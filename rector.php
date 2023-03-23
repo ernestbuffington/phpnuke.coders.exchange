@@ -345,8 +345,8 @@ return static function (RectorConfig $rectorConfig): void {
 		//__DIR__ . '/modules/Web_Links/l_config.php',
 
 
-		__DIR__ . '/modules/Your_Account/index.php',
-		//__DIR__ . '/modules/Your_Account/navbar.php',
+		//////__DIR__ . '/modules/Your_Account/index.php',
+		__DIR__ . '/modules/Your_Account/navbar.php',
 
           #__DIR__ . '/themes',
 		//__DIR__ . '/admin.php',
