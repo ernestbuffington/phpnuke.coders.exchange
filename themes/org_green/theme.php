@@ -51,10 +51,8 @@ function themeheader() {
 
     global $user, $banners, $sitename, $slogan, $cookie, $prefix, $anonymous, $swapblock,$name, $db;
 
-    if(!isset($topic))
-	$topic = '';
-	if(!isset($sel))
-	$sel = '';
+    if(!isset($topic)) { $topic = ''; }
+	if(!isset($sel)) { $sel = ''; }
 	
     cookiedecode($user);
 
