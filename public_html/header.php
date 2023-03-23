@@ -120,10 +120,10 @@ function head() {
 
 
 
-	if (file_exists("themes/$ThemeSel/images/favicon.ico")) {
-
-		echo "<link REL=\"shortcut icon\" HREF=\"themes/$ThemeSel/images/favicon.ico\" TYPE=\"image/x-icon\">\n";
-
+	if (file_exists("themes/$ThemeSel/images/favicon.png")) {
+		echo "<link REL=\"apple-touch-icon\" HREF=\"themes/$ThemeSel/images/favicon.png\">\n";
+	} else {
+	   echo "<link REL=\"apple-touch-icon\" HREF=\"favicon.png\">\n";
 	}
 
 	echo "<link rel=\"alternate\" type=\"application/rss+xml\" title=\"RSS\" href=\"backend.php\">\n";
