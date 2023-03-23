@@ -51,6 +51,11 @@ function themeheader() {
 
     global $user, $banners, $sitename, $slogan, $cookie, $prefix, $anonymous, $swapblock,$name, $db;
 
+    if(!isset($topic))
+	$topic = '';
+	if(!isset($sel))
+	$sel = '';
+	
     cookiedecode($user);
 
     $username = $cookie[1];
@@ -67,16 +72,15 @@ function themeheader() {
 	//ads(0);
 
     $topics_list = "<select name=\"topic\" onChange='submit()'>\n";
-
     $topics_list .= "<option value=\"\">All Topics</option>\n";
 
-    $toplist = $db->sql_query("select topicid, topictext from ".$prefix."_topics order by topictext");
+    $toplist = $db->sql_query("SELECT topicid, topictext from ".$prefix."_topics ORDER BY topictext");
 
     while(list($topicid, $topics) = $db->sql_fetchrow($toplist)) {
-
+    
 	$topicid = intval($topicid);
 
-    if ($topicid==$topic) { $sel = "selected "; }
+    if ($topicid == $topic) { $sel = "selected "; }
 
 	$topics_list .= "<option $sel value=\"$topicid\">$topics</option>\n";
 
