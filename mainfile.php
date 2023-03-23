@@ -117,7 +117,7 @@ if (GZIPSUPPORT && !ini_get('zlib.output_compression')
 && isset($_SERVER['HTTP_ACCEPT_ENCODING']) 
 && preg_match('/gzip/i', (string) $_SERVER['HTTP_ACCEPT_ENCODING'])):
     
-	if (version_compare(PHPVERS, '7.1.0', '>=')): 
+	if (version_compare($phpver, '7.1.0', '>=')): 
         ob_end_clean();  // never run this without doing an end clean first (Ernest Allen Buffington)
 		ob_start('ob_gzhandler');
     else:
@@ -272,9 +272,6 @@ define('NUKE_CACHE_DIR', NUKE_INCLUDE_DIR . 'cache/');
 define('NUKE_CACHE_DELETE_DIR', NUKE_INCLUDE_DIR . 'cache');
 define('NUKE_CLASSES_DIR', NUKE_INCLUDE_DIR . 'classes/');
 define('NUKE_CLASS_EXCEPTION_DIR',  NUKE_CLASSES_DIR . 'exceptions/');
-
-# define the INCLUDE PATH
-define('INCLUDE_PATH', NUKE_BASE_DIR);
 
 // Define the INCLUDE PATH
 if(defined('FORUM_ADMIN')) {
@@ -1559,87 +1556,64 @@ function delQuotes($string){
 }
 
 function check_html ($str, $strip="") {
-
-	$reg = [];
-    $AllowableHTML = [];
+	$AllowableHTML = [];
     /* The core of this code has been lifted from phpslash */
-
 	/* which is licenced under the GPL. */
-
 	include("config.php");
-
 	if ($strip == "nohtml")
-
-	$AllowableHTML=array('');
-
-	$str = stripslashes($str);
-
+	$AllowableHTML = array('');
+	$str = stripslashes($str ?? ''); // maybe ghost
 	$str = preg_replace('#<[013\s]*([^>]*)[013\s]*>#mi','<\\1>', $str);
-
 	// Delete all spaces from html tags .
-
 	$str = preg_replace('#<a[^>]*href[013\s]*=[013\s]*"?[013\s]*([^" >]*)[013\s]*"?[^>]*>#mi','<a href="\\1">', $str);
-
 	// Delete all attribs from Anchor, except an href, double quoted.
-
 	$str = preg_replace('#<[013\s]* img[013\s]*([^>]*)[013\s]*>#mi', '', $str);
-
 	// Delete all img tags
-
 	$str = preg_replace('#<a[^>]*href[013\s]*=[013\s]*"?javascript[[:punct:]]*"?[^>]*>#mi', '', $str);
-
 	// Delete javascript code from a href tags -- Zhen-Xjell @ http://nukecops.com
-
 	$tmp = "";
-
-	while (preg_match('#<(\/?[[:alpha:]]*)[013\s]*([^>]*)>#m',$str,$reg)) {
-
-		$i = strpos($str,(string) $reg[0]);
-
+	while (preg_match('#<(\/?[[:alpha:]]*)[013\s]*([^>]*)>#m',$str,$reg)) 
+	{
+		$i = strpos($str,$reg[0]);
 		$l = strlen($reg[0]);
-
-		if ($reg[1][0] == "/") $tag = strtolower(substr($reg[1],1));
-
-		else $tag = strtolower($reg[1]);
-
-		if ($a = $AllowableHTML[$tag])
-
-		if ($reg[1][0] == "/") $tag = "</$tag>";
-
-		elseif (($a == 1) || ($reg[2] == "")) $tag = "<$tag>";
-
-		else {
-
-			# Place here the double quote fix function.
-
-			$attrb_list=delQuotes($reg[2]);
-
-			// A VER
-
-			//$attrb_list = ereg_replace("&","&amp;",$attrb_list);
-
-			$tag = "<$tag" . $attrb_list . ">";
-
-		} # Attribs in tag allowed
-
-		else $tag = "";
-
+		$a = [];
+		
+		if (isset($reg[1][0]) && $reg[1][0] == "/") 
+		{
+		  $tag = strtolower(substr($reg[1],1));
+		}
+		else 
+		{ 
+		  $tag = strtolower($reg[1]);
+		}
+		
+		if(isset($AllowableHTML[$tag])) 
+		{
+		  if ($a == $AllowableHTML[$tag]) {
+		     if ($reg[1][0] == "/") { 
+		       $tag = "</$tag>";
+		     }
+		     elseif (($a == 1) || ($reg[2] == "")) {
+		       $tag = "<$tag>";
+		     } else {
+			   # Place here the double quote fix function.
+			   $attrb_list=delQuotes($reg[2]);
+			   // A VER
+			   //$attrb_list = ereg_replace("&","&amp;",$attrb_list);
+			   $tag = "<$tag" . $attrb_list . ">";
+		     } # Attribs in tag allowed
+		   } else { 
+		     $tag = "";
+		   }
+		}
 		$tmp .= substr($str,0,$i) . $tag;
-
 		$str = substr($str,$i+$l);
-
 	}
-
 	$str = $tmp . $str;
-
 	return $str;
-
 	exit;
-
 	/* Squash PHP tags unconditionally */
-
 	$str = preg_replace('#<\?#m',"",$str);
-
 	return $str;
 }
 
