@@ -20,6 +20,8 @@
  * StringifyStrNeedlesRector (https://wiki.php.net/rfc/deprecations_php_7_3#string_search_functions_with_integer_needle)
  * StrStartsWithRector (https://wiki.php.net/rfc/add_str_starts_with_and_ends_with_functions)
  */
+
+define('NUKE_FILE', true);
  
 // End the transaction
 if(!defined('END_TRANSACTION')) {
@@ -226,8 +228,6 @@ if (!defined('ADMIN_FILE')) {
 
 }
 
-
-
  foreach ($_POST as $secvalue) {
 
   if ((preg_match('#<[^>]*iframe*"?[^>]*#mi', $secvalue)) ||
@@ -339,6 +339,26 @@ if (file_exists(INCLUDE_PATH."includes/custom_files/custom_mainfile.php")) {
 	include_once(INCLUDE_PATH."includes/custom_files/custom_mainfile.php");
 }
 
+# add external Rector vendor library support so that we can use composer with Nuke
+# Rector Autoload - only if vendor directory exists with an autoload file! START
+if(file_exists(NUKE_RECTOR_DIR.'autoload.php')):
+  require_once(NUKE_RECTOR_DIR.'autoload.php');
+endif;  
+# Rector Autoload - only if vendor directory exists with an autoload file! END
+
+
+# add external vendor library support so that we can use composer with Nuke
+# Vendor Autoload - only if vendor directory exists with an autoload file! START
+if(file_exists(NUKE_VENDOR_DIR.'autoload.php')):
+  require_once(NUKE_VENDOR_DIR.'autoload.php');
+endif;  
+# Vendor Autoload - only if vendor directory exists with an autoload file! END
+
+# Core exceptions handler START
+include_once(NUKE_INCLUDE_DIR . 'exception.php');
+include_once(NUKE_INCLUDE_DIR . 'abstract/abstract.exception.php');
+# Core exceptions handler END
+
 if (!defined('FORUM_ADMIN')) {
 
 if(empty($admin_file)) {
@@ -352,10 +372,6 @@ if(empty($admin_file)) {
   }
 
 }
-
-
-
-define('NUKE_FILE', true);
 
 $row = $db->sql_fetchrow($db->sql_query("SELECT * FROM ".$prefix."_config"));
 $sitename = filter($row['sitename'], "nohtml");
