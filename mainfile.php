@@ -41,6 +41,7 @@ function include_secure($file_name)
     include_once($file_name);
 }
 
+// samesite cookie array
 $arr_cookie_options = array (
 'expires' => time() + 60*60*24*30, 
 'path' => '/', 
@@ -87,6 +88,13 @@ function define_once($constant, $value)
     if(!defined($constant)): 
       define($constant, $value);
 	endif;
+}
+
+# add 3rd party microtime
+function get_microtime() 
+{
+    [$usec, $sec] = explode(' ', microtime());
+    return ($usec + $sec);
 }
 
 $do_gzip_compress = false;
