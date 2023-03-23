@@ -420,7 +420,7 @@ if ($siteUrl) {
 
 	// create the admin user
 	$cryptpass = md5( $adminPassword );
-	$sql="INSERT INTO nuke_authors VALUES ('$setup_admin', 'God', 'https://www.".$_SERVER['SERVER_NAME']."', '$adminEmail', '$cryptpass', 0, 1, '') ";
+	$sql="INSERT INTO nuke_authors VALUES ('$setup_admin', 'God', 'https://".$_SERVER['SERVER_NAME']."', '$adminEmail', '$cryptpass', 0, 1, '') ";
 	$result=$db->sql_query($sql);
 
 	$date = date("F j, Y");
