@@ -76,7 +76,7 @@ if ($httpref == 1) {
 
     $referer = check_html($referer, "nohtml");
 
-    if (eregi("nuke_", $referer) && eregi("into", $referer) && eregi("from", $referer)) {
+    if (preg_match('#nuke_#mi', $referer) && preg_match('#into#mi', $referer) && preg_match('#from#mi', $referer)) {
 
     	$referer = "";
 
