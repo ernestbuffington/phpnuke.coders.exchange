@@ -34,7 +34,10 @@ define('GZIPSUPPORT', extension_loaded('zlib'));
 define('GDSUPPORT', extension_loaded('gd'));
 define('CAN_MOD_INI', !stristr(ini_get('disable_functions'), 'ini_set'));
 
-// convert superglobals if php is lower then 4.1.0
+if(CAN_MOD_INI):
+    ini_set('zlib.output_compression', 0);
+endif;
+
 function include_secure($file_name)
 {
     $file_name =  preg_replace("/\.[\.\/]*\//", "", $file_name);
@@ -304,6 +307,19 @@ endif;
 
 // Include the required files
 require_once(INCLUDE_PATH."config.php");
+
+# add 3rd party support by adding file mode and directory mode!
+if(!$directory_mode):
+  $directory_mode = 0777;
+else:
+  $directory_mode = 0755;
+endif;
+
+if(!$file_mode):
+  $file_mode = 0666;
+else:
+  $file_mode = 0644;
+endif;
 
 if(!$dbname) {
     die("<br><br><center><img src=images/logo.gif><br><br><b>There seems that PHP-Nuke isn't installed yet.<br>(The values in config.php file are the default ones)<br><br>You can proceed with the <a href='./install/index.php'>web installation</a> now.</center></b>");
