@@ -282,6 +282,26 @@ if(defined('FORUM_ADMIN')) {
     define('INCLUDE_PATH', NUKE_BASE_DIR);
 }
 
+# If a class hasn't been loaded yet find the required file on the server and load
+# it in using the special autoloader detection built into PHP5+
+if(!function_exists('classAutoloader')): 
+
+    function classAutoloader($class) 
+    {
+        # Set the class file path
+        if(preg_match('/Exception/', (string) $class)): 
+          $file = NUKE_CLASS_EXCEPTION_DIR . strtolower((string) $class) . '.php';
+        else:
+          $file = NUKE_CLASSES_DIR . 'class.' . strtolower((string) $class) . '.php';
+		endif;
+
+		if(!class_exists($class, false) && file_exists($file)):
+          require_once($file);
+		endif;
+    }
+    spl_autoload_register('classAutoloader');
+endif;
+
 // Include the required files
 require_once(INCLUDE_PATH."config.php");
 
