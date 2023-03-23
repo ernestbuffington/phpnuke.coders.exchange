@@ -4,7 +4,7 @@
 # PHP-NUKE: Advanced Content Management System
 # ============================================
 #
-# Copyright (c) 2007 by Francisco Burzi
+# Copyright (c) 2023 by Francisco Burzi (Frank)
 # http://phpnuke.org
 #
 # This program is free software. You can redistribute it and/or modify
@@ -43,18 +43,26 @@ if (stristr(htmlentities($_SERVER['PHP_SELF']), "config.php")) {
 ######################################################################
 
 $dbhost = "localhost";
-$dbuname = "root";
-$dbpass = "";
-$dbname = "";
+$dbuname = "phpnukecoders_db";
+$dbpass = "xwdNPADv86nce";
+$dbname = "phpnukecoders_db";
 $prefix = "nuke";
 $user_prefix = "nuke";
-$dbtype = "MySQL";
-$sitekey = "cPEnq15ZPmejnuKtzZMUHFH1bee9KLT9i5FfZBmI";
+$dbtype = "MySQLi";
+$sitekey = "OSaJUP2Aya1o18h5lezw0JAbTUaI5SIewjUFcBR9";
 $subscription_url = "";
 $admin_file = "admin";
 
+
+$directory_mode = 0777;
+$file_mode = 0666;
+$debug = true;
+$use_cache = 1;
+$persistency = false;
+
+
 /**********************************************************************/
-/* You finished to configure the Database. Now you can change all     */
+/* You have finished configuring the Database. Now you can change all */
 /* you want in the Administration Section.   To enter just launch     */
 /* your web browser pointing it to http://xxxxxx.xxx/admin.php        */
 /* (Change xxxxxx.xxx to your domain name, for example: phpnuke.org)  */
@@ -63,7 +71,7 @@ $admin_file = "admin";
 /* new site. In that menu you can change all you need to change.      */
 /*                                                                    */
 /* Congratulations! now you have an automated news portal!            */
-/* Thanks for choose PHP-Nuke: The Future of the Web                  */
+/* Thanks for choosing PHP-Nuke: The Future of the Web                */
 /**********************************************************************/
 
 // DO NOT TOUCH ANYTHING BELOW THIS LINE UNTIL YOU KNOW WHAT YOU'RE DOING
@@ -71,7 +79,7 @@ $admin_file = "admin";
 $prefix = empty($user_prefix) ? $prefix : $user_prefix;
 $reasons = array("As Is","Offtopic","Flamebait","Troll","Redundant","Insighful","Interesting","Informative","Funny","Overrated","Underrated");
 $badreasons = 4;
-/* If you want to use the IMG tag in your HTML code, to include images in News for example, you must use the following line and comment the old $AllowableHTML */
+/* If you want to use the IMG tag in your HTML code, to include images in News for example you must use the following line and comment out the old $AllowableHTML */
 /* $AllowableHTML = array("img"=>2,"b"=>1,"i"=>1,"strike"=>1,"div"=>2,"u"=>1,"a"=>2,"em"=>1,"br"=>1,"strong"=>1,"blockquote"=>1,"tt"=>1,"li"=>1,"ol"=>1,"ul"=>1); */
 /* or just include "img"=>2 in the $AllowableHTML array bellow. This feature isn't included by default due to possible security issues */
 $AllowableHTML = array("b"=>1,"i"=>1,"strike"=>1,"div"=>2,"u"=>1,"a"=>2,"em"=>1,"br"=>1,"strong"=>1,"blockquote"=>1,"tt"=>1,"li"=>1,"ol"=>1,"ul"=>1);
@@ -79,12 +87,12 @@ $CensorList = array("fuck","cunt","fucker","fucking","pussy","cock","c0ck","cum"
 $tipath = "images/topics/";
 
 //***************************************************************
-// IF YOU WANT TO LEGALY REMOVE ANY COPYRIGHT NOTICES PLAY FAIR AND CHECK: http://phpnuke.org/modules.php?name=Commercial_License
+// IF YOU WANT TO LEGALY REMOVE ANY COPYRIGHT NOTICES PLAY FAIR AND CHECK: http://phpnuke.coders.exchange/modules.php?name=Commercial_License
 // COPYRIGHT NOTICES ARE GPL SECTION 2(c) COMPLIANT AND CAN'T BE REMOVED WITHOUT PHP-NUKE'S AUTHOR WRITTEN AUTHORIZATION
 // THE USE OF COMMERCIAL LICENSE MODE FOR PHP-NUKE HAS BEEN APPROVED BY THE FSF (FREE SOFTWARE FOUNDATION)
 // YOU CAN REQUEST INFORMATION ABOUT THIS TO GNU.ORG REPRESENTATIVE. THE EMAIL THREAD REFERENCE IS #213080
 // YOU'RE NOT AUTHORIZED TO CHANGE THE FOLLOWING VARIABLE'S VALUE UNTIL YOU ACQUIRE A COMMERCIAL LICENSE
-// (http://phpnuke.org/modules.php?name=Commercial_License)
+// (http://phpnuke.coders.exchange/modules.php?name=Commercial_License)
 //***************************************************************
 
 $commercial_license = 0;
