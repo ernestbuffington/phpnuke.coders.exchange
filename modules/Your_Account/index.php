@@ -900,7 +900,7 @@ function userinfo($username, $bypass=0, $hid=0, $url=0) {
 
 				$row5 = $db->sql_fetchrow($result5);
 
-				$nsitename = filter($row5['sitename'] ?? '', "nohtml");
+				$nsitename = filter($row5['sitename'], "nohtml");
 
 				$url = filter($row5['headlinesurl'], "nohtml");
 
