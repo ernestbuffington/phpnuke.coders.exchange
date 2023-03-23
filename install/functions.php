@@ -579,7 +579,7 @@ function site_form($display=1,$return=false){
 	mysqli_free_result($result);
     
 	if(empty($sitename))
-	$sitename = 'A PHP-Nuke Titanium Web Portal';
+	$sitename = 'A PHP-Nuke Web Portal';
 
 	if(empty($nukeurl))
 	$nukeurl = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http") . "://$_SERVER[HTTP_HOST]";
