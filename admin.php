@@ -19,46 +19,27 @@ if(isset($aid)) {
 	if(!empty($aid) AND (!isset($admin) OR empty($admin)) AND $op!='login') {
 
 		unset($aid);
-
 		unset($admin);
-
 		die("Access Denied");
-
 	}
-
 }
-
-
 
 require_once("mainfile.php");
 
-
-
 //Uncomment the following lines after setting the site url in the Administration
-
 //global $nukeurl;
-
 //if (!stripos_clone($_SERVER['HTTP_HOST'], $nukeurl)) {
-
 //  die("Access denied");
-
 //}
-
-
 
 $checkurl = $_SERVER['REQUEST_URI'];
 
 if((stripos_clone($checkurl,'AddAuthor')) OR (stripos_clone($checkurl,'VXBkYXRlQXV0aG9y')) OR (stripos_clone($checkurl,'QWRkQXV0aG9y')) OR (stripos_clone($checkurl,'UpdateAuthor')) OR (stripos_clone($checkurl, "?admin")) OR (stripos_clone($checkurl, "&admin"))) {
 
 	die("Illegal Operation");
-
 }
 
-
-
 get_lang("admin");
-
-
 
 function create_first($name, $url, $email, $pwd, $user_new) {
 
@@ -89,16 +70,10 @@ function create_first($name, $url, $email, $pwd, $user_new) {
 			if ($url == "http://") { $url = ""; }
 
 			$db->sql_query("INSERT INTO ".$user_prefix."_users (user_id, username, user_email, user_website, user_avatar, user_regdate, user_password, theme, commentmax, user_level, user_lang, user_dateformat) VALUES (NULL,'".addslashes($name)."','".addslashes($email)."','".addslashes($url)."','$user_avatar','$user_regdate','$pwd','$Default_Theme','$commentlimit', '2', 'english','D M d, Y g:i a')");
-
 		}
-
 		login();
-
 	}
-
 }
-
-
 
 global $admin_file;
 
@@ -139,33 +114,22 @@ if ($the_first == 0) {
 		CloseTable();
 
 		include("footer.php");
-
 	}
 
 	switch($fop) {
 
 		case "create_first":
-
 		create_first($name, $url, $email, $pwd, $user_new);
-
 		break;
-
 	}
-
 	die();
-
 }
 
-
-
-if (isset($aid) && (ereg("[^a-zA-Z0-9_-]",trim($aid)))) {
-
+if (isset($aid) && (preg_match('#[^a-zA-Z0-9_\-]#m',trim($aid)))) {
 	die("Begone");
-
 }
 
 if (isset($aid)) { $aid = substr($aid, 0,25);}
-
 if (isset($pwd)) { $pwd = substr($pwd, 0,40);}
 
 if ((isset($aid)) && (isset($pwd)) && (isset($op)) && ($op == "login")) {
@@ -177,11 +141,8 @@ if ((isset($aid)) && (isset($pwd)) && (isset($op)) && ($op == "login")) {
 	$code = substr($rcode, 2, 6);
 
 	if (extension_loaded("gd") AND $code != $_POST['gfx_check'] AND ($gfx_chk == 1 OR $gfx_chk == 5 OR $gfx_chk == 6 OR $gfx_chk == 7)) {
-
 		Header("Location: ".$admin_file.".php");
-
 		die();
-
 	}
 
 	if(!empty($aid) AND !empty($pwd)) {
@@ -198,21 +159,14 @@ if ((isset($aid)) && (isset($pwd)) && (isset($op)) && ($op == "login")) {
 
 			$admin = base64_encode("$aid:$pwd:$admlanguage");
 
-			setcookie("admin",$admin,time()+2592000);
+			setcookie("admin",$admin,['expires' => time()+2592000]);
 
 			unset($op);
-
 		}
-
 	}
-
 }
 
-
-
 $admintest = 0;
-
-
 
 if(isset($admin) && !empty($admin)) {
 
@@ -245,7 +199,6 @@ if(isset($admin) && !empty($admin)) {
 		$alert .= "</html>\n";
 
 		die($alert);
-
 	}
 
 	$aid = substr($aid, 0,25);
@@ -263,14 +216,9 @@ if(isset($admin) && !empty($admin)) {
 			if($rpwd == $pwd && !empty($rpwd)) {
 
 				$admintest = 1;
-
 			}
-
 		}
-
 	}
-
-
 
 	if(!isset($op)) {
 
@@ -279,21 +227,13 @@ if(isset($admin) && !empty($admin)) {
 		} elseif(($op=="mod_authors" OR $op=="modifyadmin" OR $op=="UpdateAuthor" OR $op=="AddAuthor" OR $op=="deladmin2" OR $op=="deladmin" OR $op=="assignstories" OR $op=="deladminconf") AND ($rname != "God")) {
 
 			die("Illegal Operation");
-
 		}
 
 		$pagetitle = "- "._ADMINMENU."";
 
-
-
 		/*********************************************************/
-
 		/* Login Function                                        */
-
 		/*********************************************************/
-
-
-
 		function login() {
 
 			global $gfx_chk, $admin_file;
@@ -304,7 +244,7 @@ if(isset($admin) && !empty($admin)) {
 
 			$maxran = 1000000;
 
-			$random_num = mt_rand(0, $maxran);
+			$random_num = random_int(0, $maxran);
 
 			OpenTable();
 
@@ -333,9 +273,7 @@ if(isset($admin) && !empty($admin)) {
 				echo "<tr><td colspan='2'>"._SECURITYCODE.": <img src='?gfx=gfx&random_num=$random_num' border='1' alt='"._SECURITYCODE."' title='"._SECURITYCODE."'></td></tr>"
 
 				."<tr><td colspan='2'>"._TYPESECCODE.": <input type=\"text\" NAME=\"gfx_check\" SIZE=\"7\" MAXLENGTH=\"6\"></td></tr>";
-
 			}
-
 			echo "<tr><td>"
 
 			."<input type=\"hidden\" NAME=\"random_num\" value=\"$random_num\">"
@@ -351,10 +289,7 @@ if(isset($admin) && !empty($admin)) {
 			CloseTable();
 
 			include("footer.php");
-
 		}
-
-
 
 		function deleteNotice($id) {
 
@@ -365,19 +300,10 @@ if(isset($admin) && !empty($admin)) {
 			$db->sql_query("DELETE FROM ".$prefix."_reviews_add WHERE id = '$id'");
 
 			Header("Location: ".$admin_file.".php?op=reviews");
-
 		}
-
-
-
 		/*********************************************************/
-
 		/* Administration Menu Function                          */
-
 		/*********************************************************/
-
-
-
 		function adminmenu($url, $title, $image) {
 
 			global $counter, $admingraphic, $Default_Theme;
@@ -391,7 +317,6 @@ if(isset($admin) && !empty($admin)) {
 				} else {
 
 					$image = "images/admin/$image";
-
 				}
 
 				if ($admingraphic == 1) {
@@ -403,9 +328,7 @@ if(isset($admin) && !empty($admin)) {
 					} else {
 
 						$img = "";
-
 						$close = "</a>";
-
 					}
 
 					echo "<td align=\"center\" valign=\"top\" width=\"16%\"><font class=\"content\"><a href=\"$url\">$img<b>$title</b>$close<br><br></font></td>";
@@ -419,12 +342,8 @@ if(isset($admin) && !empty($admin)) {
 						} else {
 
 							$counter++;
-
 						}
-
 					}
-
-
 
 					function GraphicAdmin() {
 
@@ -452,14 +371,11 @@ if(isset($admin) && !empty($admin)) {
 
 							while($func=$linksdir->read()) {
 
-								if(substr($func, 0, 6) == "links.") {
+								if(str_starts_with($func, "links.")) {
 
 									$menulist .= "$func ";
-
 								}
-
 							}
-
 							closedir($linksdir->handle);
 
 							$menulist = explode(" ", $menulist);
@@ -471,11 +387,8 @@ if(isset($admin) && !empty($admin)) {
 								if(!empty($menulist[$i])) {
 
 									$sucounter = 0;
-
 									include($linksdir->path."/$menulist[$i]");
-
 								}
-
 							}
 
 							adminmenu("".$admin_file.".php?op=logout", ""._ADMINLOGOUT."", "logout.gif");
@@ -487,7 +400,6 @@ if(isset($admin) && !empty($admin)) {
 							CloseTable();
 
 							echo "<br>";
-
 						}
 
 						OpenTable();
@@ -504,14 +416,11 @@ if(isset($admin) && !empty($admin)) {
 
 						while ($file = readdir($handle)) {
 
-							if ( (!ereg("[.]",$file)) ) {
+							if ( (!preg_match('#[\.]#m',$file)) ) {
 
 								$modlist .= "$file ";
-
 							}
-
 						}
-
 						closedir($handle);
 
 						$modlist = explode(" ", $modlist);
@@ -527,15 +436,10 @@ if(isset($admin) && !empty($admin)) {
 								$mid = intval($row['mid']);
 
 								if (empty($mid)) {
-
 									$db->sql_query("insert into " . $prefix . "_modules values (NULL, '$modlist[$i]', '$modlist[$i]', '0', '0', '1', '0', '')");
-
 								}
-
 							}
-
 						}
-
 						$result = $db->sql_query("SELECT title, admins FROM ".$prefix."_modules ORDER BY title ASC");
 
 						$row2 = $db->sql_fetchrow($db->sql_query("SELECT name FROM ".$prefix."_authors WHERE aid='$aid'"));
@@ -551,9 +455,7 @@ if(isset($admin) && !empty($admin)) {
 								if ($row2['name'] == $admins[$i]) {
 
 									$auth_user = 1;
-
 								}
-
 							}
 
 							if ($radminsuper == 1 OR $auth_user == 1) {
@@ -561,13 +463,9 @@ if(isset($admin) && !empty($admin)) {
 								if (file_exists("modules/".$row['title']."/admin/index.php") AND file_exists("modules/".$row['title']."/admin/links.php") AND file_exists("modules/".$row['title']."/admin/case.php")) {
 
 									include("modules/".$row['title']."/admin/links.php");
-
 								}
-
 							}
-
 						}
-
 						adminmenu("".$admin_file.".php?op=logout", ""._ADMINLOGOUT."", "logout.gif");
 
 						echo"</tr></table></center>";
@@ -575,19 +473,10 @@ if(isset($admin) && !empty($admin)) {
 						CloseTable();
 
 						echo "<br>";
-
 					}
-
-
-
 					/*********************************************************/
-
 					/* Administration Main Function                          */
-
 					/*********************************************************/
-
-
-
 					function adminMain() {
 
 						global $language, $admin, $aid, $prefix, $file, $db, $sitename, $user_prefix, $admin_file, $bgcolor1, $locale;
@@ -639,17 +528,13 @@ if(isset($admin) && !empty($admin)) {
 								if ($aidname == $admins[$i]) {
 
 									$auth_user = 1;
-
 								}
-
 							}
 
 							if ($auth_user == 1) {
 
 								$radminarticle = 1;
-
 							}
-
 						}
 
 						if (!empty($admlanguage)) {
@@ -659,9 +544,7 @@ if(isset($admin) && !empty($admin)) {
 							} else {
 
 								$queryalang = "";
-
 							}
-
 							$row3 = $db->sql_fetchrow($db->sql_query("SELECT main_module from ".$prefix."_main"));
 
 							$main_module = $row3['main_module'];
@@ -719,7 +602,6 @@ if(isset($admin) && !empty($admin)) {
 									if (empty($alanguage)) {
 
 										$alanguage = ""._ALL."";
-
 									}
 
 									if (!empty($anid)) {
@@ -729,7 +611,6 @@ if(isset($admin) && !empty($admin)) {
 											echo "<table border=\"1\" width=\"100%\">";
 
 											$count = 1;
-
 										}
 
 										$time = str_replace(" ", "@", $time);
@@ -751,21 +632,16 @@ if(isset($admin) && !empty($admin)) {
 													echo "<tr><td width=\"100%\">&nbsp;$title&nbsp;</td><td align=\"center\">&nbsp;$alanguage&nbsp;</td><td nowrap>&nbsp;$time&nbsp;</td></tr>"; /* Multilingual Code : added column to display language */
 
 												}
-
 											}
-
 										}
-
 										if ((empty($anid)) AND ($count == 0)) {
 
 											echo "<center><i>"._NOAUTOARTICLES."</i></center>";
-
 										}
 
 										if ($count == 1) {
 
 											echo "</table>";
-
 										}
 
 										CloseTable();
@@ -805,7 +681,6 @@ if(isset($admin) && !empty($admin)) {
 											if (empty($alanguage)) {
 
 												$alanguage = ""._ALL."";
-
 											}
 
 											formatTimestamp($time);
@@ -837,9 +712,7 @@ if(isset($admin) && !empty($admin)) {
 													} else {
 
 														echo "</td></tr>";
-
 													}
-
 												}
 
 												echo "</table>";
@@ -867,9 +740,7 @@ if(isset($admin) && !empty($admin)) {
 												}
 
 												CloseTable();
-
 											}
-
 											$row8 = $db->sql_fetchrow($db->sql_query("SELECT pollID, pollTitle FROM ".$prefix."_poll_desc WHERE artid='0' ORDER BY pollID DESC LIMIT 1"));
 
 											$pollID = intval($row8['pollID']);
@@ -885,105 +756,62 @@ if(isset($admin) && !empty($admin)) {
 												echo "<center><b>"._CURRENTPOLL.":</b> $pollTitle  <a href=\"".$admin_file.".php?op=create\"><img src=\"images/add.gif\" alt=\""._ADD."\" title=\""._ADD."\" border=\"0\" width=\"17\" height=\"17\"></a>  <a href=\"".$admin_file.".php?op=polledit&amp;pollID=$pollID\"><img src=\"images/edit.gif\" alt=\""._EDIT."\" title=\""._EDIT."\" border=\"0\" width=\"17\" height=\"17\"></a></center>";
 
 												CloseTable();
-
 											}
 
 											unset($title);
 
 											include("footer.php");
-
 										}
-
-
 
 										if($admintest) {
 
-
-
 											switch($op) {
 
-
-
 												case "do_gfx":
-
 												do_gfx();
-
 												break;
-
-
 
 												case "deleteNotice":
-
 												deleteNotice($id);
-
 												break;
-
-
 
 												case "GraphicAdmin":
-
 												GraphicAdmin();
-
 												break;
-
-
 
 												case "adminMain":
-
 												adminMain();
-
 												break;
-
-
 
 												case "logout":
-
 												setcookie("admin", false);
-
 												$admin = "";
-
 												include("header.php");
-
 												OpenTable();
-
 												echo "<center><font class=\"title\"><b>"._YOUARELOGGEDOUT."</b></font></center>";
-
 												CloseTable();
-
 												Header("Refresh: 3; url=".$admin_file.".php");
-
 												include("footer.php");
-
 												break;
 
-
-
 												case "login";
-
 												unset($op);
-
-
 
 												default:
 
 												if (!is_admin($admin)) {
 
 													login();
-
 												}
-
 												$casedir = dir("admin/case");
 
 												while($func=$casedir->read()) {
 
-													if(substr($func, 0, 5) == "case.") {
+													if(str_starts_with($func, "case.")) {
 
 														include($casedir->path."/".$func);
-
 													}
-
 												}
-
 												closedir($casedir->handle);
 
 												$result = $db->sql_query("SELECT title FROM ".$prefix."_modules ORDER BY title ASC");
@@ -993,41 +821,17 @@ if(isset($admin) && !empty($admin)) {
 													if (file_exists("modules/$mod_title/admin/index.php") AND file_exists("modules/$mod_title/admin/links.php") AND file_exists("modules/$mod_title/admin/case.php")) {
 
 														include("modules/$mod_title/admin/case.php");
-
 													}
-
 												}
-
 												break;
-
-
-
 											}
-
-
-
 											} else {
-
-
 
 												switch($op) {
 
-
-
 													default:
-
 													login();
-
 													break;
-
-
-
 												}
-
-
-
 											}
-
-
-
-											?>
+?>
