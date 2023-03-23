@@ -41,6 +41,15 @@ function include_secure($file_name)
     include_once($file_name);
 }
 
+$arr_cookie_options = array (
+'expires' => time() + 60*60*24*30, 
+'path' => '/', 
+'domain' => ''.$_SERVER['HTTP_HOST'].'', // get the server host automaticly
+'secure' => true,     // or false
+'httponly' => true,    // or false
+'samesite' => 'None' // None || Lax  || Strict
+);
+
 // override old superglobals if php is higher then 4.1.0
 if($phpver >= '7.2.0') {
   $HTTP_GET_VARS = $_GET;
