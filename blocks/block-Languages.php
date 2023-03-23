@@ -46,7 +46,11 @@ if ($useflags == 1) {
     while ($file = readdir($handle)) {
 	if (preg_match("/^lang\-(.+)\.php/", $file, $matches)) {
 	    $langFound = $matches[1];
-	    $languageslist .= "$langFound ";
+	    
+		if(!isset($languageslist))
+		$languageslist = '';
+		
+		$languageslist .= "$langFound ";
 	}
     }
     closedir($handle);
