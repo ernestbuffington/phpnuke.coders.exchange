@@ -1425,42 +1425,31 @@ function FixQuotes ($what = "") {
 /* text filter                                           */
 /*********************************************************/
 function check_words($Message) {
-
-	$CensorList = [];
-    
 	global $CensorMode, $CensorReplace, $EditedMessage;
-
 	include("config.php");
-
 	$EditedMessage = $Message;
+    $CensorList = [];
 
+    if(empty($Message)): 
+      return '';
+	endif;
+	
+	$CensorReplace = [];
+	
 	if ($CensorMode != 0) {
-
 		if (is_array($CensorList)) {
-
 			$Replace = $CensorReplace;
-
-			if ($CensorMode == 1) {
-
+			if (isset($CensorMode) && $CensorMode === 1) {
 				for ($i = 0; $i < count($CensorList); $i++) {
-
-					$EditedMessage = preg_replace("$CensorList[$i]([^a-zA-Z0-9])","$Replace\\1",$EditedMessage);
-
+					$EditedMessage = preg_replace("$CensorList[$i]([^a-zA-Z0-9])","$Replace\\1",(string) $EditedMessage);
 				}
-
-			} elseif ($CensorMode == 2) {
-
+			} elseif (isset($CensorMode) && $CensorMode === 2) {
 				for ($i = 0; $i < count($CensorList); $i++) {
-
-					$EditedMessage = preg_replace("(^|[^[:alnum:]])$CensorList[$i]","\\1$Replace",$EditedMessage);
-
+					$EditedMessage = preg_replace("(^|[^[:alnum:]])$CensorList[$i]","\\1$Replace",(string) $EditedMessage);
 				}
-
-			} elseif ($CensorMode == 3) {
-
+			} elseif (isset($CensorMode) && $CensorMode === 3) {
 				for ($i = 0; $i < count($CensorList); $i++) {
-
-					$EditedMessage = preg_replace("$CensorList[$i]","$Replace",$EditedMessage);
+					$EditedMessage = preg_replace("$CensorList[$i]","$Replace",(string) $EditedMessage);
 				}
 			}
 		}
