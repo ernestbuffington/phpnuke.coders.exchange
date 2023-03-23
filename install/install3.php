@@ -354,9 +354,9 @@ function check() {
 		$root = str_replace("install/","",$root);
 		$root = str_replace("/install3.php","",$root);
 		if($_SERVER['SERVER_PORT'] == 443){
-		$url = "https://www.".$root;
+		$url = "https://".$root;
 		} else {
-		$url = "http://www.".$root;
+		$url = "http://".$root;
 		}
 	}
 ?>
