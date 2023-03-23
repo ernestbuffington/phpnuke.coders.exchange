@@ -24,11 +24,10 @@
 /**************************************************************************/
 
 
-define("_PDATE","Data:");
-define("_PTOPIC","Tema:");
-define("_COMESFROM","Este artigo veio de");
-define("_THEURL","O link deste artigo é:");
-define("_DATE","Data");
-define("_TITLE","Título");
+define_once("_PDATE","Data:");
+define_once("_PTOPIC","Tema:");
+define_once("_COMESFROM","Este artigo veio de");
+define_once("_THEURL","O link deste artigo é:");
+define_once("_DATE","Data");
+define_once("_TITLE","Título");
 
-?>

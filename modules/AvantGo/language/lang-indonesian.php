@@ -17,11 +17,11 @@
 /* And, if you use HTML code, please double check it.                     */
 /**************************************************************************/
 
-define("_PDATE","Tanggal:");
-define("_PTOPIC","Topik:");
-define("_COMESFROM","Berita ini dari");
-define("_THEURL","URL berita ini adalah:");
-define("_DATE","Tanggal");
-define("_TITLE","Judul");
+define_once("_PDATE","Tanggal:");
+define_once("_PTOPIC","Topik:");
+define_once("_COMESFROM","Berita ini dari");
+define_once("_THEURL","URL berita ini adalah:");
+define_once("_DATE","Tanggal");
+define_once("_TITLE","Judul");
 
-?>
+

@@ -17,22 +17,21 @@
 /* And, if you use HTML code, please double check it.                     */
 /**************************************************************************/
 
-define("_SEND","Lähetä");
-define("_FYOURNAME","Nimesi:");
-define("_FYOUREMAIL","Sähkäpostiosoitteesi:");
-define("_FFRIENDNAME","Kaverisi nimi:");
-define("_FFRIENDEMAIL","Kaverisi sähköpostiosoite:");
-define("_HELLO","Hei");
-define("_YOURFRIEND","ystäväsi");
-define("_RECOMMEND","Suosittele sivustoa kaverillesi");
-define("_INTSITE","Mielenkiintoinen saitti:");
-define("_OURSITE","piti sivustoa");
-define("_INTSENT","mielenkiintoisena ja ajatteli suositella sitä sinullekin.");
-define("_FSITENAME","Sivuston nimi:");
-define("_FSITEURL","Sivuston URL:");
-define("_FREFERENCE","Tiedot sivustostamme on lähetetty osoitteeseen:");
-define("_THANKSREC","Kiitos meidän suosittelemisesta!");
-define("_SECURITYCODEERROR","<b>ERROR:</b> The security code you wrote is incorrect...<br>Please write it exactly as given bellow:");
-define("_SENDSITEERROR","<b>Error sending the recommendation...</b><br><br><b>ERROR:</b> One or more required fields are empty.<br>Please go back and correct the problem, then try again.");
+define_once("_SEND","Lähetä");
+define_once("_FYOURNAME","Nimesi:");
+define_once("_FYOUREMAIL","Sähkäpostiosoitteesi:");
+define_once("_FFRIENDNAME","Kaverisi nimi:");
+define_once("_FFRIENDEMAIL","Kaverisi sähköpostiosoite:");
+define_once("_HELLO","Hei");
+define_once("_YOURFRIEND","ystäväsi");
+define_once("_RECOMMEND","Suosittele sivustoa kaverillesi");
+define_once("_INTSITE","Mielenkiintoinen saitti:");
+define_once("_OURSITE","piti sivustoa");
+define_once("_INTSENT","mielenkiintoisena ja ajatteli suositella sitä sinullekin.");
+define_once("_FSITENAME","Sivuston nimi:");
+define_once("_FSITEURL","Sivuston URL:");
+define_once("_FREFERENCE","Tiedot sivustostamme on lähetetty osoitteeseen:");
+define_once("_THANKSREC","Kiitos meidän suosittelemisesta!");
+define_once("_SECURITYCODEERROR","<b>ERROR:</b> The security code you wrote is incorrect...<br>Please write it exactly as given bellow:");
+define_once("_SENDSITEERROR","<b>Error sending the recommendation...</b><br><br><b>ERROR:</b> One or more required fields are empty.<br>Please go back and correct the problem, then try again.");
 
-?>

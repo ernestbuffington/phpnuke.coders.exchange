@@ -18,27 +18,26 @@
 /**************************************************************************/
 
 
-define("_FUNCTIONS","Funkcije");
-define("_YES","Da");
-define("_NO","Ne");
-define("_SAVE","Shrani");
-define("_ID","Šifra");
-define("_CATEGORIES","Kategorije");
-define("_ALL","Vsi");
-define("_FAQ","FAQ");
-define("_CONTENT","Vsebina");
-define("_FAQADMIN","Administracija FAQ-a");
-define("_ACTIVEFAQS","Aktivni FAQ-i");
-define("_ADDCATEGORY","Dodaj novo kategorijo");
-define("_QUESTIONS","Vprašanja in odgovori");
-define("_ADDQUESTION","Dodaj novo vprašanje");
-define("_QUESTION","Vprašanje");
-define("_ANSWER","Odgovor");
-define("_EDITCATEGORY","Uredi kategorijo");
-define("_EDITQUESTIONS","Uredi vprašanja in odgovore");
-define("_FAQDELWARNING","OPOZORILO: Ali ste sigurni da želite izbrisati ta Faq in vso njegovo vsebino?");
-define("_QUESTIONDEL","OPOZORILO: Ali ste sigurni da želite izbrisati to vprašanje?");
-define("_LANGUAGE","Jezik");
+define_once("_FUNCTIONS","Funkcije");
+define_once("_YES","Da");
+define_once("_NO","Ne");
+define_once("_SAVE","Shrani");
+define_once("_ID","Šifra");
+define_once("_CATEGORIES","Kategorije");
+define_once("_ALL","Vsi");
+define_once("_FAQ","FAQ");
+define_once("_CONTENT","Vsebina");
+define_once("_FAQADMIN","Administracija FAQ-a");
+define_once("_ACTIVEFAQS","Aktivni FAQ-i");
+define_once("_ADDCATEGORY","Dodaj novo kategorijo");
+define_once("_QUESTIONS","Vprašanja in odgovori");
+define_once("_ADDQUESTION","Dodaj novo vprašanje");
+define_once("_QUESTION","Vprašanje");
+define_once("_ANSWER","Odgovor");
+define_once("_EDITCATEGORY","Uredi kategorijo");
+define_once("_EDITQUESTIONS","Uredi vprašanja in odgovore");
+define_once("_FAQDELWARNING","OPOZORILO: Ali ste sigurni da želite izbrisati ta Faq in vso njegovo vsebino?");
+define_once("_QUESTIONDEL","OPOZORILO: Ali ste sigurni da želite izbrisati to vprašanje?");
+define_once("_LANGUAGE","Jezik");
 
 
-?>

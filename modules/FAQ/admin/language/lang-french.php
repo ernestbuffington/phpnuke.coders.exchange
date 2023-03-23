@@ -18,27 +18,26 @@
 /**************************************************************************/
 
 
-define("_FUNCTIONS","Fonctions");
-define("_YES","Oui");
-define("_NO","Non");
-define("_SAVE","Sauver");
-define("_ID","ID");
-define("_CATEGORIES","cat&eacute;gories");
-define("_ALL","Tous");
-define("_FAQ","FAQ");
-define("_CONTENT","Contenu");
-define("_FAQADMIN","Administration FAQ");
-define("_ACTIVEFAQS","FAQs actives");
-define("_ADDCATEGORY","Ajouter une nouvelle cat&eacute;gorie");
-define("_QUESTIONS","Questions et r&eacute;ponses");
-define("_ADDQUESTION","Ajouter une nouvelle question");
-define("_QUESTION","Question");
-define("_ANSWER","R&eacute;ponse");
-define("_EDITCATEGORY","Editer la cat&eacute;gorie");
-define("_EDITQUESTIONS","Editer les questions et r&eacute;ponses");
-define("_FAQDELWARNING","ATTENTION: Etes-vous s&ucirc;r de vouloir effacer cet Faq et tout son contenu ?");
-define("_QUESTIONDEL","ATTENTION: Etes-vous s&ucirc;r de vouloir effacer cette question?");
-define("_LANGUAGE","Langue");
+define_once("_FUNCTIONS","Fonctions");
+define_once("_YES","Oui");
+define_once("_NO","Non");
+define_once("_SAVE","Sauver");
+define_once("_ID","ID");
+define_once("_CATEGORIES","cat&eacute;gories");
+define_once("_ALL","Tous");
+define_once("_FAQ","FAQ");
+define_once("_CONTENT","Contenu");
+define_once("_FAQADMIN","Administration FAQ");
+define_once("_ACTIVEFAQS","FAQs actives");
+define_once("_ADDCATEGORY","Ajouter une nouvelle cat&eacute;gorie");
+define_once("_QUESTIONS","Questions et r&eacute;ponses");
+define_once("_ADDQUESTION","Ajouter une nouvelle question");
+define_once("_QUESTION","Question");
+define_once("_ANSWER","R&eacute;ponse");
+define_once("_EDITCATEGORY","Editer la cat&eacute;gorie");
+define_once("_EDITQUESTIONS","Editer les questions et r&eacute;ponses");
+define_once("_FAQDELWARNING","ATTENTION: Etes-vous s&ucirc;r de vouloir effacer cet Faq et tout son contenu ?");
+define_once("_QUESTIONDEL","ATTENTION: Etes-vous s&ucirc;r de vouloir effacer cette question?");
+define_once("_LANGUAGE","Langue");
 
 
-?>

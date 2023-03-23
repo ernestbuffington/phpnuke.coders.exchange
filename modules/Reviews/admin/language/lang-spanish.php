@@ -18,29 +18,28 @@
 /**************************************************************************/
 
 
-define("_EMAIL","E-Mail");
-define("_SAVECHANGES","Guardar Cambios");
-define("_SCORE","Puntuación");
-define("_PRODUCTTITLE","Nombre del Producto");
-define("_RELATEDLINK","Enlace Relacionado");
-define("_LINKTITLE","Título del Enlace");
-define("_REVIEWER","Moderador:");
-define("_REVIEWID","ID del Review");
-define("_REVIEWS","Reviews");
-define("_DATE","Fecha");
-define("_REVADMIN","Administración de Reviews");
-define("_REVTITLE","Título de la Página de Reviews");
-define("_REVDESC","Página de Descripción de Reviews");
-define("_REVWAITING","Reviews esperando la aprobación");
-define("_REVIMGINFO","Pon tu imagen de 150x150 en images/reviews");
-define("_TEXT","Texto");
-define("_IMAGE","Imagen");
-define("_NOREVIEW2ADD","No hay Reviews para agregar");
-define("_ADDREVIEW","Agregar Review");
-define("_CLICK2ADDREVIEW","Haz click aquí para escribir un Review");
-define("_DELMODREVIEW","Borrar / Modificar un Review");
-define("_MODREVINFO","Puedes borrar/modificar Reviews navegando por <a href=\"modules.php?name=Reviews\">Reviews</a> como Administrador.");
-define("_LANGUAGE","Lenguaje");
+define_once("_EMAIL","E-Mail");
+define_once("_SAVECHANGES","Guardar Cambios");
+define_once("_SCORE","Puntuación");
+define_once("_PRODUCTTITLE","Nombre del Producto");
+define_once("_RELATEDLINK","Enlace Relacionado");
+define_once("_LINKTITLE","Título del Enlace");
+define_once("_REVIEWER","Moderador:");
+define_once("_REVIEWID","ID del Review");
+define_once("_REVIEWS","Reviews");
+define_once("_DATE","Fecha");
+define_once("_REVADMIN","Administración de Reviews");
+define_once("_REVTITLE","Título de la Página de Reviews");
+define_once("_REVDESC","Página de Descripción de Reviews");
+define_once("_REVWAITING","Reviews esperando la aprobación");
+define_once("_REVIMGINFO","Pon tu imagen de 150x150 en images/reviews");
+define_once("_TEXT","Texto");
+define_once("_IMAGE","Imagen");
+define_once("_NOREVIEW2ADD","No hay Reviews para agregar");
+define_once("_ADDREVIEW","Agregar Review");
+define_once("_CLICK2ADDREVIEW","Haz click aquí para escribir un Review");
+define_once("_DELMODREVIEW","Borrar / Modificar un Review");
+define_once("_MODREVINFO","Puedes borrar/modificar Reviews navegando por <a href=\"modules.php?name=Reviews\">Reviews</a> como Administrador.");
+define_once("_LANGUAGE","Lenguaje");
 
 
-?>

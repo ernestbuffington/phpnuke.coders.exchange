@@ -17,11 +17,10 @@
 /* And, if you use HTML code, please double check it.                     */
 /**************************************************************************/
 
-define("_PDATE","Ng…y:");
-define("_PTOPIC","Ch&#7911; &#273;&#7873;:");
-define("_COMESFROM","B…i n…y &#273;&#7871;n t&#7915;");
-define("_THEURL","C i link cho b…i n…y l…:");
-define("_DATE","Ng…y");
-define("_TITLE","T&#7921;a");
+define_once("_PDATE","Ng…y:");
+define_once("_PTOPIC","Ch&#7911; &#273;&#7873;:");
+define_once("_COMESFROM","B…i n…y &#273;&#7871;n t&#7915;");
+define_once("_THEURL","C i link cho b…i n…y l…:");
+define_once("_DATE","Ng…y");
+define_once("_TITLE","T&#7921;a");
 
-?>

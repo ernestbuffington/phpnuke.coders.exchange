@@ -18,27 +18,26 @@
 /**************************************************************************/
 
 
-define("_FUNCTIONS","Funcións");
-define("_YES","Sí");
-define("_NO","Non");
-define("_SAVE","Gardar");
-define("_ID","ID");
-define("_CATEGORIES","Categorías");
-define("_ALL","Todo");
-define("_FAQ","PUF");
-define("_CONTENT","Contido");
-define("_FAQADMIN","Administración das PUF");
-define("_ACTIVEFAQS","PUF Activas");
-define("_ADDCATEGORY","Engadir Categoría");
-define("_QUESTIONS","Preguntas e Respostas");
-define("_ADDQUESTION","Engadir Pregunta");
-define("_QUESTION","Pregunta");
-define("_ANSWER","Resposta");
-define("_EDITCATEGORY","Editar Categoría");
-define("_EDITQUESTIONS","Editar Preguntas e Respostas");
-define("_FAQDELWARNING","AVISO: ¿Está seguro de borrar esta PUF e todo o seu contido?");
-define("_QUESTIONDEL","AVISO: ¿Está seguro de querer borrar esta pregunta?");
-define("_LANGUAGE","Idioma");
+define_once("_FUNCTIONS","Funcións");
+define_once("_YES","Sí");
+define_once("_NO","Non");
+define_once("_SAVE","Gardar");
+define_once("_ID","ID");
+define_once("_CATEGORIES","Categorías");
+define_once("_ALL","Todo");
+define_once("_FAQ","PUF");
+define_once("_CONTENT","Contido");
+define_once("_FAQADMIN","Administración das PUF");
+define_once("_ACTIVEFAQS","PUF Activas");
+define_once("_ADDCATEGORY","Engadir Categoría");
+define_once("_QUESTIONS","Preguntas e Respostas");
+define_once("_ADDQUESTION","Engadir Pregunta");
+define_once("_QUESTION","Pregunta");
+define_once("_ANSWER","Resposta");
+define_once("_EDITCATEGORY","Editar Categoría");
+define_once("_EDITQUESTIONS","Editar Preguntas e Respostas");
+define_once("_FAQDELWARNING","AVISO: ¿Está seguro de borrar esta PUF e todo o seu contido?");
+define_once("_QUESTIONDEL","AVISO: ¿Está seguro de querer borrar esta pregunta?");
+define_once("_LANGUAGE","Idioma");
 
 
-?>

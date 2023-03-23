@@ -18,27 +18,26 @@
 /**************************************************************************/
 
 
-define("_CATEGORIES","Κατηγορίες");
-define("_ALL","Σύνολο");
-define("_FUNCTIONS","Λειτουργίες");
-define("_YES","Ναι");
-define("_NO","Οχι");
-define("_QUESTION","Ερώτηση");
-define("_ANSWER","Απάντηση");
-define("_FAQ","Συχνές ερωτήσεις");
-define("_CONTENT","Περιεχόμενα");
-define("_SAVE","Αποθήκευση");
-define("_EDITCATEGORY","Επεξεργασία Κατηγορίας");
-define("_FAQADMIN","Διαχείριση FAQ");
-define("_ACTIVEFAQS","Ενεργά FAQs");
-define("_ID","ID αριθμός");
-define("_ADDCATEGORY","Προσθήκη Νέας Κατηγορίας");
-define("_QUESTIONS","Ερωτήσεις και Απαντήσεις");
-define("_ADDQUESTION","Προσθήκη Νέας Ερώτησης");
-define("_EDITQUESTIONS","Επεξεργασία Ερωτήσεων και Απαντήσεων");
-define("_FAQDELWARNING","ΠΡΟΣΟΧΗ: Είστε βέβαιος ότι θέλετε να διαγράψτε αυτές τις FAQ και όλα τα περιεχόμενα τις;");
-define("_QUESTIONDEL","ΠΡΟΣΟΧΗ: Είστε βέβαιος ότι θέλετε να διαγράψτε αυτές τις Ερωτήσεις;");
-define("_LANGUAGE","Language");
+define_once("_CATEGORIES","Κατηγορίες");
+define_once("_ALL","Σύνολο");
+define_once("_FUNCTIONS","Λειτουργίες");
+define_once("_YES","Ναι");
+define_once("_NO","Οχι");
+define_once("_QUESTION","Ερώτηση");
+define_once("_ANSWER","Απάντηση");
+define_once("_FAQ","Συχνές ερωτήσεις");
+define_once("_CONTENT","Περιεχόμενα");
+define_once("_SAVE","Αποθήκευση");
+define_once("_EDITCATEGORY","Επεξεργασία Κατηγορίας");
+define_once("_FAQADMIN","Διαχείριση FAQ");
+define_once("_ACTIVEFAQS","Ενεργά FAQs");
+define_once("_ID","ID αριθμός");
+define_once("_ADDCATEGORY","Προσθήκη Νέας Κατηγορίας");
+define_once("_QUESTIONS","Ερωτήσεις και Απαντήσεις");
+define_once("_ADDQUESTION","Προσθήκη Νέας Ερώτησης");
+define_once("_EDITQUESTIONS","Επεξεργασία Ερωτήσεων και Απαντήσεων");
+define_once("_FAQDELWARNING","ΠΡΟΣΟΧΗ: Είστε βέβαιος ότι θέλετε να διαγράψτε αυτές τις FAQ και όλα τα περιεχόμενα τις;");
+define_once("_QUESTIONDEL","ΠΡΟΣΟΧΗ: Είστε βέβαιος ότι θέλετε να διαγράψτε αυτές τις Ερωτήσεις;");
+define_once("_LANGUAGE","Language");
 
 
-?>

@@ -18,27 +18,26 @@
 /**************************************************************************/
 
 
-define("_FUNCTIONS","Funksione");
-define("_YES","Po");
-define("_NO","Jo");
-define("_SAVE","Shpëtoje");
-define("_ID","ID");
-define("_CATEGORIES","Kategori");
-define("_ALL","Të Gjithë");
-define("_FAQ","FAQ");
-define("_CONTENT","Përmbajtja");
-define("_FAQADMIN","Administrimi i FAQ");
-define("_ACTIVEFAQS","FAQ Aktive");
-define("_ADDCATEGORY","Shto një Kategori të Re");
-define("_QUESTIONS","Pyetje dhe Përgjigje");
-define("_ADDQUESTION","Shto Pyetje");
-define("_QUESTION","Pyetje");
-define("_ANSWER","Përgjigje");
-define("_EDITCATEGORY","Shkruaj Kategorinë");
-define("_EDITQUESTIONS","Shkruaj Pyetje dhe Përgjigje");
-define("_FAQDELWARNING","KUJDES: Je i sigurt që dëshiron të fshish këtë Faq dhe të gjithë përmbajtjen e tij?");
-define("_QUESTIONDEL","KUJDES: Je i sigurt që do t'a fshish këtë Pyetje?");
-define("_LANGUAGE","Gjuha");
+define_once("_FUNCTIONS","Funksione");
+define_once("_YES","Po");
+define_once("_NO","Jo");
+define_once("_SAVE","Shpëtoje");
+define_once("_ID","ID");
+define_once("_CATEGORIES","Kategori");
+define_once("_ALL","Të Gjithë");
+define_once("_FAQ","FAQ");
+define_once("_CONTENT","Përmbajtja");
+define_once("_FAQADMIN","Administrimi i FAQ");
+define_once("_ACTIVEFAQS","FAQ Aktive");
+define_once("_ADDCATEGORY","Shto një Kategori të Re");
+define_once("_QUESTIONS","Pyetje dhe Përgjigje");
+define_once("_ADDQUESTION","Shto Pyetje");
+define_once("_QUESTION","Pyetje");
+define_once("_ANSWER","Përgjigje");
+define_once("_EDITCATEGORY","Shkruaj Kategorinë");
+define_once("_EDITQUESTIONS","Shkruaj Pyetje dhe Përgjigje");
+define_once("_FAQDELWARNING","KUJDES: Je i sigurt që dëshiron të fshish këtë Faq dhe të gjithë përmbajtjen e tij?");
+define_once("_QUESTIONDEL","KUJDES: Je i sigurt që do t'a fshish këtë Pyetje?");
+define_once("_LANGUAGE","Gjuha");
 
 
-?>

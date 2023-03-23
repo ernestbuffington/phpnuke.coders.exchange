@@ -22,18 +22,17 @@
 /**************************************************************************/
 
 
-define("_PRINTER","Imprimir");
-define("_FRIEND","Envie esta notícia a uma pessoa");
-define("_ARTICLES","Notícias");
-define("_USCORE","Pontuação");
-define("_DATE","Data");
-define("_SELECTMONTH2VIEW","Por favor selecione o mês a ser visualizado:");
-define("_SHOWALLSTORIES","Visualizar TODAS as notícias");
-define("_STORIESARCHIVE","Arquivo de Notícias");
-define("_ACTIONS","Ações");
-define("_ARCHIVESINDEX","Índice do Arquivo de Notícias");
-define("_ALLSTORIESARCH","TODA as Notícias");
-define("_NEXTPAGE","Próxima página");
-define("_PREVIOUSPAGE","Página anterior");
+define_once("_PRINTER","Imprimir");
+define_once("_FRIEND","Envie esta notícia a uma pessoa");
+define_once("_ARTICLES","Notícias");
+define_once("_USCORE","Pontuação");
+define_once("_DATE","Data");
+define_once("_SELECTMONTH2VIEW","Por favor selecione o mês a ser visualizado:");
+define_once("_SHOWALLSTORIES","Visualizar TODAS as notícias");
+define_once("_STORIESARCHIVE","Arquivo de Notícias");
+define_once("_ACTIONS","Ações");
+define_once("_ARCHIVESINDEX","Índice do Arquivo de Notícias");
+define_once("_ALLSTORIESARCH","TODA as Notícias");
+define_once("_NEXTPAGE","Próxima página");
+define_once("_PREVIOUSPAGE","Página anterior");
 
-?>

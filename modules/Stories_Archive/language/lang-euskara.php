@@ -17,19 +17,18 @@
 /* And, if you use HTML code, please double check it.                     */
 /**************************************************************************/
 
-define("_PRINTER","Inprimatzeko bertsioa");
-define("_FRIEND","Lagun bati bidali");
-define("_ARTICLES","Artikuloak");
-define("_USCORE","Hasierako puntuazioa");
-define("_DATE","Data");
-define("_SELECTMONTH2VIEW","Aukeratu ikusi nahi duzun hilabetea:");
-define("_SHOWALLSTORIES","Historia GUZTIAK erakutsi");
-define("_STORIESARCHIVE","Historien artxiboa");
-define("_ACTIONS","Akzioak");
-define("_ARCHIVESINDEX","Historien artxiboaren indizea");
-define("_ALLSTORIESARCH","Historia guztiak");
-define("_NEXTPAGE","Hurrengo orria");
-define("_PREVIOUSPAGE","Aurreko orria");
+define_once("_PRINTER","Inprimatzeko bertsioa");
+define_once("_FRIEND","Lagun bati bidali");
+define_once("_ARTICLES","Artikuloak");
+define_once("_USCORE","Hasierako puntuazioa");
+define_once("_DATE","Data");
+define_once("_SELECTMONTH2VIEW","Aukeratu ikusi nahi duzun hilabetea:");
+define_once("_SHOWALLSTORIES","Historia GUZTIAK erakutsi");
+define_once("_STORIESARCHIVE","Historien artxiboa");
+define_once("_ACTIONS","Akzioak");
+define_once("_ARCHIVESINDEX","Historien artxiboaren indizea");
+define_once("_ALLSTORIESARCH","Historia guztiak");
+define_once("_NEXTPAGE","Hurrengo orria");
+define_once("_PREVIOUSPAGE","Aurreko orria");
 
 
-?>

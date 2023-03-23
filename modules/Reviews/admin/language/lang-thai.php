@@ -18,29 +18,28 @@
 /**************************************************************************/
 
 
-define("_EMAIL","อีเมล์");
-define("_SAVECHANGES","บันทึกการเปลี่ยนแปลง");
-define("_SCORE","คะแนน:");
-define("_PRODUCTTITLE","เรื่อง");
-define("_RELATEDLINK","ลิงก์ที่เกี่ยวข้อง");
-define("_LINKTITLE","ชื่อลิงก์");
-define("_REVIEWER","ผู้วิจารณ์");
-define("_REVIEWID","รหัสบทวิจารณ์");
-define("_REVIEWS","บทวิจารณ์");
-define("_DATE","วันที่");
-define("_REVADMIN","จัดการบทวิจารณ์");
-define("_REVTITLE","บทวิจารณ์");
-define("_REVDESC","เป็นหน้าที่ให้วิจารณ์ในส่วนต่างๆได้อย่างเสรี");
-define("_REVWAITING","บทวิจารณ์ที่อยู่ระหว่างการตรวจสอบ");
-define("_REVIMGINFO","เก็บรูปขนาด 150*150 ใน images/reviews");
-define("_TEXT","ข้อความ");
-define("_IMAGE","รูป");
-define("_NOREVIEW2ADD","ไม่มีบทวิจารณ์ที่จะเพิ่ม");
-define("_ADDREVIEW","เพิ่มบทวิจารณ์");
-define("_CLICK2ADDREVIEW","คลิ๊กที่นี่เพื่อเขียนบทวิจารณ์");
-define("_DELMODREVIEW","ลบ/แก้ไขบทวิจารณ์");
-define("_MODREVINFO","คุณสามารถลบ/แก้ไข บทวิจารณ์โดยเปิด <a href=\"modules.php?op=modload&amp;name=Reviews\">ที่นี่</a> ด้วยผู้ดูแลระบบ");
-define("_LANGUAGE","ภาษา");
+define_once("_EMAIL","อีเมล์");
+define_once("_SAVECHANGES","บันทึกการเปลี่ยนแปลง");
+define_once("_SCORE","คะแนน:");
+define_once("_PRODUCTTITLE","เรื่อง");
+define_once("_RELATEDLINK","ลิงก์ที่เกี่ยวข้อง");
+define_once("_LINKTITLE","ชื่อลิงก์");
+define_once("_REVIEWER","ผู้วิจารณ์");
+define_once("_REVIEWID","รหัสบทวิจารณ์");
+define_once("_REVIEWS","บทวิจารณ์");
+define_once("_DATE","วันที่");
+define_once("_REVADMIN","จัดการบทวิจารณ์");
+define_once("_REVTITLE","บทวิจารณ์");
+define_once("_REVDESC","เป็นหน้าที่ให้วิจารณ์ในส่วนต่างๆได้อย่างเสรี");
+define_once("_REVWAITING","บทวิจารณ์ที่อยู่ระหว่างการตรวจสอบ");
+define_once("_REVIMGINFO","เก็บรูปขนาด 150*150 ใน images/reviews");
+define_once("_TEXT","ข้อความ");
+define_once("_IMAGE","รูป");
+define_once("_NOREVIEW2ADD","ไม่มีบทวิจารณ์ที่จะเพิ่ม");
+define_once("_ADDREVIEW","เพิ่มบทวิจารณ์");
+define_once("_CLICK2ADDREVIEW","คลิ๊กที่นี่เพื่อเขียนบทวิจารณ์");
+define_once("_DELMODREVIEW","ลบ/แก้ไขบทวิจารณ์");
+define_once("_MODREVINFO","คุณสามารถลบ/แก้ไข บทวิจารณ์โดยเปิด <a href=\"modules.php?op=modload&amp;name=Reviews\">ที่นี่</a> ด้วยผู้ดูแลระบบ");
+define_once("_LANGUAGE","ภาษา");
 
 
-?>

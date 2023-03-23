@@ -17,18 +17,17 @@
 /* And, if you use HTML code, please double check it.                     */
 /**************************************************************************/
 
-define("_PRINTER","Versión Imprimible");
-define("_FRIEND","Enviar a un Amigo");
-define("_ARTICLES","Artículos");
-define("_USCORE","Puntuación");
-define("_DATE","Fecha");
-define("_SELECTMONTH2VIEW","Por favor selecciona el mes que deseas consultar:");
-define("_SHOWALLSTORIES","Mostrar todas las Noticias");
-define("_STORIESARCHIVE","Archivo de Noticias");
-define("_ACTIONS","Acciones");
-define("_ARCHIVESINDEX","Indice del Archivo de Noticias");
-define("_ALLSTORIESARCH","Todas las Noticias");
-define("_NEXTPAGE","Página Siguiente");
-define("_PREVIOUSPAGE","Página Anterior");
+define_once("_PRINTER","Versión Imprimible");
+define_once("_FRIEND","Enviar a un Amigo");
+define_once("_ARTICLES","Artículos");
+define_once("_USCORE","Puntuación");
+define_once("_DATE","Fecha");
+define_once("_SELECTMONTH2VIEW","Por favor selecciona el mes que deseas consultar:");
+define_once("_SHOWALLSTORIES","Mostrar todas las Noticias");
+define_once("_STORIESARCHIVE","Archivo de Noticias");
+define_once("_ACTIONS","Acciones");
+define_once("_ARCHIVESINDEX","Indice del Archivo de Noticias");
+define_once("_ALLSTORIESARCH","Todas las Noticias");
+define_once("_NEXTPAGE","Página Siguiente");
+define_once("_PREVIOUSPAGE","Página Anterior");
 
-?>

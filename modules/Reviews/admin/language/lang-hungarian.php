@@ -18,29 +18,28 @@
 /**************************************************************************/
 
 
-define("_EMAIL","Email");
-define("_SAVECHANGES","Változások mentése");
-define("_SCORE","Pontok:");
-define("_PRODUCTTITLE","Termék neve");
-define("_RELATEDLINK","Kapcsolódó link");
-define("_LINKTITLE","A céloldal neve");
-define("_REVIEWER","Szerzõ:");
-define("_REVIEWID","Leírás száma");
-define("_REVIEWS","Ismertetõk");
-define("_DATE","Dátum");
-define("_REVADMIN","Ismertetõk adminisztrálása");
-define("_REVTITLE","Ismertetõk oldal címe");
-define("_REVDESC","Ismertetõk oldal leírása");
-define("_REVWAITING","Jóáhagyásra váró leírások");
-define("_REVIMGINFO","Töltsd fel a 150*150 méretû képed az images/reviews könyvtárba");
-define("_TEXT","Szöveg");
-define("_IMAGE","Kép");
-define("_NOREVIEW2ADD","Nincs hozzáadható ismertetõ");
-define("_ADDREVIEW","Ismertetõ hozzáadása");
-define("_CLICK2ADDREVIEW","Kattints ide új ismertetõ írásához");
-define("_DELMODREVIEW","Ismertetõ szerkesztése / törlése");
-define("_MODREVINFO","Ismertetõk szerkesztéséhez és törléséhez egyszerûen lépj adminisztrátorként a <a href=\"modules.php?name=Reviews\">Reviews</a> oldalra.");
-define("_LANGUAGE","Language");
+define_once("_EMAIL","Email");
+define_once("_SAVECHANGES","Változások mentése");
+define_once("_SCORE","Pontok:");
+define_once("_PRODUCTTITLE","Termék neve");
+define_once("_RELATEDLINK","Kapcsolódó link");
+define_once("_LINKTITLE","A céloldal neve");
+define_once("_REVIEWER","Szerzõ:");
+define_once("_REVIEWID","Leírás száma");
+define_once("_REVIEWS","Ismertetõk");
+define_once("_DATE","Dátum");
+define_once("_REVADMIN","Ismertetõk adminisztrálása");
+define_once("_REVTITLE","Ismertetõk oldal címe");
+define_once("_REVDESC","Ismertetõk oldal leírása");
+define_once("_REVWAITING","Jóáhagyásra váró leírások");
+define_once("_REVIMGINFO","Töltsd fel a 150*150 méretû képed az images/reviews könyvtárba");
+define_once("_TEXT","Szöveg");
+define_once("_IMAGE","Kép");
+define_once("_NOREVIEW2ADD","Nincs hozzáadható ismertetõ");
+define_once("_ADDREVIEW","Ismertetõ hozzáadása");
+define_once("_CLICK2ADDREVIEW","Kattints ide új ismertetõ írásához");
+define_once("_DELMODREVIEW","Ismertetõ szerkesztése / törlése");
+define_once("_MODREVINFO","Ismertetõk szerkesztéséhez és törléséhez egyszerûen lépj adminisztrátorként a <a href=\"modules.php?name=Reviews\">Reviews</a> oldalra.");
+define_once("_LANGUAGE","Language");
 
 
-?>

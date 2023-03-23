@@ -17,12 +17,11 @@
 /* And, if you use HTML code, please double check it.                     */
 /**************************************************************************/
 
-define("_PDATE","Дата:");
-define("_PTOPIC","Тема:");
-define("_COMESFROM","Ця стаття відправлена з");
-define("_THEURL","URL цієї статті - :");
-define("_DATE","Дата");
-define("_TITLE","Назва");
+define_once("_PDATE","Дата:");
+define_once("_PTOPIC","Тема:");
+define_once("_COMESFROM","Ця стаття відправлена з");
+define_once("_THEURL","URL цієї статті - :");
+define_once("_DATE","Дата");
+define_once("_TITLE","Назва");
 
 
-?>

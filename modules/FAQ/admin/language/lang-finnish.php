@@ -18,27 +18,26 @@
 /**************************************************************************/
 
 
-define("_FUNCTIONS","Tehtävät");
-define("_YES","Kyllä");
-define("_NO","Ei");
-define("_SAVE","Tallenna");
-define("_ID","ID");
-define("_CATEGORIES","Aihepiirit");
-define("_ALL","Kaikki");
-define("_FAQ","UKK");
-define("_CONTENT","Sisältö");
-define("_FAQADMIN","UKK ylläpito");
-define("_ACTIVEFAQS","Aktiiviset Kysymykset");
-define("_ADDCATEGORY","Lisää kategoria");
-define("_QUESTIONS","Kysymykset ja vastaukset");
-define("_ADDQUESTION","Lisää kysymys");
-define("_QUESTION","Kysymys");
-define("_ANSWER","Vastaus");
-define("_EDITCATEGORY","Muokkaa kategoriaa");
-define("_EDITQUESTIONS","Muokkaa kysymyksiä ja vastauksia");
-define("_FAQDELWARNING","VAROITUS: Oletteko varma, että tahdotte poistaa UKKn ja kaiken sen sisällön?");
-define("_QUESTIONDEL","VAROITUS: Oletteko varma, että tahdotte poistaa tämän kysymyksen sen vastauksen?");
-define("_LANGUAGE","Language");
+define_once("_FUNCTIONS","Tehtävät");
+define_once("_YES","Kyllä");
+define_once("_NO","Ei");
+define_once("_SAVE","Tallenna");
+define_once("_ID","ID");
+define_once("_CATEGORIES","Aihepiirit");
+define_once("_ALL","Kaikki");
+define_once("_FAQ","UKK");
+define_once("_CONTENT","Sisältö");
+define_once("_FAQADMIN","UKK ylläpito");
+define_once("_ACTIVEFAQS","Aktiiviset Kysymykset");
+define_once("_ADDCATEGORY","Lisää kategoria");
+define_once("_QUESTIONS","Kysymykset ja vastaukset");
+define_once("_ADDQUESTION","Lisää kysymys");
+define_once("_QUESTION","Kysymys");
+define_once("_ANSWER","Vastaus");
+define_once("_EDITCATEGORY","Muokkaa kategoriaa");
+define_once("_EDITQUESTIONS","Muokkaa kysymyksiä ja vastauksia");
+define_once("_FAQDELWARNING","VAROITUS: Oletteko varma, että tahdotte poistaa UKKn ja kaiken sen sisällön?");
+define_once("_QUESTIONDEL","VAROITUS: Oletteko varma, että tahdotte poistaa tämän kysymyksen sen vastauksen?");
+define_once("_LANGUAGE","Language");
 
 
-?>

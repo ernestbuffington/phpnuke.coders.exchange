@@ -17,11 +17,10 @@
 /* And, if you use HTML code, please double check it.                     */
 /**************************************************************************/
 
-define("_PDATE","Dags:");
-define("_PTOPIC","Efnisflokkur:");
-define("_COMESFROM","Þessi grein kemur frá");
-define("_THEURL","Vefslóð þessarar greinar er:");
-define("_DATE","Dags");
-define("_TITLE","Titill");
+define_once("_PDATE","Dags:");
+define_once("_PTOPIC","Efnisflokkur:");
+define_once("_COMESFROM","Þessi grein kemur frá");
+define_once("_THEURL","Vefslóð þessarar greinar er:");
+define_once("_DATE","Dags");
+define_once("_TITLE","Titill");
 
-?>

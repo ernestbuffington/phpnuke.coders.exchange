@@ -17,19 +17,18 @@
 /* Mail:webmaster@pcnet.com.tr ICQ:19648424 URL: http://www.turknuke.com  */
 /**************************************************************************/
 
-define("_SEND","Gönder");
-define("_YOURNAME","Ýsminiz");
-define("_MESSAGE","Mesaj");
-define("_YOUREMAIL","Email'iniz");
-define("_FEEDBACKNOTE","Bu site hakkýnda tüm yorumlarýnýz ve önerileriniz bizim için deðerlidir. Teþekkürler!");
-define("_FEEDBACKTITLE","Ýletiþim Formu");
-define("_FEEDBACK","Ýletiþim");
-define("_FBENTERNAME","HATA: Lütfen isminizi girin!");
-define("_FBENTEREMAIL","HATA: Lütfen email adresinizi girin!");
-define("_FBENTERMESSAGE","HATA: Lütfen bir mesaj girin!");
-define("_SENDEREMAIL","Gönderenin Emaili");
-define("_SENDERNAME","Gönderenin Ýsmi");
-define("_FBMAILSENT","Mail gönderildi!");
-define("_FBTHANKSFORCONTACT","Bizimle iletiþim kurduðunuz için teþekkürler.");
+define_once("_SEND","Gönder");
+define_once("_YOURNAME","Ýsminiz");
+define_once("_MESSAGE","Mesaj");
+define_once("_YOUREMAIL","Email'iniz");
+define_once("_FEEDBACKNOTE","Bu site hakkýnda tüm yorumlarýnýz ve önerileriniz bizim için deðerlidir. Teþekkürler!");
+define_once("_FEEDBACKTITLE","Ýletiþim Formu");
+define_once("_FEEDBACK","Ýletiþim");
+define_once("_FBENTERNAME","HATA: Lütfen isminizi girin!");
+define_once("_FBENTEREMAIL","HATA: Lütfen email adresinizi girin!");
+define_once("_FBENTERMESSAGE","HATA: Lütfen bir mesaj girin!");
+define_once("_SENDEREMAIL","Gönderenin Emaili");
+define_once("_SENDERNAME","Gönderenin Ýsmi");
+define_once("_FBMAILSENT","Mail gönderildi!");
+define_once("_FBTHANKSFORCONTACT","Bizimle iletiþim kurduðunuz için teþekkürler.");
 
-?>

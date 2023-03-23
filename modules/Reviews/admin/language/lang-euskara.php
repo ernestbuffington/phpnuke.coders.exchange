@@ -18,29 +18,28 @@
 /**************************************************************************/
 
 
-define("_EMAIL","Emaila");
-define("_SAVECHANGES","Aldaketak gorde");
-define("_SCORE","Puntuazioa");
-define("_PRODUCTTITLE","Produktoaren izena");
-define("_RELATEDLINK","Erlazionaturiko Lotora");
-define("_LINKTITLE","Loturaren Titulua");
-define("_REVIEWER","moderatzaile :");
-define("_REVIEWID","Berrikuspenaren ID-a (identifikatiboa)");
-define("_REVIEWS","Berrikuspenak");
-define("_DATE","Data");
-define("_REVADMIN","Berrikuspenen administrazioa");
-define("_REVTITLE","Berrikuspenen orriaren tituloa");
-define("_REVDESC","Berrikuspenen azalpenen orria");
-define("_REVWAITING","Berrikuspenak publikatzeko baimena itxaroten");
-define("_REVIMGINFO","Irudiak 150x150-eko tamainakoa eta 'images/reviews' karpetan izan behar da");
-define("_TEXT","Testua");
-define("_IMAGE","Irudia");
-define("_NOREVIEW2ADD","Eza dago gehitzeko berrikuspenik");
-define("_ADDREVIEW","Berrikuspena gehitu");
-define("_CLICK2ADDREVIEW","Egin klik hemen berrikuspen bat idazteko");
-define("_DELMODREVIEW","Berrikuspen bat ezabatu/editatu");
-define("_MODREVINFO","Administratzaile bezala sartu ezkero <a href=\"reviews.php\">reviews.php</a> orrian, berrikuspenak editatu edo ezabatu ditzakezu");
-define("_LANGUAGE","Hizkuntza");
+define_once("_EMAIL","Emaila");
+define_once("_SAVECHANGES","Aldaketak gorde");
+define_once("_SCORE","Puntuazioa");
+define_once("_PRODUCTTITLE","Produktoaren izena");
+define_once("_RELATEDLINK","Erlazionaturiko Lotora");
+define_once("_LINKTITLE","Loturaren Titulua");
+define_once("_REVIEWER","moderatzaile :");
+define_once("_REVIEWID","Berrikuspenaren ID-a (identifikatiboa)");
+define_once("_REVIEWS","Berrikuspenak");
+define_once("_DATE","Data");
+define_once("_REVADMIN","Berrikuspenen administrazioa");
+define_once("_REVTITLE","Berrikuspenen orriaren tituloa");
+define_once("_REVDESC","Berrikuspenen azalpenen orria");
+define_once("_REVWAITING","Berrikuspenak publikatzeko baimena itxaroten");
+define_once("_REVIMGINFO","Irudiak 150x150-eko tamainakoa eta 'images/reviews' karpetan izan behar da");
+define_once("_TEXT","Testua");
+define_once("_IMAGE","Irudia");
+define_once("_NOREVIEW2ADD","Eza dago gehitzeko berrikuspenik");
+define_once("_ADDREVIEW","Berrikuspena gehitu");
+define_once("_CLICK2ADDREVIEW","Egin klik hemen berrikuspen bat idazteko");
+define_once("_DELMODREVIEW","Berrikuspen bat ezabatu/editatu");
+define_once("_MODREVINFO","Administratzaile bezala sartu ezkero <a href=\"reviews.php\">reviews.php</a> orrian, berrikuspenak editatu edo ezabatu ditzakezu");
+define_once("_LANGUAGE","Hizkuntza");
 
 
-?>

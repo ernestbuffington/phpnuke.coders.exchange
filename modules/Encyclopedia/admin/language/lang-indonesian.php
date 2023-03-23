@@ -18,40 +18,39 @@
 /**************************************************************************/
 
 
-define("_SEND","Kirim");
-define("_FUNCTIONS","Admin");
-define("_YES","Ya");
-define("_NO","Tidak");
-define("_SAVECHANGES","Simpan Perubahan");
-define("_PAGEBREAK","Untuk membuat berhalaman ganda, ketik <b>[--pagebreak--]</b> pada bagian yang ingin dipenggal.");
-define("_DESCRIPTION","Deskripsi");
-define("_TO","Untuk");
-define("_TITLE","Judul");
-define("_ACTIVE","Aktif");
-define("_DEACTIVATE","Nonaktifkan");
-define("_INACTIVE","Nonaktif");
-define("_ACTIVATE","Aktifkan");
-define("_ADD","Tambahkan");
-define("_LANGUAGE","Bahasa");
-define("_ENCYCLOPEDIA","Ensiklopedia");
-define("_ENCYCLOPEDIAMANAGER","Manager Ensiklopedia");
-define("_DELENCYCLOPEDIA","Hapus Ensiklopedia");
-define("_DELENCYCONTWARNING","Anda yakin ingin menghapus Ensiklopedia ini dan seluruh isinya?");
-define("_DELENCYCLOPEDIATEXT","Hapus Entri Ensiklopedia");
-define("_DELENCYTEXTWARNING","Anda yakin ingin menghapus entri ini?");
-define("_CURRENTSTATUS","Status Sekarang");
-define("_ACTIVATEPAGE","Aktifkan Halaman ini?");
-define("_TERMS","Term");
-define("_ADDNEWENCYCLOPEDIA","Tambahkan Entri Ensiklopedia");
-define("_ADDNEWENCYTERM","Tambahkan Entri Baru pada Ensiklopedia");
-define("_TERMTEXT","Kata");
-define("_MOVETERMS","Pindahkan entri");
-define("_MOVEALLTERMSFROM","Pindahkan <b>semua</b> entri dari");
-define("_EDITENCYCLOPEDIA","Edit Ensiklopedia");
-define("_ENCYTERMSEDIT","Penyuntingan Entri Ensiklopedia");
-define("_SELECTONETERM","Pilih satu dari entri yang ada:");
-define("_NOCONTENTFORLETTER","Maaf, tidak ada entri untuk");
-define("_CHANGETOENCY","Ubah ke Ensiklopedia");
+define_once("_SEND","Kirim");
+define_once("_FUNCTIONS","Admin");
+define_once("_YES","Ya");
+define_once("_NO","Tidak");
+define_once("_SAVECHANGES","Simpan Perubahan");
+define_once("_PAGEBREAK","Untuk membuat berhalaman ganda, ketik <b>[--pagebreak--]</b> pada bagian yang ingin dipenggal.");
+define_once("_DESCRIPTION","Deskripsi");
+define_once("_TO","Untuk");
+define_once("_TITLE","Judul");
+define_once("_ACTIVE","Aktif");
+define_once("_DEACTIVATE","Nonaktifkan");
+define_once("_INACTIVE","Nonaktif");
+define_once("_ACTIVATE","Aktifkan");
+define_once("_ADD","Tambahkan");
+define_once("_LANGUAGE","Bahasa");
+define_once("_ENCYCLOPEDIA","Ensiklopedia");
+define_once("_ENCYCLOPEDIAMANAGER","Manager Ensiklopedia");
+define_once("_DELENCYCLOPEDIA","Hapus Ensiklopedia");
+define_once("_DELENCYCONTWARNING","Anda yakin ingin menghapus Ensiklopedia ini dan seluruh isinya?");
+define_once("_DELENCYCLOPEDIATEXT","Hapus Entri Ensiklopedia");
+define_once("_DELENCYTEXTWARNING","Anda yakin ingin menghapus entri ini?");
+define_once("_CURRENTSTATUS","Status Sekarang");
+define_once("_ACTIVATEPAGE","Aktifkan Halaman ini?");
+define_once("_TERMS","Term");
+define_once("_ADDNEWENCYCLOPEDIA","Tambahkan Entri Ensiklopedia");
+define_once("_ADDNEWENCYTERM","Tambahkan Entri Baru pada Ensiklopedia");
+define_once("_TERMTEXT","Kata");
+define_once("_MOVETERMS","Pindahkan entri");
+define_once("_MOVEALLTERMSFROM","Pindahkan <b>semua</b> entri dari");
+define_once("_EDITENCYCLOPEDIA","Edit Ensiklopedia");
+define_once("_ENCYTERMSEDIT","Penyuntingan Entri Ensiklopedia");
+define_once("_SELECTONETERM","Pilih satu dari entri yang ada:");
+define_once("_NOCONTENTFORLETTER","Maaf, tidak ada entri untuk");
+define_once("_CHANGETOENCY","Ubah ke Ensiklopedia");
 
 
-?>

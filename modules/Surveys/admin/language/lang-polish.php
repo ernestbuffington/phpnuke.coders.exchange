@@ -18,36 +18,35 @@
 /**************************************************************************/
 
 
-define("_YES","Tak");
-define("_NO","Nie");
-define("_CATEGORY","Kategoria");
-define("_SAVECHANGES","Zapisz zmiany");
-define("_ARTICLES","Artyku³y");
-define("_SELECTTOPIC","Wybierz temat");
-define("_OPTION","Opcje");
-define("_ADMPOLLS","Ankiety/G³osowania");
-define("_TITLE","Tytu³");
-define("_STORYTEXT","Tekst artyku³u");
-define("_EXTENDEDTEXT","Tekst rozszerzony");
-define("_PUBLISHINHOME","Czy opublikowaæ na stronie g³ównej?");
-define("_ONLYIFCATSELECTED","Dzia³a jedynie wtedy, gdy kategoria <i>Artyku³y</i> nie jest wybrana");
-define("_ADD","Dodaj");
-define("_POLLSADMIN","Zarz±dzanie ankietami");
-define("_CREATEPOLL","Utwórz now± ankietê");
-define("_DELETEPOLLS","Skasuj ankietê");
-define("_POLLTITLE","Tytu³ ankiety");
-define("_POLLEACHFIELD","Proszê wpisaæ wszystkie dostêpne opcje w pojedynczych polach");
-define("_CREATEPOLLBUT","Utwórz ankietê");
-define("_REMOVEEXISTING","Zdejmij istniej±c± ankietê");
-define("_POLLDELWARNING","OSTRZE¯ENIE: Wybrana ankieta bêdzie NIEODWO£ALNIE skasowana z bazy!");
-define("_CHOOSEPOLL","Wybierz ankietê z poni¿szej listy:");
-define("_EDITPOLL","Edytuj ankiety");
-define("_CHOOSEPOLLEDIT","Wybierz ankietê któr± chcesz edytowaæ:");
-define("_ACTIVATECOMMENTS","Aktywowaæ komentarze dla tego artyku³u?");
-define("_LANGUAGE","Jêzyk");
-define("_ANNOUNCEPOLL","Zaanonsuj now± ankietê na swojej stronie");
-define("_LEAVEBLANK","(pozostaw puste by stworzyæ ankietê bez anonsowania)");
-define("_POLLEDIT","Edytuj ankietê:");
+define_once("_YES","Tak");
+define_once("_NO","Nie");
+define_once("_CATEGORY","Kategoria");
+define_once("_SAVECHANGES","Zapisz zmiany");
+define_once("_ARTICLES","Artyku³y");
+define_once("_SELECTTOPIC","Wybierz temat");
+define_once("_OPTION","Opcje");
+define_once("_ADMPOLLS","Ankiety/G³osowania");
+define_once("_TITLE","Tytu³");
+define_once("_STORYTEXT","Tekst artyku³u");
+define_once("_EXTENDEDTEXT","Tekst rozszerzony");
+define_once("_PUBLISHINHOME","Czy opublikowaæ na stronie g³ównej?");
+define_once("_ONLYIFCATSELECTED","Dzia³a jedynie wtedy, gdy kategoria <i>Artyku³y</i> nie jest wybrana");
+define_once("_ADD","Dodaj");
+define_once("_POLLSADMIN","Zarz±dzanie ankietami");
+define_once("_CREATEPOLL","Utwórz now± ankietê");
+define_once("_DELETEPOLLS","Skasuj ankietê");
+define_once("_POLLTITLE","Tytu³ ankiety");
+define_once("_POLLEACHFIELD","Proszê wpisaæ wszystkie dostêpne opcje w pojedynczych polach");
+define_once("_CREATEPOLLBUT","Utwórz ankietê");
+define_once("_REMOVEEXISTING","Zdejmij istniej±c± ankietê");
+define_once("_POLLDELWARNING","OSTRZE¯ENIE: Wybrana ankieta bêdzie NIEODWO£ALNIE skasowana z bazy!");
+define_once("_CHOOSEPOLL","Wybierz ankietê z poni¿szej listy:");
+define_once("_EDITPOLL","Edytuj ankiety");
+define_once("_CHOOSEPOLLEDIT","Wybierz ankietê któr± chcesz edytowaæ:");
+define_once("_ACTIVATECOMMENTS","Aktywowaæ komentarze dla tego artyku³u?");
+define_once("_LANGUAGE","Jêzyk");
+define_once("_ANNOUNCEPOLL","Zaanonsuj now± ankietê na swojej stronie");
+define_once("_LEAVEBLANK","(pozostaw puste by stworzyæ ankietê bez anonsowania)");
+define_once("_POLLEDIT","Edytuj ankietê:");
 
 
-?>

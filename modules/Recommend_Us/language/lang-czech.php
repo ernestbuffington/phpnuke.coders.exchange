@@ -17,22 +17,21 @@
 /* And, if you use HTML code, please double check it.                     */
 /**************************************************************************/
 
-define("_SEND","Poslat");
-define("_FYOURNAME","Vaše jméno:");
-define("_FYOUREMAIL","Váš e-mail:");
-define("_FFRIENDNAME","Adresátovo jméno(v 5.pádì):");
-define("_FFRIENDEMAIL","Adresátùv e-mail:");
-define("_HELLO","Ahoj");
-define("_YOURFRIEND","Váš pøítel");
-define("_RECOMMEND","Doporuète tuto stránku známým");
-define("_INTSITE","Zajímavá stránka:");
-define("_OURSITE","považuje naši stránku");
-define("_INTSENT","za zajímavou a rozhodl se vám ji poslat.");
-define("_FSITENAME","Jméno stránky:");
-define("_FSITEURL","Adresa:");
-define("_FREFERENCE","Doporuèení na naši stránku bylo odesláno");
-define("_THANKSREC","Díky za doporuèení!");
-define("_SECURITYCODEERROR","<b>ERROR:</b> The security code you wrote is incorrect...<br>Please write it exactly as given bellow:");
-define("_SENDSITEERROR","<b>Error sending the recommendation...</b><br><br><b>ERROR:</b> One or more required fields are empty.<br>Please go back and correct the problem, then try again.");
+define_once("_SEND","Poslat");
+define_once("_FYOURNAME","Vaše jméno:");
+define_once("_FYOUREMAIL","Váš e-mail:");
+define_once("_FFRIENDNAME","Adresátovo jméno(v 5.pádì):");
+define_once("_FFRIENDEMAIL","Adresátùv e-mail:");
+define_once("_HELLO","Ahoj");
+define_once("_YOURFRIEND","Váš pøítel");
+define_once("_RECOMMEND","Doporuète tuto stránku známým");
+define_once("_INTSITE","Zajímavá stránka:");
+define_once("_OURSITE","považuje naši stránku");
+define_once("_INTSENT","za zajímavou a rozhodl se vám ji poslat.");
+define_once("_FSITENAME","Jméno stránky:");
+define_once("_FSITEURL","Adresa:");
+define_once("_FREFERENCE","Doporuèení na naši stránku bylo odesláno");
+define_once("_THANKSREC","Díky za doporuèení!");
+define_once("_SECURITYCODEERROR","<b>ERROR:</b> The security code you wrote is incorrect...<br>Please write it exactly as given bellow:");
+define_once("_SENDSITEERROR","<b>Error sending the recommendation...</b><br><br><b>ERROR:</b> One or more required fields are empty.<br>Please go back and correct the problem, then try again.");
 
-?>

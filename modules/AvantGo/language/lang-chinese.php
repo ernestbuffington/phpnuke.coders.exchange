@@ -17,12 +17,11 @@
 /* And, if you use HTML code, please double check it.                     */
 /**************************************************************************/
 
-define("_PDATE","日期：");
-define("_PTOPIC","新聞主題：");
-define("_COMESFROM","本文章來自於");
-define("_THEURL","這份報導的網址是：");
-define("_DATE","日期");
-define("_TITLE","標題");
+define_once("_PDATE","日期：");
+define_once("_PTOPIC","新聞主題：");
+define_once("_COMESFROM","本文章來自於");
+define_once("_THEURL","這份報導的網址是：");
+define_once("_DATE","日期");
+define_once("_TITLE","標題");
 
 
-?>

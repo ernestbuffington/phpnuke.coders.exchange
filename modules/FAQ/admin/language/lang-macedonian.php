@@ -18,27 +18,26 @@
 /**************************************************************************/
 
 
-define("_FUNCTIONS","Функции");
-define("_YES","Да");
-define("_NO","Не");
-define("_SAVE","Сними");
-define("_ID","Идентификација");
-define("_CATEGORIES","Категории");
-define("_ALL","Сите");
-define("_FAQ","ЧПП");
-define("_CONTENT","Содржина");
-define("_FAQADMIN","Администрација на ЧПП");
-define("_ACTIVEFAQS","Активни ЧПП-а");
-define("_ADDCATEGORY","Додади нова категорија");
-define("_QUESTIONS","Прашања и одговори");
-define("_ADDQUESTION","Додади ново прашање");
-define("_QUESTION","Прашање");
-define("_ANSWER","Одговор");
-define("_EDITCATEGORY","Измени категорија");
-define("_EDITQUESTIONS","Измени прашања и одговори");
-define("_FAQDELWARNING","ВНИМАНИЕ: Дали си сигурен дека сакаш да го избришеш овој ЧПП и сета негова содржина?");
-define("_QUESTIONDEL","ВНИМАНИЕ: Дали си сигурен дека сакаш да го избришеш ова прашање?");
-define("_LANGUAGE","Јазик");
+define_once("_FUNCTIONS","Функции");
+define_once("_YES","Да");
+define_once("_NO","Не");
+define_once("_SAVE","Сними");
+define_once("_ID","Идентификација");
+define_once("_CATEGORIES","Категории");
+define_once("_ALL","Сите");
+define_once("_FAQ","ЧПП");
+define_once("_CONTENT","Содржина");
+define_once("_FAQADMIN","Администрација на ЧПП");
+define_once("_ACTIVEFAQS","Активни ЧПП-а");
+define_once("_ADDCATEGORY","Додади нова категорија");
+define_once("_QUESTIONS","Прашања и одговори");
+define_once("_ADDQUESTION","Додади ново прашање");
+define_once("_QUESTION","Прашање");
+define_once("_ANSWER","Одговор");
+define_once("_EDITCATEGORY","Измени категорија");
+define_once("_EDITQUESTIONS","Измени прашања и одговори");
+define_once("_FAQDELWARNING","ВНИМАНИЕ: Дали си сигурен дека сакаш да го избришеш овој ЧПП и сета негова содржина?");
+define_once("_QUESTIONDEL","ВНИМАНИЕ: Дали си сигурен дека сакаш да го избришеш ова прашање?");
+define_once("_LANGUAGE","Јазик");
 
 
-?>

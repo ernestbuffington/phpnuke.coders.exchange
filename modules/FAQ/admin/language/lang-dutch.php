@@ -18,27 +18,26 @@
 /**************************************************************************/
 
 
-define("_FUNCTIONS","Functies");
-define("_YES","Ja");
-define("_NO","Nee");
-define("_SAVE","Bewaar");
-define("_ID","ID");
-define("_CATEGORIES","Categorieën");
-define("_ALL","Alle");
-define("_FAQ","FAQ");
-define("_CONTENT","Inhoud");
-define("_FAQADMIN","FAQ Administratie");
-define("_ACTIVEFAQS","Actieve FAQs");
-define("_ADDCATEGORY","Nieuwe categorie toevoegen");
-define("_QUESTIONS","Vragen en antwoorden");
-define("_ADDQUESTION","Nieuwe vraag toevoegen");
-define("_QUESTION","Vraag");
-define("_ANSWER","Antwoord");
-define("_EDITCATEGORY","Categorie bewerken");
-define("_EDITQUESTIONS","Vragen en antwoorden bewerken");
-define("_FAQDELWARNING","WAARSCHUWING: Weet u zeker dat u deze FAQ en de inhoud daarvan wilt verwijderen?");
-define("_QUESTIONDEL","WAARSCHUWING: Weet u zeker dat u deze vraag wilt verwijderen");
-define("_LANGUAGE","Taal");
+define_once("_FUNCTIONS","Functies");
+define_once("_YES","Ja");
+define_once("_NO","Nee");
+define_once("_SAVE","Bewaar");
+define_once("_ID","ID");
+define_once("_CATEGORIES","Categorieën");
+define_once("_ALL","Alle");
+define_once("_FAQ","FAQ");
+define_once("_CONTENT","Inhoud");
+define_once("_FAQADMIN","FAQ Administratie");
+define_once("_ACTIVEFAQS","Actieve FAQs");
+define_once("_ADDCATEGORY","Nieuwe categorie toevoegen");
+define_once("_QUESTIONS","Vragen en antwoorden");
+define_once("_ADDQUESTION","Nieuwe vraag toevoegen");
+define_once("_QUESTION","Vraag");
+define_once("_ANSWER","Antwoord");
+define_once("_EDITCATEGORY","Categorie bewerken");
+define_once("_EDITQUESTIONS","Vragen en antwoorden bewerken");
+define_once("_FAQDELWARNING","WAARSCHUWING: Weet u zeker dat u deze FAQ en de inhoud daarvan wilt verwijderen?");
+define_once("_QUESTIONDEL","WAARSCHUWING: Weet u zeker dat u deze vraag wilt verwijderen");
+define_once("_LANGUAGE","Taal");
 
 
-?>

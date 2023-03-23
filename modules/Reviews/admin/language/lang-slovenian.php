@@ -18,29 +18,28 @@
 /**************************************************************************/
 
 
-define("_EMAIL","E-mail");
-define("_SAVECHANGES","Shrani spremembe");
-define("_SCORE","Ocena:");
-define("_PRODUCTTITLE","Naziv");
-define("_RELATEDLINK","Vezana povezava");
-define("_LINKTITLE","Naslov povezave");
-define("_REVIEWER","Recenzijo je napisal:");
-define("_REVIEWID","ID recenzije");
-define("_REVIEWS","Recenzije");
-define("_DATE","Datum");
-define("_REVADMIN","Administracija recenzij");
-define("_REVTITLE","Naslov strani recenzije");
-define("_REVDESC","Opis strani recenzije");
-define("_REVWAITING","Recenzije na èakanju");
-define("_REVIMGINFO","Shranite 150*150 sliko v images/reviews");
-define("_TEXT","Tekst");
-define("_IMAGE","Slika");
-define("_NOREVIEW2ADD","Ni recenzij za dodajanje");
-define("_ADDREVIEW","Dodaj recenzijo");
-define("_CLICK2ADDREVIEW","Klikni tukaj, da bi napisal recenzijo");
-define("_DELMODREVIEW","Izbriši / Uredi recenzijo");
-define("_MODREVINFO","Kot administrator recenzije lahko enostavno brišete/menjate z <a href=\"modules.php?name=Reviews\">Reviews</a>.");
-define("_LANGUAGE","Jezik");
+define_once("_EMAIL","E-mail");
+define_once("_SAVECHANGES","Shrani spremembe");
+define_once("_SCORE","Ocena:");
+define_once("_PRODUCTTITLE","Naziv");
+define_once("_RELATEDLINK","Vezana povezava");
+define_once("_LINKTITLE","Naslov povezave");
+define_once("_REVIEWER","Recenzijo je napisal:");
+define_once("_REVIEWID","ID recenzije");
+define_once("_REVIEWS","Recenzije");
+define_once("_DATE","Datum");
+define_once("_REVADMIN","Administracija recenzij");
+define_once("_REVTITLE","Naslov strani recenzije");
+define_once("_REVDESC","Opis strani recenzije");
+define_once("_REVWAITING","Recenzije na èakanju");
+define_once("_REVIMGINFO","Shranite 150*150 sliko v images/reviews");
+define_once("_TEXT","Tekst");
+define_once("_IMAGE","Slika");
+define_once("_NOREVIEW2ADD","Ni recenzij za dodajanje");
+define_once("_ADDREVIEW","Dodaj recenzijo");
+define_once("_CLICK2ADDREVIEW","Klikni tukaj, da bi napisal recenzijo");
+define_once("_DELMODREVIEW","Izbriši / Uredi recenzijo");
+define_once("_MODREVINFO","Kot administrator recenzije lahko enostavno brišete/menjate z <a href=\"modules.php?name=Reviews\">Reviews</a>.");
+define_once("_LANGUAGE","Jezik");
 
 
-?>

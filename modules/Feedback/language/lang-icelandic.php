@@ -17,19 +17,18 @@
 /* And, if you use HTML code, please double check it.                     */
 /**************************************************************************/
 
-define("_SEND","Senda");
-define("_YOURNAME","Nafn þitt");
-define("_MESSAGE","Skilaboð");
-define("_YOUREMAIL","Netfangið þitt");
-define("_FEEDBACKNOTE","Allar athugasemdir og tillögur um þennan vef eru vel þegnar og eru þær mikilvægar fyrir okkur. Takk fyrir!");
-define("_FEEDBACKTITLE","Form fyrir endurgjöf");
-define("_FEEDBACK","Endurgjöf");
-define("_FBENTERNAME","VILLA: Vinsamlegast sláðu inn nafnið þitt!");
-define("_FBENTEREMAIL","VILLA: Vinsamlegast sláðu inn netfangið þitt!");
-define("_FBENTERMESSAGE","VILLA: Vinsamlegast sláðu inn skilaboð!");
-define("_SENDEREMAIL","Netfang sendanda");
-define("_SENDERNAME","Nafn sendanda");
-define("_FBMAILSENT","Tölvupóstur hefur verið sendur!");
-define("_FBTHANKSFORCONTACT","Þakka þér fyrir að hafa haft samband við okkur");
+define_once("_SEND","Senda");
+define_once("_YOURNAME","Nafn þitt");
+define_once("_MESSAGE","Skilaboð");
+define_once("_YOUREMAIL","Netfangið þitt");
+define_once("_FEEDBACKNOTE","Allar athugasemdir og tillögur um þennan vef eru vel þegnar og eru þær mikilvægar fyrir okkur. Takk fyrir!");
+define_once("_FEEDBACKTITLE","Form fyrir endurgjöf");
+define_once("_FEEDBACK","Endurgjöf");
+define_once("_FBENTERNAME","VILLA: Vinsamlegast sláðu inn nafnið þitt!");
+define_once("_FBENTEREMAIL","VILLA: Vinsamlegast sláðu inn netfangið þitt!");
+define_once("_FBENTERMESSAGE","VILLA: Vinsamlegast sláðu inn skilaboð!");
+define_once("_SENDEREMAIL","Netfang sendanda");
+define_once("_SENDERNAME","Nafn sendanda");
+define_once("_FBMAILSENT","Tölvupóstur hefur verið sendur!");
+define_once("_FBTHANKSFORCONTACT","Þakka þér fyrir að hafa haft samband við okkur");
 
-?>

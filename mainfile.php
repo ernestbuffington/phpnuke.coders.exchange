@@ -136,6 +136,9 @@ $sanitize_rules = array("newlang"=>"/[a-z][a-z]/i","redirect"=>"/[a-z0-9]*/i");
 
 foreach($_REQUEST as $key=>$value)
 {
+	if (!isset($values))
+	$values = '';
+	
     if(!isset($sanitize_rules[$key]) || preg_match($sanitize_rules[$key], $values))
     {
         $GLOBALS[$key] = $value;

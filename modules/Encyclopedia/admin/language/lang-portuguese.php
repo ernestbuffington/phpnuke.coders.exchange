@@ -18,40 +18,39 @@
 /**************************************************************************/
 
 
-define("_SEND","Enviar");
-define("_FUNCTIONS","Funções");
-define("_YES","Sim");
-define("_NO","Não");
-define("_SAVECHANGES","Gravar alterações");
-define("_PAGEBREAK","Se você quiser o seu texto em várias páginas escreva <b>[--pagebreak--]</b> onde queira separar o texto.");
-define("_DESCRIPTION","Descrição");
-define("_TO","Para");
-define("_TITLE","Título");
-define("_ACTIVE","Activo");
-define("_DEACTIVATE","Desactivar");
-define("_INACTIVE","Inactivo");
-define("_ACTIVATE","Activo");
-define("_ADD","Adicionar");
-define("_LANGUAGE","Língua");
-define("_ENCYCLOPEDIA","Enciclopédia");
-define("_ENCYCLOPEDIAMANAGER","Gerência da Enciclopédia");
-define("_DELENCYCLOPEDIA","Apagar Enciclopédia");
-define("_DELENCYCONTWARNING","Tem a certeza que deseja apagar esta enciclopédia e todo o seu conteúdo?");
-define("_DELENCYCLOPEDIATEXT","Apagar o termos da Enciclopédia");
-define("_DELENCYTEXTWARNING","Tem a certeza que deseja apagar este termo?");
-define("_CURRENTSTATUS","Estatuto corrente");
-define("_ACTIVATEPAGE","Activar esta Página?");
-define("_TERMS","Termos");
-define("_ADDNEWENCYCLOPEDIA","Adicionar uma nova Enciclopédia");
-define("_ADDNEWENCYTERM","Adicionar um novo Termo da Enciclopédia");
-define("_TERMTEXT","Texto do Termo");
-define("_MOVETERMS","Mover Termos");
-define("_MOVEALLTERMSFROM","Mover TODOS os termos de");
-define("_EDITENCYCLOPEDIA","Editar Enciclopédia");
-define("_ENCYTERMSEDIT"," Editar os Termos da Enciclopédia");
-define("_SELECTONETERM","É favor seleccionar um termo da seguinte lista:");
-define("_NOCONTENTFORLETTER","Desculpe, não existe conteúdo para a carta");
-define("_CHANGETOENCY","Modificar para a Enciclopédia");
+define_once("_SEND","Enviar");
+define_once("_FUNCTIONS","Funções");
+define_once("_YES","Sim");
+define_once("_NO","Não");
+define_once("_SAVECHANGES","Gravar alterações");
+define_once("_PAGEBREAK","Se você quiser o seu texto em várias páginas escreva <b>[--pagebreak--]</b> onde queira separar o texto.");
+define_once("_DESCRIPTION","Descrição");
+define_once("_TO","Para");
+define_once("_TITLE","Título");
+define_once("_ACTIVE","Activo");
+define_once("_DEACTIVATE","Desactivar");
+define_once("_INACTIVE","Inactivo");
+define_once("_ACTIVATE","Activo");
+define_once("_ADD","Adicionar");
+define_once("_LANGUAGE","Língua");
+define_once("_ENCYCLOPEDIA","Enciclopédia");
+define_once("_ENCYCLOPEDIAMANAGER","Gerência da Enciclopédia");
+define_once("_DELENCYCLOPEDIA","Apagar Enciclopédia");
+define_once("_DELENCYCONTWARNING","Tem a certeza que deseja apagar esta enciclopédia e todo o seu conteúdo?");
+define_once("_DELENCYCLOPEDIATEXT","Apagar o termos da Enciclopédia");
+define_once("_DELENCYTEXTWARNING","Tem a certeza que deseja apagar este termo?");
+define_once("_CURRENTSTATUS","Estatuto corrente");
+define_once("_ACTIVATEPAGE","Activar esta Página?");
+define_once("_TERMS","Termos");
+define_once("_ADDNEWENCYCLOPEDIA","Adicionar uma nova Enciclopédia");
+define_once("_ADDNEWENCYTERM","Adicionar um novo Termo da Enciclopédia");
+define_once("_TERMTEXT","Texto do Termo");
+define_once("_MOVETERMS","Mover Termos");
+define_once("_MOVEALLTERMSFROM","Mover TODOS os termos de");
+define_once("_EDITENCYCLOPEDIA","Editar Enciclopédia");
+define_once("_ENCYTERMSEDIT"," Editar os Termos da Enciclopédia");
+define_once("_SELECTONETERM","É favor seleccionar um termo da seguinte lista:");
+define_once("_NOCONTENTFORLETTER","Desculpe, não existe conteúdo para a carta");
+define_once("_CHANGETOENCY","Modificar para a Enciclopédia");
 
 
-?>

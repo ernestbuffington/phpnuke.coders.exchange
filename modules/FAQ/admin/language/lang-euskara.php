@@ -18,27 +18,26 @@
 /**************************************************************************/
 
 
-define("_FUNCTIONS","Funtzioak");
-define("_YES","Bai");
-define("_NO","Ez");
-define("_SAVE","Gorde");
-define("_ID","ID");
-define("_CATEGORIES","Kategoria");
-define("_ALL","Guztiak");
-define("_FAQ","FAQ-ak");
-define("_CONTENT","Edukia");
-define("_FAQADMIN","FAQen administrazioa");
-define("_ACTIVEFAQS","Aktibo dauden FAQak");
-define("_ADDCATEGORY","Kategoria bat gehitu");
-define("_QUESTIONS","Galderak eta erantzunak");
-define("_ADDQUESTION","Galdera gehitu");
-define("_QUESTION","Galdera");
-define("_ANSWER","Erantzuna");
-define("_EDITCATEGORY","Kategoria editatu");
-define("_EDITQUESTIONS","Galderak eta erantzunak editatu");
-define("_FAQDELWARNING","KONTUZ: ziur zaude FAQak eta bere eduki guztiak ezabatu nahi dituzula?");
-define("_QUESTIONDEL","KONTUZ: ziur zaude galdera hau ezabatu nahi duzula?");
-define("_LANGUAGE","Hizkuntza");
+define_once("_FUNCTIONS","Funtzioak");
+define_once("_YES","Bai");
+define_once("_NO","Ez");
+define_once("_SAVE","Gorde");
+define_once("_ID","ID");
+define_once("_CATEGORIES","Kategoria");
+define_once("_ALL","Guztiak");
+define_once("_FAQ","FAQ-ak");
+define_once("_CONTENT","Edukia");
+define_once("_FAQADMIN","FAQen administrazioa");
+define_once("_ACTIVEFAQS","Aktibo dauden FAQak");
+define_once("_ADDCATEGORY","Kategoria bat gehitu");
+define_once("_QUESTIONS","Galderak eta erantzunak");
+define_once("_ADDQUESTION","Galdera gehitu");
+define_once("_QUESTION","Galdera");
+define_once("_ANSWER","Erantzuna");
+define_once("_EDITCATEGORY","Kategoria editatu");
+define_once("_EDITQUESTIONS","Galderak eta erantzunak editatu");
+define_once("_FAQDELWARNING","KONTUZ: ziur zaude FAQak eta bere eduki guztiak ezabatu nahi dituzula?");
+define_once("_QUESTIONDEL","KONTUZ: ziur zaude galdera hau ezabatu nahi duzula?");
+define_once("_LANGUAGE","Hizkuntza");
 
 
-?>

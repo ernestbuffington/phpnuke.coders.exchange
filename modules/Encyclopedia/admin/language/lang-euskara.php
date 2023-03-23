@@ -18,40 +18,39 @@
 /**************************************************************************/
 
 
-define("_SEND","Bidali");
-define("_FUNCTIONS","Funtzioak");
-define("_YES","Bai");
-define("_NO","Ez");
-define("_SAVECHANGES","Aldaketak gorde");
-define("_PAGEBREAK","Orrialde batetan baino gehiagotan zatitzeko, idatzi <b>[--pagebreak--]</b> orrialde berri baten mozketa sartzeko");
-define("_DESCRIPTION","Azalpena");
-define("_TO","Norentzat");
-define("_TITLE","Tituloa");
-define("_ACTIVE","Aktiboa");
-define("_DEACTIVATE","Desaktibatu");
-define("_INACTIVE","Aktibatu gabe");
-define("_ACTIVATE","Aktibatu");
-define("_ADD","gehitu");
-define("_LANGUAGE","Hizkuntza");
-define("_ENCYCLOPEDIA","Entziklopedia");
-define("_ENCYCLOPEDIAMANAGER","Entziklopedia maneiatzailea");
-define("_DELENCYCLOPEDIA","Ezabatu entziklopedia");
-define("_DELENCYCONTWARNING","Ziur zaude entziklopedia hau eta eduki GUZTIAK ezabatu nahi dituzula?");
-define("_DELENCYCLOPEDIATEXT","Ezabatu entziklopediaren edukiak");
-define("_DELENCYTEXTWARNING","Ziur zaude eduki hau ezabatu nahi duzula?");
-define("_CURRENTSTATUS","Uneko egoera");
-define("_ACTIVATEPAGE","Aktibatu orri hau?");
-define("_TERMS","Terminoak");
-define("_ADDNEWENCYCLOPEDIA","Gehitu entziklopedia berria");
-define("_ADDNEWENCYTERM","Gehitu entziklopediara termino berri bat");
-define("_TERMTEXT","terminoaren testua");
-define("_MOVETERMS","terminoak mugitu");
-define("_MOVEALLTERMSFROM","Mugitu hemengo termino GUZTIAK");
-define("_EDITENCYCLOPEDIA","Editatu entziklopedia");
-define("_ENCYTERMSEDIT","Editatu entziklopediaren terminoak");
-define("_SELECTONETERM","Aukeratu termino bat ondorengo zerrendatik:");
-define("_NOCONTENTFORLETTER","Sentitzen dut, ez dago terminorik letra horrekin");
-define("_CHANGETOENCY","Aldatu entziklopedia honetara");
+define_once("_SEND","Bidali");
+define_once("_FUNCTIONS","Funtzioak");
+define_once("_YES","Bai");
+define_once("_NO","Ez");
+define_once("_SAVECHANGES","Aldaketak gorde");
+define_once("_PAGEBREAK","Orrialde batetan baino gehiagotan zatitzeko, idatzi <b>[--pagebreak--]</b> orrialde berri baten mozketa sartzeko");
+define_once("_DESCRIPTION","Azalpena");
+define_once("_TO","Norentzat");
+define_once("_TITLE","Tituloa");
+define_once("_ACTIVE","Aktiboa");
+define_once("_DEACTIVATE","Desaktibatu");
+define_once("_INACTIVE","Aktibatu gabe");
+define_once("_ACTIVATE","Aktibatu");
+define_once("_ADD","gehitu");
+define_once("_LANGUAGE","Hizkuntza");
+define_once("_ENCYCLOPEDIA","Entziklopedia");
+define_once("_ENCYCLOPEDIAMANAGER","Entziklopedia maneiatzailea");
+define_once("_DELENCYCLOPEDIA","Ezabatu entziklopedia");
+define_once("_DELENCYCONTWARNING","Ziur zaude entziklopedia hau eta eduki GUZTIAK ezabatu nahi dituzula?");
+define_once("_DELENCYCLOPEDIATEXT","Ezabatu entziklopediaren edukiak");
+define_once("_DELENCYTEXTWARNING","Ziur zaude eduki hau ezabatu nahi duzula?");
+define_once("_CURRENTSTATUS","Uneko egoera");
+define_once("_ACTIVATEPAGE","Aktibatu orri hau?");
+define_once("_TERMS","Terminoak");
+define_once("_ADDNEWENCYCLOPEDIA","Gehitu entziklopedia berria");
+define_once("_ADDNEWENCYTERM","Gehitu entziklopediara termino berri bat");
+define_once("_TERMTEXT","terminoaren testua");
+define_once("_MOVETERMS","terminoak mugitu");
+define_once("_MOVEALLTERMSFROM","Mugitu hemengo termino GUZTIAK");
+define_once("_EDITENCYCLOPEDIA","Editatu entziklopedia");
+define_once("_ENCYTERMSEDIT","Editatu entziklopediaren terminoak");
+define_once("_SELECTONETERM","Aukeratu termino bat ondorengo zerrendatik:");
+define_once("_NOCONTENTFORLETTER","Sentitzen dut, ez dago terminorik letra horrekin");
+define_once("_CHANGETOENCY","Aldatu entziklopedia honetara");
 
 
-?>

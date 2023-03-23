@@ -17,19 +17,18 @@
 /* And, if you use HTML code, please double check it.                     */
 /**************************************************************************/
 
-define("_PRINTER","Druckbare Version");
-define("_FRIEND","Diesen Artikel an einen Freund senden");
-define("_ARTICLES","Artikel");
-define("_USCORE","Wertung");
-define("_DATE","Datum");
-define("_SELECTMONTH2VIEW","W&auml;hlen Sie einen Monat der angezeigt werden soll:");
-define("_SHOWALLSTORIES","Zeige ALLE Stories");
-define("_STORIESARCHIVE","Stories Archiv");
-define("_ACTIONS","Aktionen");
-define("_ARCHIVESINDEX","Stories Archiv Index");
-define("_ALLSTORIESARCH","Alle Stories");
-define("_NEXTPAGE","N&auml;chste Seite");
-define("_PREVIOUSPAGE","Vorhergehende Seite");
+define_once("_PRINTER","Druckbare Version");
+define_once("_FRIEND","Diesen Artikel an einen Freund senden");
+define_once("_ARTICLES","Artikel");
+define_once("_USCORE","Wertung");
+define_once("_DATE","Datum");
+define_once("_SELECTMONTH2VIEW","W&auml;hlen Sie einen Monat der angezeigt werden soll:");
+define_once("_SHOWALLSTORIES","Zeige ALLE Stories");
+define_once("_STORIESARCHIVE","Stories Archiv");
+define_once("_ACTIONS","Aktionen");
+define_once("_ARCHIVESINDEX","Stories Archiv Index");
+define_once("_ALLSTORIESARCH","Alle Stories");
+define_once("_NEXTPAGE","N&auml;chste Seite");
+define_once("_PREVIOUSPAGE","Vorhergehende Seite");
 
 
-?>

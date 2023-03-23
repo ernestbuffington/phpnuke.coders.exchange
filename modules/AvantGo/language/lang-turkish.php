@@ -17,11 +17,10 @@
 /* Mail:webmaster@pcnet.com.tr ICQ:19648424 URL: http://www.turknuke.com  */
 /**************************************************************************/
 
-define("_PDATE","Tarih:");
-define("_PTOPIC","Konu:");
-define("_COMESFROM","Bu haberin bulunduðu site:");
-define("_THEURL","Bu haber için adres:");
-define("_DATE","Tarih");
-define("_TITLE","Baþlýk");
+define_once("_PDATE","Tarih:");
+define_once("_PTOPIC","Konu:");
+define_once("_COMESFROM","Bu haberin bulunduðu site:");
+define_once("_THEURL","Bu haber için adres:");
+define_once("_DATE","Tarih");
+define_once("_TITLE","Baþlýk");
 
-?>

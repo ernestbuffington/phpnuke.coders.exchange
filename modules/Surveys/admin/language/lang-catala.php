@@ -18,36 +18,35 @@
 /**************************************************************************/
 
 
-define("_YES","Si");
-define("_NO","No");
-define("_CATEGORY","Categoria");
-define("_SAVECHANGES","Desar Canvis");
-define("_ARTICLES","Articles");
-define("_SELECTTOPIC","Seleccionar Tòpic");
-define("_OPTION","Opció");
-define("_ADMPOLLS","Enquestes");
-define("_TITLE","Títol");
-define("_STORYTEXT","Text de la Noticia");
-define("_EXTENDEDTEXT","Text Ampliat");
-define("_PUBLISHINHOME","Publicar al Home?");
-define("_ONLYIFCATSELECTED","Sols funciona si la categoria <i>Articles</i> no està seleccionada");
-define("_ADD","Afegir");
-define("_POLLSADMIN","Administració d'Enquestes");
-define("_CREATEPOLL","Crear Enquesta");
-define("_DELETEPOLLS","Esborrar Enquestes");
-define("_POLLTITLE","Títol de l'Enquesta");
-define("_POLLEACHFIELD","Si us plau escriu cada opció de l'Enquesta");
-define("_CREATEPOLLBUT","Crear Enquesta");
-define("_REMOVEEXISTING","Eliminar una Enquesta existent");
-define("_POLLDELWARNING","ATENCIÓ: L'Enquesta seleccionada serà borrada INMEDIATAMENT de la base de dades!");
-define("_CHOOSEPOLL","Selecciona una Enquesta de la següent llista:");
-define("_EDITPOLL","Editar Enquestes");
-define("_CHOOSEPOLLEDIT","Selecciona l'Enquesta a editar:");
-define("_ACTIVATECOMMENTS","Activar Comentaris per a aquesta Noticia?");
-define("_LANGUAGE","Lenguatge");
-define("_ANNOUNCEPOLL","Anunciar l'Enquesta con una Noticia?");
-define("_LEAVEBLANK","(Deixa en blanc per a crear una Enquesta nova sense anunciar-la)");
-define("_POLLEDIT","Editar Enquesta:");
+define_once("_YES","Si");
+define_once("_NO","No");
+define_once("_CATEGORY","Categoria");
+define_once("_SAVECHANGES","Desar Canvis");
+define_once("_ARTICLES","Articles");
+define_once("_SELECTTOPIC","Seleccionar Tòpic");
+define_once("_OPTION","Opció");
+define_once("_ADMPOLLS","Enquestes");
+define_once("_TITLE","Títol");
+define_once("_STORYTEXT","Text de la Noticia");
+define_once("_EXTENDEDTEXT","Text Ampliat");
+define_once("_PUBLISHINHOME","Publicar al Home?");
+define_once("_ONLYIFCATSELECTED","Sols funciona si la categoria <i>Articles</i> no està seleccionada");
+define_once("_ADD","Afegir");
+define_once("_POLLSADMIN","Administració d'Enquestes");
+define_once("_CREATEPOLL","Crear Enquesta");
+define_once("_DELETEPOLLS","Esborrar Enquestes");
+define_once("_POLLTITLE","Títol de l'Enquesta");
+define_once("_POLLEACHFIELD","Si us plau escriu cada opció de l'Enquesta");
+define_once("_CREATEPOLLBUT","Crear Enquesta");
+define_once("_REMOVEEXISTING","Eliminar una Enquesta existent");
+define_once("_POLLDELWARNING","ATENCIÓ: L'Enquesta seleccionada serà borrada INMEDIATAMENT de la base de dades!");
+define_once("_CHOOSEPOLL","Selecciona una Enquesta de la següent llista:");
+define_once("_EDITPOLL","Editar Enquestes");
+define_once("_CHOOSEPOLLEDIT","Selecciona l'Enquesta a editar:");
+define_once("_ACTIVATECOMMENTS","Activar Comentaris per a aquesta Noticia?");
+define_once("_LANGUAGE","Lenguatge");
+define_once("_ANNOUNCEPOLL","Anunciar l'Enquesta con una Noticia?");
+define_once("_LEAVEBLANK","(Deixa en blanc per a crear una Enquesta nova sense anunciar-la)");
+define_once("_POLLEDIT","Editar Enquesta:");
 
 
-?>

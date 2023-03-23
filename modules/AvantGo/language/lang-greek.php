@@ -18,11 +18,10 @@
 /**************************************************************************/
 
 
-define("_DATE","Ημερομηνία");
-define("_TITLE","Τίτλος");
-define("_COMESFROM","Το άρθρο αυτό προέρχεται από");
-define("_THEURL","Το URL της ιστορίας αυτής είναι ο εξής");
-define("_PDATE","Ημερομηνία ");
-define("_PTOPIC","Θέμα");
+define_once("_DATE","Ημερομηνία");
+define_once("_TITLE","Τίτλος");
+define_once("_COMESFROM","Το άρθρο αυτό προέρχεται από");
+define_once("_THEURL","Το URL της ιστορίας αυτής είναι ο εξής");
+define_once("_PDATE","Ημερομηνία ");
+define_once("_PTOPIC","Θέμα");
 
-?>

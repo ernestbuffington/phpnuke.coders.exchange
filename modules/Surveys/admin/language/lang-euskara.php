@@ -18,36 +18,35 @@
 /**************************************************************************/
 
 
-define("_YES","Bai");
-define("_NO","Ez");
-define("_CATEGORY","Maila");
-define("_SAVECHANGES","Aldaketak gorde");
-define("_ARTICLES","Artikuloak");
-define("_SELECTTOPIC","Aukeratu Gaia");
-define("_OPTION","Aukera");
-define("_ADMPOLLS","Inkestak/Bozketak");
-define("_TITLE","Tituloa");
-define("_STORYTEXT","Notiziaren testua");
-define("_EXTENDEDTEXT","Testu gehiago");
-define("_PUBLISHINHOME","Hasierako orriaren publikatu");
-define("_ONLYIFCATSELECTED","<i>Artikuloen</i> kategoria aukeratu gabe egon ezkero funzionatzen du bakarrik");
-define("_ADD","gehitu");
-define("_POLLSADMIN","Bozketen/Inkesten administrazioa");
-define("_CREATEPOLL","Inkesta bat sortu");
-define("_DELETEPOLLS","Inkestak ezabatu");
-define("_POLLTITLE","Inkestaren tituloa");
-define("_POLLEACHFIELD","Mesedez idatzi inkestaren aukera bakoitza");
-define("_CREATEPOLLBUT","Inkesta bat sortu");
-define("_REMOVEEXISTING","Inkesta bat ezabatu");
-define("_POLLDELWARNING","KONTUZ: aukeratutako inkesta datubasean ezabatu egingo da");
-define("_CHOOSEPOLL","Aukeratu bozketa ondorengo zerrendan:");
-define("_EDITPOLL","Inkestak editatu");
-define("_CHOOSEPOLLEDIT","Editatu nahi duzun inkesta aukeratu:");
-define("_ACTIVATECOMMENTS","Notizia honentzat komentarioak aktibatu?");
-define("_LANGUAGE","Hizkuntza");
-define("_ANNOUNCEPOLL","Tokian anunziatu inkesta berri hau");
-define("_LEAVEBLANK","(Utzi zuriz inkesta sortzeko anunziatu gabe)");
-define("_POLLEDIT","Inkesta editatu:");
+define_once("_YES","Bai");
+define_once("_NO","Ez");
+define_once("_CATEGORY","Maila");
+define_once("_SAVECHANGES","Aldaketak gorde");
+define_once("_ARTICLES","Artikuloak");
+define_once("_SELECTTOPIC","Aukeratu Gaia");
+define_once("_OPTION","Aukera");
+define_once("_ADMPOLLS","Inkestak/Bozketak");
+define_once("_TITLE","Tituloa");
+define_once("_STORYTEXT","Notiziaren testua");
+define_once("_EXTENDEDTEXT","Testu gehiago");
+define_once("_PUBLISHINHOME","Hasierako orriaren publikatu");
+define_once("_ONLYIFCATSELECTED","<i>Artikuloen</i> kategoria aukeratu gabe egon ezkero funzionatzen du bakarrik");
+define_once("_ADD","gehitu");
+define_once("_POLLSADMIN","Bozketen/Inkesten administrazioa");
+define_once("_CREATEPOLL","Inkesta bat sortu");
+define_once("_DELETEPOLLS","Inkestak ezabatu");
+define_once("_POLLTITLE","Inkestaren tituloa");
+define_once("_POLLEACHFIELD","Mesedez idatzi inkestaren aukera bakoitza");
+define_once("_CREATEPOLLBUT","Inkesta bat sortu");
+define_once("_REMOVEEXISTING","Inkesta bat ezabatu");
+define_once("_POLLDELWARNING","KONTUZ: aukeratutako inkesta datubasean ezabatu egingo da");
+define_once("_CHOOSEPOLL","Aukeratu bozketa ondorengo zerrendan:");
+define_once("_EDITPOLL","Inkestak editatu");
+define_once("_CHOOSEPOLLEDIT","Editatu nahi duzun inkesta aukeratu:");
+define_once("_ACTIVATECOMMENTS","Notizia honentzat komentarioak aktibatu?");
+define_once("_LANGUAGE","Hizkuntza");
+define_once("_ANNOUNCEPOLL","Tokian anunziatu inkesta berri hau");
+define_once("_LEAVEBLANK","(Utzi zuriz inkesta sortzeko anunziatu gabe)");
+define_once("_POLLEDIT","Inkesta editatu:");
 
 
-?>

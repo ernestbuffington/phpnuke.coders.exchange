@@ -18,40 +18,39 @@
 /**************************************************************************/
 
 
-define("_SAVECHANGES","Αποθήκευση Αλλαγών");
-define("_TO","Προς");
-define("_DESCRIPTION","Περιγραφή");
-define("_TITLE","Τίτλος");
-define("_FUNCTIONS","Λειτουργίες");
-define("_PAGEBREAK","Αν έχετε πολλαπλές σελίδες μπορείτε να σημειώσετε <b>[--pagebreak--]</b> στο σημείο που θέλετε να εισαχθεί μια διακοπή σελίδας.");
-define("_YES","Ναι");
-define("_NO","Οχι");
-define("_SEND","Αποστολή");
-define("_ACTIVE","Ενεργό");
-define("_DEACTIVATE","Απενεργοποίηση");
-define("_INACTIVE","Απενεργοποιημένο");
-define("_ACTIVATE","Ενεργοποίηση");
-define("_ADD","Προσθήκη ");
-define("_LANGUAGE","Language");
-define("_ENCYCLOPEDIA","Encyclopedia");
-define("_ENCYCLOPEDIAMANAGER","Encyclopedia Manager");
-define("_DELENCYCLOPEDIA","Delete Encyclopedia");
-define("_DELENCYCONTWARNING","Are you sure you want to delete this Encyclopedia and ALL its content?");
-define("_DELENCYCLOPEDIATEXT","Delete Encyclopedia Terms");
-define("_DELENCYTEXTWARNING","Are you sure you want to delete this Term?");
-define("_CURRENTSTATUS","Current Status");
-define("_ACTIVATEPAGE","Activate This Page?");
-define("_TERMS","Terms");
-define("_ADDNEWENCYCLOPEDIA","Add a New Encyclopedia");
-define("_ADDNEWENCYTERM","Add a New Encyclopedia Term");
-define("_TERMTEXT","Term Text");
-define("_MOVETERMS","Move Terms");
-define("_MOVEALLTERMSFROM","Move ALL Terms From");
-define("_EDITENCYCLOPEDIA","Edit Encyclopedia");
-define("_ENCYTERMSEDIT","Encyclopedia Terms Edit");
-define("_SELECTONETERM","Please select one term from the following list:");
-define("_NOCONTENTFORLETTER","Sorry, there isn't any content for the letter");
-define("_CHANGETOENCY","Change to Encyclopedia");
+define_once("_SAVECHANGES","Αποθήκευση Αλλαγών");
+define_once("_TO","Προς");
+define_once("_DESCRIPTION","Περιγραφή");
+define_once("_TITLE","Τίτλος");
+define_once("_FUNCTIONS","Λειτουργίες");
+define_once("_PAGEBREAK","Αν έχετε πολλαπλές σελίδες μπορείτε να σημειώσετε <b>[--pagebreak--]</b> στο σημείο που θέλετε να εισαχθεί μια διακοπή σελίδας.");
+define_once("_YES","Ναι");
+define_once("_NO","Οχι");
+define_once("_SEND","Αποστολή");
+define_once("_ACTIVE","Ενεργό");
+define_once("_DEACTIVATE","Απενεργοποίηση");
+define_once("_INACTIVE","Απενεργοποιημένο");
+define_once("_ACTIVATE","Ενεργοποίηση");
+define_once("_ADD","Προσθήκη ");
+define_once("_LANGUAGE","Language");
+define_once("_ENCYCLOPEDIA","Encyclopedia");
+define_once("_ENCYCLOPEDIAMANAGER","Encyclopedia Manager");
+define_once("_DELENCYCLOPEDIA","Delete Encyclopedia");
+define_once("_DELENCYCONTWARNING","Are you sure you want to delete this Encyclopedia and ALL its content?");
+define_once("_DELENCYCLOPEDIATEXT","Delete Encyclopedia Terms");
+define_once("_DELENCYTEXTWARNING","Are you sure you want to delete this Term?");
+define_once("_CURRENTSTATUS","Current Status");
+define_once("_ACTIVATEPAGE","Activate This Page?");
+define_once("_TERMS","Terms");
+define_once("_ADDNEWENCYCLOPEDIA","Add a New Encyclopedia");
+define_once("_ADDNEWENCYTERM","Add a New Encyclopedia Term");
+define_once("_TERMTEXT","Term Text");
+define_once("_MOVETERMS","Move Terms");
+define_once("_MOVEALLTERMSFROM","Move ALL Terms From");
+define_once("_EDITENCYCLOPEDIA","Edit Encyclopedia");
+define_once("_ENCYTERMSEDIT","Encyclopedia Terms Edit");
+define_once("_SELECTONETERM","Please select one term from the following list:");
+define_once("_NOCONTENTFORLETTER","Sorry, there isn't any content for the letter");
+define_once("_CHANGETOENCY","Change to Encyclopedia");
 
 
-?>

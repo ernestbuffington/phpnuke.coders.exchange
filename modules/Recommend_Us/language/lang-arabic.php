@@ -17,22 +17,21 @@
 /* And, if you use HTML code, please double check it.                     */
 /**************************************************************************/
 
-define("_SEND","Убгс");
-define("_FYOURNAME","Чгуп:");
-define("_FYOUREMAIL","ШбэЯп ЧсХспЪбцфэ:");
-define("_FFRIENDNAME","Чгу еЯэоп:");
-define("_FFRIENDEMAIL","ШбэЯ еЯэоп:");
-define("_HELLO","убЭШЧ");
-define("_YOURFRIEND","еЯэоп");
-define("_RECOMMEND","Чбгс хаЧ Чсуцок Чсь еЯэо");
-define("_INTSITE","уцок ууЪк:");
-define("_OURSITE","экЪоЯ Уф уцокфЧ");
-define("_INTSENT","ууЪк цУбЧЯ Уф эбгсх сп.");
-define("_FSITENAME","Чгу Чсуцок:");
-define("_FSITEURL","кфцЧф Чсуцок:");
-define("_FREFERENCE","ЧсубЬк суцокфЧ Убгс Чсь");
-define("_THANKSREC","дпбЧ сУЮШЧб еЯэоп кфЧ!");
-define("_SECURITYCODEERROR","<b>ERROR:</b> The security code you wrote is incorrect...<br>Please write it exactly as given bellow:");
-define("_SENDSITEERROR","<b>Error sending the recommendation...</b><br><br><b>ERROR:</b> One or more required fields are empty.<br>Please go back and correct the problem, then try again.");
+define_once("_SEND","Убгс");
+define_once("_FYOURNAME","Чгуп:");
+define_once("_FYOUREMAIL","ШбэЯп ЧсХспЪбцфэ:");
+define_once("_FFRIENDNAME","Чгу еЯэоп:");
+define_once("_FFRIENDEMAIL","ШбэЯ еЯэоп:");
+define_once("_HELLO","убЭШЧ");
+define_once("_YOURFRIEND","еЯэоп");
+define_once("_RECOMMEND","Чбгс хаЧ Чсуцок Чсь еЯэо");
+define_once("_INTSITE","уцок ууЪк:");
+define_once("_OURSITE","экЪоЯ Уф уцокфЧ");
+define_once("_INTSENT","ууЪк цУбЧЯ Уф эбгсх сп.");
+define_once("_FSITENAME","Чгу Чсуцок:");
+define_once("_FSITEURL","кфцЧф Чсуцок:");
+define_once("_FREFERENCE","ЧсубЬк суцокфЧ Убгс Чсь");
+define_once("_THANKSREC","дпбЧ сУЮШЧб еЯэоп кфЧ!");
+define_once("_SECURITYCODEERROR","<b>ERROR:</b> The security code you wrote is incorrect...<br>Please write it exactly as given bellow:");
+define_once("_SENDSITEERROR","<b>Error sending the recommendation...</b><br><br><b>ERROR:</b> One or more required fields are empty.<br>Please go back and correct the problem, then try again.");
 
-?>

@@ -17,11 +17,11 @@
 /* And, if you use HTML code, please double check it.                     */
 /**************************************************************************/
 
-define("_PDATE","Data:");
-define("_PTOPIC","Argomenti:");
-define("_COMESFROM","Ky Artikull vjen nga");
-define("_THEURL","URL e këtij Artikulli është:");
-define("_DATE","Data");
-define("_TITLE","Titulli");
+define_once("_PDATE","Data:");
+define_once("_PTOPIC","Argomenti:");
+define_once("_COMESFROM","Ky Artikull vjen nga");
+define_once("_THEURL","URL e këtij Artikulli është:");
+define_once("_DATE","Data");
+define_once("_TITLE","Titulli");
 
-?>
+

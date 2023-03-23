@@ -18,29 +18,28 @@
 /**************************************************************************/
 
 
-define("_EMAIL","E-mail");
-define("_SAVECHANGES","Sauvez les modifications");
-define("_SCORE","Score:");
-define("_PRODUCTTITLE","Titre du produit");
-define("_RELATEDLINK","Lien en relation");
-define("_LINKTITLE","Titre du lien");
-define("_REVIEWER","Critique:");
-define("_REVIEWID","ID du compte rendu");
-define("_REVIEWS","Comptes rendus");
-define("_DATE","Date");
-define("_REVADMIN","Administration des comptes rendus");
-define("_REVTITLE","Titre de la page des comptes rendus");
-define("_REVDESC","Description de la page des comptes rendus");
-define("_REVWAITING","Comptes rendus en attente de validation");
-define("_REVIMGINFO","Conservez votre image 150*150 dans images/reviews");
-define("_TEXT","Texte");
-define("_IMAGE","Image");
-define("_NOREVIEW2ADD","Pas de compte rendu &agrave; ajouter");
-define("_ADDREVIEW","Ajouter un compte rendu");
-define("_CLICK2ADDREVIEW","Cliquez ici pour &eacute;crire un compte rendu");
-define("_DELMODREVIEW","Supprimer / Modifier un compte rendu");
-define("_MODREVINFO","Vous pouvez modifier/supprimer un compte rendu en parcourant simplement <a href=\"reviews.php\">reviews.php</a> en tant qu'administrateur.");
-define("_LANGUAGE","Langue");
+define_once("_EMAIL","E-mail");
+define_once("_SAVECHANGES","Sauvez les modifications");
+define_once("_SCORE","Score:");
+define_once("_PRODUCTTITLE","Titre du produit");
+define_once("_RELATEDLINK","Lien en relation");
+define_once("_LINKTITLE","Titre du lien");
+define_once("_REVIEWER","Critique:");
+define_once("_REVIEWID","ID du compte rendu");
+define_once("_REVIEWS","Comptes rendus");
+define_once("_DATE","Date");
+define_once("_REVADMIN","Administration des comptes rendus");
+define_once("_REVTITLE","Titre de la page des comptes rendus");
+define_once("_REVDESC","Description de la page des comptes rendus");
+define_once("_REVWAITING","Comptes rendus en attente de validation");
+define_once("_REVIMGINFO","Conservez votre image 150*150 dans images/reviews");
+define_once("_TEXT","Texte");
+define_once("_IMAGE","Image");
+define_once("_NOREVIEW2ADD","Pas de compte rendu &agrave; ajouter");
+define_once("_ADDREVIEW","Ajouter un compte rendu");
+define_once("_CLICK2ADDREVIEW","Cliquez ici pour &eacute;crire un compte rendu");
+define_once("_DELMODREVIEW","Supprimer / Modifier un compte rendu");
+define_once("_MODREVINFO","Vous pouvez modifier/supprimer un compte rendu en parcourant simplement <a href=\"reviews.php\">reviews.php</a> en tant qu'administrateur.");
+define_once("_LANGUAGE","Langue");
 
 
-?>

@@ -18,27 +18,26 @@
 /**************************************************************************/
 
 
-define("_FUNCTIONS","Aðgerðir");
-define("_YES","Já");
-define("_NO","Nei");
-define("_SAVE","Vista");
-define("_ID","Númer");
-define("_CATEGORIES","flokkar");
-define("_ALL","Allt");
-define("_FAQ","SOS");
-define("_CONTENT","Efni");
-define("_FAQADMIN","SOS stjórnun");
-define("_ACTIVEFAQS","Virkar SOS");
-define("_ADDCATEGORY","Bæta við flokki");
-define("_QUESTIONS","Spurningar og svör");
-define("_ADDQUESTION","Bæta við nýrri spurningu");
-define("_QUESTION","Spurning");
-define("_ANSWER","Svar");
-define("_EDITCATEGORY","Breyta flokki");
-define("_EDITQUESTIONS","Breyta spurningum og svörum");
-define("_FAQDELWARNING","VARÚÐ: Ertu viss um að þú viljir eyða þessu SOS og öllu efni þess?");
-define("_QUESTIONDEL","VARÚÐ: Ertu viss um að þú viljir eyða þessari spurningu?");
-define("_LANGUAGE","Tungumál");
+define_once("_FUNCTIONS","Aðgerðir");
+define_once("_YES","Já");
+define_once("_NO","Nei");
+define_once("_SAVE","Vista");
+define_once("_ID","Númer");
+define_once("_CATEGORIES","flokkar");
+define_once("_ALL","Allt");
+define_once("_FAQ","SOS");
+define_once("_CONTENT","Efni");
+define_once("_FAQADMIN","SOS stjórnun");
+define_once("_ACTIVEFAQS","Virkar SOS");
+define_once("_ADDCATEGORY","Bæta við flokki");
+define_once("_QUESTIONS","Spurningar og svör");
+define_once("_ADDQUESTION","Bæta við nýrri spurningu");
+define_once("_QUESTION","Spurning");
+define_once("_ANSWER","Svar");
+define_once("_EDITCATEGORY","Breyta flokki");
+define_once("_EDITQUESTIONS","Breyta spurningum og svörum");
+define_once("_FAQDELWARNING","VARÚÐ: Ertu viss um að þú viljir eyða þessu SOS og öllu efni þess?");
+define_once("_QUESTIONDEL","VARÚÐ: Ertu viss um að þú viljir eyða þessari spurningu?");
+define_once("_LANGUAGE","Tungumál");
 
 
-?>

@@ -18,36 +18,35 @@
 /**************************************************************************/
 
 
-define("_YES","ไฺใ");
-define("_NO","แว");
-define("_CATEGORY","สีไํÝ");
-define("_SAVECHANGES","อÝู วแสÛํํัวส");
-define("_ARTICLES","วแใÞวแวส");
-define("_SELECTTOPIC","รฮสั วแใๆึๆฺ");
-define("_OPTION","ลฮสํวั");
-define("_ADMPOLLS","รำสÝสวมวส/สีๆํสวส");
-define("_TITLE","วแฺไๆวไ");
-define("_STORYTEXT","ไี วแใÞวแ");
-define("_EXTENDEDTEXT","วแไี วแลึวÝํ");
-define("_PUBLISHINHOME","ๅแ รไิัๅว Ýํ วแีÝอษ วแรๆแ์ฟ");
-define("_ONLYIFCATSELECTED","สฺใแ ÝÞุ วะว แใ ํสใ ลฮสํวั สีไํÝ  <i>แแใÞวแ</i>");
-define("_ADD","รึÝ");
-define("_POLLSADMIN","วแสอ฿ใ Ýํ วแลำสÝสวมวส");
-define("_CREATEPOLL","รไิฦ วำสÝสวมว ฬฯํฯว");
-define("_DELETEPOLLS","อะÝ วแลำสÝสวมวส");
-define("_POLLTITLE","ฺไๆวไ วแลำสÝสวม");
-define("_POLLEACHFIELD","วแัฬวม วฯฮวแ ฿แ ฮํวั Ýํ อÞแ ๆวอฯ");
-define("_CREATEPOLLBUT","รไิฦ วแลำสÝสวม");
-define("_REMOVEEXISTING","รอะÝ วำสÝสวม ใๆฬๆฯ");
-define("_POLLDELWARNING","สอะํั: ำํสใ อะÝ วแลำสÝสวม ๅะว ใไ Þวฺฯษ วแศํวไวส วแยไ!");
-define("_CHOOSEPOLL","วแัฬวม วฮสํวั วำสÝสวม ใไ วแÞวฦใษ วแสวแํษ:");
-define("_EDITPOLL","สฺฯํแ วแลำสÝสวม");
-define("_CHOOSEPOLLEDIT","วฮสั วแลำสÝสวม วแใัวฯ สฺฯํแๅ:");
-define("_ACTIVATECOMMENTS","ๅแ สๆฯ สไิํุ วแสฺแํÞวส Ýํ ๅะว วแใÞวแฟ");
-define("_LANGUAGE","วแแÛษ");
-define("_ANNOUNCEPOLL","วแลฺแวไ ฺไ ๅะว วแลำสÝสวม Ýํ ใๆÞฺ฿");
-define("_LEAVEBLANK","(วสั฿ๅ ÝวัÛว แฺใแ วำสÝสวม ฬฯํฯ ศฯๆไ วแลฺแวไ ฺไๅ)");
-define("_POLLEDIT","สฺฯํแ วำสÝสวม:");
+define_once("_YES","ไฺใ");
+define_once("_NO","แว");
+define_once("_CATEGORY","สีไํÝ");
+define_once("_SAVECHANGES","อÝู วแสÛํํัวส");
+define_once("_ARTICLES","วแใÞวแวส");
+define_once("_SELECTTOPIC","รฮสั วแใๆึๆฺ");
+define_once("_OPTION","ลฮสํวั");
+define_once("_ADMPOLLS","รำสÝสวมวส/สีๆํสวส");
+define_once("_TITLE","วแฺไๆวไ");
+define_once("_STORYTEXT","ไี วแใÞวแ");
+define_once("_EXTENDEDTEXT","วแไี วแลึวÝํ");
+define_once("_PUBLISHINHOME","ๅแ รไิัๅว Ýํ วแีÝอษ วแรๆแ์ฟ");
+define_once("_ONLYIFCATSELECTED","สฺใแ ÝÞุ วะว แใ ํสใ ลฮสํวั สีไํÝ  <i>แแใÞวแ</i>");
+define_once("_ADD","รึÝ");
+define_once("_POLLSADMIN","วแสอ฿ใ Ýํ วแลำสÝสวมวส");
+define_once("_CREATEPOLL","รไิฦ วำสÝสวมว ฬฯํฯว");
+define_once("_DELETEPOLLS","อะÝ วแลำสÝสวมวส");
+define_once("_POLLTITLE","ฺไๆวไ วแลำสÝสวม");
+define_once("_POLLEACHFIELD","วแัฬวม วฯฮวแ ฿แ ฮํวั Ýํ อÞแ ๆวอฯ");
+define_once("_CREATEPOLLBUT","รไิฦ วแลำสÝสวม");
+define_once("_REMOVEEXISTING","รอะÝ วำสÝสวม ใๆฬๆฯ");
+define_once("_POLLDELWARNING","สอะํั: ำํสใ อะÝ วแลำสÝสวม ๅะว ใไ Þวฺฯษ วแศํวไวส วแยไ!");
+define_once("_CHOOSEPOLL","วแัฬวม วฮสํวั วำสÝสวม ใไ วแÞวฦใษ วแสวแํษ:");
+define_once("_EDITPOLL","สฺฯํแ วแลำสÝสวม");
+define_once("_CHOOSEPOLLEDIT","วฮสั วแลำสÝสวม วแใัวฯ สฺฯํแๅ:");
+define_once("_ACTIVATECOMMENTS","ๅแ สๆฯ สไิํุ วแสฺแํÞวส Ýํ ๅะว วแใÞวแฟ");
+define_once("_LANGUAGE","วแแÛษ");
+define_once("_ANNOUNCEPOLL","วแลฺแวไ ฺไ ๅะว วแลำสÝสวม Ýํ ใๆÞฺ฿");
+define_once("_LEAVEBLANK","(วสั฿ๅ ÝวัÛว แฺใแ วำสÝสวม ฬฯํฯ ศฯๆไ วแลฺแวไ ฺไๅ)");
+define_once("_POLLEDIT","สฺฯํแ วำสÝสวม:");
 
 
-?>

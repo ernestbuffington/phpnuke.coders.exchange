@@ -17,12 +17,11 @@
 /* And, if you use HTML code, please double check it.                     */
 /**************************************************************************/
 
-define("_PDATE","Data");
-define("_PTOPIC","Gaia");
-define("_COMESFROM","Notizi hau aterata dagoen sistemaren izena:");
-define("_THEURL","Notiziaren URLa:");
-define("_DATE","Data");
-define("_TITLE","Tituloa");
+define_once("_PDATE","Data");
+define_once("_PTOPIC","Gaia");
+define_once("_COMESFROM","Notizi hau aterata dagoen sistemaren izena:");
+define_once("_THEURL","Notiziaren URLa:");
+define_once("_DATE","Data");
+define_once("_TITLE","Tituloa");
 
 
-?>

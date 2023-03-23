@@ -22,19 +22,19 @@
 /* And, if you use HTML code, please double check it.                     */
 /**************************************************************************/
 
-define("_SEND","שלח");
-define("_YOURNAME","שמך");
-define("_MESSAGE","הודעתך");
-define("_YOUREMAIL","דואר אלקטרוני");
-define("_FEEDBACKNOTE","כל המשובים שתשלחו לנו יתקבלו בברכה");
-define("_FEEDBACKTITLE","משוב מאת ");
-define("_FEEDBACK","משוב");
-define("_FBENTERNAME","שגיאה: אנא הכנס את שמך!");
-define("_FBENTEREMAIL","שגיאה: אנא הכנס את דואר האלקטרוני שלך!");
-define("_FBENTERMESSAGE","שגיאה: אנא רשום את הודעתך!");
-define("_SENDEREMAIL","דואר אלקטרוני");
-define("_SENDERNAME","שם השולח");
-define("_FBMAILSENT","המשוב נשלח!");
-define("_FBTHANKSFORCONTACT","תודה אשר שיצרת עמנו קשר, אנו ניצור עימך קשר בהקדם האפשרי.");
+define_once("_SEND","שלח");
+define_once("_YOURNAME","שמך");
+define_once("_MESSAGE","הודעתך");
+define_once("_YOUREMAIL","דואר אלקטרוני");
+define_once("_FEEDBACKNOTE","כל המשובים שתשלחו לנו יתקבלו בברכה");
+define_once("_FEEDBACKTITLE","משוב מאת ");
+define_once("_FEEDBACK","משוב");
+define_once("_FBENTERNAME","שגיאה: אנא הכנס את שמך!");
+define_once("_FBENTEREMAIL","שגיאה: אנא הכנס את דואר האלקטרוני שלך!");
+define_once("_FBENTERMESSAGE","שגיאה: אנא רשום את הודעתך!");
+define_once("_SENDEREMAIL","דואר אלקטרוני");
+define_once("_SENDERNAME","שם השולח");
+define_once("_FBMAILSENT","המשוב נשלח!");
+define_once("_FBTHANKSFORCONTACT","תודה אשר שיצרת עמנו קשר, אנו ניצור עימך קשר בהקדם האפשרי.");
 
-?>
+

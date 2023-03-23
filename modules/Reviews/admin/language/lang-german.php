@@ -18,29 +18,28 @@
 /**************************************************************************/
 
 
-define("_EMAIL","<b>eMail</b>");
-define("_SAVECHANGES","&Auml;nderungen speichern");
-define("_SCORE","Punkte:");
-define("_PRODUCTTITLE","Produktbezeichnung");
-define("_RELATEDLINK","zugeh&ouml;riger Link");
-define("_LINKTITLE","Linkbezeichnung");
-define("_REVIEWER","Tester:");
-define("_REVIEWID","Testberichts-ID");
-define("_REVIEWS","Testberichte");
-define("_DATE","Datum");
-define("_REVADMIN","Administration Testberichte-Reviews");
-define("_REVTITLE","&Uuml;berschrift f&uuml;r den Testbericht");
-define("_REVDESC","Beschreibung des Testberichts");
-define("_REVWAITING","Testbericht auf Best&auml;tigung wartend");
-define("_REVIMGINFO","Legen Sie ihr 150*150 Bild unter /images/reviews ab");
-define("_TEXT","Text");
-define("_IMAGE","Bild");
-define("_NOREVIEW2ADD","keinen Testbericht zum hinzuf&uuml;gen");
-define("_ADDREVIEW","Testbericht hinzuf&uuml;gen");
-define("_CLICK2ADDREVIEW","Hier anklicken, um einen Testbericht zu erstellen");
-define("_DELMODREVIEW","L&ouml;sche / ver&auml;ndere einen Testbericht");
-define("_MODREVINFO","Als Administrator k&ouml;nnen Sie unter <a href=\"modules.php?name=Reviews\">Reviews</a> Testberichte ver&auml;ndern oder l&ouml;schen.");
-define("_LANGUAGE","Sprache");
+define_once("_EMAIL","<b>eMail</b>");
+define_once("_SAVECHANGES","&Auml;nderungen speichern");
+define_once("_SCORE","Punkte:");
+define_once("_PRODUCTTITLE","Produktbezeichnung");
+define_once("_RELATEDLINK","zugeh&ouml;riger Link");
+define_once("_LINKTITLE","Linkbezeichnung");
+define_once("_REVIEWER","Tester:");
+define_once("_REVIEWID","Testberichts-ID");
+define_once("_REVIEWS","Testberichte");
+define_once("_DATE","Datum");
+define_once("_REVADMIN","Administration Testberichte-Reviews");
+define_once("_REVTITLE","&Uuml;berschrift f&uuml;r den Testbericht");
+define_once("_REVDESC","Beschreibung des Testberichts");
+define_once("_REVWAITING","Testbericht auf Best&auml;tigung wartend");
+define_once("_REVIMGINFO","Legen Sie ihr 150*150 Bild unter /images/reviews ab");
+define_once("_TEXT","Text");
+define_once("_IMAGE","Bild");
+define_once("_NOREVIEW2ADD","keinen Testbericht zum hinzuf&uuml;gen");
+define_once("_ADDREVIEW","Testbericht hinzuf&uuml;gen");
+define_once("_CLICK2ADDREVIEW","Hier anklicken, um einen Testbericht zu erstellen");
+define_once("_DELMODREVIEW","L&ouml;sche / ver&auml;ndere einen Testbericht");
+define_once("_MODREVINFO","Als Administrator k&ouml;nnen Sie unter <a href=\"modules.php?name=Reviews\">Reviews</a> Testberichte ver&auml;ndern oder l&ouml;schen.");
+define_once("_LANGUAGE","Sprache");
 
 
-?>

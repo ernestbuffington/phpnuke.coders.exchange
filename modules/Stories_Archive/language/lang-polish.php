@@ -20,17 +20,17 @@
 /*                                                                        */
 /**************************************************************************/
 
-define("_PRINTER","Strona gotowa do druku");
-define("_FRIEND","Wy¶lij ten artyku³ do znajomych");
-define("_ARTICLES","Artyku³y");
-define("_USCORE","Wynik");
-define("_DATE","Data");
-define("_SELECTMONTH2VIEW","Proszê wybraæ miesi±c który chcesz przejrzeæ:");
-define("_SHOWALLSTORIES","Poka¿ WSZYSTKIE artyku³y");
-define("_STORIESARCHIVE","Archiwum artyku³ów");
-define("_ACTIONS","Akcje");
-define("_ARCHIVESINDEX","Wykaz archiwum artyku³ów");
-define("_ALLSTORIESARCH","Wszystkie artyku³y");
-define("_NEXTPAGE","Nastêpna strona");
-define("_PREVIOUSPAGE","Poprzednia strona");
+define_once("_PRINTER","Strona gotowa do druku");
+define_once("_FRIEND","Wy¶lij ten artyku³ do znajomych");
+define_once("_ARTICLES","Artyku³y");
+define_once("_USCORE","Wynik");
+define_once("_DATE","Data");
+define_once("_SELECTMONTH2VIEW","Proszê wybraæ miesi±c który chcesz przejrzeæ:");
+define_once("_SHOWALLSTORIES","Poka¿ WSZYSTKIE artyku³y");
+define_once("_STORIESARCHIVE","Archiwum artyku³ów");
+define_once("_ACTIONS","Akcje");
+define_once("_ARCHIVESINDEX","Wykaz archiwum artyku³ów");
+define_once("_ALLSTORIESARCH","Wszystkie artyku³y");
+define_once("_NEXTPAGE","Nastêpna strona");
+define_once("_PREVIOUSPAGE","Poprzednia strona");
 

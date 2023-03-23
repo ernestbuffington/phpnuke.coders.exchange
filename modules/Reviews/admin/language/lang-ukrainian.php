@@ -18,29 +18,28 @@
 /**************************************************************************/
 
 
-define("_EMAIL","Email");          //
-define("_SAVECHANGES","Зберегти зміни");
-define("_SCORE","Оцінка:");
-define("_PRODUCTTITLE","Назв");
-define("_RELATEDLINK","Схожі ресурси");
-define("_LINKTITLE","Назва ресурсу");
-define("_REVIEWER","Оглядач:");
-define("_REVIEWID","ID огляду");
-define("_REVIEWS","Огляди");
-define("_DATE","Дата");
-define("_REVADMIN","Адміністрування оглядів");
-define("_REVTITLE","Назва оглядів");
-define("_REVDESC","Опис оглядів");
-define("_REVWAITING","Огляди, що очікують підтвердження");
-define("_REVIMGINFO","Збережіть малюнок 150*150 в images/reviews");
-define("_TEXT","Текст");
-define("_IMAGE","Малюнок");
-define("_NOREVIEW2ADD","Немає нових оглядів");
-define("_ADDREVIEW","Додати огляд");
-define("_CLICK2ADDREVIEW","Напишіть огляд");
-define("_DELMODREVIEW","Витерти/Змінити огляд");
-define("_MODREVINFO","Ви можете витирати/редагувати <a href=\"reviews.php\">огляди</a> переглядаючи їх як адмін..");
-define("_LANGUAGE","Language");
+define_once("_EMAIL","Email");          //
+define_once("_SAVECHANGES","Зберегти зміни");
+define_once("_SCORE","Оцінка:");
+define_once("_PRODUCTTITLE","Назв");
+define_once("_RELATEDLINK","Схожі ресурси");
+define_once("_LINKTITLE","Назва ресурсу");
+define_once("_REVIEWER","Оглядач:");
+define_once("_REVIEWID","ID огляду");
+define_once("_REVIEWS","Огляди");
+define_once("_DATE","Дата");
+define_once("_REVADMIN","Адміністрування оглядів");
+define_once("_REVTITLE","Назва оглядів");
+define_once("_REVDESC","Опис оглядів");
+define_once("_REVWAITING","Огляди, що очікують підтвердження");
+define_once("_REVIMGINFO","Збережіть малюнок 150*150 в images/reviews");
+define_once("_TEXT","Текст");
+define_once("_IMAGE","Малюнок");
+define_once("_NOREVIEW2ADD","Немає нових оглядів");
+define_once("_ADDREVIEW","Додати огляд");
+define_once("_CLICK2ADDREVIEW","Напишіть огляд");
+define_once("_DELMODREVIEW","Витерти/Змінити огляд");
+define_once("_MODREVINFO","Ви можете витирати/редагувати <a href=\"reviews.php\">огляди</a> переглядаючи їх як адмін..");
+define_once("_LANGUAGE","Language");
 
 
-?>

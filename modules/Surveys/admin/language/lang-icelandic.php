@@ -18,36 +18,35 @@
 /**************************************************************************/
 
 
-define("_YES","Já");
-define("_NO","Nei");
-define("_CATEGORY","Flokkur");
-define("_SAVECHANGES","Vista breytingar");
-define("_ARTICLES","greinar");
-define("_SELECTTOPIC","Veldu efnisflokk");
-define("_OPTION","Valkostur");
-define("_ADMPOLLS","Skoðanakannanir");
-define("_TITLE","Titill");
-define("_STORYTEXT","Texti fréttar");
-define("_EXTENDEDTEXT","Aukatexti");
-define("_PUBLISHINHOME","Birta á aðalsíðu?");
-define("_ONLYIFCATSELECTED","Virkar aðeins ef <i>greinar</i> flokkurinn er ekki valinn");
-define("_ADD","Bæta við");
-define("_POLLSADMIN","Kerfisstjórn skoðanakannana");
-define("_CREATEPOLL","Búa til nýja skoðanakönnun");
-define("_DELETEPOLLS","Eyða skoðanakönnunum");
-define("_POLLTITLE","Titill skoðanakönnunar");
-define("_POLLEACHFIELD","Vinsamlegast setjið hvern svarmöguleika í sér reit");
-define("_CREATEPOLLBUT","Búa til skoðanakönnun");
-define("_REMOVEEXISTING","Eyða skoðanakönnun");
-define("_POLLDELWARNING","VARÚÐ: Viðkomandi könnun verður STRAX eytt úr gagnagrunninum!");
-define("_CHOOSEPOLL","Veldu skoðanakönnun úr listanum hér fyrir neðan:");
-define("_EDITPOLL","Breyta könnunum");
-define("_CHOOSEPOLLEDIT","Veldu könnum sem þú vilt breyta:");
-define("_ACTIVATECOMMENTS","Gera mögulegt að gera athugasemdir við þessa grein?");
-define("_LANGUAGE","Tungumál");
-define("_ANNOUNCEPOLL","Tilkynna þessa nýju könnum á vefnum þínum");
-define("_LEAVEBLANK","(Látið vera autt til þess að búa til könnun án þess tilkynna um hana sérstaklega)");
-define("_POLLEDIT","Breyta könnun:");
+define_once("_YES","Já");
+define_once("_NO","Nei");
+define_once("_CATEGORY","Flokkur");
+define_once("_SAVECHANGES","Vista breytingar");
+define_once("_ARTICLES","greinar");
+define_once("_SELECTTOPIC","Veldu efnisflokk");
+define_once("_OPTION","Valkostur");
+define_once("_ADMPOLLS","Skoðanakannanir");
+define_once("_TITLE","Titill");
+define_once("_STORYTEXT","Texti fréttar");
+define_once("_EXTENDEDTEXT","Aukatexti");
+define_once("_PUBLISHINHOME","Birta á aðalsíðu?");
+define_once("_ONLYIFCATSELECTED","Virkar aðeins ef <i>greinar</i> flokkurinn er ekki valinn");
+define_once("_ADD","Bæta við");
+define_once("_POLLSADMIN","Kerfisstjórn skoðanakannana");
+define_once("_CREATEPOLL","Búa til nýja skoðanakönnun");
+define_once("_DELETEPOLLS","Eyða skoðanakönnunum");
+define_once("_POLLTITLE","Titill skoðanakönnunar");
+define_once("_POLLEACHFIELD","Vinsamlegast setjið hvern svarmöguleika í sér reit");
+define_once("_CREATEPOLLBUT","Búa til skoðanakönnun");
+define_once("_REMOVEEXISTING","Eyða skoðanakönnun");
+define_once("_POLLDELWARNING","VARÚÐ: Viðkomandi könnun verður STRAX eytt úr gagnagrunninum!");
+define_once("_CHOOSEPOLL","Veldu skoðanakönnun úr listanum hér fyrir neðan:");
+define_once("_EDITPOLL","Breyta könnunum");
+define_once("_CHOOSEPOLLEDIT","Veldu könnum sem þú vilt breyta:");
+define_once("_ACTIVATECOMMENTS","Gera mögulegt að gera athugasemdir við þessa grein?");
+define_once("_LANGUAGE","Tungumál");
+define_once("_ANNOUNCEPOLL","Tilkynna þessa nýju könnum á vefnum þínum");
+define_once("_LEAVEBLANK","(Látið vera autt til þess að búa til könnun án þess tilkynna um hana sérstaklega)");
+define_once("_POLLEDIT","Breyta könnun:");
 
 
-?>

@@ -17,18 +17,18 @@
 /* And, if you use HTML code, please double check it.                     */
 /**************************************************************************/
 
-define("_PRINTER","Отпечати ја страната");
-define("_FRIEND","Прати ја веста на пријател");
-define("_ARTICLES","Коментари");
-define("_USCORE","Бодови");
-define("_DATE","Дата");
-define("_SELECTMONTH2VIEW","Избери го месецот што сакаш да го видиш:");
-define("_SHOWALLSTORIES","Прикажи ги СИТЕ вести");
-define("_STORIESARCHIVE","Архива на вести");
-define("_ACTIONS","Дејства");
-define("_ARCHIVESINDEX","Содржина на архивата");
-define("_ALLSTORIESARCH","Сите вести");
-define("_NEXTPAGE","Следна страна");
-define("_PREVIOUSPAGE","Претходна страна");
+define_once("_PRINTER","Отпечати ја страната");
+define_once("_FRIEND","Прати ја веста на пријател");
+define_once("_ARTICLES","Коментари");
+define_once("_USCORE","Бодови");
+define_once("_DATE","Дата");
+define_once("_SELECTMONTH2VIEW","Избери го месецот што сакаш да го видиш:");
+define_once("_SHOWALLSTORIES","Прикажи ги СИТЕ вести");
+define_once("_STORIESARCHIVE","Архива на вести");
+define_once("_ACTIONS","Дејства");
+define_once("_ARCHIVESINDEX","Содржина на архивата");
+define_once("_ALLSTORIESARCH","Сите вести");
+define_once("_NEXTPAGE","Следна страна");
+define_once("_PREVIOUSPAGE","Претходна страна");
 
-?>
+

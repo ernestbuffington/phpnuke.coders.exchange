@@ -17,18 +17,17 @@
 /* Mail:webmaster@pcnet.com.tr ICQ:19648424 URL: http://www.turknuke.com  */
 /**************************************************************************/
 
-define("_PRINTER","Yazdýrýlabilir Sayfa");
-define("_FRIEND","Bu Haberi Arkadaþýna Gönder");
-define("_ARTICLES","Haber");
-define("_USCORE","Puan");
-define("_DATE","Tarih");
-define("_SELECTMONTH2VIEW","Lütfen görüntülemek istediðiniz ayý seçin:");
-define("_SHOWALLSTORIES","TÜM Haberleri Göster");
-define("_STORIESARCHIVE","Haber Arþivi");
-define("_ACTIONS","Hareketler");
-define("_ARCHIVESINDEX","Haber Arþivi Ýndeksi");
-define("_ALLSTORIESARCH","Tüm Haberler");
-define("_NEXTPAGE","Sonraki Sayfa");
-define("_PREVIOUSPAGE","Önceki Sayfa");
+define_once("_PRINTER","Yazdýrýlabilir Sayfa");
+define_once("_FRIEND","Bu Haberi Arkadaþýna Gönder");
+define_once("_ARTICLES","Haber");
+define_once("_USCORE","Puan");
+define_once("_DATE","Tarih");
+define_once("_SELECTMONTH2VIEW","Lütfen görüntülemek istediðiniz ayý seçin:");
+define_once("_SHOWALLSTORIES","TÜM Haberleri Göster");
+define_once("_STORIESARCHIVE","Haber Arþivi");
+define_once("_ACTIONS","Hareketler");
+define_once("_ARCHIVESINDEX","Haber Arþivi Ýndeksi");
+define_once("_ALLSTORIESARCH","Tüm Haberler");
+define_once("_NEXTPAGE","Sonraki Sayfa");
+define_once("_PREVIOUSPAGE","Önceki Sayfa");
 
-?>

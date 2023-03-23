@@ -18,29 +18,28 @@
 /**************************************************************************/
 
 
-define("_EMAIL","E-Mail");
-define("_SAVECHANGES","Gardar cambios");
-define("_SCORE","Puntuación");
-define("_PRODUCTTITLE","Nome do Producto");
-define("_RELATEDLINK","Enlace Relacionado");
-define("_LINKTITLE","Título do Enlace");
-define("_REVIEWER","Moderador:");
-define("_REVIEWID","ID Reseña");
-define("_REVIEWS","Reseñas");
-define("_DATE","Fecha");
-define("_REVADMIN","Administración de Reseñas");
-define("_REVTITLE","Título da Páxina de Reseñas");
-define("_REVDESC","Páxina de Descripción de Reseñas");
-define("_REVWAITING","Reseñas esperando a aprobación");
-define("_REVIMGINFO","Poña a súa imaxen de 150x150 en images/reviews");
-define("_TEXT","Texto");
-define("_IMAGE","Imaxe");
-define("_NOREVIEW2ADD","Non hai Reseñas para Engadir");
-define("_ADDREVIEW","Engadir Reseña");
-define("_CLICK2ADDREVIEW","Presione aquí para escribir unha reseña");
-define("_DELMODREVIEW","Borrar / Modificar unha reseña");
-define("_MODREVINFO","Pode borrar/modificar reseñas navegando por <a href=\"modules.php?name=Reviews\">Reviews</a> como Administrador.");
-define("_LANGUAGE","Idioma");
+define_once("_EMAIL","E-Mail");
+define_once("_SAVECHANGES","Gardar cambios");
+define_once("_SCORE","Puntuación");
+define_once("_PRODUCTTITLE","Nome do Producto");
+define_once("_RELATEDLINK","Enlace Relacionado");
+define_once("_LINKTITLE","Título do Enlace");
+define_once("_REVIEWER","Moderador:");
+define_once("_REVIEWID","ID Reseña");
+define_once("_REVIEWS","Reseñas");
+define_once("_DATE","Fecha");
+define_once("_REVADMIN","Administración de Reseñas");
+define_once("_REVTITLE","Título da Páxina de Reseñas");
+define_once("_REVDESC","Páxina de Descripción de Reseñas");
+define_once("_REVWAITING","Reseñas esperando a aprobación");
+define_once("_REVIMGINFO","Poña a súa imaxen de 150x150 en images/reviews");
+define_once("_TEXT","Texto");
+define_once("_IMAGE","Imaxe");
+define_once("_NOREVIEW2ADD","Non hai Reseñas para Engadir");
+define_once("_ADDREVIEW","Engadir Reseña");
+define_once("_CLICK2ADDREVIEW","Presione aquí para escribir unha reseña");
+define_once("_DELMODREVIEW","Borrar / Modificar unha reseña");
+define_once("_MODREVINFO","Pode borrar/modificar reseñas navegando por <a href=\"modules.php?name=Reviews\">Reviews</a> como Administrador.");
+define_once("_LANGUAGE","Idioma");
 
 
-?>

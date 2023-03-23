@@ -17,19 +17,18 @@
 /* And, if you use HTML code, please double check it.                     */
 /**************************************************************************/
 
-define("_PRINTER","Format imprimable");
-define("_FRIEND","Envoyer cet article &agrave; un(e) ami(e)");
-define("_ARTICLES","Articles");
-define("_USCORE","Score");
-define("_DATE","Date");
-define("_SELECTMONTH2VIEW","Merci de séléctionner le mois que vous voulez voir :");
-define("_SHOWALLSTORIES","Voir TOUS les articles");
-define("_STORIESARCHIVE","Archives des articles");
-define("_ACTIONS","Actions");
-define("_ARCHIVESINDEX","Index des Archives des articles");
-define("_ALLSTORIESARCH","TOUS les articles");
-define("_NEXTPAGE","Page suivante");
-define("_PREVIOUSPAGE","Page précédente");
+define_once("_PRINTER","Format imprimable");
+define_once("_FRIEND","Envoyer cet article &agrave; un(e) ami(e)");
+define_once("_ARTICLES","Articles");
+define_once("_USCORE","Score");
+define_once("_DATE","Date");
+define_once("_SELECTMONTH2VIEW","Merci de séléctionner le mois que vous voulez voir :");
+define_once("_SHOWALLSTORIES","Voir TOUS les articles");
+define_once("_STORIESARCHIVE","Archives des articles");
+define_once("_ACTIONS","Actions");
+define_once("_ARCHIVESINDEX","Index des Archives des articles");
+define_once("_ALLSTORIESARCH","TOUS les articles");
+define_once("_NEXTPAGE","Page suivante");
+define_once("_PREVIOUSPAGE","Page précédente");
 
 
-?>

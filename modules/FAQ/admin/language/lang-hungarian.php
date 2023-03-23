@@ -18,27 +18,26 @@
 /**************************************************************************/
 
 
-define("_FUNCTIONS","Funkciók");
-define("_YES","Igen");
-define("_NO","Nem");
-define("_SAVE","Ment");
-define("_ID","ID");
-define("_CATEGORIES","kategória");
-define("_ALL","Minden");
-define("_FAQ","GYIK/FAQ");
-define("_CONTENT","Tartalom");
-define("_FAQADMIN","FAQ Adminisztráció");
-define("_ACTIVEFAQS","Aktív FAQ-ok");
-define("_ADDCATEGORY","Új kategória");
-define("_QUESTIONS","Kérdések és Válaszok");
-define("_ADDQUESTION","Új kérdés");
-define("_QUESTION","Kérdés");
-define("_ANSWER","Válasz");
-define("_EDITCATEGORY","Kategória szerkesztése");
-define("_EDITQUESTIONS","Kérdések és Válaszok szerkesztése");
-define("_FAQDELWARNING","FIGYELMEZTETÉS: Biztosan törölni akarod ezt a FAQ-ot és teljes tartalmát?");
-define("_QUESTIONDEL","FIGYELMEZTETÉS: Biztosan törölni akarod ezt a kérdést?");
-define("_LANGUAGE","Language");
+define_once("_FUNCTIONS","Funkciók");
+define_once("_YES","Igen");
+define_once("_NO","Nem");
+define_once("_SAVE","Ment");
+define_once("_ID","ID");
+define_once("_CATEGORIES","kategória");
+define_once("_ALL","Minden");
+define_once("_FAQ","GYIK/FAQ");
+define_once("_CONTENT","Tartalom");
+define_once("_FAQADMIN","FAQ Adminisztráció");
+define_once("_ACTIVEFAQS","Aktív FAQ-ok");
+define_once("_ADDCATEGORY","Új kategória");
+define_once("_QUESTIONS","Kérdések és Válaszok");
+define_once("_ADDQUESTION","Új kérdés");
+define_once("_QUESTION","Kérdés");
+define_once("_ANSWER","Válasz");
+define_once("_EDITCATEGORY","Kategória szerkesztése");
+define_once("_EDITQUESTIONS","Kérdések és Válaszok szerkesztése");
+define_once("_FAQDELWARNING","FIGYELMEZTETÉS: Biztosan törölni akarod ezt a FAQ-ot és teljes tartalmát?");
+define_once("_QUESTIONDEL","FIGYELMEZTETÉS: Biztosan törölni akarod ezt a kérdést?");
+define_once("_LANGUAGE","Language");
 
 
-?>

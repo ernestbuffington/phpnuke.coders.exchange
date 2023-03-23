@@ -18,40 +18,39 @@
 /**************************************************************************/
 
 
-define("_SEND","Send");
-define("_FUNCTIONS","Funksjoner");
-define("_YES","Ja");
-define("_NO","Nei");
-define("_SAVECHANGES","Lagre endringer");
-define("_PAGEBREAK","Dersom du vil dele artikkelen opp i flere sider skriver du <b>[--pagebreak--]</b> der du vil ha sideskift.");
-define("_DESCRIPTION","Beskrivelse");
-define("_TO","Til");
-define("_TITLE","Tittel");
-define("_ACTIVE","Aktiv");
-define("_DEACTIVATE","Deaktiver");
-define("_INACTIVE","Inaktiv");
-define("_ACTIVATE","Aktivere");
-define("_ADD","Legg til");
-define("_LANGUAGE","Språk");
-define("_ENCYCLOPEDIA","Oppslagsverk");
-define("_ENCYCLOPEDIAMANAGER","Oppslagsverksadministrasjon");
-define("_DELENCYCLOPEDIA","Slett oppslagsverk");
-define("_DELENCYCONTWARNING","Er du sikker på at du vil slette dette oppslagsverket og ALLE dens oppføringer?");
-define("_DELENCYCLOPEDIATEXT","Slett oppslagsverk innhold");
-define("_DELENCYTEXTWARNING","Er du sikker på at du vil slette innholdet?");
-define("_CURRENTSTATUS","Nåværende status");
-define("_ACTIVATEPAGE","Aktiver denne siden?");
-define("_TERMS","Termer");
-define("_ADDNEWENCYCLOPEDIA","Legg til nytt oppslagsverk");
-define("_ADDNEWENCYTERM","Legg til en ny oppslagsverk terme");
-define("_TERMTEXT","Terme tekst");
-define("_MOVETERMS","Fytt termer");
-define("_MOVEALLTERMSFROM","Flytt ALLE termer fra");
-define("_EDITENCYCLOPEDIA","Rediger oppslagsverk");
-define("_ENCYTERMSEDIT","Oppslagsverk termer redigering");
-define("_SELECTONETERM","Vennligst velg en terme fra følgende liste:");
-define("_NOCONTENTFORLETTER","Beklager, det er ikke innhold for bokstaven");
-define("_CHANGETOENCY","Bytt til oppslagsverk");
+define_once("_SEND","Send");
+define_once("_FUNCTIONS","Funksjoner");
+define_once("_YES","Ja");
+define_once("_NO","Nei");
+define_once("_SAVECHANGES","Lagre endringer");
+define_once("_PAGEBREAK","Dersom du vil dele artikkelen opp i flere sider skriver du <b>[--pagebreak--]</b> der du vil ha sideskift.");
+define_once("_DESCRIPTION","Beskrivelse");
+define_once("_TO","Til");
+define_once("_TITLE","Tittel");
+define_once("_ACTIVE","Aktiv");
+define_once("_DEACTIVATE","Deaktiver");
+define_once("_INACTIVE","Inaktiv");
+define_once("_ACTIVATE","Aktivere");
+define_once("_ADD","Legg til");
+define_once("_LANGUAGE","Språk");
+define_once("_ENCYCLOPEDIA","Oppslagsverk");
+define_once("_ENCYCLOPEDIAMANAGER","Oppslagsverksadministrasjon");
+define_once("_DELENCYCLOPEDIA","Slett oppslagsverk");
+define_once("_DELENCYCONTWARNING","Er du sikker på at du vil slette dette oppslagsverket og ALLE dens oppføringer?");
+define_once("_DELENCYCLOPEDIATEXT","Slett oppslagsverk innhold");
+define_once("_DELENCYTEXTWARNING","Er du sikker på at du vil slette innholdet?");
+define_once("_CURRENTSTATUS","Nåværende status");
+define_once("_ACTIVATEPAGE","Aktiver denne siden?");
+define_once("_TERMS","Termer");
+define_once("_ADDNEWENCYCLOPEDIA","Legg til nytt oppslagsverk");
+define_once("_ADDNEWENCYTERM","Legg til en ny oppslagsverk terme");
+define_once("_TERMTEXT","Terme tekst");
+define_once("_MOVETERMS","Fytt termer");
+define_once("_MOVEALLTERMSFROM","Flytt ALLE termer fra");
+define_once("_EDITENCYCLOPEDIA","Rediger oppslagsverk");
+define_once("_ENCYTERMSEDIT","Oppslagsverk termer redigering");
+define_once("_SELECTONETERM","Vennligst velg en terme fra følgende liste:");
+define_once("_NOCONTENTFORLETTER","Beklager, det er ikke innhold for bokstaven");
+define_once("_CHANGETOENCY","Bytt til oppslagsverk");
 
 
-?>

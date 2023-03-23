@@ -18,27 +18,26 @@
 /**************************************************************************/
 
 
-define("_FUNCTIONS","ÇáÏæÇá");
-define("_YES","äÚã");
-define("_NO","áÇ");
-define("_SAVE","ÍÝÙ");
-define("_ID","ÑÞã");
-define("_CATEGORIES","ÇáÊÕäíÝÇÊ");
-define("_ALL","ÇáÌãíÚ");
-define("_FAQ","Ó æ Ì");
-define("_CONTENT","ÇáãÍÊæì");
-define("_FAQADMIN","ÇáÊÍßã Ýí ÇáÃÓÆáÉ ÇáãÊßÑÑÉ");
-define("_ACTIVEFAQS","ÇáÃÓÆáÉ ÇáãÊßÑÑÉ ÇáäÔØÉ");
-define("_ADDCATEGORY","ÃÖÝ ÊÕäíÝ ÌÏíÏÇ");
-define("_QUESTIONS","ÃÓÆáÉ æÃÌæÈÉ");
-define("_ADDQUESTION","ÃÖÝ ÓÄÇá ÌÏíÏ");
-define("_QUESTION","ÇáÓÄÇá");
-define("_ANSWER","ÇáÌæÇÈ");
-define("_EDITCATEGORY","ÊÚÏíá ÇáÊÕäíÝ");
-define("_EDITQUESTIONS","ÊÚÏíá ÇáÃÓÆáÉ æÇáÃÌæÈÉ");
-define("_FAQDELWARNING","ÊÍÐíÑ: åá ÊÑíÏ ÍÐÝ åÐå ÇáÃÓÆáÉ ÇáãÊßÑÑÉ æÌãíÚ ãÍÊæíÇÊåÇ¿");
-define("_QUESTIONDEL","ÊÍÐíÑ: åá ÊÑíÏ ÍÐÝ åÐÇ ÇáÓÄÇá ÈÇáÊÃßíÏ¿");
-define("_LANGUAGE","ÇááÛÉ");
+define_once("_FUNCTIONS","ÇáÏæÇá");
+define_once("_YES","äÚã");
+define_once("_NO","áÇ");
+define_once("_SAVE","ÍÝÙ");
+define_once("_ID","ÑÞã");
+define_once("_CATEGORIES","ÇáÊÕäíÝÇÊ");
+define_once("_ALL","ÇáÌãíÚ");
+define_once("_FAQ","Ó æ Ì");
+define_once("_CONTENT","ÇáãÍÊæì");
+define_once("_FAQADMIN","ÇáÊÍßã Ýí ÇáÃÓÆáÉ ÇáãÊßÑÑÉ");
+define_once("_ACTIVEFAQS","ÇáÃÓÆáÉ ÇáãÊßÑÑÉ ÇáäÔØÉ");
+define_once("_ADDCATEGORY","ÃÖÝ ÊÕäíÝ ÌÏíÏÇ");
+define_once("_QUESTIONS","ÃÓÆáÉ æÃÌæÈÉ");
+define_once("_ADDQUESTION","ÃÖÝ ÓÄÇá ÌÏíÏ");
+define_once("_QUESTION","ÇáÓÄÇá");
+define_once("_ANSWER","ÇáÌæÇÈ");
+define_once("_EDITCATEGORY","ÊÚÏíá ÇáÊÕäíÝ");
+define_once("_EDITQUESTIONS","ÊÚÏíá ÇáÃÓÆáÉ æÇáÃÌæÈÉ");
+define_once("_FAQDELWARNING","ÊÍÐíÑ: åá ÊÑíÏ ÍÐÝ åÐå ÇáÃÓÆáÉ ÇáãÊßÑÑÉ æÌãíÚ ãÍÊæíÇÊåÇ¿");
+define_once("_QUESTIONDEL","ÊÍÐíÑ: åá ÊÑíÏ ÍÐÝ åÐÇ ÇáÓÄÇá ÈÇáÊÃßíÏ¿");
+define_once("_LANGUAGE","ÇááÛÉ");
 
 
-?>

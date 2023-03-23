@@ -20,19 +20,18 @@
 /*                                                                        */
 /**************************************************************************/
 
-define("_SEND","Wy¶lij");
-define("_YOURNAME","Twoje imiê i nazwisko");
-define("_MESSAGE","Wiadomo¶æ");
-define("_YOUREMAIL","Twój adres e-mail");
-define("_FEEDBACKNOTE","Wszystkie sugestie i komentarze dotycz±ce tej strony s± mile widziane i s± cennym ¼ród³em informacji dla nas!");
-define("_FEEDBACKTITLE","Formularz kontaktowy");
-define("_FEEDBACK","Kontakt");
-define("_FBENTERNAME","B£¡D: Wpisz swój nick!");
-define("_FBENTEREMAIL","B£¡D: Podaj swój adres e-mail!");
-define("_FBENTERMESSAGE","B£¡D: Wpisz wiadomo¶æ!");
-define("_SENDEREMAIL","Imiê nadawcy");
-define("_SENDERNAME","Nick nadawcy");
-define("_FBMAILSENT","E-mail zosta³ wys³any!");
-define("_FBTHANKSFORCONTACT","Dziêkujemy za po¶wiêcenie czasu i wys³anie formularza");
+define_once("_SEND","Wy¶lij");
+define_once("_YOURNAME","Twoje imiê i nazwisko");
+define_once("_MESSAGE","Wiadomo¶æ");
+define_once("_YOUREMAIL","Twój adres e-mail");
+define_once("_FEEDBACKNOTE","Wszystkie sugestie i komentarze dotycz±ce tej strony s± mile widziane i s± cennym ¼ród³em informacji dla nas!");
+define_once("_FEEDBACKTITLE","Formularz kontaktowy");
+define_once("_FEEDBACK","Kontakt");
+define_once("_FBENTERNAME","B£¡D: Wpisz swój nick!");
+define_once("_FBENTEREMAIL","B£¡D: Podaj swój adres e-mail!");
+define_once("_FBENTERMESSAGE","B£¡D: Wpisz wiadomo¶æ!");
+define_once("_SENDEREMAIL","Imiê nadawcy");
+define_once("_SENDERNAME","Nick nadawcy");
+define_once("_FBMAILSENT","E-mail zosta³ wys³any!");
+define_once("_FBTHANKSFORCONTACT","Dziêkujemy za po¶wiêcenie czasu i wys³anie formularza");
 
-?>

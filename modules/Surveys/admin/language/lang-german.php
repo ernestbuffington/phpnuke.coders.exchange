@@ -18,36 +18,35 @@
 /**************************************************************************/
 
 
-define("_YES","Ja");
-define("_NO","Nein");
-define("_CATEGORY","Bereich");
-define("_SAVECHANGES","&Auml;nderungen speichern");
-define("_ARTICLES","Artikel");
-define("_SELECTTOPIC","Thema ausw&auml;hlen");
-define("_OPTION","Optionen");
-define("_ADMPOLLS","Umfragen");
-define("_TITLE","Titel");
-define("_STORYTEXT","Beitrags-Aufmacher");
-define("_EXTENDEDTEXT","Erweiterter Text");
-define("_PUBLISHINHOME","Auf der Startseite ver&ouml;ffentlichen?");
-define("_ONLYIFCATSELECTED","funktioniert nur, wenn die Kategorie <i>Artikel</i> nicht ausgew&auml;hlt ist");
-define("_ADD","Hinzuf&uuml;gen");
-define("_POLLSADMIN","Umfragen verwalten");
-define("_CREATEPOLL","Neue Umfrage erstellen");
-define("_DELETEPOLLS","Umfrage l&ouml;schen");
-define("_POLLTITLE","Umfrage-Titel");
-define("_POLLEACHFIELD","Bitte f&uuml;r jede Auswahlm&ouml;glichkeit eine Zeile erstellen");
-define("_CREATEPOLLBUT","Umfrage erstellen");
-define("_REMOVEEXISTING","Existierende Umfrage entfernen");
-define("_POLLDELWARNING","WARNUNG: Die ausgew&auml;hlte Umfrage wird SOFORT aus der Datenbank entfernt!");
-define("_CHOOSEPOLL","Bitte w&auml;hlen Sie eine Umfrage aus der folgenden Liste aus:");
-define("_EDITPOLL","Bearbeite Polls");
-define("_CHOOSEPOLLEDIT","W&auml;hlen Sie den Poll, welchen Sie bearbeiten wollen:");
-define("_ACTIVATECOMMENTS","Kommentare f&uuml;r diese Storie aktivieren?");
-define("_LANGUAGE","Sprache");
-define("_ANNOUNCEPOLL","Die Abstimmung in der Webseite Ank&uuml;ndigen?");
-define("_LEAVEBLANK","(Leer lassen f&uuml;r eine Abstimmung ohne Ank&uuml;ndigung)");
-define("_POLLEDIT","Bearbeite Bewertung:");
+define_once("_YES","Ja");
+define_once("_NO","Nein");
+define_once("_CATEGORY","Bereich");
+define_once("_SAVECHANGES","&Auml;nderungen speichern");
+define_once("_ARTICLES","Artikel");
+define_once("_SELECTTOPIC","Thema ausw&auml;hlen");
+define_once("_OPTION","Optionen");
+define_once("_ADMPOLLS","Umfragen");
+define_once("_TITLE","Titel");
+define_once("_STORYTEXT","Beitrags-Aufmacher");
+define_once("_EXTENDEDTEXT","Erweiterter Text");
+define_once("_PUBLISHINHOME","Auf der Startseite ver&ouml;ffentlichen?");
+define_once("_ONLYIFCATSELECTED","funktioniert nur, wenn die Kategorie <i>Artikel</i> nicht ausgew&auml;hlt ist");
+define_once("_ADD","Hinzuf&uuml;gen");
+define_once("_POLLSADMIN","Umfragen verwalten");
+define_once("_CREATEPOLL","Neue Umfrage erstellen");
+define_once("_DELETEPOLLS","Umfrage l&ouml;schen");
+define_once("_POLLTITLE","Umfrage-Titel");
+define_once("_POLLEACHFIELD","Bitte f&uuml;r jede Auswahlm&ouml;glichkeit eine Zeile erstellen");
+define_once("_CREATEPOLLBUT","Umfrage erstellen");
+define_once("_REMOVEEXISTING","Existierende Umfrage entfernen");
+define_once("_POLLDELWARNING","WARNUNG: Die ausgew&auml;hlte Umfrage wird SOFORT aus der Datenbank entfernt!");
+define_once("_CHOOSEPOLL","Bitte w&auml;hlen Sie eine Umfrage aus der folgenden Liste aus:");
+define_once("_EDITPOLL","Bearbeite Polls");
+define_once("_CHOOSEPOLLEDIT","W&auml;hlen Sie den Poll, welchen Sie bearbeiten wollen:");
+define_once("_ACTIVATECOMMENTS","Kommentare f&uuml;r diese Storie aktivieren?");
+define_once("_LANGUAGE","Sprache");
+define_once("_ANNOUNCEPOLL","Die Abstimmung in der Webseite Ank&uuml;ndigen?");
+define_once("_LEAVEBLANK","(Leer lassen f&uuml;r eine Abstimmung ohne Ank&uuml;ndigung)");
+define_once("_POLLEDIT","Bearbeite Bewertung:");
 
 
-?>

@@ -18,29 +18,28 @@
 /**************************************************************************/
 
 
-define("_EMAIL","E-mail");
-define("_SAVECHANGES","Zapisz zmiany");
-define("_SCORE","Wynik:");
-define("_PRODUCTTITLE","Nazwa produktu");
-define("_RELATEDLINK","Link");
-define("_LINKTITLE","Tytu³ linku");
-define("_REVIEWER","Recenzent:");
-define("_REVIEWID","ID recenzji");
-define("_REVIEWS","Recenzje");
-define("_DATE","Data");
-define("_REVADMIN","Zarz±dzanie recenzjami");
-define("_REVTITLE","Tytu³ strony z recenzjami");
-define("_REVDESC","Opis strony");
-define("_REVWAITING","Recenzje oczekuj±ce na sprawdzenie");
-define("_REVIMGINFO","Zapisz swój obrazek wielko¶ci 150*150 w images/reviews");
-define("_TEXT","Tekst");
-define("_IMAGE","Grafika");
-define("_NOREVIEW2ADD","Brak recenzji do dodania");
-define("_ADDREVIEW","Dodaj recenzjê");
-define("_CLICK2ADDREVIEW","Kliknij tutaj, aby napisaæ recenzjê");
-define("_DELMODREVIEW","Usuñ / Modyfikuj recenzjê");
-define("_MODREVINFO","Mo¿esz ³atwo usun±æ / zmieniæ recenzjê przegl±daj±c <a href=\"modules.php?name=Reviews\">Recenzje</a> jako administrator.");
-define("_LANGUAGE","Jêzyk");
+define_once("_EMAIL","E-mail");
+define_once("_SAVECHANGES","Zapisz zmiany");
+define_once("_SCORE","Wynik:");
+define_once("_PRODUCTTITLE","Nazwa produktu");
+define_once("_RELATEDLINK","Link");
+define_once("_LINKTITLE","Tytu³ linku");
+define_once("_REVIEWER","Recenzent:");
+define_once("_REVIEWID","ID recenzji");
+define_once("_REVIEWS","Recenzje");
+define_once("_DATE","Data");
+define_once("_REVADMIN","Zarz±dzanie recenzjami");
+define_once("_REVTITLE","Tytu³ strony z recenzjami");
+define_once("_REVDESC","Opis strony");
+define_once("_REVWAITING","Recenzje oczekuj±ce na sprawdzenie");
+define_once("_REVIMGINFO","Zapisz swój obrazek wielko¶ci 150*150 w images/reviews");
+define_once("_TEXT","Tekst");
+define_once("_IMAGE","Grafika");
+define_once("_NOREVIEW2ADD","Brak recenzji do dodania");
+define_once("_ADDREVIEW","Dodaj recenzjê");
+define_once("_CLICK2ADDREVIEW","Kliknij tutaj, aby napisaæ recenzjê");
+define_once("_DELMODREVIEW","Usuñ / Modyfikuj recenzjê");
+define_once("_MODREVINFO","Mo¿esz ³atwo usun±æ / zmieniæ recenzjê przegl±daj±c <a href=\"modules.php?name=Reviews\">Recenzje</a> jako administrator.");
+define_once("_LANGUAGE","Jêzyk");
 
 
-?>

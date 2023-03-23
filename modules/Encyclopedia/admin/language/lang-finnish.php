@@ -18,40 +18,39 @@
 /**************************************************************************/
 
 
-define("_SEND","L‰het‰");
-define("_FUNCTIONS","Teht‰v‰t");
-define("_YES","Kyll‰");
-define("_NO","Ei");
-define("_SAVECHANGES","Tallenna muutokset");
-define("_PAGEBREAK","Jos tahdotte k‰ytt‰‰ opetuksessa useita sivuja, voitte erotella sivut k‰ytt‰en <b>[--pagebreak--]</b> tagia.");
-define("_DESCRIPTION","Kuvaus");
-define("_TO","Kenelle:");
-define("_TITLE","Otsikko");
-define("_ACTIVE","Aktiivinen");
-define("_DEACTIVATE","Deaktivoi");
-define("_INACTIVE","Ei aktiivinen");
-define("_ACTIVATE","Aktivoi");
-define("_ADD","Lis‰‰");
-define("_LANGUAGE","Language");
-define("_ENCYCLOPEDIA","Encyclopedia");
-define("_ENCYCLOPEDIAMANAGER","Encyclopedia Manager");
-define("_DELENCYCLOPEDIA","Delete Encyclopedia");
-define("_DELENCYCONTWARNING","Are you sure you want to delete this Encyclopedia and ALL its content?");
-define("_DELENCYCLOPEDIATEXT","Delete Encyclopedia Terms");
-define("_DELENCYTEXTWARNING","Are you sure you want to delete this Term?");
-define("_CURRENTSTATUS","Current Status");
-define("_ACTIVATEPAGE","Activate This Page?");
-define("_TERMS","Terms");
-define("_ADDNEWENCYCLOPEDIA","Add a New Encyclopedia");
-define("_ADDNEWENCYTERM","Add a New Encyclopedia Term");
-define("_TERMTEXT","Term Text");
-define("_MOVETERMS","Move Terms");
-define("_MOVEALLTERMSFROM","Move ALL Terms From");
-define("_EDITENCYCLOPEDIA","Edit Encyclopedia");
-define("_ENCYTERMSEDIT","Encyclopedia Terms Edit");
-define("_SELECTONETERM","Please select one term from the following list:");
-define("_NOCONTENTFORLETTER","Sorry, there isn't any content for the letter");
-define("_CHANGETOENCY","Change to Encyclopedia");
+define_once("_SEND","L‰het‰");
+define_once("_FUNCTIONS","Teht‰v‰t");
+define_once("_YES","Kyll‰");
+define_once("_NO","Ei");
+define_once("_SAVECHANGES","Tallenna muutokset");
+define_once("_PAGEBREAK","Jos tahdotte k‰ytt‰‰ opetuksessa useita sivuja, voitte erotella sivut k‰ytt‰en <b>[--pagebreak--]</b> tagia.");
+define_once("_DESCRIPTION","Kuvaus");
+define_once("_TO","Kenelle:");
+define_once("_TITLE","Otsikko");
+define_once("_ACTIVE","Aktiivinen");
+define_once("_DEACTIVATE","Deaktivoi");
+define_once("_INACTIVE","Ei aktiivinen");
+define_once("_ACTIVATE","Aktivoi");
+define_once("_ADD","Lis‰‰");
+define_once("_LANGUAGE","Language");
+define_once("_ENCYCLOPEDIA","Encyclopedia");
+define_once("_ENCYCLOPEDIAMANAGER","Encyclopedia Manager");
+define_once("_DELENCYCLOPEDIA","Delete Encyclopedia");
+define_once("_DELENCYCONTWARNING","Are you sure you want to delete this Encyclopedia and ALL its content?");
+define_once("_DELENCYCLOPEDIATEXT","Delete Encyclopedia Terms");
+define_once("_DELENCYTEXTWARNING","Are you sure you want to delete this Term?");
+define_once("_CURRENTSTATUS","Current Status");
+define_once("_ACTIVATEPAGE","Activate This Page?");
+define_once("_TERMS","Terms");
+define_once("_ADDNEWENCYCLOPEDIA","Add a New Encyclopedia");
+define_once("_ADDNEWENCYTERM","Add a New Encyclopedia Term");
+define_once("_TERMTEXT","Term Text");
+define_once("_MOVETERMS","Move Terms");
+define_once("_MOVEALLTERMSFROM","Move ALL Terms From");
+define_once("_EDITENCYCLOPEDIA","Edit Encyclopedia");
+define_once("_ENCYTERMSEDIT","Encyclopedia Terms Edit");
+define_once("_SELECTONETERM","Please select one term from the following list:");
+define_once("_NOCONTENTFORLETTER","Sorry, there isn't any content for the letter");
+define_once("_CHANGETOENCY","Change to Encyclopedia");
 
 
-?>

@@ -21,19 +21,18 @@
 /* Comments/suggestions: aleagi@terra.com.br - aleagi@phpnuke.org.br      */
 /**************************************************************************/
 
-define("_SEND","Enviar");
-define("_YOURNAME","Seu nome");
-define("_MESSAGE","Mensagem");
-define("_YOUREMAIL","Seu e-mail");
-define("_FEEDBACKNOTE","Todos os comentários e sugestões sobre este portal são uma fonte de informações para melhorarmos nossos serviços. Obrigado!");
-define("_FEEDBACKTITLE","Formulário de contato");
-define("_FEEDBACK","Contate-nos");
-define("_FBENTERNAME","<b>ERRO</b>: Por favor, digite seu nome!");
-define("_FBENTEREMAIL","<b>ERRO</b>: Por favor, digite seu endereço de e-mail!");
-define("_FBENTERMESSAGE","<b>ERRO</b>: Por favor, digite uma mensagem!");
-define("_SENDEREMAIL","Endereço de e-mail do rementente");
-define("_SENDERNAME","Nome do remetente");
-define("_FBMAILSENT","O e-mail foi enviado!");
-define("_FBTHANKSFORCONTACT","Obrigado por nos contatar!");
+define_once("_SEND","Enviar");
+define_once("_YOURNAME","Seu nome");
+define_once("_MESSAGE","Mensagem");
+define_once("_YOUREMAIL","Seu e-mail");
+define_once("_FEEDBACKNOTE","Todos os comentários e sugestões sobre este portal são uma fonte de informações para melhorarmos nossos serviços. Obrigado!");
+define_once("_FEEDBACKTITLE","Formulário de contato");
+define_once("_FEEDBACK","Contate-nos");
+define_once("_FBENTERNAME","<b>ERRO</b>: Por favor, digite seu nome!");
+define_once("_FBENTEREMAIL","<b>ERRO</b>: Por favor, digite seu endereço de e-mail!");
+define_once("_FBENTERMESSAGE","<b>ERRO</b>: Por favor, digite uma mensagem!");
+define_once("_SENDEREMAIL","Endereço de e-mail do rementente");
+define_once("_SENDERNAME","Nome do remetente");
+define_once("_FBMAILSENT","O e-mail foi enviado!");
+define_once("_FBTHANKSFORCONTACT","Obrigado por nos contatar!");
 
-?>

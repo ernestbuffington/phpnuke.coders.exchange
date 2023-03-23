@@ -18,40 +18,39 @@
 /**************************************************************************/
 
 
-define("_SEND","Senda");
-define("_FUNCTIONS","Aðgerðir");
-define("_YES","Já");
-define("_NO","Nei");
-define("_SAVECHANGES","Vista breytingar");
-define("_PAGEBREAK","Ef þú vilt hafa margar síður getur skrifað <b>[--pagebreak--]</b> þar sem þú vilt fá síðuskil.");
-define("_DESCRIPTION","Lýsing");
-define("_TO","Til");
-define("_TITLE","Titill");
-define("_ACTIVE","Virkur");
-define("_DEACTIVATE","Gera óvirkan");
-define("_INACTIVE","Óvirkur");
-define("_ACTIVATE","Gera virkan");
-define("_ADD","Bæta við");
-define("_LANGUAGE","Tungumál");
-define("_ENCYCLOPEDIA","Uppsláttarrit");
-define("_ENCYCLOPEDIAMANAGER","Stjórnandi uppsláttarrits");
-define("_DELENCYCLOPEDIA","Eyða uppsláttarriti");
-define("_DELENCYCONTWARNING","Ertu viss um að þú viljir eyða þessu uppsláttarriti og ÖLLU því sem það inniheldur?");
-define("_DELENCYCLOPEDIATEXT","Eyða hugtökum í uppsláttarriti");
-define("_DELENCYTEXTWARNING","Ertu viss um að þú viljir eyða þessu hugtaki?");
-define("_CURRENTSTATUS","Núverandi staða");
-define("_ACTIVATEPAGE","Gera þessa síðu virka?");
-define("_TERMS","Hugtök");
-define("_ADDNEWENCYCLOPEDIA","Bæta við nýju uppsláttarriti");
-define("_ADDNEWENCYTERM","Bæta við nýju hugtaki í uppsláttarrit");
-define("_TERMTEXT","Texti hugtaks");
-define("_MOVETERMS","Færa hugtak");
-define("_MOVEALLTERMSFROM","Færa ÖLL hugtök úr");
-define("_EDITENCYCLOPEDIA","Breyta uppsláttarriti");
-define("_ENCYTERMSEDIT","Breyta hugtökum í uppsláttarriti");
-define("_SELECTONETERM","Vinsamlegast veljið eitt hugtaka úr eftirfarandi lista:");
-define("_NOCONTENTFORLETTER","Því miður er ekkert innihald tengt þessum bókstaf");
-define("_CHANGETOENCY","Breyta í uppsláttarrit");
+define_once("_SEND","Senda");
+define_once("_FUNCTIONS","Aðgerðir");
+define_once("_YES","Já");
+define_once("_NO","Nei");
+define_once("_SAVECHANGES","Vista breytingar");
+define_once("_PAGEBREAK","Ef þú vilt hafa margar síður getur skrifað <b>[--pagebreak--]</b> þar sem þú vilt fá síðuskil.");
+define_once("_DESCRIPTION","Lýsing");
+define_once("_TO","Til");
+define_once("_TITLE","Titill");
+define_once("_ACTIVE","Virkur");
+define_once("_DEACTIVATE","Gera óvirkan");
+define_once("_INACTIVE","Óvirkur");
+define_once("_ACTIVATE","Gera virkan");
+define_once("_ADD","Bæta við");
+define_once("_LANGUAGE","Tungumál");
+define_once("_ENCYCLOPEDIA","Uppsláttarrit");
+define_once("_ENCYCLOPEDIAMANAGER","Stjórnandi uppsláttarrits");
+define_once("_DELENCYCLOPEDIA","Eyða uppsláttarriti");
+define_once("_DELENCYCONTWARNING","Ertu viss um að þú viljir eyða þessu uppsláttarriti og ÖLLU því sem það inniheldur?");
+define_once("_DELENCYCLOPEDIATEXT","Eyða hugtökum í uppsláttarriti");
+define_once("_DELENCYTEXTWARNING","Ertu viss um að þú viljir eyða þessu hugtaki?");
+define_once("_CURRENTSTATUS","Núverandi staða");
+define_once("_ACTIVATEPAGE","Gera þessa síðu virka?");
+define_once("_TERMS","Hugtök");
+define_once("_ADDNEWENCYCLOPEDIA","Bæta við nýju uppsláttarriti");
+define_once("_ADDNEWENCYTERM","Bæta við nýju hugtaki í uppsláttarrit");
+define_once("_TERMTEXT","Texti hugtaks");
+define_once("_MOVETERMS","Færa hugtak");
+define_once("_MOVEALLTERMSFROM","Færa ÖLL hugtök úr");
+define_once("_EDITENCYCLOPEDIA","Breyta uppsláttarriti");
+define_once("_ENCYTERMSEDIT","Breyta hugtökum í uppsláttarriti");
+define_once("_SELECTONETERM","Vinsamlegast veljið eitt hugtaka úr eftirfarandi lista:");
+define_once("_NOCONTENTFORLETTER","Því miður er ekkert innihald tengt þessum bókstaf");
+define_once("_CHANGETOENCY","Breyta í uppsláttarrit");
 
 
-?>

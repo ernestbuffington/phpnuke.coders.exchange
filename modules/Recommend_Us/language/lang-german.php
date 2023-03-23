@@ -17,22 +17,21 @@
 /* And, if you use HTML code, please double check it.                     */
 /**************************************************************************/
 
-define("_SEND","Senden");
-define("_FYOURNAME","Ihr Name:");
-define("_FYOUREMAIL","Ihre eMail:");
-define("_FFRIENDNAME","Name des Freundes:");
-define("_FFRIENDEMAIL","eMail des Freundes:");
-define("_HELLO","Hallo");
-define("_YOURFRIEND","Ihr Freund");
-define("_RECOMMEND","Diese Website einem Freund empfehlen");
-define("_INTSITE","Interessante Website:");
-define("_OURSITE","fand diese Website");
-define("_INTSENT","interessant und wollte sie Ihnen empfehlen.");
-define("_FSITENAME","Name der Website:");
-define("_FSITEURL","URL der Website:");
-define("_FREFERENCE","Die Weiterempfehlung unserer Website wurde gesandt an");
-define("_THANKSREC","Vielen Dank f&uuml;r Ihre Weiterempfehlung!");
-define("_SECURITYCODEERROR","<b>ERROR:</b> The security code you wrote is incorrect...<br>Please write it exactly as given bellow:");
-define("_SENDSITEERROR","<b>Error sending the recommendation...</b><br><br><b>ERROR:</b> One or more required fields are empty.<br>Please go back and correct the problem, then try again.");
+define_once("_SEND","Senden");
+define_once("_FYOURNAME","Ihr Name:");
+define_once("_FYOUREMAIL","Ihre eMail:");
+define_once("_FFRIENDNAME","Name des Freundes:");
+define_once("_FFRIENDEMAIL","eMail des Freundes:");
+define_once("_HELLO","Hallo");
+define_once("_YOURFRIEND","Ihr Freund");
+define_once("_RECOMMEND","Diese Website einem Freund empfehlen");
+define_once("_INTSITE","Interessante Website:");
+define_once("_OURSITE","fand diese Website");
+define_once("_INTSENT","interessant und wollte sie Ihnen empfehlen.");
+define_once("_FSITENAME","Name der Website:");
+define_once("_FSITEURL","URL der Website:");
+define_once("_FREFERENCE","Die Weiterempfehlung unserer Website wurde gesandt an");
+define_once("_THANKSREC","Vielen Dank f&uuml;r Ihre Weiterempfehlung!");
+define_once("_SECURITYCODEERROR","<b>ERROR:</b> The security code you wrote is incorrect...<br>Please write it exactly as given bellow:");
+define_once("_SENDSITEERROR","<b>Error sending the recommendation...</b><br><br><b>ERROR:</b> One or more required fields are empty.<br>Please go back and correct the problem, then try again.");
 
-?>

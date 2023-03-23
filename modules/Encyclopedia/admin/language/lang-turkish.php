@@ -18,40 +18,39 @@
 /**************************************************************************/
 
 
-define("_SEND","Gönder");
-define("_FUNCTIONS","Fonksiyonlar");
-define("_YES","Evet");
-define("_NO","Hayýr");
-define("_SAVECHANGES","Deðiþiklikleri Kaydet");
-define("_PAGEBREAK","Birden fazla sayfa kullanmak için kesmek istediðiniz yere <b>[--pagebreak--]</b> yazabilirsiniz.");
-define("_DESCRIPTION","Taným");
-define("_TO","Kime");
-define("_TITLE","Baþlýk");
-define("_ACTIVE","Aktif");
-define("_DEACTIVATE","Pasifleþtir");
-define("_INACTIVE","Pasif");
-define("_ACTIVATE","Etkinleþtir");
-define("_ADD","Ekle");
-define("_LANGUAGE","Dil");
-define("_ENCYCLOPEDIA","Ansiklopedi");
-define("_ENCYCLOPEDIAMANAGER","Ansiklopedi Yöneticisi");
-define("_DELENCYCLOPEDIA","Ansiklopedi Sil");
-define("_DELENCYCONTWARNING","Bu ansiklopediyi ve TÜM içeriðini silmek istediðinizden emin misiniz?");
-define("_DELENCYCLOPEDIATEXT","Ansiklopedi Terimi Sil");
-define("_DELENCYTEXTWARNING","Bu terimi silmek istediðinizden emin misiniz?");
-define("_CURRENTSTATUS","Geçerli Durum");
-define("_ACTIVATEPAGE","Bu sayfayý etkinleþtir?");
-define("_TERMS","Terim");
-define("_ADDNEWENCYCLOPEDIA","Yeni Ansiklopedi Ekle");
-define("_ADDNEWENCYTERM","Yeni Ansiklopedi Terimi Ekle");
-define("_TERMTEXT","Terim Metni");
-define("_MOVETERMS","Terimleri Taþý");
-define("_MOVEALLTERMSFROM","Buradaki TÜM terimleri");
-define("_EDITENCYCLOPEDIA","Ansiklopedi Düzenle");
-define("_ENCYTERMSEDIT","Ansiklopedi Terimi Düzenle");
-define("_SELECTONETERM","Lütfen aþaðýdaki listeden bir terim seçin:");
-define("_NOCONTENTFORLETTER","Üzgünüm, bu harf için içerik mevcut deðil");
-define("_CHANGETOENCY","Ansiklopedi Deðiþtir");
+define_once("_SEND","Gönder");
+define_once("_FUNCTIONS","Fonksiyonlar");
+define_once("_YES","Evet");
+define_once("_NO","Hayýr");
+define_once("_SAVECHANGES","Deðiþiklikleri Kaydet");
+define_once("_PAGEBREAK","Birden fazla sayfa kullanmak için kesmek istediðiniz yere <b>[--pagebreak--]</b> yazabilirsiniz.");
+define_once("_DESCRIPTION","Taným");
+define_once("_TO","Kime");
+define_once("_TITLE","Baþlýk");
+define_once("_ACTIVE","Aktif");
+define_once("_DEACTIVATE","Pasifleþtir");
+define_once("_INACTIVE","Pasif");
+define_once("_ACTIVATE","Etkinleþtir");
+define_once("_ADD","Ekle");
+define_once("_LANGUAGE","Dil");
+define_once("_ENCYCLOPEDIA","Ansiklopedi");
+define_once("_ENCYCLOPEDIAMANAGER","Ansiklopedi Yöneticisi");
+define_once("_DELENCYCLOPEDIA","Ansiklopedi Sil");
+define_once("_DELENCYCONTWARNING","Bu ansiklopediyi ve TÜM içeriðini silmek istediðinizden emin misiniz?");
+define_once("_DELENCYCLOPEDIATEXT","Ansiklopedi Terimi Sil");
+define_once("_DELENCYTEXTWARNING","Bu terimi silmek istediðinizden emin misiniz?");
+define_once("_CURRENTSTATUS","Geçerli Durum");
+define_once("_ACTIVATEPAGE","Bu sayfayý etkinleþtir?");
+define_once("_TERMS","Terim");
+define_once("_ADDNEWENCYCLOPEDIA","Yeni Ansiklopedi Ekle");
+define_once("_ADDNEWENCYTERM","Yeni Ansiklopedi Terimi Ekle");
+define_once("_TERMTEXT","Terim Metni");
+define_once("_MOVETERMS","Terimleri Taþý");
+define_once("_MOVEALLTERMSFROM","Buradaki TÜM terimleri");
+define_once("_EDITENCYCLOPEDIA","Ansiklopedi Düzenle");
+define_once("_ENCYTERMSEDIT","Ansiklopedi Terimi Düzenle");
+define_once("_SELECTONETERM","Lütfen aþaðýdaki listeden bir terim seçin:");
+define_once("_NOCONTENTFORLETTER","Üzgünüm, bu harf için içerik mevcut deðil");
+define_once("_CHANGETOENCY","Ansiklopedi Deðiþtir");
 
 
-?>

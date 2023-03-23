@@ -17,18 +17,17 @@
 /* And, if you use HTML code, please double check it.                     */
 /**************************************************************************/
 
-define("_PRINTER","Utskriftsvänlig sida");
-define("_FRIEND","Skicka denna artikel till en kompis");
-define("_ARTICLES","Artiklarna");
-define("_USCORE","Poäng");
-define("_DATE","Datum");
-define("_SELECTMONTH2VIEW","Please select the month you want to view:");
-define("_SHOWALLSTORIES","Show ALL Stories");
-define("_STORIESARCHIVE","Stories Archive");
-define("_ACTIONS","Actions");
-define("_ARCHIVESINDEX","Stories Archive Index");
-define("_ALLSTORIESARCH","All Stories");
-define("_NEXTPAGE","Next Page");
-define("_PREVIOUSPAGE","Previous Page");
+define_once("_PRINTER","Utskriftsvänlig sida");
+define_once("_FRIEND","Skicka denna artikel till en kompis");
+define_once("_ARTICLES","Artiklarna");
+define_once("_USCORE","Poäng");
+define_once("_DATE","Datum");
+define_once("_SELECTMONTH2VIEW","Please select the month you want to view:");
+define_once("_SHOWALLSTORIES","Show ALL Stories");
+define_once("_STORIESARCHIVE","Stories Archive");
+define_once("_ACTIONS","Actions");
+define_once("_ARCHIVESINDEX","Stories Archive Index");
+define_once("_ALLSTORIESARCH","All Stories");
+define_once("_NEXTPAGE","Next Page");
+define_once("_PREVIOUSPAGE","Previous Page");
 
-?>

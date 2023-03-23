@@ -18,29 +18,28 @@
 /**************************************************************************/
 
 
-define("_EMAIL","E-mail");
-define("_SAVECHANGES","Uložit zmìny");
-define("_SCORE","Skóre:");
-define("_PRODUCTTITLE","Název produktu");
-define("_RELATEDLINK","Související odkaz");
-define("_LINKTITLE","Název odkazu");
-define("_REVIEWER","Recenzent:");
-define("_REVIEWID","ID recenze");
-define("_REVIEWS","Recenze");
-define("_DATE","Datum");
-define("_REVADMIN","Administrace recenzí");
-define("_REVTITLE","Nadpis stránky recenzí");
-define("_REVDESC","Popis stránky recenzí");
-define("_REVWAITING","Recenze èekající na ovìøení");
-define("_REVIMGINFO","Uložte váš obrázek o velikosti 150*150 do adresáøe images/reviews");
-define("_TEXT","Text");
-define("_IMAGE","Obrázek");
-define("_NOREVIEW2ADD","Nejsou recenze k pøidání");
-define("_ADDREVIEW","Pøidat recenzi");
-define("_CLICK2ADDREVIEW","Kliknìte a napište recenzi");
-define("_DELMODREVIEW","Smazat / Upravit recenzi");
-define("_MODREVINFO","Mùžete jednoduše mazat/upravovat recenze pøi prohlížení stránky <a href=\"modules.php?name=Reviews\">Reviews</a> jako administrátor.");
-define("_LANGUAGE","Language");
+define_once("_EMAIL","E-mail");
+define_once("_SAVECHANGES","Uložit zmìny");
+define_once("_SCORE","Skóre:");
+define_once("_PRODUCTTITLE","Název produktu");
+define_once("_RELATEDLINK","Související odkaz");
+define_once("_LINKTITLE","Název odkazu");
+define_once("_REVIEWER","Recenzent:");
+define_once("_REVIEWID","ID recenze");
+define_once("_REVIEWS","Recenze");
+define_once("_DATE","Datum");
+define_once("_REVADMIN","Administrace recenzí");
+define_once("_REVTITLE","Nadpis stránky recenzí");
+define_once("_REVDESC","Popis stránky recenzí");
+define_once("_REVWAITING","Recenze èekající na ovìøení");
+define_once("_REVIMGINFO","Uložte váš obrázek o velikosti 150*150 do adresáøe images/reviews");
+define_once("_TEXT","Text");
+define_once("_IMAGE","Obrázek");
+define_once("_NOREVIEW2ADD","Nejsou recenze k pøidání");
+define_once("_ADDREVIEW","Pøidat recenzi");
+define_once("_CLICK2ADDREVIEW","Kliknìte a napište recenzi");
+define_once("_DELMODREVIEW","Smazat / Upravit recenzi");
+define_once("_MODREVINFO","Mùžete jednoduše mazat/upravovat recenze pøi prohlížení stránky <a href=\"modules.php?name=Reviews\">Reviews</a> jako administrátor.");
+define_once("_LANGUAGE","Language");
 
 
-?>

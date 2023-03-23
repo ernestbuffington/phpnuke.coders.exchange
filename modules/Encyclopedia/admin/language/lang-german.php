@@ -18,40 +18,39 @@
 /**************************************************************************/
 
 
-define("_SEND","Senden");
-define("_FUNCTIONS","Funktionen");
-define("_YES","Ja");
-define("_NO","Nein");
-define("_SAVECHANGES","&Auml;nderungen speichern");
-define("_PAGEBREAK","Wenn Sie mehrere Seiten m&ouml;chten, f&uuml;gen Sie bitte <b>[--pagebreak--]</b> f&uuml;r einen Seitenumbruch ein.");
-define("_DESCRIPTION","Beschreibung");
-define("_TO","zu");
-define("_TITLE","Titel");
-define("_ACTIVE","Aktiv");
-define("_DEACTIVATE","Deaktivieren");
-define("_INACTIVE","Inaktiv");
-define("_ACTIVATE","Aktivieren");
-define("_ADD","Hinzuf&uuml;gen");
-define("_LANGUAGE","Sprache");
-define("_ENCYCLOPEDIA","Enzyclop&auml;die");
-define("_ENCYCLOPEDIAMANAGER","Enzyclop&auml;die Manager");
-define("_DELENCYCLOPEDIA","L&ouml;sche Enzyclop&auml;die");
-define("_DELENCYCONTWARNING","Sind Sie sicher, dass Sie diese Enzyclop&auml;die mit allen Inhalten l&ouml;schen m&ouml;chten?");
-define("_DELENCYCLOPEDIATEXT","L&ouml;sche Enzyclop&auml;die Bezeichnungen");
-define("_DELENCYTEXTWARNING","Sind Sie sicher, dass Sie diese Bezeichnung l&ouml;schen m&ouml;chten?");
-define("_CURRENTSTATUS","Derzeitiger Status");
-define("_ACTIVATEPAGE","Aktiviere diese Seite?");
-define("_TERMS","Bezeichnungen");
-define("_ADDNEWENCYCLOPEDIA","Neue Enzyclop&auml;die hinzuf&uuml;gen");
-define("_ADDNEWENCYTERM","Enzyclop&auml;die-Begriff hinzuf&uuml;gen");
-define("_TERMTEXT","Begriffstext");
-define("_MOVETERMS","Verschiebe Begriffe");
-define("_MOVEALLTERMSFROM","Verschiebe alle Begriffe von");
-define("_EDITENCYCLOPEDIA","Bearbeite Enzyclop&auml;die");
-define("_ENCYTERMSEDIT","Enzyclop&auml;die-Begriffe bearbeiten");
-define("_SELECTONETERM","Bitte w&auml;hlen Sie einen Begriff aus der Liste:");
-define("_NOCONTENTFORLETTER","Sorry, diese Seite hat keinen Inhalt");
-define("_CHANGETOENCY","Wechsel zu Enzyclop&auml;die");
+define_once("_SEND","Senden");
+define_once("_FUNCTIONS","Funktionen");
+define_once("_YES","Ja");
+define_once("_NO","Nein");
+define_once("_SAVECHANGES","&Auml;nderungen speichern");
+define_once("_PAGEBREAK","Wenn Sie mehrere Seiten m&ouml;chten, f&uuml;gen Sie bitte <b>[--pagebreak--]</b> f&uuml;r einen Seitenumbruch ein.");
+define_once("_DESCRIPTION","Beschreibung");
+define_once("_TO","zu");
+define_once("_TITLE","Titel");
+define_once("_ACTIVE","Aktiv");
+define_once("_DEACTIVATE","Deaktivieren");
+define_once("_INACTIVE","Inaktiv");
+define_once("_ACTIVATE","Aktivieren");
+define_once("_ADD","Hinzuf&uuml;gen");
+define_once("_LANGUAGE","Sprache");
+define_once("_ENCYCLOPEDIA","Enzyclop&auml;die");
+define_once("_ENCYCLOPEDIAMANAGER","Enzyclop&auml;die Manager");
+define_once("_DELENCYCLOPEDIA","L&ouml;sche Enzyclop&auml;die");
+define_once("_DELENCYCONTWARNING","Sind Sie sicher, dass Sie diese Enzyclop&auml;die mit allen Inhalten l&ouml;schen m&ouml;chten?");
+define_once("_DELENCYCLOPEDIATEXT","L&ouml;sche Enzyclop&auml;die Bezeichnungen");
+define_once("_DELENCYTEXTWARNING","Sind Sie sicher, dass Sie diese Bezeichnung l&ouml;schen m&ouml;chten?");
+define_once("_CURRENTSTATUS","Derzeitiger Status");
+define_once("_ACTIVATEPAGE","Aktiviere diese Seite?");
+define_once("_TERMS","Bezeichnungen");
+define_once("_ADDNEWENCYCLOPEDIA","Neue Enzyclop&auml;die hinzuf&uuml;gen");
+define_once("_ADDNEWENCYTERM","Enzyclop&auml;die-Begriff hinzuf&uuml;gen");
+define_once("_TERMTEXT","Begriffstext");
+define_once("_MOVETERMS","Verschiebe Begriffe");
+define_once("_MOVEALLTERMSFROM","Verschiebe alle Begriffe von");
+define_once("_EDITENCYCLOPEDIA","Bearbeite Enzyclop&auml;die");
+define_once("_ENCYTERMSEDIT","Enzyclop&auml;die-Begriffe bearbeiten");
+define_once("_SELECTONETERM","Bitte w&auml;hlen Sie einen Begriff aus der Liste:");
+define_once("_NOCONTENTFORLETTER","Sorry, diese Seite hat keinen Inhalt");
+define_once("_CHANGETOENCY","Wechsel zu Enzyclop&auml;die");
 
 
-?>

@@ -18,27 +18,26 @@
 /**************************************************************************/
 
 
-define("_FUNCTIONS","Функции");
-define("_YES","Да");
-define("_NO","Нет");
-define("_SAVE","Сохранить");
-define("_ID","ID");
-define("_CATEGORIES","Категории");
-define("_ALL","ВСЕ");
-define("_FAQ","ЧаВо?");
-define("_CONTENT","Content");
-define("_FAQADMIN","ЧаВо?");
-define("_ACTIVEFAQS","Включить");
-define("_ADDCATEGORY","Добавить категорию");
-define("_QUESTIONS","Вопросы и ответы");
-define("_ADDQUESTION","Добавить новый вопрос");
-define("_QUESTION","Вопрос");
-define("_ANSWER","Ответ");
-define("_EDITCATEGORY","Редактировать категорию");
-define("_EDITQUESTIONS","Редактировать вопросы и ответы");
-define("_FAQDELWARNING","удалить?");
-define("_QUESTIONDEL","удалить?");
-define("_LANGUAGE","Language");
+define_once("_FUNCTIONS","Функции");
+define_once("_YES","Да");
+define_once("_NO","Нет");
+define_once("_SAVE","Сохранить");
+define_once("_ID","ID");
+define_once("_CATEGORIES","Категории");
+define_once("_ALL","ВСЕ");
+define_once("_FAQ","ЧаВо?");
+define_once("_CONTENT","Content");
+define_once("_FAQADMIN","ЧаВо?");
+define_once("_ACTIVEFAQS","Включить");
+define_once("_ADDCATEGORY","Добавить категорию");
+define_once("_QUESTIONS","Вопросы и ответы");
+define_once("_ADDQUESTION","Добавить новый вопрос");
+define_once("_QUESTION","Вопрос");
+define_once("_ANSWER","Ответ");
+define_once("_EDITCATEGORY","Редактировать категорию");
+define_once("_EDITQUESTIONS","Редактировать вопросы и ответы");
+define_once("_FAQDELWARNING","удалить?");
+define_once("_QUESTIONDEL","удалить?");
+define_once("_LANGUAGE","Language");
 
 
-?>

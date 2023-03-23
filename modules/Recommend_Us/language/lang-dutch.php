@@ -17,23 +17,22 @@
 /* And, if you use HTML code, please double check it.                     */
 /**************************************************************************/
 
-define("_SEND","Verzenden");
-define("_FYOURNAME","Uw naam:");
-define("_FYOUREMAIL","Uw E-mail:");
-define("_FFRIENDNAME","De naam van uw kennis:");
-define("_FFRIENDEMAIL","Het E-mailadres van uw kennis:");
-define("_HELLO","Hallo");
-define("_YOURFRIEND","Uw kennis");
-define("_RECOMMEND","Deze site aanbevelen aan een kennis");
-define("_INTSITE","Interessante site:");
-define("_OURSITE","vond onze site");
-define("_INTSENT","interessant en wilde deze naar u verzenden.");
-define("_FSITENAME","Sitenaam:");
-define("_FSITEURL","Site URL:");
-define("_FREFERENCE","De referentie naar onze site is verzonden naar");
-define("_THANKSREC","Bedankt voor uw aanbeveling!");
-define("_SECURITYCODEERROR","<b>ERROR:</b> The security code you wrote is incorrect...<br>Please write it exactly as given bellow:");
+define_once("_SEND","Verzenden");
+define_once("_FYOURNAME","Uw naam:");
+define_once("_FYOUREMAIL","Uw E-mail:");
+define_once("_FFRIENDNAME","De naam van uw kennis:");
+define_once("_FFRIENDEMAIL","Het E-mailadres van uw kennis:");
+define_once("_HELLO","Hallo");
+define_once("_YOURFRIEND","Uw kennis");
+define_once("_RECOMMEND","Deze site aanbevelen aan een kennis");
+define_once("_INTSITE","Interessante site:");
+define_once("_OURSITE","vond onze site");
+define_once("_INTSENT","interessant en wilde deze naar u verzenden.");
+define_once("_FSITENAME","Sitenaam:");
+define_once("_FSITEURL","Site URL:");
+define_once("_FREFERENCE","De referentie naar onze site is verzonden naar");
+define_once("_THANKSREC","Bedankt voor uw aanbeveling!");
+define_once("_SECURITYCODEERROR","<b>ERROR:</b> The security code you wrote is incorrect...<br>Please write it exactly as given bellow:");
 
-define("_SENDSITEERROR","<b>Error sending the recommendation...</b><br><br><b>ERROR:</b> One or more required fields are empty.<br>Please go back and correct the problem, then try again.");
+define_once("_SENDSITEERROR","<b>Error sending the recommendation...</b><br><br><b>ERROR:</b> One or more required fields are empty.<br>Please go back and correct the problem, then try again.");
 
-?>

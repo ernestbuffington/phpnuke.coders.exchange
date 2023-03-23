@@ -17,18 +17,17 @@
 /* And, if you use HTML code, please double check it.                     */
 /**************************************************************************/
 
-define("_PRINTER","หน้าเอกสารสำหรับเครื่องพิมพ์");
-define("_FRIEND","ส่งเรื่องนี้ต่อให้เพื่อนอ่าน");
-define("_ARTICLES","บทความ");
-define("_USCORE","คะแนน");
-define("_DATE","วันที่");
-define("_SELECTMONTH2VIEW","กรุณาเลือกเดือนที่จะดู:");
-define("_SHOWALLSTORIES","ดูเรื่องทั้งหมด");
-define("_STORIESARCHIVE","เรื่องทั้งหมด");
-define("_ACTIONS","การจัดการ");
-define("_ARCHIVESINDEX","สารบัญเรื่องทั้งหมด");
-define("_ALLSTORIESARCH","เรื่องทั้งหมด");
-define("_NEXTPAGE","หน้าต่อไป");
-define("_PREVIOUSPAGE","หน้าก่อนนี้");
+define_once("_PRINTER","หน้าเอกสารสำหรับเครื่องพิมพ์");
+define_once("_FRIEND","ส่งเรื่องนี้ต่อให้เพื่อนอ่าน");
+define_once("_ARTICLES","บทความ");
+define_once("_USCORE","คะแนน");
+define_once("_DATE","วันที่");
+define_once("_SELECTMONTH2VIEW","กรุณาเลือกเดือนที่จะดู:");
+define_once("_SHOWALLSTORIES","ดูเรื่องทั้งหมด");
+define_once("_STORIESARCHIVE","เรื่องทั้งหมด");
+define_once("_ACTIONS","การจัดการ");
+define_once("_ARCHIVESINDEX","สารบัญเรื่องทั้งหมด");
+define_once("_ALLSTORIESARCH","เรื่องทั้งหมด");
+define_once("_NEXTPAGE","หน้าต่อไป");
+define_once("_PREVIOUSPAGE","หน้าก่อนนี้");
 
-?>

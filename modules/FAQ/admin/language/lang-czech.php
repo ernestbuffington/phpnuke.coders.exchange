@@ -18,27 +18,26 @@
 /**************************************************************************/
 
 
-define("_FUNCTIONS","Funkce");
-define("_YES","Ano");
-define("_NO","Ne");
-define("_SAVE","Uložit");
-define("_ID","ID");
-define("_CATEGORIES","Kategorie");
-define("_ALL","Vše");
-define("_FAQ","FAQ");
-define("_CONTENT","Obsah");
-define("_FAQADMIN","FAQ administrace");
-define("_ACTIVEFAQS","Aktivní FAQy");
-define("_ADDCATEGORY","Pøidat novou kategorii");
-define("_QUESTIONS","Otázky a odpovìdi");
-define("_ADDQUESTION","Pøidat novou otázku");
-define("_QUESTION","Otázka");
-define("_ANSWER","Odpovìï");
-define("_EDITCATEGORY","Upravit kategorii");
-define("_EDITQUESTIONS","Upravit otázky a odpovìdi");
-define("_FAQDELWARNING","POZOR: Opravdu chcete smazat tento FAQ a celý jeho obsah?");
-define("_QUESTIONDEL","POZOR: Opravdu chcete smazat tuto otázku?");
-define("_LANGUAGE","Language");
+define_once("_FUNCTIONS","Funkce");
+define_once("_YES","Ano");
+define_once("_NO","Ne");
+define_once("_SAVE","Uložit");
+define_once("_ID","ID");
+define_once("_CATEGORIES","Kategorie");
+define_once("_ALL","Vše");
+define_once("_FAQ","FAQ");
+define_once("_CONTENT","Obsah");
+define_once("_FAQADMIN","FAQ administrace");
+define_once("_ACTIVEFAQS","Aktivní FAQy");
+define_once("_ADDCATEGORY","Pøidat novou kategorii");
+define_once("_QUESTIONS","Otázky a odpovìdi");
+define_once("_ADDQUESTION","Pøidat novou otázku");
+define_once("_QUESTION","Otázka");
+define_once("_ANSWER","Odpovìï");
+define_once("_EDITCATEGORY","Upravit kategorii");
+define_once("_EDITQUESTIONS","Upravit otázky a odpovìdi");
+define_once("_FAQDELWARNING","POZOR: Opravdu chcete smazat tento FAQ a celý jeho obsah?");
+define_once("_QUESTIONDEL","POZOR: Opravdu chcete smazat tuto otázku?");
+define_once("_LANGUAGE","Language");
 
 
-?>

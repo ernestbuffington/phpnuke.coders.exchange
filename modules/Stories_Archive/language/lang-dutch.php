@@ -17,18 +17,18 @@
 /* And, if you use HTML code, please double check it.                     */
 /**************************************************************************/
 
-define("_PRINTER","Printervriendelijke pagina");
-define("_FRIEND","Stuur dit verhaal naar een kennis");
-define("_ARTICLES","Artikelen");
-define("_USCORE","Score");
-define("_DATE","Datum");
-define("_SELECTMONTH2VIEW","Kies de maand die je wil raadplegen:");
-define("_SHOWALLSTORIES","Toon ALLE verhalen");
-define("_STORIESARCHIVE","Archief Verhalen");
-define("_ACTIONS","Acties");
-define("_ARCHIVESINDEX","Index Archief Verhalen");
-define("_ALLSTORIESARCH","Alle Verhalen");
-define("_NEXTPAGE","Volgende Pagina");
-define("_PREVIOUSPAGE","Vorige Pagina");
+define_once("_PRINTER","Printervriendelijke pagina");
+define_once("_FRIEND","Stuur dit verhaal naar een kennis");
+define_once("_ARTICLES","Artikelen");
+define_once("_USCORE","Score");
+define_once("_DATE","Datum");
+define_once("_SELECTMONTH2VIEW","Kies de maand die je wil raadplegen:");
+define_once("_SHOWALLSTORIES","Toon ALLE verhalen");
+define_once("_STORIESARCHIVE","Archief Verhalen");
+define_once("_ACTIONS","Acties");
+define_once("_ARCHIVESINDEX","Index Archief Verhalen");
+define_once("_ALLSTORIESARCH","Alle Verhalen");
+define_once("_NEXTPAGE","Volgende Pagina");
+define_once("_PREVIOUSPAGE","Vorige Pagina");
 
-?>
+

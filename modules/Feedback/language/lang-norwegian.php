@@ -17,19 +17,18 @@
 /* And, if you use HTML code, please double check it.                     */
 /**************************************************************************/
 
-define("_SEND","Send");
-define("_YOURNAME","Ditt navn");
-define("_MESSAGE","Beskjed");
-define("_YOUREMAIL","Din e-postadresse");
-define("_FEEDBACKNOTE","Alle kommentarer og forslag vedrørende våre sider er velkomne, og er en verdifull kilde for informasjon. Takk!");
-define("_FEEDBACKTITLE","Tilbakemeldingsskjema");
-define("_FEEDBACK","Tilbakemelding");
-define("_FBENTERNAME","FEIL: Vennligst skriv navnet ditt!");
-define("_FBENTEREMAIL","FEIL: Vennligst skriv inn e-postadressen din!");
-define("_FBENTERMESSAGE","FEIL: Vennligst skriv en beskjed!");
-define("_SENDEREMAIL","Avsenders e-post");
-define("_SENDERNAME","Avsenders navn");
-define("_FBMAILSENT","Mailen har blitt sent!");
-define("_FBTHANKSFORCONTACT","Takk for at du kontaktet oss");
+define_once("_SEND","Send");
+define_once("_YOURNAME","Ditt navn");
+define_once("_MESSAGE","Beskjed");
+define_once("_YOUREMAIL","Din e-postadresse");
+define_once("_FEEDBACKNOTE","Alle kommentarer og forslag vedrørende våre sider er velkomne, og er en verdifull kilde for informasjon. Takk!");
+define_once("_FEEDBACKTITLE","Tilbakemeldingsskjema");
+define_once("_FEEDBACK","Tilbakemelding");
+define_once("_FBENTERNAME","FEIL: Vennligst skriv navnet ditt!");
+define_once("_FBENTEREMAIL","FEIL: Vennligst skriv inn e-postadressen din!");
+define_once("_FBENTERMESSAGE","FEIL: Vennligst skriv en beskjed!");
+define_once("_SENDEREMAIL","Avsenders e-post");
+define_once("_SENDERNAME","Avsenders navn");
+define_once("_FBMAILSENT","Mailen har blitt sent!");
+define_once("_FBTHANKSFORCONTACT","Takk for at du kontaktet oss");
 
-?>

@@ -18,40 +18,39 @@
 /**************************************************************************/
 
 
-define("_SEND","Send");
-define("_FUNCTIONS","Funktioner");
-define("_YES","Ja");
-define("_NO","Nej");
-define("_SAVECHANGES","Gem");
-define("_PAGEBREAK","Hvis du har flere sider kan du skrive <b>[--pagebreak--]</b> hvor du vil have et sideskift i din tekst.");
-define("_DESCRIPTION","Beskrivelse");
-define("_TO","Til");
-define("_TITLE","Titel");
-define("_ACTIVE","Aktiv");
-define("_DEACTIVATE","Deaktiver");
-define("_INACTIVE","Inaktiv");
-define("_ACTIVATE","Aktiver");
-define("_ADD","Opret");
-define("_LANGUAGE","Sprog");
-define("_ENCYCLOPEDIA","Leksikon");
-define("_ENCYCLOPEDIAMANAGER","Leksikon indstillinger");
-define("_DELENCYCLOPEDIA","Slet leksikon");
-define("_DELENCYCONTWARNING","Er de sikker på at de vil slette dette leksikon og alt hvad der er indeni?");
-define("_DELENCYCLOPEDIATEXT","Slet leksikon opslag");
-define("_DELENCYTEXTWARNING","Er de sikker på at ville dette opslag?");
-define("_CURRENTSTATUS","Nuværende status");
-define("_ACTIVATEPAGE","Aktiver denne side?");
-define("_TERMS","opslag");
-define("_ADDNEWENCYCLOPEDIA","Tilføj et nyt leksikon");
-define("_ADDNEWENCYTERM","Tilføj et nyt opslag i leksikonet");
-define("_TERMTEXT","Opslags tekst");
-define("_MOVETERMS","Flyt opslag");
-define("_MOVEALLTERMSFROM","Flytte <b>ALLE</b> opslag fra");
-define("_EDITENCYCLOPEDIA","Ændre leksikon");
-define("_ENCYTERMSEDIT","Leksikon opslags ændring");
-define("_SELECTONETERM","Vær venlig at vælge et opslag i den følgende liste:");
-define("_NOCONTENTFORLETTER","Desværre, der er ingen information om det ønskede bokstav");
-define("_CHANGETOENCY","Skrift til leksikon");
+define_once("_SEND","Send");
+define_once("_FUNCTIONS","Funktioner");
+define_once("_YES","Ja");
+define_once("_NO","Nej");
+define_once("_SAVECHANGES","Gem");
+define_once("_PAGEBREAK","Hvis du har flere sider kan du skrive <b>[--pagebreak--]</b> hvor du vil have et sideskift i din tekst.");
+define_once("_DESCRIPTION","Beskrivelse");
+define_once("_TO","Til");
+define_once("_TITLE","Titel");
+define_once("_ACTIVE","Aktiv");
+define_once("_DEACTIVATE","Deaktiver");
+define_once("_INACTIVE","Inaktiv");
+define_once("_ACTIVATE","Aktiver");
+define_once("_ADD","Opret");
+define_once("_LANGUAGE","Sprog");
+define_once("_ENCYCLOPEDIA","Leksikon");
+define_once("_ENCYCLOPEDIAMANAGER","Leksikon indstillinger");
+define_once("_DELENCYCLOPEDIA","Slet leksikon");
+define_once("_DELENCYCONTWARNING","Er de sikker på at de vil slette dette leksikon og alt hvad der er indeni?");
+define_once("_DELENCYCLOPEDIATEXT","Slet leksikon opslag");
+define_once("_DELENCYTEXTWARNING","Er de sikker på at ville dette opslag?");
+define_once("_CURRENTSTATUS","Nuværende status");
+define_once("_ACTIVATEPAGE","Aktiver denne side?");
+define_once("_TERMS","opslag");
+define_once("_ADDNEWENCYCLOPEDIA","Tilføj et nyt leksikon");
+define_once("_ADDNEWENCYTERM","Tilføj et nyt opslag i leksikonet");
+define_once("_TERMTEXT","Opslags tekst");
+define_once("_MOVETERMS","Flyt opslag");
+define_once("_MOVEALLTERMSFROM","Flytte <b>ALLE</b> opslag fra");
+define_once("_EDITENCYCLOPEDIA","Ændre leksikon");
+define_once("_ENCYTERMSEDIT","Leksikon opslags ændring");
+define_once("_SELECTONETERM","Vær venlig at vælge et opslag i den følgende liste:");
+define_once("_NOCONTENTFORLETTER","Desværre, der er ingen information om det ønskede bokstav");
+define_once("_CHANGETOENCY","Skrift til leksikon");
 
 
-?>

@@ -16,19 +16,18 @@
 /**************************************************************************/
 
 
-define("_SEND","Send");
-define("_YOURNAME","Dit navn");
-define("_MESSAGE","Besked");
-define("_YOUREMAIL","Din e-mailadresse");
-define("_FEEDBACKNOTE","Alle kommentarer og foreslag omkring dette website er mere end velkomne. Mange tak!");
-define("_FEEDBACKTITLE","Feedback formular");
-define("_FEEDBACK","Feedback");
-define("_FBENTERNAME","Fejl: Vær venlig at indtaste deres navn!");
-define("_FBENTEREMAIL","Fejl: Vær venlig at indtaste deres e-mail!");
-define("_FBENTERMESSAGE","Fejl: Vær venlig at indtaste en besked!");
-define("_SENDEREMAIL","Afstenders e-mail");
-define("_SENDERNAME","Afstenders navn");
-define("_FBMAILSENT","E-mailen er sendt!");
-define("_FBTHANKSFORCONTACT","Tak for at kontakte os!");
+define_once("_SEND","Send");
+define_once("_YOURNAME","Dit navn");
+define_once("_MESSAGE","Besked");
+define_once("_YOUREMAIL","Din e-mailadresse");
+define_once("_FEEDBACKNOTE","Alle kommentarer og foreslag omkring dette website er mere end velkomne. Mange tak!");
+define_once("_FEEDBACKTITLE","Feedback formular");
+define_once("_FEEDBACK","Feedback");
+define_once("_FBENTERNAME","Fejl: Vær venlig at indtaste deres navn!");
+define_once("_FBENTEREMAIL","Fejl: Vær venlig at indtaste deres e-mail!");
+define_once("_FBENTERMESSAGE","Fejl: Vær venlig at indtaste en besked!");
+define_once("_SENDEREMAIL","Afstenders e-mail");
+define_once("_SENDERNAME","Afstenders navn");
+define_once("_FBMAILSENT","E-mailen er sendt!");
+define_once("_FBTHANKSFORCONTACT","Tak for at kontakte os!");
 
-?>

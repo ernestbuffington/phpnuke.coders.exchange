@@ -18,40 +18,39 @@
 /**************************************************************************/
 
 
-define("_SEND","Испрати");
-define("_FUNCTIONS","Функции");
-define("_YES","Да");
-define("_NO","Не");
-define("_SAVECHANGES","Сними измени");
-define("_PAGEBREAK","Ако сакаш пове?е страници можеш да напишеш <b>[--pagebreak--]</b> каде што сакаш да ја пресечеш страната.");
-define("_DESCRIPTION","Опис");
-define("_TO","До");
-define("_TITLE","Наслов");
-define("_ACTIVE","Активен");
-define("_DEACTIVATE","Деактивирај");
-define("_INACTIVE","Неактивен");
-define("_ACTIVATE","Активирај");
-define("_ADD","Додади");
-define("_LANGUAGE","Јазик");
-define("_ENCYCLOPEDIA","Енциклопедија");
-define("_ENCYCLOPEDIAMANAGER","Менаџер на енциклопедија");
-define("_DELENCYCLOPEDIA","Избриши енциклопедија");
-define("_DELENCYCONTWARNING","Сигурно ли сакаш да ја избришеш енциклопедијава и сета нејзина содржина?");
-define("_DELENCYCLOPEDIATEXT","Избриши енциклопедиски термини");
-define("_DELENCYTEXTWARNING","Сигурно ли сакаш да го избришеш овој термин?");
-define("_CURRENTSTATUS","Сегашна состојба");
-define("_ACTIVATEPAGE","Активирај ја оваа страна?");
-define("_TERMS","Термини-ознаки");
-define("_ADDNEWENCYCLOPEDIA","Додади енциклопедија");
-define("_ADDNEWENCYTERM","Додади нов енциклопедиски термин");
-define("_TERMTEXT","Термин");
-define("_MOVETERMS","Помести термин");
-define("_MOVEALLTERMSFROM","Премести ги СИТЕ термини од");
-define("_EDITENCYCLOPEDIA","Измени енциклопедија");
-define("_ENCYTERMSEDIT","Измени енциклопедиски термини");
-define("_SELECTONETERM","Ве молиме изберете еден термин од следната листа:");
-define("_NOCONTENTFORLETTER","Жалиме, нема содржина за оваа буква");
-define("_CHANGETOENCY","Префрли се во енциклопедија");
+define_once("_SEND","Испрати");
+define_once("_FUNCTIONS","Функции");
+define_once("_YES","Да");
+define_once("_NO","Не");
+define_once("_SAVECHANGES","Сними измени");
+define_once("_PAGEBREAK","Ако сакаш пове?е страници можеш да напишеш <b>[--pagebreak--]</b> каде што сакаш да ја пресечеш страната.");
+define_once("_DESCRIPTION","Опис");
+define_once("_TO","До");
+define_once("_TITLE","Наслов");
+define_once("_ACTIVE","Активен");
+define_once("_DEACTIVATE","Деактивирај");
+define_once("_INACTIVE","Неактивен");
+define_once("_ACTIVATE","Активирај");
+define_once("_ADD","Додади");
+define_once("_LANGUAGE","Јазик");
+define_once("_ENCYCLOPEDIA","Енциклопедија");
+define_once("_ENCYCLOPEDIAMANAGER","Менаџер на енциклопедија");
+define_once("_DELENCYCLOPEDIA","Избриши енциклопедија");
+define_once("_DELENCYCONTWARNING","Сигурно ли сакаш да ја избришеш енциклопедијава и сета нејзина содржина?");
+define_once("_DELENCYCLOPEDIATEXT","Избриши енциклопедиски термини");
+define_once("_DELENCYTEXTWARNING","Сигурно ли сакаш да го избришеш овој термин?");
+define_once("_CURRENTSTATUS","Сегашна состојба");
+define_once("_ACTIVATEPAGE","Активирај ја оваа страна?");
+define_once("_TERMS","Термини-ознаки");
+define_once("_ADDNEWENCYCLOPEDIA","Додади енциклопедија");
+define_once("_ADDNEWENCYTERM","Додади нов енциклопедиски термин");
+define_once("_TERMTEXT","Термин");
+define_once("_MOVETERMS","Помести термин");
+define_once("_MOVEALLTERMSFROM","Премести ги СИТЕ термини од");
+define_once("_EDITENCYCLOPEDIA","Измени енциклопедија");
+define_once("_ENCYTERMSEDIT","Измени енциклопедиски термини");
+define_once("_SELECTONETERM","Ве молиме изберете еден термин од следната листа:");
+define_once("_NOCONTENTFORLETTER","Жалиме, нема содржина за оваа буква");
+define_once("_CHANGETOENCY","Префрли се во енциклопедија");
 
 
-?>

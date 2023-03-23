@@ -18,40 +18,39 @@
 /**************************************************************************/
 
 
-define("_SEND","Poslat");
-define("_FUNCTIONS","Funkce");
-define("_YES","Ano");
-define("_NO","Ne");
-define("_SAVECHANGES","Uložit zmìny");
-define("_PAGEBREAK","Pokud chcete napsat vícestupòovou stránku použijte <b>[--pagebreak--]</b> v místì, kde ji chcete zalomit.");
-define("_DESCRIPTION","Popis");
-define("_TO","Komu");
-define("_TITLE","Název");
-define("_ACTIVE","Aktivní");
-define("_DEACTIVATE","Deaktivovat");
-define("_INACTIVE","Neaktivní");
-define("_ACTIVATE","Aktivovat");
-define("_ADD","Pøidat");
-define("_LANGUAGE","Language");
-define("_ENCYCLOPEDIA","Encyclopedia");
-define("_ENCYCLOPEDIAMANAGER","Encyclopedia Manager");
-define("_DELENCYCLOPEDIA","Delete Encyclopedia");
-define("_DELENCYCONTWARNING","Are you sure you want to delete this Encyclopedia and ALL its content?");
-define("_DELENCYCLOPEDIATEXT","Delete Encyclopedia Terms");
-define("_DELENCYTEXTWARNING","Are you sure you want to delete this Term?");
-define("_CURRENTSTATUS","Current Status");
-define("_ACTIVATEPAGE","Activate This Page?");
-define("_TERMS","Terms");
-define("_ADDNEWENCYCLOPEDIA","Add a New Encyclopedia");
-define("_ADDNEWENCYTERM","Add a New Encyclopedia Term");
-define("_TERMTEXT","Term Text");
-define("_MOVETERMS","Move Terms");
-define("_MOVEALLTERMSFROM","Move ALL Terms From");
-define("_EDITENCYCLOPEDIA","Edit Encyclopedia");
-define("_ENCYTERMSEDIT","Encyclopedia Terms Edit");
-define("_SELECTONETERM","Please select one term from the following list:");
-define("_NOCONTENTFORLETTER","Sorry, there isn't any content for the letter");
-define("_CHANGETOENCY","Change to Encyclopedia");
+define_once("_SEND","Poslat");
+define_once("_FUNCTIONS","Funkce");
+define_once("_YES","Ano");
+define_once("_NO","Ne");
+define_once("_SAVECHANGES","Uložit zmìny");
+define_once("_PAGEBREAK","Pokud chcete napsat vícestupòovou stránku použijte <b>[--pagebreak--]</b> v místì, kde ji chcete zalomit.");
+define_once("_DESCRIPTION","Popis");
+define_once("_TO","Komu");
+define_once("_TITLE","Název");
+define_once("_ACTIVE","Aktivní");
+define_once("_DEACTIVATE","Deaktivovat");
+define_once("_INACTIVE","Neaktivní");
+define_once("_ACTIVATE","Aktivovat");
+define_once("_ADD","Pøidat");
+define_once("_LANGUAGE","Language");
+define_once("_ENCYCLOPEDIA","Encyclopedia");
+define_once("_ENCYCLOPEDIAMANAGER","Encyclopedia Manager");
+define_once("_DELENCYCLOPEDIA","Delete Encyclopedia");
+define_once("_DELENCYCONTWARNING","Are you sure you want to delete this Encyclopedia and ALL its content?");
+define_once("_DELENCYCLOPEDIATEXT","Delete Encyclopedia Terms");
+define_once("_DELENCYTEXTWARNING","Are you sure you want to delete this Term?");
+define_once("_CURRENTSTATUS","Current Status");
+define_once("_ACTIVATEPAGE","Activate This Page?");
+define_once("_TERMS","Terms");
+define_once("_ADDNEWENCYCLOPEDIA","Add a New Encyclopedia");
+define_once("_ADDNEWENCYTERM","Add a New Encyclopedia Term");
+define_once("_TERMTEXT","Term Text");
+define_once("_MOVETERMS","Move Terms");
+define_once("_MOVEALLTERMSFROM","Move ALL Terms From");
+define_once("_EDITENCYCLOPEDIA","Edit Encyclopedia");
+define_once("_ENCYTERMSEDIT","Encyclopedia Terms Edit");
+define_once("_SELECTONETERM","Please select one term from the following list:");
+define_once("_NOCONTENTFORLETTER","Sorry, there isn't any content for the letter");
+define_once("_CHANGETOENCY","Change to Encyclopedia");
 
 
-?>

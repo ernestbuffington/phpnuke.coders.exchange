@@ -17,11 +17,10 @@
 /* And, if you use HTML code, please double check it.                     */
 /**************************************************************************/
 
-define("_PDATE","Datum:");
-define("_PTOPIC","Téma:");
-define("_COMESFROM","Tento èlánek najdete na");
-define("_THEURL","Adresa tohoto èlánku je:");
-define("_DATE","Datum");
-define("_TITLE","Název");
+define_once("_PDATE","Datum:");
+define_once("_PTOPIC","Téma:");
+define_once("_COMESFROM","Tento èlánek najdete na");
+define_once("_THEURL","Adresa tohoto èlánku je:");
+define_once("_DATE","Datum");
+define_once("_TITLE","Název");
 
-?>

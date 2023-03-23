@@ -18,27 +18,26 @@
 /**************************************************************************/
 
 
-define("_FUNCTIONS","Funksjoner");
-define("_YES","Ja");
-define("_NO","Nei");
-define("_SAVE","Lagre");
-define("_ID","ID");
-define("_CATEGORIES","Kategorier");
-define("_ALL","Alle");
-define("_FAQ","FAQ");
-define("_CONTENT","Innhold");
-define("_FAQADMIN","FAQ Administrasjon");
-define("_ACTIVEFAQS","Aktive FAQer");
-define("_ADDCATEGORY","Legg til ny kategori");
-define("_QUESTIONS","Spørsmål og Svar");
-define("_ADDQUESTION","Legg til et nytt spørsmål");
-define("_QUESTION","Spørsmål");
-define("_ANSWER","Svar");
-define("_EDITCATEGORY","Rediger kategori");
-define("_EDITQUESTIONS","Rediger Spørsmål og Svar");
-define("_FAQDELWARNING","ADVARSEL: er du sikker på at du vil slette denne FAQ med alt innhold?");
-define("_QUESTIONDEL","ADVARSEL: er du sikker på at du vil slette dette spørsmålet?");
-define("_LANGUAGE","Språk");
+define_once("_FUNCTIONS","Funksjoner");
+define_once("_YES","Ja");
+define_once("_NO","Nei");
+define_once("_SAVE","Lagre");
+define_once("_ID","ID");
+define_once("_CATEGORIES","Kategorier");
+define_once("_ALL","Alle");
+define_once("_FAQ","FAQ");
+define_once("_CONTENT","Innhold");
+define_once("_FAQADMIN","FAQ Administrasjon");
+define_once("_ACTIVEFAQS","Aktive FAQer");
+define_once("_ADDCATEGORY","Legg til ny kategori");
+define_once("_QUESTIONS","Spørsmål og Svar");
+define_once("_ADDQUESTION","Legg til et nytt spørsmål");
+define_once("_QUESTION","Spørsmål");
+define_once("_ANSWER","Svar");
+define_once("_EDITCATEGORY","Rediger kategori");
+define_once("_EDITQUESTIONS","Rediger Spørsmål og Svar");
+define_once("_FAQDELWARNING","ADVARSEL: er du sikker på at du vil slette denne FAQ med alt innhold?");
+define_once("_QUESTIONDEL","ADVARSEL: er du sikker på at du vil slette dette spørsmålet?");
+define_once("_LANGUAGE","Språk");
 
 
-?>

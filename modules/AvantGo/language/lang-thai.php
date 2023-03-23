@@ -17,11 +17,10 @@
 /* And, if you use HTML code, please double check it.                     */
 /**************************************************************************/
 
-define("_PDATE","วัน");
-define("_PTOPIC","หัวข้อ:");
-define("_COMESFROM","บทความนี้มาจาก");
-define("_THEURL","URL สำหรับเรื่องนี้คือ:");
-define("_DATE","วันที่");
-define("_TITLE","ชื่อเรื่อง");
+define_once("_PDATE","วัน");
+define_once("_PTOPIC","หัวข้อ:");
+define_once("_COMESFROM","บทความนี้มาจาก");
+define_once("_THEURL","URL สำหรับเรื่องนี้คือ:");
+define_once("_DATE","วันที่");
+define_once("_TITLE","ชื่อเรื่อง");
 
-?>

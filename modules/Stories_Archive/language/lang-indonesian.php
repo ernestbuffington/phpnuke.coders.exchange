@@ -17,18 +17,18 @@
 /* And, if you use HTML code, please double check it.                     */
 /**************************************************************************/
 
-define("_PRINTER","Versi Cetak");
-define("_FRIEND","Kirim Berita ini ke Teman");
-define("_ARTICLES","Berita");
-define("_USCORE","Nilai");
-define("_DATE","Tanggal");
-define("_SELECTMONTH2VIEW","Silakan pilih bulan yang anda inginkan:");
-define("_SHOWALLSTORIES","Lihat SEMUA berita");
-define("_STORIESARCHIVE","Arsip Berita");
-define("_ACTIONS","Aksi");
-define("_ARCHIVESINDEX","Indeks Arsip Berita");
-define("_ALLSTORIESARCH","Semua Berita");
-define("_NEXTPAGE","Hal. Selanjutnya");
-define("_PREVIOUSPAGE","Hal. Sebelumnya");
+define_once("_PRINTER","Versi Cetak");
+define_once("_FRIEND","Kirim Berita ini ke Teman");
+define_once("_ARTICLES","Berita");
+define_once("_USCORE","Nilai");
+define_once("_DATE","Tanggal");
+define_once("_SELECTMONTH2VIEW","Silakan pilih bulan yang anda inginkan:");
+define_once("_SHOWALLSTORIES","Lihat SEMUA berita");
+define_once("_STORIESARCHIVE","Arsip Berita");
+define_once("_ACTIONS","Aksi");
+define_once("_ARCHIVESINDEX","Indeks Arsip Berita");
+define_once("_ALLSTORIESARCH","Semua Berita");
+define_once("_NEXTPAGE","Hal. Selanjutnya");
+define_once("_PREVIOUSPAGE","Hal. Sebelumnya");
 
-?>
+

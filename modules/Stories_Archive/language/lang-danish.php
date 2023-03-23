@@ -15,18 +15,17 @@
 /* Hvis de finder fejl må og skal de sende en e-mail eller icq til mig!   */
 /**************************************************************************/
 
-define("_PRINTER","Printervenlig side");
-define("_FRIEND","Send denne nyhed til en ven");
-define("_ARTICLES","Artikler");
-define("_USCORE","Score");
-define("_DATE","Dato");
-define("_SELECTMONTH2VIEW","Vær venlig at vælge den måned de vil se:");
-define("_SHOWALLSTORIES","Vis ALLE historier");
-define("_STORIESARCHIVE","Historie arkiv");
-define("_ACTIONS","Handlinger");
-define("_ARCHIVESINDEX","Historie arkivs startside");
-define("_ALLSTORIESARCH","Alle historier");
-define("_NEXTPAGE","Næste side");
-define("_PREVIOUSPAGE","Forrige side");
+define_once("_PRINTER","Printervenlig side");
+define_once("_FRIEND","Send denne nyhed til en ven");
+define_once("_ARTICLES","Artikler");
+define_once("_USCORE","Score");
+define_once("_DATE","Dato");
+define_once("_SELECTMONTH2VIEW","Vær venlig at vælge den måned de vil se:");
+define_once("_SHOWALLSTORIES","Vis ALLE historier");
+define_once("_STORIESARCHIVE","Historie arkiv");
+define_once("_ACTIONS","Handlinger");
+define_once("_ARCHIVESINDEX","Historie arkivs startside");
+define_once("_ALLSTORIESARCH","Alle historier");
+define_once("_NEXTPAGE","Næste side");
+define_once("_PREVIOUSPAGE","Forrige side");
 
-?>

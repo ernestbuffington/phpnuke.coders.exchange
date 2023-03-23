@@ -4,8 +4,8 @@
 /* PHP-NUKE: Web Portal System                                          */
 /* ===========================                                          */
 /*                                                                      */
-/* Copyright (c) 2007 by Francisco Burzi                                */
-/* http://phpnuke.org                                                   */
+/* Copyright (c) 2023 by Francisco Burzi                                */
+/* http://www.phpnuke.coders.exchange                                   */
 /*                                                                      */
 /* This program is free software. You can redistribute it and/or modify */
 /* it under the terms of the GNU General Public License as published by */
@@ -17,11 +17,11 @@
 // module's directory. It's all, as easy as it sounds ;)
 
 $author_name = "Francisco Burzi";
-$author_email = "";
-$author_homepage = "http://phpnuke.org";
+$author_email = "fburzi@gmail.com";
+$author_homepage = "https://phpnuke.coders.exchange";
 $license = "GNU/GPL";
-$download_location = "http://phpnuke.org/modules.php?name=Downloads";
-$module_version = "1.0";
+$download_location = "https://phpnuke.coders.exchange/modules.php?name=Downloads";
+$module_version = "1.1";
 $module_description = "Encyclopedia system to manage big lists of terms.";
 
 // DO NOT TOUCH THE FOLLOWING COPYRIGHT CODE. YOU'RE JUST ALLOWED TO CHANGE YOUR "OWN"
@@ -41,7 +41,7 @@ function show_copyright() {
     if ($module_version == "") { $module_version = "N/A"; }
     if ($module_description == "") { $module_description = "N/A"; }
     $module_name = basename(dirname(__FILE__));
-    $module_name = eregi_replace("_", " ", $module_name);
+    $module_name = preg_replace('#_#mi', " ", $module_name);
     echo "<html>\n"
 	."<body bgcolor=\"#F6F6EB\" link=\"#363636\" alink=\"#363636\" vlink=\"#363636\">\n"
 	."<title>$module_name: Copyright Information</title>\n"

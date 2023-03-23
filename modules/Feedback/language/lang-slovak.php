@@ -31,19 +31,19 @@
 /*************************************************************************/
 /**************************************************************************/
 
-define("_SEND","Posla");
-define("_YOURNAME","Vaše meno");
-define("_MESSAGE","Odkaz");
-define("_YOUREMAIL","Váš e-mail");
-define("_FEEDBACKNOTE","Vaše komentáre, návrhy a pripomienky k tejto stránke sú vítané a ve¾mi prospešné. Ïakujeme.");
-define("_FEEDBACKTITLE","Formulár");
-define("_FEEDBACK","Napíšte nám");
-define("_FBENTERNAME","Napíšte Vaše meno!");
-define("_FBENTEREMAIL","Napíšte korektne Vašu e-mailovú adresu!");
-define("_FBENTERMESSAGE","Napíšte odkaz!");
-define("_SENDEREMAIL","Email odosielatela");
-define("_SENDERNAME","Meno odosielatela");
-define("_FBMAILSENT","Odkaz bol poslaný!");
-define("_FBTHANKSFORCONTACT","Ïakujeme, že ste nás kontaktovali.");
+define_once("_SEND","Posla");
+define_once("_YOURNAME","Vaše meno");
+define_once("_MESSAGE","Odkaz");
+define_once("_YOUREMAIL","Váš e-mail");
+define_once("_FEEDBACKNOTE","Vaše komentáre, návrhy a pripomienky k tejto stránke sú vítané a ve¾mi prospešné. Ïakujeme.");
+define_once("_FEEDBACKTITLE","Formulár");
+define_once("_FEEDBACK","Napíšte nám");
+define_once("_FBENTERNAME","Napíšte Vaše meno!");
+define_once("_FBENTEREMAIL","Napíšte korektne Vašu e-mailovú adresu!");
+define_once("_FBENTERMESSAGE","Napíšte odkaz!");
+define_once("_SENDEREMAIL","Email odosielatela");
+define_once("_SENDERNAME","Meno odosielatela");
+define_once("_FBMAILSENT","Odkaz bol poslaný!");
+define_once("_FBTHANKSFORCONTACT","Ïakujeme, že ste nás kontaktovali.");
 
-?>
+

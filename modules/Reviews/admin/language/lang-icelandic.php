@@ -18,29 +18,28 @@
 /**************************************************************************/
 
 
-define("_EMAIL","Netfang");
-define("_SAVECHANGES","Vista breytingar");
-define("_SCORE","Einkunn:");
-define("_PRODUCTTITLE","Titill vöru");
-define("_RELATEDLINK","Tengd vefslóð");
-define("_LINKTITLE","Titill vefslóðar");
-define("_REVIEWER","Höfundur:");
-define("_REVIEWID","Umsögn nr.");
-define("_REVIEWS","umsagnir");
-define("_DATE","Dags");
-define("_REVADMIN","Stjórnsíða umsagna");
-define("_REVTITLE","Titill umsagnasíðu");
-define("_REVDESC","Lengri lýsing á umsagnasíðu");
-define("_REVWAITING","Umsagnir sem býða yfirlestrar");
-define("_REVIMGINFO","Vistaðu 150*150 myndir í images/reviews");
-define("_TEXT","Texti");
-define("_IMAGE","Mynd");
-define("_NOREVIEW2ADD","Engar umsagnir býða");
-define("_ADDREVIEW","Setja umsögn inn");
-define("_CLICK2ADDREVIEW","Smelltu hér til að skrifa umsögn");
-define("_DELMODREVIEW","Eyða eða breyta umsögnum");
-define("_MODREVINFO","Þú getur einfaldlega eytt/breytt umsögnum með því að fara á <a href=\"modules.php?name=Reviews\">Reviews</a> sem Kerfisstjóri.");
-define("_LANGUAGE","Tungumál");
+define_once("_EMAIL","Netfang");
+define_once("_SAVECHANGES","Vista breytingar");
+define_once("_SCORE","Einkunn:");
+define_once("_PRODUCTTITLE","Titill vöru");
+define_once("_RELATEDLINK","Tengd vefslóð");
+define_once("_LINKTITLE","Titill vefslóðar");
+define_once("_REVIEWER","Höfundur:");
+define_once("_REVIEWID","Umsögn nr.");
+define_once("_REVIEWS","umsagnir");
+define_once("_DATE","Dags");
+define_once("_REVADMIN","Stjórnsíða umsagna");
+define_once("_REVTITLE","Titill umsagnasíðu");
+define_once("_REVDESC","Lengri lýsing á umsagnasíðu");
+define_once("_REVWAITING","Umsagnir sem býða yfirlestrar");
+define_once("_REVIMGINFO","Vistaðu 150*150 myndir í images/reviews");
+define_once("_TEXT","Texti");
+define_once("_IMAGE","Mynd");
+define_once("_NOREVIEW2ADD","Engar umsagnir býða");
+define_once("_ADDREVIEW","Setja umsögn inn");
+define_once("_CLICK2ADDREVIEW","Smelltu hér til að skrifa umsögn");
+define_once("_DELMODREVIEW","Eyða eða breyta umsögnum");
+define_once("_MODREVINFO","Þú getur einfaldlega eytt/breytt umsögnum með því að fara á <a href=\"modules.php?name=Reviews\">Reviews</a> sem Kerfisstjóri.");
+define_once("_LANGUAGE","Tungumál");
 
 
-?>

@@ -18,36 +18,35 @@
 /**************************************************************************/
 
 
-define("_YES","Да");
-define("_NO","Нет");
-define("_CATEGORY","Категория");
-define("_SAVECHANGES","Сохранить изменения");
-define("_ARTICLES","Статьи");
-define("_SELECTTOPIC","Выберите тему");
-define("_OPTION","Опции");
-define("_ADMPOLLS","Опросы");
-define("_TITLE","Зоголовог");
-define("_STORYTEXT","Текст");
-define("_EXTENDEDTEXT","Расширенный текст");
-define("_PUBLISHINHOME","Разместить на домашней странице?");
-define("_ONLYIFCATSELECTED","Работает только если <i>Статьи</i> в нужной категирии");
-define("_ADD","Добавить");
-define("_POLLSADMIN","Вопрос/ответ");
-define("_CREATEPOLL","Создать новый опрос");
-define("_DELETEPOLLS","удалить опрос");
-define("_POLLTITLE","Вопрос");
-define("_POLLEACHFIELD","Введите варианты ответа");
-define("_CREATEPOLLBUT","создать");
-define("_REMOVEEXISTING","Удалить опрос");
-define("_POLLDELWARNING","ВНИМАНИЕ! Опрос будет удален неменлянно!");
-define("_CHOOSEPOLL","Выбберите опрос:");
-define("_EDITPOLL","Edit Polls");
-define("_CHOOSEPOLLEDIT","Choose the Poll you want to edit:");
-define("_ACTIVATECOMMENTS","Activate Comments for this Story?");
-define("_LANGUAGE","Language");
-define("_ANNOUNCEPOLL","Announce this new Survey in your site");
-define("_LEAVEBLANK","(Leave blank to create a new survey without announce it)");
-define("_POLLEDIT","Edit Poll:");
+define_once("_YES","Да");
+define_once("_NO","Нет");
+define_once("_CATEGORY","Категория");
+define_once("_SAVECHANGES","Сохранить изменения");
+define_once("_ARTICLES","Статьи");
+define_once("_SELECTTOPIC","Выберите тему");
+define_once("_OPTION","Опции");
+define_once("_ADMPOLLS","Опросы");
+define_once("_TITLE","Зоголовог");
+define_once("_STORYTEXT","Текст");
+define_once("_EXTENDEDTEXT","Расширенный текст");
+define_once("_PUBLISHINHOME","Разместить на домашней странице?");
+define_once("_ONLYIFCATSELECTED","Работает только если <i>Статьи</i> в нужной категирии");
+define_once("_ADD","Добавить");
+define_once("_POLLSADMIN","Вопрос/ответ");
+define_once("_CREATEPOLL","Создать новый опрос");
+define_once("_DELETEPOLLS","удалить опрос");
+define_once("_POLLTITLE","Вопрос");
+define_once("_POLLEACHFIELD","Введите варианты ответа");
+define_once("_CREATEPOLLBUT","создать");
+define_once("_REMOVEEXISTING","Удалить опрос");
+define_once("_POLLDELWARNING","ВНИМАНИЕ! Опрос будет удален неменлянно!");
+define_once("_CHOOSEPOLL","Выбберите опрос:");
+define_once("_EDITPOLL","Edit Polls");
+define_once("_CHOOSEPOLLEDIT","Choose the Poll you want to edit:");
+define_once("_ACTIVATECOMMENTS","Activate Comments for this Story?");
+define_once("_LANGUAGE","Language");
+define_once("_ANNOUNCEPOLL","Announce this new Survey in your site");
+define_once("_LEAVEBLANK","(Leave blank to create a new survey without announce it)");
+define_once("_POLLEDIT","Edit Poll:");
 
 
-?>

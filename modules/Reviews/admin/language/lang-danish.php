@@ -18,29 +18,28 @@
 /**************************************************************************/
 
 
-define("_EMAIL","E-mailadresse");
-define("_SAVECHANGES","Gem");
-define("_SCORE","Hits:");
-define("_PRODUCTTITLE","Overskrift på anmeldelse");
-define("_RELATEDLINK","Relateret link");
-define("_LINKTITLE","Titel på link");
-define("_REVIEWER","Anmelder:");
-define("_REVIEWID","ID på anmeldelse");
-define("_REVIEWS","Administration af anmeldelser");
-define("_DATE","Dato");
-define("_REVADMIN","Administration af anmeldelser");
-define("_REVTITLE","Titel på siden med anmeldelser");
-define("_REVDESC","Beskrivelse på side med anmeldelser");
-define("_REVWAITING","Anmeldelser som venter på at blive gennemset");
-define("_REVIMGINFO","Gem dit billede (størrelse 150*150) i mappen: images/reviews");
-define("_TEXT","Tekst");
-define("_IMAGE","Billede");
-define("_NOREVIEW2ADD","Ingen indsendte anmeldelser som venter på gennemsyn");
-define("_ADDREVIEW","Opret anmeldelse");
-define("_CLICK2ADDREVIEW","Klik her for at skrive en anmeldelse");
-define("_DELMODREVIEW","Slet eller foretag ændringer i en anmeldelse");
-define("_MODREVINFO","Når du er logget ind som administrator, kan du redigere og slette anmeldelser ved at browse under <a href=\"modules.php?name=Reviews\">anmeldelser. (reviews.php)</a>");
-define("_LANGUAGE","Sprog");
+define_once("_EMAIL","E-mailadresse");
+define_once("_SAVECHANGES","Gem");
+define_once("_SCORE","Hits:");
+define_once("_PRODUCTTITLE","Overskrift på anmeldelse");
+define_once("_RELATEDLINK","Relateret link");
+define_once("_LINKTITLE","Titel på link");
+define_once("_REVIEWER","Anmelder:");
+define_once("_REVIEWID","ID på anmeldelse");
+define_once("_REVIEWS","Administration af anmeldelser");
+define_once("_DATE","Dato");
+define_once("_REVADMIN","Administration af anmeldelser");
+define_once("_REVTITLE","Titel på siden med anmeldelser");
+define_once("_REVDESC","Beskrivelse på side med anmeldelser");
+define_once("_REVWAITING","Anmeldelser som venter på at blive gennemset");
+define_once("_REVIMGINFO","Gem dit billede (størrelse 150*150) i mappen: images/reviews");
+define_once("_TEXT","Tekst");
+define_once("_IMAGE","Billede");
+define_once("_NOREVIEW2ADD","Ingen indsendte anmeldelser som venter på gennemsyn");
+define_once("_ADDREVIEW","Opret anmeldelse");
+define_once("_CLICK2ADDREVIEW","Klik her for at skrive en anmeldelse");
+define_once("_DELMODREVIEW","Slet eller foretag ændringer i en anmeldelse");
+define_once("_MODREVINFO","Når du er logget ind som administrator, kan du redigere og slette anmeldelser ved at browse under <a href=\"modules.php?name=Reviews\">anmeldelser. (reviews.php)</a>");
+define_once("_LANGUAGE","Sprog");
 
 
-?>

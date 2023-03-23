@@ -17,30 +17,30 @@
 /* And, if you use HTML code, please double check it.                     */
 /**************************************************************************/
 
-define("_PRINTER","Faqe e Stampueshme");
-define("_FRIEND","Dërgoja këtë Artikull ndonjë Miku");
-define("_ARTICLES","Artikuj");
-define("_USCORE","Vota");
-define("_DATE","Data");
-define("_JANUARY","Janar");
-define("_FEBRUARY","Shkurt");
-define("_MARCH","Mars");
-define("_APRIL","Prill");
-define("_MAY","Maj");
-define("_JUNE","Qershor");
-define("_JULY","Korrik");
-define("_AUGUST","Gusht");
-define("_SEPTEMBER","Shtator");
-define("_OCTOBER","Tetor");
-define("_NOVEMBER","Nëntor");
-define("_DECEMBER","Dhjetor");
-define("_SELECTMONTH2VIEW","Seleksiono muajin që dëshiron të shohësh:");
-define("_SHOWALLSTORIES","Shfaq të gjithë artikujt");
-define("_STORIESARCHIVE","Arkivi i artikujve");
-define("_ACTIONS","Aksione");
-define("_ARCHIVESINDEX","Treguesi i arkivit të artikujve");
-define("_ALLSTORIESARCH","Të gjithë artikujt");
-define("_NEXTPAGE","Faqja në vazhdim");
-define("_PREVIOUSPAGE","Faqja e kaluar");
+define_once("_PRINTER","Faqe e Stampueshme");
+define_once("_FRIEND","Dërgoja këtë Artikull ndonjë Miku");
+define_once("_ARTICLES","Artikuj");
+define_once("_USCORE","Vota");
+define_once("_DATE","Data");
+define_once("_JANUARY","Janar");
+define_once("_FEBRUARY","Shkurt");
+define_once("_MARCH","Mars");
+define_once("_APRIL","Prill");
+define_once("_MAY","Maj");
+define_once("_JUNE","Qershor");
+define_once("_JULY","Korrik");
+define_once("_AUGUST","Gusht");
+define_once("_SEPTEMBER","Shtator");
+define_once("_OCTOBER","Tetor");
+define_once("_NOVEMBER","Nëntor");
+define_once("_DECEMBER","Dhjetor");
+define_once("_SELECTMONTH2VIEW","Seleksiono muajin që dëshiron të shohësh:");
+define_once("_SHOWALLSTORIES","Shfaq të gjithë artikujt");
+define_once("_STORIESARCHIVE","Arkivi i artikujve");
+define_once("_ACTIONS","Aksione");
+define_once("_ARCHIVESINDEX","Treguesi i arkivit të artikujve");
+define_once("_ALLSTORIESARCH","Të gjithë artikujt");
+define_once("_NEXTPAGE","Faqja në vazhdim");
+define_once("_PREVIOUSPAGE","Faqja e kaluar");
 
-?>
+

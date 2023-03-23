@@ -17,11 +17,11 @@
 /* And, if you use HTML code, please double check it.                     */
 /**************************************************************************/
 
-define("_PDATE","Датум:");
-define("_PTOPIC","Тема:");
-define("_COMESFROM","Оваа тема доаѓа од");
-define("_THEURL","Адресата за оваа вест е:");
-define("_DATE","Дата");
-define("_TITLE","Наслов");
+define_once("_PDATE","Датум:");
+define_once("_PTOPIC","Тема:");
+define_once("_COMESFROM","Оваа тема доаѓа од");
+define_once("_THEURL","Адресата за оваа вест е:");
+define_once("_DATE","Дата");
+define_once("_TITLE","Наслов");
 
-?>
+

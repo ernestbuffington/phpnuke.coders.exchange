@@ -17,19 +17,18 @@
 /* And, if you use HTML code, please double check it.                     */
 /**************************************************************************/
 
-define("_SEND","ÃÑÓá");
-define("_YOURNAME","ÇÓãß");
-define("_MESSAGE","ÇáÑÓÇáÉ");
-define("_YOUREMAIL","ÈÑíÏß ÇáÅáßÊÑæäí");
-define("_FEEDBACKNOTE","äÑÍÈ ÈÌãíÚ ÇáãÞÊÑÍÇÊ æÇáÊÚáíÞÇÊ Íæá ÇáãæÞÚ!");
-define("_FEEDBACKTITLE","äãæÐÌ áãÑÇÓáÊäÇ");
-define("_FEEDBACK","ãÑÇÓáÊäÇ");
-define("_FBENTERNAME","ÎØÃ: ÇáÑÌÇÁ ÇÏÎÇá ÇÓãß!");
-define("_FBENTEREMAIL","ÎØÃ: ÇáÑÌÇÁ ÇÏÎÇá ÚäæÇäß ÇáÈÑíÏí!");
-define("_FBENTERMESSAGE","ÎØÃ: áã ÊßÊÈ ÑÓÇáÊß!");
-define("_SENDEREMAIL","ÈÑíÏ ÇáãÑÓá");
-define("_SENDERNAME","ÇÓã ÇáãÑÓá");
-define("_FBMAILSENT","Êã ÇÑÓÇá ÑÓÇáÊß!");
-define("_FBTHANKSFORCONTACT","äÔßÑß áãÑÇÓáÊäÇ");
+define_once("_SEND","ÃÑÓá");
+define_once("_YOURNAME","ÇÓãß");
+define_once("_MESSAGE","ÇáÑÓÇáÉ");
+define_once("_YOUREMAIL","ÈÑíÏß ÇáÅáßÊÑæäí");
+define_once("_FEEDBACKNOTE","äÑÍÈ ÈÌãíÚ ÇáãÞÊÑÍÇÊ æÇáÊÚáíÞÇÊ Íæá ÇáãæÞÚ!");
+define_once("_FEEDBACKTITLE","äãæÐÌ áãÑÇÓáÊäÇ");
+define_once("_FEEDBACK","ãÑÇÓáÊäÇ");
+define_once("_FBENTERNAME","ÎØÃ: ÇáÑÌÇÁ ÇÏÎÇá ÇÓãß!");
+define_once("_FBENTEREMAIL","ÎØÃ: ÇáÑÌÇÁ ÇÏÎÇá ÚäæÇäß ÇáÈÑíÏí!");
+define_once("_FBENTERMESSAGE","ÎØÃ: áã ÊßÊÈ ÑÓÇáÊß!");
+define_once("_SENDEREMAIL","ÈÑíÏ ÇáãÑÓá");
+define_once("_SENDERNAME","ÇÓã ÇáãÑÓá");
+define_once("_FBMAILSENT","Êã ÇÑÓÇá ÑÓÇáÊß!");
+define_once("_FBTHANKSFORCONTACT","äÔßÑß áãÑÇÓáÊäÇ");
 
-?>

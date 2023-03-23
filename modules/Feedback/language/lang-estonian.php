@@ -17,19 +17,18 @@
 /* And, if you use HTML code, please double check it.                     */
 /**************************************************************************/
 
-define("_SEND","Saada");
-define("_YOURNAME","Sinu nimi");
-define("_MESSAGE","Teade");
-define("_YOUREMAIL","Sinu Email");
-define("_FEEDBACKNOTE","Kõik kommentarid ja ettepanekud selle veebilehe kohta on teretulnud, see on väärtuslik informatsioon meile. Tänan!");
-define("_FEEDBACKTITLE","Tagaside väljad");
-define("_FEEDBACK","Tagasiside");
-define("_FBENTERNAME","VIGA: Palun sisesta oma nimi!");
-define("_FBENTEREMAIL","VIGA: Palun sisesta oma E-maili address!");
-define("_FBENTERMESSAGE","VIGA: Palun täida kõik väljad!");
-define("_SENDEREMAIL","Saatja Email");
-define("_SENDERNAME","Saatja nimi");
-define("_FBMAILSENT","Mail on saatetud!");
-define("_FBTHANKSFORCONTACT","Tänan, et võtsid meiega ühendust");
+define_once("_SEND","Saada");
+define_once("_YOURNAME","Sinu nimi");
+define_once("_MESSAGE","Teade");
+define_once("_YOUREMAIL","Sinu Email");
+define_once("_FEEDBACKNOTE","Kõik kommentarid ja ettepanekud selle veebilehe kohta on teretulnud, see on väärtuslik informatsioon meile. Tänan!");
+define_once("_FEEDBACKTITLE","Tagaside väljad");
+define_once("_FEEDBACK","Tagasiside");
+define_once("_FBENTERNAME","VIGA: Palun sisesta oma nimi!");
+define_once("_FBENTEREMAIL","VIGA: Palun sisesta oma E-maili address!");
+define_once("_FBENTERMESSAGE","VIGA: Palun täida kõik väljad!");
+define_once("_SENDEREMAIL","Saatja Email");
+define_once("_SENDERNAME","Saatja nimi");
+define_once("_FBMAILSENT","Mail on saatetud!");
+define_once("_FBTHANKSFORCONTACT","Tänan, et võtsid meiega ühendust");
 
-?>

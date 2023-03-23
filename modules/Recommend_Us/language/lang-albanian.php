@@ -17,23 +17,22 @@
 /* And, if you use HTML code, please double check it.                     */
 /**************************************************************************/
 
-define("_SEND","Dërgoje");
-define("_FYOURNAME","Emri Juaj:");
-define("_FYOUREMAIL","E-mail Juaj:");
-define("_FFRIENDNAME","Emri i Mikut Tuaj:");
-define("_FFRIENDEMAIL","E-mail i Mikut Tuaj:");
-define("_HELLO","Përshëndetje");
-define("_YOURFRIEND","Miku Juaj");
-define("_RECOMMEND","Rakomandoja këtë Sit një Miku");
-define("_INTSITE","Sit Interesant:");
-define("_OURSITE","ka konsideruar sitin tonë");
-define("_INTSENT","interesant dhe ka dashur t'jua dërgojë.");
-define("_FSITENAME","Emri i Sitit:");
-define("_FSITEURL","URL e Sitit:");
-define("_FREFERENCE","Referimet e sitit tonë u dërguan tek");
-define("_THANKSREC","Faleminderit!");
-define("_SECURITYCODEERROR","<b>ERROR:</b> The security code you wrote is incorrect...<br>Please write it exactly as given bellow:");
+define_once("_SEND","Dërgoje");
+define_once("_FYOURNAME","Emri Juaj:");
+define_once("_FYOUREMAIL","E-mail Juaj:");
+define_once("_FFRIENDNAME","Emri i Mikut Tuaj:");
+define_once("_FFRIENDEMAIL","E-mail i Mikut Tuaj:");
+define_once("_HELLO","Përshëndetje");
+define_once("_YOURFRIEND","Miku Juaj");
+define_once("_RECOMMEND","Rakomandoja këtë Sit një Miku");
+define_once("_INTSITE","Sit Interesant:");
+define_once("_OURSITE","ka konsideruar sitin tonë");
+define_once("_INTSENT","interesant dhe ka dashur t'jua dërgojë.");
+define_once("_FSITENAME","Emri i Sitit:");
+define_once("_FSITEURL","URL e Sitit:");
+define_once("_FREFERENCE","Referimet e sitit tonë u dërguan tek");
+define_once("_THANKSREC","Faleminderit!");
+define_once("_SECURITYCODEERROR","<b>ERROR:</b> The security code you wrote is incorrect...<br>Please write it exactly as given bellow:");
 
-define("_SENDSITEERROR","<b>Error sending the recommendation...</b><br><br><b>ERROR:</b> One or more required fields are empty.<br>Please go back and correct the problem, then try again.");
+define_once("_SENDSITEERROR","<b>Error sending the recommendation...</b><br><br><b>ERROR:</b> One or more required fields are empty.<br>Please go back and correct the problem, then try again.");
 
-?>

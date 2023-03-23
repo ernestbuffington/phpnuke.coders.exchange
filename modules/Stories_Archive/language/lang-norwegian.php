@@ -17,18 +17,17 @@
 /* And, if you use HTML code, please double check it.                     */
 /**************************************************************************/
 
-define("_PRINTER","Utskriftsvennlig side");
-define("_FRIEND","Send denne artikkelen til en venn");
-define("_ARTICLES","Artiklene");
-define("_USCORE","Poeng");
-define("_DATE","Dato");
-define("_SELECTMONTH2VIEW","Velg måneden du vil se:");
-define("_SHOWALLSTORIES","Vis ALLE artikler");
-define("_STORIESARCHIVE","Artikkelarkiv");
-define("_ACTIONS","Valg");
-define("_ARCHIVESINDEX","Artikkelarkiv hovedside");
-define("_ALLSTORIESARCH","Alle artikler");
-define("_NEXTPAGE","Neste side");
-define("_PREVIOUSPAGE","Forrige side");
+define_once("_PRINTER","Utskriftsvennlig side");
+define_once("_FRIEND","Send denne artikkelen til en venn");
+define_once("_ARTICLES","Artiklene");
+define_once("_USCORE","Poeng");
+define_once("_DATE","Dato");
+define_once("_SELECTMONTH2VIEW","Velg måneden du vil se:");
+define_once("_SHOWALLSTORIES","Vis ALLE artikler");
+define_once("_STORIESARCHIVE","Artikkelarkiv");
+define_once("_ACTIONS","Valg");
+define_once("_ARCHIVESINDEX","Artikkelarkiv hovedside");
+define_once("_ALLSTORIESARCH","Alle artikler");
+define_once("_NEXTPAGE","Neste side");
+define_once("_PREVIOUSPAGE","Forrige side");
 
-?>

@@ -17,19 +17,18 @@
 /* And, if you use HTML code, please double check it.                     */
 /**************************************************************************/
 
-define("_PRINTER","Versión para imprimir");
-define("_FRIEND","Enviar a un amigo");
-define("_ARTICLES","Artigos");
-define("_USCORE","Puntuación");
-define("_DATE","Fecha");
+define_once("_PRINTER","Versión para imprimir");
+define_once("_FRIEND","Enviar a un amigo");
+define_once("_ARTICLES","Artigos");
+define_once("_USCORE","Puntuación");
+define_once("_DATE","Fecha");
 
-define("_SELECTMONTH2VIEW","Seleccione o mes que quere ver:");
-define("_SHOWALLSTORIES","Mostar TÓDA-LAS Noticas");
-define("_STORIESARCHIVE","Arquivo de Noticias");
-define("_ACTIONS","Accións");
-define("_ARCHIVESINDEX","Índice do Arquivo de Noticias");
-define("_ALLSTORIESARCH","Tóda-las Noticias");
-define("_NEXTPAGE","Próxima Páxina");
-define("_PREVIOUSPAGE","Páxina Previa");
+define_once("_SELECTMONTH2VIEW","Seleccione o mes que quere ver:");
+define_once("_SHOWALLSTORIES","Mostar TÓDA-LAS Noticas");
+define_once("_STORIESARCHIVE","Arquivo de Noticias");
+define_once("_ACTIONS","Accións");
+define_once("_ARCHIVESINDEX","Índice do Arquivo de Noticias");
+define_once("_ALLSTORIESARCH","Tóda-las Noticias");
+define_once("_NEXTPAGE","Próxima Páxina");
+define_once("_PREVIOUSPAGE","Páxina Previa");
 
-?>

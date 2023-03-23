@@ -18,29 +18,28 @@
 /**************************************************************************/
 
 
-define("_EMAIL","Email");
-define("_SAVECHANGES","Salva Modifiche");
-define("_SCORE","Voto:");
-define("_PRODUCTTITLE","Titolo Prodotto");
-define("_RELATEDLINK","Link Correlati");
-define("_LINKTITLE","Titolo Link");
-define("_REVIEWER","Recensore:");
-define("_REVIEWID","Recensione ID");
-define("_REVIEWS","Recensioni");
-define("_DATE","Data");
-define("_REVADMIN","Amministrazione Recensioni");
-define("_REVTITLE","Titolo Pagina Recensioni");
-define("_REVDESC","Descrizione Pagina Recensioni");
-define("_REVWAITING","Recensioni in Attesa di Convalida");
-define("_REVIMGINFO","Salva l'immagine 150*150 in images/reviews");
-define("_TEXT","Testo");
-define("_IMAGE","Immagine");
-define("_NOREVIEW2ADD","Nessuna Recensione da aggiungere");
-define("_ADDREVIEW","Aggiungi Recensione");
-define("_CLICK2ADDREVIEW","Clicca qui per scrivere una recensione");
-define("_DELMODREVIEW","Cancella/Modifica una recensione");
-define("_MODREVINFO","Puoi cancellare/modificare le recensioni entrando in <a href=\"modules.php?name=Reviews\">Reviews</a> come Admin.");
-define("_LANGUAGE","Lingua");
+define_once("_EMAIL","Email");
+define_once("_SAVECHANGES","Salva Modifiche");
+define_once("_SCORE","Voto:");
+define_once("_PRODUCTTITLE","Titolo Prodotto");
+define_once("_RELATEDLINK","Link Correlati");
+define_once("_LINKTITLE","Titolo Link");
+define_once("_REVIEWER","Recensore:");
+define_once("_REVIEWID","Recensione ID");
+define_once("_REVIEWS","Recensioni");
+define_once("_DATE","Data");
+define_once("_REVADMIN","Amministrazione Recensioni");
+define_once("_REVTITLE","Titolo Pagina Recensioni");
+define_once("_REVDESC","Descrizione Pagina Recensioni");
+define_once("_REVWAITING","Recensioni in Attesa di Convalida");
+define_once("_REVIMGINFO","Salva l'immagine 150*150 in images/reviews");
+define_once("_TEXT","Testo");
+define_once("_IMAGE","Immagine");
+define_once("_NOREVIEW2ADD","Nessuna Recensione da aggiungere");
+define_once("_ADDREVIEW","Aggiungi Recensione");
+define_once("_CLICK2ADDREVIEW","Clicca qui per scrivere una recensione");
+define_once("_DELMODREVIEW","Cancella/Modifica una recensione");
+define_once("_MODREVINFO","Puoi cancellare/modificare le recensioni entrando in <a href=\"modules.php?name=Reviews\">Reviews</a> come Admin.");
+define_once("_LANGUAGE","Lingua");
 
 
-?>

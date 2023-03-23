@@ -1,206 +1,208 @@
-<?php
-
-/**************************************************************************/
-/* PHP-NUKE: Advanced Content Management System                           */
-/* ============================================                           */
-/*                                                                        */
-/* This is the language module with all the system messages               */
-/*                                                                        */
-/* If you made a translation, please go to the site and send to me        */
-/* the translated file. Please keep the original text order by modules,   */
-/* and just one message per line, also double check your translation!     */
-/*                                                                        */
-/* You need to change the second quoted phrase, not the capital one!      */
-/*                                                                        */
-/* If you need to use double quotes (") remember to add a backslash (\),  */
-/* so your entry will look like: This is \"double quoted\" text.          */
-/* And, if you use HTML code, please double check it.                     */
-/**************************************************************************/
-
-/**************************************************************************/
-/* Доп. перевод, проверка синтаксиса/Add. Russian transl.& spell checking:*/
-/*         Александр Бурчак / Alexander Burchak, alexburchak@ua.fm        */
-/* Дата/Date:                                                             */
-/*         15.03.2004                                                     */
-/**************************************************************************/
-
-define("_URL","URL");
-define("_PREVIOUS","Предыдущая страница");
-define("_NEXT","Следующая страница");
-define("_CATEGORY","Категория");
-define("_CATEGORIES","Категории");
-define("_LVOTES","голоса");
-define("_TOTALVOTES","Всего голосов:");
-define("_THEREARE","Сейчас");
-define("_NOMATCHES","Ничего не найдено по Вашему запросу");
-define("_SCOMMENTS","Комментарии");
-define("_UNKNOWN","Неизвестное");
-define("_AUTHORNAME","Имя автора");
-define("_AUTHOREMAIL","E-mail автора");
-define("_DOWNLOADNAME","Название программы");
-define("_ADDTHISFILE","Добавить этот файл");
-define("_INBYTES","в байтах");
-define("_FILESIZE","Размер файла");
-define("_VERSION","Версия");
-define("_DESCRIPTION","Описание");
-define("_AUTHOR","Автор");
-define("_HOMEPAGE","Домашняя страничка");
-define("_DOWNLOADNOW","Загрузить этот файл сейчас!");
-define("_RATERESOURCE","Голосовать за ресурс");
-define("_FILEURL","Ссылка на файл");
-define("_ADDDOWNLOAD","Добавить закачку");
-define("_DOWNLOADSMAIN","Главная страница закачки");
-define("_DOWNLOADCOMMENTS","Комментарии к закачке");
-define("_DOWNLOADSMAINCAT","Главные категории закачки");
-define("_ADDADOWNLOAD","Добавить новую закачку");
-define("_DSUBMITONCE","Публикуйте каждую закачку только один раз.");
-define("_DPOSTPENDING","Все файлы перед публикацией проверяются.");
-define("_RESSORTED","Ресурсы отсортированы по");
-define("_DOWNLOADSNOTUSER1","Вы не зарегистрированы или не вошли в систему.");
-define("_DOWNLOADSNOTUSER2","Зарегистрированные пользователи имеют возможность добавлять закачки на этом сайте.");
-define("_DOWNLOADSNOTUSER3","Регистрация пользователя - быстрый и легкий процесс.");
-define("_DOWNLOADSNOTUSER4","Почему мы требуем регистрацию пользователя?");
-define("_DOWNLOADSNOTUSER5","Итак, мы предлагаем Вам только самое лучшее,");
-define("_DOWNLOADSNOTUSER6","каждый пункт индивидуально просмотрен и одобрен нашим персоналом.");
-define("_DOWNLOADSNOTUSER7","Мы надеемся, что предлагаем Вам только ценную информацию.");
-define("_DOWNLOADSNOTUSER8","<a href=\"modules.php?name=Your_Account\">Зарегистрироваться</a>");
-define("_DOWNLOADALREADYEXT","Ошибка: Этот URL уже имеется в наше базе данных!");
-define("_DOWNLOADNOTITLE","Ошибка: Вы должны указать название для Вашего URL!");
-define("_DOWNLOADNOURL","Ошибка: Вы должны указать URL для Вашего URL!");
-define("_DOWNLOADNODESC","Ошибка: Вы должны указать описание Вашего URL!");
-define("_DOWNLOADRECEIVED","Спасибо! Мы получили Вашу публикацию.");
-define("_NEWDOWNLOADS","Новые закачки");
-define("_TOTALNEWDOWNLOADS","Все новые закачки");
-define("_DTOTALFORLAST","Все новые закачки за последние");
-define("_DBESTRATED","Лучшие закачки - сверху");
-define("_TRATEDDOWNLOADS","Всего оцененных закачек");
-define("_SORTDOWNLOADSBY","Сортировать закачки по");
-define("_DCATNEWTODAY","Новые закачки в этой категории, добавленные сегодня");
-define("_DCATLAST3DAYS","Новые закачки в этой категории, добавленные за последние 3 дня");
-define("_DCATTHISWEEK","Новые закачки в этой категории, добавленные на этой неделе");
-define("_DDATE1","Дата (Сначала старые закачки)");
-define("_DDATE2","Дата (Сначала новые закачки)");
-define("_DOWNLOADS","Закачки");
-define("_DOWNLOADPROFILE","Профиль закачки");
-define("_DOWNLOADRATINGDET","Детали оценки закачки");
-define("_EDITTHISDOWNLOAD","Редактировать эту закачку");
-define("_DOWNLOADRATING","Рейтинг закачек");
-define("_DOWNLOADVOTE","Голосовать!");
-define("_DONLYREGUSERSMODIFY","Только зарегистрированные пользователи могут вносить здесь свои изменения. Пожалуйста, <a href=\"modules.php?name=Your_Account\">зарегистрируйтесь или войдите под своим именем</a>.");
-define("_REQUESTDOWNLOADMOD","Запрос на изменение закачки");
-define("_DOWNLOADID","ID Закачки");
-define("_DLETSDECIDE","Информация от таких же, как и Вы, пользователей поможет другим пользователям лучше подобрать себе закачки.");
-define("_DRATENOTE4","Вы можете посмотреть список <a href=\"modules.php?name=Downloads&amp;d_op=TopRated\">Лучшие закачки</a>.");
-define("_DATE","Дата");
-define("_TO","к");
-define("_NEW","Новые");
-define("_POPULAR","Популярные");
-define("_TOPRATED","Лучшие");
-define("_ADDITIONALDET","Дополнительные детали");
-define("_EDITORREVIEW","Рецензия редактора");
-define("_REPORTBROKEN","Сообщить о мертвой ссылке");
-define("_AND","и");
-define("_INDB","в нашей базе данных");
-define("_INSTRUCTIONS","Инструкции");
-define("_USERANDIP","Имя пользователя и IP записаны, так что не перегружайте систему.");
-define("_LDESCRIPTION","Описание: (не более 255 символов)");
-define("_CHECKFORIT","Вы не указали E-mail, но мы проверим Вашу ссылку в ближайшее время.");
-define("_LASTWEEK","Последняя неделя");
-define("_LAST30DAYS","Последние 30 дней");
-define("_1WEEK","1 неделя");
-define("_2WEEKS","2 недели");
-define("_30DAYS","30 дней");
-define("_SHOW","Показать");
-define("_DAYS","дней");
-define("_ADDEDON","Добавлен на");
-define("_RATING","Рейтинг");
-define("_DETAILS","Детали");
-define("_OF","");
-define("_TVOTESREQ","необходимые минимальные голоса");
-define("_SHOWTOP","Показать лучшие");
-define("_MOSTPOPULAR","Самые популярные - сверху");
-define("_OFALL","из всех");
-define("_POPULARITY","Популярность");
-define("_SELECTPAGE","Выбирайте страницу");
-define("_MAIN","Главная");
-define("_NEWTODAY","Новые сегодня");
-define("_NEWLAST3DAYS","Новые за последние 3 дня");
-define("_NEWTHISWEEK","Новые на этой неделе");
-define("_POPULARITY1","Популярность (от меньшей к большей)");
-define("_POPULARITY2","Популярность (от большей к меньшей)");
-define("_TITLEAZ","Заголовок (от A до Z)");
-define("_TITLEZA","Заголовок (от Z до A)");
-define("_RATING1","Оценка (от самых низких оценок к самым высоким)");
-define("_RATING2","Оценка (от самых высоких оценок к самым низким)");
-define("_SEARCHRESULTS4","Результат поиска для");
-define("_USUBCATEGORIES","Подкатегории");
-define("_TRY2SEARCH","Попробуйте поискать");
-define("_INOTHERSENGINES","в других поисковых системах");
-define("_EDITORIAL","Лучшая статья");
-define("_EDITORIALBY","Лучшая статья от");
-define("_NOEDITORIAL","В настоящее время нет лучших статей на этом сайте");
-define("_RATETHISSITE","Голосовать за этот ресурс");
-define("_ISTHISYOURSITE","Это Ваш ресурс?");
-define("_ALLOWTORATE","Разрешить другим пользователям голосовать за него с нашего Web сайта!");
-define("_OVERALLRATING","Общий рейтинг");
-define("_TOTALOF","Всего из");
-define("_USER","Пользователь");
-define("_USERAVGRATING","Средняя оценка пользователя");
-define("_NUMRATINGS","# Рейтинга");
-define("_REGISTEREDUSERS","Зарегистрированные пользователи");
-define("_NUMBEROFRATINGS","Число рейтингов");
-define("_NOREGUSERSVOTES","Нет голосов зарегистрированных пользователей");
-define("_BREAKDOWNBYVAL","Перелом в рейтингах по значению");
-define("_LTOTALVOTES","всего голосов");
-define("_HIGHRATING","Наибольший рейтинг");
-define("_LOWRATING","Наименьший рейтинг");
-define("_NUMOFCOMMENTS","Число комментариев");
-define("_WEIGHNOTE","* Примечание: Оценки этого ресурса зарегистрированными и незарегистрированными пользователями");
-define("_NOUNREGUSERSVOTES","Нет голосов незарегистрированных пользователей");
-define("_WEIGHOUTNOTE","* Примечание: Оценки этого ресурса зарегистрированными пользователями и внешними голосами");
-define("_NOOUTSIDEVOTES","Нет внешних оценок");
-define("_OUTSIDEVOTERS","Внешние оценки");
-define("_UNREGISTEREDUSERS","Незарегистрированные пользователи");
-define("_PROMOTEYOURSITE","Увеличить популярность Вашего сайта");
-define("_PROMOTE01","Возможно, Вы захотите участвовать в рейтингах Web сайтов, которые мы имеем в распоряжении. Они позволят Вам устанавливать значок (или даже форму оценки) на Вашем сайте для того, чтобы увеличить количество голосов, получаемых Вашим ресурсом. Пожалуйста, выберите одну из опций, приведенных ниже:");
-define("_TEXTLINK","Текстовая ссылка");
-define("_PROMOTE02","Один из способов связаться с оценивающей формой - через простую текстовую ссылку:");
-define("_HTMLCODE1","Код HTML, который Вы должны использовать в этом случае, следующий:");
-define("_THENUMBER","Число");
-define("_IDREFER","ссылок в HTML коде на идентификатор Вашего сайта в базе данных $sitename. Проверьте, что это число присутствует.");
-define("_BUTTONLINK","Кнопка ссылки");
-define("_PROMOTE03","Если Вас не устраивает простая текстовая ссылка, то Вы можете использовать небольшую кнопку с ссылкой:");
-define("_RATEIT","Оценить за этот сайт!");
-define("_HTMLCODE2","Исходный код для вышеуказанной кнопки:");
-define("_REMOTEFORM","Форма удаленной оценки");
-define("_PROMOTE04","Если Вы считаете это обманом, мы удалим Вашу ссылку. Вот как выглядит форма оценки:");
-define("_VOTE4THISSITE","Голосовать за этот сайт");
-define("_HTMLCODE3","Использование этой формы позволит другим пользователям оценить Ваш ресурс со страниц Вашего сайта и рейтинг будет записан здесь. Вышеуказанная форма показана только для примера, но следующий исходный код будет работать, если Вы скопируете его и вставите на страницы Вашего сайта. Исходный код приведен ниже:");
-define("_PROMOTE05","Спасибо! Удачи в Ваших рейтингах!");
-define("_STAFF","Персонал");
-define("_THANKSBROKEN","Благодарим Вас за помощь в поддержке целостности этого каталога.");
-define("_SECURITYBROKEN","Для обеспечения безопасности Ваше имя и адрес IP также будут временно записаны.");
-define("_THANKSFORINFO","Спасибо за информацию.");
-define("_LOOKTOREQUEST","Мы проверим Вашу информацию в ближайшее время.");
-define("_SENDREQUEST","Послать запрос");
-define("_THANKSTOTAKETIME","Благодарим Вас за время, потраченное на оценку сайта на");
-define("_RETURNTO","Вернуться в");
-define("_RATENOTE1","Пожалуйста, не голосуйте за один и тот же ресурс повторно.");
-define("_RATENOTE2","Шкала - 1 - 10, с 1 плохо и 10 отлично.");
-define("_RATENOTE3","Пожалуйста, будьте объективным в Вашем голосе, если каждый получит 1 или 10, то рейтинги будут не очень полезны.");
-define("_RATENOTE5","Не голосуйте за Ваш собственный ресурс или ресурс конкурента.");
-define("_YOUAREREGGED","Вы - зарегистрированный пользователь и вошли.");
-define("_FEELFREE2ADD","Не стесняйтесь добавлять комментарий относительно этого сайта.");
-define("_YOUARENOTREGGED","Вы не зарегистрированный пользователь или не вошли.");
-define("_IFYOUWEREREG","Если Вы зарегистрировались, то можете посылать комментарии на этот сайт.");
-define("_TITLE","Название");
-define("_MODIFY","Изменить");
-define("_COMPLETEVOTE1","Ваш голос учтен.");
-define("_COMPLETEVOTE2","Вы уже голосовали за этот ресурс $anonwaitdays день(дней) назад.");
-define("_COMPLETEVOTE3","Голосуйте за ресурс только один раз.<br>Все голоса регистрируются и рассматриваются.");
-define("_COMPLETEVOTE4","Вы не можете голосовать за ссылку, которую Вы предоставили.<br>Все голоса зарегистрированы и рассмотрены.");
-define("_COMPLETEVOTE5","Оценка не выбрана - голос не засчитан");
-define("_COMPLETEVOTE6","Только один голос с IP адреса разрешен каждый $outsidewaitdays дня(дней).");
-define("_LINKSDATESTRING","%d/%m/%Y");
-
-?>
+<?php
+global $sitename, $anonwaitdays, $outsidewaitdays;
+
+
+/**************************************************************************/
+/* PHP-NUKE: Advanced Content Management System                           */
+/* ============================================                           */
+/*                                                                        */
+/* This is the language module with all the system messages               */
+/*                                                                        */
+/* If you made a translation, please go to the site and send to me        */
+/* the translated file. Please keep the original text order by modules,   */
+/* and just one message per line, also double check your translation!     */
+/*                                                                        */
+/* You need to change the second quoted phrase, not the capital one!      */
+/*                                                                        */
+/* If you need to use double quotes (") remember to add a backslash (\),  */
+/* so your entry will look like: This is \"double quoted\" text.          */
+/* And, if you use HTML code, please double check it.                     */
+/**************************************************************************/
+
+/**************************************************************************/
+/* Доп. перевод, проверка синтаксиса/Add. Russian transl.& spell checking:*/
+/*         Александр Бурчак / Alexander Burchak, alexburchak@ua.fm        */
+/* Дата/Date:                                                             */
+/*         15.03.2004                                                     */
+/**************************************************************************/
+
+define_once("_URL","URL");
+define_once("_PREVIOUS","Предыдущая страница");
+define_once("_NEXT","Следующая страница");
+define_once("_CATEGORY","Категория");
+define_once("_CATEGORIES","Категории");
+define_once("_LVOTES","голоса");
+define_once("_TOTALVOTES","Всего голосов:");
+define_once("_THEREARE","Сейчас");
+define_once("_NOMATCHES","Ничего не найдено по Вашему запросу");
+define_once("_SCOMMENTS","Комментарии");
+define_once("_UNKNOWN","Неизвестное");
+define_once("_AUTHORNAME","Имя автора");
+define_once("_AUTHOREMAIL","E-mail автора");
+define_once("_DOWNLOADNAME","Название программы");
+define_once("_ADDTHISFILE","Добавить этот файл");
+define_once("_INBYTES","в байтах");
+define_once("_FILESIZE","Размер файла");
+define_once("_VERSION","Версия");
+define_once("_DESCRIPTION","Описание");
+define_once("_AUTHOR","Автор");
+define_once("_HOMEPAGE","Домашняя страничка");
+define_once("_DOWNLOADNOW","Загрузить этот файл сейчас!");
+define_once("_RATERESOURCE","Голосовать за ресурс");
+define_once("_FILEURL","Ссылка на файл");
+define_once("_ADDDOWNLOAD","Добавить закачку");
+define_once("_DOWNLOADSMAIN","Главная страница закачки");
+define_once("_DOWNLOADCOMMENTS","Комментарии к закачке");
+define_once("_DOWNLOADSMAINCAT","Главные категории закачки");
+define_once("_ADDADOWNLOAD","Добавить новую закачку");
+define_once("_DSUBMITONCE","Публикуйте каждую закачку только один раз.");
+define_once("_DPOSTPENDING","Все файлы перед публикацией проверяются.");
+define_once("_RESSORTED","Ресурсы отсортированы по");
+define_once("_DOWNLOADSNOTUSER1","Вы не зарегистрированы или не вошли в систему.");
+define_once("_DOWNLOADSNOTUSER2","Зарегистрированные пользователи имеют возможность добавлять закачки на этом сайте.");
+define_once("_DOWNLOADSNOTUSER3","Регистрация пользователя - быстрый и легкий процесс.");
+define_once("_DOWNLOADSNOTUSER4","Почему мы требуем регистрацию пользователя?");
+define_once("_DOWNLOADSNOTUSER5","Итак, мы предлагаем Вам только самое лучшее,");
+define_once("_DOWNLOADSNOTUSER6","каждый пункт индивидуально просмотрен и одобрен нашим персоналом.");
+define_once("_DOWNLOADSNOTUSER7","Мы надеемся, что предлагаем Вам только ценную информацию.");
+define_once("_DOWNLOADSNOTUSER8","<a href=\"modules.php?name=Your_Account\">Зарегистрироваться</a>");
+define_once("_DOWNLOADALREADYEXT","Ошибка: Этот URL уже имеется в наше базе данных!");
+define_once("_DOWNLOADNOTITLE","Ошибка: Вы должны указать название для Вашего URL!");
+define_once("_DOWNLOADNOURL","Ошибка: Вы должны указать URL для Вашего URL!");
+define_once("_DOWNLOADNODESC","Ошибка: Вы должны указать описание Вашего URL!");
+define_once("_DOWNLOADRECEIVED","Спасибо! Мы получили Вашу публикацию.");
+define_once("_NEWDOWNLOADS","Новые закачки");
+define_once("_TOTALNEWDOWNLOADS","Все новые закачки");
+define_once("_DTOTALFORLAST","Все новые закачки за последние");
+define_once("_DBESTRATED","Лучшие закачки - сверху");
+define_once("_TRATEDDOWNLOADS","Всего оцененных закачек");
+define_once("_SORTDOWNLOADSBY","Сортировать закачки по");
+define_once("_DCATNEWTODAY","Новые закачки в этой категории, добавленные сегодня");
+define_once("_DCATLAST3DAYS","Новые закачки в этой категории, добавленные за последние 3 дня");
+define_once("_DCATTHISWEEK","Новые закачки в этой категории, добавленные на этой неделе");
+define_once("_DDATE1","Дата (Сначала старые закачки)");
+define_once("_DDATE2","Дата (Сначала новые закачки)");
+define_once("_DOWNLOADS","Закачки");
+define_once("_DOWNLOADPROFILE","Профиль закачки");
+define_once("_DOWNLOADRATINGDET","Детали оценки закачки");
+define_once("_EDITTHISDOWNLOAD","Редактировать эту закачку");
+define_once("_DOWNLOADRATING","Рейтинг закачек");
+define_once("_DOWNLOADVOTE","Голосовать!");
+define_once("_DONLYREGUSERSMODIFY","Только зарегистрированные пользователи могут вносить здесь свои изменения. Пожалуйста, <a href=\"modules.php?name=Your_Account\">зарегистрируйтесь или войдите под своим именем</a>.");
+define_once("_REQUESTDOWNLOADMOD","Запрос на изменение закачки");
+define_once("_DOWNLOADID","ID Закачки");
+define_once("_DLETSDECIDE","Информация от таких же, как и Вы, пользователей поможет другим пользователям лучше подобрать себе закачки.");
+define_once("_DRATENOTE4","Вы можете посмотреть список <a href=\"modules.php?name=Downloads&amp;d_op=TopRated\">Лучшие закачки</a>.");
+define_once("_DATE","Дата");
+define_once("_TO","к");
+define_once("_NEW","Новые");
+define_once("_POPULAR","Популярные");
+define_once("_TOPRATED","Лучшие");
+define_once("_ADDITIONALDET","Дополнительные детали");
+define_once("_EDITORREVIEW","Рецензия редактора");
+define_once("_REPORTBROKEN","Сообщить о мертвой ссылке");
+define_once("_AND","и");
+define_once("_INDB","в нашей базе данных");
+define_once("_INSTRUCTIONS","Инструкции");
+define_once("_USERANDIP","Имя пользователя и IP записаны, так что не перегружайте систему.");
+define_once("_LDESCRIPTION","Описание: (не более 255 символов)");
+define_once("_CHECKFORIT","Вы не указали E-mail, но мы проверим Вашу ссылку в ближайшее время.");
+define_once("_LASTWEEK","Последняя неделя");
+define_once("_LAST30DAYS","Последние 30 дней");
+define_once("_1WEEK","1 неделя");
+define_once("_2WEEKS","2 недели");
+define_once("_30DAYS","30 дней");
+define_once("_SHOW","Показать");
+define_once("_DAYS","дней");
+define_once("_ADDEDON","Добавлен на");
+define_once("_RATING","Рейтинг");
+define_once("_DETAILS","Детали");
+define_once("_OF","");
+define_once("_TVOTESREQ","необходимые минимальные голоса");
+define_once("_SHOWTOP","Показать лучшие");
+define_once("_MOSTPOPULAR","Самые популярные - сверху");
+define_once("_OFALL","из всех");
+define_once("_POPULARITY","Популярность");
+define_once("_SELECTPAGE","Выбирайте страницу");
+define_once("_MAIN","Главная");
+define_once("_NEWTODAY","Новые сегодня");
+define_once("_NEWLAST3DAYS","Новые за последние 3 дня");
+define_once("_NEWTHISWEEK","Новые на этой неделе");
+define_once("_POPULARITY1","Популярность (от меньшей к большей)");
+define_once("_POPULARITY2","Популярность (от большей к меньшей)");
+define_once("_TITLEAZ","Заголовок (от A до Z)");
+define_once("_TITLEZA","Заголовок (от Z до A)");
+define_once("_RATING1","Оценка (от самых низких оценок к самым высоким)");
+define_once("_RATING2","Оценка (от самых высоких оценок к самым низким)");
+define_once("_SEARCHRESULTS4","Результат поиска для");
+define_once("_USUBCATEGORIES","Подкатегории");
+define_once("_TRY2SEARCH","Попробуйте поискать");
+define_once("_INOTHERSENGINES","в других поисковых системах");
+define_once("_EDITORIAL","Лучшая статья");
+define_once("_EDITORIALBY","Лучшая статья от");
+define_once("_NOEDITORIAL","В настоящее время нет лучших статей на этом сайте");
+define_once("_RATETHISSITE","Голосовать за этот ресурс");
+define_once("_ISTHISYOURSITE","Это Ваш ресурс?");
+define_once("_ALLOWTORATE","Разрешить другим пользователям голосовать за него с нашего Web сайта!");
+define_once("_OVERALLRATING","Общий рейтинг");
+define_once("_TOTALOF","Всего из");
+define_once("_USER","Пользователь");
+define_once("_USERAVGRATING","Средняя оценка пользователя");
+define_once("_NUMRATINGS","# Рейтинга");
+define_once("_REGISTEREDUSERS","Зарегистрированные пользователи");
+define_once("_NUMBEROFRATINGS","Число рейтингов");
+define_once("_NOREGUSERSVOTES","Нет голосов зарегистрированных пользователей");
+define_once("_BREAKDOWNBYVAL","Перелом в рейтингах по значению");
+define_once("_LTOTALVOTES","всего голосов");
+define_once("_HIGHRATING","Наибольший рейтинг");
+define_once("_LOWRATING","Наименьший рейтинг");
+define_once("_NUMOFCOMMENTS","Число комментариев");
+define_once("_WEIGHNOTE","* Примечание: Оценки этого ресурса зарегистрированными и незарегистрированными пользователями");
+define_once("_NOUNREGUSERSVOTES","Нет голосов незарегистрированных пользователей");
+define_once("_WEIGHOUTNOTE","* Примечание: Оценки этого ресурса зарегистрированными пользователями и внешними голосами");
+define_once("_NOOUTSIDEVOTES","Нет внешних оценок");
+define_once("_OUTSIDEVOTERS","Внешние оценки");
+define_once("_UNREGISTEREDUSERS","Незарегистрированные пользователи");
+define_once("_PROMOTEYOURSITE","Увеличить популярность Вашего сайта");
+define_once("_PROMOTE01","Возможно, Вы захотите участвовать в рейтингах Web сайтов, которые мы имеем в распоряжении. Они позволят Вам устанавливать значок (или даже форму оценки) на Вашем сайте для того, чтобы увеличить количество голосов, получаемых Вашим ресурсом. Пожалуйста, выберите одну из опций, приведенных ниже:");
+define_once("_TEXTLINK","Текстовая ссылка");
+define_once("_PROMOTE02","Один из способов связаться с оценивающей формой - через простую текстовую ссылку:");
+define_once("_HTMLCODE1","Код HTML, который Вы должны использовать в этом случае, следующий:");
+define_once("_THENUMBER","Число");
+define_once("_IDREFER","ссылок в HTML коде на идентификатор Вашего сайта в базе данных $sitename. Проверьте, что это число присутствует.");
+define_once("_BUTTONLINK","Кнопка ссылки");
+define_once("_PROMOTE03","Если Вас не устраивает простая текстовая ссылка, то Вы можете использовать небольшую кнопку с ссылкой:");
+define_once("_RATEIT","Оценить за этот сайт!");
+define_once("_HTMLCODE2","Исходный код для вышеуказанной кнопки:");
+define_once("_REMOTEFORM","Форма удаленной оценки");
+define_once("_PROMOTE04","Если Вы считаете это обманом, мы удалим Вашу ссылку. Вот как выглядит форма оценки:");
+define_once("_VOTE4THISSITE","Голосовать за этот сайт");
+define_once("_HTMLCODE3","Использование этой формы позволит другим пользователям оценить Ваш ресурс со страниц Вашего сайта и рейтинг будет записан здесь. Вышеуказанная форма показана только для примера, но следующий исходный код будет работать, если Вы скопируете его и вставите на страницы Вашего сайта. Исходный код приведен ниже:");
+define_once("_PROMOTE05","Спасибо! Удачи в Ваших рейтингах!");
+define_once("_STAFF","Персонал");
+define_once("_THANKSBROKEN","Благодарим Вас за помощь в поддержке целостности этого каталога.");
+define_once("_SECURITYBROKEN","Для обеспечения безопасности Ваше имя и адрес IP также будут временно записаны.");
+define_once("_THANKSFORINFO","Спасибо за информацию.");
+define_once("_LOOKTOREQUEST","Мы проверим Вашу информацию в ближайшее время.");
+define_once("_SENDREQUEST","Послать запрос");
+define_once("_THANKSTOTAKETIME","Благодарим Вас за время, потраченное на оценку сайта на");
+define_once("_RETURNTO","Вернуться в");
+define_once("_RATENOTE1","Пожалуйста, не голосуйте за один и тот же ресурс повторно.");
+define_once("_RATENOTE2","Шкала - 1 - 10, с 1 плохо и 10 отлично.");
+define_once("_RATENOTE3","Пожалуйста, будьте объективным в Вашем голосе, если каждый получит 1 или 10, то рейтинги будут не очень полезны.");
+define_once("_RATENOTE5","Не голосуйте за Ваш собственный ресурс или ресурс конкурента.");
+define_once("_YOUAREREGGED","Вы - зарегистрированный пользователь и вошли.");
+define_once("_FEELFREE2ADD","Не стесняйтесь добавлять комментарий относительно этого сайта.");
+define_once("_YOUARENOTREGGED","Вы не зарегистрированный пользователь или не вошли.");
+define_once("_IFYOUWEREREG","Если Вы зарегистрировались, то можете посылать комментарии на этот сайт.");
+define_once("_TITLE","Название");
+define_once("_MODIFY","Изменить");
+define_once("_COMPLETEVOTE1","Ваш голос учтен.");
+define_once("_COMPLETEVOTE2","Вы уже голосовали за этот ресурс $anonwaitdays день(дней) назад.");
+define_once("_COMPLETEVOTE3","Голосуйте за ресурс только один раз.<br>Все голоса регистрируются и рассматриваются.");
+define_once("_COMPLETEVOTE4","Вы не можете голосовать за ссылку, которую Вы предоставили.<br>Все голоса зарегистрированы и рассмотрены.");
+define_once("_COMPLETEVOTE5","Оценка не выбрана - голос не засчитан");
+define_once("_COMPLETEVOTE6","Только один голос с IP адреса разрешен каждый $outsidewaitdays дня(дней).");
+define_once("_LINKSDATESTRING","%d/%m/%Y");
+
+

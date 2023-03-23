@@ -18,29 +18,28 @@
 /**************************************************************************/
 
 
-define("_EMAIL","Email");
-define("_SAVECHANGES","Сними измени");
-define("_SCORE","Поени:");
-define("_PRODUCTTITLE","Наслов кој е поврзан со лицето/производот/услугата/ или што и да критикуваш");
-define("_RELATEDLINK","Соодветен линк");
-define("_LINKTITLE","Наслов на линкот");
-define("_REVIEWER","Автор:");
-define("_REVIEWID","Идентификација на критиката");
-define("_REVIEWS","Критики");
-define("_DATE","Дата");
-define("_REVADMIN","Администрација на критики");
-define("_REVTITLE","Критики - Наслов на страната");
-define("_REVDESC","Критики - Опис на страната");
-define("_REVWAITING","Критики кои чекаат за потврда");
-define("_REVIMGINFO","Сочувај ја 150*150 сликата во images/reviews");
-define("_TEXT","Текст");
-define("_IMAGE","Слика");
-define("_NOREVIEW2ADD","Нема критики за додавање");
-define("_ADDREVIEW","Додади критика");
-define("_CLICK2ADDREVIEW","Кликни тука за да напишеш критика");
-define("_DELMODREVIEW","Избриши / Измени критика");
-define("_MODREVINFO","Можеш едноставно да избришеш/измениш критика ако одиш до <a href=\"reviews.php\">reviews.php</a> како администратор.");
-define("_LANGUAGE","Јазик");
+define_once("_EMAIL","Email");
+define_once("_SAVECHANGES","Сними измени");
+define_once("_SCORE","Поени:");
+define_once("_PRODUCTTITLE","Наслов кој е поврзан со лицето/производот/услугата/ или што и да критикуваш");
+define_once("_RELATEDLINK","Соодветен линк");
+define_once("_LINKTITLE","Наслов на линкот");
+define_once("_REVIEWER","Автор:");
+define_once("_REVIEWID","Идентификација на критиката");
+define_once("_REVIEWS","Критики");
+define_once("_DATE","Дата");
+define_once("_REVADMIN","Администрација на критики");
+define_once("_REVTITLE","Критики - Наслов на страната");
+define_once("_REVDESC","Критики - Опис на страната");
+define_once("_REVWAITING","Критики кои чекаат за потврда");
+define_once("_REVIMGINFO","Сочувај ја 150*150 сликата во images/reviews");
+define_once("_TEXT","Текст");
+define_once("_IMAGE","Слика");
+define_once("_NOREVIEW2ADD","Нема критики за додавање");
+define_once("_ADDREVIEW","Додади критика");
+define_once("_CLICK2ADDREVIEW","Кликни тука за да напишеш критика");
+define_once("_DELMODREVIEW","Избриши / Измени критика");
+define_once("_MODREVINFO","Можеш едноставно да избришеш/измениш критика ако одиш до <a href=\"reviews.php\">reviews.php</a> како администратор.");
+define_once("_LANGUAGE","Јазик");
 
 
-?>

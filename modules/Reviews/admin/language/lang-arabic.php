@@ -18,29 +18,28 @@
 /**************************************************************************/
 
 
-define("_EMAIL","ÈÑםÏ Çב‗ÊÑזהם");
-define("_SAVECHANGES","ÍÝÙ ÇבÊÛםםÑÇÊ");
-define("_SCORE","ÇבÊÞםםד:");
-define("_PRODUCTTITLE","ÚהזÇה ÇבדהÊÌ");
-define("_RELATEDLINK","ÑזÇÈØ ÐÇÊ ÕבÉ");
-define("_LINKTITLE","ÚהזÇה ÇבÑÇÈØ");
-define("_REVIEWER","ÇבדÑÇÌÚ:");
-define("_REVIEWID","ÑÞד ÇבדÑÇÌÚ");
-define("_REVIEWS","דÑÇÌÚÉ");
-define("_DATE","ÇבÊÇÑםÎ");
-define("_REVADMIN","ÇבÊÍ‗ד Ýם ÊÞÇÑםÑ ÇבדÑÇÌÚÉ זÇבהÞÏ");
-define("_REVTITLE","ÚהזÇה ÕÝÍÉ ÇבדÑÇÌÚÉ");
-define("_REVDESC","ÔÑÍ בÕÝÍÉ ÇבדÑÇÌÚו");
-define("_REVWAITING","ÊÞÇÑםÑ ÇבדÑÇÌÚו ÊהÊÙÑ ÇבÊÃ‗םÏ");
-define("_REVIMGINFO","Íדב ÕזÑÉ ÈÍÌד 150*150 Ýם ÇבÏבםב images/reviews");
-define("_TEXT","ÇבהÕ");
-define("_IMAGE","ÇבÕזÑÉ");
-define("_NOREVIEW2ADD","בÇ םזÌÏ דÑÇÌÚÇÊ בבÅÖÇÝÉ");
-define("_ADDREVIEW","ÇÖÇÝÉ דÑÇÌÚÉ");
-define("_CLICK2ADDREVIEW","ÇÖÛØ והÇ ב‗ÊÇÈÉ ÊÞÑםÑ דÑÇÌÚÉ");
-define("_DELMODREVIEW","ÍÐÝ / ÊÚÏםב ÊÞÑםÑ דÑÇÌÚÉ");
-define("_MODREVINFO","םד‗ה‗ ÍÐÝ Ãז ÊÚÏםב ÊÞÑםÑ דÑÇÌÚÉ Úה ØÑםÞ ÇבÑÇÈØ <a href=\"reviews.php\">reviews.php</a> ÇÐÇ ‗הÊ ÇבדÔÑÝ ÇבÚÇד.");
-define("_LANGUAGE","ÇבבÛÉ");
+define_once("_EMAIL","ÈÑםÏ Çב‗ÊÑזהם");
+define_once("_SAVECHANGES","ÍÝÙ ÇבÊÛםםÑÇÊ");
+define_once("_SCORE","ÇבÊÞםםד:");
+define_once("_PRODUCTTITLE","ÚהזÇה ÇבדהÊÌ");
+define_once("_RELATEDLINK","ÑזÇÈØ ÐÇÊ ÕבÉ");
+define_once("_LINKTITLE","ÚהזÇה ÇבÑÇÈØ");
+define_once("_REVIEWER","ÇבדÑÇÌÚ:");
+define_once("_REVIEWID","ÑÞד ÇבדÑÇÌÚ");
+define_once("_REVIEWS","דÑÇÌÚÉ");
+define_once("_DATE","ÇבÊÇÑםÎ");
+define_once("_REVADMIN","ÇבÊÍ‗ד Ýם ÊÞÇÑםÑ ÇבדÑÇÌÚÉ זÇבהÞÏ");
+define_once("_REVTITLE","ÚהזÇה ÕÝÍÉ ÇבדÑÇÌÚÉ");
+define_once("_REVDESC","ÔÑÍ בÕÝÍÉ ÇבדÑÇÌÚו");
+define_once("_REVWAITING","ÊÞÇÑםÑ ÇבדÑÇÌÚו ÊהÊÙÑ ÇבÊÃ‗םÏ");
+define_once("_REVIMGINFO","Íדב ÕזÑÉ ÈÍÌד 150*150 Ýם ÇבÏבםב images/reviews");
+define_once("_TEXT","ÇבהÕ");
+define_once("_IMAGE","ÇבÕזÑÉ");
+define_once("_NOREVIEW2ADD","בÇ םזÌÏ דÑÇÌÚÇÊ בבÅÖÇÝÉ");
+define_once("_ADDREVIEW","ÇÖÇÝÉ דÑÇÌÚÉ");
+define_once("_CLICK2ADDREVIEW","ÇÖÛØ והÇ ב‗ÊÇÈÉ ÊÞÑםÑ דÑÇÌÚÉ");
+define_once("_DELMODREVIEW","ÍÐÝ / ÊÚÏםב ÊÞÑםÑ דÑÇÌÚÉ");
+define_once("_MODREVINFO","םד‗ה‗ ÍÐÝ Ãז ÊÚÏםב ÊÞÑםÑ דÑÇÌÚÉ Úה ØÑםÞ ÇבÑÇÈØ <a href=\"reviews.php\">reviews.php</a> ÇÐÇ ‗הÊ ÇבדÔÑÝ ÇבÚÇד.");
+define_once("_LANGUAGE","ÇבבÛÉ");
 
 
-?>

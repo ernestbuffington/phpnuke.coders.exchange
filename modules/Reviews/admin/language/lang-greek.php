@@ -18,29 +18,28 @@
 /**************************************************************************/
 
 
-define("_REVIEWS","Ανασκοπήσεις");
-define("_SCORE","Βαθμολογία (αποτέλεσμα αξιολόγησης)");
-define("_EMAIL","Email");
-define("_SAVECHANGES","Αποθήκευση Αλλαγών");
-define("_DATE","Ημερομηνία");
-define("_LINKTITLE","Επικεφαλίδα Συνδέσμου");
-define("_PRODUCTTITLE","Τίτλος");
-define("_RELATEDLINK","Σχετικοί Συνδέσμοι ");
-define("_REVIEWER","Σχολιαστές ?");
-define("_REVIEWID","Περιφραφή ID");
-define("_REVADMIN","Διαχείριση Reviews");
-define("_REVTITLE","Σελίδα Τίτλων Reviews");
-define("_REVDESC","Σελιδα Περιγραφής Reviews");
-define("_REVWAITING","Reviews εν αναμονή Έγκρισης");
-define("_TEXT","Κείμενο");
-define("_IMAGE","Εικόνα");
-define("_REVIMGINFO","Αποθήκευση την 150*150 εικόνα σας στο φάκελο εικόνες/reviews");
-define("_ADDREVIEW","Προσθήκη Review");
-define("_NOREVIEW2ADD","Δεν υπάρχουν reviews για προσθήκη");
-define("_CLICK2ADDREVIEW","Κάντε κλικ εδώ για να γράψτε κάποιο review");
-define("_DELMODREVIEW","Διαγραφή / Τροποποίση review");
-define("_MODREVINFO","Μπορείτε εύκολα να διαγράψτε/τροποποιήσετε reviews αν προσπελάσετε το <a href=\"modules.php?name=Reviews\">Reviews</a> ως Διαχειριστής.");
-define("_LANGUAGE","Language");
+define_once("_REVIEWS","Ανασκοπήσεις");
+define_once("_SCORE","Βαθμολογία (αποτέλεσμα αξιολόγησης)");
+define_once("_EMAIL","Email");
+define_once("_SAVECHANGES","Αποθήκευση Αλλαγών");
+define_once("_DATE","Ημερομηνία");
+define_once("_LINKTITLE","Επικεφαλίδα Συνδέσμου");
+define_once("_PRODUCTTITLE","Τίτλος");
+define_once("_RELATEDLINK","Σχετικοί Συνδέσμοι ");
+define_once("_REVIEWER","Σχολιαστές ?");
+define_once("_REVIEWID","Περιφραφή ID");
+define_once("_REVADMIN","Διαχείριση Reviews");
+define_once("_REVTITLE","Σελίδα Τίτλων Reviews");
+define_once("_REVDESC","Σελιδα Περιγραφής Reviews");
+define_once("_REVWAITING","Reviews εν αναμονή Έγκρισης");
+define_once("_TEXT","Κείμενο");
+define_once("_IMAGE","Εικόνα");
+define_once("_REVIMGINFO","Αποθήκευση την 150*150 εικόνα σας στο φάκελο εικόνες/reviews");
+define_once("_ADDREVIEW","Προσθήκη Review");
+define_once("_NOREVIEW2ADD","Δεν υπάρχουν reviews για προσθήκη");
+define_once("_CLICK2ADDREVIEW","Κάντε κλικ εδώ για να γράψτε κάποιο review");
+define_once("_DELMODREVIEW","Διαγραφή / Τροποποίση review");
+define_once("_MODREVINFO","Μπορείτε εύκολα να διαγράψτε/τροποποιήσετε reviews αν προσπελάσετε το <a href=\"modules.php?name=Reviews\">Reviews</a> ως Διαχειριστής.");
+define_once("_LANGUAGE","Language");
 
 
-?>

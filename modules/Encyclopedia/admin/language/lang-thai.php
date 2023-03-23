@@ -18,40 +18,39 @@
 /**************************************************************************/
 
 
-define("_SEND","ส่ง");
-define("_FUNCTIONS","การจัดการ");
-define("_YES","ตกลง");
-define("_NO","ไม่ตกลง");
-define("_SAVECHANGES","บันทึกการเปลี่ยนแปลง");
-define("_PAGEBREAK","ถ้าคุณต้องการที่จะแบ่งหน้ากรุณาใส่<b>[--pagebreak--]</b>ด้วย");
-define("_DESCRIPTION","รายละเอียด");
-define("_TO","ถึง");
-define("_TITLE","ชื่อ");
-define("_ACTIVE","ทำงาน");
-define("_DEACTIVATE","ไม่ทำงาน");
-define("_INACTIVE","ไม่ทำงาน");
-define("_ACTIVATE","ทำงาน");
-define("_ADD","เพิ่ม");
-define("_LANGUAGE","ภาษา");
-define("_ENCYCLOPEDIA","พจนานุกรม");
-define("_ENCYCLOPEDIAMANAGER","จัดการพจนานุกรม");
-define("_DELENCYCLOPEDIA","ลบพจนานุกรม");
-define("_DELENCYCONTWARNING","คุณแน่ใจที่จะลบพจนานุกรมนี้และเนื้อหาทั้งหมด?");
-define("_DELENCYCLOPEDIATEXT","ลบคำในพจนานุกรม");
-define("_DELENCYTEXTWARNING","คุณแน่ใจที่จะลบคำนี้?");
-define("_CURRENTSTATUS","สถานะปัจจุบัน");
-define("_ACTIVATEPAGE","หน้านี้ทำงาน?");
-define("_TERMS","คำ");
-define("_ADDNEWENCYCLOPEDIA","เพิ่มพจนานุกรมใหม่");
-define("_ADDNEWENCYTERM","เพิ่มคำในพจนานุกรมใหม่");
-define("_TERMTEXT","ข้อความของคำ");
-define("_MOVETERMS","ย้ายคำ");
-define("_MOVEALLTERMSFROM","ย้ายคำทั้งหมดจาก");
-define("_EDITENCYCLOPEDIA","แก้ไขพจนานุกรม");
-define("_ENCYTERMSEDIT","แก้ไขคำในพจนานุกรม");
-define("_SELECTONETERM","กรุณาเลือกคำจากรายการข้างล่างนี้:");
-define("_NOCONTENTFORLETTER","เสียใจ ไม่มีข้อมูลสำหรับอักษรนี้");
-define("_CHANGETOENCY","เปลี่ยนพจนานุกรม");
+define_once("_SEND","ส่ง");
+define_once("_FUNCTIONS","การจัดการ");
+define_once("_YES","ตกลง");
+define_once("_NO","ไม่ตกลง");
+define_once("_SAVECHANGES","บันทึกการเปลี่ยนแปลง");
+define_once("_PAGEBREAK","ถ้าคุณต้องการที่จะแบ่งหน้ากรุณาใส่<b>[--pagebreak--]</b>ด้วย");
+define_once("_DESCRIPTION","รายละเอียด");
+define_once("_TO","ถึง");
+define_once("_TITLE","ชื่อ");
+define_once("_ACTIVE","ทำงาน");
+define_once("_DEACTIVATE","ไม่ทำงาน");
+define_once("_INACTIVE","ไม่ทำงาน");
+define_once("_ACTIVATE","ทำงาน");
+define_once("_ADD","เพิ่ม");
+define_once("_LANGUAGE","ภาษา");
+define_once("_ENCYCLOPEDIA","พจนานุกรม");
+define_once("_ENCYCLOPEDIAMANAGER","จัดการพจนานุกรม");
+define_once("_DELENCYCLOPEDIA","ลบพจนานุกรม");
+define_once("_DELENCYCONTWARNING","คุณแน่ใจที่จะลบพจนานุกรมนี้และเนื้อหาทั้งหมด?");
+define_once("_DELENCYCLOPEDIATEXT","ลบคำในพจนานุกรม");
+define_once("_DELENCYTEXTWARNING","คุณแน่ใจที่จะลบคำนี้?");
+define_once("_CURRENTSTATUS","สถานะปัจจุบัน");
+define_once("_ACTIVATEPAGE","หน้านี้ทำงาน?");
+define_once("_TERMS","คำ");
+define_once("_ADDNEWENCYCLOPEDIA","เพิ่มพจนานุกรมใหม่");
+define_once("_ADDNEWENCYTERM","เพิ่มคำในพจนานุกรมใหม่");
+define_once("_TERMTEXT","ข้อความของคำ");
+define_once("_MOVETERMS","ย้ายคำ");
+define_once("_MOVEALLTERMSFROM","ย้ายคำทั้งหมดจาก");
+define_once("_EDITENCYCLOPEDIA","แก้ไขพจนานุกรม");
+define_once("_ENCYTERMSEDIT","แก้ไขคำในพจนานุกรม");
+define_once("_SELECTONETERM","กรุณาเลือกคำจากรายการข้างล่างนี้:");
+define_once("_NOCONTENTFORLETTER","เสียใจ ไม่มีข้อมูลสำหรับอักษรนี้");
+define_once("_CHANGETOENCY","เปลี่ยนพจนานุกรม");
 
 
-?>

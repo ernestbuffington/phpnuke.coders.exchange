@@ -17,19 +17,19 @@
 /* And, if you use HTML code, please double check it.                     */
 /**************************************************************************/
 
-define("_SEND","Verzenden");
-define("_YOURNAME","Uw naam");
-define("_MESSAGE","Bericht");
-define("_YOUREMAIL","Uw E-mailadres");
-define("_FEEDBACKNOTE","Alle commentaar en suggesties over deze website zijn erg welkom en een gewaardeerde informatiebron voor ons. Dank je!");
-define("_FEEDBACKTITLE","Feedback Formulier");
-define("_FEEDBACK","Feedback");
-define("_FBENTERNAME","FOUT: vul je naam in!");
-define("_FBENTEREMAIL","FOUT: vul je E-mailadres in!");
-define("_FBENTERMESSAGE","FOUT: vul een bericht in!");
-define("_SENDEREMAIL","E-mail van Verzender");
-define("_SENDERNAME","Naam van Verzender");
-define("_FBMAILSENT","E-Mail is verzonden!");
-define("_FBTHANKSFORCONTACT","Dank je om ons te contacteren");
+define_once("_SEND","Verzenden");
+define_once("_YOURNAME","Uw naam");
+define_once("_MESSAGE","Bericht");
+define_once("_YOUREMAIL","Uw E-mailadres");
+define_once("_FEEDBACKNOTE","Alle commentaar en suggesties over deze website zijn erg welkom en een gewaardeerde informatiebron voor ons. Dank je!");
+define_once("_FEEDBACKTITLE","Feedback Formulier");
+define_once("_FEEDBACK","Feedback");
+define_once("_FBENTERNAME","FOUT: vul je naam in!");
+define_once("_FBENTEREMAIL","FOUT: vul je E-mailadres in!");
+define_once("_FBENTERMESSAGE","FOUT: vul een bericht in!");
+define_once("_SENDEREMAIL","E-mail van Verzender");
+define_once("_SENDERNAME","Naam van Verzender");
+define_once("_FBMAILSENT","E-Mail is verzonden!");
+define_once("_FBTHANKSFORCONTACT","Dank je om ons te contacteren");
 
-?>
+

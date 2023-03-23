@@ -20,11 +20,10 @@
 /*                                                                        */
 /**************************************************************************/
 
-define("_PDATE","Data:");
-define("_PTOPIC","Temat:");
-define("_COMESFROM","Artyku³ pochodzi ze strony");
-define("_THEURL","Adres tego artyku³u to:");
-define("_DATE","Data");
-define("_TITLE","Tytu³");
+define_once("_PDATE","Data:");
+define_once("_PTOPIC","Temat:");
+define_once("_COMESFROM","Artyku³ pochodzi ze strony");
+define_once("_THEURL","Adres tego artyku³u to:");
+define_once("_DATE","Data");
+define_once("_TITLE","Tytu³");
 
-?>

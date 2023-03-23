@@ -18,29 +18,28 @@
 /**************************************************************************/
 
 
-define("_EMAIL","Email");
-define("_SAVECHANGES","Сохранить изменения");
-define("_SCORE","Всего:");
-define("_PRODUCTTITLE","Название продукта");
-define("_RELATEDLINK","Оцениваемые Линки");
-define("_LINKTITLE","Линк вашего сайта");
-define("_REVIEWER","Ревьювер:");
-define("_REVIEWID","ID Рецензии");
-define("_REVIEWS","Рецензии");
-define("_DATE","Дата");
-define("_REVADMIN","Администрирование Рецензий");
-define("_REVTITLE","Заголовог");
-define("_REVDESC","Текст");
-define("_REVWAITING","Ждущие размещения");
-define("_REVIMGINFO","Картинка 150*150 в images/reviews");
-define("_TEXT","Текст");
-define("_IMAGE","Картинка");
-define("_NOREVIEW2ADD","Ничего не добавлено");
-define("_ADDREVIEW","Добавить");
-define("_CLICK2ADDREVIEW","Нажмите здесь чтобы  написать рецензию");
-define("_DELMODREVIEW","Удолить / Редактировать рецензию");
-define("_MODREVINFO","К примеру вы можете удалить рецензию из браузера <a href=\"reviews.php\">reviews.php</a>.");
-define("_LANGUAGE","Language");
+define_once("_EMAIL","Email");
+define_once("_SAVECHANGES","Сохранить изменения");
+define_once("_SCORE","Всего:");
+define_once("_PRODUCTTITLE","Название продукта");
+define_once("_RELATEDLINK","Оцениваемые Линки");
+define_once("_LINKTITLE","Линк вашего сайта");
+define_once("_REVIEWER","Ревьювер:");
+define_once("_REVIEWID","ID Рецензии");
+define_once("_REVIEWS","Рецензии");
+define_once("_DATE","Дата");
+define_once("_REVADMIN","Администрирование Рецензий");
+define_once("_REVTITLE","Заголовог");
+define_once("_REVDESC","Текст");
+define_once("_REVWAITING","Ждущие размещения");
+define_once("_REVIMGINFO","Картинка 150*150 в images/reviews");
+define_once("_TEXT","Текст");
+define_once("_IMAGE","Картинка");
+define_once("_NOREVIEW2ADD","Ничего не добавлено");
+define_once("_ADDREVIEW","Добавить");
+define_once("_CLICK2ADDREVIEW","Нажмите здесь чтобы  написать рецензию");
+define_once("_DELMODREVIEW","Удолить / Редактировать рецензию");
+define_once("_MODREVINFO","К примеру вы можете удалить рецензию из браузера <a href=\"reviews.php\">reviews.php</a>.");
+define_once("_LANGUAGE","Language");
 
 
-?>

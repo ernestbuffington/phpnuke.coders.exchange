@@ -18,27 +18,26 @@
 /**************************************************************************/
 
 
-define("_FUNCTIONS","Функції");
-define("_YES","Так");
-define("_NO","Ні");
-define("_SAVE","Зберегти");
-define("_ID","ID");
-define("_CATEGORIES","Категорії");
-define("_ALL","Всі");
-define("_FAQ","FAQ");
-define("_CONTENT","Зміст");
-define("_FAQADMIN","Адміністрування FAQ");
-define("_ACTIVEFAQS","Активні FAQ");
-define("_ADDCATEGORY","Створити нову категорію");
-define("_QUESTIONS","Питання і відповіді");
-define("_ADDQUESTION","Додати нове питання");
-define("_QUESTION","Питання");
-define("_ANSWER","Відповідь");
-define("_EDITCATEGORY","Редагувати категорію");
-define("_EDITQUESTIONS","Редагувати відповіді і питання");
-define("_FAQDELWARNING","Ви дійсно хочете витерти цю категорію і всі питання, що в неї входять?");
-define("_QUESTIONDEL","Ви дійсно хочете витерти це питання?");
-define("_LANGUAGE","Language");
+define_once("_FUNCTIONS","Функції");
+define_once("_YES","Так");
+define_once("_NO","Ні");
+define_once("_SAVE","Зберегти");
+define_once("_ID","ID");
+define_once("_CATEGORIES","Категорії");
+define_once("_ALL","Всі");
+define_once("_FAQ","FAQ");
+define_once("_CONTENT","Зміст");
+define_once("_FAQADMIN","Адміністрування FAQ");
+define_once("_ACTIVEFAQS","Активні FAQ");
+define_once("_ADDCATEGORY","Створити нову категорію");
+define_once("_QUESTIONS","Питання і відповіді");
+define_once("_ADDQUESTION","Додати нове питання");
+define_once("_QUESTION","Питання");
+define_once("_ANSWER","Відповідь");
+define_once("_EDITCATEGORY","Редагувати категорію");
+define_once("_EDITQUESTIONS","Редагувати відповіді і питання");
+define_once("_FAQDELWARNING","Ви дійсно хочете витерти цю категорію і всі питання, що в неї входять?");
+define_once("_QUESTIONDEL","Ви дійсно хочете витерти це питання?");
+define_once("_LANGUAGE","Language");
 
 
-?>

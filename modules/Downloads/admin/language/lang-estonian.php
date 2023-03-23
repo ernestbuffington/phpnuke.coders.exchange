@@ -1,112 +1,111 @@
-<?php
-
-/**************************************************************************/
-/* PHP-NUKE: Advanced Content Management System                           */
-/* ============================================                           */
-/*                                                                        */
-/* This is the language module with all the system messages               */
-/*                                                                        */
-/* If you made a translation go to the my website and send to me          */
-/* the translated file. Please keep the original text order by modules,   */
-/* and just one message per line, also double check your translation!     */
-/*                                                                        */
-/* You need to change the second quoted phrase, not the capital one!      */
-/*                                                                        */
-/* If you need to use double quotes (") remember to add a backslash (\),  */
-/* so your entry will look like: This is \"double quoted\" text.          */
-/* And, if you use HTML code, please double check it.                     */
-/**************************************************************************/
-
-
-define("_URL","URL");
-define("_FUNCTIONS","Funktsioonid");
-define("_YES","Jah");
-define("_NO","Ei");
-define("_CATEGORY","Kategooria");
-define("_SAVECHANGES","Salvesta muudatused");
-define("_OK","Olgu!");
-define("_HITS","Tabamusi");
-define("_THEREARE","Praegu on");
-define("_CHECK","Kontroll");
-define("_AUTHORNAME","Autori nimi");
-define("_AUTHOREMAIL","Autori Email");
-define("_DOWNLOADNAME","Programmi nimi");
-define("_INBYTES","baitides");
-define("_FILESIZE","Faili suurus");
-define("_VERSION","Versioon");
-define("_DESCRIPTION","Kirjeldus");
-define("_AUTHOR","Autor");
-define("_HOMEPAGE","Kodulehekülg");
-define("_NAME","Nimi");
-define("_FILEURL","Faili link");
-define("_DOWNLOADID","Faili ID");
-define("_PAGETITLE","Lehe pealkiri");
-define("_PAGEURL","Lehe URL");
-define("_ADDURL","Lisa see URL");
-define("_DOWNLOAD","Failid");
-define("_TITLE","Pealkiri");
-define("_STATUS","Olek");
-define("_ADD","Lisa");
-define("_MODIFY","Uuenda");
-define("_DOWNLOADSINDB","Faile meie andmebaasis");
-define("_DOWNLOADSWAITINGVAL","Failid, mis ootavad heakskiitu");
-define("_CLEANDOWNLOADSDB","Puhasta failide hääled");
-define("_BROKENDOWNLOADSREP","Andmed vigastest failidest");
-define("_DOWNLOADMODREQUEST","Faili uuenduse soovid");
-define("_ADDNEWDOWNLOAD","Lisa uus fail");
-define("_MODDOWNLOAD","Uuenda faili");
-define("_WEBDOWNLOADSADMIN","Veebifailide administratsioon");
-define("_DNOREPORTEDBROKEN","Vigaseid faile pole.");
-define("_DUSERREPBROKEN","Kasutajate mainitud vigased failid");
-define("_DIGNOREINFO","Eira (Kustutab kõik <b><i>soovid</i></b> antud failidele)");
-define("_DDELETEINFO","Kustuta (Kustutab <b><i>vigased failid</i></b> ja <b><i>soovid</i></b> antud failidele)");
-define("_DOWNLOADOWNER","Faili omanik");
-define("_DUSERMODREQUEST","Kasutaja failide uuenduse soovid");
-define("_DOWNLOADVALIDATION","Failide heakskiit");
-define("_CHECKALLDOWNLOADS","Kontrolli KÕIKI faile");
-define("_VALIDATEDOWNLOADS","Heakskiidetud failid");
-define("_NEWDOWNLOADADDED","Uued failid lisatud andmebaasi");
-define("_SUBMITTER","Saatja");
-define("_VISIT","Külasta");
-define("_ADDMAINCATEGORY","Lisa PEAkategooria");
-define("_ADDSUBCATEGORY","Lisa ALAMkategooria");
-define("_IN","");
-define("_DESCRIPTION255","Kirjeldus: (255 tähemärki max)");
-define("_MODCATEGORY","Uuenda kategooriat");
-define("_ADDEDITORIAL","Lisa toimetaja");
-define("_EDITORIALTITLE","Toimetaja pealkiri");
-define("_EDITORIALTEXT","Toimetaja tekst");
-define("_DATEWRITTEN","Kirjutamise kuupäev");
-define("_IGNORE","Eira");
-define("_ORIGINAL","Originaal");
-define("_PROPOSED","Pakutud");
-define("_NOMODREQUESTS","Praegu pole ühtegi uuendussoovi");
-define("_SUBCATEGORY","Alamkategooria");
-define("_OWNER","Omanik");
-define("_ACCEPT","Nõustu");
-define("_ERRORTHECATEGORY","VIGA: kategooria");
-define("_ALREADYEXIST","on juba olemas!");
-define("_ERRORTHESUBCATEGORY","VIGA: alamkategooria");
-define("_EDITORIALADDED","Toimetaja lisatud andmebaasi");
-define("_EDITORIALMODIFIED","Toimetaja uuendatud");
-define("_EDITORIALREMOVED","Toimetaja eemaldatud andmebaasist");
-define("_CHECKCATEGORIES","Kontrolli kategooriaid");
-define("_INCLUDESUBCATEGORIES","(lisa alamkategooriad)");
-define("_FAILED","Nurjus!");
-define("_BEPATIENT","(palun ole kannatlik)");
-define("_VALIDATINGCAT","Kinnitab kategooria (ja kõik alamkategooriad)");
-define("_VALIDATINGSUBCAT","Kinnitab alamkategooria");
-define("_ERRORURLEXIST","VIGA: See URL on juba lisatud andmebaasi!");
-define("_ERRORNOTITLE","VIGA: Sa pead kirjutama PEALKIRJA oma URL'ile!");
-define("_ERRORNOURL","VIGA: Sa pead kirjutama URL'i oma URL'ile!");
-define("_ERRORNODESCRIPTION","VIGA: Sa pead kirjutama KIRJELDUSE oma URL'ile!");
-define("_EZTRANSFER","Ülekanne");
-define("_EZTHEREIS","Praegu on");
-define("_EZSUBCAT","alamkategooriad");
-define("_EZATTACHEDTOCAT","sellesse kategooriasse");
-define("_EZTRANSFERDOWNLOADS","Kanna kõik failid kategooriast");
-define("_DELEZDOWNLOADSCATWARNING","HOIATUS : Oled sa kindel, et soovid kustutada selle kategooria? Sa kustutad sellega ka kõik alamkategooriad ja lisatud failid!");
-define("_DOWNLOADTITLE","Faili pealkiri");
-
-
-?>
+<?php
+
+/**************************************************************************/
+/* PHP-NUKE: Advanced Content Management System                           */
+/* ============================================                           */
+/*                                                                        */
+/* This is the language module with all the system messages               */
+/*                                                                        */
+/* If you made a translation go to the my website and send to me          */
+/* the translated file. Please keep the original text order by modules,   */
+/* and just one message per line, also double check your translation!     */
+/*                                                                        */
+/* You need to change the second quoted phrase, not the capital one!      */
+/*                                                                        */
+/* If you need to use double quotes (") remember to add a backslash (\),  */
+/* so your entry will look like: This is \"double quoted\" text.          */
+/* And, if you use HTML code, please double check it.                     */
+/**************************************************************************/
+
+
+define_once("_URL","URL");
+define_once("_FUNCTIONS","Funktsioonid");
+define_once("_YES","Jah");
+define_once("_NO","Ei");
+define_once("_CATEGORY","Kategooria");
+define_once("_SAVECHANGES","Salvesta muudatused");
+define_once("_OK","Olgu!");
+define_once("_HITS","Tabamusi");
+define_once("_THEREARE","Praegu on");
+define_once("_CHECK","Kontroll");
+define_once("_AUTHORNAME","Autori nimi");
+define_once("_AUTHOREMAIL","Autori Email");
+define_once("_DOWNLOADNAME","Programmi nimi");
+define_once("_INBYTES","baitides");
+define_once("_FILESIZE","Faili suurus");
+define_once("_VERSION","Versioon");
+define_once("_DESCRIPTION","Kirjeldus");
+define_once("_AUTHOR","Autor");
+define_once("_HOMEPAGE","Kodulehekülg");
+define_once("_NAME","Nimi");
+define_once("_FILEURL","Faili link");
+define_once("_DOWNLOADID","Faili ID");
+define_once("_PAGETITLE","Lehe pealkiri");
+define_once("_PAGEURL","Lehe URL");
+define_once("_ADDURL","Lisa see URL");
+define_once("_DOWNLOAD","Failid");
+define_once("_TITLE","Pealkiri");
+define_once("_STATUS","Olek");
+define_once("_ADD","Lisa");
+define_once("_MODIFY","Uuenda");
+define_once("_DOWNLOADSINDB","Faile meie andmebaasis");
+define_once("_DOWNLOADSWAITINGVAL","Failid, mis ootavad heakskiitu");
+define_once("_CLEANDOWNLOADSDB","Puhasta failide hääled");
+define_once("_BROKENDOWNLOADSREP","Andmed vigastest failidest");
+define_once("_DOWNLOADMODREQUEST","Faili uuenduse soovid");
+define_once("_ADDNEWDOWNLOAD","Lisa uus fail");
+define_once("_MODDOWNLOAD","Uuenda faili");
+define_once("_WEBDOWNLOADSADMIN","Veebifailide administratsioon");
+define_once("_DNOREPORTEDBROKEN","Vigaseid faile pole.");
+define_once("_DUSERREPBROKEN","Kasutajate mainitud vigased failid");
+define_once("_DIGNOREINFO","Eira (Kustutab kõik <b><i>soovid</i></b> antud failidele)");
+define_once("_DDELETEINFO","Kustuta (Kustutab <b><i>vigased failid</i></b> ja <b><i>soovid</i></b> antud failidele)");
+define_once("_DOWNLOADOWNER","Faili omanik");
+define_once("_DUSERMODREQUEST","Kasutaja failide uuenduse soovid");
+define_once("_DOWNLOADVALIDATION","Failide heakskiit");
+define_once("_CHECKALLDOWNLOADS","Kontrolli KÕIKI faile");
+define_once("_VALIDATEDOWNLOADS","Heakskiidetud failid");
+define_once("_NEWDOWNLOADADDED","Uued failid lisatud andmebaasi");
+define_once("_SUBMITTER","Saatja");
+define_once("_VISIT","Külasta");
+define_once("_ADDMAINCATEGORY","Lisa PEAkategooria");
+define_once("_ADDSUBCATEGORY","Lisa ALAMkategooria");
+define_once("_IN","");
+define_once("_DESCRIPTION255","Kirjeldus: (255 tähemärki max)");
+define_once("_MODCATEGORY","Uuenda kategooriat");
+define_once("_ADDEDITORIAL","Lisa toimetaja");
+define_once("_EDITORIALTITLE","Toimetaja pealkiri");
+define_once("_EDITORIALTEXT","Toimetaja tekst");
+define_once("_DATEWRITTEN","Kirjutamise kuupäev");
+define_once("_IGNORE","Eira");
+define_once("_ORIGINAL","Originaal");
+define_once("_PROPOSED","Pakutud");
+define_once("_NOMODREQUESTS","Praegu pole ühtegi uuendussoovi");
+define_once("_SUBCATEGORY","Alamkategooria");
+define_once("_OWNER","Omanik");
+define_once("_ACCEPT","Nõustu");
+define_once("_ERRORTHECATEGORY","VIGA: kategooria");
+define_once("_ALREADYEXIST","on juba olemas!");
+define_once("_ERRORTHESUBCATEGORY","VIGA: alamkategooria");
+define_once("_EDITORIALADDED","Toimetaja lisatud andmebaasi");
+define_once("_EDITORIALMODIFIED","Toimetaja uuendatud");
+define_once("_EDITORIALREMOVED","Toimetaja eemaldatud andmebaasist");
+define_once("_CHECKCATEGORIES","Kontrolli kategooriaid");
+define_once("_INCLUDESUBCATEGORIES","(lisa alamkategooriad)");
+define_once("_FAILED","Nurjus!");
+define_once("_BEPATIENT","(palun ole kannatlik)");
+define_once("_VALIDATINGCAT","Kinnitab kategooria (ja kõik alamkategooriad)");
+define_once("_VALIDATINGSUBCAT","Kinnitab alamkategooria");
+define_once("_ERRORURLEXIST","VIGA: See URL on juba lisatud andmebaasi!");
+define_once("_ERRORNOTITLE","VIGA: Sa pead kirjutama PEALKIRJA oma URL'ile!");
+define_once("_ERRORNOURL","VIGA: Sa pead kirjutama URL'i oma URL'ile!");
+define_once("_ERRORNODESCRIPTION","VIGA: Sa pead kirjutama KIRJELDUSE oma URL'ile!");
+define_once("_EZTRANSFER","Ülekanne");
+define_once("_EZTHEREIS","Praegu on");
+define_once("_EZSUBCAT","alamkategooriad");
+define_once("_EZATTACHEDTOCAT","sellesse kategooriasse");
+define_once("_EZTRANSFERDOWNLOADS","Kanna kõik failid kategooriast");
+define_once("_DELEZDOWNLOADSCATWARNING","HOIATUS : Oled sa kindel, et soovid kustutada selle kategooria? Sa kustutad sellega ka kõik alamkategooriad ja lisatud failid!");
+define_once("_DOWNLOADTITLE","Faili pealkiri");
+
+

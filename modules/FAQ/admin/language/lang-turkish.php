@@ -18,27 +18,26 @@
 /**************************************************************************/
 
 
-define("_FUNCTIONS","Fonksiyonlar");
-define("_YES","Evet");
-define("_NO","Hayýr");
-define("_SAVE","Kaydet");
-define("_ID","ID");
-define("_CATEGORIES","Kategori");
-define("_ALL","Tümü");
-define("_FAQ","SSS");
-define("_CONTENT","Ýçerik");
-define("_FAQADMIN","SSS Yönetimi");
-define("_ACTIVEFAQS","Aktif SSS'ler");
-define("_ADDCATEGORY","Yeni Kategori Ekle");
-define("_QUESTIONS","Sorular ve Cevaplar");
-define("_ADDQUESTION","Yeni Soru Ekle");
-define("_QUESTION","Soru");
-define("_ANSWER","Cevap");
-define("_EDITCATEGORY","Kategori Düzenle");
-define("_EDITQUESTIONS","Soru ve Cevaplarý Düzenle");
-define("_FAQDELWARNING","UYARI: Bu SSS ve tüm içeriðini silmek istediðinizden emin misiniz?");
-define("_QUESTIONDEL","UYARI: Bu soruyu silmek istediðinizden emin misiniz?");
-define("_LANGUAGE","Dil");
+define_once("_FUNCTIONS","Fonksiyonlar");
+define_once("_YES","Evet");
+define_once("_NO","Hayýr");
+define_once("_SAVE","Kaydet");
+define_once("_ID","ID");
+define_once("_CATEGORIES","Kategori");
+define_once("_ALL","Tümü");
+define_once("_FAQ","SSS");
+define_once("_CONTENT","Ýçerik");
+define_once("_FAQADMIN","SSS Yönetimi");
+define_once("_ACTIVEFAQS","Aktif SSS'ler");
+define_once("_ADDCATEGORY","Yeni Kategori Ekle");
+define_once("_QUESTIONS","Sorular ve Cevaplar");
+define_once("_ADDQUESTION","Yeni Soru Ekle");
+define_once("_QUESTION","Soru");
+define_once("_ANSWER","Cevap");
+define_once("_EDITCATEGORY","Kategori Düzenle");
+define_once("_EDITQUESTIONS","Soru ve Cevaplarý Düzenle");
+define_once("_FAQDELWARNING","UYARI: Bu SSS ve tüm içeriðini silmek istediðinizden emin misiniz?");
+define_once("_QUESTIONDEL","UYARI: Bu soruyu silmek istediðinizden emin misiniz?");
+define_once("_LANGUAGE","Dil");
 
 
-?>

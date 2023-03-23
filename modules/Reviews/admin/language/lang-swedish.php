@@ -18,29 +18,28 @@
 /**************************************************************************/
 
 
-define("_EMAIL","E-post");
-define("_SAVECHANGES","Spara Ändringar");
-define("_SCORE","Poäng:");
-define("_PRODUCTTITLE","Produktnamn");
-define("_RELATEDLINK","Relaterad Länk");
-define("_LINKTITLE","Titel på länken");
-define("_REVIEWER","Recensent:");
-define("_REVIEWID","Recensions ID");
-define("_REVIEWS","Recensioner");
-define("_DATE","Datum");
-define("_REVADMIN","Recensionsadministration");
-define("_REVTITLE","Recensionssidans Titel");
-define("_REVDESC","Recensionssidan Beskrivning");
-define("_REVWAITING","Recensioner som väntar på validering");
-define("_REVIMGINFO","Lägg din 150*150 bild i images/reviews");
-define("_TEXT","Text");
-define("_IMAGE","Bild");
-define("_NOREVIEW2ADD","Inga recensioner att lägga till");
-define("_ADDREVIEW","Addera recension");
-define("_CLICK2ADDREVIEW","Klicka här för att skriva en recension");
-define("_DELMODREVIEW","Radera / Modifiera en recension");
-define("_MODREVINFO","Du kan enkelt radera/modifiera recensioner genom att bläddra i <a href=\"modules.php?name=Reviews\">Reviews</a> som Admin.");
-define("_LANGUAGE","Language");
+define_once("_EMAIL","E-post");
+define_once("_SAVECHANGES","Spara Ändringar");
+define_once("_SCORE","Poäng:");
+define_once("_PRODUCTTITLE","Produktnamn");
+define_once("_RELATEDLINK","Relaterad Länk");
+define_once("_LINKTITLE","Titel på länken");
+define_once("_REVIEWER","Recensent:");
+define_once("_REVIEWID","Recensions ID");
+define_once("_REVIEWS","Recensioner");
+define_once("_DATE","Datum");
+define_once("_REVADMIN","Recensionsadministration");
+define_once("_REVTITLE","Recensionssidans Titel");
+define_once("_REVDESC","Recensionssidan Beskrivning");
+define_once("_REVWAITING","Recensioner som väntar på validering");
+define_once("_REVIMGINFO","Lägg din 150*150 bild i images/reviews");
+define_once("_TEXT","Text");
+define_once("_IMAGE","Bild");
+define_once("_NOREVIEW2ADD","Inga recensioner att lägga till");
+define_once("_ADDREVIEW","Addera recension");
+define_once("_CLICK2ADDREVIEW","Klicka här för att skriva en recension");
+define_once("_DELMODREVIEW","Radera / Modifiera en recension");
+define_once("_MODREVINFO","Du kan enkelt radera/modifiera recensioner genom att bläddra i <a href=\"modules.php?name=Reviews\">Reviews</a> som Admin.");
+define_once("_LANGUAGE","Language");
 
 
-?>

@@ -18,27 +18,26 @@
 /**************************************************************************/
 
 
-define("_FUNCTIONS","Funções");
-define("_YES","Sim");
-define("_NO","Não");
-define("_SAVE","Gravar");
-define("_ID","ID");
-define("_CATEGORIES","Categorias");
-define("_ALL","Todos");
-define("_FAQ","FAQ");
-define("_CONTENT","Conteúdo");
-define("_FAQADMIN","Administrar FAQ");
-define("_ACTIVEFAQS","Activar FAQs");
-define("_ADDCATEGORY","Adicionar uma Nova Categoria");
-define("_QUESTIONS","Perguntas & Respostas");
-define("_ADDQUESTION","Adicionar uma Nova Pergunta");
-define("_QUESTION","Pergunta");
-define("_ANSWER","Resposta");
-define("_EDITCATEGORY","Editar Categoria");
-define("_EDITQUESTIONS","Editar Perguntas & Respostas");
-define("_FAQDELWARNING","CUIDADO: Você realmente quer apagar esta FAQ e todo o seu conteúdo?");
-define("_QUESTIONDEL","CUIDADO: Você realmente quer apagar esta pergunta?");
-define("_LANGUAGE","Língua");
+define_once("_FUNCTIONS","Funções");
+define_once("_YES","Sim");
+define_once("_NO","Não");
+define_once("_SAVE","Gravar");
+define_once("_ID","ID");
+define_once("_CATEGORIES","Categorias");
+define_once("_ALL","Todos");
+define_once("_FAQ","FAQ");
+define_once("_CONTENT","Conteúdo");
+define_once("_FAQADMIN","Administrar FAQ");
+define_once("_ACTIVEFAQS","Activar FAQs");
+define_once("_ADDCATEGORY","Adicionar uma Nova Categoria");
+define_once("_QUESTIONS","Perguntas & Respostas");
+define_once("_ADDQUESTION","Adicionar uma Nova Pergunta");
+define_once("_QUESTION","Pergunta");
+define_once("_ANSWER","Resposta");
+define_once("_EDITCATEGORY","Editar Categoria");
+define_once("_EDITQUESTIONS","Editar Perguntas & Respostas");
+define_once("_FAQDELWARNING","CUIDADO: Você realmente quer apagar esta FAQ e todo o seu conteúdo?");
+define_once("_QUESTIONDEL","CUIDADO: Você realmente quer apagar esta pergunta?");
+define_once("_LANGUAGE","Língua");
 
 
-?>

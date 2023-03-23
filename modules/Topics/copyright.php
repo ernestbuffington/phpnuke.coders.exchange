@@ -4,13 +4,17 @@
 /* PHP-NUKE: Web Portal System                                          */
 /* ===========================                                          */
 /*                                                                      */
-/* Copyright (c) 2007 by Francisco Burzi                                */
-/* http://phpnuke.org                                                   */
+/* Copyright (c) 2023 by Francisco Burzi                                */
+/* http://www.phpnuke.coders.exchange                                   */
 /*                                                                      */
 /* This program is free software. You can redistribute it and/or modify */
 /* it under the terms of the GNU General Public License as published by */
 /* the Free Software Foundation; either version 2 of the License.       */
 /************************************************************************/
+
+/* Applied rules:
+ * EregToPregMatchRector (http://php.net/reference.pcre.pattern.posix https://stackoverflow.com/a/17033826/1348344 https://docstore.mik.ua/orelly/webprog/pcook/ch13_02.htm)
+ */
 
 // To have the Copyright window work in your module just fill the following
 // required information and then copy the file "copyright.php" into your
@@ -18,11 +22,11 @@
 // NOTE: in $download_location PLEASE give the direct download link to the file!!!
 
 $author_name = "Francisco Burzi";
-$author_email = "";
-$author_homepage = "http://phpnuke.org";
+$author_email = "fburzi@gmail.com";
+$author_homepage = "http://phpnuke.coders.exchange";
 $license = "GNU/GPL";
-$download_location = "http://phpnuke.org";
-$module_version = "";
+$download_location = "https://phpnuke.coders.exchange";
+$module_version = "1.1";
 $module_description = "All topics are shown in this module with some useful information.";
 
 // DO NOT TOUCH THE FOLLOWING COPYRIGHT CODE. YOU'RE JUST ALLOWED TO CHANGE YOUR "OWN"
@@ -42,7 +46,7 @@ function show_copyright() {
 	if ($module_version == "") { $module_version = "N/A"; }
 	if ($module_description == "") { $module_description = "N/A"; }
 	$module_name = basename(dirname(__FILE__));
-	$module_name = eregi_replace("_", " ", $module_name);
+	$module_name = preg_replace('#_#mi', " ", $module_name);
 	echo "<html>\n"
 	."<body bgcolor=\"#F6F6EB\" link=\"#363636\" alink=\"#363636\" vlink=\"#363636\">\n"
 	."<title>$module_name: Copyright Information</title>\n"
@@ -62,5 +66,3 @@ function show_copyright() {
 }
 
 show_copyright();
-
-?>

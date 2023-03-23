@@ -71,7 +71,7 @@ define("_CLICKSMILEBUTTONS","Кликни на смајли да го вметнеш во пораката:");
 define("_CLICKCODEBUTTONS","Кликни на следниве копчиња да вметнеш BB код во пораката:");
 define("_PRIVMSGERROR","Грешка!");
 define("_USERDOESNTEXIST","Жалиме, избраниот корисник не постои во нашата база");
-define("_DELETESELECTED","Delete Selected");
+define("_DELETESELECTED","Delete Selected");
 define("_SENDNEWMSG","Send New Message");
 define("_REPLY","Reply");
 define("_NOSUBJECT","There is not a Subject for your Message.");

@@ -20,22 +20,21 @@
 /*                                                                        */
 /**************************************************************************/
 
-define("_SEND","Wy¶lij");
-define("_FYOURNAME","Twoje imiê:");
-define("_FYOUREMAIL","Twój e-mail:");
-define("_FFRIENDNAME","Imiê Twego znajomego:");
-define("_FFRIENDEMAIL","E-mail Twego znajomego:");
-define("_HELLO","Witaj");
-define("_YOURFRIEND","Twój znajomy");
-define("_RECOMMEND","Zarekomenduj tê stronê znajomym");
-define("_INTSITE","Interesuj±ca strona:");
-define("_OURSITE","uwa¿a, ¿e ta strona jest");
-define("_INTSENT","interesuj±ca i warta poinformowania Ciebie o jej istnieniu.");
-define("_FSITENAME","Nazwa strony:");
-define("_FSITEURL","Adres strony:");
-define("_FREFERENCE","Referencje na temat naszej strony zosta³y wys³ane do");
-define("_THANKSREC","Dziêkujemy za zarekomendowanie nas!");
-define("_SECURITYCODEERROR","<b>ERROR:</b> The security code you wrote is incorrect...<br>Please write it exactly as given bellow:");
-define("_SENDSITEERROR","<b>Error sending the recommendation...</b><br><br><b>ERROR:</b> One or more required fields are empty.<br>Please go back and correct the problem, then try again.");
+define_once("_SEND","Wy¶lij");
+define_once("_FYOURNAME","Twoje imiê:");
+define_once("_FYOUREMAIL","Twój e-mail:");
+define_once("_FFRIENDNAME","Imiê Twego znajomego:");
+define_once("_FFRIENDEMAIL","E-mail Twego znajomego:");
+define_once("_HELLO","Witaj");
+define_once("_YOURFRIEND","Twój znajomy");
+define_once("_RECOMMEND","Zarekomenduj tê stronê znajomym");
+define_once("_INTSITE","Interesuj±ca strona:");
+define_once("_OURSITE","uwa¿a, ¿e ta strona jest");
+define_once("_INTSENT","interesuj±ca i warta poinformowania Ciebie o jej istnieniu.");
+define_once("_FSITENAME","Nazwa strony:");
+define_once("_FSITEURL","Adres strony:");
+define_once("_FREFERENCE","Referencje na temat naszej strony zosta³y wys³ane do");
+define_once("_THANKSREC","Dziêkujemy za zarekomendowanie nas!");
+define_once("_SECURITYCODEERROR","<b>ERROR:</b> The security code you wrote is incorrect...<br>Please write it exactly as given bellow:");
+define_once("_SENDSITEERROR","<b>Error sending the recommendation...</b><br><br><b>ERROR:</b> One or more required fields are empty.<br>Please go back and correct the problem, then try again.");
 
-?>

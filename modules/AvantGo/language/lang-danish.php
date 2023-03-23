@@ -15,11 +15,10 @@
 /* Hvis de finder fejl må og skal de sende en e-mail eller icq til mig!   */
 /**************************************************************************/
 
-define("_PDATE","Dato:");
-define("_PTOPIC","Emne:");
-define("_COMESFROM","Denne artikel kommer fra");
-define("_THEURL","Internetadressen til denne artikel er:");
-define("_DATE","Dato");
-define("_TITLE","Titel");
+define_once("_PDATE","Dato:");
+define_once("_PTOPIC","Emne:");
+define_once("_COMESFROM","Denne artikel kommer fra");
+define_once("_THEURL","Internetadressen til denne artikel er:");
+define_once("_DATE","Dato");
+define_once("_TITLE","Titel");
 
-?>

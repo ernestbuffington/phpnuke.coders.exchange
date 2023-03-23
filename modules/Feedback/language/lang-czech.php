@@ -17,19 +17,18 @@
 /* And, if you use HTML code, please double check it.                     */
 /**************************************************************************/
 
-define("_SEND","Poslat");
-define("_YOURNAME","Vaše jméno");
-define("_MESSAGE","Zpráva");
-define("_YOUREMAIL","Váš e-mail");
-define("_FEEDBACKNOTE","All comments and suggestions about this web site are very welcome and a valuable source of information for us. Thanks!");
-define("_FEEDBACKTITLE","Feedback Form");
-define("_FEEDBACK","Feedback");
-define("_FBENTERNAME","ERROR: Please enter your name!");
-define("_FBENTEREMAIL","ERROR: Please enter your e-mail address!");
-define("_FBENTERMESSAGE","ERROR: Please enter a message!");
-define("_SENDEREMAIL","Sender's Email");
-define("_SENDERNAME","Sender's Name");
-define("_FBMAILSENT","Mail has been sent!");
-define("_FBTHANKSFORCONTACT","Thank you for contacting us");
+define_once("_SEND","Poslat");
+define_once("_YOURNAME","Vaše jméno");
+define_once("_MESSAGE","Zpráva");
+define_once("_YOUREMAIL","Váš e-mail");
+define_once("_FEEDBACKNOTE","All comments and suggestions about this web site are very welcome and a valuable source of information for us. Thanks!");
+define_once("_FEEDBACKTITLE","Feedback Form");
+define_once("_FEEDBACK","Feedback");
+define_once("_FBENTERNAME","ERROR: Please enter your name!");
+define_once("_FBENTEREMAIL","ERROR: Please enter your e-mail address!");
+define_once("_FBENTERMESSAGE","ERROR: Please enter a message!");
+define_once("_SENDEREMAIL","Sender's Email");
+define_once("_SENDERNAME","Sender's Name");
+define_once("_FBMAILSENT","Mail has been sent!");
+define_once("_FBTHANKSFORCONTACT","Thank you for contacting us");
 
-?>
