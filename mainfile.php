@@ -81,6 +81,14 @@ if (!function_exists("floatval")) {
     }
 }
 
+# define anything only once
+function define_once($constant, $value) 
+{
+    if(!defined($constant)): 
+      define($constant, $value);
+	endif;
+}
+
 $do_gzip_compress = false;
 
 if (GZIPSUPPORT && !ini_get('zlib.output_compression') 
