@@ -1,99 +1,92 @@
-<?php
-/***************************************************************************
- *                                 db.php
- *                            -------------------
- *   begin                : Saturday, Feb 13, 2001
- *   copyright            : (C) 2001 The phpBB Group
- *   email                : support@phpbb.com
- *
- *   Id: db.php,v 1.10 2002/03/18 13:35:22 psotfx Exp
- *
- *
- ***************************************************************************/
-
-/***************************************************************************
- *   This file is part of the phpBB2 port to Nuke 6.0 (c) copyright 2002
- *   by Tom Nitzschner (tom@toms-home.com)
- *   http://bbtonuke.sourceforge.net (or http://www.toms-home.com)
- *
- *   As always, make a backup before messing with anything. All code
- *   release by me is considered sample code only. It may be fully
- *   functual, but you use it at your own risk, if you break it,
- *   you get to fix it too. No waranty is given or implied.
- *
- *   Please post all questions/request about this port on http://bbtonuke.sourceforge.net first,
- *   then on my site. All original header code and copyright messages will be maintained
- *   to give credit where credit is due. If you modify this, the only requirement is
- *   that you also maintain all original copyright messages. All my work is released
- *   under the GNU GENERAL PUBLIC LICENSE. Please see the README for more information.
- *
- ***************************************************************************/
-
-/***************************************************************************
- *
- *   This program is free software; you can redistribute it and/or modify
- *   it under the terms of the GNU General Public License as published by
- *   the Free Software Foundation; either version 2 of the License, or
- *   (at your option) any later version.
- *
- ***************************************************************************/
-
-if (stristr($_SERVER['PHP_SELF'], "db.php")) {
-    Header("Location: index.php");
-    die();
-}
-
-if (defined('FORUM_ADMIN')) {
-    $the_include = "../../../db";
-} elseif (defined('INSIDE_MOD')) {
-    $the_include = "../../db";
-} else {
-    $the_include = "db";
-}
-
-switch($dbtype) {
-
-	case 'MySQL':
-		include("".$the_include."/mysql.php");
-		break;
-
-	case 'mysql4':
-		include("".$the_include."/mysql4.php");
-		break;
-
-	case 'sqlite':
-		include("".$the_include."/sqlite.php");
-		break;
-
-	case 'postgres':
-		include("".$the_include."/postgres7.php");
-		break;
-
-	case 'mssql':
-		include("".$the_include."/mssql.php");
-		break;
-
-	case 'oracle':
-		include("".$the_include."/oracle.php");
-		break;
-
-	case 'msaccess':
-		include("".$the_include."/msaccess.php");
-		break;
-
-	case 'mssql-odbc':
-		include("".$the_include."/mssql-odbc.php");
-		break;
-	
-	case 'db2':
-		include("".$the_include."/db2.php");
-		break;
-
-}
-
-$db = new sql_db($dbhost, $dbuname, $dbpass, $dbname, false);
-if(!$db->db_connect_id) {
-    die("<br><br><center><img src=images/logo.gif><br><br><b>There seems to be a problem with the $dbtype server, sorry for the inconvenience.<br><br>We should be back shortly.</center></b>");
-}
-
-?>
+<?php
+/* -------------------------------------------------------------
+ * >> Database
+ *
+ * @filename    db.php
+ * @author      The phpBB Group
+ * @version     1.11
+ * @date        Nov 24, 2011
+ * @notes       n/a
+ *
+ * -------------------------------------------------------------
+ * // Legal Stuff
+ * -------------------------------------------------------------
+ *
+ * (c) Copyright 2001 The phpBB Group
+ * support@phpbb.com
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ */
+
+/************************************************************************/
+/* PHP-NUKE: Advanced Content Management System                         */
+/* ============================================                         */
+/*                                                                      */
+/* Copyright (c) 2023 by Francisco Burzi                                */
+/* http://www.phpnuke.coders.exchange                                   */
+/*                                                                      */
+/* This program is free software. You can redistribute it and/or modify */
+/* it under the terms of the GNU General Public License as published by */
+/* the Free Software Foundation; either version 2 of the License.       */
+/************************************************************************/
+
+if (!defined('NUKE_BASIC') || isset($_REQUEST['dbtype'])) {
+  die('Quit trying to hack my website!');
+}
+
+if(!isset($dbtype)) {
+  $dbtype = 'mysqli';
+}
+
+$dbtype = strtolower($dbtype);
+
+if (file_exists(NUKE_DB_DIR . $dbtype . '.php')) {
+    require_once(NUKE_DB_DIR . $dbtype . '.php');
+} else {
+    die('Invalid Database Type Specified!');
+}
+
+$db = new sql_db($dbhost, $dbuname, $dbpass, $dbname, false);
+
+if (!$db->db_connect_id) {
+ print '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">';
+ print '<html xmlns="http://www.w3.org/1999/xhtml">';
+
+ print '<head>';
+ print '<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />';
+ print '<title>Local Database Access Temporarily Denied</title>';
+ print '<style>';
+ print 'h1.myclass {font-size: 11pt; font-style: normal; color: white; text-align: center}';
+ print 'h1.myclass2 {font-size: 20pt; font-style: normal; color: red; text-align: center}';
+ print 'table { background-color: #151515; }';
+ print 'body { background-color: #151515; }';
+ print '</style>';
+ print '</head>';
+
+ print '<body>';
+ print '<table align="center" border="0" width="35%">';
+ print '<tr><td align="center">';
+ print '<h1 class="myclass2">';
+ print 'Local Database Access Temporarily Denied';
+ print '</h1>';
+ print '</td></tr>';
+ print '<tr><td align="center">';
+ print '<h1 class="myclass">';
+
+ exit("<br /><br /><div align='center'><img src='images/logo.gif'><br /><br /><strong>There seems to be a problem with the MariaDB server, sorry for the inconvenience.<br /><br />We should be back shortly...</strong></div>");
+
+ print '</h1>';
+ print '<br />';
+ print '<img src="/images/logo.gif" alt="" />';
+ print '</td></tr>';
+ print '</table>';
+ print '<p>';
+ print '<a href="http://validator.w3.org/check?uri=referer"><img src="http://www.w3.org/Icons/valid-xhtml10" alt="Valid XHTML 1.0 Strict" height="31" width="88" /></a>';
+ print '</p>';
+
+ print '</body>';
+ print '</html>';
+}
