@@ -3,6 +3,7 @@ _notes
 vendor/*
 /desktop.ini
 /config.php
+/rector.php
 lincludes/log/*
 lincludes/cache/*
 
