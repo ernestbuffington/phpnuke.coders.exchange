@@ -175,8 +175,9 @@ return static function (RectorConfig $rectorConfig): void {
 		
     $rectorConfig->paths([
           #__DIR__ . '/admin',
-		  ////__DIR__ . '/db/mysqli.php',
-		  ////__DIR__ . '/install/includes/database.php',
+		  //////__DIR__ . '/db/mysqli.php',
+		  //////__DIR__ . '/install/includes/database.php',
+		
 		///__DIR__ . '/admin/modules/backup/backup.php',
 		///__DIR__ . '/admin/modules/backup/backupdownload.php',
 		///__DIR__ . '/admin/modules/modules.php',
@@ -184,15 +185,18 @@ return static function (RectorConfig $rectorConfig): void {
 		///__DIR__ . '/admin/modules/authors.php',
 		///__DIR__ . '/admin/modules/ipban.php',
 		///__DIR__ . '/admin/modules/settings.php',
-          #__DIR__ . '/blocks',
+        
+		  #__DIR__ . '/blocks',
 		///__DIR__ . '/blocks/blocks-Modules.php',
-        ///__DIR__ . '/install/includes/database.php',
+        
+		///__DIR__ . '/install/includes/database.php',
 		///__DIR__ . '/install/install2.php',
 		///__DIR__ . '/install',
         ///__DIR__ . '/includes', BAD IDEA HAD TO REBOOT SERVER
+		
 		///__DIR__ . '/includes/classes/class.debugger.php',
-		///__DIR__ . '/includes/counter.php',
-		///__DIR__ . '/includes/ipban.php',
+		//////__DIR__ . '/includes/counter.php',
+		//__DIR__ . '/includes/ipban.php',
           #__DIR__ . '/install',
           #__DIR__ . '/language',
           #__DIR__ . '/modules',
@@ -350,7 +354,7 @@ return static function (RectorConfig $rectorConfig): void {
 		///__DIR__ . '/footer.php',
 		///__DIR__ . '/header.php',
 		///__DIR__ . '/index.php',
-		__DIR__ . '/mainfile.php',
+		///__DIR__ . '/mainfile.php',
 		///__DIR__ . '/modules.php',
     ]);
 
