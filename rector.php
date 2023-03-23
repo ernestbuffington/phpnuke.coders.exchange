@@ -349,7 +349,7 @@ return static function (RectorConfig $rectorConfig): void {
 		//////__DIR__ . '/modules/Your_Account/navbar.php',
 
           #__DIR__ . '/themes',
-		//__DIR__ . '/admin.php',
+		//////__DIR__ . '/admin.php',
 		//__DIR__ . '/backend.php',
 		//__DIR__ . '/footer.php',
 		//__DIR__ . '/header.php',
