@@ -1,8 +1,6 @@
 <?php
 
 /* -- -----------------------------------------------------------
- * // PHP-Nuke Titanium: Enhanced and Advanced
- * -- -----------------------------------------------------------
  *
  * >> Exception Handler
  *
@@ -14,7 +12,7 @@
  *
  * -- -----------------------------------------------------------
  * // Legal Stuff
- * -- -----------------------------------------------------------
+ * -- ----------------------------------------------------------- 
  *
  * (c) Copyright 2000-11 Francisco Burzi
  * http://www.phpnuke.org
@@ -24,7 +22,7 @@
  * the Free Software Foundation; either version 2 of the license.
  */
 
-if (!defined('NUKE_EVO')) {
+if (!defined('NUKE_FILE')) {
 	die('You can\'t access this file directly...');
 }
 
