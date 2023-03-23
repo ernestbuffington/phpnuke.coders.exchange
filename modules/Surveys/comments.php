@@ -201,7 +201,7 @@ function navbar($pollID, $title, $thold, $mode, $order) {
 	echo "<table width=\"99%\" border=\"0\" cellspacing=\"1\" cellpadding=\"2\">\n";
 	if($title) {
 		echo "<tr><td bgcolor=\"$bgcolor2\" align=\"center\"><font class=\"content\" color=\"$textcolor1\">\"$title\" | ";
-		if(is_user()) {
+		if(is_user($admin)) {
 			echo "<a href=\"modules.php?name=Your_Account&amp;op=editcomm\"><font color=\"$textcolor1\">"._CONFIGURE."</font></a>";
 		} else {
 			echo "<a href=\"modules.php?name=Your_Account\"><font color=\"$textcolor1\">"._LOGINCREATE."</font></a>";
@@ -215,7 +215,7 @@ function navbar($pollID, $title, $thold, $mode, $order) {
 	echo "<tr><td bgcolor=\"$bgcolor1\" align=\"center\" width=\"100%\">\n";
 	cookiedecode($user);
 	if (($pollcomm) AND ($mode != "nocomments")) {
-		if ($anonpost==1 OR (isset($admin) AND is_admin()) OR is_user()) {
+		if ($anonpost==1 OR (isset($admin) AND is_admin($admin)) OR is_user($admin)) {
 			if (!isset($pid)) { $pid = 0; }
 			echo "<form action=\"modules.php?name=$module_name&amp;file=comments\" method=\"post\">"
 			."<input type=\"hidden\" name=\"pid\" value=\"$pid\">"
@@ -228,7 +228,7 @@ function navbar($pollID, $title, $thold, $mode, $order) {
 	."</table>"
 	."\n\n<!-- COMMENTS NAVIGATION BAR END -->\n\n";
 	CloseTable();
-	if ($anonpost == 0 AND !is_user()) {
+	if ($anonpost == 0 AND !is_user($admin)) {
 		echo "<br>";
 		OpenTable();
 		echo "<center>"._NOANONCOMMENTS."</center>";
@@ -332,7 +332,7 @@ function DisplayKids ($tid, $mode, $order=0, $thold=0, $level=0, $dummy=0, $tblw
 				elseif(strlen((string) $r_comment) > $commentlimit) echo substr("$r_comment", 0, $commentlimit)."<br><br><b><a href=\"modules.php?name=$module_name&amp;file=comments&amp;pollID=$r_pollID&amp;tid=$r_tid&amp;mode=$mode&amp;order=$order&amp;thold=$thold\">"._READREST."</a></b>";
 				else echo $r_comment;
 				echo "</td></tr></table><br><p>";
-				if ($anonpost==1 OR is_admin() OR is_user()) {
+				if ($anonpost==1 OR is_admin($admin) OR is_user($admin)) {
 					echo "<font class=content color=\"$bgcolor2\"> [ <a href=\"modules.php?name=$module_name&amp;file=comments&amp;op=Reply&amp;pid=$r_tid&amp;pollID=$r_pollID&amp;mode=$mode&amp;order=$order&amp;thold=$thold\">"._REPLY."</a>";
 				}
 				modtwo($r_tid, $r_score, $r_reason);
@@ -534,7 +534,7 @@ function DisplayTopic ($pollID, $pid=0, $tid=0, $mode="thread", $order=0, $thold
 		$reason = intval($row_q['reason']);
 		$karma = $db->sql_fetchrow($db->sql_query("SELECT karma FROM ".$user_prefix."_users WHERE username='$c_name'"));
 		$karma = intval($karma['karma']);
-		if (is_admin()) {
+		if (is_admin($admin)) {
 			if ($karma == 1) {
 				$karma = "<img src=\"images/karma/1.gif\" border=\"0\" alt=\""._KARMALOW."\" title=\""._KARMALOW."\">&nbsp;";
 			} elseif ($karma == 2) {
@@ -596,7 +596,7 @@ function DisplayTopic ($pollID, $pid=0, $tid=0, $mode="thread", $order=0, $thold
 		$url = filter($row_url['user_website'], "nohtml");
 		if ($url != "http://" AND !empty($url) AND stripos_clone($url, "http://")) { echo "<a href=\"$url\" target=\"new\">$url</a> "; }
 
-		if(is_admin()) {
+		if(is_admin($admin)) {
 			$row3 = $db->sql_fetchrow($db->sql_query("SELECT host_name from ".$prefix."_pollcomments where tid='$tid'"));
 			$host_name = filter($row3['host_name'], "nohtml");
 			echo "<br><b>(IP: $host_name)</b> $karma";
@@ -607,7 +607,7 @@ function DisplayTopic ($pollID, $pid=0, $tid=0, $mode="thread", $order=0, $thold
 		elseif(strlen((string) $comment) > $commentlimit) echo substr("$comment", 0, $commentlimit)."<br><br><b><a href=\"modules.php?name=$module_name&amp;file=comments&amp;pollID=$pollID&tid=$tid&mode=$mode&order=$order&thold=$thold\">"._READREST."</a></b>";
 		else echo $comment;
 		echo "</td></tr></table><br><p>";
-		if ($anonpost==1 OR is_admin() OR is_user()) {
+		if ($anonpost==1 OR is_admin($admin) OR is_user($admin)) {
 			echo "<font class=\"content\"> [ <a href=\"modules.php?name=$module_name&amp;file=comments&amp;op=Reply&amp;pid=$tid&amp;pollID=$pollID&amp;mode=$mode&amp;order=$order&amp;thold=$thold\">"._REPLY."</a>";
 		}
 		if ($pid != 0) {
@@ -617,9 +617,9 @@ function DisplayTopic ($pollID, $pid=0, $tid=0, $mode="thread", $order=0, $thold
 		}
 		modtwo($tid, $score, $reason);
 
-		if(is_admin()) {
+		if(is_admin($admin)) {
 			echo " | <a href=\"".$admin_file.".php?op=RemovePollComment&amp;tid=$tid&amp;pollID=$pollID\">"._DELETE."</a> ]</font><p>";
-		} elseif ($anonpost != 0 OR is_admin() OR is_user()) {
+		} elseif ($anonpost != 0 OR is_admin($admin) OR is_user($admin)) {
 			echo " ]</font><p>";
 		}
 
@@ -723,7 +723,7 @@ function reply ($pid, $pollID, $mode, $order, $thold) {
 	$order = htmlentities((string) $order);
 	$thold = htmlentities((string) $thold);
 	$mode = htmlentities((string) $mode);
-	if ($anonpost == 0 AND !is_user()) {
+	if ($anonpost == 0 AND !is_user($admin)) {
 		OpenTable();
 		echo "<center><font class=title><b>"._SURVEYCOM."</b></font></center>";
 		CloseTable();
@@ -773,7 +773,7 @@ function reply ($pid, $pollID, $mode, $order, $thold) {
 		OpenTable();
 		echo "<form action=\"modules.php?name=$module_name&amp;file=comments\" method=\"post\">";
 		echo "<font class=\"content\"><b>"._YOURNAME.":</b></font> ";
-		if (is_user()) {
+		if (is_user($admin)) {
 			cookiedecode($user);
 			echo "<font class=\"content\"><a href=\"modules.php?name=Your_Account\">$cookie[1]</a> [ <a href=\"modules.php?name=Your_Account&amp;op=logout\">"._LOGOUT."</a> ]</font>";
 		} else {
@@ -794,7 +794,7 @@ function reply ($pid, $pollID, $mode, $order, $thold) {
 		} else {
 			echo ""._HTMLNOTALLOWED."</font><br><br>";
 		}
-		if (is_user() AND ($anonpost == 1)) { echo "<INPUT type=checkbox name=xanonpost> "._POSTANON."<br>"; }
+		if (is_user($admin) AND ($anonpost == 1)) { echo "<INPUT type=checkbox name=xanonpost> "._POSTANON."<br>"; }
 		echo "<INPUT type=\"hidden\" name=\"pid\" value=\"$pid\">"
 		."<INPUT type=\"hidden\" name=\"pollID\" value=\"$pollID\">"
 		."<INPUT type=\"hidden\" name=\"mode\" value=\"$mode\">"
@@ -848,7 +848,7 @@ function replyPreview ($pid, $pollID, $subject, $comment, $xanonpost, $mode, $or
 	OpenTable();
 	echo "<b>$subject</b><br>";
 	echo "<font class=content>"._BY." ";
-	if (is_user()) {
+	if (is_user($admin)) {
 		echo $cookie[1];
 	} else {
 		echo $anonymous;
@@ -860,7 +860,7 @@ function replyPreview ($pid, $pollID, $subject, $comment, $xanonpost, $mode, $or
 	OpenTable();
 	echo "<form action=\"modules.php?name=$module_name&amp;file=comments\" method=\"post\">"
 	."<font class=\"content\"><B>"._YOURNAME.":</B></FONT> ";
-	if (is_user()) {
+	if (is_user($admin)) {
 		echo "<font class=\"content\"><a href=\"modules.php?name=Your_Account\">$cookie[1]</a> <font class=\"content\">[ <a href=\"modules.php?name=Your_Account&amp;op=logout\">"._LOGOUT."</a> ]</font>";
 	} else {
 		echo "<font class=\"content\">$anonymous</font>";
@@ -880,7 +880,7 @@ function replyPreview ($pid, $pollID, $subject, $comment, $xanonpost, $mode, $or
 	}
 	if (($xanonpost) AND ($anonpost == 1)) {
 		echo "<INPUT type=\"checkbox\" name=\"xanonpost\" checked> "._POSTANON."<br>";
-	} elseif ((is_user()) AND ($anonpost == 1)) {
+	} elseif ((is_user($admin)) AND ($anonpost == 1)) {
 		echo "<INPUT type=\"checkbox\" name=\"xanonpost\"> "._POSTANON."<br>";
 	}
 	echo "<INPUT type=\"hidden\" name=\"pid\" value=\"$pid\">"
@@ -922,7 +922,7 @@ if (!isset($thold) OR empty($thold)) {
 	$subject = filter($subject, "nohtml", 1);
 	$comment = format_url($comment);
 	$comment = filter($comment, "", 1);
-	if ((is_user()) && (!$xanonpost)) {
+	if ((is_user($admin)) && (!$xanonpost)) {
 		$name = $userinfo['username'];
 		$email = $userinfo['femail'];
 		$url = $userinfo['user_website'];
@@ -940,8 +940,8 @@ if (!isset($thold) OR empty($thold)) {
 	$result = $db->sql_query("select count(*) from ".$prefix."_poll_desc where pollID='$pollID'");
 	$fake = $db->sql_numrows($result);
 	if ($fake == 1) {
-		if ((($anonpost == 0) AND (is_user())) OR ($anonpost == 1)) {
-			if (is_user()) {
+		if ((($anonpost == 0) AND (is_user($admin))) OR ($anonpost == 1)) {
+			if (is_user($admin)) {
 				$krow = $db->sql_fetchrow($db->sql_query("SELECT karma FROM ".$user_prefix."_users WHERE username='$name'"));
 				$koptions = "&mode=".$mode."&order=".$order."&thold=".$thold;
 				if ($krow['karma'] == 2) {
@@ -1023,7 +1023,7 @@ switch($op) {
 	break;
 
 	case "moderate":
-	if(!is_admin()) {
+	if(!is_admin($admin)) {
 		global $module_name;
 	}
 	if(($admintest==1) || ($moderate==2)) {
