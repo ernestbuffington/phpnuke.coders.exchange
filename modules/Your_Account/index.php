@@ -1375,7 +1375,7 @@ function new_user() {
 
 		while ($row = $db->sql_fetchrow($result)) {
 
-			$b_title = filter($row[title], "nohtml");
+			$b_title = filter($row['title'], "nohtml");
 
 			if (!empty($b_title)) {
 
