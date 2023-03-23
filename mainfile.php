@@ -2220,23 +2220,28 @@ function public_message() {
 		}
 
 		if (!is_user($user) OR (is_user($user) AND ($pm_show == 1))) {
+            
+			if(!isset($c_mid))
+			$c_mid = 0;
+
+			if(!isset($p_msg))
+			$p_msg = 0;
 
 			$c_mid = base64_decode($p_msg);
-
+			
 			$c_mid = addslashes($c_mid);
-
 			$c_mid = intval($c_mid);
 
 			$result2 = $db->sql_query("SELECT mid, content, date, who FROM ".$prefix."_public_messages WHERE mid > '$c_mid' ORDER BY date ASC LIMIT 1");
 			$row2 = $db->sql_fetchrow($result2);
 
-			$mid = intval($row2['mid']);
+			$mid = intval($row2['mid'] ?? '');
 
-			$content = filter($row2['content'], "nohtml");
+			$content = filter($row2['content'] ?? '', "nohtml");
 
-			$tdate = $row2['date'];
+			$tdate = $row2['date'] ?? '';
 
-			$who = filter($row2['who'], "nohtml");
+			$who = filter($row2['who'] ?? '', "nohtml");
 
 			if ((!isset($c_mid)) OR ($c_mid = $mid)) {
 
