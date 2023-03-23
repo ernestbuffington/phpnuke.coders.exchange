@@ -51,22 +51,31 @@ $arr_cookie_options = array (
 'samesite' => 'None' // None || Lax  || Strict
 );
 
-// override old superglobals if php is higher then 4.1.0
-if($phpver >= '7.2.0') {
-  $HTTP_GET_VARS = $_GET;
-  $HTTP_POST_VARS = $_POST;
-  $HTTP_SERVER_VARS = $_SERVER;
-  $HTTP_POST_FILES = $_FILES;
-  $HTTP_ENV_VARS = $_ENV;
-  $PHP_SELF = $_SERVER['PHP_SELF'];
-
-  if(isset($_SESSION)) {
-    $HTTP_SESSION_VARS = $_SESSION;
-  }
-
-  if(isset($_COOKIE)) {
-    $HTTP_COOKIE_VARS= $_COOKIE;
-  }
+# idea based on Nuke Evolution
+# override old superglobals
+if(!ini_get('register_globals')){ 
+	$import = true;
+	# Need register_globals so try the built in import function
+	if (function_exists('import_request_variables')){
+		import_request_variables('GPC');
+	} else { 
+		function php_nuke_import_globals($array)
+		{
+			foreach ($array as $k => $v):
+			  global ${$k};
+			  ${$k} = $v;
+			endforeach;
+		}
+		if(!empty($_GET)){
+		  php_nuke_import_globals($_GET);
+		} 
+		if(!empty($_POST)){
+		  php_nuke_import_globals($_POST);
+		}
+		if(!empty($_COOKIE)){
+		  php_nuke_import_globals($_COOKIE);
+		}
+	}
 }
 
 // After doing those superglobals we can now use one
