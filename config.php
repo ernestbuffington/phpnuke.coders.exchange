@@ -44,7 +44,7 @@ if (stristr(htmlentities($_SERVER['PHP_SELF']), "config.php")) {
 
 $dbhost = "localhost";
 $dbuname = "phpnukecoders_db";
-$dbpass = "";
+$dbpass = "xwdNPADv86nce";
 $dbname = "phpnukecoders_db";
 $prefix = "nuke";
 $user_prefix = "nuke";
