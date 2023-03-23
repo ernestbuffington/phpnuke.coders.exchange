@@ -1,9 +1,9 @@
 .idea
 _notes
-vendor
+vendor/*
 /desktop.ini
 /config.php
-
-
+lincludes/log/*
+lincludes/cache/*
 
 
