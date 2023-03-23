@@ -242,13 +242,44 @@ if (!defined('ADMIN_FILE')) {
 
 }
 
+# add 3rd party backward version comapatibility defines
+# Inspired by phoenix-cms at website-portals.net
+# Absolute Nuke directory
+define('NUKE_BASE_DIR', __DIR__ . '/');
+# Absolute Nuke directory + includes
+define('NUKE_VENDOR_DIR', NUKE_BASE_DIR . 'includes/vendor/');
+define('NUKE_RECTOR_DIR', NUKE_BASE_DIR . 'vendor/');
+define('NUKE_ZEND_DIR', NUKE_BASE_DIR . 'includes/Zend/');
+define('NUKE_BLOCKS_DIR', NUKE_BASE_DIR . 'blocks/');
+define('NUKE_CSS_DIR', 'includes/css/');
+define('NUKE_IMAGES_DIR', NUKE_BASE_DIR . 'images/');
+define('NUKE_INCLUDE_DIR', NUKE_BASE_DIR . 'includes/');
+define('NUKE_JQUERY_INCLUDE_DIR', 'includes/js/');
+define('NUKE_JQUERY_SCRIPTS_DIR', 'includes/js/scripts/');
+define('NUKE_LANGUAGE_DIR', NUKE_BASE_DIR . 'language/');
+define('NUKE_MODULES_DIR', NUKE_BASE_DIR . 'modules/');
+define('NUKE_THEMES_DIR', NUKE_BASE_DIR . 'themes/');
+define('NUKE_THEMES_SAVE_DIR', NUKE_INCLUDE_DIR . 'saved_themes/');
+define('NUKE_ADMIN_DIR', NUKE_BASE_DIR . 'admin/');
+define('NUKE_RSS_DIR', NUKE_INCLUDE_DIR . 'rss/');
+define('NUKE_DB_DIR', NUKE_BASE_DIR . 'db/');
+define('NUKE_ADMIN_MODULE_DIR', NUKE_ADMIN_DIR . 'modules/');
+define('NUKE_FORUMS_DIR', (defined("IN_ADMIN") ? './../' : 'modules/Forums/'));
+define('NUKE_CACHE_DIR', NUKE_INCLUDE_DIR . 'cache/');
+define('NUKE_CACHE_DELETE_DIR', NUKE_INCLUDE_DIR . 'cache');
+define('NUKE_CLASSES_DIR', NUKE_INCLUDE_DIR . 'classes/');
+define('NUKE_CLASS_EXCEPTION_DIR',  NUKE_CLASSES_DIR . 'exceptions/');
+
+# define the INCLUDE PATH
+define('INCLUDE_PATH', NUKE_BASE_DIR);
+
 // Define the INCLUDE PATH
 if(defined('FORUM_ADMIN')) {
 	define('INCLUDE_PATH', '../../../');
 } elseif(defined('INSIDE_MOD')) {
 	define('INCLUDE_PATH', '../../');
 } else {
-	define('INCLUDE_PATH', './');
+    define('INCLUDE_PATH', NUKE_BASE_DIR);
 }
 
 // Include the required files
