@@ -3,7 +3,7 @@ PHP-Nuke: PHP 8.x Web Portal System
 
 Welcome to PHP-Nuke v8.3.2!
 
-First of all, thanks a lot to download this software, I hope that you
+First of all, thanks a lot for downloading this software, I hope that you
 can enjoy it.
 
 PHP-Nuke is free software, released under GNU GPL Licence version 2.0
@@ -15,8 +15,8 @@ wrote my own code in Perl called NUKE and used it for about 1 year,
 then my site goes big, so I needed a more powerfull system and decided
 to use Slash, the same used in Slashdot site. It's good but you realy
 need to know Perl to modify it, need too many modules, need to load
-a damn daemon that sucks all your CPU power. My Pentium III just appears
-to be a 386 each minute the daemon make its work. Well, then I discovered
+a damn daemon that sucks all your CPU power. My Pentium III just appeared
+to be a 386 each minute the daemon makes its work. Well, then I discovered
 Thatware, a good project to have a news site under PHP. I learned PHP
 in less than a week and initiate to modify it. There are too many mods
 to mention, it was practicaly a rewrite. I added some cool stuff, deleted
@@ -49,7 +49,7 @@ PHP-Nuke isn't perfect, but your suggestions and feedback can help all
 us to have a very well done portal system!
 
 PS: Sorry for my English, I'm not english spoken guy. Also, remember I receive
-too many Emails, so I can't answer to all you, but for sure I'll read all
-Emails I receive.
+too many Emails, so I can't answer to all of you, but for sure I'll read all
+the Emails I receive.
 
 -- Francisco Burzi <fburzi@gmail.com>
