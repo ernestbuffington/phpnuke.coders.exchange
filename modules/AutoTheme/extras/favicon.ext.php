@@ -1,5 +1,9 @@
 <?php 
 
+/* Applied rules:
+ * AddDefaultValueForUndefinedVariableRector (https://github.com/vimeo/psalm/blob/29b70442b11e3e66113935a2ee22e165a70c74a4/docs/fixing_code.md#possiblyundefinedvariable)
+ */
+ 
 // Extra for all platforms
 //
 // How to register an extra and the functions that it performs and when to perform them (at operation)
@@ -20,7 +24,9 @@ $extra['favicon'] = array (
 //
 function at_shortcut_icon($config)
 {
-	extract($config);
+	$imagepath = null;
+ $xhtml = null;
+ extract($config);
 	
 	$favicon = atAutoGetVar("favicon");
     $icon = $favicon['icon'];	
@@ -37,6 +43,7 @@ function at_shortcut_icon($config)
 
 function at_admin_shortcuticon($vars)
 {
+    $icon = null;
     extract($vars);
 
     if (!$icon) {
