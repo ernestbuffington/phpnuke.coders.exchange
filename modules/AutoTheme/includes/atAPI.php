@@ -22,6 +22,10 @@
 //
 // ----------------------------------------------------------------------
 
+/* Applied Rules:
+ * Fix Magic Quotes - if(function_exists("get_magic_quotes_gpc") && get_magic_quotes_gpc())
+ */
+ 
 define('AUTOTHEME_DEBUG_ENABLED', FALSE);
 
 define('AUTOTHEME_API_LOADED', TRUE);
@@ -553,7 +557,7 @@ function atExportVar($var)
         }
         return $result;
     }
-    if (get_magic_quotes_gpc()) {
+    if(function_exists("get_magic_quotes_gpc") && get_magic_quotes_gpc()) {
         $var = stripslashes($var);
     }
     return $var;
