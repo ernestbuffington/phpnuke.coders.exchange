@@ -18,6 +18,7 @@ if(!isset($subscription_url)) $subscription_url = '';
 /* And, if you use HTML code, please double check it.                     */
 /**************************************************************************/
 
+
 define_once("_CHARSET","ISO-8859-1");
 define_once("_SEARCH","Search");
 define_once("_LOGIN","Login");
