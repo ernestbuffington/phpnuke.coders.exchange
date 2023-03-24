@@ -2148,11 +2148,11 @@ function edituser() {
 
 		$direktori = "modules/Forums/images/avatars";
 
-		$dir = @opendir($direktori);
+		$dir = opendir($direktori);
 
 		$avatar_images = array();
 
-		while( $file = @readdir($dir) )
+		while( $file = readdir($dir) )
 
 		{
 
@@ -2160,13 +2160,13 @@ function edituser() {
 
 			{
 
-				$sub_dir = @opendir($direktori . '/' . $file);
+				$sub_dir = opendir($direktori . '/' . $file);
 
 				$avatar_row_count = 0;
 
 				$avatar_col_count = 0;
 
-				while( $sub_file = @readdir($sub_dir) )
+				while( $sub_file = readdir($sub_dir) )
 
 				{
 
@@ -2198,11 +2198,11 @@ function edituser() {
 
 		}
 
-		@closedir($dir);
+		closedir($dir);
 
-		@ksort($avatar_images);
+		ksort($avatar_images);
 
-		@reset($avatar_images);
+		reset($avatar_images);
 
 		if( empty($category) )
 
@@ -2212,7 +2212,7 @@ function edituser() {
 
 		}
 
-		@reset($avatar_images);
+		reset($avatar_images);
 
 		$s_categories = '<select name="avatarcategory">';
 
