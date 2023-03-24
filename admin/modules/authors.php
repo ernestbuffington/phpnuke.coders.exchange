@@ -50,7 +50,7 @@ if (($row['radminsuper'] == 1) && ($row['name'] == 'God')) {
 			$a_aid = filter($row['aid'], "nohtml");
 			$name = filter($row['name'], "nohtml");
 			$admlanguage = $row['admlanguage'];
-			$a_aid = strtolower(substr("$a_aid", 0,25));
+			//$a_aid = strtolower(substr("$a_aid", 0,25)); maybe ghost
 			$name = substr("$name", 0,50);
 			if ($name == "God") {
 				echo "<tr><td>&nbsp;$a_aid <i>("._MAINACCOUNT.")</i>&nbsp;</td>";
@@ -173,7 +173,7 @@ if (($row['radminsuper'] == 1) && ($row['name'] == 'God')) {
 		$chng_pwd = filter($row['pwd'], "nohtml");
 		$chng_radminsuper = intval($row['radminsuper']);
 		$chng_admlanguage = $row['admlanguage'];
-		$chng_aid = strtolower(substr("$chng_aid", 0,25));
+		//$chng_aid = strtolower(substr("$chng_aid", 0,25)); maybe ghost
 		$aid = $chng_aid;
 		echo "<form action=\"".$admin_file.".php\" method=\"post\">"
 		."<table border=\"0\">"
@@ -296,7 +296,7 @@ if (($row['radminsuper'] == 1) && ($row['name'] == 'God')) {
 				exit;
 			}
 			$chng_pwd = md5($chng_pwd);
-			$chng_aid = strtolower(substr("$chng_aid", 0,25));
+			//$chng_aid = strtolower(substr("$chng_aid", 0,25)); maybe ghost
 			if ($chng_radminsuper == 1) {
 				$result = $db->sql_query("SELECT mid, admins FROM ".$prefix."_modules");
 				while ($row = $db->sql_fetchrow($result)) {
@@ -396,7 +396,7 @@ if (($row['radminsuper'] == 1) && ($row['name'] == 'God')) {
 			while ($row2 = $db->sql_fetchrow($result2)) {
 				$sid = intval($row2['sid']);
 				$old_aid = $row2['aid'];
-				$old_aid = strtolower(substr("$old_aid", 0,25));
+				//$old_aid = strtolower(substr("$old_aid", 0,25)); maybe ghost
 				$informant = $row2['informant'];
 				$informant = substr("$informant", 0,25);
 				if ($old_aid == $informant) {
@@ -501,7 +501,8 @@ if (($row['radminsuper'] == 1) && ($row['name'] == 'God')) {
 		break;
 
 		case "AddAuthor":
-		$add_aid = strtolower(substr("$add_aid", 0,25));
+		/* $add_aid = strtolower(substr("$add_aid", 0,25)); maybe ghost */
+		$add_aid = substr((string) $add_aid, 0,25);
 		$add_name = substr("$add_name", 0,25);
 		if (!($add_aid && $add_name && $add_email && $add_pwd)) {
 			include("header.php");
@@ -518,13 +519,22 @@ if (($row['radminsuper'] == 1) && ($row['name'] == 'God')) {
 			include("footer.php");
 			return;
 		}
-		$add_pwd = md5($add_pwd);
+        $add_pwd = md5((string) $add_pwd);
+		
+		/* // maybe ghost 3/19/2023 9:51 AM
 		for ($i=0; $i < sizeof($auth_modules); $i++) {
 			$row = $db->sql_fetchrow($db->sql_query("SELECT admins FROM ".$prefix."_modules WHERE mid='".intval($auth_modules[$i])."'"));
 			$adm = $row['admins'] . $add_name;
 			$db->sql_query("UPDATE ".$prefix."_modules SET admins='$adm,' WHERE mid='".intval($auth_modules[$i])."'");
 		}
-		$result = $db->sql_query("insert into " . $prefix . "_authors values ('$add_aid', '$add_name', '$add_url', '$add_email', '$add_pwd', '0', '$add_radminsuper', '$add_admlanguage')");
+		*/
+		
+        for ($i=0,$maxi=is_countable($auth_modules) ? count($auth_modules) : 0; $i < $maxi; $i++) {
+            $row = $db->sql_fetchrow($db->sql_query("SELECT admins FROM ".$prefix."_modules WHERE mid='".intval($auth_modules[$i])."'"));
+            $adm = $row['admins'] . $add_name;
+            $db->sql_query("UPDATE ".$prefix."_modules SET admins='$adm,' WHERE mid='".intval($auth_modules[$i])."'");
+        }		
+		$result = $db->sql_query("INSERT INTO " . $prefix . "_authors values ('$add_aid', '$add_name', '$add_url', '$add_email', '$add_pwd', '0', '$add_radminsuper', '$add_admlanguage')");
 		if (!$result) {
 			return;
 		}
