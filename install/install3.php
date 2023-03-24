@@ -359,6 +359,7 @@ function check() {
 		$url = "http://".$root;
 		}
 	}
+	$server_name = str_replace("www.", "", $_SERVER['SERVER_NAME']);
 ?>
 					<tr>
 						<td nowarp>Your Site URL:</td>
@@ -366,7 +367,7 @@ function check() {
 					</tr>
 					<tr>
 						<td nowarp>Your E-mail:</td>
-						<td align="center"><input class="inputbox" type="text" name="adminEmail" value="<?php echo "admin@".$_SERVER['SERVER_NAME'].""; ?>" size="40" /></td>
+						<td align="center"><input class="inputbox" type="text" name="adminEmail" value="<?php echo "admin@".$server_name.""; ?>" size="40" /></td>
 					</tr>
 					<tr>
 						<td nowarp>Admin password:</td>
