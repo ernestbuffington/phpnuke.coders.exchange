@@ -3,11 +3,13 @@ PHP-Nuke: Advanced Content Management System
 
 Jan 2023: Version 8.3.2
 ========================
+- Return from 16 year Break
 - Patched for PHP 8.x
 - Fixed various Bugs
 
 August 2007: Version 8.1
 ========================
+- Time for a Break I'm losing my mind!
 - Settings administration module has been 100% re-writted and totaly changed and reorganized
 - Added feature to let administrators choice if users can change themes or not (Administration -> Settings -> Themes)
 - Added feature to select the display of the referers list in abridged or unabridged modes
