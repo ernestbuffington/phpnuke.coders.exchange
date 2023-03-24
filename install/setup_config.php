@@ -8,7 +8,20 @@
 
 global $setup_admin, $dbhost, $dbname, $dbuname, $dbpass, $dbtype, $prefix, $user_prefix, $admin_file, $directory_mode, $file_mode, $debug, $use_cache, $persistency;
 
+
+/*----[ Admin and 1st User Name ] -------------------------
+|                                                         |
+| The name of your Admin Account and 1st User Account     |
+|                                                         |
+---------------------------------------------------------*/
+
 $setup_admin = 'Administrator';
+
+/*----[ $dbhost ] ----------------------------------------
+|                                                         |
+| The name of your host                                   |
+|                                                         |
+---------------------------------------------------------*/
 
 $dbhost = 'localhost';
 
