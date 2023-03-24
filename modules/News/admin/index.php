@@ -12,6 +12,12 @@
 /* the Free Software Foundation; either version 2 of the License.       */
 /************************************************************************/
 
+
+/* Applied rules:
+ * AddDefaultValueForUndefinedVariableRector (https://github.com/vimeo/psalm/blob/29b70442b11e3e66113935a2ee22e165a70c74a4/docs/fixing_code.md#possiblyundefinedvariable)
+ * EregToPregMatchRector (http://php.net/reference.pcre.pattern.posix https://stackoverflow.com/a/17033826/1348344 https://docstore.mik.ua/orelly/webprog/pcook/ch13_02.htm)
+ */
+ 
 if (!defined('ADMIN_FILE')) {
 	die ("Access Denied");
 }
@@ -39,7 +45,9 @@ if ($row2['radminsuper'] == 1 || $auth_user == 1) {
 	/*********************************************************/
 
 	function puthome($ihome, $acomm) {
-		echo "<br><b>"._PUBLISHINHOME."</b>&nbsp;&nbsp;";
+		$sel1 = null;
+  $sel2 = null;
+  echo "<br><b>"._PUBLISHINHOME."</b>&nbsp;&nbsp;";
 		if (($ihome == 0) OR (empty($ihome))) {
 			$sel1 = "checked";
 			$sel2 = "";
@@ -139,7 +147,8 @@ if ($row2['radminsuper'] == 1 || $auth_user == 1) {
 	}
 
 	function EditCategory($catid) {
-		global $prefix, $db, $admin_file;
+		$sel = null;
+  global $prefix, $db, $admin_file;
 		$catid = intval($catid);
 		$result = $db->sql_query("select title from ".$prefix."_stories_cat where catid='$catid'");
 		list($title) = $db->sql_fetchrow($result);
@@ -384,7 +393,12 @@ if ($row2['radminsuper'] == 1 || $auth_user == 1) {
 	}
 
 	function autoEdit($anid) {
-		global $aid, $bgcolor1, $bgcolor2, $prefix, $db, $multilingual, $admin_file;
+		$sid = null;
+  $radminarticle = null;
+  $datetime = [];
+  $sel = null;
+  $languageslist = [];
+  global $aid, $bgcolor1, $bgcolor2, $prefix, $db, $multilingual, $admin_file;
 		$sid = intval($sid);
 		$aid = substr("$aid", 0,25);
 		$result = $db->sql_query("select radminsuper from ".$prefix."_authors where aid='$aid'");
@@ -416,7 +430,7 @@ if ($row2['radminsuper'] == 1 || $auth_user == 1) {
 			$informant = substr("$informant", 0,25);
 			$ihome = intval($ihome);
 			$acomm = intval($acomm);
-			ereg ("([0-9]{4})-([0-9]{1,2})-([0-9]{1,2}) ([0-9]{1,2}):([0-9]{1,2}):([0-9]{1,2})", $time, $datetime);
+			preg_match ('#([0-9]{4})\-([0-9]{1,2})\-([0-9]{1,2}) ([0-9]{1,2}):([0-9]{1,2}):([0-9]{1,2})#m', $time, $datetime);
 			GraphicAdmin();
 			OpenTable();
 			echo "<center><font class=\"title\"><b>"._ARTICLEADMIN."</b></font></center>";
@@ -595,7 +609,9 @@ if ($row2['radminsuper'] == 1 || $auth_user == 1) {
 	}
 
 	function autoSaveEdit($anid, $year, $day, $month, $hour, $min, $title, $hometext, $bodytext, $topic, $notes, $catid, $ihome, $alanguage, $acomm) {
-		global $aid, $ultramode, $prefix, $db, $admin_file;
+		$sid = null;
+  $radminarticle = null;
+  global $aid, $ultramode, $prefix, $db, $admin_file;
 		$aid = substr("$aid", 0,25);
 		$sid = intval($sid);
 		$result = $db->sql_query("select radminsuper from ".$prefix."_authors where aid='$aid'");
@@ -656,7 +672,14 @@ if ($row2['radminsuper'] == 1 || $auth_user == 1) {
 	}
 
 	function displayStory($qid) {
-		global $user, $subject, $story, $bgcolor1, $bgcolor2, $anonymous, $user_prefix, $prefix, $db, $multilingual, $admin_file;
+		$sel = null;
+  $cat = null;
+  $ihome = null;
+  $acomm = null;
+  $languageslist = [];
+  $pollTitle = null;
+  $optionText = null;
+  global $user, $subject, $story, $bgcolor1, $bgcolor2, $anonymous, $user_prefix, $prefix, $db, $multilingual, $admin_file;
 		include ('header.php');
 		GraphicAdmin();
 		OpenTable();
@@ -903,7 +926,14 @@ if ($row2['radminsuper'] == 1 || $auth_user == 1) {
 	}
 
 	function previewStory($automated, $year, $day, $month, $hour, $min, $qid, $uid, $author, $subject, $hometext, $bodytext, $topic, $notes, $catid, $ihome, $alanguage, $acomm, $pollTitle, $optionText, $assotop) {
-		global $user, $boxstuff, $anonymous, $bgcolor1, $bgcolor2, $user_prefix, $prefix, $db, $multilingual, $admin_file;
+		$sel = null;
+  $associated = null;
+  $checked = null;
+  $sel1 = null;
+  $sel2 = null;
+  $languageslist = [];
+  $language = null;
+  global $user, $boxstuff, $anonymous, $bgcolor1, $bgcolor2, $user_prefix, $prefix, $db, $multilingual, $admin_file;
 		include ('header.php');
 		GraphicAdmin();
 		OpenTable();
@@ -1165,7 +1195,8 @@ if ($row2['radminsuper'] == 1 || $auth_user == 1) {
 	}
 
 	function postStory($automated, $year, $day, $month, $hour, $min, $qid, $uid, $author, $subject, $hometext, $bodytext, $topic, $notes, $catid, $ihome, $alanguage, $acomm, $pollTitle, $optionText, $assotop) {
-		global $aid, $ultramode, $prefix, $db, $user_prefix, $admin_file;
+		$associated = null;
+  global $aid, $ultramode, $prefix, $db, $user_prefix, $admin_file;
 		for ($i=0; $i<sizeof($assotop); $i++) {
 			$associated .= "$assotop[$i]-";
 		}
@@ -1251,7 +1282,11 @@ if ($row2['radminsuper'] == 1 || $auth_user == 1) {
 	}
 
 	function editStory($sid) {
-		global $user, $bgcolor1, $bgcolor2, $aid, $prefix, $db, $multilingual, $admin_file;
+		$radminarticle = null;
+  $sel = null;
+  $checked = null;
+  $languageslist = [];
+  global $user, $bgcolor1, $bgcolor2, $aid, $prefix, $db, $multilingual, $admin_file;
 		$aid = substr("$aid", 0,25);
 		$result = $db->sql_query("select radminsuper from ".$prefix."_authors where aid='$aid'");
 		list($radminsuper) = $db->sql_fetchrow($result);
@@ -1400,7 +1435,8 @@ if ($row2['radminsuper'] == 1 || $auth_user == 1) {
 	}
 
 	function removeStory($sid, $ok=0) {
-		global $ultramode, $aid, $prefix, $db, $admin_file;
+		$radminarticle = null;
+  global $ultramode, $aid, $prefix, $db, $admin_file;
 		$aid = substr("$aid", 0,25);
 		$result = $db->sql_query("select counter, radminsuper from ".$prefix."_authors where aid='$aid'");
 		list($counter, $radminsuper) = $db->sql_fetchrow($result);
@@ -1465,7 +1501,9 @@ if ($row2['radminsuper'] == 1 || $auth_user == 1) {
 	}
 
 	function changeStory($sid, $subject, $hometext, $bodytext, $topic, $notes, $catid, $ihome, $alanguage, $acomm, $assotop) {
-		global $aid, $ultramode, $prefix, $db, $admin_file;
+		$associated = null;
+  $radminarticle = null;
+  global $aid, $ultramode, $prefix, $db, $admin_file;
 		for ($i=0; $i<sizeof($assotop); $i++) {
 			$associated .= "$assotop[$i]-";
 		}
@@ -1505,7 +1543,12 @@ if ($row2['radminsuper'] == 1 || $auth_user == 1) {
 	}
 
 	function adminStory() {
-		global $prefix, $db, $language, $multilingual, $admin_file;
+		$topic = null;
+  $sel = null;
+  $ihome = null;
+  $acomm = null;
+  $languageslist = [];
+  global $prefix, $db, $language, $multilingual, $admin_file;
 		include ('header.php');
 		GraphicAdmin();
 		OpenTable();
@@ -1712,7 +1755,14 @@ if ($row2['radminsuper'] == 1 || $auth_user == 1) {
 	}
 
 	function previewAdminStory($automated, $year, $day, $month, $hour, $min, $subject, $hometext, $bodytext, $topic, $catid, $ihome, $alanguage, $acomm, $pollTitle, $optionText, $assotop) {
-		global $user, $bgcolor1, $bgcolor2, $prefix, $db, $alanguage, $multilingual, $admin_file;
+		$sel = null;
+  $associated = null;
+  $checked = null;
+  $sel1 = null;
+  $sel2 = null;
+  $languageslist = [];
+  $language = null;
+  global $user, $bgcolor1, $bgcolor2, $prefix, $db, $alanguage, $multilingual, $admin_file;
 		include ('header.php');
 		if ($topic<1) {
 			$topic = 1;
@@ -1959,7 +2009,9 @@ if ($row2['radminsuper'] == 1 || $auth_user == 1) {
 	}
 
 	function postAdminStory($automated, $year, $day, $month, $hour, $min, $subject, $hometext, $bodytext, $topic, $catid, $ihome, $alanguage, $acomm, $pollTitle, $optionText, $assotop) {
-		global $ultramode, $aid, $prefix, $db, $admin_file;
+		$associated = null;
+  $notes = null;
+  global $ultramode, $aid, $prefix, $db, $admin_file;
 		for ($i=0; $i<sizeof($assotop); $i++) {
 			$associated .= "$assotop[$i]-";
 		}
@@ -2029,7 +2081,8 @@ if ($row2['radminsuper'] == 1 || $auth_user == 1) {
 	}
 
 	function submissions() {
-		global $admin, $bgcolor1, $bgcolor2, $prefix, $db, $radminsuper, $anonymous, $multilingual, $admin_file, $user_prefix;
+		$karma = null;
+  global $admin, $bgcolor1, $bgcolor2, $prefix, $db, $radminsuper, $anonymous, $multilingual, $admin_file, $user_prefix;
 		$dummy = 0;
 		include ("header.php");
 		GraphicAdmin();
