@@ -1,2 +1,5 @@
 Fixes all security issues explained here:
 http://www.exploit-db.com/exploits/29733/
+
+Patched for PHP 8.x
+
