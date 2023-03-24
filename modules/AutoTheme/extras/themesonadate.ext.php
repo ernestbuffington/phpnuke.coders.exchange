@@ -1,5 +1,9 @@
 <?php 
 
+/* Applied rules:
+ * AddDefaultValueForUndefinedVariableRector (https://github.com/vimeo/psalm/blob/29b70442b11e3e66113935a2ee22e165a70c74a4/docs/fixing_code.md#possiblyundefinedvariable)
+ */
+ 
 // Extra for all platforms
 //
 // How to register an extra and the functions that it performs and when to perform them (at operation)
@@ -20,6 +24,8 @@ $extra['themesonadate'] = array (
 //
 function at_themesonadate($vars)
 {
+    $newtheme = null;
+    $user = null;
     extract($vars);
     
     $themesonadate = atAutoGetVar("themesonadate");
@@ -48,7 +54,8 @@ function at_themesonadate($vars)
 
 function at_admin_themesonadate($themesonadate)
 {
-	$themelist = atThemeList();
+	$output = null;
+ $themelist = atThemeList();
 		
     foreach ($themesonadate['date'] as $k => $date) {
     	$theme = $themesonadate['theme'][$k];
