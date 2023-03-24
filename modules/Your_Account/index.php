@@ -2763,11 +2763,11 @@ function savehome($user_id, $username, $storynum, $ublockon, $ublock, $broadcast
 
 function savetheme($user_id, $theme) {
 
-	$prefix = null;
- $theme_id = null;
- global $user, $cookie, $userinfo, $user_prefix, $db, $module_name;
+    //$theme_id = null;
 
-	$row = $db->sql_fetchrow($db->sql_query("SELECT overwrite_theme from ".$prefix."_config"));
+    global $user, $cookie, $prefix, $userinfo, $user_prefix, $db, $module_name;
+
+	$row = $db->sql_fetchrow($db->sql_query("SELECT overwrite_theme FROM ".$prefix."_config"));
 
 	$overwrite_theme = intval($row['overwrite_theme']);
 
@@ -2803,18 +2803,26 @@ function savetheme($user_id, $theme) {
 
 	if (($user_id == $vuid) AND ($check2 == $ccpass)) {
 
-		$db->sql_query("UPDATE ".$user_prefix."_users SET user_style='$theme_id' WHERE user_id='$user_id'");
+		//$db->sql_query("UPDATE ".$user_prefix."_users SET user_style='$theme_id' WHERE user_id='$user_id'"); # maybe ghost (this table field does not exist in nuke_users) wtf Franky
 
 		$db->sql_query("UPDATE ".$user_prefix."_users SET theme='$theme' WHERE user_id='$user_id'");
 
 		getusrinfo($user);
 
-		docookie($userinfo['user_id'],$userinfo['username'],$userinfo['user_password'],$userinfo['storynum'],$userinfo['umode'],$userinfo['uorder'],$userinfo['thold'],$userinfo['noscore'],$userinfo['ublockon'],$userinfo['theme'],$userinfo['commentmax']);
+		docookie($userinfo['user_id'],
+		        $userinfo['username'],
+		   $userinfo['user_password'],
+		        $userinfo['storynum'],
+				   $userinfo['umode'],
+				  $userinfo['uorder'],
+				   $userinfo['thold'],
+				 $userinfo['noscore'],
+				$userinfo['ublockon'],
+				   $userinfo['theme'],
+			  $userinfo['commentmax']);
 
 		Header("Location: modules.php?name=$module_name&theme=$theme");
-
 	}
-
 }
 
 
