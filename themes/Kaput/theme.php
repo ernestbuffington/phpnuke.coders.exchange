@@ -97,9 +97,19 @@ function themeheader() {
     echo "<body bgcolor=\"#FFFFFF\" text=\"#000000\" link=\"#363636\" vlink=\"#363636\" alink=\"#d5ae83\">\n"
 	."<br>\n";
     ads(0);
-    OpenTable();
-    echo "<table border=\"0\"><tr><td rowspan=\"2\">"
+    // open table
+	echo '<div align="center">';
+    echo "<table width=\"1670\" border=\"0\" cellspacing=\"0\" cellpadding=\"0\" width=\"100%\"><tr>
+    <td width=\"15\" height=\"15\"><img src=\"themes/Kaput/images/up-left2.gif\" alt=\"\" border=\"0\"></td>
+    <td background=\"themes/Kaput/images/up2.gif\" align=\"center\" width=\"100%\" height=\"15\">&nbsp;</td>
+    <td><img src=\"themes/Kaput/images/up-right2.gif\" width=\"15\" height=\"15\" alt=\"\" border=\"0\"></td></tr>
+    <tr>
+    <td background=\"themes/Kaput/images/left2.gif\" width=\"15\">&nbsp;</td>
+    <td bgcolor=\"ffffff\" width=\"100%\">";
+    
+	echo "<table style=\"text-align:center;\" border=\"0\"><tr><td rowspan=\"2\">"
 	."<a href=\"index.php\"><img src=\"themes/Kaput/images/logo.gif\" border=\"0\" alt=\""._WELCOMETO." $sitename\" align=\"left\"></a></td>"
+	
 	."<td align=right width=100%>"
         ."<form action=\"modules.php?name=Search\" method=\"post\">"
         ."<font class=\"content\" color=\"#000000\"><b>"._SEARCH." </b>"
@@ -111,10 +121,20 @@ function themeheader() {
         ."<A href=\"modules.php?name=Downloads\">Downloads</a>&nbsp;&middot;&nbsp;<A href=\"modules.php?name=Your_Account\">Your Account</a>"
         ."&nbsp;&middot;&nbsp;<A href=\"modules.php?name=Forum\">Forums</a>&nbsp;&middot;&nbsp;<A href=\"modules.php?name=Top\">Top 10</a>"
         ."</b></font></td></tr></table>\n";
-    CloseTable();
+    
+    echo "</td>
+    <td background=\"themes/Kaput/images/right2.gif\">&nbsp;</td></tr>
+    <tr>
+    <td width=\"15\" height=\"15\"><img src=\"themes/Kaput/images/down-left2.gif\" alt=\"\" border=\"0\"></td>
+    <td background=\"themes/Kaput/images/down2.gif\" align=\"center\" height=\"15\">&nbsp;</td>
+    <td><img src=\"themes/Kaput/images/down-right2.gif\" width=\"15\" height=\"15\" alt=\"\" border=\"0\"></td></tr>
+    </td></tr></table>
+    <br>";
+	echo '</div>';
+	
     $public_msg = public_message();
     echo "$public_msg<br>";	
-    echo "<table cellpadding=\"0\" cellspacing=\"0\" width=\"99%\" border=\"0\" align=\"center\" bgcolor=\"#ffffff\">\n"
+    echo "<table cellpadding=\"0\" cellspacing=\"0\" width=\"1670\" border=\"0\" align=\"center\" bgcolor=\"#ffffff\">\n"
 	."<tr><td bgcolor=\"#ffffff\" valign=\"top\">\n";
     blocks("left");
     echo "</td><td><img src=\"themes/NukeNews/images/pixel.gif\" width=\"15\" height=\"1\" border=\"0\" alt=\"\"></td><td width=\"100%\" valign=top>\n";
@@ -138,11 +158,29 @@ function themefooter() {
     }
     echo "</td></tr></table>\n";
     echo "<br>";
-    OpenTable();
+
+    // open table
+	echo '<div align="center">';
+    echo "<table width=\"1670\" border=\"0\" cellspacing=\"0\" cellpadding=\"0\" width=\"100%\"><tr>
+    <td width=\"15\" height=\"15\"><img src=\"themes/Kaput/images/up-left2.gif\" alt=\"\" border=\"0\"></td>
+    <td background=\"themes/Kaput/images/up2.gif\" align=\"center\" width=\"100%\" height=\"15\">&nbsp;</td>
+    <td><img src=\"themes/Kaput/images/up-right2.gif\" width=\"15\" height=\"15\" alt=\"\" border=\"0\"></td></tr>
+    <tr>
+    <td background=\"themes/Kaput/images/left2.gif\" width=\"15\">&nbsp;</td>
+    <td bgcolor=\"ffffff\" width=\"100%\">";
+
     echo "<center>";
     footmsg();
     echo "</center>";
-    CloseTable();
+    echo "</td>
+    <td background=\"themes/Kaput/images/right2.gif\">&nbsp;</td></tr>
+    <tr>
+    <td width=\"15\" height=\"15\"><img src=\"themes/Kaput/images/down-left2.gif\" alt=\"\" border=\"0\"></td>
+    <td background=\"themes/Kaput/images/down2.gif\" align=\"center\" height=\"15\">&nbsp;</td>
+    <td><img src=\"themes/Kaput/images/down-right2.gif\" width=\"15\" height=\"15\" alt=\"\" border=\"0\"></td></tr>
+    </td></tr></table>
+    <br>";
+	echo '</div>';
 }
 
 /************************************************************/

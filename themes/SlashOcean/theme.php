@@ -54,7 +54,7 @@ echo "<body bgcolor=FFFFFF text=000000 link=101070 vlink=101070>
 ads(0);
 echo "<br>
 <center>
-<table cellpadding=0 cellspacing=0 border=0 width=99% align=center><tr><td align=left>
+<table cellpadding=0 cellspacing=0 border=0 width='1670' align=center><tr><td align=left>
 <a href=$nukeurl><img src=themes/SlashOcean/images/logo.gif Alt=\"Welcome to $sitename\" border=0></a>
 </td><td align=right width=100%>
 	<form action=modules.php?name=Search&amp;method=post>
@@ -64,12 +64,12 @@ echo "<br>
 	</form>";
     echo "</td></tr></table><br>";
 echo "
-<table cellpadding=0 cellspacing=0 border=0 width=99% bgcolor=101070><tr><td>
+<table cellpadding=0 cellspacing=0 border=0 width='1670' bgcolor=101070><tr><td>
 <table cellpadding=5 cellspacing=1 border=0 width=100% bgcolor=FFFFFF><tr><td>
 <font class=content>$slogan</td></tr></table></td></tr></table>";
     $public_msg = public_message();
     echo "$public_msg<br>";	
-echo "<table width=99% align=center cellpadding=0 cellspacing=0 border=0><tr><td valign=top rowspan=15>";
+echo "<table width='1670' align=center cellpadding=0 cellspacing=0 border=0><tr><td valign=top rowspan=15>";
 
 	blocks("left");
 

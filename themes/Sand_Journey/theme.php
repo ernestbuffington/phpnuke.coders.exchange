@@ -115,7 +115,7 @@ function themeheader() {
 
     echo "<center><a href=\"index.php\"><img src=\"themes/Sand_Journey/images/LogoLeft.gif\" alt=\"Welcome to $sitename\" title=\"Welcome to $sitename\" border=\"0\"></a><br><br></center>"
 
-	."<table cellpadding=\"0\" cellspacing=\"0\" width=\"100%\" border=\"0\" align=\"center\" bgcolor=\"$bgcolor1\"><tr><td align=\"center\">"
+	."<table cellpadding=\"0\" cellspacing=\"0\" width=\"1670\" border=\"0\" align=\"center\" bgcolor=\"$bgcolor1\"><tr><td align=\"center\">"
 
 	."<form action=\"modules.php?name=Search\" method=\"post\">"
 
@@ -129,7 +129,7 @@ function themeheader() {
 
 	."<br>"
 
-	."<table border=\"0 cellpadding=\"4\" cellspacing=\"0\" width=\"100%\" align=\"center\">\n"
+	."<table border=\"0 cellpadding=\"4\" cellspacing=\"0\" width=\"1670\" align=\"center\">\n"
 
 	."<tr><td bgcolor=\"$bgcolor2\" align=\"left\" width=\"20%\">&nbsp;$bienvenida</td>"
 
@@ -165,7 +165,7 @@ function themeheader() {
 
         echo "$public_msg<br>";
 
-	echo "<table border=\"0\" cellspacing=\"0\" cellpadding=\"2\" width=\"100%\"><tr><td valign=\"top\" width=\"150\" bgcolor=$bgcolor1>";
+	echo "<table border=\"0\" cellspacing=\"0\" cellpadding=\"2\" width=\"1670\"><tr><td valign=\"top\" width=\"150\" bgcolor=$bgcolor1>";
 
 	blocks("left");
 
