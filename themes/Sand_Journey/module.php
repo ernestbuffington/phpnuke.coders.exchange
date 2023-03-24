@@ -1,3 +1,3 @@
-<?php
-$default_module = "News";
+<?php
+$default_module = "News";
 ?>
