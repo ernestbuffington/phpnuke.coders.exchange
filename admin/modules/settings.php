@@ -709,7 +709,7 @@ if ($row['radminsuper'] == 1) {
 
 	function savegeneral($xsitename, $xnukeurl, $xslogan, $xstartdate, $xadmingraphic, $xgfx_chk, $xnuke_editor, $xdisplay_errors) {
 		$xsite_logo = null;
-  global $prefix, $db, $admin_file;
+        global $prefix, $db, $admin_file;
 		$xsitename = filter($xsitename, "nohtml", 1);
 		$xnukeurl = filter($xnukeurl, "nohtml", 1);
 		$xslogan = filter($xslogan, "nohtml", 1);
