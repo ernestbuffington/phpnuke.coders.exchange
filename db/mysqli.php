@@ -151,16 +151,21 @@ class sql_db
 
     function check_query($query) {
         global $prefix, $cache;
-        if (!stristr($query, "UPDATE") && !stristr($query, "INSERT") && !stristr($query, "DELETE")) { return; }
-        $tables = ['nuke' => $prefix . '_config', 
+        if (!stristr($query, "UPDATE") && !stristr($query, "INSERT") && !stristr($query, "DELETE")) 
+		{ 
+		  return; 
+		}
+       
+	    $tables = ['nuke' => $prefix . '_config', 
 				   'nuke' => $prefix . '_bbconfig', 
-				   'nuke' => $prefix . '_blocks', 
+				   'nuke' => $prefix . '_blocks',
+				   'nuke' => $prefix . '_groups',  
 				   'nuke' => $prefix . '_modules'];
 				   
         foreach( $tables as $file => $table )
         {
             if (stristr($query, $table)) {
-				$cache->delete($file, 'config');
+				//$cache->delete($file, 'config');
             }
         }
         return;
