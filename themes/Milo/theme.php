@@ -124,10 +124,10 @@ function themeheader() {
 	."<form action=\"modules.php?name=Search\" method=\"post\"><font class=\"content\" color=\"#000000\"><b>"._SEARCH." </b>\n"
 	."<input type=\"text\" name=\"query\" size=\"14\"></font></form></td>\n"
 	."<td bgcolor=\"#C0C0C0\" align=\"center\">\n"
-	."<form action=\"modules.php?name=Search\" method=\"get\"><font class=\"content\"><b>"._TOPICS." </b>\n";
-    $toplist = $db->sql_query("select topicid, topictext from $prefix"._topics." order by topictext");
+	."<form action=\"modules.php?name=Search\" method=\"get\"><font class=\"content\"><b>Topics</b>\n";
+    $toplist = $db->sql_query("SELECT topicid, topictext FROM ".$prefix."_topics ORDER BY topictext");
     echo "<select name=\"topic\"onChange='submit()'>\n"
-	."<option value=\"\">"._ALLTOPICS."</option>\n";
+	."<option value=\"\">All Topics</option>\n";
     while(list($topicid, $topics) = $db->sql_fetchrow($toplist)) {
 	$topicid = intval($topicid);
     if ($topicid==$topic) { $sel = "selected "; }
