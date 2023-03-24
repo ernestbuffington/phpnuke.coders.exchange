@@ -22,8 +22,12 @@
 //
 // ----------------------------------------------------------------------
 
+/* Applied rules:
+ * EregToPregMatchRector (http://php.net/reference.pcre.pattern.posix https://stackoverflow.com/a/17033826/1348344 https://docstore.mik.ua/orelly/webprog/pcook/ch13_02.htm)
+ */
+ 
 if (!defined('ADMIN_FILE')) {
-	if (!eregi("admin.php", $_SERVER['PHP_SELF'])) {
+	if (!preg_match('#admin.php#mi', $_SERVER['PHP_SELF'])) {
 		die ("Access Denied");
 	}
 }
