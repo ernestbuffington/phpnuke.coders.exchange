@@ -441,8 +441,9 @@ if ($display_errors == 1) {
 }
 
 if (!defined('FORUM_ADMIN')) {
-
-    if ((isset($newlang)) AND (stristr($newlang,"."))) {
+    global $newlang, $lang, $currentlang;
+    
+	if ((isset($newlang)) AND (stristr($newlang,"."))) {
 
 		if (file_exists("language/lang-".$newlang.".php")) {
 
