@@ -34,7 +34,7 @@ $dbhost = 'localhost';
 | The name of your database that holds your tables        |
 |                                                         |
 ---------------------------------------------------------*/
-$dbname = 'phpnukecoders_db';
+$dbname = 'SomeDataBaseName';
 
 /*----[ $dbuname ] ---------------------------------------
 |                                                         |
@@ -42,22 +42,18 @@ $dbname = 'phpnukecoders_db';
 | permissions                                             |
 |                                                         |
 ---------------------------------------------------------*/
-$dbuname = 'phpnukecoders_db';
+$dbuname = 'SomeDataBaseUserName';
 
 /*----[ $dbpass ] ----------------------------------------
 |                                                         |
 | The password associated with your db usersname          |
 |                                                         |
 ---------------------------------------------------------*/
-$dbpass = 'xwdNPADv86nce';
+$dbpass = 'SomePassword';
 
 /*----[ $dbtype ] ----------------------------------------
 |                                                         |
 | The type of SQL server you prefer to use                |
-|                                                         |
-| Choose from the following (case-sensitive):             |
-|    - mysql (4.x or later)                               |
-|    - mysqli (PHP must be compiled with "System Mysql")  |
 |                                                         |
 | Default: mysqli                                         |
 |                                                         |
@@ -158,5 +154,5 @@ $use_cache = 1;
 ---------------------------------------------------------*/
 $persistency = false;
 
-Once you set everything just point your browser to https://yourdomain.com/install
+Once you set everything just point your browser to https://www.yourdomain.com/install
 
