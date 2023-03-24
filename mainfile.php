@@ -167,9 +167,9 @@ if(!function_exists('stripos')) {
 } else {
 
 // But when this is PHP5, we use the original function
-  function stripos_clone($haystack, $needle, $offset=0) {
+function stripos_clone($haystack, $needle, $offset=0) {
 
-    $return = stripos($haystack, (string) $needle, $offset=0);
+  $return = stripos($haystack, (string) $needle, $offset=0);
 
   if ($return === false) {
 
@@ -178,11 +178,8 @@ if(!function_exists('stripos')) {
     } else {
 
     return true;
-
     }
-
   }
-
 }
 
 if(isset($admin) && $admin == $_COOKIE['admin'])
@@ -222,13 +219,9 @@ if (!defined('ADMIN_FILE')) {
   (preg_match('#"#mi', $secvalue)) ||
   (preg_match('#forum_admin#mi', $sec_key)) ||
   (preg_match('#inside_mod#mi', $sec_key)))
-
   {
-
    die ($htmltags);
-
   }
-
 }
 
  foreach ($_POST as $secvalue) {
@@ -243,9 +236,7 @@ if (!defined('ADMIN_FILE')) {
   (preg_match('#<[^>]style*"?[^>]*#mi', $secvalue))) {
    die ($htmltags);
   }
-
  }
-
 }
 
 # add 3rd party backward version comapatibility defines
@@ -305,8 +296,11 @@ if(!function_exists('classAutoloader')):
     spl_autoload_register('classAutoloader');
 endif;
 
-// Include the required files
-require_once(INCLUDE_PATH."config.php");
+if (file_exists(INCLUDE_PATH."config.php")) {
+	include_once(INCLUDE_PATH."config.php");
+} else {
+   header("Location: install/index.php");	
+}
 
 # add 3rd party support by adding file mode and directory mode!
 if(!$directory_mode):
@@ -658,21 +652,37 @@ foreach ($_POST as $postkey => $postvalue) {
     } else {
 
      $postString .= $postkey."=".$postvalue;
-
     }
-
 }
 
 str_replace("%09", "%20", $postString);
 
 $postString_64 = base64_decode($postString);
 
-if ((!isset($admin) OR (isset($admin) AND !is_admin($admin))) AND (stristr($postString,'%20union%20')) OR (stristr($postString,'*/union/*')) OR (stristr($postString,' union ')) OR (stristr($postString_64,'%20union%20')) OR (stristr($postString_64,'*/union/*')) OR (stristr($postString_64,' union ')) OR (stristr($postString_64,'+union+')) OR (stristr($postString,'http-equiv')) OR (stristr($postString_64,'http-equiv')) OR (stristr($postString,'alert(')) OR (stristr($postString_64,'alert(')) OR (stristr($postString,'javascript:')) OR (stristr($postString_64,'javascript:')) OR (stristr($postString,'document.cookie')) OR (stristr($postString_64,'document.cookie')) OR (stristr($postString,'onmouseover=')) OR (stristr($postString_64,'onmouseover=')) OR (stristr($postString,'document.location')) OR (stristr($postString_64,'document.location'))) {
-
+if ((!isset($admin) 
+OR (isset($admin) 
+AND !is_admin($admin))) 
+AND (stristr($postString,'%20union%20')) 
+OR (stristr($postString,'*/union/*')) 
+OR (stristr($postString,' union ')) 
+OR (stristr($postString_64,'%20union%20')) 
+OR (stristr($postString_64,'*/union/*')) 
+OR (stristr($postString_64,' union ')) 
+OR (stristr($postString_64,'+union+')) 
+OR (stristr($postString,'http-equiv')) 
+OR (stristr($postString_64,'http-equiv')) 
+OR (stristr($postString,'alert(')) 
+OR (stristr($postString_64,'alert(')) 
+OR (stristr($postString,'javascript:')) 
+OR (stristr($postString_64,'javascript:')) 
+OR (stristr($postString,'document.cookie')) 
+OR (stristr($postString_64,'document.cookie')) 
+OR (stristr($postString,'onmouseover=')) 
+OR (stristr($postString_64,'onmouseover=')) 
+OR (stristr($postString,'document.location')) 
+OR (stristr($postString_64,'document.location'))) {
 header("Location: index.php");
-
 die();
-
 }
 
 // Additional security (Union, CLike, XSS)
@@ -699,8 +709,16 @@ die();
 	   if (stristr($queryString,'http://')) die('Illegal Operation');
 	}
 
-    if ((stristr($queryString,'%20union%20')) OR (stristr($queryString,'/*')) OR (stristr($queryString,'*/union/*')) OR (stristr($queryString,'c2nyaxb0')) OR (stristr($queryString,'+union+'))  OR ((stristr($queryString,'cmd=')) AND (!stristr($queryString,'&cmd'))) OR ((stristr($queryString,'exec')) AND (!stristr($queryString,'execu'))) OR (stristr($queryString,'concat'))) {
-
+    if ((stristr($queryString,'%20union%20')) 
+	OR (stristr($queryString,'/*')) 
+	OR (stristr($queryString,'*/union/*')) 
+	OR (stristr($queryString,'c2nyaxb0')) 
+	OR (stristr($queryString,'+union+'))  
+	OR ((stristr($queryString,'cmd=')) 
+	AND (!stristr($queryString,'&cmd'))) 
+	OR ((stristr($queryString,'exec')) 
+	AND (!stristr($queryString,'execu'))) 
+	OR (stristr($queryString,'concat'))) {
       die('Illegal Operation');
     }
   }
@@ -837,14 +855,9 @@ function render_blocks($side, $blockfile, $title, $content, $bid, $url) {
 		} else {
 
 			headlines($bid);
-
 		}
-
 	}
-
 }
-
-
 
 function blocks($side) {
 
@@ -1003,9 +1016,7 @@ function message_box() {
 					} else {
 
 						$remain = ""._EXPIREIN." $etime "._HOURS."";
-
 					}
-
 				}
 
 				if ($view == 5 AND paid()) {
@@ -1111,8 +1122,6 @@ function message_box() {
 	}
 }
 
-
-
 function online() {
 
   global $user, $cookie, $prefix, $db;
@@ -1129,7 +1138,6 @@ function online() {
 
     $uname = $ip;
     $guest = 1;
-
   }
 
   $past = time()-3600;
@@ -1160,8 +1168,6 @@ function online() {
   $db->sql_freeresult($result);
 }
 
-
-
 function blockfileinc($title, $blockfile, $side=0) {
 
 	$blockfiletitle = $title;
@@ -1175,13 +1181,11 @@ function blockfileinc($title, $blockfile, $side=0) {
 	} else {
 
 		include("blocks/".$blockfile."");
-
 	}
 
 	if (empty($content)) {
 
 		$content = _BLOCKPROBLEM2;
-
 	}
 
 	if ($side == 1) {
@@ -1195,9 +1199,7 @@ function blockfileinc($title, $blockfile, $side=0) {
 	} else {
 
 		themesidebox($blockfiletitle, $content);
-
 	}
-
 }
 
 function selectlanguage() {
@@ -1217,11 +1219,8 @@ function selectlanguage() {
 			if(str_starts_with($func, "lang-")) {
 
 				$menulist .= "$func ";
-
 			}
-
 		}
-
 		closedir($langdir->handle);
 
 		$menulist = explode(" ", $menulist);
@@ -1236,9 +1235,7 @@ function selectlanguage() {
 				$tl = str_replace(".php","",$tl);
 				$altlang = ucfirst($tl);
 				$content .= "<a href=\"index.php?newlang=".$tl."\"><img src=\"images/language/flag-".$tl.".png\" border=\"0\" alt=\"$altlang\" title=\"$altlang\" hspace=\"3\" vspace=\"3\"></a> ";
-
 			}
-
 		}
 
 		$content .= "</font></center>";
@@ -1359,7 +1356,6 @@ function cookiedecode($user) {
     } else {
 
         $cookie = $user;
-
     }
 
     if (!isset($pass) AND isset($cookie[1])) {
@@ -1381,7 +1377,6 @@ function getusrinfo($user) {
     if (!$user OR empty($user)) {
 
       return NULL;
-
     }
 
     cookiedecode($user);
@@ -1393,9 +1388,7 @@ function getusrinfo($user) {
         if ($userrow['username'] == $user[1] && $userrow['user_password'] == $user[2]) {
 
             return $userrow;
-
         }
-
     }
 
     $sql = "SELECT * FROM ".$user_prefix."_users WHERE username='$user[1]' AND user_password='$user[2]'";
@@ -1408,7 +1401,6 @@ function getusrinfo($user) {
         $userrow = $db->sql_fetchrow($result);
 
         return $userinfo = $userrow;
-
     }
     $db->sql_freeresult($result);
 
@@ -1420,7 +1412,6 @@ function FixQuotes ($what = "") {
 	while (stristr($what, "\\\\'")) {
 
 		$what = str_replace("\\\\'","'",$what);
-
 	}
 	return $what;
 }
