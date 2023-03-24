@@ -183,7 +183,8 @@ return static function (RectorConfig $rectorConfig): void {
 		//////__DIR__ . '/admin/modules/authors.php',
 		//////__DIR__ . '/admin/modules/groups.php',
 		//////__DIR__ . '/admin/modules/ipban.php',
-		__DIR__ . '/admin/modules/messages.php',
+		//////__DIR__ . '/admin/modules/messages.php',
+		__DIR__ . '/admin/modules/moderation.php',
 		
 		//__DIR__ . '/admin/modules/backup/backup.php', # Mod From Titanium #
 		//__DIR__ . '/admin/modules/backup/backupdownload.php',
