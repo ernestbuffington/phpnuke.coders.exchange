@@ -12,6 +12,11 @@
 /* the Free Software Foundation; either version 2 of the License.       */
 /************************************************************************/
 
+/* Applied rules:
+ * AddDefaultValueForUndefinedVariableRector (https://github.com/vimeo/psalm/blob/29b70442b11e3e66113935a2ee22e165a70c74a4/docs/fixing_code.md#possiblyundefinedvariable)
+ * EregToPregMatchRector (http://php.net/reference.pcre.pattern.posix https://stackoverflow.com/a/17033826/1348344 https://docstore.mik.ua/orelly/webprog/pcook/ch13_02.htm)
+ */
+ 
 if (!defined('ADMIN_FILE')) {
 
 	die ("Access Denied");
@@ -30,6 +35,8 @@ if ($row['radminsuper'] == 1) {
 	/*********************************************************/
 	function modules() {
 
+		$who_view = null;
+        
 		global $prefix, $db, $multilingual, $bgcolor2, $admin_file;
 
 		include ("header.php");
@@ -48,7 +55,7 @@ if ($row['radminsuper'] == 1) {
 
 		while ($file = readdir($handle)) {
 
-			if ( (!ereg("[.]",$file)) ) {
+			if ( (!preg_match('#[\.]#m',$file)) ) {
 
 				$modlist .= "$file ";
 
@@ -141,7 +148,7 @@ if ($row['radminsuper'] == 1) {
 
 			if (empty($custom_title)) {
 
-				$custom_title = ereg_replace("_"," ",$title);
+				$custom_title = preg_replace('#_#m'," ",$title);
 
 				$db->sql_query("update " . $prefix . "_modules set custom_title='$custom_title' where mid='$mid'");
 
@@ -167,7 +174,7 @@ if ($row['radminsuper'] == 1) {
 
 			if (empty($custom_title)) {
 
-				$custom_title = ereg_replace("_", " ", $title);
+				$custom_title = preg_replace('#_#m', " ", $title);
 
 			}
 
@@ -317,7 +324,10 @@ if ($row['radminsuper'] == 1) {
 
 	function module_edit($mid) {
 
-		global $prefix, $db, $admin_file;
+		$dummy = null;
+        $insel1 = null;
+        $insel2 = null;
+        global $prefix, $db, $admin_file;
 
 		$main_m = $db->sql_fetchrow($db->sql_query("SELECT main_module from " . $prefix . "_main"));
 
@@ -507,62 +517,33 @@ if ($row['radminsuper'] == 1) {
 
 	}
 
-
-
 	switch ($op){
 
-
-
 		case "modules":
-
 		modules();
-
 		break;
-
-
 
 		case "module_status":
-
 		module_status($mid, $active);
-
 		break;
-
-
 
 		case "module_edit":
-
 		module_edit($mid);
-
 		break;
-
-
 
 		case "module_edit_save":
-
 		module_edit_save($mid, $custom_title, $view, $inmenu, $mod_group);
-
 		break;
-
-
 
 		case "home_module":
-
 		home_module($mid, $ok);
-
 		break;
-
-
-
 	}
-
-
 
 } else {
 
 	echo "Access Denied";
 
 }
-
-
 
 ?>
