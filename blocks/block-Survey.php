@@ -11,6 +11,7 @@
 /* it under the terms of the GNU General Public License as published by */
 /* the Free Software Foundation; either version 2 of the License.       */
 /************************************************************************/
+
 if ( !defined('BLOCK_FILE') ) {
     Header("Location: ../index.php");
     die();
