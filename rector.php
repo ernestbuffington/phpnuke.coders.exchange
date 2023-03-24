@@ -185,11 +185,14 @@ return static function (RectorConfig $rectorConfig): void {
 		//////__DIR__ . '/admin/modules/ipban.php',
 		//////__DIR__ . '/admin/modules/messages.php',
 		//////__DIR__ . '/admin/modules/moderation.php',
-		__DIR__ . '/admin/modules/modules.php',
+		//////__DIR__ . '/admin/modules/modules.php',
+		//////__DIR__ . '/admin/modules/newsletter.php',
+		//////__DIR__ . '/admin/modules/optimize.php',
+		//////__DIR__ . '/admin/modules/referers.php',
+		//////__DIR__ . '/admin/modules/settings.php',
 		
 		//__DIR__ . '/admin/modules/backup/backup.php', # Mod From Titanium #
 		//__DIR__ . '/admin/modules/backup/backupdownload.php',
-		//__DIR__ . '/admin/modules/settings.php',
         
 		  #__DIR__ . '/blocks',
 		//////__DIR__ . '/blocks/blocks-Modules.php',
@@ -268,11 +271,11 @@ return static function (RectorConfig $rectorConfig): void {
 		//__DIR__ . '/modules/Forums/admin/admin_groups.php',
 		//__DIR__ . '/modules/Forums/admin/admin_mass_email.php',
 		//__DIR__ . '/modules/Forums/admin/admin_ranks.php',
-		//_DIR__ . '/modules/Forums/admin/admin_smilies.php',
+		//_DIR__  . '/modules/Forums/admin/admin_smilies.php',
 		//__DIR__ . '/modules/Forums/admin/admin_styles.php',
 		//__DIR__ . '/modules/Forums/admin/admin_ug_auth.php', HAD PROBLEMS
 		//__DIR__ . '/modules/Forums/admin/admin_user_ban.php',
-		//_DIR__ . '/modules/Forums/admin/admin_users.php',
+		//_DIR__  . '/modules/Forums/admin/admin_users.php',
 		//__DIR__ . '/modules/Forums/admin/admin_words.php',
 		//__DIR__ . '/modules/Forums/admin/case.php',
 		//__DIR__ . '/modules/Forums/admin/common.php',
@@ -335,7 +338,7 @@ return static function (RectorConfig $rectorConfig): void {
 		//__DIR__ . '/modules/Member_List/copyright.php',
 		
 		//__DIR__ . '/modules/News/index.php',
-		//__DIR__ . '/modules/News/admin/index.php',
+		__DIR__ . '/modules/News/admin/index.php',
 		//__DIR__ . '/modules/News/index.php',
 		//__DIR__ . '/modules/News/comments.php',
 		//__DIR__ . '/modules/News/article.php',
