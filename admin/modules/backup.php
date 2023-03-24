@@ -4,12 +4,8 @@
 /* PHP-NUKE: Web Portal System                                          */
 /* ===========================                                          */
 /*                                                                      */
-/* Copyright (c) 2007 by Francisco Burzi                                */
-/* http://phpnuke.org                                                   */
-/*                                                                      */
-/* Based on Databese Backup System                                      */
-/* Copyright (c) 2001 by Thomas Rudant (thomas.rudant@grunk.net)        */
-/* http://www.grunk.net - http://www.securite-internet.org              */
+/* Copyright (c) 2023 by Francisco Burzi                                */
+/* http://www.phpnuke.coders.exchange                                   */
 /*                                                                      */
 /* This program is free software. You can redistribute it and/or modify */
 /* it under the terms of the GNU General Public License as published by */
@@ -20,234 +16,93 @@ if (!defined('ADMIN_FILE')) {
 	die ("Access Denied");
 }
 
-global $prefix, $db, $admin_file;
+global $op, $prefix, $db, $admin_file;
+
 $aid = substr("$aid", 0,25);
 $row = $db->sql_fetchrow($db->sql_query("SELECT radminsuper FROM " . $prefix . "_authors WHERE aid='$aid'"));
 if ($row['radminsuper'] == 1) {
+	
+	/* backup the full database */
+	function backup_tables($servername,$username,$password,$db,$tables = '*')
+	{
 
-	switch($op) {
+        global $dbhost,$dbuname,$dbpass,$dbname;
 
-		case "backup":
-		@set_time_limit(600);
-		$crlf="\n";
+        $servername = $dbhost;
+        $username = $dbuname;
+        $password = $dbpass;
+        $db = $dbname;
 
-		switch($lang)
+        $conn = new mysqli($servername, $username, $password, $db);
+        
+		if($conn->connect_error){
+	      echo "Connect Failed!<br>" . $conn->error;
+        }
+        //set your timezone , refer to php manual
+        date_default_timezone_set("Asia/Kuala_Lumpur");		
+		
+		$link = null;
+        $link = mysqli_connect($servername,$username,$password);
+		mysqli_select_db($link,$db);
+		
+		//get all of the tables and fuck your mother
+		if($tables == '*')
 		{
-			case french :
-			// French Text
-			$strNoTablesFound	= "Aucune table n'a été trouvée dans cette base.";
-			$strHost		= "Serveur";
-			$strDatabase		= "Base de données";
-			$strTableStructure	= "Structure de la table";
-			$strDumpingData		= "Contenu de la table";
-			$strError		= "Erreur";
-			$strSQLQuery		= "requête SQL";
-			$strMySQLSaid		= "MySQL a répondu:";
-			$strBack		= "Retour";
-			$strFileName		= "Sauvegarde BD";
-			$strName		= "Sauvegarde de la base de données";
-			$strDone		= "effectuée le";
-			$strat			= "à";
-			$strby			= "par";
-			$date_jour = date ("d-m-Y");
-			break;
-
-			default :
-			// English Text
-			$strNoTablesFound = "No tables found in database.";
-			$strHost = "Host";
-			$strDatabase = "Database ";
-			$strTableStructure = "Table structure for table";
-			$strDumpingData = "Dumping data for table";
-			$strError = "Error";
-			$strSQLQuery = "SQL-query";
-			$strMySQLSaid = "MySQL said: ";
-			$strBack = "Back";
-			$strFileName = "Save Database";
-			$strName = "Database saved";
-			$strDone = "On";
-			$strat = "at";
-			$strby = "by";
-			$date_jour = date ("m-d-Y");
-			break;
-		}
-
-		header("Content-disposition: filename=$strFileName $dbname $date_jour.sql");
-		header("Content-type: application/octetstream");
-		header("Pragma: no-cache");
-		header("Expires: 0");
-
-		// doing some DOS-CRLF magic...
-		$client = $_SERVER["HTTP_USER_AGENT"];
-		if(ereg('[^(]*\((.*)\)[^)]*',$client,$regs))
-		{
-			$os = $regs[1];
-			// this looks better under WinX
-			if (eregi("Win",$os))
-			$crlf="\r\n";
-		}
-
-
-		function my_handler($sql_insert)
-		{
-			global $crlf;
-			echo "$sql_insert;$crlf";
-		}
-
-		// Get the content of $table as a series of INSERT statements.
-		// After every row, a custom callback function $handler gets called.
-		// $handler must accept one parameter ($sql_insert);
-		function get_table_content($db, $table, $handler)
-		{
-			$result = mysql_db_query($db, "SELECT * FROM $table") or mysql_die();
-			$i = 0;
-			while($row = mysql_fetch_row($result))
+			$tables = array();
+			$result = mysqli_query($link, 'SHOW TABLES');
+			while($row = mysqli_fetch_row($result))
 			{
-				//        set_time_limit(60); // HaRa
-				$table_list = "(";
-
-				for($j=0; $j<mysql_num_fields($result);$j++)
-				$table_list .= mysql_field_name($result,$j).", ";
-
-				$table_list = substr($table_list,0,-2);
-				$table_list .= ")";
-
-				if(isset($GLOBALS["showcolumns"]))
-				$schema_insert = "INSERT INTO $table $table_list VALUES (";
-				else
-				$schema_insert = "INSERT INTO $table VALUES (";
-
-				for($j=0; $j<mysql_num_fields($result);$j++)
-				{
-					if(!isset($row[$j]))
-					$schema_insert .= " NULL,";
-					elseif($row[$j] != "")
-					$schema_insert .= " '".addslashes($row[$j])."',";
-					else
-					$schema_insert .= " '',";
-				}
-				$schema_insert = ereg_replace(",$", "", $schema_insert);
-				$schema_insert .= ")";
-				$handler(trim($schema_insert));
-				$i++;
+				$tables[] = $row[0];
 			}
-			return (true);
-		}
-
-		// Return $table's CREATE definition
-		// Returns a string containing the CREATE statement on success
-		function get_table_def($db, $table, $crlf)
-		{
-			$schema_create = "";
-			//$schema_create .= "DROP TABLE IF EXISTS $table;$crlf";
-			$schema_create .= "CREATE TABLE $table ($crlf";
-
-			$result = mysql_db_query($db, "SHOW FIELDS FROM $table") or mysql_die();
-			while($row = mysql_fetch_array($result))
-			{
-				$schema_create .= "   $row[Field] $row[Type]";
-
-				if(isset($row["Default"]) && (!empty($row["Default"]) || $row["Default"] == "0"))
-				$schema_create .= " DEFAULT '$row[Default]'";
-				if($row["Null"] != "YES")
-				$schema_create .= " NOT NULL";
-				if($row["Extra"] != "")
-				$schema_create .= " $row[Extra]";
-				$schema_create .= ",$crlf";
-			}
-			$schema_create = ereg_replace(",".$crlf."$", "", $schema_create);
-			$result = mysql_db_query($db, "SHOW KEYS FROM $table") or mysql_die();
-			while($row = mysql_fetch_array($result))
-			{
-				$kname=$row['Key_name'];
-				if(($kname != "PRIMARY") && ($row['Non_unique'] == 0))
-				$kname="UNIQUE|$kname";
-				if(!isset($index[$kname]))
-				$index[$kname] = array();
-				$index[$kname][] = $row['Column_name'];
-			}
-
-			while(list($x, $columns) = @each($index))
-			{
-				$schema_create .= ",$crlf";
-				if($x == "PRIMARY")
-				$schema_create .= "   PRIMARY KEY (" . implode($columns, ", ") . ")";
-				elseif (substr($x,0,6) == "UNIQUE")
-				$schema_create .= "   UNIQUE ".substr($x,7)." (" . implode($columns, ", ") . ")";
-				else
-				$schema_create .= "   KEY $x (" . implode($columns, ", ") . ")";
-			}
-
-			$schema_create .= "$crlf)";
-			return (stripslashes($schema_create));
-		}
-
-		function mysql_die($error = "")
-		{
-			echo "<b> $strError </b><p>";
-			if(isset($sql_query) && !empty($sql_query))
-			{
-				echo "$strSQLQuery: <pre>$sql_query</pre><p>";
-			}
-			if(empty($error))
-			echo $strMySQLSaid.mysql_error();
-			else
-			echo $strMySQLSaid.$error;
-			echo "<br><a href=\"javascript:history.go(-1)\">$strBack</a>";
-			exit;
-		}
-
-		global $dbhost, $dbuname, $dbpass, $dbname;
-		mysql_pconnect($dbhost, $dbuname, $dbpass);
-		@mysql_select_db("$dbname") or die ("Unable to select database");
-
-		$tables = mysql_list_tables($dbname);
-
-		$num_tables = @mysql_numrows($tables);
-		if($num_tables == 0)
-		{
-			echo $strNoTablesFound;
 		}
 		else
 		{
-			$i = 0;
-			$heure_jour = date ("H:i");
-			print "# ========================================================$crlf";
-			print "#$crlf";
-			print "# $strName : $dbname$crlf";
-			print "# $strDone $date_jour $strat $heure_jour $strby $name !$crlf";
-			print "#$crlf";
-			print "# ========================================================$crlf";
-			print "$crlf";
-
-			while($i < $num_tables)
-			{
-				$table = mysql_tablename($tables, $i);
-
-				print $crlf;
-				print "# --------------------------------------------------------$crlf";
-				print "#$crlf";
-				print "# $strTableStructure '$table'$crlf";
-				print "#$crlf";
-				print $crlf;
-
-				echo get_table_def($dbname, $table, $crlf).";$crlf$crlf";
-
-				print "#$crlf";
-				print "# $strDumpingData '$table'$crlf";
-				print "#$crlf";
-				print $crlf;
-
-				get_table_content($dbname, $table, "my_handler");
-
-				$i++;
-			}
+			$tables = is_array($tables) ? $tables : explode(',',$tables);
 		}
-		break;
+		
+		//cycle through
+		
+        $return = '';
+		
+		ob_clean(); // clean the output buffer so that you wont have HTML garbage inside your database backup file!
+		
+		foreach($tables as $table)
+		{
+			$result = mysqli_query($link, 'SELECT * FROM '.$table);
+			$num_fields = mysqli_field_count($link);
+			
+			// $return.= 'DROP TABLE '.$table.';';
+			$return.= 'DROP TABLE IF EXISTS '.$table.';'; //avoid error while uploading backedup database into blank database
+			$row2 = mysqli_fetch_row(mysqli_query($link, 'SHOW CREATE TABLE '.$table));
+			$return.= "\n\n".$row2[1].";\n\n";
+			
+			 for ($i = 0; $i < $num_fields; $i++)  
+			 {
+				while($row = mysqli_fetch_row($result))
+				{
+					$return.= 'INSERT INTO '.$table.' VALUES(';
+					for($j=0; $j < $num_fields; $j++) 
+					{
+						$row[$j] = addslashes($row[$j] ?? '');
+						$row[$j] = preg_replace("/\n/","\\n",$row[$j]);
+						if (isset($row[$j])) { $return.= '"'.$row[$j].'"' ; } else { $return.= '""'; }
+						if ($j < ($num_fields-1)) { $return.= ','; }
+					}
+					$return.= ");\n";
+				}
+			 }
+			$return.="\n\n\n";
+		}
+		//save file to the browser (download)
+		header('Content-Type: text/csv; charset=utf-8'); 
+		//declare the file name
+		header("Content-Disposition: attachment; filename=\"".'php-nuke-db-backup-'.date('Y-m-d (h.i.s a)').".sql\"");
+		header("Content-Length: " . strlen($return));
+		header("Content-Transfer-Encoding: binary");
+		echo $return;
 	}
+	backup_tables($servername, $username, $password, $db);
 
 } else {
-	echo "Access Denied";
+	echo "Fail:".mysqli_error($link);
 }
-
-?>
