@@ -22,6 +22,11 @@
 //
 // ----------------------------------------------------------------------
 
+/* Applied rules:
+ * AddDefaultValueForUndefinedVariableRector (https://github.com/vimeo/psalm/blob/29b70442b11e3e66113935a2ee22e165a70c74a4/docs/fixing_code.md#possiblyundefinedvariable)
+ * EregToPregMatchRector (http://php.net/reference.pcre.pattern.posix https://stackoverflow.com/a/17033826/1348344 https://docstore.mik.ua/orelly/webprog/pcook/ch13_02.htm)
+ */
+ 
 function atExtendedInit()
 {
 	return array();
@@ -29,6 +34,11 @@ function atExtendedInit()
 
 function atThemeExit()
 {
+	$template = [];
+    $themepath = null;
+    $atdir = null;
+    $platform = null;
+    
 	$runningconfig = atGetRunningConfig();
     extract($runningconfig);
 
@@ -46,17 +56,17 @@ function atThemeExit()
 	if (!$template) {
         $template = "HTML401_Transitional.html";
     }
-    if (@file_exists($themepath.$template)) {
+    if (file_exists($themepath.$template)) {
 		$file = $themepath.$template;
 	}
-	elseif (@file_exists($atdir."templates/$platform/$template")) {
+	elseif (file_exists($atdir."templates/$platform/$template")) {
 		$file = $atdir."templates/$platform/$template";
 	}
 	else {
 		$file = $atdir."templates/HTML.html";
 	}
 	$HTML = atTemplateRead($file);
-	$HTML = eregi_replace('\<\/head\>', '', $HTML);
+	$HTML = preg_replace('#<\/head>#mi', '', $HTML);
 	$HTML = preg_replace('/(\<\!--[ ]*\[|{)display(}|\][ ]*--\>)/', $display, $HTML);
 	$output = atCommandReplace($HTML);
 
@@ -68,7 +78,11 @@ function atThemeExit()
 	
 function atThemeAddHeader()
 {
-    $runningconfig = atGetRunningConfig();
+    $style = [];
+    $themepath = null;
+    $xhtml = null;
+    
+	$runningconfig = atGetRunningConfig();
     extract($runningconfig);
  
     $stylesheet = $style['stylesheet'];
@@ -83,7 +97,7 @@ function atThemeAddHeader()
 				."</script>\n";
     }
     if (isset($stylesheet)) {
-        if (@file_exists($themepath.$stylesheet) && !@is_dir($themepath.$stylesheet)) {
+        if (file_exists($themepath.$stylesheet) && !is_dir($themepath.$stylesheet)) {
             $head .= "\n<!-- Custom Page stylesheet -->\n";
         	$head .= "<link rel=\"stylesheet\" href=\"".$themepath.$stylesheet."\" type=\"text/css\""
         	.($xhtml ? " />" : ">")."\n";
