@@ -1,5 +1,9 @@
 <?php 
 
+/* Applied rules:
+ * AddDefaultValueForUndefinedVariableRector (https://github.com/vimeo/psalm/blob/29b70442b11e3e66113935a2ee22e165a70c74a4/docs/fixing_code.md#possiblyundefinedvariable)
+ */
+ 
 // Extra for all platforms
 //
 // How to register an extra and the functions that it performs and when to perform them (at operation)
@@ -20,7 +24,12 @@ $extra['themeversion'] = array (
 //
 function at_themeversion($runningconfig)
 {
-	if (is_array($runningconfig['themeversion'])) {
+	$name = null;
+ $version = null;
+ $description = null;
+ $author = null;
+ $contact = null;
+ if (is_array($runningconfig['themeversion'])) {
         extract($runningconfig['themeversion']);
     }	
 	if (!$name) { $name = $runningconfig['thename']; }
@@ -40,6 +49,12 @@ function at_themeversion($runningconfig)
 //
 function at_admin_themeversion($themeversion)
 {	
+    $include = null;
+    $name = null;
+    $version = null;
+    $description = null;
+    $author = null;
+    $contact = null;
     extract($themeversion);
     
     $yinc = $ninc = "";
