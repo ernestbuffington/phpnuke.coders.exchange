@@ -1,5 +1,9 @@
 <?php 
 
+/* Applied rules:
+ * AddDefaultValueForUndefinedVariableRector (https://github.com/vimeo/psalm/blob/29b70442b11e3e66113935a2ee22e165a70c74a4/docs/fixing_code.md#possiblyundefinedvariable)
+ */
+
 // Extra for all platforms
 //
 // How to register an extra and the functions that it performs and when to perform them (at operation)
@@ -20,7 +24,14 @@ $extra['headcontent'] = array (
 //
 function at_headcontent($vars)
 {
-	extract($vars);
+	$headcontent = [];
+ $modtemplate = null;
+ $modops = null;
+ $title = null;
+ $keywords = null;
+ $description = null;
+ $page = [];
+ extract($vars);
 	
 	if ($headcontent[$modtemplate][$modops]) {
 		extract($headcontent[$modtemplate][$modops]);
@@ -50,7 +61,10 @@ function at_headcontent($vars)
 
 function at_admin_headcontent($headcontent)
 {	
-	extract($headcontent);
+	$title = null;
+ $keywords = null;
+ $description = null;
+ extract($headcontent);
 	
     $output = "      "._AT_TITLE."<br />\n"
     ."      <input type=\"text\" name=\"title\" size=\"50\" value=\"$title\"><br />\n"
