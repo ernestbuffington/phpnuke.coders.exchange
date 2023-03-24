@@ -208,9 +208,9 @@ return static function (RectorConfig $rectorConfig): void {
 		//////__DIR__ . '/modules/AutoTheme/includes/php-nuke/atAPI.php',
 		//////__DIR__ . '/modules/AutoTheme/includes/php-nuke/atCommands.php',
 		//////__DIR__ . '/modules/AutoTheme/includes/php-nuke/atExtended.php',
-		__DIR__ . '/modules/AutoTheme/includes/atAPI.php',
-		//__DIR__ . '/modules/AutoTheme/includes/atCommands.php',
-		//__DIR__ . '/modules/AutoTheme/includes/atExtended.php',
+		//////__DIR__ . '/modules/AutoTheme/includes/atAPI.php',
+		//////__DIR__ . '/modules/AutoTheme/includes/atCommands.php',
+		__DIR__ . '/modules/AutoTheme/includes/atExtended.php',
 		//__DIR__ . '/modules/AutoTheme/extras',
 		//__DIR__ . '/modules/AutoTheme/extras/php-nuke',
 
