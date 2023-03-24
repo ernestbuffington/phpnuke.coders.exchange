@@ -21,6 +21,11 @@
  *
  ***************************************************************************/
 
+/* Applied rules:
+ * ReplaceHttpServerVarsByServerRector (https://blog.tigertech.net/posts/php-5-3-http-server-vars/)
+ * NullToStrictStringFuncCallArgRector
+ */
+ 
 if ( !defined('IN_PHPBB') )
 {
         die('Hacking attempt');
@@ -29,7 +34,7 @@ if ( !defined('IN_PHPBB') )
 
 $sql = "SELECT user_active, user_id, username, user_email, user_newpasswd, user_lang, user_actkey
         FROM " . USERS_TABLE . "
-        WHERE user_id = " . intval($HTTP_GET_VARS[POST_USERS_URL]);
+        WHERE user_id = " . intval($_GET[POST_USERS_URL]);
 if ( !($result = $db->sql_query($sql)) )
 {
         message_die(GENERAL_ERROR, 'Could not obtain user information', '', __LINE__, __FILE__, $sql);
@@ -37,7 +42,7 @@ if ( !($result = $db->sql_query($sql)) )
 
 if ( $row = $db->sql_fetchrow($result) )
 {
-        if ( $row['user_active'] && empty(trim($row['user_actkey'])) )
+        if ( $row['user_active'] && empty(trim((string) $row['user_actkey'])) )
         {
                 $template->assign_vars(array(
                         'META' => '<meta http-equiv="refresh" content="10;url=' . append_sid("index.$phpEx") . '">')
@@ -45,14 +50,14 @@ if ( $row = $db->sql_fetchrow($result) )
 
                 message_die(GENERAL_MESSAGE, $lang['Already_activated']);
         }
-        else if ((trim($row['user_actkey']) == trim($HTTP_GET_VARS['act_key'])) && (!empty(trim($row['user_actkey']))))
+        else if ((trim((string) $row['user_actkey']) == trim((string) $_GET['act_key'])) && (!empty(trim((string) $row['user_actkey']))))
         {
 		if (intval($board_config['require_activation']) == USER_ACTIVATION_ADMIN && $userdata['user_level'] != ADMIN)
 		{
 			message_die(GENERAL_MESSAGE, $lang['Not_Authorised']);
 		}
 
-                $sql_update_pass = ( !empty($row['user_newpasswd']) ) ? ", user_password = '" . str_replace("\'", "''", $row['user_newpasswd']) . "', user_newpasswd = ''" : '';
+                $sql_update_pass = ( !empty($row['user_newpasswd']) ) ? ", user_password = '" . str_replace("\'", "''", (string) $row['user_newpasswd']) . "', user_newpasswd = ''" : '';
 
                 $sql = "UPDATE " . USERS_TABLE . "
                         SET user_active = 1, user_actkey = ''" . $sql_update_pass . "
@@ -109,4 +114,3 @@ else
         message_die(GENERAL_MESSAGE, $lang['No_such_user']);
 }
 
-?>

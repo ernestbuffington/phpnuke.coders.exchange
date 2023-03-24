@@ -20,6 +20,14 @@
  *
  ***************************************************************************/
 
+/* Applied rules:
+ * WhileEachToForeachRector
+ * ReplaceHttpServerVarsByServerRector (https://blog.tigertech.net/posts/php-5-3-http-server-vars/)
+ * TernaryToNullCoalescingRector
+ * ListToArrayDestructRector (https://wiki.php.net/rfc/short_list_syntax https://www.php.net/manual/en/migration71.new-features.php#migration71.new-features.symmetric-array-destructuring)
+ * SetCookieRector (https://www.php.net/setcookie https://wiki.php.net/rfc/same-site-cookie)
+ */
+ 
 if ( !defined('MODULE_FILE') )
 {
 	die("You can't access this file directly...");
@@ -46,11 +54,11 @@ init_userprefs($userdata);
 // End session management
 //
 
-$viewcat = ( !empty($HTTP_GET_VARS[POST_CAT_URL]) ) ? $HTTP_GET_VARS[POST_CAT_URL] : -1;
+$viewcat = ( !empty($_GET[POST_CAT_URL]) ) ? $_GET[POST_CAT_URL] : -1;
 
-if( isset($HTTP_GET_VARS['mark']) || isset($HTTP_POST_VARS['mark']) )
+if( isset($_GET['mark']) || isset($_POST['mark']) )
 {
-	$mark_read = ( isset($HTTP_POST_VARS['mark']) ) ? $HTTP_POST_VARS['mark'] : $HTTP_GET_VARS['mark'];
+	$mark_read = $_POST['mark'] ?? $_GET['mark'];
 }
 else
 {
@@ -64,7 +72,7 @@ if( $mark_read == 'forums' )
 {
 	if( $userdata['session_logged_in'] )
 	{
-		setcookie($board_config['cookie_name'] . '_f_all', time(), 0, $board_config['cookie_path'], $board_config['cookie_domain'], $board_config['cookie_secure']);
+		setcookie($board_config['cookie_name'] . '_f_all', time(), ['expires' => 0, 'path' => $board_config['cookie_path'], 'domain' => $board_config['cookie_domain'], 'secure' => $board_config['cookie_secure']]);
 	}
 
 	$template->assign_vars(array(
@@ -79,8 +87,8 @@ if( $mark_read == 'forums' )
 // End handle marking posts
 //
 
-$tracking_topics = ( isset($HTTP_COOKIE_VARS[$board_config['cookie_name'] . '_t']) ) ? unserialize($HTTP_COOKIE_VARS[$board_config['cookie_name'] . "_t"]) : array();
-$tracking_forums = ( isset($HTTP_COOKIE_VARS[$board_config['cookie_name'] . '_f']) ) ? unserialize($HTTP_COOKIE_VARS[$board_config['cookie_name'] . "_f"]) : array();
+$tracking_topics = ( isset($_COOKIE[$board_config['cookie_name'] . '_t']) ) ? unserialize($_COOKIE[$board_config['cookie_name'] . "_t"]) : array();
+$tracking_forums = ( isset($_COOKIE[$board_config['cookie_name'] . '_f']) ) ? unserialize($_COOKIE[$board_config['cookie_name'] . "_f"]) : array();
 
 //
 // If you don't use these stats on your index you may want to consider
@@ -370,7 +378,8 @@ if( ( $total_categories = count($category_rows) ) )
 									{
 										$forum_last_post_time = 0;
 
-										while( list($check_topic_id, $check_post_time) = @each($new_topic_data[$forum_id]) )
+										//while( [$check_topic_id, $check_post_time] = each($new_topic_data[$forum_id]) ) maybe ghost
+										foreach ($new_topic_data[$forum_id] as $check_topic_id => $check_post_time)
 										{
 											if ( empty($tracking_topics[$check_topic_id]) )
 											{
@@ -396,9 +405,9 @@ if( ( $total_categories = count($category_rows) ) )
 											}
 										}
 
-										if ( isset($HTTP_COOKIE_VARS[$board_config['cookie_name'] . '_f_all']) )
+										if ( isset($_COOKIE[$board_config['cookie_name'] . '_f_all']) )
 										{
-											if ( $HTTP_COOKIE_VARS[$board_config['cookie_name'] . '_f_all'] > $forum_last_post_time )
+											if ( $_COOKIE[$board_config['cookie_name'] . '_f_all'] > $forum_last_post_time )
 											{
 												$unread_topics = false;
 											}
@@ -421,7 +430,7 @@ if( ( $total_categories = count($category_rows) ) )
 								$last_post = $last_post_time . '<br />';
 
 								$last_post .= ( $forum_data[$j]['user_id'] == ANONYMOUS ) ? ( ($forum_data[$j]['post_username'] != '' ) ? $forum_data[$j]['post_username'] . ' ' : $lang['Guest'] . ' ' ) : '<a href="' . append_sid("profile.$phpEx?mode=viewprofile&amp;" . POST_USERS_URL . '='  . $forum_data[$j]['user_id']) . '">' . $forum_data[$j]['username'] . '</a> ';
-								
+
 								$last_post .= '<a href="' . append_sid("viewtopic.$phpEx?"  . POST_POST_URL . '=' . $forum_data[$j]['forum_last_post_id']) . '#' . $forum_data[$j]['forum_last_post_id'] . '"><img src="' . $images['icon_latest_reply'] . '" border="0" alt="' . $lang['View_latest_post'] . '" title="' . $lang['View_latest_post'] . '" /></a>';
 							}
 							else
@@ -429,16 +438,25 @@ if( ( $total_categories = count($category_rows) ) )
 								$last_post = $lang['No_Posts'];
 							}
 
-							if ( count($forum_moderators[$forum_id]) > 0 )
-							{
-								$l_moderators = ( count($forum_moderators[$forum_id]) == 1 ) ? $lang['Moderator'] : $lang['Moderators'];
-								$moderator_list = implode(', ', $forum_moderators[$forum_id]);
-							}
-							else
-							{
-								$l_moderators = '&nbsp;';
-								$moderator_list = '&nbsp;';
-							}
+							if (isset($forum_moderators[$forum_id])) {
+                               if ( $forum_moderators[$forum_id] !== [] )
+                               {
+                                  $moderator_list_font_change = ( count($forum_moderators[$forum_id]) == 1 ) ? $lang['Moderator'] : $lang['Moderators'];
+								  $l_moderators = '<span style="font-size:0.9em !important;">'.$moderator_list_font_change.'</span>';
+                                  $moderator_list_font_change = implode(', ', $forum_moderators[$forum_id]);
+								  $moderator_list = '<span style="font-size:0.9em !important;">'.$moderator_list_font_change.'</span>';
+                               }
+                               else
+                               {
+                                  $l_moderators = '';
+                                  $moderator_list = '';
+                               }
+                            }
+                            else
+                               {
+                                  $l_moderators = '';
+                                  $moderator_list = '';
+                               }
 
 							$row_color = ( !($i % 2) ) ? $theme['td_color1'] : $theme['td_color2'];
 							$row_class = ( !($i % 2) ) ? $theme['td_class1'] : $theme['td_class2'];

@@ -38,6 +38,10 @@
  *
  ***************************************************************************/
 
+/* Applied rules:
+ * TernaryToNullCoalescingRector
+ */
+ 
 if ( !defined('IN_PHPBB') )
 {
 	die('Hacking attempt');
@@ -55,7 +59,7 @@ $template->set_filenames(array(
 
 $template->assign_vars(array(
 	'PHPBB_VERSION' => '2' . $board_config['version'],
-	'TRANSLATION_INFO' => ( isset($lang['TRANSLATION_INFO']) ) ? $lang['TRANSLATION_INFO'] : '',
+	'TRANSLATION_INFO' => $lang['TRANSLATION_INFO'] ?? '',
 	'ADMIN_LINK' => $admin_link)
 );
 
@@ -68,4 +72,3 @@ $db->sql_close();
 // Compress buffered output if required and send to browser
 //
 
-?>

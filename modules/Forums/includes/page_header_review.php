@@ -38,6 +38,11 @@
  *
  ***************************************************************************/
 
+/* Applied rules:
+ * ListToArrayDestructRector (https://wiki.php.net/rfc/short_list_syntax https://www.php.net/manual/en/migration71.new-features.php#migration71.new-features.symmetric-array-destructuring)
+ * WhileEachToForeachRector (https://wiki.php.net/rfc/deprecations_php_7_2#each)
+ */
+ 
 if ( !defined('IN_PHPBB') )
 {
 	die("Hacking attempt");
@@ -300,22 +305,24 @@ else
 //
 $nav_links_html = '';
 $nav_link_proto = '<link rel="%s" href="%s" title="%s" />' . "\n";
-while( list($nav_item, $nav_array) = @each($nav_links) )
-{
-	if ( !empty($nav_array['url']) )
-	{
-		$nav_links_html .= sprintf($nav_link_proto, $nav_item, $nav_array['url'], $nav_array['title']);
-	}
-	else
-	{
-		// We have a nested array, used for items like <link rel='chapter'> that can occur more than once.
-		while( list(,$nested_array) = each($nav_array) )
-		{
-			$nav_links_html .= sprintf($nav_link_proto, $nav_item, $nested_array['url'], $nested_array['title']);
-		}
-	}
+if(isset($nav_links)) {
+   foreach ($nav_links as $nav_item => $nav_array)
+   {
+      if ( !empty($nav_array['url']) )
+      {
+         $nav_links_html .= sprintf($nav_link_proto, $nav_item, $nav_array['url'], $nav_array['title']);
+      }
+      else
+      {
+        # We have a nested array, used for items like <link rel='chapter'> that can occur more than once.
+        # while( list(,$nested_array) = each($nav_array) ) <- php 8.x patch maybe ghost
+		foreach (array_keys($nav_array) as $nested_array)
+        {
+            $nav_links_html .= sprintf($nav_link_proto, $nav_item, $nested_array['url'], $nested_array['title']);
+        }
+    }
+  }
 }
-
 //
 // The following assigns all _common_ variables that may be used at any point
 // in a template.
@@ -443,4 +450,3 @@ else
 
 $template->pparse('overall_header');
 
-?>

@@ -20,6 +20,14 @@
  *
  ***************************************************************************/
 
+/* Applied rules:
+ * AddDefaultValueForUndefinedVariableRector (https://github.com/vimeo/psalm/blob/29b70442b11e3e66113935a2ee22e165a70c74a4/docs/fixing_code.md#possiblyundefinedvariable)
+ * Php4ConstructorRector (https://wiki.php.net/rfc/remove_php4_constructors)
+ * WhileEachToForeachRector (https://wiki.php.net/rfc/deprecations_php_7_2#each)
+ * StrStartsWithRector (https://wiki.php.net/rfc/add_str_starts_with_and_ends_with_functions)
+ * NullToStrictStringFuncCallArgRector
+ */
+ 
 /**
  * Template class. By Nathan Codding of the phpBB group.
  * The interface was originally inspired by PHPLib templates,
@@ -58,7 +66,7 @@ class Template {
          * Constructor. Simply sets the root dir.
          *
          */
-        function Template($root = ".")
+        function __construct($root = ".")
         {
                 $this->set_rootdir($root);
         }
@@ -98,9 +106,8 @@ class Template {
                 }
 
                 reset($filename_array);
-                while(list($handle, $filename) = each($filename_array))
-                {
-                        $this->files[$handle] = $this->make_filename($filename);
+                foreach ($filename_array as $handle => $filename) {
+                    $this->files[$handle] = $this->make_filename($filename);
                 }
 
                 return true;
@@ -165,10 +172,11 @@ class Template {
          */
         function assign_block_vars($blockname, $vararray)
         {
-                if (strstr($blockname, '.'))
+                $lastiteration = null;
+                if (strstr((string) $blockname, '.'))
                 {
                         // Nested block.
-                        $blocks = explode('.', $blockname);
+                        $blocks = explode('.', (string) $blockname);
                         $blockcount = sizeof($blocks) - 1;
                         $str = '$this->_tpldata';
                         for ($i = 0; $i < $blockcount; $i++)
@@ -203,9 +211,8 @@ class Template {
         function assign_vars($vararray)
         {
                 reset ($vararray);
-                while (list($key, $val) = each($vararray))
-                {
-                        $this->_tpldata['.'][0][$key] = $val;
+                foreach ($vararray as $key => $val) {
+                    $this->_tpldata['.'][0][$key] = $val;
                 }
 
                 return true;
@@ -231,7 +238,7 @@ class Template {
         function make_filename($filename)
         {
                 // Check if it's an absolute or relative path.
-                if (substr($filename, 0, 1) != '/')
+                if (!str_starts_with((string) $filename, '/'))
                 {
                        $filename = ($rp_filename = phpbb_realpath($this->root . '/' . $filename)) ? $rp_filename : $filename;
                 }
@@ -287,8 +294,9 @@ class Template {
          */
         function compile($code, $do_not_echo = false, $retvar = '')
         {
+                $n = [];
                 // replace \ with \\ and then ' with \'.
-                $code = str_replace('\\', '\\\\', $code);
+                $code = str_replace('\\', '\\\\', (string) $code);
                 $code = str_replace('\'', '\\\'', $code);
 
                 // change template varrefs into PHP varrefs
@@ -430,7 +438,7 @@ class Template {
         function generate_block_varref($namespace, $varname)
         {
                 // Strip the trailing period.
-                $namespace = substr($namespace, 0, strlen($namespace) - 1);
+                $namespace = substr((string) $namespace, 0, strlen((string) $namespace) - 1);
 
                 // Get a reference to the data block for this namespace.
                 $varref = $this->generate_block_data_ref($namespace, true);
@@ -457,7 +465,7 @@ class Template {
         function generate_block_data_ref($blockname, $include_last_iterator)
         {
                 // Get an array of the blocks involved.
-                $blocks = explode(".", $blockname);
+                $blocks = explode(".", (string) $blockname);
                 $blockcount = sizeof($blocks) - 1;
                 $varref = '$this->_tpldata';
                 // Build up the string with everything but the last child.
@@ -478,4 +486,4 @@ class Template {
 
 }
 
-?>
+

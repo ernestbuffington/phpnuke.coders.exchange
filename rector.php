@@ -313,7 +313,7 @@ return static function (RectorConfig $rectorConfig): void {
 		//__DIR__ . '/modules/Forums/includes/usercp_register.php',
 		//__DIR__ . '/modules/Forums/includes/usercp_sendpassword.php',
 		//__DIR__ . '/modules/Forums/includes/usercp_viewprofile.php',
-		//__DIR__ . '/modules/Forums/common.php',
+		__DIR__ . '/modules/Forums/common.php',
 		//__DIR__ . '/modules/Forums/config.php',
 		//__DIR__ . '/modules/Forums/copyright.php',
 		//__DIR__ . '/modules/Forums/extension.inc',
@@ -365,7 +365,7 @@ return static function (RectorConfig $rectorConfig): void {
 
 		//__DIR__ . '/modules/Top/index.php', 
 
-		__DIR__ . '/modules/Topics/admin/index.php',
+		//////__DIR__ . '/modules/Topics/admin/index.php',
 		//__DIR__ . '/modules/Topics/index.php', Mucho Fuckups Here
 		//__DIR__ . '/modules/Topics/copyright.php',
 

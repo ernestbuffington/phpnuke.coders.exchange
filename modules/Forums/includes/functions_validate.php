@@ -20,6 +20,11 @@
  *
  ***************************************************************************/
 
+/* Applied rules:
+ * WrapVariableVariableNameInCurlyBracesRector (https://www.php.net/manual/en/language.variables.variable.php)
+ * NullToStrictStringFuncCallArgRector
+ */
+ 
 //
 // Check to see if the username has been taken, or if it is disallowed.
 // Also checks if it includes the " character, which we don't allow in usernames.
@@ -35,12 +40,12 @@ function validate_username($username)
         global $db, $lang, $userdata;
 
         // Remove doubled up spaces
-	$username = preg_replace('#\s+#', ' ', trim($username)); 
+	$username = preg_replace('#\s+#', ' ', trim((string) $username)); 
 	$username = phpbb_clean_username($username);
 
         $sql = "SELECT username
                 FROM " . USERS_TABLE . "
-                WHERE LOWER(username) = '" . strtolower($username) . "'";
+                WHERE LOWER(username) = '" . strtolower((string) $username) . "'";
         if ($result = $db->sql_query($sql))
         {
                 if ($row = $db->sql_fetchrow($result))
@@ -56,7 +61,7 @@ function validate_username($username)
 
         $sql = "SELECT group_name
                 FROM " . GROUPS_TABLE . "
-                WHERE LOWER(group_name) = '" . strtolower($username) . "'";
+                WHERE LOWER(group_name) = '" . strtolower((string) $username) . "'";
         if ($result = $db->sql_query($sql))
         {
                 if ($row = $db->sql_fetchrow($result))
@@ -75,7 +80,7 @@ function validate_username($username)
                 {
                         do
                         {
-                                if (preg_match("#\b(" . str_replace("\*", ".*?", phpbb_preg_quote($row['disallow_username'], '#')) . ")\b#i", $username))
+                                if (preg_match("#\b(" . str_replace("\*", ".*?", (string) phpbb_preg_quote($row['disallow_username'], '#')) . ")\b#i", (string) $username))
                                 {
                                         $db->sql_freeresult($result);
                                         return array('error' => true, 'error_msg' => $lang['Username_disallowed']);
@@ -94,7 +99,7 @@ function validate_username($username)
                 {
                         do
                         {
-                                if (preg_match("#\b(" . str_replace("\*", ".*?", phpbb_preg_quote($row['word'], '#')) . ")\b#i", $username))
+                                if (preg_match("#\b(" . str_replace("\*", ".*?", (string) phpbb_preg_quote($row['word'], '#')) . ")\b#i", (string) $username))
                                 {
                                         $db->sql_freeresult($result);
                                         return array('error' => true, 'error_msg' => $lang['Username_disallowed']);
@@ -106,7 +111,7 @@ function validate_username($username)
         $db->sql_freeresult($result);
 
         // Don't allow " and ALT-255 in username.
-        if (strstr($username, '"') || strstr($username, '&quot;') || strstr($username, chr(160)))
+        if (strstr((string) $username, '"') || strstr((string) $username, '&quot;') || strstr((string) $username, chr(160)))
         {
                 return array('error' => true, 'error_msg' => $lang['Username_invalid']);
         }
@@ -114,6 +119,10 @@ function validate_username($username)
         return array('error' => false, 'error_msg' => '');
 }
 
+//
+// Check to see if email address is banned
+// or already present in the DB
+//
 //
 // Check to see if email address is banned
 // or already present in the DB
@@ -173,32 +182,28 @@ function validate_email($email)
 //
 function validate_optional_fields(&$icq, &$aim, &$msnm, &$yim, &$website, &$location, &$occupation, &$interests, &$sig)
 {
-        $check_var_length = array('aim', 'msnm', 'yim', 'location', 'occupation', 'interests', 'sig');
-
-        for($i = 0; $i < count($check_var_length); $i++)
+        $check_var_length = count(['aim', 'msnm', 'yim', 'location', 'occupation', 'interests', 'sig']);
+ 
+        for($i = 0; $i < ($check_var_length); $i++)
         {
-                if (strlen($$check_var_length[$i]) < 2)
-                {
-                        $$check_var_length[$i] = '';
-                }
+			if(!isset(${$check_var_length}[$i]))
+			${$check_var_length}[$i] = '';
+			   
+            if (strlen((string) ${$check_var_length}[$i]) < 2)
+            {
+               ${$check_var_length}[$i] = '';
+            }
         }
-
-        // ICQ number has to be only numbers.
-        if (!preg_match('/^[0-9]+$/', $icq))
-        {
-                $icq = '';
-        }
-
         // website has to start with http://, followed by something with length at least 3 that
         // contains at least one dot.
         if ($website != "")
         {
-                if (!preg_match('#^http[s]?:\/\/#i', $website))
+                if (!preg_match('#^http[s]?:\/\/#i', (string) $website))
                 {
                         $website = 'http://' . $website;
                 }
 
-                if (!preg_match('#^http[s]?\\:\\/\\/[a-z0-9\-]+\.([a-z0-9\-]+\.)?[a-z]+#i', $website))
+                if (!preg_match('#^http[s]?\\:\\/\\/[a-z0-9\-]+\.([a-z0-9\-]+\.)?[a-z]+#i', (string) $website))
                 {
                         $website = '';
                 }
@@ -207,4 +212,3 @@ function validate_optional_fields(&$icq, &$aim, &$msnm, &$yim, &$website, &$loca
         return;
 }
 
-?>

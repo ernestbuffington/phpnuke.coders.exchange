@@ -60,4 +60,3 @@ $phpEx = "php";
 
 $starttime = 0;
 
-?>

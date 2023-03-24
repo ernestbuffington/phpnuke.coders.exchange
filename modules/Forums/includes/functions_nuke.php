@@ -58,6 +58,11 @@
  *
  ***************************************************************************/
 
+/* Applied rules:
+ * EregToPregMatchRector (http://php.net/reference.pcre.pattern.posix https://stackoverflow.com/a/17033826/1348344 https://docstore.mik.ua/orelly/webprog/pcook/ch13_02.htm)
+ * NullToStrictStringFuncCallArgRector
+ */
+ 
 if (!defined('IN_PHPBB')) {
 	die();
 }
@@ -65,9 +70,9 @@ if (!defined('IN_PHPBB')) {
 function nuke_sql($query)
 {
 //echo "before = $query<br>";
-        $nuke_sql = str_replace(" username", " username", $query);
-        if (ereg ('privmsgs_text', $nuke_sql)){
-            $nuke_sql = str_replace("uname_", "username_", $query);
+        $nuke_sql = str_replace(" username", " username", (string) $query);
+        if (preg_match ('#privmsgs_text#m', $nuke_sql)){
+            $nuke_sql = str_replace("uname_", "username_", (string) $query);
         }
         $nuke_sql = str_replace("u.username", "u.username", $nuke_sql);
         $nuke_sql = str_replace("u2.username", "u2.username", $nuke_sql);
@@ -90,4 +95,3 @@ function nuke_sql($query)
     return $nuke_sql;
 }
 
-?>

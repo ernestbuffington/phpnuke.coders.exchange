@@ -195,4 +195,3 @@ function sync($type, $id = false)
         return true;
 }
 
-?>

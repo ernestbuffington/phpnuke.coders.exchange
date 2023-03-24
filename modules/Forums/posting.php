@@ -19,6 +19,17 @@
  *   (at your option) any later version.
  *
  ***************************************************************************/
+ 
+/* Applied rules:
+ * ReplaceHttpServerVarsByServerRector (https://blog.tigertech.net/posts/php-5-3-http-server-vars/)
+ * WrapVariableVariableNameInCurlyBracesRector (https://www.php.net/manual/en/language.variables.variable.php)
+ * CountOnNullRector (https://3v4l.org/Bndc9)
+ * WhileEachToForeachRector (https://wiki.php.net/rfc/deprecations_php_7_2#each)
+ * SetCookieRector (https://www.php.net/setcookie https://wiki.php.net/rfc/same-site-cookie)
+ * NullToStrictStringFuncCallArgRector
+ * CountOnNullRector (https://3v4l.org/Bndc9)
+ */
+ 
 if ( !defined('MODULE_FILE') )
 {
 	die("You can't access this file directly...");
@@ -42,31 +53,29 @@ include("modules/Forums/includes/functions_post.php");
 // Check and set various parameters
 //
 $params = array('submit' => 'post', 'preview' => 'preview', 'delete' => 'delete', 'poll_delete' => 'poll_delete', 'poll_add' => 'add_poll_option', 'poll_edit' => 'edit_poll_option', 'mode' => 'mode');
-while( list($var, $param) = @each($params) )
-{
-	if ( !empty($HTTP_POST_VARS[$param]) || !empty($HTTP_GET_VARS[$param]) )
-	{
-		$$var = ( !empty($HTTP_POST_VARS[$param]) ) ? htmlspecialchars($HTTP_POST_VARS[$param]) : htmlspecialchars($HTTP_GET_VARS[$param]);
-	}
-	else
-	{
-		$$var = '';
-	}
+foreach ($params as $var => $param) {
+    if ( !empty($_POST[$param]) || !empty($_GET[$param]) )
+   	{
+   		${$var} = ( !empty($_POST[$param]) ) ? htmlspecialchars((string) $_POST[$param]) : htmlspecialchars((string) $_GET[$param]);
+   	}
+   	else
+   	{
+   		${$var} = '';
+   	}
 }
 
-$confirm = isset($HTTP_POST_VARS['confirm']) ? true : false;
+$confirm = isset($_POST['confirm']) ? true : false;
 
 $params = array('forum_id' => POST_FORUM_URL, 'topic_id' => POST_TOPIC_URL, 'post_id' => POST_POST_URL);
-while( list($var, $param) = @each($params) )
-{
-	if ( !empty($HTTP_POST_VARS[$param]) || !empty($HTTP_GET_VARS[$param]) )
-	{
-		$$var = ( !empty($HTTP_POST_VARS[$param]) ) ? intval($HTTP_POST_VARS[$param]) : intval($HTTP_GET_VARS[$param]);
-	}
-	else
-	{
-		$$var = '';
-	}
+foreach ($params as $var => $param) {
+    if ( !empty($_POST[$param]) || !empty($_GET[$param]) )
+   	{
+   		${$var} = ( !empty($_POST[$param]) ) ? intval($_POST[$param]) : intval($_GET[$param]);
+   	}
+   	else
+   	{
+   		${$var} = '';
+   	}
 }
 
 $refresh = $preview || $poll_add || $poll_edit || $poll_delete;
@@ -75,7 +84,7 @@ $orig_word = $replacement_word = array();
 //
 // Set topic type
 //
-$topic_type = ( !empty($HTTP_POST_VARS['topictype']) ) ? intval($HTTP_POST_VARS['topictype']) : POST_NORMAL;
+$topic_type = ( !empty($_POST['topictype']) ) ? intval($_POST['topictype']) : POST_NORMAL;
 $topic_type = ( in_array($topic_type, array(POST_NORMAL, POST_STICKY, POST_ANNOUNCE)) ) ? $topic_type : POST_NORMAL;
 
 //
@@ -108,7 +117,7 @@ init_userprefs($userdata);
 // Was cancel pressed? If so then redirect to the appropriate
 // page, no point in continuing with any further checks
 //
-if ( isset($HTTP_POST_VARS['cancel']) )
+if ( isset($_POST['cancel']) )
 {
 	if ( $post_id )
 	{
@@ -383,7 +392,7 @@ if ( !$board_config['allow_html'] )
 }
 else
 {
-	$html_on = ( $submit || $refresh ) ? ( ( !empty($HTTP_POST_VARS['disable_html']) ) ? 0 : TRUE ) : ( ( $userdata['user_id'] == ANONYMOUS ) ? $board_config['allow_html'] : $userdata['user_allowhtml'] );
+	$html_on = ( $submit || $refresh ) ? ( ( !empty($_POST['disable_html']) ) ? 0 : TRUE ) : ( ( $userdata['user_id'] == ANONYMOUS ) ? $board_config['allow_html'] : $userdata['user_allowhtml'] );
 }
 
 if ( !$board_config['allow_bbcode'] )
@@ -392,7 +401,7 @@ if ( !$board_config['allow_bbcode'] )
 }
 else
 {
-	$bbcode_on = ( $submit || $refresh ) ? ( ( !empty($HTTP_POST_VARS['disable_bbcode']) ) ? 0 : TRUE ) : ( ( $userdata['user_id'] == ANONYMOUS ) ? $board_config['allow_bbcode'] : $userdata['user_allowbbcode'] );
+	$bbcode_on = ( $submit || $refresh ) ? ( ( !empty($_POST['disable_bbcode']) ) ? 0 : TRUE ) : ( ( $userdata['user_id'] == ANONYMOUS ) ? $board_config['allow_bbcode'] : $userdata['user_allowbbcode'] );
 }
 
 if ( !$board_config['allow_smilies'] )
@@ -401,12 +410,12 @@ if ( !$board_config['allow_smilies'] )
 }
 else
 {
-	$smilies_on = ( $submit || $refresh ) ? ( ( !empty($HTTP_POST_VARS['disable_smilies']) ) ? 0 : TRUE ) : ( ( $userdata['user_id'] == ANONYMOUS ) ? $board_config['allow_smilies'] : $userdata['user_allowsmile'] );
+	$smilies_on = ( $submit || $refresh ) ? ( ( !empty($_POST['disable_smilies']) ) ? 0 : TRUE ) : ( ( $userdata['user_id'] == ANONYMOUS ) ? $board_config['allow_smilies'] : $userdata['user_allowsmile'] );
 }
 
 if ( ($submit || $refresh) && $is_auth['auth_read'])
 {
-	$notify_user = ( !empty($HTTP_POST_VARS['notify']) ) ? TRUE : 0;
+	$notify_user = ( !empty($_POST['notify']) ) ? TRUE : 0;
 }
 else
 {
@@ -430,7 +439,7 @@ else
 	}
 }
 
-$attach_sig = ( $submit || $refresh ) ? ( ( !empty($HTTP_POST_VARS['attach_sig']) ) ? TRUE : 0 ) : ( ( $userdata['user_id'] == ANONYMOUS ) ? 0 : $userdata['user_attachsig'] );
+$attach_sig = ( $submit || $refresh ) ? ( ( !empty($_POST['attach_sig']) ) ? TRUE : 0 ) : ( ( $userdata['user_id'] == ANONYMOUS ) ? 0 : $userdata['user_attachsig'] );
 
 // --------------------
 //  What shall we do?
@@ -474,9 +483,9 @@ else if ( $mode == 'vote' )
 	//
 	// Vote in a poll
 	//
-	if ( !empty($HTTP_POST_VARS['vote_id']) )
+	if ( !empty($_POST['vote_id']) )
 	{
-		$vote_option_id = intval($HTTP_POST_VARS['vote_id']);
+		$vote_option_id = intval($_POST['vote_id']);
 
 		$sql = "SELECT vd.vote_id    
 			FROM " . VOTE_DESC_TABLE . " vd, " . VOTE_RESULTS_TABLE . " vr
@@ -558,12 +567,12 @@ else if ( $submit || $confirm )
 		case 'editpost':
 		case 'newtopic':
 		case 'reply':
-			$username = ( !empty($HTTP_POST_VARS['username']) ) ? $HTTP_POST_VARS['username'] : '';
-			$subject = ( !empty($HTTP_POST_VARS['subject']) ) ? trim($HTTP_POST_VARS['subject']) : '';
-			$message = ( !empty($HTTP_POST_VARS['message']) ) ? $HTTP_POST_VARS['message'] : '';
-			$poll_title = ( isset($HTTP_POST_VARS['poll_title']) && $is_auth['auth_pollcreate'] ) ? $HTTP_POST_VARS['poll_title'] : '';
-			$poll_options = ( isset($HTTP_POST_VARS['poll_option_text']) && $is_auth['auth_pollcreate'] ) ? $HTTP_POST_VARS['poll_option_text'] : '';
-			$poll_length = ( isset($HTTP_POST_VARS['poll_length']) && $is_auth['auth_pollcreate'] ) ? $HTTP_POST_VARS['poll_length'] : '';
+			$username = ( !empty($_POST['username']) ) ? $_POST['username'] : '';
+			$subject = ( !empty($_POST['subject']) ) ? trim((string) $_POST['subject']) : '';
+			$message = ( !empty($_POST['message']) ) ? $_POST['message'] : '';
+			$poll_title = ( isset($_POST['poll_title']) && $is_auth['auth_pollcreate'] ) ? $_POST['poll_title'] : '';
+			$poll_options = ( isset($_POST['poll_option_text']) && $is_auth['auth_pollcreate'] ) ? $_POST['poll_option_text'] : '';
+			$poll_length = ( isset($_POST['poll_length']) && $is_auth['auth_pollcreate'] ) ? $_POST['poll_length'] : '';
 			$bbcode_uid = '';
 
 			prepare_post($mode, $post_data, $bbcode_on, $html_on, $smilies_on, $error_msg, $username, $bbcode_uid, $subject, $message, $poll_title, $poll_options, $poll_length);
@@ -572,7 +581,7 @@ else if ( $submit || $confirm )
 			{
 				$topic_type = ( $topic_type != $post_data['topic_type'] && !$is_auth['auth_sticky'] && !$is_auth['auth_announce'] ) ? $post_data['topic_type'] : $topic_type;
 
-				submit_post($mode, $post_data, $return_message, $return_meta, $forum_id, $topic_id, $post_id, $poll_id, $topic_type, $bbcode_on, $html_on, $smilies_on, $attach_sig, $bbcode_uid, str_replace("\'", "''", $username), str_replace("\'", "''", $subject), str_replace("\'", "''", $message), str_replace("\'", "''", $poll_title), $poll_options, $poll_length);
+				submit_post($mode, $post_data, $return_message, $return_meta, $forum_id, $topic_id, $post_id, $poll_id, $topic_type, $bbcode_on, $html_on, $smilies_on, $attach_sig, $bbcode_uid, str_replace("\'", "''",  $username), str_replace("\'", "''", $subject), str_replace("\'", "''", $message), str_replace("\'", "''", $poll_title), $poll_options, $poll_length);
 			}
 			break;
 
@@ -597,10 +606,10 @@ else if ( $submit || $confirm )
 
 		if ( $mode == 'newtopic' || $mode == 'reply' )
 		{
-			$tracking_topics = ( !empty($HTTP_COOKIE_VARS[$board_config['cookie_name'] . '_t']) ) ? unserialize($HTTP_COOKIE_VARS[$board_config['cookie_name'] . '_t']) : array();
-			$tracking_forums = ( !empty($HTTP_COOKIE_VARS[$board_config['cookie_name'] . '_f']) ) ? unserialize($HTTP_COOKIE_VARS[$board_config['cookie_name'] . '_f']) : array();
+			$tracking_topics = ( !empty($_COOKIE[$board_config['cookie_name'] . '_t']) ) ? unserialize($_COOKIE[$board_config['cookie_name'] . '_t']) : array();
+			$tracking_forums = ( !empty($_COOKIE[$board_config['cookie_name'] . '_f']) ) ? unserialize($_COOKIE[$board_config['cookie_name'] . '_f']) : array();
 
-			if ( count($tracking_topics) + count($tracking_forums) == 100 && empty($tracking_topics[$topic_id]) )
+			if ( (is_countable($tracking_topics) ? count($tracking_topics) : 0) + (is_countable($tracking_forums) ? count($tracking_forums) : 0) == 100 && empty($tracking_topics[$topic_id]) )
 			{
 				asort($tracking_topics);
 				unset($tracking_topics[key($tracking_topics)]);
@@ -608,7 +617,7 @@ else if ( $submit || $confirm )
 
 			$tracking_topics[$topic_id] = time();
 
-			setcookie($board_config['cookie_name'] . '_t', serialize($tracking_topics), 0, $board_config['cookie_path'], $board_config['cookie_domain'], $board_config['cookie_secure']);
+			setcookie($board_config['cookie_name'] . '_t', serialize($tracking_topics), ['expires' => 0, 'path' => $board_config['cookie_path'], 'domain' => $board_config['cookie_domain'], 'secure' => $board_config['cookie_secure']]);
 		}
 
 		$template->assign_vars(array(
@@ -618,34 +627,33 @@ else if ( $submit || $confirm )
 	}
 }
 
-if( $refresh || isset($HTTP_POST_VARS['del_poll_option']) || $error_msg != '' )
+if( $refresh || isset($_POST['del_poll_option']) || $error_msg != '' )
 {
-	$username = ( !empty($HTTP_POST_VARS['username']) ) ? htmlspecialchars(trim(stripslashes($HTTP_POST_VARS['username']))) : '';
-	$subject = ( !empty($HTTP_POST_VARS['subject']) ) ? htmlspecialchars(trim(stripslashes($HTTP_POST_VARS['subject']))) : '';
-	$message = ( !empty($HTTP_POST_VARS['message']) ) ? htmlspecialchars(trim(stripslashes($HTTP_POST_VARS['message']))) : '';
+	$username = ( !empty($_POST['username']) ) ? htmlspecialchars(trim(stripslashes((string) $_POST['username']))) : '';
+	$subject = ( !empty($_POST['subject']) ) ? htmlspecialchars(trim(stripslashes((string) $_POST['subject']))) : '';
+	$message = ( !empty($_POST['message']) ) ? htmlspecialchars(trim(stripslashes((string) $_POST['message']))) : '';
 
-	$poll_title = ( !empty($HTTP_POST_VARS['poll_title']) ) ? htmlspecialchars(trim(stripslashes($HTTP_POST_VARS['poll_title']))) : '';
-	$poll_length = ( isset($HTTP_POST_VARS['poll_length']) ) ? max(0, intval($HTTP_POST_VARS['poll_length'])) : 0;
+	$poll_title = ( !empty($_POST['poll_title']) ) ? htmlspecialchars(trim(stripslashes((string) $_POST['poll_title']))) : '';
+	$poll_length = ( isset($_POST['poll_length']) ) ? max(0, intval($_POST['poll_length'])) : 0;
 
 	$poll_options = array();
-	if ( !empty($HTTP_POST_VARS['poll_option_text']) )
+	if ( !empty($_POST['poll_option_text']) )
 	{
-		while( list($option_id, $option_text) = @each($HTTP_POST_VARS['poll_option_text']) )
-		{
-			if( isset($HTTP_POST_VARS['del_poll_option'][$option_id]) )
-			{
-				unset($poll_options[$option_id]);
-			}
-			else if ( !empty($option_text) ) 
-			{
-				$poll_options[intval($option_id)] = htmlspecialchars(trim(stripslashes($option_text)));
-			}
-		}
+		foreach ($_POST['poll_option_text'] as $option_id => $option_text) {
+      if( isset($_POST['del_poll_option'][$option_id]) )
+   			{
+   				unset($poll_options[$option_id]);
+   			}
+   			else if ( !empty($option_text) ) 
+   			{
+   				$poll_options[intval($option_id)] = htmlspecialchars(trim(stripslashes((string) $option_text)));
+   			}
+  }
 	}
 
-	if ( isset($poll_add) && !empty($HTTP_POST_VARS['add_poll_option_text']) )
+	if ( isset($poll_add) && !empty($_POST['add_poll_option_text']) )
 	{
-		$poll_options[] = htmlspecialchars(trim(stripslashes($HTTP_POST_VARS['add_poll_option_text'])));
+		$poll_options[] = htmlspecialchars(trim(stripslashes((string) $_POST['add_poll_option_text'])));
 	}
 
 	if ( $mode == 'newtopic' || $mode == 'reply')
@@ -665,7 +673,7 @@ if( $refresh || isset($HTTP_POST_VARS['del_poll_option']) || $error_msg != '' )
 		obtain_word_list($orig_word, $replacement_word);
 
 		$bbcode_uid = ( $bbcode_on ) ? make_bbcode_uid() : '';
-		$preview_message = stripslashes(prepare_message(addslashes(unprepare_message($message)), $html_on, $bbcode_on, $smilies_on, $bbcode_uid));
+		$preview_message = stripslashes((string) prepare_message(addslashes((string) unprepare_message($message)), $html_on, $bbcode_on, $smilies_on, $bbcode_uid));
 		$preview_subject = $subject;
 		$preview_username = $username;
 
@@ -676,7 +684,7 @@ if( $refresh || isset($HTTP_POST_VARS['del_poll_option']) || $error_msg != '' )
 		{
 			if( $user_sig != '' || !$userdata['user_allowhtml'] )
 			{
-				$user_sig = preg_replace('#(<)([\/]?.*?)(>)#is', '&lt;\2&gt;', $user_sig);
+				$user_sig = preg_replace('#(<)([\/]?.*?)(>)#is', '&lt;\2&gt;', (string) $user_sig);
 			}
 		}
 
@@ -694,7 +702,7 @@ if( $refresh || isset($HTTP_POST_VARS['del_poll_option']) || $error_msg != '' )
 		{
 			$preview_username = ( !empty($username) ) ? preg_replace($orig_word, $replacement_word, $preview_username) : '';
 			$preview_subject = ( !empty($subject) ) ? preg_replace($orig_word, $replacement_word, $preview_subject) : '';
-			$preview_message = ( !empty($preview_message) ) ? preg_replace($orig_word, $replacement_word, $preview_message) : '';
+			$preview_message = ( !empty($preview_message) ) ? preg_replace($orig_word, $replacement_word, (string) $preview_message) : '';
 		}
 
 		if( $user_sig != '' )
@@ -718,7 +726,7 @@ if( $refresh || isset($HTTP_POST_VARS['del_poll_option']) || $error_msg != '' )
 			$preview_message = $preview_message . '<br /><br />_________________<br />' . $user_sig;
 		}
 
-		$preview_message = str_replace("\n", '<br />', $preview_message);
+		$preview_message = str_replace("\n", '<br />', (string) $preview_message);
 
 		$template->set_filenames(array(
 			'preview' => 'posting_preview.tpl')
@@ -795,10 +803,10 @@ else
 
 		if ( $post_info['bbcode_uid'] != '' )
 		{
-			$message = preg_replace('/\:(([a-z0-9]:)?)' . $post_info['bbcode_uid'] . '/s', '', $message);
+			$message = preg_replace('/\:(([a-z0-9]:)?)' . $post_info['bbcode_uid'] . '/s', '', (string) $message);
 		}
 
-		$message = str_replace('<', '&lt;', $message);
+		$message = str_replace('<', '&lt;', (string) $message);
 		$message = str_replace('>', '&gt;', $message);
 		$message = str_replace('<br />', "\n", $message);
 
@@ -811,16 +819,16 @@ else
 			$msg_date =  create_date($board_config['default_dateformat'], $postrow['post_time'], $board_config['board_timezone']);
 
 			// Use trim to get rid of spaces placed there by MS-SQL 2000
-			$quote_username = ( trim($post_info['post_username']) != '' ) ? $post_info['post_username'] : $post_info['username'];
+			$quote_username = ( trim((string) $post_info['post_username']) != '' ) ? $post_info['post_username'] : $post_info['username'];
 			$message = '[quote="' . $quote_username . '"]' . $message . '[/quote]';
 
 			if ( !empty($orig_word) )
 			{
-				$subject = ( !empty($subject) ) ? preg_replace($orig_word, $replace_word, $subject) : '';
-				$message = ( !empty($message) ) ? preg_replace($orig_word, $replace_word, $message) : '';
+				$subject = ( !empty($subject) ) ? preg_replace($orig_word, (string) $replace_word, (string) $subject) : '';
+				$message = ( !empty($message) ) ? preg_replace($orig_word, (string) $replace_word, $message) : '';
 			}
 
-			if ( !preg_match('/^Re:/', $subject) && strlen($subject) > 0 )
+			if ( !preg_match('/^Re:/', (string) $subject) && strlen((string) $subject) > 0 )
 			{
 				$subject = 'Re: ' . $subject;
 			}
@@ -1098,14 +1106,13 @@ if( ( $mode == 'newtopic' || ( $mode == 'editpost' && $post_data['edit_poll']) )
 
 	if( !empty($poll_options) )
 	{
-		while( list($option_id, $option_text) = each($poll_options) )
-		{
-			$template->assign_block_vars('poll_option_rows', array(
-				'POLL_OPTION' => str_replace('"', '&quot;', $option_text), 
-
-				'S_POLL_OPTION_NUM' => $option_id)
-			);
-		}
+		foreach ($poll_options as $option_id => $option_text) {
+      $template->assign_block_vars('poll_option_rows', array(
+   				'POLL_OPTION' => str_replace('"', '&quot;', (string) $option_text), 
+   
+   				'S_POLL_OPTION_NUM' => $option_id)
+   			);
+  }
 	}
 
 	$template->assign_var_from_handle('POLLBOX', 'pollbody');
@@ -1127,4 +1134,3 @@ $template->pparse('body');
 
 include("modules/Forums/includes/page_tail.php");
 
-?>

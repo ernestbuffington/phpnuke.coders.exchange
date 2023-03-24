@@ -59,6 +59,13 @@
  *   (at your option) any later version.
  *
  ***************************************************************************/
+ 
+/* Applied rules:
+ * ReplaceHttpServerVarsByServerRector (https://blog.tigertech.net/posts/php-5-3-http-server-vars/)
+ * WhileEachToForeachRector (https://wiki.php.net/rfc/deprecations_php_7_2#each)
+ * NullToStrictStringFuncCallArgRector
+ */
+ 
 $forum_admin = "1";
 if ( !defined('IN_PHPBB') )
 {
@@ -67,74 +74,70 @@ if ( !defined('IN_PHPBB') )
 //$root_path = "./../../../";
 $root_path = "./../";
 error_reporting  (E_ERROR | E_WARNING | E_PARSE); // This will NOT report uninitialized variables
-if(function_exists("get_magic_quotes_gpc") && get_magic_quotes_gpc()) {
-     set_magic_quotes_runtime(0); // Disable magic_quotes_runtime
-}
+//set_magic_quotes_runtime(0); // Disable dipshit magic_quotes_runtime
+
 //
 // addslashes to vars if magic_quotes_gpc is off
 // this is a security precaution to prevent someone
 // trying to break out of a SQL statement.
 //
-if(!function_exists("get_magic_quotes_gpc")) 
+if (function_exists('get_magic_quotes_gpc') && get_magic_quotes_gpc()){
+ // this dipshit system no longer exists!
+}
+else
 {
-	if( is_array($HTTP_GET_VARS) )
+	if( is_array($_GET) )
 	{
-		while( list($k, $v) = each($HTTP_GET_VARS) )
-		{
-			if( is_array($HTTP_GET_VARS[$k]) )
-			{
-				while( list($k2, $v2) = each($HTTP_GET_VARS[$k]) )
-				{
-					$HTTP_GET_VARS[$k][$k2] = addslashes($v2);
-				}
-				@reset($HTTP_GET_VARS[$k]);
-			}
-			else
-			{
-				$HTTP_GET_VARS[$k] = addslashes($v);
-			}
-		}
-		@reset($HTTP_GET_VARS);
+		foreach ($_GET as $k => $v) {
+      if( is_array($_GET[$k]) )
+   			{
+   				foreach ($_GET[$k] as $k2 => $v2) {
+           $_GET[$k][$k2] = addslashes((string) $v2);
+       }
+   				reset($_GET[$k]);
+   			}
+   			else
+   			{
+   				$_GET[$k] = addslashes((string) $v);
+   			}
+  }
+		reset($_GET);
 	}
 
-	if( is_array($HTTP_POST_VARS) )
+	if( is_array($_POST) )
 	{
-		while( list($k, $v) = each($HTTP_POST_VARS) )
-		{
-			if( is_array($HTTP_POST_VARS[$k]) )
-			{
-				while( list($k2, $v2) = each($HTTP_POST_VARS[$k]) )
-				{
-					$HTTP_POST_VARS[$k][$k2] = addslashes($v2);
-				}
-				@reset($HTTP_POST_VARS[$k]);
-			}
-			else
-			{
-				$HTTP_POST_VARS[$k] = addslashes($v);
-			}
-		}
-		@reset($HTTP_POST_VARS);
+		foreach ($_POST as $k => $v) {
+      if( is_array($_POST[$k]) )
+   			{
+   				foreach ($_POST[$k] as $k2 => $v2) {
+           $_POST[$k][$k2] = addslashes((string) $v2);
+       }
+   				reset($_POST[$k]);
+   			}
+   			else
+   			{
+   				$_POST[$k] = addslashes((string) $v);
+   			}
+  }
+		reset($_POST);
 	}
 
-	if( is_array($HTTP_COOKIE_VARS) )
+	if( is_array($_COOKIE) )
 	{
-		while( list($k, $v) = each($HTTP_COOKIE_VARS) )
-		{
-			if( is_array($HTTP_COOKIE_VARS[$k]) )
-			{
-				while( list($k2, $v2) = each($HTTP_COOKIE_VARS[$k]) )
-				{
-					$HTTP_COOKIE_VARS[$k][$k2] = addslashes($v2);
-				}
-				@reset($HTTP_COOKIE_VARS[$k]);
-			}
-			else
-			{
-				$HTTP_COOKIE_VARS[$k] = addslashes($v);
-			}
-		}
-		@reset($HTTP_COOKIE_VARS);
+		foreach ($_COOKIE as $k => $v) {
+      if( is_array($_COOKIE[$k]) )
+   			{
+   				foreach ($_COOKIE[$k] as $k2 => $v2) {
+           $_COOKIE[$k][$k2] = addslashes((string) $v2);
+       }
+   				reset($_COOKIE[$k]);
+   			}
+   			else
+   			{
+   				$_COOKIE[$k] = addslashes((string) $v);
+   			}
+  }
+		reset($_COOKIE);
 	}
 }
 
@@ -193,17 +196,17 @@ $nav_links['author'] = array (
 //
 if( getenv('HTTP_X_FORWARDED_FOR') != '' )
 {
-	$client_ip = ( !empty($HTTP_SERVER_VARS['REMOTE_ADDR']) ) ? $HTTP_SERVER_VARS['REMOTE_ADDR'] : ( ( !empty($HTTP_ENV_VARS['REMOTE_ADDR']) ) ? $HTTP_ENV_VARS['REMOTE_ADDR'] : $REMOTE_ADDR );
+	$client_ip = ( !empty($_SERVER['REMOTE_ADDR']) ) ? $_SERVER['REMOTE_ADDR'] : ( ( !empty($_ENV['REMOTE_ADDR']) ) ? $_ENV['REMOTE_ADDR'] : $REMOTE_ADDR );
 
 	if ( preg_match("/^([0-9]+\.[0-9]+\.[0-9]+\.[0-9]+)/", getenv('HTTP_X_FORWARDED_FOR'), $ip_list) )
 	{
 		$private_ip = array('/^0\./', '/^127\.0\.0\.1/', '/^192\.168\..*/', '/^172\.16\..*/', '/^10..*/', '/^224..*/', '/^240..*/');
-		$client_ip = preg_replace($private_ip, $client_ip, $ip_list[1]);
+		$client_ip = preg_replace($private_ip, (string) $client_ip, $ip_list[1]);
 	}
 }
 else
 {
-	$client_ip = ( !empty($HTTP_SERVER_VARS['REMOTE_ADDR']) ) ? $HTTP_SERVER_VARS['REMOTE_ADDR'] : ( ( !empty($HTTP_ENV_VARS['REMOTE_ADDR']) ) ? $HTTP_ENV_VARS['REMOTE_ADDR'] : $REMOTE_ADDR );
+	$client_ip = ( !empty($_SERVER['REMOTE_ADDR']) ) ? $_SERVER['REMOTE_ADDR'] : ( ( !empty($_ENV['REMOTE_ADDR']) ) ? $_ENV['REMOTE_ADDR'] : $REMOTE_ADDR );
 }
 $user_ip = encode_ip($client_ip);
 
@@ -232,4 +235,3 @@ if( $board_config['board_disable'] && !defined("IN_ADMIN") && !defined("IN_LOGIN
 	message_die(GENERAL_MESSAGE, 'Board_disable', 'Information');
 }
 
-?>
