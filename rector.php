@@ -230,8 +230,8 @@ return static function (RectorConfig $rectorConfig): void {
 		//////__DIR__ . '/modules/AutoTheme/extras/stylefixes.ext.php',
 		//////__DIR__ . '/modules/AutoTheme/extras/themegroup.ext.php',
 		//////__DIR__ . '/modules/AutoTheme/extras/themelang.ext.php',
-		__DIR__ . '/modules/AutoTheme/extras/themesonadate.ext.php',
-		//__DIR__ . '/modules/AutoTheme/extras/themetime.ext.php',
+		//////__DIR__ . '/modules/AutoTheme/extras/themesonadate.ext.php',
+		__DIR__ . '/modules/AutoTheme/extras/themetime.ext.php',
 		//__DIR__ . '/modules/AutoTheme/extras/themeversion.ext.php',
 		//__DIR__ . '/modules/AutoTheme/extras/transitionpages.ext.php',
 
