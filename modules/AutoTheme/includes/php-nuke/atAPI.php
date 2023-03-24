@@ -22,6 +22,11 @@
 //
 // ----------------------------------------------------------------------
 
+/* Applied rules:
+ * AddDefaultValueForUndefinedVariableRector (https://github.com/vimeo/psalm/blob/29b70442b11e3e66113935a2ee22e165a70c74a4/docs/fixing_code.md#possiblyundefinedvariable)
+ * EregToPregMatchRector (http://php.net/reference.pcre.pattern.posix https://stackoverflow.com/a/17033826/1348344 https://docstore.mik.ua/orelly/webprog/pcook/ch13_02.htm)
+ */
+ 
 function atPlatformHeader($xhtml)
 {
 	return false;
@@ -105,7 +110,7 @@ function atGetModType()
 {
     $type = "";
 
-    if (eregi("admin.php", $_SERVER['PHP_SELF'])) {
+    if (preg_match('#admin.php#mi', $_SERVER['PHP_SELF'])) {
         $type = "admin";
     }
     elseif (atGetModName() == "Your_Account") {
@@ -148,6 +153,8 @@ function atGetLang()
 
 function atBlockLoad($location="", $title="")
 {
+	$blocks = [];
+    
 	if (!defined('BLOCK_FILE')) {
 		define('BLOCK_FILE', true);
 	}
@@ -213,7 +220,9 @@ function atBlockLoad($location="", $title="")
 
 function atGetBlocks()
 {
-    $dbi = $GLOBALS['dbi'];
+    $blocklist = [];
+    
+	$dbi = $GLOBALS['dbi'];
     $prefix = $GLOBALS['prefix'];
     $language = $GLOBALS['currentlang'];
     $ml = $GLOBALS['multilingual'];
@@ -236,7 +245,9 @@ function atGetBlocks()
 
 function atBlockList()
 {
-    $dbi = $GLOBALS['dbi'];
+    $blocklist = [];
+    
+	$dbi = $GLOBALS['dbi'];
     $prefix = $GLOBALS['prefix'];
 
     $result = sql_query("SELECT title FROM ".$prefix."_blocks ORDER BY title", $dbi);
@@ -249,14 +260,16 @@ function atBlockList()
 
 function atThemeList($dir="themes")
 {
-    $dir = AT_DIRPREFIX."themes";
+    $themelist = [];
+    
+	$dir = AT_DIRPREFIX."themes";
 
-	if ($handle = @opendir($dir)) {
-        while (false !== ($subdir = @readdir($handle))) {
-            if (@is_dir("$dir/$subdir") &&
+	if ($handle = opendir($dir)) {
+        while (false !== ($subdir = readdir($handle))) {
+            if (is_dir("$dir/$subdir") &&
                 $subdir !== '.' &&
                 $subdir !== '..' &&
-                @file_exists("$dir/$subdir/theme.cfg"))
+                file_exists("$dir/$subdir/theme.cfg"))
             {
                 $themelist[] = $subdir;
             }
@@ -276,9 +289,9 @@ function atModList($dir="modules")
         "*UserPages"
     );
 
-    if ($handle = @opendir($dir)) {
-        while (false !== ($subdir = @readdir($handle))) {
-            if (@is_dir("$dir/$subdir") &&
+    if ($handle = opendir($dir)) {
+        while (false !== ($subdir = readdir($handle))) {
+            if (is_dir("$dir/$subdir") &&
                 $subdir !== '.' &&
                 $subdir !== '..')
             {
@@ -297,7 +310,7 @@ function atThemeSet($theme, $douser=0)
 	$userprefix = $GLOBALS['user_prefix'];
 	$user = $GLOBALS['user'];
 
-	if (isset($theme) && @file_exists("themes/$theme/theme.cfg")) {
+	if (isset($theme) && file_exists("themes/$theme/theme.cfg")) {
     	sql_query("UPDATE ".$prefix."_config SET Default_Theme='$theme'", $dbi);
 
 	    if (atIsLoggedIn() && $douser) {
