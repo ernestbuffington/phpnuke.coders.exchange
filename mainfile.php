@@ -1554,7 +1554,7 @@ function check_html ($str, $strip="") {
 	/* which is licenced under the GPL. */
 	include("config.php");
 	if ($strip == "nohtml")
-	$AllowableHTML = array('');
+	$AllowableHTML=array('');
 	$str = stripslashes($str ?? ''); // maybe ghost
 	$str = preg_replace('#<[013\s]*([^>]*)[013\s]*>#mi','<\\1>', $str);
 	// Delete all spaces from html tags .
@@ -1582,7 +1582,7 @@ function check_html ($str, $strip="") {
 		
 		if(isset($AllowableHTML[$tag])) 
 		{
-		  if ($a == $AllowableHTML[$tag]) {
+		  if ($a = $AllowableHTML[$tag]) {
 		     if ($reg[1][0] == "/") { 
 		       $tag = "</$tag>";
 		     }
