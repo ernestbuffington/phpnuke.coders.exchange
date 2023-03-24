@@ -178,6 +178,7 @@ return static function (RectorConfig $rectorConfig): void {
 		//////__DIR__ . '/db/mysqli.php',
 		//////__DIR__ . '/install/includes/database.php',
 		
+		__DIR__ . '/admin/modules/backup.php',
 		//__DIR__ . '/admin/modules/backup/backup.php',
 		//__DIR__ . '/admin/modules/backup/backupdownload.php',
 		//__DIR__ . '/admin/modules/modules.php',
@@ -203,6 +204,7 @@ return static function (RectorConfig $rectorConfig): void {
 
 		//__DIR__ . '/modules/Advertising/index.php',
 
+        // Auto Theme Admin Mod
 		//////__DIR__ . '/modules/AutoTheme/includes/php-nuke/atFuncs.php',
 		//////__DIR__ . '/modules/AutoTheme/includes/php-nuke/atAdmin.php',
 		//////__DIR__ . '/modules/AutoTheme/includes/php-nuke/atAPI.php',
@@ -231,9 +233,9 @@ return static function (RectorConfig $rectorConfig): void {
 		//////__DIR__ . '/modules/AutoTheme/extras/themegroup.ext.php',
 		//////__DIR__ . '/modules/AutoTheme/extras/themelang.ext.php',
 		//////__DIR__ . '/modules/AutoTheme/extras/themesonadate.ext.php',
-		__DIR__ . '/modules/AutoTheme/extras/themetime.ext.php',
-		//__DIR__ . '/modules/AutoTheme/extras/themeversion.ext.php',
-		//__DIR__ . '/modules/AutoTheme/extras/transitionpages.ext.php',
+		//////__DIR__ . '/modules/AutoTheme/extras/themetime.ext.php',
+		//////__DIR__ . '/modules/AutoTheme/extras/themeversion.ext.php',
+		//////__DIR__ . '/modules/AutoTheme/extras/transitionpages.ext.php',
 
 		//__DIR__ . '/modules/Avantgo/index.php',
 
