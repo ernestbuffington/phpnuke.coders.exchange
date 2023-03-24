@@ -152,14 +152,10 @@ class sql_db
     function check_query($query) {
         global $prefix, $cache;
         if (!stristr($query, "UPDATE") && !stristr($query, "INSERT") && !stristr($query, "DELETE")) { return; }
-        $tables = ['nukeconfig' => $prefix . '_config', 
-		           'evoconfig' => $prefix . '_evolution', 
-				   'titanium_evoconfig' => $prefix . '_evolution', 
-				   'board_config' => $prefix . '_bbconfig', 
-				   'blocks' => $prefix . '_blocks', 
-				   'tianium_blocks' => $prefix . '_blocks', 
-				   'ya_config' => $prefix . '_cnbya_config', 
-				   'block_modules' => $prefix . '_modules'];
+        $tables = ['nuke' => $prefix . '_config', 
+				   'nuke' => $prefix . '_bbconfig', 
+				   'nuke' => $prefix . '_blocks', 
+				   'nuke' => $prefix . '_modules'];
 				   
         foreach( $tables as $file => $table )
         {
