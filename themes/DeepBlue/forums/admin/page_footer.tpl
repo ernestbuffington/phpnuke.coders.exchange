@@ -19,5 +19,5 @@
 {PHPBB_VERSION} &#169; 2001-2003 <a href="http://www.phpbb.com/"
 	target="_phpbb" class="copyright">phpBB Group</a><br />
 {TRANSLATION_INFO}<br>
-BBtoNuke 2.0.8 phpBB Port by The 86it Developers Network &copy; 2023 <a
+BBtoNuke 2.0.21 phpBB Port by The 86it Developers Network &copy; 2023 <a
 	href="http://www.toms-home.com/" target="_blank" class="copyright">NukeCops</a></span></div>
