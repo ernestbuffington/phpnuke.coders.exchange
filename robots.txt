@@ -1,15 +1,37 @@
-User-agent: Mediapartners-Google*
-Disallow:
-User-agent: *
-
-Disallow: /admin.php
+User-agent: ia_archiver
 Disallow: /admin/
-Disallow: /db/
+Disallow: /install/
+Disallow: /blocks/
+Disallow: /cgi-bin/
+Disallow: /.well-known/
 Disallow: /images/
 Disallow: /includes/
-Disallow: /install/
-Disallow: /themes/
-Disallow: /blocks/
-Disallow: /modules/
 Disallow: /language/
-Disallow: /install/
+Disallow: /modules/
+Disallow: /themes/
+Disallow: /admin.php
+Disallow: /config.php
+
+User-agent: Baidu
+Disallow: /
+
+User-agent: *alexa*
+Disallow: /
+
+User-agent: Googlebot-Image
+Disallow: /
+
+User-agent: *
+Disallow: /admin/
+Disallow: /blocks/
+Disallow: /cgi-bin/
+Disallow: /.well-known/
+Disallow: /images/
+Disallow: /includes/
+Disallow: /language/
+Disallow: /modules/
+Disallow: /themes/
+Disallow: /admin.php
+Disallow: /config.php
+
+Sitemap: https://www.phpnuke.coders.exchange/xmls/sitemap/sitemap-index.xml
