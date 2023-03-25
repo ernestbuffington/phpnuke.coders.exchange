@@ -255,8 +255,8 @@ function check() {
 		formValid=false;
 	} else if ( confirm('Are you sure these settings are correct? \n\nPHP-Nuke will now attempt to Intall Your Database!')) {
 		formValid=true;
+        document.getElementById("des").style.visibility = "visible";
 	}
-    document.getElementById("des").style.visibility = "visible";
 	return formValid;
 }
 //-->
