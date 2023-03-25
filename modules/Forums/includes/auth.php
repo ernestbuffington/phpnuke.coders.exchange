@@ -159,7 +159,7 @@ function auth($type, $forum_id, $userdata, $f_access = '')
                         FROM " . AUTH_ACCESS_TABLE . " a, " . USER_GROUP_TABLE . " ug
                         WHERE ug.user_id = ".$userdata['user_id']. "
 				AND ug.user_pending = 0 
-                                AND a.group_id = ug.group_id
+                                AND a.nuke_group_id = ug.nuke_group_id
                                 $forum_match_sql";
                 if ( !($result = $db->sql_query($sql)) )
                 {

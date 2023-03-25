@@ -45,7 +45,7 @@ $phpbb_root_path = "./../";
 require($phpbb_root_path . 'extension.inc');
 require('./pagestart.' . $phpEx);
 
-$params = ['mode' => 'mode', 'user_id' => POST_USERS_URL, 'group_id' => POST_GROUPS_URL, 'adv' => 'adv'];
+$params = ['mode' => 'mode', 'user_id' => POST_USERS_URL, 'nuke_group_id' => POST_GROUPS_URL, 'adv' => 'adv'];
 
 //while( [$var, $param] = @each($params) )
 foreach ($params as $var => $param)
@@ -61,7 +61,7 @@ foreach ($params as $var => $param)
 }
 
 $user_id = (int) $user_id;
-$group_id = (int) $group_id;
+$nuke_group_id = (int) $nuke_group_id;
 $adv = (int) $adv;
 $mode = htmlspecialchars((string) $mode);
 
@@ -133,18 +133,18 @@ function check_auth($type, $key, $u_access, $is_admin)
 // End Functions
 // -------------
 
-if (isset($_POST['submit']) && ( ( $mode == 'user' && $user_id ) || ( $mode == 'group' && $group_id ) )) {
+if (isset($_POST['submit']) && ( ( $mode == 'user' && $user_id ) || ( $mode == 'group' && $nuke_group_id ) )) {
     $user_level = '';
     if ( $mode == 'user' )
     {
             //
-            // Get group_id for this user_id
+            // Get nuke_group_id for this user_id
             //
-            $sql = "SELECT g.group_id, u.user_level
+            $sql = "SELECT g.nuke_group_id, u.user_level
                         FROM " . USER_GROUP_TABLE . " ug, " . USERS_TABLE . " u, " . GROUPS_TABLE . " g
                         WHERE u.user_id = '$user_id'
                                 AND ug.user_id = u.user_id
-                                AND g.group_id = ug.group_id
+                                AND g.nuke_group_id = ug.nuke_group_id
                                 AND g.group_single_user = " . TRUE;
             if ( !($result = $db->sql_query($sql)) )
             {
@@ -153,7 +153,7 @@ if (isset($_POST['submit']) && ( ( $mode == 'user' && $user_id ) || ( $mode == '
 
             $row = $db->sql_fetchrow($result);
 
-            $group_id = (int) $row['group_id'];
+            $nuke_group_id = (int) $row['nuke_group_id'];
             $user_level = (int) $row['user_level'];
 
             $db->sql_freeresult($result);
@@ -178,7 +178,7 @@ if (isset($_POST['submit']) && ( ( $mode == 'user' && $user_id ) || ( $mode == '
                     }
 
                     $sql = "DELETE FROM " . AUTH_ACCESS_TABLE . "
-                                WHERE group_id = '$group_id'
+                                WHERE nuke_group_id = '$nuke_group_id'
                                         AND auth_mod = '0'";
                     if ( !($result = $db->sql_query($sql)) )
                     {
@@ -191,7 +191,7 @@ if (isset($_POST['submit']) && ( ( $mode == 'user' && $user_id ) || ( $mode == '
                     //
                     $sql = "UPDATE " . AUTH_ACCESS_TABLE . "
                                 SET auth_view = '0', auth_read = '0', auth_post = '0', auth_reply = '0', auth_edit = '0', auth_delete = '0', auth_sticky = '0', auth_announce = '0'
-                                WHERE group_id = '$group_id'";
+                                WHERE nuke_group_id = '$nuke_group_id'";
 
                     if ( !($result = $db->sql_query($sql)) )
                     {
@@ -214,7 +214,7 @@ if (isset($_POST['submit']) && ( ( $mode == 'user' && $user_id ) || ( $mode == '
                     {
                             $sql = "UPDATE " . AUTH_ACCESS_TABLE . "
                                         SET auth_view = '0', auth_read = '0', auth_post = '0', auth_reply = '0', auth_edit = '0', auth_delete = '0', auth_sticky = '0', auth_announce = '0'
-                                        WHERE group_id = '$group_id'";
+                                        WHERE nuke_group_id = '$nuke_group_id'";
 
                             if ( !($result = $db->sql_query($sql)) )
                             {
@@ -313,7 +313,7 @@ if (isset($_POST['submit']) && ( ( $mode == 'user' && $user_id ) || ( $mode == '
                     }
                     $db->sql_freeresult($result);
 
-                    $sql = ( $mode == 'user' ) ? "SELECT aa.* FROM " . AUTH_ACCESS_TABLE . " aa, " . USER_GROUP_TABLE . " ug, " . GROUPS_TABLE. " g WHERE ug.user_id = $user_id AND g.group_id = ug.group_id AND aa.group_id = ug.group_id AND g.group_single_user = " . TRUE : "SELECT * FROM " . AUTH_ACCESS_TABLE . " WHERE group_id = '$group_id'";
+                    $sql = ( $mode == 'user' ) ? "SELECT aa.* FROM " . AUTH_ACCESS_TABLE . " aa, " . USER_GROUP_TABLE . " ug, " . GROUPS_TABLE. " g WHERE ug.user_id = $user_id AND g.nuke_group_id = ug.nuke_group_id AND aa.nuke_group_id = ug.nuke_group_id AND g.group_single_user = " . TRUE : "SELECT * FROM " . AUTH_ACCESS_TABLE . " WHERE nuke_group_id = '$nuke_group_id'";
                     if ( !($result = $db->sql_query($sql)) )
                     {
                             message_die(GENERAL_ERROR, "Couldn't obtain user/group permissions", "", __LINE__, __FILE__, $sql);
@@ -401,8 +401,8 @@ if (isset($_POST['submit']) && ( ( $mode == 'user' && $user_id ) || ( $mode == '
                                             $sql_field .= ( ( $sql_field != '' ) ? ', ' : '' ) . 'auth_mod';
                                             $sql_value .= ( ( $sql_value != '' ) ? ', ' : '' ) . ( $update_mod_status[$forum_id] ?? 0);
 
-                                            $sql = "INSERT INTO " . AUTH_ACCESS_TABLE . " (forum_id, group_id, $sql_field)
-                                                        VALUES ($forum_id, $group_id, $sql_value)";
+                                            $sql = "INSERT INTO " . AUTH_ACCESS_TABLE . " (forum_id, nuke_group_id, $sql_field)
+                                                        VALUES ($forum_id, $nuke_group_id, $sql_value)";
                                     }
                                     else
                                     {
@@ -416,7 +416,7 @@ if (isset($_POST['submit']) && ( ( $mode == 'user' && $user_id ) || ( $mode == '
 
                                             $sql = "UPDATE " . AUTH_ACCESS_TABLE . "
                                                         SET $sql_values
-                                                        WHERE group_id = '$group_id'
+                                                        WHERE nuke_group_id = '$nuke_group_id'
                                                                 AND forum_id = '$forum_id'";
                                     }
                                     if( !($result = $db->sql_query($sql)) )
@@ -429,7 +429,7 @@ if (isset($_POST['submit']) && ( ( $mode == 'user' && $user_id ) || ( $mode == '
                     if ( $delete_sql != '' )
                     {
                             $sql = "DELETE FROM " . AUTH_ACCESS_TABLE . "
-                                        WHERE group_id = '$group_id'
+                                        WHERE nuke_group_id = '$nuke_group_id'
                                                 AND forum_id IN ($delete_sql)";
                             if( !($result = $db->sql_query($sql)) )
                             {
@@ -446,7 +446,7 @@ if (isset($_POST['submit']) && ( ( $mode == 'user' && $user_id ) || ( $mode == '
             //
             $sql = "SELECT u.user_id
                         FROM " . AUTH_ACCESS_TABLE . " aa, " . USER_GROUP_TABLE . " ug, " . USERS_TABLE . " u
-                        WHERE ug.group_id = aa.group_id
+                        WHERE ug.nuke_group_id = aa.nuke_group_id
                                 AND u.user_id = ug.user_id
                                 AND ug.user_pending = 0
                                 AND u.user_level NOT IN (" . MOD . ", " . ADMIN . ")
@@ -468,7 +468,7 @@ if (isset($_POST['submit']) && ( ( $mode == 'user' && $user_id ) || ( $mode == '
                 'postgresql' => "SELECT u.user_id
                                         FROM " . USERS_TABLE . " u, " . USER_GROUP_TABLE . " ug, " . AUTH_ACCESS_TABLE . " aa
                                         WHERE ug.user_id = u.user_id
-                                                AND aa.group_id = ug.group_id
+                                                AND aa.nuke_group_id = ug.nuke_group_id
                                                 AND u.user_level NOT IN (" . USER . ", " . ADMIN . ")
                                         GROUP BY u.user_id
                                         HAVING SUM(aa.auth_mod) = 0
@@ -479,7 +479,7 @@ if (isset($_POST['submit']) && ( ( $mode == 'user' && $user_id ) || ( $mode == '
                                                         SELECT aa.auth_mod
                                                         FROM " . USER_GROUP_TABLE . " ug, " . AUTH_ACCESS_TABLE . " aa
                                                         WHERE ug.user_id = u.user_id
-                                                                AND aa.group_id = ug.group_id
+                                                                AND aa.nuke_group_id = ug.nuke_group_id
                                                 )
                                                 AND u.user_level NOT IN (" . USER . ", " . ADMIN . ")
                                                 GROUP BY u.user_id
@@ -487,14 +487,14 @@ if (isset($_POST['submit']) && ( ( $mode == 'user' && $user_id ) || ( $mode == '
                 'oracle' => "SELECT u.user_id
                                         FROM " . USERS_TABLE . " u, " . USER_GROUP_TABLE . " ug, " . AUTH_ACCESS_TABLE . " aa
                                         WHERE ug.user_id = u.user_id(+)
-                                                AND aa.group_id = ug.group_id(+)
+                                                AND aa.nuke_group_id = ug.nuke_group_id(+)
                                                 AND u.user_level NOT IN (" . USER . ", " . ADMIN . ")
                                         GROUP BY u.user_id
                                         HAVING SUM(aa.auth_mod) = 0",
                 default => "SELECT u.user_id
                                         FROM ( ( " . USERS_TABLE . " u
                                         LEFT JOIN " . USER_GROUP_TABLE . " ug ON ug.user_id = u.user_id )
-                                        LEFT JOIN " . AUTH_ACCESS_TABLE . " aa ON aa.group_id = ug.group_id )
+                                        LEFT JOIN " . AUTH_ACCESS_TABLE . " aa ON aa.nuke_group_id = ug.nuke_group_id )
                                         WHERE u.user_level NOT IN (" . USER . ", " . ADMIN . ")
                                         GROUP BY u.user_id
                                         HAVING SUM(aa.auth_mod) = 0",
@@ -534,7 +534,7 @@ if (isset($_POST['submit']) && ( ( $mode == 'user' && $user_id ) || ( $mode == '
             }
             
     $sql = 'SELECT user_id FROM ' . USER_GROUP_TABLE . "
-            WHERE group_id = $group_id";
+            WHERE nuke_group_id = $nuke_group_id";
     $result = $db->sql_query($sql);
 
     $group_user = [];
@@ -549,7 +549,7 @@ if(!empty($group_user)):
     $sql = "SELECT ug.user_id, COUNT(auth_mod) AS is_auth_mod
             FROM " . AUTH_ACCESS_TABLE . " aa, " . USER_GROUP_TABLE . " ug
             WHERE ug.user_id IN (" . implode(', ', $group_user ?? '') . ")
-                AND aa.group_id = ug.group_id
+                AND aa.nuke_group_id = ug.nuke_group_id
                 AND aa.auth_mod = 1
             GROUP BY ug.user_id";
     if ( !($result = $db->sql_query($sql)) )
@@ -588,7 +588,7 @@ endif;
             message_die(GENERAL_MESSAGE, $message);
             //$cache->delete('forum_moderators', 'config');
     }
-} elseif (( $mode == 'user' && ( isset($_POST['username']) || $user_id ) ) || ( $mode == 'group' && $group_id )) {
+} elseif (( $mode == 'user' && ( isset($_POST['username']) || $user_id ) ) || ( $mode == 'group' && $nuke_group_id )) {
     if ( isset($_POST['username']) )
     {
             $this_userdata = get_userdata($_POST['username'], true);
@@ -644,25 +644,25 @@ endif;
     
 	if ( $user_check != $user_id )
     {
-        $sql = "SELECT MAX(group_id) AS total
+        $sql = "SELECT MAX(nuke_group_id) AS total
                     FROM " . GROUPS_TABLE;
         if ( !($result = $db->sql_query($sql)) )
         {
-            message_die(GENERAL_ERROR, 'Could not select last group_id information', '', __LINE__, __FILE__, $sql);
+            message_die(GENERAL_ERROR, 'Could not select last nuke_group_id information', '', __LINE__, __FILE__, $sql);
         }
         if ( !($row = $db->sql_fetchrow($result)) )
         {
-            message_die(GENERAL_ERROR, 'Could not obtain next group_id information', '', __LINE__, __FILE__, $sql);
+            message_die(GENERAL_ERROR, 'Could not obtain next nuke_group_id information', '', __LINE__, __FILE__, $sql);
         }
-        $group_id = $row['total'] + 1;
-        $sql = "INSERT INTO " . GROUPS_TABLE . " (group_id, group_name, group_description, group_single_user, group_moderator)
-                    VALUES ('$group_id', '', 'Personal User', '1', '0')";
+        $nuke_group_id = $row['total'] + 1;
+        $sql = "INSERT INTO " . GROUPS_TABLE . " (nuke_group_id, group_name, group_description, group_single_user, group_moderator)
+                    VALUES ('$nuke_group_id', '', 'Personal User', '1', '0')";
         if ( !($result = $db->sql_query($sql)) )
         {
             message_die(GENERAL_ERROR, 'Could not create private group', '', __LINE__, __FILE__, $sql);
         }
-        $sql = "INSERT INTO " . USER_GROUP_TABLE . " (group_id, user_id, user_pending)
-                    VALUES ('$group_id', '$user_id', '0')";
+        $sql = "INSERT INTO " . USER_GROUP_TABLE . " (nuke_group_id, user_id, user_pending)
+                    VALUES ('$nuke_group_id', '$user_id', '0')";
         if ( !($result = $db->sql_query($sql)) )
         {
             message_die(GENERAL_ERROR, 'Could not create private group', '', __LINE__, __FILE__, $sql);
@@ -671,8 +671,8 @@ endif;
     //
     //  End Private group check.
     //
-    $sql = "SELECT u.user_id, u.username, u.user_level, g.group_id, g.group_name, g.group_single_user, ug.user_pending FROM " . USERS_TABLE . " u, " . GROUPS_TABLE . " g, " . USER_GROUP_TABLE . " ug WHERE ";
-    $sql .= ( $mode == 'user' ) ? "u.user_id = '$user_id' AND ug.user_id = u.user_id AND g.group_id = ug.group_id" : "g.group_id = '$group_id' AND ug.group_id = g.group_id AND u.user_id = ug.user_id";
+    $sql = "SELECT u.user_id, u.username, u.user_level, g.nuke_group_id, g.group_name, g.group_single_user, ug.user_pending FROM " . USERS_TABLE . " u, " . GROUPS_TABLE . " g, " . USER_GROUP_TABLE . " ug WHERE ";
+    $sql .= ( $mode == 'user' ) ? "u.user_id = '$user_id' AND ug.user_id = u.user_id AND g.nuke_group_id = ug.nuke_group_id" : "g.nuke_group_id = '$nuke_group_id' AND ug.nuke_group_id = g.nuke_group_id AND u.user_id = ug.user_id";
     if ( !($result = $db->sql_query($sql)) )
     {
             message_die(GENERAL_ERROR, "Couldn't obtain user/group information", "", __LINE__, __FILE__, $sql);
@@ -683,7 +683,7 @@ endif;
             $ug_info[] = $row;
     }
     $db->sql_freeresult($result);
-    $sql = ( $mode == 'user' ) ? "SELECT aa.*, g.group_single_user FROM " . AUTH_ACCESS_TABLE . " aa, " . USER_GROUP_TABLE . " ug, " . GROUPS_TABLE. " g WHERE ug.user_id = $user_id AND g.group_id = ug.group_id AND aa.group_id = ug.group_id AND g.group_single_user = 1" : "SELECT * FROM " . AUTH_ACCESS_TABLE . " WHERE group_id = '$group_id'";
+    $sql = ( $mode == 'user' ) ? "SELECT aa.*, g.group_single_user FROM " . AUTH_ACCESS_TABLE . " aa, " . USER_GROUP_TABLE . " ug, " . GROUPS_TABLE. " g WHERE ug.user_id = $user_id AND g.nuke_group_id = ug.nuke_group_id AND aa.nuke_group_id = ug.nuke_group_id AND g.group_single_user = 1" : "SELECT * FROM " . AUTH_ACCESS_TABLE . " WHERE nuke_group_id = '$nuke_group_id'";
     if ( !($result = $db->sql_query($sql)) )
     {
             message_die(GENERAL_ERROR, "Couldn't obtain user/group permissions", "", __LINE__, __FILE__, $sql);
@@ -873,7 +873,7 @@ endif;
         if( ( $mode == 'user' && !$singleUg_info['group_single_user'] ) || $mode == 'group' )
         {
                 $name[] = ( $mode == 'user' ) ? $singleUg_info['group_name'] :  $singleUg_info['username'];
-                $id[] = ( $mode == 'user' ) ? (int) $singleUg_info['group_id'] : (int) $singleUg_info['user_id'];
+                $id[] = ( $mode == 'user' ) ? (int) $singleUg_info['nuke_group_id'] : (int) $singleUg_info['user_id'];
         }
     }
     $t_usergroup_list = $t_pending_list = '';
@@ -921,12 +921,12 @@ endif;
     $template->set_filenames(["body" => 'admin/auth_ug_body.tpl']
     );
     $adv_switch = ( empty($adv) ) ? 1 : 0;
-    $u_ug_switch = ( $mode == 'user' ) ? POST_USERS_URL . "=" . $user_id : POST_GROUPS_URL . "=" . $group_id;
+    $u_ug_switch = ( $mode == 'user' ) ? POST_USERS_URL . "=" . $user_id : POST_GROUPS_URL . "=" . $nuke_group_id;
     $switch_mode = append_sid("admin_ug_auth.$phpEx?mode=$mode&amp;" . $u_ug_switch . "&amp;adv=$adv_switch");
     $switch_mode_text = ( empty($adv) ) ? $lang['Advanced_mode'] : $lang['Simple_mode'];
     $u_switch_mode = '<a href="' . $switch_mode . '">' . $switch_mode_text . '</a>';
     $s_hidden_fields = '<input type="hidden" name="mode" value="' . $mode . '" /><input type="hidden" name="adv" value="' . $adv . '" />';
-    $s_hidden_fields .= ( $mode == 'user' ) ? '<input type="hidden" name="' . POST_USERS_URL . '" value="' . $user_id . '" />' : '<input type="hidden" name="' . POST_GROUPS_URL . '" value="' . $group_id . '" />';
+    $s_hidden_fields .= ( $mode == 'user' ) ? '<input type="hidden" name="' . POST_USERS_URL . '" value="' . $user_id . '" />' : '<input type="hidden" name="' . POST_GROUPS_URL . '" value="' . $nuke_group_id . '" />';
     if ( $mode == 'user' )
     {
             $template->assign_block_vars('switch_user_auth', []);
@@ -963,7 +963,7 @@ endif;
         }
         else
         {
-                $sql = "SELECT group_id, group_name
+                $sql = "SELECT nuke_group_id, group_name
                         FROM " . GROUPS_TABLE . "
                         WHERE group_single_user <> " . TRUE;
                 if ( !($result = $db->sql_query($sql)) )
@@ -976,7 +976,7 @@ endif;
                         $select_list = '<select name="' . POST_GROUPS_URL . '">';
                         do
                         {
-                                $select_list .= '<option value="' . $row['group_id'] . '">' . $row['group_name'] . '</option>';
+                                $select_list .= '<option value="' . $row['nuke_group_id'] . '">' . $row['group_name'] . '</option>';
                         }
                         while ( $row = $db->sql_fetchrow($result) );
                         $select_list .= '</select>';

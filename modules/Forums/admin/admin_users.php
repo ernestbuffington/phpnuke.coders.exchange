@@ -85,10 +85,10 @@ if ( $mode == 'edit' || $mode == 'save' && ( isset($_POST['username']) || isset(
 
                 if( $_POST['deleteuser'] && ( $userdata['user_id'] != $user_id ) )
                 {
-                        $sql = "SELECT g.group_id
+                        $sql = "SELECT g.nuke_group_id
                                 FROM " . USER_GROUP_TABLE . " ug, " . GROUPS_TABLE . " g
 				WHERE ug.user_id = $user_id 
-                                        AND g.group_id = ug.group_id
+                                        AND g.nuke_group_id = ug.nuke_group_id
 					AND g.group_single_user = 1";
                         if( !($result = $db->sql_query($sql)) )
                         {
@@ -121,7 +121,7 @@ if ( $mode == 'edit' || $mode == 'save' && ( isset($_POST['username']) || isset(
                                 message_die(GENERAL_ERROR, 'Could not update votes for this user', '', __LINE__, __FILE__, $sql);
                         }
 
-                        $sql = "SELECT group_id
+                        $sql = "SELECT nuke_group_id
                                 FROM " . GROUPS_TABLE . "
 				WHERE group_moderator = $user_id";
                         if( !($result = $db->sql_query($sql)) )
@@ -131,7 +131,7 @@ if ( $mode == 'edit' || $mode == 'save' && ( isset($_POST['username']) || isset(
 
                         while ( $row_group = $db->sql_fetchrow($result) )
                         {
-                                $group_moderator[] = $row_group['group_id'];
+                                $group_moderator[] = $row_group['nuke_group_id'];
                         }
 
                         if ( is_countable($group_moderator) ? count($group_moderator) : 0 )
@@ -162,14 +162,14 @@ if ( $mode == 'edit' || $mode == 'save' && ( isset($_POST['username']) || isset(
                         }
 
 			$sql = "DELETE FROM " . GROUPS_TABLE . "
-				WHERE group_id = " . $row['group_id'];
+				WHERE nuke_group_id = " . $row['nuke_group_id'];
 			if( !$db->sql_query($sql) )
 			{
 				message_die(GENERAL_ERROR, 'Could not delete group for this user', '', __LINE__, __FILE__, $sql);
 			}
 
 			$sql = "DELETE FROM " . AUTH_ACCESS_TABLE . "
-				WHERE group_id = " . $row['group_id'];
+				WHERE nuke_group_id = " . $row['nuke_group_id'];
 			if( !$db->sql_query($sql) )
 			{
 				message_die(GENERAL_ERROR, 'Could not delete group for this user', '', __LINE__, __FILE__, $sql);

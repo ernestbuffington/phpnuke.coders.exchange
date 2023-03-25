@@ -34,7 +34,7 @@ ALTER TABLE `#prefix#_banner_positions`
   ADD KEY `position_number` (`position_number`);
 
 ALTER TABLE `#prefix#_bbauth_access`
-  ADD KEY `group_id` (`group_id`),
+  ADD KEY `nuke_group_id` (`nuke_group_id`),
   ADD KEY `forum_id` (`forum_id`);
 
 ALTER TABLE `#prefix#_bbbanlist`
@@ -62,7 +62,7 @@ ALTER TABLE `#prefix#_bbforum_prune`
   ADD KEY `forum_id` (`forum_id`);
 
 ALTER TABLE `#prefix#_bbgroups`
-  ADD PRIMARY KEY (`group_id`),
+  ADD PRIMARY KEY (`nuke_group_id`),
   ADD KEY `group_single_user` (`group_single_user`);
 
 ALTER TABLE `#prefix#_bbposts`
@@ -124,7 +124,7 @@ ALTER TABLE `#prefix#_bbtopics_watch`
   ADD KEY `notify_status` (`notify_status`);
 
 ALTER TABLE `#prefix#_bbuser_group`
-  ADD KEY `group_id` (`group_id`),
+  ADD KEY `nuke_group_id` (`nuke_group_id`),
   ADD KEY `user_id` (`user_id`);
 
 ALTER TABLE `#prefix#_bbvote_desc`
@@ -412,7 +412,7 @@ ALTER TABLE `#prefix#_bbforum_prune`
   MODIFY `prune_id` mediumint(8) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 ALTER TABLE `#prefix#_bbgroups`
-  MODIFY `group_id` mediumint(8) NOT NULL AUTO_INCREMENT;
+  MODIFY `nuke_group_id` mediumint(8) NOT NULL AUTO_INCREMENT;
 
 ALTER TABLE `#prefix#_bbposts`
   MODIFY `post_id` mediumint(8) UNSIGNED NOT NULL AUTO_INCREMENT;

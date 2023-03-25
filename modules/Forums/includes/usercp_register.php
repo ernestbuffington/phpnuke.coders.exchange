@@ -659,10 +659,10 @@ if ( isset($_POST['submit']) )
                                 message_die(GENERAL_ERROR, 'Could not insert data into groups table', '', __LINE__, __FILE__, $sql);
                         }
 
-                        $group_id = $db->sql_nextid();
+                        $nuke_group_id = $db->sql_nextid();
 
-                        $sql = "INSERT INTO " . USER_GROUP_TABLE . " (user_id, group_id, user_pending)
-				VALUES ($user_id, $group_id, 0)";
+                        $sql = "INSERT INTO " . USER_GROUP_TABLE . " (user_id, nuke_group_id, user_pending)
+				VALUES ($user_id, $nuke_group_id, 0)";
                         if( !($result = $db->sql_query($sql, END_TRANSACTION)) )
                         {
                                 message_die(GENERAL_ERROR, 'Could not insert data into user_group table', '', __LINE__, __FILE__, $sql);

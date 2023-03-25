@@ -776,19 +776,19 @@ if ($row2['radminsuper'] == 1 || $auth_user == 1) {
 
 		$db->sql_query("delete from " . $user_prefix . "_bbuser_group where user_id='$del_user_id'");
 
-		$result2 = $db->sql_query("SELECT group_id FROM " . $user_prefix . "_bbgroups WHERE group_moderator = '$del_user_id'");
+		$result2 = $db->sql_query("SELECT nuke_group_id FROM " . $user_prefix . "_bbgroups WHERE group_moderator = '$del_user_id'");
 
 		$row2 = $db->sql_fetchrow($result2);
 
-		$del_group_id = intval($row2['group_id']);
+		$del_nuke_group_id = intval($row2['nuke_group_id']);
 
-		if (intval($del_group_id) > 0)
+		if (intval($del_nuke_group_id) > 0)
 
 		{
 
-		$db->sql_query("delete from " . $user_prefix . "_bbgroups where group_id='$del_group_id'");
+		$db->sql_query("delete from " . $user_prefix . "_bbgroups where nuke_group_id='$del_nuke_group_id'");
 
-		$db->sql_query("delete from " . $user_prefix . "_bbauth_access where group_id='$del_group_id'");
+		$db->sql_query("delete from " . $user_prefix . "_bbauth_access where nuke_group_id='$del_nuke_group_id'");
 
 		}
 
@@ -940,9 +940,9 @@ if ($row2['radminsuper'] == 1 || $auth_user == 1) {
 
 		$db->sql_query("INSERT INTO ".$prefix."_bbgroups (group_name, group_description, group_single_user, group_moderator) VALUES ('', 'Personal User', '1', '0')");
 
-		$group_id = $db->sql_nextid();
+		$nuke_group_id = $db->sql_nextid();
 
-		$db->sql_query("INSERT INTO ".$prefix."_bbuser_group (user_id, group_id, user_pending) VALUES ('$guserid', '$group_id', '0')");
+		$db->sql_query("INSERT INTO ".$prefix."_bbuser_group (user_id, nuke_group_id, user_pending) VALUES ('$guserid', '$nuke_group_id', '0')");
 
 		}
 

@@ -209,7 +209,7 @@ global $lang;
 /*****[BEGIN]******************************************
  [ Mod:     Group Colors and Ranks             v1.0.0 ]
  ******************************************************/
-function auc_colors_select($default, $select_name = "color_groups", $value = "group_id")
+function auc_colors_select($default, $select_name = "color_groups", $value = "nuke_group_id")
 {
 global $db, $prefix;
 
@@ -226,7 +226,7 @@ global $db, $prefix;
     $g_select .= '<option value="0" '.$selected.'>None</option>';
     while( $row = $db->sql_fetchrow($result) )
     {
-        $selected = ( $row['group_id'] == $default ) ? ' selected="selected"' : '';
+        $selected = ( $row['nuke_group_id'] == $default ) ? ' selected="selected"' : '';
         $g_select .= '<option value="' . $row[$value] . '"' . $selected . '>' . $row['group_name'] . '</option>';
     }
     $db->sql_freeresult($result);

@@ -75,9 +75,9 @@ if ( isset($_POST['submit']) )
                 $error_msg .= ( !empty($error_msg) ) ? '<br />' . $lang['Empty_message'] : $lang['Empty_message'];
         }
 
-        $group_id = intval($_POST[POST_GROUPS_URL]);
+        $nuke_group_id = intval($_POST[POST_GROUPS_URL]);
 
-        $sql = ( $group_id != -1 ) ? "SELECT u.user_email FROM " . USERS_TABLE . " u, " . USER_GROUP_TABLE . " ug WHERE ug.group_id = $group_id AND ug.user_pending <> " . TRUE . " AND u.user_id = ug.user_id" : "SELECT user_email FROM " . USERS_TABLE;
+        $sql = ( $nuke_group_id != -1 ) ? "SELECT u.user_email FROM " . USERS_TABLE . " u, " . USER_GROUP_TABLE . " ug WHERE ug.nuke_group_id = $nuke_group_id AND ug.user_pending <> " . TRUE . " AND u.user_id = ug.user_id" : "SELECT user_email FROM " . USERS_TABLE;
         if ( !($result = $db->sql_query($sql)) )
         {
                 message_die(GENERAL_ERROR, 'Could not select group members', '', __LINE__, __FILE__, $sql);
@@ -96,7 +96,7 @@ if ( isset($_POST['submit']) )
         }
         else
         {
-                $message = ( $group_id != -1 ) ? $lang['Group_not_exist'] : $lang['No_such_user'];
+                $message = ( $nuke_group_id != -1 ) ? $lang['Group_not_exist'] : $lang['No_such_user'];
 
                 $error = true;
                 $error_msg .= ( !empty($error_msg) ) ? '<br />' . $message : $message;
@@ -167,7 +167,7 @@ if (isset($error))
 // Initial selection
 //
 
-$sql = "SELECT group_id, group_name
+$sql = "SELECT nuke_group_id, group_name
         FROM ".GROUPS_TABLE . "
         WHERE group_single_user <> 1";
 if ( !($result = $db->sql_query($sql)) )
@@ -180,7 +180,7 @@ if ( $row = $db->sql_fetchrow($result) )
 {
         do
         {
-                $select_list .= '<option value = "' . $row['group_id'] . '">' . $row['group_name'] . '</option>';
+                $select_list .= '<option value = "' . $row['nuke_group_id'] . '">' . $row['group_name'] . '</option>';
         }
         while ( $row = $db->sql_fetchrow($result) );
 }

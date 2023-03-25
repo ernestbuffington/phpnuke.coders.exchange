@@ -341,9 +341,9 @@ function activate($username, $check_num) {
 
                         $db->sql_query("INSERT INTO ".$prefix."_bbgroups (group_name, group_description, group_single_user, group_moderator) VALUES ('', 'Personal User', '1', '0')");
 
-                        $group_id = $db->sql_nextid();
+                        $nuke_group_id = $db->sql_nextid();
 
-                        $db->sql_query("INSERT INTO ".$prefix."_bbuser_group (user_id, group_id, user_pending) VALUES ('$guserid', '$group_id', '0')");
+                        $db->sql_query("INSERT INTO ".$prefix."_bbuser_group (user_id, nuke_group_id, user_pending) VALUES ('$guserid', '$nuke_group_id', '0')");
 
 			$db->sql_query("DELETE FROM ".$user_prefix."_users_temp WHERE username='$username' AND check_num='$check_num'");
 
