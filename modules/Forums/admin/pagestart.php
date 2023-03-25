@@ -27,29 +27,16 @@ if (!defined('IN_PHPBB'))
 }
 
 define('IN_ADMIN', true);
-
 define('FORUM_ADMIN', true);
-
 define("PHPBB_ROOT_PATH", $phpbb_root_path);
-
 define("PHPBB_PHPEX", $phpEx);
-
 include("../../../mainfile.php");
-
 $phpbb_root_path = PHPBB_ROOT_PATH;
-
 $phpEx = PHPBB_PHPEX;
-
 include($phpbb_root_path.'common.'.$phpEx);
-
 //
-
 // Do a check to see if the nuke user is still valid.
-
 //
-
-
-
 global $admin, $prefix, $db, $cookie, $nukeuser, $user;
 
 $admin = base64_decode($admin);
@@ -71,12 +58,8 @@ for ($i=0; $i < sizeof($admins); $i++) {
     if ($row2['name'] == "$admins[$i]" AND $row['admins'] != "") {
 
         $auth_user = 1;	
-
     }
-
 }
-
-
 
 $user = addslashes(base64_decode($user));
 
@@ -112,42 +95,24 @@ if ((is_admin($admin)) AND ($admin[1] == $row2['pwd'] && !empty($row2['pwd'])) A
 
 }
 
-
-
 //
-
 // Start session management
-
 //
-
 $userdata = session_pagestart($user_ip, PAGE_INDEX, $nukeuser);
-
 init_userprefs($userdata);
-
 //
-
 // End session management
-
 //
 
 /*
-
 if( !$userdata['session_logged_in'] )
-
 {
-
 	redirect(append_sid("login.$phpEx?redirect=admin/index.$phpEx", true));
 }
-
 else if( $userdata['user_level'] != ADMIN )
-
 {
-
         message_die(GENERAL_MESSAGE, $lang['Not_admin']);
-
 }
-
-
 
 if ($HTTP_GET_VARS['sid'] != $userdata['session_id'])
 {
@@ -155,26 +120,16 @@ if ($HTTP_GET_VARS['sid'] != $userdata['session_id'])
 }
 
 if (!$userdata['session_admin'])
-
 {
-
 	redirect(append_sid("login.$phpEx?redirect=admin/index.$phpEx&admin=1", true));
 }
-
 */
 
 if ( empty($no_page_header) )
-
 {
-
         // Not including the pageheader can be neccesarry if META tags are
-
         // needed in the calling script.
-
         include('./page_header_admin.'.$phpEx);
-
 }
-
-
 
 ?>
