@@ -34,4 +34,4 @@ Disallow: /themes/
 Disallow: /admin.php
 Disallow: /config.php
 
-Sitemap: https://www.phpnuke.coders.exchange/xmls/sitemap/sitemap-index.xml
+
