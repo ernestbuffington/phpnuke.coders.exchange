@@ -17,8 +17,8 @@
   2.0.7 standalone.&nbsp; </span> </span> <br>
   <span class="copyright">
 <span class="copyright">Ported and tested by: <br> </span>
-<a class="copyright" href="http://nukecops.com" target="_blank">Nuke Cops</a><br>
+<a class="copyright" href="http://www.86it.us" target="_blank">The 86it Developers Network</a><br>
 <br>
-  BBtoNuke 2.0.7 by <a class="copyright" href="http://nukecops.com" target="_blank">Nuke 
-  Cops</a> © 2004<a href="http://nukecops.com">http://www.nukecops.com</a></p> 
+  BBtoNuke 2.0.8 by <a class="copyright" href="http://www.86it.us" target="_blank">The 86it Developers Network 
+  </a> &#169; 2023 <a href="http://www.86it.us">http://www.86it.us</a></p> 
   </span></div>
