@@ -19,6 +19,6 @@
 <span class="copyright">Ported and tested by: <br> </span>
 <a class="copyright" href="http://www.86it.us" target="_blank">The 86it Developers Network</a><br>
 <br>
-  BBtoNuke 2.0.8 by <a class="copyright" href="http://www.86it.us" target="_blank">The 86it Developers Network 
+  BBtoNuke 2.0.21 by <a class="copyright" href="http://www.86it.us" target="_blank">The 86it Developers Network 
   </a> &#169; 2023 <a href="http://www.86it.us">http://www.86it.us</a></p> 
   </span></div>
