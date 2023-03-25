@@ -518,7 +518,7 @@ $lang['Email_address'] = 'Адрес E-mail';
 $lang['Email'] = 'E-mail';
 $lang['Send_private_message'] = 'Отправить личное сообщение';
 $lang['Hidden_email'] = '[ скрыт ]';
-$lang['Search_user_posts'] = 'Искать все собщения этого пользователя';
+$lang['Search_nuke_user_posts'] = 'Искать все собщения этого пользователя';
 $lang['Interests'] = 'Интересы';
 $lang['Occupation'] = 'Род занятий';
 $lang['Poster_rank'] = 'Звание';
@@ -526,7 +526,7 @@ $lang['Poster_rank'] = 'Звание';
 $lang['Total_posts'] = 'Всего сообщений';
 $lang['User_post_pct_stats'] = '%.2f%% от общего числа'; // 15% of total
 $lang['User_post_day_stats'] = '%.2f сообщений в день'; // 1.5 posts per day
-$lang['Search_user_posts'] = 'Найти все сообщения пользователя %s'; // Find all posts by username
+$lang['Search_nuke_user_posts'] = 'Найти все сообщения пользователя %s'; // Find all posts by username
 
 $lang['No_user_id_specified'] = 'Извините, такого пользователя не существует';
 $lang['Wrong_Profile'] = 'Вы не можете редактировать чужой профиль.';

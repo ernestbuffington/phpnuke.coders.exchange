@@ -291,7 +291,7 @@ switch( $mode )
 			while ( $row = $db->sql_fetchrow($result) )
 			{
 				$count_sql[] = "UPDATE " . USERS_TABLE . " 
-					SET user_posts = user_posts - " . $row['posts'] . " 
+					SET nuke_user_posts = nuke_user_posts - " . $row['posts'] . " 
 					WHERE user_id = " . $row['poster_id'];
 			}
 			$db->sql_freeresult($result);
@@ -1104,7 +1104,7 @@ switch( $mode )
 					'ROW_CLASS' => $row_class, 
 					'USERNAME' => $username,
 					'POSTS' => $row['postings'] . ' ' . ( ( $row['postings'] == 1 ) ? $lang['Post'] : $lang['Posts'] ),
-					'L_SEARCH_POSTS' => sprintf($lang['Search_user_posts'], $username), 
+					'L_SEARCH_POSTS' => sprintf($lang['Search_nuke_user_posts'], $username), 
 
                                         'U_PROFILE' => append_sid("profile.$phpEx?mode=viewprofile&amp;" . POST_USERS_URL . "=$id"),
                                         'U_SEARCHPOSTS' => append_sid("search.$phpEx?search_author=" . urlencode((string) $username) . "&amp;showresults=topics"))

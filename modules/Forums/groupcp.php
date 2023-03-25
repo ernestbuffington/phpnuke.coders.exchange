@@ -52,7 +52,7 @@ function generate_user_info(&$row, $date_format, $group_mod, &$from, &$posts, &$
 
         $from = ( !empty($row['user_from']) ) ? $row['user_from'] : '&nbsp;';
         $joined = create_date($date_format, $row['nuke_user_regdate'], $board_config['board_timezone']);
-        $posts = ( $row['user_posts'] ) ? $row['user_posts'] : 0;
+        $posts = ( $row['nuke_user_posts'] ) ? $row['nuke_user_posts'] : 0;
 
         $poster_avatar = '';
         if ( $row['user_avatar_type'] && $row['user_id'] != ANONYMOUS && $row['user_allowavatar'] )
@@ -119,8 +119,8 @@ function generate_user_info(&$row, $date_format, $group_mod, &$from, &$posts, &$
         $yim = ( $row['user_yim'] ) ? '<a href="http://edit.yahoo.com/config/send_webmesg?.target=' . $row['user_yim'] . '&amp;.src=pg">' . $lang['YIM'] . '</a>' : '';
 
         $temp_url = append_sid("search.$phpEx?search_author=" . urlencode((string) $username) . "&amp;showresults=posts");
-        $search_img = '<a href="' . $temp_url . '"><img src="' . $images['icon_search'] . '" alt="' . $lang['Search_user_posts'] . '" title="' . $lang['Search_user_posts'] . '" border="0" /></a>';
-        $search = '<a href="' . $temp_url . '">' . $lang['Search_user_posts'] . '</a>';
+        $search_img = '<a href="' . $temp_url . '"><img src="' . $images['icon_search'] . '" alt="' . $lang['Search_nuke_user_posts'] . '" title="' . $lang['Search_nuke_user_posts'] . '" border="0" /></a>';
+        $search = '<a href="' . $temp_url . '">' . $lang['Search_nuke_user_posts'] . '</a>';
 
         return;
 }
@@ -787,7 +787,7 @@ else if ( $group_id )
         //
         // Get moderator details for this group
         //
-        $sql = "SELECT username, user_id, user_viewemail, user_posts, nuke_user_regdate, user_from, user_website, user_email, user_icq, user_aim, user_yim, user_msnm
+        $sql = "SELECT username, user_id, user_viewemail, nuke_user_posts, nuke_user_regdate, user_from, user_website, user_email, user_icq, user_aim, user_yim, user_msnm
                 FROM " . USERS_TABLE . "
                 WHERE user_id = " . $group_info['group_moderator'];
         if ( !($result = $db->sql_query($sql)) )
@@ -800,7 +800,7 @@ else if ( $group_id )
         //
         // Get user information for this group
         //
-        $sql = "SELECT u.username, u.user_id, u.user_viewemail, u.user_posts, u.nuke_user_regdate, u.user_from, u.user_website, u.user_email, u.user_icq, u.user_aim, u.user_yim, u.user_msnm, ug.user_pending
+        $sql = "SELECT u.username, u.user_id, u.user_viewemail, u.nuke_user_posts, u.nuke_user_regdate, u.user_from, u.user_website, u.user_email, u.user_icq, u.user_aim, u.user_yim, u.user_msnm, ug.user_pending
                 FROM " . USERS_TABLE . " u, " . USER_GROUP_TABLE . " ug
                 WHERE ug.group_id = '$group_id'
                         AND u.user_id = ug.user_id
@@ -816,7 +816,7 @@ else if ( $group_id )
         $members_count = is_countable($group_members) ? count($group_members) : 0;
         $db->sql_freeresult($result);
 
-        $sql = "SELECT u.username, u.user_id, u.user_viewemail, u.user_posts, u.nuke_user_regdate, u.user_from, u.user_website, u.user_email, u.user_icq, u.user_aim, u.user_yim, u.user_msnm
+        $sql = "SELECT u.username, u.user_id, u.user_viewemail, u.nuke_user_posts, u.nuke_user_regdate, u.user_from, u.user_website, u.user_email, u.user_icq, u.user_aim, u.user_yim, u.user_msnm
                 FROM " . GROUPS_TABLE . " g, " . USER_GROUP_TABLE . " ug, " . USERS_TABLE . " u
                 WHERE ug.group_id = '$group_id'
                         AND g.group_id = ug.group_id

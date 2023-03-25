@@ -884,8 +884,8 @@ switch( $mode )
 			$db->sql_query($sql);
 
                         $sql = "UPDATE " . USERS_TABLE . "
-                                SET user_style = " . $board_config['default_style'] . "
-				WHERE user_style = '$style_id'";
+                                SET nuke_user_style = " . $board_config['default_style'] . "
+				WHERE nuke_user_style = '$style_id'";
 			if(!$result = $db->sql_query($sql, END_TRANSACTION))
 			{
 				message_die(GENERAL_ERROR, "Could not update user style information", "", __LINE__, __FILE__, $sql);

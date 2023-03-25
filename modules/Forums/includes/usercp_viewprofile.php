@@ -74,13 +74,13 @@ if (is_active("Forums")) {
 $regdate = $profiledata['nuke_user_regdate'];
 $nukedate = strtotime((string) $regdate);
 $memberdays = max(1, round( ( time() - $nukedate ) / 86400 ));
-$posts_per_day = $profiledata['user_posts'] / $memberdays;
+$posts_per_day = $profiledata['nuke_user_posts'] / $memberdays;
 
 // Get the users percentage of total posts
-if ( $profiledata['user_posts'] != 0  )
+if ( $profiledata['nuke_user_posts'] != 0  )
 {
 	$total_posts = get_db_stat('postcount');
-	$percentage = ( $total_posts ) ? min(100, ($profiledata['user_posts'] / $total_posts) * 100) : 0;
+	$percentage = ( $total_posts ) ? min(100, ($profiledata['nuke_user_posts'] / $total_posts) * 100) : 0;
 }
 else
 {
@@ -121,7 +121,7 @@ else
 {
 	for($i = 0; $i < count($ranksrow); $i++)
 	{
-		if ( $profiledata['user_posts'] >= $ranksrow[$i]['rank_min'] && !$ranksrow[$i]['rank_special'] )
+		if ( $profiledata['nuke_user_posts'] >= $ranksrow[$i]['rank_min'] && !$ranksrow[$i]['rank_special'] )
 		{
 			$poster_rank = $ranksrow[$i]['rank_title'];
 			$rank_image = ( $ranksrow[$i]['rank_image'] ) ? '<img src="' . $ranksrow[$i]['rank_image'] . '" alt="' . $poster_rank . '" title="' . $poster_rank . '" border="0" /><br />' : '';
@@ -180,8 +180,8 @@ $yim_img = ( $profiledata['user_yim'] ) ? '<a href="http://edit.yahoo.com/config
 $yim = ( $profiledata['user_yim'] ) ? '<a href="http://edit.yahoo.com/config/send_webmesg?.target=' . $profiledata['user_yim'] . '&amp;.src=pg">' . $lang['YIM'] . '</a>' : '';
 
 $temp_url = append_sid("search.$phpEx?search_author=" . urlencode((string) $profiledata['username']) . "&amp;showresults=posts");
-$search_img = '<a href="' . $temp_url . '"><img src="' . $images['icon_search'] . '" alt="' . $lang['Search_user_posts'] . '" title="' . sprintf($lang['Search_user_posts'], $profiledata['username']) . '" border="0" /></a>';
-$search = '<a href="' . $temp_url . '">' . sprintf($lang['Search_user_posts'], $profiledata['username']) . '</a>';
+$search_img = '<a href="' . $temp_url . '"><img src="' . $images['icon_search'] . '" alt="' . $lang['Search_nuke_user_posts'] . '" title="' . sprintf($lang['Search_nuke_user_posts'], $profiledata['username']) . '" border="0" /></a>';
+$search = '<a href="' . $temp_url . '">' . sprintf($lang['Search_nuke_user_posts'], $profiledata['username']) . '</a>';
 
 //
 // Generate page
@@ -204,7 +204,7 @@ $template->assign_vars(array(
 	'POSTER_RANK' => $poster_rank,
 	'RANK_IMAGE' => $rank_image,
 	'POSTS_PER_DAY' => $posts_per_day,
-	'POSTS' => $profiledata['user_posts'],
+	'POSTS' => $profiledata['nuke_user_posts'],
         'PERCENTAGE' => $percentage . '%',
         'POST_DAY_STATS' => sprintf($lang['User_post_day_stats'], $posts_per_day),
         'POST_PERCENT_STATS' => sprintf($lang['User_post_pct_stats'], $percentage),
@@ -238,7 +238,7 @@ $template->assign_vars(array(
         'L_POSTER_RANK' => $lang['Poster_rank'],
         'L_JOINED' => $lang['Joined'],
         'L_TOTAL_POSTS' => $lang['Total_posts'],
-        'L_SEARCH_USER_POSTS' => sprintf($lang['Search_user_posts'], $profiledata['username']),
+        'L_SEARCH_USER_POSTS' => sprintf($lang['Search_nuke_user_posts'], $profiledata['username']),
 	'L_CONTACT' => $lang['Contact'],
 	'L_EMAIL_ADDRESS' => $lang['Email_address'],
 	'L_EMAIL' => $lang['Email'],

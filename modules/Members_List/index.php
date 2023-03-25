@@ -133,7 +133,7 @@ switch( $mode )
 		$order_by = "user_from $sort_order LIMIT $start, " . $board_config['topics_per_page'];
 		break;
 	case 'posts':
-		$order_by = "user_posts $sort_order LIMIT $start, " . $board_config['topics_per_page'];
+		$order_by = "nuke_user_posts $sort_order LIMIT $start, " . $board_config['topics_per_page'];
 		break;
 	case 'email':
 		$order_by = "user_email $sort_order LIMIT $start, " . $board_config['topics_per_page'];
@@ -142,14 +142,14 @@ switch( $mode )
 		$order_by = "user_website $sort_order LIMIT $start, " . $board_config['topics_per_page'];
 		break;
 	case 'topten':
-		$order_by = "user_posts $sort_order LIMIT 10";
+		$order_by = "nuke_user_posts $sort_order LIMIT 10";
 		break;
 	default:
                 $order_by = "user_id $sort_order LIMIT $start, " . $board_config['topics_per_page'];
 		break;
 }
 
-$sql = "SELECT username, user_id, user_viewemail, user_posts, nuke_user_regdate, user_from, user_website, user_email, user_icq, user_aim, user_yim, user_msnm, user_avatar, user_avatar_type, user_allowavatar
+$sql = "SELECT username, user_id, user_viewemail, nuke_user_posts, nuke_user_regdate, user_from, user_website, user_email, user_icq, user_aim, user_yim, user_msnm, user_avatar, user_avatar_type, user_allowavatar
 	FROM " . USERS_TABLE . "
 	WHERE user_id <> " . ANONYMOUS . "
 	ORDER BY $order_by";
@@ -174,7 +174,7 @@ if ( $row = $db->sql_fetchrow($result) )
                 $row['user_from'] = str_replace(".gif", "", $row['user_from']);
 		$from = ( !empty($row['user_from']) ) ? $row['user_from'] : '&nbsp;';
                 $joined = $row['nuke_user_regdate'];
-		$posts = ( $row['user_posts'] ) ? $row['user_posts'] : 0;
+		$posts = ( $row['nuke_user_posts'] ) ? $row['nuke_user_posts'] : 0;
 
 		$poster_avatar = '';
 		if ( $row['user_avatar_type'] && $user_id != ANONYMOUS && $row['user_allowavatar'] )
@@ -244,8 +244,8 @@ if ( $row = $db->sql_fetchrow($result) )
 		$yim = ( $row['user_yim'] ) ? '<a href="http://edit.yahoo.com/config/send_webmesg?.target=' . $row['user_yim'] . '&amp;.src=pg">' . $lang['YIM'] . '</a>' : '';
 
 		$temp_url = append_sid("search.$phpEx?search_author=" . urlencode($username) . "&amp;showresults=posts");
-		$search_img = '<a href="' . $temp_url . '"><img src="' . $images['icon_search'] . '" alt="' . sprintf($lang['Search_user_posts'], $username) . '" title="' . sprintf($lang['Search_user_posts'], $username) . '" border="0" /></a>';
-		$search = '<a href="' . $temp_url . '">' . sprintf($lang['Search_user_posts'], $username) . '</a>';
+		$search_img = '<a href="' . $temp_url . '"><img src="' . $images['icon_search'] . '" alt="' . sprintf($lang['Search_nuke_user_posts'], $username) . '" title="' . sprintf($lang['Search_nuke_user_posts'], $username) . '" border="0" /></a>';
+		$search = '<a href="' . $temp_url . '">' . sprintf($lang['Search_nuke_user_posts'], $username) . '</a>';
 
 		$row_color = ( !($i % 2) ) ? $theme['td_color1'] : $theme['td_color2'];
 		$row_class = ( !($i % 2) ) ? $theme['td_class1'] : $theme['td_class2'];

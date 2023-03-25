@@ -443,10 +443,10 @@ function validate_admin(){
 																						   `commentmax`, 
 																						   `user_level`, 
 																						    `user_lang`, 
-																					  `user_dateformat`, 
+																					  `nuke_user_dateformat`, 
 																					    `user_color_gc`, 
 																						`user_color_gi`, 
-																						   `user_posts`) 
+																						   `nuke_user_posts`) 
 																						   
 		VALUES (2,
 		'$user_nick',

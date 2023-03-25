@@ -336,14 +336,14 @@ function init_userprefs($userdata)
 			$default_lang = phpbb_ltrim(basename((string) phpbb_rtrim($userdata['user_lang'])), "'");
 		}
 
-		if ( !empty($userdata['user_dateformat']) )
+		if ( !empty($userdata['nuke_user_dateformat']) )
 		{
-			$board_config['default_dateformat'] = $userdata['user_dateformat'];
+			$board_config['default_dateformat'] = $userdata['nuke_user_dateformat'];
 		}
 
-		if ( isset($userdata['user_timezone']) )
+		if ( isset($userdata['nuke_user_timezone']) )
 		{
-			$board_config['board_timezone'] = $userdata['user_timezone'];
+			$board_config['board_timezone'] = $userdata['nuke_user_timezone'];
 		}
 	}
 	else
@@ -419,9 +419,9 @@ function init_userprefs($userdata)
 	//
 	if ( !$board_config['override_user_style'] )
 	{
-		if ( $userdata['user_id'] != ANONYMOUS && $userdata['user_style'] > 0 )
+		if ( $userdata['user_id'] != ANONYMOUS && $userdata['nuke_user_style'] > 0 )
 		{
-			if ( $theme = setup_style($userdata['user_style']) )
+			if ( $theme = setup_style($userdata['nuke_user_style']) )
 			{
 				return;
 			}

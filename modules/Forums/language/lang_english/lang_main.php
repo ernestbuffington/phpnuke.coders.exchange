@@ -534,7 +534,7 @@ $lang['Poster_rank'] = 'Poster rank';
 $lang['Total_posts'] = 'Total posts';
 $lang['User_post_pct_stats'] = '%.2f%% of total'; // 1.25% of total
 $lang['User_post_day_stats'] = '%.2f posts per day'; // 1.5 posts per day
-$lang['Search_user_posts'] = 'Find all posts by %s'; // Find all posts by username
+$lang['Search_nuke_user_posts'] = 'Find all posts by %s'; // Find all posts by username
 
 $lang['No_user_id_specified'] = 'Sorry, but that user does not exist.';
 $lang['Wrong_Profile'] = 'You cannot modify a profile that is not your own.';

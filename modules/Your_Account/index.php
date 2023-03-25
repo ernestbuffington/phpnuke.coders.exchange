@@ -2076,7 +2076,7 @@ function edituser() {
 
 		echo "<tr><td bgcolor='$bgcolor2'><b>"._FORUMSTIME."</b></td><td bgcolor='$bgcolor3'>";
 
-		echo "<select name='user_timezone'>";
+		echo "<select name='nuke_user_timezone'>";
 
 		for ($i=-12; $i<13; $i++) {
 
@@ -2096,13 +2096,13 @@ function edituser() {
 
 			}
 
-			if ($userinfo['user_timezone'] == $i) {
+			if ($userinfo['nuke_user_timezone'] == $i) {
 
-				echo "<option name=\"user_timezone\" value=\"$i\" selected>$dummy</option>";
+				echo "<option name=\"nuke_user_timezone\" value=\"$i\" selected>$dummy</option>";
 
 			} else {
 
-				echo "<option name=\"user_timezone\" value=\"$i\">$dummy</option>";
+				echo "<option name=\"nuke_user_timezone\" value=\"$i\">$dummy</option>";
 
 			}
 
@@ -2116,7 +2116,7 @@ function edituser() {
 
 		echo "<tr><td bgcolor='$bgcolor2'><b>"._FORUMSDATE.":</b><br>"._FORUMSDATEMSG."</b></td><td bgcolor='$bgcolor3'>";
 
-		echo "<input size='15' maxlength='14' type=\"text\" name=\"user_dateformat\" value=\"".$userinfo['user_dateformat']."\">";
+		echo "<input size='15' maxlength='14' type=\"text\" name=\"nuke_user_dateformat\" value=\"".$userinfo['nuke_user_dateformat']."\">";
 
 		echo "</td></tr>";
 
@@ -2339,7 +2339,7 @@ function edituser() {
 
 
 
-function saveuser($realname, $user_email, $femail, $user_website, $user_icq, $user_aim, $user_yim, $user_msnm, $user_from, $user_occ, $user_interests, $newsletter, $user_viewemail, $user_allow_viewonline, $user_notify, $user_notify_pm, $user_popup_pm, $user_attachsig, $user_allowbbcode, $user_allowhtml, $user_allowsmile, $user_timezone, $user_dateformat, $user_sig, $bio, $user_password, $vpass, $username, $user_id) {
+function saveuser($realname, $user_email, $femail, $user_website, $user_icq, $user_aim, $user_yim, $user_msnm, $user_from, $user_occ, $user_interests, $newsletter, $user_viewemail, $user_allow_viewonline, $user_notify, $user_notify_pm, $user_popup_pm, $user_attachsig, $user_allowbbcode, $user_allowhtml, $user_allowsmile, $nuke_user_timezone, $nuke_user_dateformat, $user_sig, $bio, $user_password, $vpass, $username, $user_id) {
 
 	$user_avatar = null;
  global $user, $cookie, $userinfo, $EditedMessage, $user_prefix, $db, $module_name, $minpass;
@@ -2446,7 +2446,7 @@ function saveuser($realname, $user_email, $femail, $user_website, $user_icq, $us
 
 				$user_id = intval($user_id);
 
-				$db->sql_query("UPDATE ".$user_prefix."_users SET name='$realname', user_email='$user_email', femail='$femail', user_website='$user_website', user_password='$user_password', bio='$bio', user_icq='$user_icq', user_occ='$user_occ', user_from='$user_from', user_interests='$user_interests', user_sig='$user_sig', user_aim='$user_aim', user_yim='$user_yim', user_msnm='$user_msnm', newsletter='$newsletter', user_viewemail='$user_viewemail', user_allow_viewonline='$user_allow_viewonline', user_notify='$user_notify', user_notify_pm='$user_notify_pm', user_popup_pm='$user_popup_pm', user_attachsig='$user_attachsig', user_allowbbcode='$user_allowbbcode', user_allowhtml='$user_allowhtml', user_allowsmile='$user_allowsmile', user_timezone='$user_timezone', user_dateformat='$user_dateformat' WHERE user_id='$user_id'");
+				$db->sql_query("UPDATE ".$user_prefix."_users SET name='$realname', user_email='$user_email', femail='$femail', user_website='$user_website', user_password='$user_password', bio='$bio', user_icq='$user_icq', user_occ='$user_occ', user_from='$user_from', user_interests='$user_interests', user_sig='$user_sig', user_aim='$user_aim', user_yim='$user_yim', user_msnm='$user_msnm', newsletter='$newsletter', user_viewemail='$user_viewemail', user_allow_viewonline='$user_allow_viewonline', user_notify='$user_notify', user_notify_pm='$user_notify_pm', user_popup_pm='$user_popup_pm', user_attachsig='$user_attachsig', user_allowbbcode='$user_allowbbcode', user_allowhtml='$user_allowhtml', user_allowsmile='$user_allowsmile', nuke_user_timezone='$nuke_user_timezone', nuke_user_dateformat='$nuke_user_dateformat' WHERE user_id='$user_id'");
 
 				$sql = "SELECT user_id, username, user_password, storynum, umode, uorder, thold, noscore, ublockon, theme FROM ".$user_prefix."_users WHERE username='$username' AND user_password='$user_password'";
 
@@ -2468,7 +2468,7 @@ function saveuser($realname, $user_email, $femail, $user_website, $user_icq, $us
 
 			} else {
 
-				$db->sql_query("UPDATE ".$user_prefix."_users SET name='$realname', user_email='$user_email', femail='$femail', user_website='$user_website', bio='$bio', user_icq='$user_icq', user_occ='$user_occ', user_from='$user_from', user_interests='$user_interests', user_sig='$user_sig', user_aim='$user_aim', user_yim='$user_yim', user_msnm='$user_msnm', newsletter='$newsletter', user_viewemail='$user_viewemail', user_allow_viewonline='$user_allow_viewonline', user_notify='$user_notify', user_notify_pm='$user_notify_pm', user_popup_pm='$user_popup_pm', user_attachsig='$user_attachsig', user_allowbbcode='$user_allowbbcode', user_allowhtml='$user_allowhtml', user_allowsmile='$user_allowsmile', user_timezone='$user_timezone', user_dateformat='$user_dateformat' WHERE user_id='$user_id'");
+				$db->sql_query("UPDATE ".$user_prefix."_users SET name='$realname', user_email='$user_email', femail='$femail', user_website='$user_website', bio='$bio', user_icq='$user_icq', user_occ='$user_occ', user_from='$user_from', user_interests='$user_interests', user_sig='$user_sig', user_aim='$user_aim', user_yim='$user_yim', user_msnm='$user_msnm', newsletter='$newsletter', user_viewemail='$user_viewemail', user_allow_viewonline='$user_allow_viewonline', user_notify='$user_notify', user_notify_pm='$user_notify_pm', user_popup_pm='$user_popup_pm', user_attachsig='$user_attachsig', user_allowbbcode='$user_allowbbcode', user_allowhtml='$user_allowhtml', user_allowsmile='$user_allowsmile', nuke_user_timezone='$nuke_user_timezone', nuke_user_dateformat='$nuke_user_dateformat' WHERE user_id='$user_id'");
 
 			}
 
@@ -2803,7 +2803,7 @@ function savetheme($user_id, $theme) {
 
 	if (($user_id == $vuid) AND ($check2 == $ccpass)) {
 
-		//$db->sql_query("UPDATE ".$user_prefix."_users SET user_style='$theme_id' WHERE user_id='$user_id'"); # maybe ghost (this table field does not exist in nuke_users) wtf Franky
+		//$db->sql_query("UPDATE ".$user_prefix."_users SET nuke_user_style='$theme_id' WHERE user_id='$user_id'"); # maybe ghost (this table field does not exist in nuke_users) wtf Franky
 
 		$db->sql_query("UPDATE ".$user_prefix."_users SET theme='$theme' WHERE user_id='$user_id'");
 
@@ -3578,7 +3578,7 @@ switch($op) {
 
 	case "saveuser":
 
-	saveuser($realname, $user_email, $femail, $user_website, $user_icq, $user_aim, $user_yim, $user_msnm, $user_from, $user_occ, $user_interests, $newsletter, $user_viewemail, $user_allow_viewonline, $user_notify, $user_notify_pm, $user_popup_pm, $user_attachsig, $user_allowbbcode, $user_allowhtml, $user_allowsmile, $user_timezone, $user_dateformat, $user_sig, $bio, $user_password, $vpass, $username, $user_id);
+	saveuser($realname, $user_email, $femail, $user_website, $user_icq, $user_aim, $user_yim, $user_msnm, $user_from, $user_occ, $user_interests, $newsletter, $user_viewemail, $user_allow_viewonline, $user_notify, $user_notify_pm, $user_popup_pm, $user_attachsig, $user_allowbbcode, $user_allowhtml, $user_allowsmile, $nuke_user_timezone, $nuke_user_dateformat, $user_sig, $bio, $user_password, $vpass, $username, $user_id);
 
 	break;
 

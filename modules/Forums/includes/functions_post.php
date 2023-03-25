@@ -448,7 +448,7 @@ function update_post_stats(&$mode, &$post_data, &$forum_id, &$topic_id, &$post_i
         if ($mode != 'poll_delete')
         {
                 $sql = "UPDATE " . USERS_TABLE . "
-                        SET user_posts = user_posts $sign
+                        SET nuke_user_posts = nuke_user_posts $sign
 			WHERE user_id = $user_id";
                 if (!$db->sql_query($sql, END_TRANSACTION))
                 {
