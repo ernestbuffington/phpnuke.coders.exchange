@@ -292,7 +292,7 @@
 	</tr>
 	<tr>
 		<td class="row1"><span class="gen">{L_SELECT_RANK}</span></td>
-		<td class="row2"><select name="user_rank">{RANK_SELECT_BOX}</select></td>
+		<td class="row2"><select name="nuke_user_rank">{RANK_SELECT_BOX}</select></td>
 	</tr>
 	<tr> 
 	  <td class="row1"><span class="gen">{L_DELETE_USER}?</span></td>

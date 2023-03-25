@@ -1048,7 +1048,7 @@ CREATE TABLE IF NOT EXISTS `#prefix#_users` (
   `newsletter` int(1) NOT NULL DEFAULT 0,
   `nuke_user_posts` int(10) NOT NULL DEFAULT 0,
   `user_attachsig` int(2) NOT NULL DEFAULT 0,
-  `user_rank` int(10) NOT NULL DEFAULT 0,
+  `nuke_user_rank` int(10) NOT NULL DEFAULT 0,
   `user_level` int(10) NOT NULL DEFAULT 1,
   `broadcast` tinyint(1) NOT NULL DEFAULT 1,
   `popmeson` tinyint(1) NOT NULL DEFAULT 0,

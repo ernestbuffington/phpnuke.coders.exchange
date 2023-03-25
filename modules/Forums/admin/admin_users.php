@@ -293,7 +293,7 @@ if ( $mode == 'edit' || $mode == 'save' && ( isset($_POST['username']) || isset(
 
                 $user_status = ( !empty($_POST['user_status']) ) ? intval( $_POST['user_status'] ) : 0;
                 $user_allowpm = ( !empty($_POST['user_allowpm']) ) ? intval( $_POST['user_allowpm'] ) : 0;
-                $user_rank = ( !empty($_POST['user_rank']) ) ? intval( $_POST['user_rank'] ) : 0;
+                $nuke_user_rank = ( !empty($_POST['nuke_user_rank']) ) ? intval( $_POST['nuke_user_rank'] ) : 0;
                 $user_allowavatar = ( !empty($_POST['user_allowavatar']) ) ? intval( $_POST['user_allowavatar'] ) : 0;
 
                 if( isset( $_POST['avatargallery'] ) || isset( $_POST['submitavatar'] ) || isset( $_POST['cancelavatar'] ) )
@@ -680,7 +680,7 @@ if ( $mode == 'edit' || $mode == 'save' && ( isset($_POST['username']) || isset(
                 if( !$error )
                 {
                         $sql = "UPDATE " . USERS_TABLE . "
-                                SET " . $username_sql . $passwd_sql . "user_email = '" . str_replace("\'", "''", (string) $email) . "', user_icq = '" . str_replace("\'", "''", (string) $icq) . "', user_website = '" . str_replace("\'", "''", (string) $website) . "', user_occ = '" . str_replace("\'", "''", (string) $occupation) . "', user_from = '" . str_replace("\'", "''", (string) $location) . "', user_interests = '" . str_replace("\'", "''", (string) $interests) . "', user_sig = '" . str_replace("\'", "''", (string) $signature) . "', user_viewemail = $viewemail, user_aim = '" . str_replace("\'", "''", (string) $aim) . "', user_yim = '" . str_replace("\'", "''", (string) $yim) . "', user_msnm = '" . str_replace("\'", "''", (string) $msn) . "', user_attachsig = $attachsig, user_sig_bbcode_uid = '$signature_bbcode_uid', user_allowsmile = $allowsmilies, user_allowhtml = $allowhtml, user_allowavatar = $user_allowavatar, user_allowbbcode = $allowbbcode, user_allow_viewonline = $allowviewonline, user_notify = $notifyreply, user_allow_pm = $user_allowpm, user_notify_pm = $notifypm, user_popup_pm = $popuppm, user_lang = '" . str_replace("\'", "''", (string) $user_lang) . "', nuke_user_style = $nuke_user_style, nuke_user_timezone = $nuke_user_timezone, nuke_user_dateformat = '" . str_replace("\'", "''", (string) $nuke_user_dateformat) . "', user_active = $user_status, user_rank = $user_rank" . $avatar_sql . "
+                                SET " . $username_sql . $passwd_sql . "user_email = '" . str_replace("\'", "''", (string) $email) . "', user_icq = '" . str_replace("\'", "''", (string) $icq) . "', user_website = '" . str_replace("\'", "''", (string) $website) . "', user_occ = '" . str_replace("\'", "''", (string) $occupation) . "', user_from = '" . str_replace("\'", "''", (string) $location) . "', user_interests = '" . str_replace("\'", "''", (string) $interests) . "', user_sig = '" . str_replace("\'", "''", (string) $signature) . "', user_viewemail = $viewemail, user_aim = '" . str_replace("\'", "''", (string) $aim) . "', user_yim = '" . str_replace("\'", "''", (string) $yim) . "', user_msnm = '" . str_replace("\'", "''", (string) $msn) . "', user_attachsig = $attachsig, user_sig_bbcode_uid = '$signature_bbcode_uid', user_allowsmile = $allowsmilies, user_allowhtml = $allowhtml, user_allowavatar = $user_allowavatar, user_allowbbcode = $allowbbcode, user_allow_viewonline = $allowviewonline, user_notify = $notifyreply, user_allow_pm = $user_allowpm, user_notify_pm = $notifypm, user_popup_pm = $popuppm, user_lang = '" . str_replace("\'", "''", (string) $user_lang) . "', nuke_user_style = $nuke_user_style, nuke_user_timezone = $nuke_user_timezone, nuke_user_dateformat = '" . str_replace("\'", "''", (string) $nuke_user_dateformat) . "', user_active = $user_status, nuke_user_rank = $nuke_user_rank" . $avatar_sql . "
 				WHERE user_id = $user_id";
 
                         if( $result = $db->sql_query($sql) )
@@ -940,7 +940,7 @@ if ( $mode == 'edit' || $mode == 'save' && ( isset($_POST['username']) || isset(
                         $s_hidden_fields .= '<input type="hidden" name="user_status" value="' . $user_status . '" />';
                         $s_hidden_fields .= '<input type="hidden" name="user_allowpm" value="' . $user_allowpm . '" />';
                         $s_hidden_fields .= '<input type="hidden" name="user_allowavatar" value="' . $user_allowavatar . '" />';
-                        $s_hidden_fields .= '<input type="hidden" name="user_rank" value="' . $user_rank . '" />';
+                        $s_hidden_fields .= '<input type="hidden" name="nuke_user_rank" value="' . $nuke_user_rank . '" />';
 
                         $template->assign_vars(array(
                                 "L_USER_TITLE" => $lang['User_admin'],
@@ -1003,7 +1003,7 @@ if ( $mode == 'edit' || $mode == 'save' && ( isset($_POST['username']) || isset(
                         $rank = $row['rank_title'];
                         $rank_id = $row['rank_id'];
 
-                        $selected = ( $this_userdata['user_rank'] == $rank_id ) ? ' selected="selected"' : '';
+                        $selected = ( $this_userdata['nuke_user_rank'] == $rank_id ) ? ' selected="selected"' : '';
                         $rank_select_box .= '<option value="' . $rank_id . '"' . $selected . '>' . $rank . '</option>';
                 }
 
