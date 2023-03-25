@@ -149,7 +149,7 @@ switch( $mode )
 		break;
 }
 
-$sql = "SELECT username, user_id, user_viewemail, user_posts, user_regdate, user_from, user_website, user_email, user_icq, user_aim, user_yim, user_msnm, user_avatar, user_avatar_type, user_allowavatar
+$sql = "SELECT username, user_id, user_viewemail, user_posts, nuke_user_regdate, user_from, user_website, user_email, user_icq, user_aim, user_yim, user_msnm, user_avatar, user_avatar_type, user_allowavatar
 	FROM " . USERS_TABLE . "
 	WHERE user_id <> " . ANONYMOUS . "
 	ORDER BY $order_by";
@@ -173,7 +173,7 @@ if ( $row = $db->sql_fetchrow($result) )
                 }
                 $row['user_from'] = str_replace(".gif", "", $row['user_from']);
 		$from = ( !empty($row['user_from']) ) ? $row['user_from'] : '&nbsp;';
-                $joined = $row['user_regdate'];
+                $joined = $row['nuke_user_regdate'];
 		$posts = ( $row['user_posts'] ) ? $row['user_posts'] : 0;
 
 		$poster_avatar = '';

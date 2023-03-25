@@ -223,7 +223,7 @@ function finishNewUser($username, $user_email, $user_password, $random_num, $gfx
 
 	$user_email = validate_mail($user_email);
 
-	$user_regdate = date("M d, Y");
+	$nuke_user_regdate = date("M d, Y");
 
 	$user_password = htmlspecialchars(stripslashes($user_password));
 
@@ -263,7 +263,7 @@ function finishNewUser($username, $user_email, $user_password, $random_num, $gfx
 
 		$user_email = filter($user_email, "nohtml", 1);
 
-		$result = $db->sql_query("INSERT INTO ".$user_prefix."_users_temp (user_id, username, user_email, user_password, user_regdate, check_num, time) VALUES (NULL, '$username', '$user_email', '$new_password', '$user_regdate', '$check_num', '$time')");
+		$result = $db->sql_query("INSERT INTO ".$user_prefix."_users_temp (user_id, username, user_email, user_password, nuke_user_regdate, check_num, time) VALUES (NULL, '$username', '$user_email', '$new_password', '$nuke_user_regdate', '$check_num', '$time')");
 
 		if(!$result) {
 
@@ -331,7 +331,7 @@ function activate($username, $check_num) {
 
 		if ($check_num == $row['check_num']) {
 
-			$db->sql_query("INSERT INTO ".$user_prefix."_users (user_id, username, user_email, user_password, user_avatar, user_avatar_type, user_regdate, user_lang) VALUES (NULL, '".$row['username']."', '".$row['user_email']."', '$user_password', 'gallery/blank.gif', '3', '".$row['user_regdate']."', '$language')");
+			$db->sql_query("INSERT INTO ".$user_prefix."_users (user_id, username, user_email, user_password, user_avatar, user_avatar_type, nuke_user_regdate, user_lang) VALUES (NULL, '".$row['username']."', '".$row['user_email']."', '$user_password', 'gallery/blank.gif', '3', '".$row['nuke_user_regdate']."', '$language')");
 
 			$result2 = $db->sql_query("SELECT user_id FROM ".$user_prefix."_users WHERE username='".$row['username']."'");
 

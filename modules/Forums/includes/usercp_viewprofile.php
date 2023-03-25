@@ -71,7 +71,7 @@ if (is_active("Forums")) {
 // Calculate the number of days this user has been a member ($memberdays)
 // Then calculate their posts per day
 //
-$regdate = $profiledata['user_regdate'];
+$regdate = $profiledata['nuke_user_regdate'];
 $nukedate = strtotime((string) $regdate);
 $memberdays = max(1, round( ( time() - $nukedate ) / 86400 ));
 $posts_per_day = $profiledata['user_posts'] / $memberdays;
@@ -200,7 +200,7 @@ else
 
 $template->assign_vars(array(
 	'USERNAME' => $profiledata['username'],
-        'JOINED' => $profiledata['user_regdate'],
+        'JOINED' => $profiledata['nuke_user_regdate'],
 	'POSTER_RANK' => $poster_rank,
 	'RANK_IMAGE' => $rank_image,
 	'POSTS_PER_DAY' => $posts_per_day,

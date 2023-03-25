@@ -880,7 +880,7 @@ if ($row2['radminsuper'] == 1 || $auth_user == 1) {
 
 		} else {
 
-			$user_regdate = date("M d, Y");
+			$nuke_user_regdate = date("M d, Y");
 
 			$add_uname = filter($add_uname, "nohtml", 1);
 
@@ -918,9 +918,9 @@ if ($row2['radminsuper'] == 1 || $auth_user == 1) {
 
 			$sql = "insert into " . $user_prefix . "_users ";
 
-			$sql .= "(user_id,name,username,user_email,femail,user_website,user_regdate,user_icq,user_aim,user_yim,user_msnm,user_from,user_occ,user_interests,user_viewemail,user_avatar,user_sig,user_password,newsletter,broadcast,popmeson) ";
+			$sql .= "(user_id,name,username,user_email,femail,user_website,nuke_user_regdate,user_icq,user_aim,user_yim,user_msnm,user_from,user_occ,user_interests,user_viewemail,user_avatar,user_sig,user_password,newsletter,broadcast,popmeson) ";
 
-			$sql .= "values (NULL,'$add_name','$add_uname','$add_email','$add_femail','$add_url','$user_regdate','$add_user_icq','$add_user_aim','$add_user_yim','$add_user_msnm','$add_user_from','$add_user_occ','$add_user_intrest','$add_user_viewemail','$add_avatar','$add_user_sig','$add_pass','$add_newsletter','1','0')";
+			$sql .= "values (NULL,'$add_name','$add_uname','$add_email','$add_femail','$add_url','$nuke_user_regdate','$add_user_icq','$add_user_aim','$add_user_yim','$add_user_msnm','$add_user_from','$add_user_occ','$add_user_intrest','$add_user_viewemail','$add_avatar','$add_user_sig','$add_pass','$add_newsletter','1','0')";
 
 			$result = $db->sql_query($sql);
 

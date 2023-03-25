@@ -1022,7 +1022,7 @@ CREATE TABLE IF NOT EXISTS `#prefix#_users` (
   `femail` varchar(255) NOT NULL DEFAULT '',
   `user_website` varchar(255) NOT NULL DEFAULT '',
   `user_avatar` varchar(255) NOT NULL DEFAULT '',
-  `user_regdate` varchar(20) NOT NULL DEFAULT '',
+  `nuke_user_regdate` varchar(20) NOT NULL DEFAULT '',
   `user_icq` varchar(15) DEFAULT NULL,
   `user_occ` varchar(100) DEFAULT NULL,
   `user_from` varchar(100) DEFAULT NULL,
@@ -1087,7 +1087,7 @@ CREATE TABLE IF NOT EXISTS `#prefix#_users_temp` (
   `username` varchar(25) NOT NULL DEFAULT '',
   `user_email` varchar(255) NOT NULL DEFAULT '',
   `user_password` varchar(40) NOT NULL DEFAULT '',
-  `user_regdate` varchar(20) NOT NULL DEFAULT '',
+  `nuke_user_regdate` varchar(20) NOT NULL DEFAULT '',
   `check_num` varchar(50) NOT NULL DEFAULT '',
   `time` varchar(14) NOT NULL DEFAULT ''
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;

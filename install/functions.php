@@ -415,7 +415,7 @@ function validate_admin(){
 		$cookiedata_admin = base64_encode("$user_nick:$user_pass:english:1:new");
         $cookiedata = base64_encode("2:$user_nick:$user_pass");
 
-        $user_regdate = date('M d, Y');
+        $nuke_user_regdate = date('M d, Y');
         $user_avatar = 'blank.png';
         $commentlimit = 4096;
 
@@ -437,7 +437,7 @@ function validate_admin(){
 																						   `user_email`, 
 																						 `user_website`, 
 																						  `user_avatar`, 
-																						 `user_regdate`, 
+																						 `nuke_user_regdate`, 
 																						`user_password`, 
 																						        `theme`, 
 																						   `commentmax`, 
@@ -452,7 +452,7 @@ function validate_admin(){
 		'$user_nick',
 		'".$_POST['admin_email']."',
 		'".$url."','".$user_avatar."',
-		'".$user_regdate."',
+		'".$nuke_user_regdate."',
 		'$user_pass',
 		'Titanium_Core',
 		'".$commentlimit."', 
