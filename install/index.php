@@ -283,7 +283,7 @@ if (file_exists($filename)) {
 <img src="../install/images/stop.png" alt="Stop" name="stop" width="200" height="200" align="absmiddle" />
 </div>
 <script type="text/javascript">
-  window.onload = function () { alert('Before you can run the ' + toUnicodeVariant('PHP-Nuke', 'bold sans', 'bold') + ' installation setup you must go to your root directory and delete the ' + toUnicodeVariant('config.php', 'bold sans', 'bold') + ' file.'); } 
+  window.onload = function () { alert('Before you can run the ' + toUnicodeVariant('PHP-Nuke', 'bold sans', 'bold') + ' installation applicaton you must go to your root directory and delete the ' + toUnicodeVariant('config.php', 'bold sans', 'bold') + ' file.'); } 
 </script>
 <?
 exit();
