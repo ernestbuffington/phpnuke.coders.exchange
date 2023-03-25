@@ -202,7 +202,7 @@ if (isset($_POST['submit']) && ( ( $mode == 'user' && $user_id ) || ( $mode == '
             $message = $lang['Auth_updated'] . '<br /><br />' . sprintf($lang['Click_return_userauth'], '<a href="' . append_sid("admin_ug_auth.$phpEx?mode=$mode") . '">', '</a>') . '<br /><br />' . sprintf($lang['Click_return_admin_index'], '<a href="' . append_sid("index.$phpEx?pane=right") . '">', '</a>');
             message_die(GENERAL_MESSAGE, $message);
     }
-    else
+    else 
     {
             if ( $mode == 'user' && $_POST['userlevel'] == 'user' && $user_level == ADMIN )
             {
