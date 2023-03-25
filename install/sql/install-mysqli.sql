@@ -1142,6 +1142,7 @@ CREATE TABLE IF NOT EXISTS `#prefix#_users` (
   `nuke_user_avatar_type` tinyint(4) NOT NULL DEFAULT 3,
   `nuke_user_sig_bbcode_uid` varchar(10) DEFAULT NULL,
   `points` int(10) DEFAULT 0,
+  `nuke_group_id` mediumint(8) UNSIGNED NOT NULL DEFAULT 3,
   `last_ip` varchar(15) DEFAULT NULL
 
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
