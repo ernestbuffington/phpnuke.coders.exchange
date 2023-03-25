@@ -25,7 +25,7 @@ $author_user_email = "ernest.buffington@gmail.com";
 $author_homepage = "https://theghost.86it.us";
 $license = "GNU/GPL";
 $download_location = "http://www.phpnuke.coders.exchange";
-$module_version = "2.0.8";
+$module_version = "2.0.21";
 $module_description = "phpBB port for PHP 8.x";
 
 // DO NOT TOUCH THE FOLLOWING COPYRIGHT CODE. YOU'RE JUST ALLOWED TO CHANGE YOUR "OWN"
