@@ -541,7 +541,7 @@ else if ( $mode == 'read' )
 
         //
 
-        $sql = "SELECT u.username AS username_1, u.user_id AS user_id_1, u2.username AS username_2, u2.user_id AS user_id_2, u.user_sig_bbcode_uid, u.nuke_user_posts, u.user_from, u.user_website, u.user_email, u.user_icq, u.user_aim, u.user_yim, u.nuke_user_regdate, u.user_msnm, u.user_viewemail, u.nuke_user_rank, u.user_sig, u.user_avatar, pm.*, pmt.privmsgs_bbcode_uid, pmt.privmsgs_text
+        $sql = "SELECT u.username AS username_1, u.user_id AS user_id_1, u2.username AS username_2, u2.user_id AS user_id_2, u.nuke_user_sig_bbcode_uid, u.nuke_user_posts, u.user_from, u.user_website, u.user_email, u.user_icq, u.user_aim, u.user_yim, u.nuke_user_regdate, u.user_msnm, u.user_viewemail, u.nuke_user_rank, u.nuke_user_sig, u.user_avatar, pm.*, pmt.privmsgs_bbcode_uid, pmt.privmsgs_text
 
                 FROM " . PRIVMSGS_TABLE . " pm, " . PRIVMSGS_TEXT_TABLE . " pmt, " . USERS_TABLE . " u, " . USERS_TABLE . " u2
 
@@ -1188,7 +1188,7 @@ else if ( $mode == 'read' )
 
         {
 
-                $user_sig = ( $privmsg['privmsgs_from_userid'] == $userdata['user_id'] ) ? $userdata['user_sig'] : $privmsg['user_sig'];
+                $nuke_user_sig = ( $privmsg['privmsgs_from_userid'] == $userdata['user_id'] ) ? $userdata['nuke_user_sig'] : $privmsg['nuke_user_sig'];
 
         }
 
@@ -1196,13 +1196,13 @@ else if ( $mode == 'read' )
 
         {
 
-                $user_sig = '';
+                $nuke_user_sig = '';
 
         }
 
 
 
-        $user_sig_bbcode_uid = ( $privmsg['privmsgs_from_userid'] == $userdata['user_id'] ) ? $userdata['user_sig_bbcode_uid'] : $privmsg['user_sig_bbcode_uid'];
+        $nuke_user_sig_bbcode_uid = ( $privmsg['privmsgs_from_userid'] == $userdata['user_id'] ) ? $userdata['nuke_user_sig_bbcode_uid'] : $privmsg['nuke_user_sig_bbcode_uid'];
 
 
 
@@ -1218,11 +1218,11 @@ else if ( $mode == 'read' )
 
         {
 
-                if ( $user_sig != '')
+                if ( $nuke_user_sig != '')
 
                 {
 
-                        $user_sig = preg_replace('#(<)([\/]?.*?)(>)#is', "&lt;\\2&gt;", $user_sig);
+                        $nuke_user_sig = preg_replace('#(<)([\/]?.*?)(>)#is', "&lt;\\2&gt;", $nuke_user_sig);
 
                 }
 
@@ -1240,11 +1240,11 @@ else if ( $mode == 'read' )
 
 
 
-        if ( $user_sig != '' && $privmsg['privmsgs_attach_sig'] && $user_sig_bbcode_uid != '' )
+        if ( $nuke_user_sig != '' && $privmsg['privmsgs_attach_sig'] && $nuke_user_sig_bbcode_uid != '' )
 
         {
 
-                $user_sig = ( $board_config['allow_bbcode'] ) ? bbencode_second_pass($user_sig, $user_sig_bbcode_uid) : preg_replace('/\:[0-9a-z\:]+\]/si', ']', $user_sig);
+                $nuke_user_sig = ( $board_config['allow_bbcode'] ) ? bbencode_second_pass($nuke_user_sig, $nuke_user_sig_bbcode_uid) : preg_replace('/\:[0-9a-z\:]+\]/si', ']', $nuke_user_sig);
 
         }
 
@@ -1264,11 +1264,11 @@ else if ( $mode == 'read' )
 
 
 
-        if ( $privmsg['privmsgs_attach_sig'] && $user_sig != '' )
+        if ( $privmsg['privmsgs_attach_sig'] && $nuke_user_sig != '' )
 
         {
 
-                $private_message .= '<br /><br />_________________<br />' . make_clickable($user_sig);
+                $private_message .= '<br /><br />_________________<br />' . make_clickable($nuke_user_sig);
 
         }
 
@@ -2317,7 +2317,7 @@ else if ( $submit || $refresh || $mode != '' )
 
         $attach_sig = ( $submit || $refresh ) ? ( ( !empty($HTTP_POST_VARS['attach_sig']) ) ? TRUE : 0 ) : $userdata['user_attachsig'];
 
-        $user_sig = ( $userdata['user_sig'] != '' && $board_config['allow_sig'] ) ? $userdata['user_sig'] : "";
+        $nuke_user_sig = ( $userdata['nuke_user_sig'] != '' && $board_config['allow_sig'] ) ? $userdata['nuke_user_sig'] : "";
 
 
 
@@ -2862,7 +2862,7 @@ else if ( $submit || $refresh || $mode != '' )
 
 
 
-                        $user_sig = ( $userdata['user_sig'] != '' && $board_config['allow_sig'] ) ? $userdata['user_sig'] : '';
+                        $nuke_user_sig = ( $userdata['nuke_user_sig'] != '' && $board_config['allow_sig'] ) ? $userdata['nuke_user_sig'] : '';
 
 
 
@@ -2876,7 +2876,7 @@ else if ( $submit || $refresh || $mode != '' )
 
 
 
-                        $user_sig = ( $userdata['user_sig'] != '' && $board_config['allow_sig'] ) ? $userdata['user_sig'] : '';
+                        $nuke_user_sig = ( $userdata['nuke_user_sig'] != '' && $board_config['allow_sig'] ) ? $userdata['nuke_user_sig'] : '';
 
 
 
@@ -2890,7 +2890,7 @@ else if ( $submit || $refresh || $mode != '' )
 
 
 
-                        $sql = "SELECT u.user_id, u.user_sig
+                        $sql = "SELECT u.user_id, u.nuke_user_sig
 
                                 FROM " . PRIVMSGS_TABLE . " pm, " . USERS_TABLE . " u
 
@@ -2921,7 +2921,7 @@ else if ( $submit || $refresh || $mode != '' )
 
 
 
-                                $user_sig = ( $postrow['user_sig'] != '' && $board_config['allow_sig'] ) ? $postrow['user_sig'] : '';
+                                $nuke_user_sig = ( $postrow['nuke_user_sig'] != '' && $board_config['allow_sig'] ) ? $postrow['nuke_user_sig'] : '';
 
                         }
 
@@ -2984,7 +2984,7 @@ else if ( $submit || $refresh || $mode != '' )
 
                 {
 
-                        $sql = "SELECT pm.*, pmt.privmsgs_bbcode_uid, pmt.privmsgs_text, u.username, u.user_id, u.user_sig
+                        $sql = "SELECT pm.*, pmt.privmsgs_bbcode_uid, pmt.privmsgs_text, u.username, u.user_id, u.nuke_user_sig
 
                                 FROM " . PRIVMSGS_TABLE . " pm, " . PRIVMSGS_TEXT_TABLE . " pmt, " . USERS_TABLE . " u
 
@@ -3048,7 +3048,7 @@ else if ( $submit || $refresh || $mode != '' )
 
 
 
-                        $user_sig = ( $board_config['allow_sig'] ) ? (($privmsg['privmsgs_type'] == PRIVMSGS_NEW_MAIL) ? $user_sig : $privmsg['user_sig']) : '';
+                        $nuke_user_sig = ( $board_config['allow_sig'] ) ? (($privmsg['privmsgs_type'] == PRIVMSGS_NEW_MAIL) ? $nuke_user_sig : $privmsg['nuke_user_sig']) : '';
 
 
 
@@ -3227,11 +3227,11 @@ else if ( $submit || $refresh || $mode != '' )
 
                 {
 
-                        if ( $user_sig != '' )
+                        if ( $nuke_user_sig != '' )
 
                         {
 
-                                $user_sig = preg_replace('#(<)([\/]?.*?)(>)#is', "&lt;\\2&gt;", $user_sig);
+                                $nuke_user_sig = preg_replace('#(<)([\/]?.*?)(>)#is', "&lt;\\2&gt;", $nuke_user_sig);
 
                         }
 
@@ -3239,11 +3239,11 @@ else if ( $submit || $refresh || $mode != '' )
 
 
 
-                if ( $attach_sig && $user_sig != '' && $userdata['user_sig_bbcode_uid'] )
+                if ( $attach_sig && $nuke_user_sig != '' && $userdata['nuke_user_sig_bbcode_uid'] )
 
                 {
 
-                        $user_sig = bbencode_second_pass($user_sig, $userdata['user_sig_bbcode_uid']);
+                        $nuke_user_sig = bbencode_second_pass($nuke_user_sig, $userdata['nuke_user_sig_bbcode_uid']);
 
                 }
 
@@ -3259,11 +3259,11 @@ else if ( $submit || $refresh || $mode != '' )
 
 
 
-                if ( $attach_sig && $user_sig != '' )
+                if ( $attach_sig && $nuke_user_sig != '' )
 
                 {
 
-                        $preview_message = $preview_message . '<br /><br />_________________<br />' . $user_sig;
+                        $preview_message = $preview_message . '<br /><br />_________________<br />' . $nuke_user_sig;
 
                 }
 
@@ -3515,7 +3515,7 @@ else if ( $submit || $refresh || $mode != '' )
 
         //
 
-        if ( $user_sig != '' )
+        if ( $nuke_user_sig != '' )
 
         {
 

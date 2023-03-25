@@ -408,7 +408,7 @@ $select_post_order .= '</select>';
 //
 // Go ahead and pull all data for this topic
 //
-$sql = "SELECT u.username, u.user_id, u.nuke_user_posts, u.user_from, u.user_website, u.user_email, u.user_icq, u.user_aim, u.user_yim, u.nuke_user_regdate, u.user_msnm, u.user_viewemail, u.nuke_user_rank, u.user_sig, u.user_sig_bbcode_uid, u.user_avatar, u.nuke_user_avatar_type, u.user_allowavatar, u.user_allowsmile, p.*,  pt.post_text, pt.post_subject, pt.bbcode_uid
+$sql = "SELECT u.username, u.user_id, u.nuke_user_posts, u.user_from, u.user_website, u.user_email, u.user_icq, u.user_aim, u.user_yim, u.nuke_user_regdate, u.user_msnm, u.user_viewemail, u.nuke_user_rank, u.nuke_user_sig, u.nuke_user_sig_bbcode_uid, u.user_avatar, u.nuke_user_avatar_type, u.user_allowavatar, u.user_allowsmile, p.*,  pt.post_text, pt.post_subject, pt.bbcode_uid
         FROM " . POSTS_TABLE . " p, " . USERS_TABLE . " u, " . POSTS_TEXT_TABLE . " pt
         WHERE p.topic_id = '$topic_id'
                 $limit_posts_time
@@ -1083,8 +1083,8 @@ for($i = 0; $i < $total_posts; $i++)
         $message = $postrow[$i]['post_text'];
         $bbcode_uid = $postrow[$i]['bbcode_uid'];
 
-        $user_sig = ( $postrow[$i]['enable_sig'] && $postrow[$i]['user_sig'] != '' && $board_config['allow_sig'] ) ? $postrow[$i]['user_sig'] : '';
-        $user_sig_bbcode_uid = $postrow[$i]['user_sig_bbcode_uid'];
+        $nuke_user_sig = ( $postrow[$i]['enable_sig'] && $postrow[$i]['nuke_user_sig'] != '' && $board_config['allow_sig'] ) ? $postrow[$i]['nuke_user_sig'] : '';
+        $nuke_user_sig_bbcode_uid = $postrow[$i]['nuke_user_sig_bbcode_uid'];
 
         //
         // Note! The order used for parsing the message _is_ important, moving things around could break any
@@ -1097,9 +1097,9 @@ for($i = 0; $i < $total_posts; $i++)
         //
 	if ( !$board_config['allow_html'] || !$userdata['user_allowhtml'])
         {
-                if ( $user_sig != '' )
+                if ( $nuke_user_sig != '' )
                 {
-                        $user_sig = preg_replace('#(<)([\/]?.*?)(>)#is', "&lt;\\2&gt;", (string) $user_sig);
+                        $nuke_user_sig = preg_replace('#(<)([\/]?.*?)(>)#is', "&lt;\\2&gt;", (string) $nuke_user_sig);
                 }
 
                 if ( $postrow[$i]['enable_html'] )
@@ -1111,9 +1111,9 @@ for($i = 0; $i < $total_posts; $i++)
         //
         // Parse message and/or sig for BBCode if reqd
         //
-	if ($user_sig != '' && $user_sig_bbcode_uid != '')
+	if ($nuke_user_sig != '' && $nuke_user_sig_bbcode_uid != '')
 	{
-		$user_sig = ($board_config['allow_bbcode']) ? bbencode_second_pass($user_sig, $user_sig_bbcode_uid) : preg_replace("/\:$user_sig_bbcode_uid/si", '', (string) $user_sig);
+		$nuke_user_sig = ($board_config['allow_bbcode']) ? bbencode_second_pass($nuke_user_sig, $nuke_user_sig_bbcode_uid) : preg_replace("/\:$nuke_user_sig_bbcode_uid/si", '', (string) $nuke_user_sig);
 	}
 
 	if ($bbcode_uid != '')
@@ -1121,9 +1121,9 @@ for($i = 0; $i < $total_posts; $i++)
 		$message = ($board_config['allow_bbcode']) ? bbencode_second_pass($message, $bbcode_uid) : preg_replace("/\:$bbcode_uid/si", '', (string) $message);
 	}
 
-        if ( $user_sig != '' )
+        if ( $nuke_user_sig != '' )
         {
-                $user_sig = make_clickable($user_sig);
+                $nuke_user_sig = make_clickable($nuke_user_sig);
         }
         $message = make_clickable($message);
 
@@ -1132,9 +1132,9 @@ for($i = 0; $i < $total_posts; $i++)
         //
         if ( $board_config['allow_smilies'] )
         {
-                if ( $postrow[$i]['user_allowsmile'] && $user_sig != '' )
+                if ( $postrow[$i]['user_allowsmile'] && $nuke_user_sig != '' )
                 {
-                        $user_sig = smilies_pass($user_sig);
+                        $nuke_user_sig = smilies_pass($nuke_user_sig);
                 }
 
                 if ( $postrow[$i]['enable_smilies'] )
@@ -1159,9 +1159,9 @@ for($i = 0; $i < $total_posts; $i++)
         {
                 $post_subject = preg_replace($orig_word, $replacement_word, (string) $post_subject);
 
-                if ($user_sig != '')
+                if ($nuke_user_sig != '')
                 {
-			$user_sig = str_replace('\"', '"', substr(preg_replace_callback('#(\>(((?>([^><]+|(?R)))*)\<))#s', fn($matches) => preg_replace($orig_word, $replacement_word, (string) $matches[0]), '>' . $user_sig . '<'), 1, -1));
+			$nuke_user_sig = str_replace('\"', '"', substr(preg_replace_callback('#(\>(((?>([^><]+|(?R)))*)\<))#s', fn($matches) => preg_replace($orig_word, $replacement_word, (string) $matches[0]), '>' . $nuke_user_sig . '<'), 1, -1));
                 }
 
 		$message = str_replace('\"', '"', substr(preg_replace_callback('#(\>(((?>([^><]+|(?R)))*)\<))#s', fn($matches) => preg_replace($orig_word, $replacement_word, (string) $matches[0]), '>' . $message . '<'), 1, -1));
@@ -1171,9 +1171,9 @@ for($i = 0; $i < $total_posts; $i++)
         // Replace newlines (we use this rather than nl2br because
         // till recently it wasn't XHTML compliant)
         //
-        if ( $user_sig != '' )
+        if ( $nuke_user_sig != '' )
         {
-                $user_sig = '<br />_________________<br />' . str_replace("\n", "\n<br />\n", (string) $user_sig);
+                $nuke_user_sig = '<br />_________________<br />' . str_replace("\n", "\n<br />\n", (string) $nuke_user_sig);
         }
 
         $message = str_replace("\n", "\n<br />\n", (string) $message);
@@ -1212,7 +1212,7 @@ for($i = 0; $i < $total_posts; $i++)
                 'POST_DATE' => $post_date,
                 'POST_SUBJECT' => $post_subject,
                 'MESSAGE' => $message,
-                'SIGNATURE' => $user_sig,
+                'SIGNATURE' => $nuke_user_sig,
                 'EDITED_MESSAGE' => $l_edited_by,
 
                 'MINI_POST_IMG' => $mini_post_img,

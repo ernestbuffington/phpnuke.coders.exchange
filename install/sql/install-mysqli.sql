@@ -1074,7 +1074,7 @@ CREATE TABLE IF NOT EXISTS `#prefix#_users` (
   `nuke_user_notify_pm` tinyint(1) NOT NULL DEFAULT 0,
   `user_popup_pm` tinyint(1) NOT NULL DEFAULT 0,
   `nuke_user_avatar_type` tinyint(4) NOT NULL DEFAULT 3,
-  `user_sig_bbcode_uid` varchar(10) DEFAULT NULL,
+  `nuke_user_sig_bbcode_uid` varchar(10) DEFAULT NULL,
   `user_actkey` varchar(32) DEFAULT NULL,
   `user_newpasswd` varchar(32) DEFAULT NULL,
   `points` int(10) DEFAULT 0,

@@ -174,7 +174,7 @@ if ($row2['radminsuper'] == 1 || $auth_user == 1) {
 
 		."<tr><td>" . _SIGNATURE . "</td>"
 
-		."<td><textarea name=\"add_user_sig\" rows=\"15\" cols=\"70\"></textarea></td></tr>"
+		."<td><textarea name=\"add_nuke_user_sig\" rows=\"15\" cols=\"70\"></textarea></td></tr>"
 
 		."<tr><td>" . _PASSWORD . "</td>"
 
@@ -214,7 +214,7 @@ if ($row2['radminsuper'] == 1 || $auth_user == 1) {
 
 		$chng_user = stripslashes(check_html($chng_user, "nohtml"));
 
-		$result = $db->sql_query("SELECT user_id, username, name, user_website, user_email, femail, user_icq, user_aim, user_yim, user_msnm, user_from, user_occ, user_interests, user_viewemail, user_avatar, user_sig, user_password, newsletter from " . $user_prefix . "_users where username='$chng_user'");
+		$result = $db->sql_query("SELECT user_id, username, name, user_website, user_email, femail, user_icq, user_aim, user_yim, user_msnm, user_from, user_occ, user_interests, user_viewemail, user_avatar, nuke_user_sig, user_password, newsletter from " . $user_prefix . "_users where username='$chng_user'");
 
 		$numrows = $db->sql_numrows($result);
 
@@ -252,7 +252,7 @@ if ($row2['radminsuper'] == 1 || $auth_user == 1) {
 
 			$chng_avatar = filter($row['user_avatar'], "nohtml");
 
-			$chng_user_sig = filter($row['user_sig']);
+			$chng_nuke_user_sig = filter($row['nuke_user_sig']);
 
 			$chng_pass = filter($row['user_password'], "nohtml");
 
@@ -462,7 +462,7 @@ if ($row2['radminsuper'] == 1 || $auth_user == 1) {
 
 			echo "<tr><td>" . _SIGNATURE . "</td>"
 
-			."<td><textarea name=\"chng_user_sig\" rows=\"15\" cols=\"70\">$chng_user_sig</textarea></td></tr>"
+			."<td><textarea name=\"chng_nuke_user_sig\" rows=\"15\" cols=\"70\">$chng_nuke_user_sig</textarea></td></tr>"
 
 			."<tr><td>" . _PASSWORD . "</td>"
 
@@ -502,7 +502,7 @@ if ($row2['radminsuper'] == 1 || $auth_user == 1) {
 
 
 
-	function updateUser($chng_uid, $chng_uname, $chng_name, $chng_url, $chng_email, $chng_femail, $chng_user_icq, $chng_user_aim, $chng_user_yim, $chng_user_msnm, $chng_user_from, $chng_user_occ, $chng_user_intrest, $chng_user_viewemail, $chng_avatar, $chng_user_sig, $chng_pass, $chng_pass2, $chng_newsletter, $subscription, $subscription_expire, $reason) {
+	function updateUser($chng_uid, $chng_uname, $chng_name, $chng_url, $chng_email, $chng_femail, $chng_user_icq, $chng_user_aim, $chng_user_yim, $chng_user_msnm, $chng_user_from, $chng_user_occ, $chng_user_intrest, $chng_user_viewemail, $chng_avatar, $chng_nuke_user_sig, $chng_pass, $chng_pass2, $chng_newsletter, $subscription, $subscription_expire, $reason) {
 
 		global $user_prefix, $db, $prefix, $nukeurl, $sitename, $adminmail, $subscription_url, $admin_file;
 
@@ -536,7 +536,7 @@ if ($row2['radminsuper'] == 1 || $auth_user == 1) {
 
 		$chng_avatar = filter($chng_avatar, "nohtml", 1);
 
-		$chng_user_sig = filter($chng_user_sig, "", 1);
+		$chng_nuke_user_sig = filter($chng_nuke_user_sig, "", 1);
 
 		$chng_pass = filter($chng_pass, "nohtml", 1);
 
@@ -582,7 +582,7 @@ if ($row2['radminsuper'] == 1 || $auth_user == 1) {
 
 		if ($tmp == 0) {
 
-			$db->sql_query("update " . $user_prefix . "_users set username='$chng_uname', name='$chng_name', user_email='$chng_email', femail='$chng_femail', user_website='$chng_url', user_icq='$chng_user_icq', user_aim='$chng_user_aim', user_yim='$chng_user_yim', user_msnm='$chng_user_msnm', user_from='$chng_user_from', user_occ='$chng_user_occ', user_interests='$chng_user_intrest', user_viewemail='$chng_user_viewemail', user_avatar='$chng_avatar', user_sig='$chng_user_sig', newsletter='$chng_newsletter' where user_id='$chng_uid'");
+			$db->sql_query("update " . $user_prefix . "_users set username='$chng_uname', name='$chng_name', user_email='$chng_email', femail='$chng_femail', user_website='$chng_url', user_icq='$chng_user_icq', user_aim='$chng_user_aim', user_yim='$chng_user_yim', user_msnm='$chng_user_msnm', user_from='$chng_user_from', user_occ='$chng_user_occ', user_interests='$chng_user_intrest', user_viewemail='$chng_user_viewemail', user_avatar='$chng_avatar', nuke_user_sig='$chng_nuke_user_sig', newsletter='$chng_newsletter' where user_id='$chng_uid'");
 
 		}
 
@@ -590,7 +590,7 @@ if ($row2['radminsuper'] == 1 || $auth_user == 1) {
 
 			$cpass = md5($chng_pass);
 
-			$db->sql_query("update " . $user_prefix . "_users set username='$chng_uname', name='$chng_name', user_email='$chng_email', femail='$chng_femail', user_website='$chng_url', user_icq='$chng_user_icq', user_aim='$chng_user_aim', user_yim='$chng_user_yim', user_msnm='$chng_user_msnm', user_from='$chng_user_from', user_occ='$chng_user_occ', user_interests='$chng_user_intrest', user_viewemail='$chng_user_viewemail', user_avatar='$chng_avatar', user_sig='$chng_user_sig', user_password='$cpass', newsletter='$chng_newsletter' where user_id='$chng_uid'");
+			$db->sql_query("update " . $user_prefix . "_users set username='$chng_uname', name='$chng_name', user_email='$chng_email', femail='$chng_femail', user_website='$chng_url', user_icq='$chng_user_icq', user_aim='$chng_user_aim', user_yim='$chng_user_yim', user_msnm='$chng_user_msnm', user_from='$chng_user_from', user_occ='$chng_user_occ', user_interests='$chng_user_intrest', user_viewemail='$chng_user_viewemail', user_avatar='$chng_avatar', nuke_user_sig='$chng_nuke_user_sig', user_password='$cpass', newsletter='$chng_newsletter' where user_id='$chng_uid'");
 
 		}
 
@@ -722,7 +722,7 @@ if ($row2['radminsuper'] == 1 || $auth_user == 1) {
 
 		case "updateUser":
 
-		updateUser($chng_uid, $chng_uname, $chng_name, $chng_url, $chng_email, $chng_femail, $chng_user_icq, $chng_user_aim, $chng_user_yim, $chng_user_msnm, $chng_user_from, $chng_user_occ, $chng_user_intrest, $chng_user_viewemail, $chng_avatar, $chng_user_sig, $chng_pass, $chng_pass2, $chng_newsletter, $subscription, $subscription_expire, $reason);
+		updateUser($chng_uid, $chng_uname, $chng_name, $chng_url, $chng_email, $chng_femail, $chng_user_icq, $chng_user_aim, $chng_user_yim, $chng_user_msnm, $chng_user_from, $chng_user_occ, $chng_user_intrest, $chng_user_viewemail, $chng_avatar, $chng_nuke_user_sig, $chng_pass, $chng_pass2, $chng_newsletter, $subscription, $subscription_expire, $reason);
 
 		break;
 
@@ -910,7 +910,7 @@ if ($row2['radminsuper'] == 1 || $auth_user == 1) {
 
 			$add_avatar = "gallery/007.gif";
 
-			$add_user_sig = filter($add_user_sig, "", 1);
+			$add_nuke_user_sig = filter($add_nuke_user_sig, "", 1);
 
 			$add_pass = filter($add_pass, "nohtml", 1);
 
@@ -918,9 +918,9 @@ if ($row2['radminsuper'] == 1 || $auth_user == 1) {
 
 			$sql = "insert into " . $user_prefix . "_users ";
 
-			$sql .= "(user_id,name,username,user_email,femail,user_website,nuke_user_regdate,user_icq,user_aim,user_yim,user_msnm,user_from,user_occ,user_interests,user_viewemail,user_avatar,user_sig,user_password,newsletter,broadcast,popmeson) ";
+			$sql .= "(user_id,name,username,user_email,femail,user_website,nuke_user_regdate,user_icq,user_aim,user_yim,user_msnm,user_from,user_occ,user_interests,user_viewemail,user_avatar,nuke_user_sig,user_password,newsletter,broadcast,popmeson) ";
 
-			$sql .= "values (NULL,'$add_name','$add_uname','$add_email','$add_femail','$add_url','$nuke_user_regdate','$add_user_icq','$add_user_aim','$add_user_yim','$add_user_msnm','$add_user_from','$add_user_occ','$add_user_intrest','$add_user_viewemail','$add_avatar','$add_user_sig','$add_pass','$add_newsletter','1','0')";
+			$sql .= "values (NULL,'$add_name','$add_uname','$add_email','$add_femail','$add_url','$nuke_user_regdate','$add_user_icq','$add_user_aim','$add_user_yim','$add_user_msnm','$add_user_from','$add_user_occ','$add_user_intrest','$add_user_viewemail','$add_avatar','$add_nuke_user_sig','$add_pass','$add_newsletter','1','0')";
 
 			$result = $db->sql_query($sql);
 
