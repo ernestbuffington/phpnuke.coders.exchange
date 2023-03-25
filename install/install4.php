@@ -505,7 +505,7 @@ echo "<?xml version=\"1.0\" encoding=\"iso-8859-1\"?".">";
 			<div class="install-form">
 				<div class="form-block">
 					<table width="100%">
-						<tr><td class="error" align="center">PLEASE REMEMBER TO COMPLETELY<br/>REMOVE THE INSTALLATION DIRECTORY</td></tr>
+						<tr><td class="error" align="center">Enjoy your new PHP-Nuke Portal!</td></tr>
 						<tr><td align="center"><h5>Administration Login Details</h5></td></tr>
 						<tr><td align="center" class="notice"><b>Username : <?=$setup_admin?></b></td></tr>
 						<tr><td align="center" class="notice"><b>Password : <?php echo $adminPassword; ?></b></td></tr>
