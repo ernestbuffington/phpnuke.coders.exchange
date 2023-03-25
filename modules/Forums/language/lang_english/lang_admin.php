@@ -743,7 +743,7 @@ $lang['Install_No_PCRE'] = 'phpBB2 Requires the Perl-Compatible Regular Expressi
 // Version Check
 //
 $lang['Version_up_to_date'] = 'Your installation is up to date, no updates are available for your version of phpBB.';
-$lang['Version_not_up_to_date'] = 'Your installation does <b>not</b> seem to be up to date. Updates are available for your version of phpBB, please visit <a href="http://www.nukeresources.com" target="_new">http://www.nukeresources.com</a> to obtain the latest version of <b>BBToNuke</b> (the ported version of phpBB files for phpNuke).';
+$lang['Version_not_up_to_date'] = 'Your installation does <b>not</b> seem to be up to date. Updates are available for your version of phpBB, please visit <a href="http://www.phpnuke.coders.exchange" target="_new">http://www.phpnuke.coders.exchange</a> to obtain the latest version of <b>BBToNuke</b> (the ported version of phpBB files for phpNuke).';
 $lang['Latest_version_info'] = 'The latest available version is <b>phpBB %s</b>.';
 $lang['Current_version_info'] = 'You are running <b>phpBB %s</b>.';
 $lang['Connect_socket_error'] = 'Unable to open connection to phpBB Server, reported error is:<br />%s';
