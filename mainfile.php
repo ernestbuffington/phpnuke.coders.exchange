@@ -222,8 +222,6 @@ if (!defined('ADMIN_FILE')) {
   {
    die ($htmltags);
   }
-}
-
  foreach ($_POST as $secvalue) {
 
   if ((preg_match('#<[^>]*iframe*"?[^>]*#mi', $secvalue)) ||
@@ -235,10 +233,10 @@ if (!defined('ADMIN_FILE')) {
   (preg_match('#<[^>]*body*"?[^>]*#mi', $secvalue)) ||
   (preg_match('#<[^>]style*"?[^>]*#mi', $secvalue))) {
    die ($htmltags);
+   }
   }
  }
 }
-
 # add 3rd party backward version comapatibility defines
 # Inspired by phoenix-cms at website-portals.net
 # Absolute Nuke directory
