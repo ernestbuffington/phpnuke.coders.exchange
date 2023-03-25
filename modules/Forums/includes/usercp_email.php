@@ -106,7 +106,7 @@ if ( $result = $db->sql_query($sql) )
 
         if ( $row['user_viewemail'] || $userdata['user_level'] == ADMIN )
         {
-                if ( time() - $userdata['user_emailtime'] < $board_config['flood_interval'] )
+                if ( time() - $userdata['nuke_user_emailtime'] < $board_config['flood_interval'] )
                 {
                         message_die(GENERAL_MESSAGE, $lang['Flood_email_limit']);
                 }
@@ -138,7 +138,7 @@ if ( $result = $db->sql_query($sql) )
                         if ( !$error )
                         {
                                 $sql = "UPDATE " . USERS_TABLE . "
-                                        SET user_emailtime = " . time() . "
+                                        SET nuke_user_emailtime = " . time() . "
                                         WHERE user_id = " . $userdata['user_id'];
                                 if ( $result = $db->sql_query($sql) )
                                 {

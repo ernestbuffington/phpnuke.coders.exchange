@@ -1063,7 +1063,7 @@ CREATE TABLE IF NOT EXISTS `#prefix#_users` (
   `user_new_privmsg` smallint(5) UNSIGNED NOT NULL DEFAULT 0,
   `user_unread_privmsg` smallint(5) UNSIGNED NOT NULL DEFAULT 0,
   `user_last_privmsg` int(11) NOT NULL DEFAULT 0,
-  `user_emailtime` int(11) DEFAULT NULL,
+  `nuke_user_emailtime` int(11) DEFAULT NULL,
   `user_allowhtml` tinyint(1) DEFAULT 1,
   `user_allowbbcode` tinyint(1) DEFAULT 1,
   `user_allowsmile` tinyint(1) DEFAULT 1,
