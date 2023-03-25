@@ -370,6 +370,10 @@ ALTER TABLE `#prefix#_topics`
 
 ALTER TABLE `#prefix#_users`
   ADD PRIMARY KEY (`user_id`),
+  ADD UNIQUE KEY `username_clean` (`username_clean`),
+  ADD KEY `user_birthday` (`user_birthday`),
+  ADD KEY `user_email_hash` (`user_email_hash`),
+  ADD KEY `user_type` (`user_type`),
   ADD KEY `uid` (`user_id`),
   ADD KEY `uname` (`username`),
   ADD KEY `user_session_time` (`user_session_time`),
@@ -575,3 +579,6 @@ ALTER TABLE `#prefix#_users`
 
 ALTER TABLE `#prefix#_users_temp`
   MODIFY `user_id` int(10) NOT NULL AUTO_INCREMENT;
+  
+ALTER TABLE `#prefix#_users`
+  MODIFY `user_id` mediumint(8) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
