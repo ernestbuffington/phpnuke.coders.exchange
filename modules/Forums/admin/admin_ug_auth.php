@@ -586,7 +586,7 @@ endif;
     }
 
             message_die(GENERAL_MESSAGE, $message);
-            $cache->delete('forum_moderators', 'config');
+            //$cache->delete('forum_moderators', 'config');
     }
 } elseif (( $mode == 'user' && ( isset($_POST['username']) || $user_id ) ) || ( $mode == 'group' && $group_id )) {
     if ( isset($_POST['username']) )
