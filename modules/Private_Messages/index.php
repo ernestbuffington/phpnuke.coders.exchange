@@ -2425,7 +2425,7 @@ else if ( $submit || $refresh || $mode != '' )
 
 
 
-                        $sql = "SELECT user_id, user_notify_pm, user_email, user_lang, user_active
+                        $sql = "SELECT user_id, nuke_user_notify_pm, user_email, user_lang, user_active
 
                                 FROM " . USERS_TABLE . "
 
@@ -2736,7 +2736,7 @@ else if ( $submit || $refresh || $mode != '' )
 
 
 
-                        if ( $to_userdata['user_notify_pm'] && !empty($to_userdata['user_email']) && $to_userdata['user_active'] )
+                        if ( $to_userdata['nuke_user_notify_pm'] && !empty($to_userdata['user_email']) && $to_userdata['user_active'] )
 
                         {
 

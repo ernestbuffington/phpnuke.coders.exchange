@@ -289,7 +289,7 @@ if ( $mode == 'edit' || $mode == 'save' && ( isset($_POST['username']) || isset(
                 $user_avatar_filetype = ( !empty($_FILES['avatar']['type']) ) ? $_FILES['avatar']['type'] : '';
 
                 $user_avatar = ( empty($user_avatar_loc) ) ? $this_userdata['user_avatar'] : '';
-                $user_avatar_type = ( empty($user_avatar_loc) ) ? $this_userdata['user_avatar_type'] : '';
+                $nuke_user_avatar_type = ( empty($user_avatar_loc) ) ? $this_userdata['nuke_user_avatar_type'] : '';
 
                 $user_status = ( !empty($_POST['user_status']) ) ? intval( $_POST['user_status'] ) : 0;
                 $user_allowpm = ( !empty($_POST['user_allowpm']) ) ? intval( $_POST['user_allowpm'] ) : 0;
@@ -320,7 +320,7 @@ if ( $mode == 'edit' || $mode == 'save' && ( isset($_POST['username']) || isset(
                         if ( !isset($_POST['cancelavatar']))
                         {
                                 $user_avatar = $user_avatar_category . '/' . $user_avatar_local;
-                                $user_avatar_type = USER_AVATAR_GALLERY;
+                                $nuke_user_avatar_type = USER_AVATAR_GALLERY;
                         }
                 }
         }
@@ -413,14 +413,14 @@ if ( $mode == 'edit' || $mode == 'save' && ( isset($_POST['username']) || isset(
                 $avatar_sql = "";
                 if( isset($_POST['avatardel']) )
                 {
-                        if( $this_userdata['user_avatar_type'] == USER_AVATAR_UPLOAD && $this_userdata['user_avatar'] != "" )
+                        if( $this_userdata['nuke_user_avatar_type'] == USER_AVATAR_UPLOAD && $this_userdata['user_avatar'] != "" )
                         {
 				if( file_exists(phpbb_realpath('./../' . $board_config['avatar_path'] . "/" . $this_userdata['user_avatar'])) )
 				{
 					unlink('./../' . $board_config['avatar_path'] . "/" . $this_userdata['user_avatar']);
                                 }
                         }
-                        $avatar_sql = ", user_avatar = '', user_avatar_type = " . USER_AVATAR_NONE;
+                        $avatar_sql = ", user_avatar = '', nuke_user_avatar_type = " . USER_AVATAR_NONE;
                 }
                 else if( ( $user_avatar_loc != "" || !empty($user_avatar_url) ) && !$error )
                 {
@@ -481,7 +481,7 @@ if ( $mode == 'edit' || $mode == 'save' && ( isset($_POST['username']) || isset(
 
                                                                 $avatar_filename = $user_id . $imgtype;
 
-                                                                if( $this_userdata['user_avatar_type'] == USER_AVATAR_UPLOAD && $this_userdata['user_avatar'] != "" )
+                                                                if( $this_userdata['nuke_user_avatar_type'] == USER_AVATAR_UPLOAD && $this_userdata['user_avatar'] != "" )
                                                                 {
                                                                         if( file_exists(phpbb_realpath("./../" . $board_config['avatar_path'] . "/" . $this_userdata['user_avatar'])) )
                                                                         {
@@ -490,7 +490,7 @@ if ( $mode == 'edit' || $mode == 'save' && ( isset($_POST['username']) || isset(
                                                                 }
                                                                 copy($user_avatar_loc, "./../" . $board_config['avatar_path'] . "/$avatar_filename");
 
-                                                                $avatar_sql = ", user_avatar = '$avatar_filename', user_avatar_type = " . USER_AVATAR_UPLOAD;
+                                                                $avatar_sql = ", user_avatar = '$avatar_filename', nuke_user_avatar_type = " . USER_AVATAR_UPLOAD;
                                                         }
                                                         else
                                                         {
@@ -590,7 +590,7 @@ if ( $mode == 'edit' || $mode == 'save' && ( isset($_POST['username']) || isset(
 
                                                                                 $avatar_filename = $user_id . $imgtype;
 
-                                                                                if( $this_userdata['user_avatar_type'] == USER_AVATAR_UPLOAD && $this_userdata['user_avatar'] != "")
+                                                                                if( $this_userdata['nuke_user_avatar_type'] == USER_AVATAR_UPLOAD && $this_userdata['user_avatar'] != "")
                                                                                 {
                                                                                         if( file_exists(phpbb_realpath("./../" . $board_config['avatar_path'] . "/" . $this_userdata['user_avatar'])) )
                                                                                         {
@@ -600,7 +600,7 @@ if ( $mode == 'edit' || $mode == 'save' && ( isset($_POST['username']) || isset(
                                                                                 copy($tmp_filename, "./../" . $board_config['avatar_path'] . "/$avatar_filename");
                                                                                 unlink($tmp_filename);
 
-                                                                                $avatar_sql = ", user_avatar = '$avatar_filename', user_avatar_type = " . USER_AVATAR_UPLOAD;
+                                                                                $avatar_sql = ", user_avatar = '$avatar_filename', nuke_user_avatar_type = " . USER_AVATAR_UPLOAD;
                                                                         }
                                                                         else
                                                                         {
@@ -661,7 +661,7 @@ if ( $mode == 'edit' || $mode == 'save' && ( isset($_POST['username']) || isset(
 
                         if( preg_match("#^(http:\/\/[a-z0-9\-]+?\.([a-z0-9\-]+\.)*[a-z]+\/.*?\.(gif|jpg|png)$)#is", (string) $user_avatar_remoteurl) )
                         {
-                                $avatar_sql = ", user_avatar = '" . str_replace("\'", "''", (string) $user_avatar_remoteurl) . "', user_avatar_type = " . USER_AVATAR_REMOTE;
+                                $avatar_sql = ", user_avatar = '" . str_replace("\'", "''", (string) $user_avatar_remoteurl) . "', nuke_user_avatar_type = " . USER_AVATAR_REMOTE;
                         }
                         else
                         {
@@ -671,7 +671,7 @@ if ( $mode == 'edit' || $mode == 'save' && ( isset($_POST['username']) || isset(
                 }
                 else if( $user_avatar_local != "" && $avatar_sql == "" && !$error )
                 {
-                        $avatar_sql = ", user_avatar = '" . str_replace("\'", "''", phpbb_ltrim(basename((string) $user_avatar_category), "'") . '/' . phpbb_ltrim(basename((string) $user_avatar_local), "'")) . "', user_avatar_type = " . USER_AVATAR_GALLERY;
+                        $avatar_sql = ", user_avatar = '" . str_replace("\'", "''", phpbb_ltrim(basename((string) $user_avatar_category), "'") . '/' . phpbb_ltrim(basename((string) $user_avatar_local), "'")) . "', nuke_user_avatar_type = " . USER_AVATAR_GALLERY;
                 }
 
                 //
@@ -680,7 +680,7 @@ if ( $mode == 'edit' || $mode == 'save' && ( isset($_POST['username']) || isset(
                 if( !$error )
                 {
                         $sql = "UPDATE " . USERS_TABLE . "
-                                SET " . $username_sql . $passwd_sql . "user_email = '" . str_replace("\'", "''", (string) $email) . "', user_icq = '" . str_replace("\'", "''", (string) $icq) . "', user_website = '" . str_replace("\'", "''", (string) $website) . "', user_occ = '" . str_replace("\'", "''", (string) $occupation) . "', user_from = '" . str_replace("\'", "''", (string) $location) . "', user_interests = '" . str_replace("\'", "''", (string) $interests) . "', user_sig = '" . str_replace("\'", "''", (string) $signature) . "', user_viewemail = $viewemail, user_aim = '" . str_replace("\'", "''", (string) $aim) . "', user_yim = '" . str_replace("\'", "''", (string) $yim) . "', user_msnm = '" . str_replace("\'", "''", (string) $msn) . "', user_attachsig = $attachsig, user_sig_bbcode_uid = '$signature_bbcode_uid', user_allowsmile = $allowsmilies, user_allowhtml = $allowhtml, user_allowavatar = $user_allowavatar, user_allowbbcode = $allowbbcode, user_allow_viewonline = $allowviewonline, user_notify = $notifyreply, user_allow_pm = $user_allowpm, user_notify_pm = $notifypm, user_popup_pm = $popuppm, user_lang = '" . str_replace("\'", "''", (string) $user_lang) . "', nuke_user_style = $nuke_user_style, nuke_user_timezone = $nuke_user_timezone, nuke_user_dateformat = '" . str_replace("\'", "''", (string) $nuke_user_dateformat) . "', user_active = $user_status, nuke_user_rank = $nuke_user_rank" . $avatar_sql . "
+                                SET " . $username_sql . $passwd_sql . "user_email = '" . str_replace("\'", "''", (string) $email) . "', user_icq = '" . str_replace("\'", "''", (string) $icq) . "', user_website = '" . str_replace("\'", "''", (string) $website) . "', user_occ = '" . str_replace("\'", "''", (string) $occupation) . "', user_from = '" . str_replace("\'", "''", (string) $location) . "', user_interests = '" . str_replace("\'", "''", (string) $interests) . "', user_sig = '" . str_replace("\'", "''", (string) $signature) . "', user_viewemail = $viewemail, user_aim = '" . str_replace("\'", "''", (string) $aim) . "', user_yim = '" . str_replace("\'", "''", (string) $yim) . "', user_msnm = '" . str_replace("\'", "''", (string) $msn) . "', user_attachsig = $attachsig, user_sig_bbcode_uid = '$signature_bbcode_uid', user_allowsmile = $allowsmilies, user_allowhtml = $allowhtml, user_allowavatar = $user_allowavatar, user_allowbbcode = $allowbbcode, user_allow_viewonline = $allowviewonline, user_notify = $notifyreply, user_allow_pm = $user_allowpm, nuke_user_notify_pm = $notifypm, user_popup_pm = $popuppm, user_lang = '" . str_replace("\'", "''", (string) $user_lang) . "', nuke_user_style = $nuke_user_style, nuke_user_timezone = $nuke_user_timezone, nuke_user_dateformat = '" . str_replace("\'", "''", (string) $nuke_user_dateformat) . "', user_active = $user_status, nuke_user_rank = $nuke_user_rank" . $avatar_sql . "
 				WHERE user_id = $user_id";
 
                         if( $result = $db->sql_query($sql) )
@@ -801,7 +801,7 @@ if ( $mode == 'edit' || $mode == 'save' && ( isset($_POST['username']) || isset(
                 $signature = preg_replace($html_entities_match, $html_entities_replace, (string) $signature);
 
                 $viewemail = $this_userdata['user_viewemail'];
-                $notifypm = $this_userdata['user_notify_pm'];
+                $notifypm = $this_userdata['nuke_user_notify_pm'];
                 $popuppm = $this_userdata['user_popup_pm'];
                 $notifyreply = $this_userdata['user_notify'];
                 $attachsig = $this_userdata['user_attachsig'];
@@ -811,7 +811,7 @@ if ( $mode == 'edit' || $mode == 'save' && ( isset($_POST['username']) || isset(
                 $allowviewonline = $this_userdata['user_allow_viewonline'];
 
                 $user_avatar = $this_userdata['user_avatar'];
-                $user_avatar_type = $this_userdata['user_avatar_type'];
+                $nuke_user_avatar_type = $this_userdata['nuke_user_avatar_type'];
                 $nuke_user_style = $this_userdata['nuke_user_style'];
                 $user_lang = $this_userdata['user_lang'];
                 $nuke_user_timezone = $this_userdata['nuke_user_timezone'];
@@ -969,9 +969,9 @@ if ( $mode == 'edit' || $mode == 'save' && ( isset($_POST['username']) || isset(
                         $s_hidden_fields .= '<input type="hidden" name="avatarlocal" value="' . $user_avatar_local . '" /><input type="hidden" name="avatarcatname" value="' . $user_avatar_category . '" />';
                 }
 
-                if( $user_avatar_type )
+                if( $nuke_user_avatar_type )
                 {
-                        switch( $user_avatar_type )
+                        switch( $nuke_user_avatar_type )
                         {
                                 case USER_AVATAR_UPLOAD:
                                         $avatar = '<img src="../../../' . $board_config['avatar_path'] . '/' . $user_avatar . '" alt="" />';

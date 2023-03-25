@@ -216,7 +216,7 @@ if (
         $user_avatar_filetype = ( !empty($_FILES['avatar']['type']) ) ? $_FILES['avatar']['type'] : '';
 
         $user_avatar = ( empty($user_avatar_local) && $mode == 'editprofile' ) ? $userdata['user_avatar'] : '';
-        $user_avatar_type = ( empty($user_avatar_local) && $mode == 'editprofile' ) ? $userdata['user_avatar_type'] : '';
+        $nuke_user_avatar_type = ( empty($user_avatar_local) && $mode == 'editprofile' ) ? $userdata['nuke_user_avatar_type'] : '';
 
         if ( (isset($_POST['avatargallery']) || isset($_POST['submitavatar']) || isset($_POST['cancelavatar'])) && (!isset($_POST['submit'])) )
         {
@@ -243,7 +243,7 @@ if (
                 if ( !isset($_POST['cancelavatar']))
                 {
                         $user_avatar = $user_avatar_category . '/' . $user_avatar_local;
-                        $user_avatar_type = USER_AVATAR_GALLERY;
+                        $nuke_user_avatar_type = USER_AVATAR_GALLERY;
                 }
         }
 }
@@ -468,7 +468,7 @@ if ( isset($_POST['submit']) )
 
         if ( isset($_POST['avatardel']) && $mode == 'editprofile' )
         {
-                $avatar_sql = user_avatar_delete($userdata['user_avatar_type'], $userdata['user_avatar']);
+                $avatar_sql = user_avatar_delete($userdata['nuke_user_avatar_type'], $userdata['user_avatar']);
         }
         else
         if ( ( !empty($user_avatar_upload) || !empty($user_avatar_name) ) && $board_config['allow_avatar_upload'] )
@@ -476,7 +476,7 @@ if ( isset($_POST['submit']) )
                 if ( !empty($user_avatar_upload) )
                 {
                         $avatar_mode = (empty($user_avatar_name)) ? 'remote' : 'local';
-                        $avatar_sql = user_avatar_upload($mode, $avatar_mode, $userdata['user_avatar'], $userdata['user_avatar_type'], $error, $error_msg, $user_avatar_upload, $user_avatar_name, $user_avatar_size, $user_avatar_filetype);
+                        $avatar_sql = user_avatar_upload($mode, $avatar_mode, $userdata['user_avatar'], $userdata['nuke_user_avatar_type'], $error, $error_msg, $user_avatar_upload, $user_avatar_name, $user_avatar_size, $user_avatar_filetype);
                 }
                 else if ( !empty($user_avatar_name) )
                 {
@@ -488,12 +488,12 @@ if ( isset($_POST['submit']) )
         }
         else if ( $user_avatar_remoteurl != '' && $board_config['allow_avatar_remote'] )
         {
-                user_avatar_delete($userdata['user_avatar_type'], $userdata['user_avatar']);
+                user_avatar_delete($userdata['nuke_user_avatar_type'], $userdata['user_avatar']);
                 $avatar_sql = user_avatar_url($mode, $error, $error_msg, $user_avatar_remoteurl);
         }
         else if ( $user_avatar_local != '' && $board_config['allow_avatar_local'] )
         {
-                user_avatar_delete($userdata['user_avatar_type'], $userdata['user_avatar']);
+                user_avatar_delete($userdata['nuke_user_avatar_type'], $userdata['user_avatar']);
                 $avatar_sql = user_avatar_gallery($mode, $error, $error_msg, $user_avatar_local, $user_avatar_category);
         }
 
@@ -527,7 +527,7 @@ if ( isset($_POST['submit']) )
                         }
 
                         $sql = "UPDATE " . USERS_TABLE . "
-				SET " . $username_sql . $passwd_sql . "user_email = '" . str_replace("\'", "''", (string) $email) ."', user_icq = '" . str_replace("\'", "''", (string) $icq) . "', user_website = '" . str_replace("\'", "''", (string) $website) . "', user_occ = '" . str_replace("\'", "''", (string) $occupation) . "', user_from = '" . str_replace("\'", "''", (string) $location) . "', user_interests = '" . str_replace("\'", "''", (string) $interests) . "', user_sig = '" . str_replace("\'", "''", (string) $signature) . "', user_sig_bbcode_uid = '$signature_bbcode_uid', user_viewemail = $viewemail, user_aim = '" . str_replace("\'", "''", str_replace(' ', '+', (string) $aim)) . "', user_yim = '" . str_replace("\'", "''", (string) $yim) . "', user_msnm = '" . str_replace("\'", "''", (string) $msn) . "', user_attachsig = $attachsig, user_allowsmile = $allowsmilies, user_allowhtml = $allowhtml, user_allowbbcode = $allowbbcode, user_allow_viewonline = $allowviewonline, user_notify = $notifyreply, user_notify_pm = $notifypm, user_popup_pm = $popup_pm, nuke_user_timezone = $nuke_user_timezone, nuke_user_dateformat = '" . str_replace("\'", "''", (string) $nuke_user_dateformat) . "', user_lang = '" . str_replace("\'", "''", (string) $user_lang) . "', nuke_user_style = $nuke_user_style, user_active = $user_active, user_actkey = '" . str_replace("\'", "''", $user_actkey) . "'" . $avatar_sql . "
+				SET " . $username_sql . $passwd_sql . "user_email = '" . str_replace("\'", "''", (string) $email) ."', user_icq = '" . str_replace("\'", "''", (string) $icq) . "', user_website = '" . str_replace("\'", "''", (string) $website) . "', user_occ = '" . str_replace("\'", "''", (string) $occupation) . "', user_from = '" . str_replace("\'", "''", (string) $location) . "', user_interests = '" . str_replace("\'", "''", (string) $interests) . "', user_sig = '" . str_replace("\'", "''", (string) $signature) . "', user_sig_bbcode_uid = '$signature_bbcode_uid', user_viewemail = $viewemail, user_aim = '" . str_replace("\'", "''", str_replace(' ', '+', (string) $aim)) . "', user_yim = '" . str_replace("\'", "''", (string) $yim) . "', user_msnm = '" . str_replace("\'", "''", (string) $msn) . "', user_attachsig = $attachsig, user_allowsmile = $allowsmilies, user_allowhtml = $allowhtml, user_allowbbcode = $allowbbcode, user_allow_viewonline = $allowviewonline, user_notify = $notifyreply, nuke_user_notify_pm = $notifypm, user_popup_pm = $popup_pm, nuke_user_timezone = $nuke_user_timezone, nuke_user_dateformat = '" . str_replace("\'", "''", (string) $nuke_user_dateformat) . "', user_lang = '" . str_replace("\'", "''", (string) $user_lang) . "', nuke_user_style = $nuke_user_style, user_active = $user_active, user_actkey = '" . str_replace("\'", "''", $user_actkey) . "'" . $avatar_sql . "
 				WHERE user_id = $user_id";
                         if ( !($result = $db->sql_query($sql)) )
                         {
@@ -632,7 +632,7 @@ if ( isset($_POST['submit']) )
                         // Get current date
                         //
                         $reg_date = date("M d, Y");
-			$sql = "INSERT INTO " . USERS_TABLE . "	(user_id, username, nuke_user_regdate, user_password, user_email, user_icq, user_website, user_occ, user_from, user_interests, user_sig, user_sig_bbcode_uid, user_avatar, user_avatar_type, user_viewemail, user_aim, user_yim, user_msnm, user_attachsig, user_allowsmile, user_allowhtml, user_allowbbcode, user_allow_viewonline, user_notify, user_notify_pm, user_popup_pm, nuke_user_timezone, nuke_user_dateformat, user_lang, nuke_user_style, user_level, user_allow_pm, user_active, user_actkey)
+			$sql = "INSERT INTO " . USERS_TABLE . "	(user_id, username, nuke_user_regdate, user_password, user_email, user_icq, user_website, user_occ, user_from, user_interests, user_sig, user_sig_bbcode_uid, user_avatar, nuke_user_avatar_type, user_viewemail, user_aim, user_yim, user_msnm, user_attachsig, user_allowsmile, user_allowhtml, user_allowbbcode, user_allow_viewonline, user_notify, nuke_user_notify_pm, user_popup_pm, nuke_user_timezone, nuke_user_dateformat, user_lang, nuke_user_style, user_level, user_allow_pm, user_active, user_actkey)
 				VALUES ($user_id, '" . str_replace("\'", "''", (string) $username) . "', " . time() . ", '" . str_replace("\'", "''", (string) $new_password) . "', '" . str_replace("\'", "''", (string) $email) . "', '" . str_replace("\'", "''", (string) $icq) . "', '" . str_replace("\'", "''", (string) $website) . "', '" . str_replace("\'", "''", (string) $occupation) . "', '" . str_replace("\'", "''", (string) $location) . "', '" . str_replace("\'", "''", (string) $interests) . "', '" . str_replace("\'", "''", (string) $signature) . "', '$signature_bbcode_uid', $avatar_sql, $viewemail, '" . str_replace("\'", "''", str_replace(' ', '+', (string) $aim)) . "', '" . str_replace("\'", "''", (string) $yim) . "', '" . str_replace("\'", "''", (string) $msn) . "', $attachsig, $allowsmilies, $allowhtml, $allowbbcode, $allowviewonline, $notifyreply, $notifypm, $popup_pm, $nuke_user_timezone, $reg_date, '" . str_replace("\'", "''", (string) $user_lang) . "', $nuke_user_style, 0, 1, ";
                         if ( $board_config['require_activation'] == USER_ACTIVATION_SELF || $board_config['require_activation'] == USER_ACTIVATION_ADMIN || $coppa )
                         {
@@ -827,7 +827,7 @@ else if ( $mode == 'editprofile' && !isset($_POST['avatargallery']) && !isset($_
         $signature = ($signature_bbcode_uid != '') ? preg_replace("/:(([a-z0-9]+:)?)$signature_bbcode_uid(=|\])/si", '\\3', (string) $userdata['user_sig']) : $userdata['user_sig'];
 
         $viewemail = $userdata['user_viewemail'];
-        $notifypm = $userdata['user_notify_pm'];
+        $notifypm = $userdata['nuke_user_notify_pm'];
         $popup_pm = $userdata['user_popup_pm'];
         $notifyreply = $userdata['user_notify'];
         $attachsig = $userdata['user_attachsig'];
@@ -837,7 +837,7 @@ else if ( $mode == 'editprofile' && !isset($_POST['avatargallery']) && !isset($_
         $allowviewonline = $userdata['user_allow_viewonline'];
 
         $user_avatar = ( $userdata['user_allowavatar'] ) ? $userdata['user_avatar'] : '';
-        $user_avatar_type = ( $userdata['user_allowavatar'] ) ? $userdata['user_avatar_type'] : USER_AVATAR_NONE;
+        $nuke_user_avatar_type = ( $userdata['user_allowavatar'] ) ? $userdata['nuke_user_avatar_type'] : USER_AVATAR_NONE;
 
         $nuke_user_style = $userdata['nuke_user_style'];
         $user_lang = $userdata['user_lang'];
@@ -890,9 +890,9 @@ else
         }
 
         $avatar_img = '';
-        if ( $user_avatar_type )
+        if ( $nuke_user_avatar_type )
         {
-                switch( $user_avatar_type )
+                switch( $nuke_user_avatar_type )
                 {
                         case USER_AVATAR_UPLOAD:
                                 $avatar_img = ( $board_config['allow_avatar_upload'] ) ? '<img src="' . $board_config['avatar_path'] . '/' . $user_avatar . '" alt="" />' : '';

@@ -88,9 +88,9 @@ else
 }
 
 $avatar_img = '';
-if ( $profiledata['user_avatar_type'] && $profiledata['user_allowavatar'] )
+if ( $profiledata['nuke_user_avatar_type'] && $profiledata['user_allowavatar'] )
 {
-	switch( $profiledata['user_avatar_type'] )
+	switch( $profiledata['nuke_user_avatar_type'] )
 	{
 		case USER_AVATAR_UPLOAD:
 			$avatar_img = ( $board_config['allow_avatar_upload'] ) ? '<img src="' . $board_config['avatar_path'] . '/' . $profiledata['user_avatar'] . '" alt="" border="0" />' : '';

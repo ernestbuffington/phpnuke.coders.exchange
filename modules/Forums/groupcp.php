@@ -48,16 +48,16 @@ function generate_user_info(&$row, $date_format, $group_mod, &$from, &$posts, &$
 
         global $lang, $images, $board_config, $phpEx;
 
-        if(!isset($row['user_avatar_type'])) { $row['user_avatar_type'] = ''; }
+        if(!isset($row['nuke_user_avatar_type'])) { $row['nuke_user_avatar_type'] = ''; }
 
         $from = ( !empty($row['user_from']) ) ? $row['user_from'] : '&nbsp;';
         $joined = create_date($date_format, $row['nuke_user_regdate'], $board_config['board_timezone']);
         $posts = ( $row['nuke_user_posts'] ) ? $row['nuke_user_posts'] : 0;
 
         $poster_avatar = '';
-        if ( $row['user_avatar_type'] && $row['user_id'] != ANONYMOUS && $row['user_allowavatar'] )
+        if ( $row['nuke_user_avatar_type'] && $row['user_id'] != ANONYMOUS && $row['user_allowavatar'] )
         {
-                switch( $row['user_avatar_type'] )
+                switch( $row['nuke_user_avatar_type'] )
                 {
                         case USER_AVATAR_UPLOAD:
                                 $poster_avatar = ( $board_config['allow_avatar_upload'] ) ? '<img src="' . $board_config['avatar_path'] . '/' . $row['user_avatar'] . '" alt="" border="0" />' : '';

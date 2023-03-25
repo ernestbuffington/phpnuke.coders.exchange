@@ -101,7 +101,7 @@ while ($config_row = $db->sql_fetchrow($config_result))
 
 // Select all avatars and usernames that have an uploaded avatar currently
 $sql = "SELECT user_id, username, user_avatar FROM " . USERS_TABLE . "
-	WHERE user_avatar_type = " . USER_AVATAR_UPLOAD . " AND user_avatar IS NOT NULL";
+	WHERE nuke_user_avatar_type = " . USER_AVATAR_UPLOAD . " AND user_avatar IS NOT NULL";
 
 if(!$result = $db->sql_query($sql))
 {

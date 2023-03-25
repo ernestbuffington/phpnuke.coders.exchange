@@ -331,7 +331,7 @@ function activate($username, $check_num) {
 
 		if ($check_num == $row['check_num']) {
 
-			$db->sql_query("INSERT INTO ".$user_prefix."_users (user_id, username, user_email, user_password, user_avatar, user_avatar_type, nuke_user_regdate, user_lang) VALUES (NULL, '".$row['username']."', '".$row['user_email']."', '$user_password', 'gallery/blank.gif', '3', '".$row['nuke_user_regdate']."', '$language')");
+			$db->sql_query("INSERT INTO ".$user_prefix."_users (user_id, username, user_email, user_password, user_avatar, nuke_user_avatar_type, nuke_user_regdate, user_lang) VALUES (NULL, '".$row['username']."', '".$row['user_email']."', '$user_password', 'gallery/blank.gif', '3', '".$row['nuke_user_regdate']."', '$language')");
 
 			$result2 = $db->sql_query("SELECT user_id FROM ".$user_prefix."_users WHERE username='".$row['username']."'");
 
@@ -478,11 +478,11 @@ function userinfo($username, $bypass=0, $hid=0, $url=0) {
 
     }
 
-	if ($userinfo['user_avatar_type'] == 1) { 
+	if ($userinfo['nuke_user_avatar_type'] == 1) { 
 
 		$userinfo['user_avatar'] = $board_config['avatar_path']."/".$userinfo['user_avatar']; 
 
-	} elseif ($userinfo['user_avatar_type'] == 2) {
+	} elseif ($userinfo['nuke_user_avatar_type'] == 2) {
 
 		$userinfo['user_avatar'] = $userinfo['user_avatar'];
 
@@ -1956,17 +1956,17 @@ function edituser() {
 
 		echo "<tr><td bgcolor='$bgcolor2'><b>"._PMNOTIFY.":</b></td><td bgcolor='$bgcolor3'>";
 
-		if ($userinfo['user_notify_pm'] == 1) {
+		if ($userinfo['nuke_user_notify_pm'] == 1) {
 
-			echo "<input type=\"radio\" name=\"user_notify_pm\" value=\"1\" checked>"._YES." &nbsp;"
+			echo "<input type=\"radio\" name=\"nuke_user_notify_pm\" value=\"1\" checked>"._YES." &nbsp;"
 
-			."<input type=\"radio\" name=\"user_notify_pm\" value=\"0\">"._NO."";
+			."<input type=\"radio\" name=\"nuke_user_notify_pm\" value=\"0\">"._NO."";
 
-		} elseif ($userinfo['user_notify_pm'] == 0) {
+		} elseif ($userinfo['nuke_user_notify_pm'] == 0) {
 
-			echo "<input type=\"radio\" name=\"user_notify_pm\" value=\"1\">"._YES." &nbsp;"
+			echo "<input type=\"radio\" name=\"nuke_user_notify_pm\" value=\"1\">"._YES." &nbsp;"
 
-			."<input type=\"radio\" name=\"user_notify_pm\" value=\"0\" checked>"._NO."";
+			."<input type=\"radio\" name=\"nuke_user_notify_pm\" value=\"0\" checked>"._NO."";
 
 		}
 
@@ -2241,11 +2241,11 @@ function edituser() {
 
 		}
 
-		if ($userinfo['user_avatar_type'] == 1) { 
+		if ($userinfo['nuke_user_avatar_type'] == 1) { 
 
 			$userinfo['user_avatar'] = $board_config['avatar_path']."/".$userinfo['user_avatar']; 
 
-		} elseif ($userinfo['user_avatar_type'] == 2) { 
+		} elseif ($userinfo['nuke_user_avatar_type'] == 2) { 
 
 			$userinfo['user_avatar'] = $userinfo['user_avatar']; 
 
@@ -2339,7 +2339,7 @@ function edituser() {
 
 
 
-function saveuser($realname, $user_email, $femail, $user_website, $user_icq, $user_aim, $user_yim, $user_msnm, $user_from, $user_occ, $user_interests, $newsletter, $user_viewemail, $user_allow_viewonline, $user_notify, $user_notify_pm, $user_popup_pm, $user_attachsig, $user_allowbbcode, $user_allowhtml, $user_allowsmile, $nuke_user_timezone, $nuke_user_dateformat, $user_sig, $bio, $user_password, $vpass, $username, $user_id) {
+function saveuser($realname, $user_email, $femail, $user_website, $user_icq, $user_aim, $user_yim, $user_msnm, $user_from, $user_occ, $user_interests, $newsletter, $user_viewemail, $user_allow_viewonline, $user_notify, $nuke_user_notify_pm, $user_popup_pm, $user_attachsig, $user_allowbbcode, $user_allowhtml, $user_allowsmile, $nuke_user_timezone, $nuke_user_dateformat, $user_sig, $bio, $user_password, $vpass, $username, $user_id) {
 
 	$user_avatar = null;
  global $user, $cookie, $userinfo, $EditedMessage, $user_prefix, $db, $module_name, $minpass;
@@ -2434,7 +2434,7 @@ function saveuser($realname, $user_email, $femail, $user_website, $user_icq, $us
 
 				$user_notify = intval($user_notify);
 
-				$user_notify_pm = intval($user_notify_pm);
+				$nuke_user_notify_pm = intval($nuke_user_notify_pm);
 
 				$user_popup_pm = intval($user_popup_pm);
 
@@ -2446,7 +2446,7 @@ function saveuser($realname, $user_email, $femail, $user_website, $user_icq, $us
 
 				$user_id = intval($user_id);
 
-				$db->sql_query("UPDATE ".$user_prefix."_users SET name='$realname', user_email='$user_email', femail='$femail', user_website='$user_website', user_password='$user_password', bio='$bio', user_icq='$user_icq', user_occ='$user_occ', user_from='$user_from', user_interests='$user_interests', user_sig='$user_sig', user_aim='$user_aim', user_yim='$user_yim', user_msnm='$user_msnm', newsletter='$newsletter', user_viewemail='$user_viewemail', user_allow_viewonline='$user_allow_viewonline', user_notify='$user_notify', user_notify_pm='$user_notify_pm', user_popup_pm='$user_popup_pm', user_attachsig='$user_attachsig', user_allowbbcode='$user_allowbbcode', user_allowhtml='$user_allowhtml', user_allowsmile='$user_allowsmile', nuke_user_timezone='$nuke_user_timezone', nuke_user_dateformat='$nuke_user_dateformat' WHERE user_id='$user_id'");
+				$db->sql_query("UPDATE ".$user_prefix."_users SET name='$realname', user_email='$user_email', femail='$femail', user_website='$user_website', user_password='$user_password', bio='$bio', user_icq='$user_icq', user_occ='$user_occ', user_from='$user_from', user_interests='$user_interests', user_sig='$user_sig', user_aim='$user_aim', user_yim='$user_yim', user_msnm='$user_msnm', newsletter='$newsletter', user_viewemail='$user_viewemail', user_allow_viewonline='$user_allow_viewonline', user_notify='$user_notify', nuke_user_notify_pm='$nuke_user_notify_pm', user_popup_pm='$user_popup_pm', user_attachsig='$user_attachsig', user_allowbbcode='$user_allowbbcode', user_allowhtml='$user_allowhtml', user_allowsmile='$user_allowsmile', nuke_user_timezone='$nuke_user_timezone', nuke_user_dateformat='$nuke_user_dateformat' WHERE user_id='$user_id'");
 
 				$sql = "SELECT user_id, username, user_password, storynum, umode, uorder, thold, noscore, ublockon, theme FROM ".$user_prefix."_users WHERE username='$username' AND user_password='$user_password'";
 
@@ -2468,7 +2468,7 @@ function saveuser($realname, $user_email, $femail, $user_website, $user_icq, $us
 
 			} else {
 
-				$db->sql_query("UPDATE ".$user_prefix."_users SET name='$realname', user_email='$user_email', femail='$femail', user_website='$user_website', bio='$bio', user_icq='$user_icq', user_occ='$user_occ', user_from='$user_from', user_interests='$user_interests', user_sig='$user_sig', user_aim='$user_aim', user_yim='$user_yim', user_msnm='$user_msnm', newsletter='$newsletter', user_viewemail='$user_viewemail', user_allow_viewonline='$user_allow_viewonline', user_notify='$user_notify', user_notify_pm='$user_notify_pm', user_popup_pm='$user_popup_pm', user_attachsig='$user_attachsig', user_allowbbcode='$user_allowbbcode', user_allowhtml='$user_allowhtml', user_allowsmile='$user_allowsmile', nuke_user_timezone='$nuke_user_timezone', nuke_user_dateformat='$nuke_user_dateformat' WHERE user_id='$user_id'");
+				$db->sql_query("UPDATE ".$user_prefix."_users SET name='$realname', user_email='$user_email', femail='$femail', user_website='$user_website', bio='$bio', user_icq='$user_icq', user_occ='$user_occ', user_from='$user_from', user_interests='$user_interests', user_sig='$user_sig', user_aim='$user_aim', user_yim='$user_yim', user_msnm='$user_msnm', newsletter='$newsletter', user_viewemail='$user_viewemail', user_allow_viewonline='$user_allow_viewonline', user_notify='$user_notify', nuke_user_notify_pm='$nuke_user_notify_pm', user_popup_pm='$user_popup_pm', user_attachsig='$user_attachsig', user_allowbbcode='$user_allowbbcode', user_allowhtml='$user_allowhtml', user_allowsmile='$user_allowsmile', nuke_user_timezone='$nuke_user_timezone', nuke_user_dateformat='$nuke_user_dateformat' WHERE user_id='$user_id'");
 
 			}
 
@@ -3159,7 +3159,7 @@ function avatarsave($avatar, $category) {
 
 		$newavatar=$category."/".$avatar;
 
-		$db->sql_query("UPDATE ".$user_prefix."_users SET user_avatar='$newavatar', user_avatar_type='3' WHERE user_id = '".intval($cookie[0])."'");
+		$db->sql_query("UPDATE ".$user_prefix."_users SET user_avatar='$newavatar', nuke_user_avatar_type='3' WHERE user_id = '".intval($cookie[0])."'");
 
 		echo "<center><font class=\"content\">Avatar for ".$cookie[1]." Saved!</center></font><br><br>";
 
@@ -3223,7 +3223,7 @@ function avatarlinksave($avatar) {
 
 		if(preg_match("#^(http:\/\/[a-z0-9\-]+?\.([a-z0-9\-]+\.)*[a-z]+\/.*?\.(gif|jpg|png)$)#is", $avatar) && !preg_match('#.php#mi',$avatar) && !preg_match('#.js#mi',$avatar) && !preg_match('#.cgi#mi',$avatar)){
 
-		$db->sql_query("UPDATE ".$user_prefix."_users SET user_avatar='$avatar', user_avatar_type='2' WHERE user_id = '".intval($cookie[0])."'");
+		$db->sql_query("UPDATE ".$user_prefix."_users SET user_avatar='$avatar', nuke_user_avatar_type='2' WHERE user_id = '".intval($cookie[0])."'");
 
 		echo "<center><font class=\"content\">Avatar for ".$cookie[1]." Saved!</center></font><br><br>";
 
@@ -3578,7 +3578,7 @@ switch($op) {
 
 	case "saveuser":
 
-	saveuser($realname, $user_email, $femail, $user_website, $user_icq, $user_aim, $user_yim, $user_msnm, $user_from, $user_occ, $user_interests, $newsletter, $user_viewemail, $user_allow_viewonline, $user_notify, $user_notify_pm, $user_popup_pm, $user_attachsig, $user_allowbbcode, $user_allowhtml, $user_allowsmile, $nuke_user_timezone, $nuke_user_dateformat, $user_sig, $bio, $user_password, $vpass, $username, $user_id);
+	saveuser($realname, $user_email, $femail, $user_website, $user_icq, $user_aim, $user_yim, $user_msnm, $user_from, $user_occ, $user_interests, $newsletter, $user_viewemail, $user_allow_viewonline, $user_notify, $nuke_user_notify_pm, $user_popup_pm, $user_attachsig, $user_allowbbcode, $user_allowhtml, $user_allowsmile, $nuke_user_timezone, $nuke_user_dateformat, $user_sig, $bio, $user_password, $vpass, $username, $user_id);
 
 	break;
 

@@ -70,7 +70,7 @@ function user_avatar_delete($avatar_type, $avatar_file)
 		}
 	}
 
-	return ", user_avatar = '', user_avatar_type = " . USER_AVATAR_NONE;
+	return ", user_avatar = '', nuke_user_avatar_type = " . USER_AVATAR_NONE;
 }
 
 function user_avatar_gallery($mode, &$error, &$error_msg, $avatar_filename, $avatar_category)
@@ -92,7 +92,7 @@ function user_avatar_gallery($mode, &$error, &$error_msg, $avatar_filename, $ava
 
 	if ( file_exists(phpbb_realpath($board_config['avatar_gallery_path'] . '/' . $avatar_category . '/' . $avatar_filename)) && ($mode == 'editprofile') )
 	{
-		$return = ", user_avatar = '" . str_replace("\'", "''", $avatar_category . '/' . $avatar_filename) . "', user_avatar_type = " . USER_AVATAR_GALLERY;
+		$return = ", user_avatar = '" . str_replace("\'", "''", $avatar_category . '/' . $avatar_filename) . "', nuke_user_avatar_type = " . USER_AVATAR_GALLERY;
 	}
 	else
 	{
@@ -119,7 +119,7 @@ function user_avatar_url($mode, &$error, &$error_msg, $avatar_filename)
 		return;
 	}
 
-	return ( $mode == 'editprofile' ) ? ", user_avatar = '" . str_replace("\'", "''", $avatar_filename) . "', user_avatar_type = " . USER_AVATAR_REMOTE : '';
+	return ( $mode == 'editprofile' ) ? ", user_avatar = '" . str_replace("\'", "''", $avatar_filename) . "', nuke_user_avatar_type = " . USER_AVATAR_REMOTE : '';
 
 }
 
@@ -303,7 +303,7 @@ function user_avatar_upload($mode, $avatar_mode, &$current_avatar, &$current_typ
 
 		chmod('./' . $board_config['avatar_path'] . "/$new_filename", 0777);
 
-		$avatar_sql = ( $mode == 'editprofile' ) ? ", user_avatar = '$new_filename', user_avatar_type = " . USER_AVATAR_UPLOAD : "'$new_filename', " . USER_AVATAR_UPLOAD;
+		$avatar_sql = ( $mode == 'editprofile' ) ? ", user_avatar = '$new_filename', nuke_user_avatar_type = " . USER_AVATAR_UPLOAD : "'$new_filename', " . USER_AVATAR_UPLOAD;
 	}
 	else
 	{

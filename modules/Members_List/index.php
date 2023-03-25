@@ -149,7 +149,7 @@ switch( $mode )
 		break;
 }
 
-$sql = "SELECT username, user_id, user_viewemail, nuke_user_posts, nuke_user_regdate, user_from, user_website, user_email, user_icq, user_aim, user_yim, user_msnm, user_avatar, user_avatar_type, user_allowavatar
+$sql = "SELECT username, user_id, user_viewemail, nuke_user_posts, nuke_user_regdate, user_from, user_website, user_email, user_icq, user_aim, user_yim, user_msnm, user_avatar, nuke_user_avatar_type, user_allowavatar
 	FROM " . USERS_TABLE . "
 	WHERE user_id <> " . ANONYMOUS . "
 	ORDER BY $order_by";
@@ -177,9 +177,9 @@ if ( $row = $db->sql_fetchrow($result) )
 		$posts = ( $row['nuke_user_posts'] ) ? $row['nuke_user_posts'] : 0;
 
 		$poster_avatar = '';
-		if ( $row['user_avatar_type'] && $user_id != ANONYMOUS && $row['user_allowavatar'] )
+		if ( $row['nuke_user_avatar_type'] && $user_id != ANONYMOUS && $row['user_allowavatar'] )
 		{
-			switch( $row['user_avatar_type'] )
+			switch( $row['nuke_user_avatar_type'] )
 			{
 				case USER_AVATAR_UPLOAD:
 					$poster_avatar = ( $board_config['allow_avatar_upload'] ) ? '<img src="' . $board_config['avatar_path'] . '/' . $row['user_avatar'] . '" alt="" border="0" />' : '';
