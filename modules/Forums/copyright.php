@@ -20,13 +20,13 @@
 // required information and then copy the file "copyright.php" into your
 // module's directory. It's all, as easy as it sounds ;)
 
-$author_name = "chatserv";
-$author_user_email = "chatserv@nukeresources.com";
-$author_homepage = "http://www.nukeresources.com";
+$author_name = "Ernest Allen Buffington";
+$author_user_email = "ernest.buffington@gmail.com";
+$author_homepage = "https://theghost.86it.us";
 $license = "GNU/GPL";
-$download_location = "http://www.nukeresources.com/downloads.html";
-$module_version = "";
-$module_description = "phpBB port for PHP-Nuke";
+$download_location = "http://www.phpnuke.coders.exchange";
+$module_version = "2.0.8";
+$module_description = "phpBB port for PHP 8.x";
 
 // DO NOT TOUCH THE FOLLOWING COPYRIGHT CODE. YOU'RE JUST ALLOWED TO CHANGE YOUR "OWN"
 // MODULE'S DATA (SEE ABOVE) SO THE SYSTEM CAN BE ABLE TO SHOW THE COPYRIGHT NOTICE
