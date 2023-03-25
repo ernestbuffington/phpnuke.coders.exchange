@@ -4,8 +4,8 @@
 /* PHP-NUKE: Web Portal System                                          */
 /* ===========================                                          */
 /*                                                                      */
-/* Copyright (c) 2007 by Francisco Burzi                                */
-/* http://phpnuke.org                                                   */
+/* Copyright (c) 2023 by Francisco Burzi                                */
+/* https://phpnuke.coders.exchange                                      */
 /*                                                                      */
 /* Google Page Rank Calculation                                         */
 /* Copyright 2004 by GoogleCommunity.com                                */

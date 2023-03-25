@@ -4,7 +4,7 @@
 /* ===========================                                          */
 /*                                                                      */
 /* Copyright (c) 2002 by Francisco Burzi                                */
-/* http://phpnuke.org                                                   */
+/* https://phpnuke.coders.exchange                                      */
 /*                                                                      */
 /* Merged with new SQL Layer by Quake                                   */
 /*                                                                      */
