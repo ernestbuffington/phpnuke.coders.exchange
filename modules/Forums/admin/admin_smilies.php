@@ -611,7 +611,7 @@ else
         $template->pparse("body");
 }
 
-$cache->delete('smilies', 'config');
+//$cache->delete('smilies', 'config');
 
 //
 // Page Footer
