@@ -30,7 +30,7 @@ $dbhost = 'localhost';
 | The name of your database that holds your tables        |
 |                                                         |
 ---------------------------------------------------------*/
-$dbname = 'phpnukecoders_db';
+$dbname = 'phpnukecoders_test';
 
 /*----[ $dbuname ] ---------------------------------------
 |                                                         |

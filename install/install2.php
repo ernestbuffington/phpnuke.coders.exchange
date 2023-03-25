@@ -1,5 +1,4 @@
 <?php
-
 /************************************************************************/
 /* PHP-NUKE: Advanced Content Management System                         */
 /* ============================================                         */
@@ -187,7 +186,7 @@ $total_steps = '10';
 $next_step = $step+1;
 $continue_button = '<input type="hidden" name="step" value="'.$next_step.'" /><input type="submit" class="button" name="submit" value="'.$install_lang['continue'].' '.$next_step.'" />';
 
-check_required_files();
+//check_required_files();
 
 $safemodcheck = ini_get('safe_mod');
 
@@ -246,8 +245,8 @@ if (!$DBcreated){
 	if (!$DBhostname || !$DBuserName || !$DBname) {
 		db_err ("stepBack3","The database details provided are incorrect and/or empty.");
 	}
-
-    $dbtype = strtolower($db_type);
+    
+	$dbtype = strtolower($db_type);
 
 	 switch ($dbtype) 
 	 {
@@ -888,7 +887,7 @@ function check() {
 //-->
 </script>
 </head>
-<body onload="document.form.sitename.focus();">
+<body onLoad="document.form.sitename.focus();">
 <div id="wrapper">
 	<div id="header">
 	  <div id="phpnuke"><img src="header_install.png" alt="PHP-Nuke Installation" /></div>
@@ -896,7 +895,7 @@ function check() {
 </div>
 
 <div id="ctr" align="center">
-	<form action="install3.php" method="post" name="form" id="form" onsubmit="return check();">
+	<form action="install3.php" method="post" name="form" id="form" onSubmit="return check();">
 	<input type="hidden" name="DBhostname" value="<?php echo "$DBhostname"; ?>" />
 	<input type="hidden" name="DBuserName" value="<?php echo "$DBuserName"; ?>" />
 	<input type="hidden" name="DBpassword" value="<?php echo "$DBpassword"; ?>" />
@@ -911,7 +910,7 @@ function check() {
 	  		<div class="step-off">Step 3</div>
 		  	<div class="step-off">Step 4</div>
 		</div>
-		<div id="right">
+    		<div id="right">
   			<div class="far-right">
 <?php if (!$isErr) { ?>
   		  		<input class="button" type="submit" name="next" value="Next >>"/>

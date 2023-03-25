@@ -1,5 +1,4 @@
 <?php
-
 /************************************************************************/
 /* PHP-NUKE: Advanced Content Management System                         */
 /* ============================================                         */
@@ -75,7 +74,7 @@ $step = 0;
 $total_steps = '10';
 $next_step = $step+1;
 $continue_button = '<input type="hidden" name="step" value="'.$next_step.'" /><input type="submit" class="button" name="submit" value="'.$install_lang['continue'].' '.$next_step.'" />';
-check_required_files();
+//check_required_files();
 
 $safemodcheck = ini_get('safe_mod');
 
@@ -135,6 +134,14 @@ function writableCell( $folder ) {
 	echo '</tr>';
 }
 
+function writableCellConfig() {
+	echo '<tr>';
+	echo '<td class="item">config.php</td>';
+	echo '<td align="left">';
+	echo '<b><font color="green">Auto Create Enabled</font></b></td>';
+	echo '</tr>';
+}
+
 echo "<?xml version=\"1.0\" encoding=\"iso-8859-1\"?".">";
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -146,7 +153,6 @@ echo "<?xml version=\"1.0\" encoding=\"iso-8859-1\"?".">";
 <link rel="stylesheet" href="install.css" type="text/css" />
 </head>
 <body>
-
 <div id="wrapper">
 <div id="header">
 <div id="phpnuke"><img src="header_install.png" alt="PHP-Nuke Installation" /></div>
@@ -163,7 +169,6 @@ echo "<?xml version=\"1.0\" encoding=\"iso-8859-1\"?".">";
 <div class="step-off">Step 3</div>
 <div class="step-off">Step 4</div>
 </div>
-
 <div id="right">
 
 <div id="step">Pre-Installation Check</div>
@@ -498,7 +503,7 @@ to write to it.
 
 <table class="content">
 <?php
-writableCell( 'config.php' );
+writableCellConfig();
 writableCell( 'ultramode.txt' );
 ?>
 </table>

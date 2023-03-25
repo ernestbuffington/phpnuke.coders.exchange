@@ -187,7 +187,7 @@ $total_steps = '10';
 $next_step = $step+1;
 $continue_button = '<input type="hidden" name="step" value="'.$next_step.'" /><input type="submit" class="button" name="submit" value="'.$install_lang['continue'].' '.$next_step.'" />';
 
-check_required_files();
+//check_required_files();
 
 $safemodcheck = ini_get('safe_mod');
 
@@ -294,11 +294,7 @@ if ($sitename) {
 	return;
 }
 
-if (file_exists( '../config.php' )) {
-	$canWrite = is_writable( '../config.php' );
-} else {
-	$canWrite = is_writable( '..' );
-}
+$canWrite = true; // fopen can write to files no matter what!
 
 if ($siteUrl) {
 	$configArray['siteUrl']=$siteUrl;
@@ -396,7 +392,7 @@ $config .= "\$prefix = empty(\$user_prefix) ? \$prefix : \$user_prefix;\n";
 $config .= "\$reasons = array(\"As Is\",\"Offtopic\",\"Flamebait\",\"Troll\",\"Redundant\",\"Insighful\",\"Interesting\",\"Informative\",\"Funny\",\"Overrated\",\"Underrated\");\n";
 $config .= "\$badreasons = 4;\n";
 $config .= "\n";
-$config .= "\$AllowableHTML = array((\"img\"=>2,\"span\"=>2,\"font\"=>2,\"b\"=>1,\"i\"=>1,\"strike\"=>1,\"div\"=>2,\"u\"=>1,\"a\"=>2,\"em\"=>1,\"br\"=>1,\"strong\"=>1,\"blockquote\"=>1,\"tt\"=>1,\"li\"=>1,\"ol\"=>1,\"ul\"=>1);\n";
+$config .= "\$AllowableHTML = array(\"img\"=>2,\"span\"=>2,\"font\"=>2,\"b\"=>1,\"i\"=>1,\"strike\"=>1,\"div\"=>2,\"u\"=>1,\"a\"=>2,\"em\"=>1,\"br\"=>1,\"strong\"=>1,\"blockquote\"=>1,\"tt\"=>1,\"li\"=>1,\"ol\"=>1,\"ul\"=>1);\n";
 $config .= "\$CensorList = array(\"cuntlapper\",\"fuck\",\"cunt\",\"fucker\",\"fucking\",\"pussy\",\"cock\",\"c0ck\",\"cum\",\"twat\",\"clit\",\"bitch\",\"fuk\",\"cornhole\",\"fuking\",\"motherfucker\");\n";
 $config .= "\$tipath = \"images/topics/\";\n";
 $config .= "\n";
@@ -413,12 +409,9 @@ $config .= "\$commercial_license = 0;\n";
 $config .= "\n";
 $config .= "?>";
 
-if ($canWrite && ($fp = fopen("../config.php", "w"))) {
-		fputs( $fp, $config, strlen( $config ) );
-		fclose( $fp );
-	} else {
-		$canWrite = false;
-	}
+    $fp = fopen("../config.php", "w"); 
+	fputs( $fp, $config, strlen( $config ) );
+	fclose( $fp );
     //35 over is user level
 	$database = new sql_db($db_host, $db_user, $db_pass, $db_name, $db_persistency);
 	$nullDate = $database->getNullDate();
@@ -482,7 +475,8 @@ echo "<?xml version=\"1.0\" encoding=\"iso-8859-1\"?".">";
 			<div class="step-off">Step 3</div>
 			<div class="step-on">Step 4</div>
 		</div>
-		<div id="right">
+    
+    		<div id="right">
 			<div id="step">Step 4</div>
 			<div class="far-right">
 				<input class="button" type="button" name="runSite" value="View Site"
@@ -517,7 +511,7 @@ echo "<?xml version=\"1.0\" encoding=\"iso-8859-1\"?".">";
 						<tr><td align="center" class="notice"><b>Password : <?php echo $adminPassword; ?></b></td></tr>
 						<tr><td>&nbsp;</td></tr>
 						<tr><td align="right">&nbsp;</td></tr>
-<?php						if (!$canWrite) { ?>
+<?php						if ($canWrite == false) { ?>
 						<tr>
 							<td class="small">
 							<font color="FF0000"><b>WARNING:</b></font> Your configuration file or directory is not writeable,

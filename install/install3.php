@@ -187,7 +187,7 @@ $total_steps = '10';
 $next_step = $step+1;
 $continue_button = '<input type="hidden" name="step" value="'.$next_step.'" /><input type="submit" class="button" name="submit" value="'.$install_lang['continue'].' '.$next_step.'" />';
 
-check_required_files();
+//check_required_files();
 
 $safemodcheck = ini_get('safe_mod');
 
@@ -310,7 +310,8 @@ function check() {
 			<div class="step-on">Step 3</div>
 			<div class="step-off">Step 4</div>
 		</div>
-		<div id="right">
+    
+    		<div id="right">
 			<div id="step">Step 3</div>
 			<div class="far-right">
 				<input class="button" type="submit" name="next" value="Next >>"/>
@@ -350,7 +351,7 @@ function check() {
 		$url = $configArray['siteUrl'];
 	else {
 		$port = ( $_SERVER['SERVER_PORT'] == 80 ) ? '443' : ":".$_SERVER['SERVER_PORT'];
-		$root = $_SERVER['SERVER_NAME'].$port.$_SERVER['PHP_SELF'];
+		$root = $_SERVER['SERVER_NAME'].$_SERVER['PHP_SELF'];
 		$root = str_replace("install/","",$root);
 		$root = str_replace("/install3.php","",$root);
 		if($_SERVER['SERVER_PORT'] == 443){

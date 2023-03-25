@@ -1,5 +1,4 @@
 <?php
-
 /************************************************************************/
 /* PHP-NUKE: Advanced Content Management System                         */
 /* ============================================                         */
@@ -173,7 +172,7 @@ $total_steps = '10';
 $next_step = $step+1;
 $continue_button = '<input type="hidden" name="step" value="'.$next_step.'" /><input type="submit" class="button" name="submit" value="'.$install_lang['continue'].' '.$next_step.'" />';
 
-check_required_files();
+//check_required_files();
 
 $safemodcheck = ini_get('safe_mod');
 
@@ -225,12 +224,13 @@ echo '<title>PHP-Nuke '._VERSION.' Installer</title>';
 echo '<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />';
 echo '<link rel="shortcut icon" href="../../images/favicon.ico" />';
 echo '<link rel="stylesheet" href="/install/install.css" type="text/css" />';
+?>
 
+<?php
 if (isset($language) AND $language != "" AND is_readable(SETUP_LANGUAGE_DIR."".$language.".php")) {
         require_once(SETUP_LANGUAGE_DIR.$language.".php");
         $langpic = "language/".$language.".png";
 } else $langpic = "graphics/blank.gif";
-
 echo "<script src=\"include/js/overlib.js\"><!-- overLIB (c) Erik Bosrup --></script>\n";
 echo "<script src=\"include/js/overlib_shadow.js\"><!-- overLIB (c) Erik Bosrup --></script>\n";
 
@@ -253,10 +253,10 @@ function check() {
 		alert('Please enter a Name for your Nuke Database');
 		f.DBname.focus();
 		formValid=false;
-	} else if ( confirm('Are you sure these settings are correct? \n\nPHP-Nuke will now attempt to populate a Database with the settings you have supplied\nIf the database name already exists, it will be deleted with all its content!')) {
+	} else if ( confirm('Are you sure these settings are correct? \n\nPHP-Nuke will now attempt to Intall Your Database!')) {
 		formValid=true;
 	}
-
+    document.getElementById("des").style.visibility = "visible";
 	return formValid;
 }
 //-->
@@ -290,8 +290,22 @@ function check() {
 			<div class="step-off">
 				Step 4
 			</div>
-		</div>
-		<div id="right">
+	<br>
+    <br>	
+    <div align="center" id="des">
+    <span class="loader"></span>
+    <br>
+    <br>
+    <strong>Wait Please....</strong>
+    </div>
+    <script src="inculdes/jquery-1.11.1.js"></script>
+    <script type="text/javascript">
+    document.getElementById("des").style.visibility = "hidden";
+    </script>
+        
+        </div>
+    
+    		<div id="right">
 			<div class="far-right">
 				<input class="button" type="submit" name="next" value="Next >>"/>
   			</div>

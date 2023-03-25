@@ -3,7 +3,7 @@ REPLACE INTO `#prefix#_bbconfig` (`config_name`, `config_value`) VALUES
 ('board_disable', '0'),
 ('sitename', 'PHP-Nuke CodersExchange'),
 ('site_desc', ''),
-('cookie_name', 'phpbb2mysql'),
+('cookie_name', 'nuke_phpBB'),
 ('cookie_path', '/'),
 ('cookie_domain', 'phpnuke.coders.exchange'),
 ('cookie_secure', '0'),

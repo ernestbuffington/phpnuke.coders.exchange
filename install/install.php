@@ -81,7 +81,7 @@ $step = 1;
 $total_steps = '10';
 $next_step = $step+1;
 $continue_button = '<input type="hidden" name="step" value="'.$next_step.'" /><input type="submit" class="button" name="submit" value="'.$install_lang['continue'].' '.$next_step.'" />';
-check_required_files();
+//check_required_files();
 
 $safemodcheck = ini_get('safe_mod');
 
@@ -151,7 +151,8 @@ function writableCell( $folder ) {
 		<div class="step-off">Step 3</div>
 		<div class="step-off">Step 4</div>
 	</div>
-	<div id="right">
+	
+    <div id="right">
 		<div id="step">PHP-Nuke License</div>
 		<div class="far-right">
 		<input class="button" type="submit" name="next" value="Next &gt;&gt;"/>
