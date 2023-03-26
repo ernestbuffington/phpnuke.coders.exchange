@@ -1,46 +1,29 @@
 <?php
-
-
-
 /************************************************************************/
-
 /* PHP-NUKE: Web Portal System                                          */
-
 /* ===========================                                          */
-
 /*                                                                      */
-
 /* Copyright (c) 2023 by Francisco Burzi                                */
-
 /* https://phpnuke.coders.exchange                                      */
-
 /*                                                                      */
-
 /* Based on Journey Links Hack                                          */
-
 /* Copyright (c) 2000 by James Knickelbein                              */
-
 /* Journey Milwaukee (http://www.journeymilwaukee.com)                  */
-
 /*                                                                      */
-
 /* This program is free software. You can redistribute it and/or modify */
-
 /* it under the terms of the GNU General Public License as published by */
-
 /* the Free Software Foundation; either version 2 of the License.       */
-
 /************************************************************************/
 
-
+/* Applied rules:
+ * AddDefaultValueForUndefinedVariableRector (https://github.com/vimeo/psalm/blob/29b70442b11e3e66113935a2ee22e165a70c74a4/docs/fixing_code.md#possiblyundefinedvariable)
+ * EregToPregMatchRector (http://php.net/reference.pcre.pattern.posix https://stackoverflow.com/a/17033826/1348344 https://docstore.mik.ua/orelly/webprog/pcook/ch13_02.htm)
+ */
 
 if (!defined('ADMIN_FILE')) {
 
 	die ("Access Denied");
-
 }
-
-
 
 global $prefix, $db, $admin_file;
 
@@ -80,7 +63,8 @@ if ($row2['radminsuper'] == 1 || $auth_user == 1) {
 
 	function getparent($parentid, $title) {
 
-		global $prefix,$db;
+		$result = null;
+  global $prefix,$db;
 
 		$title = filter($title, "nohtml");
 
@@ -628,7 +612,13 @@ if ($row2['radminsuper'] == 1 || $auth_user == 1) {
 
 	function LinksModLink($lid) {
 
-		global $prefix, $db, $admin_file, $bgcolor1, $bgcolor2, $sitename;
+		$editorialtitle = null;
+  $editorialtext = null;
+  $editorialtime = [];
+  $adminid = null;
+  $ratingtime = [];
+  $rating2 = null;
+  global $prefix, $db, $admin_file, $bgcolor1, $bgcolor2, $sitename;
 
 		include ("header.php");
 
@@ -762,7 +752,7 @@ if ($row2['radminsuper'] == 1 || $auth_user == 1) {
 
 					$editorialtitle = filter($row3['editorialtitle'], "nohtml");
 
-					ereg ("([0-9]{4})-([0-9]{1,2})-([0-9]{1,2}) ([0-9]{1,2}):([0-9]{1,2}):([0-9]{1,2})", $editorialtimestamp, $editorialtime);
+					preg_match ('#([0-9]{4})\-([0-9]{1,2})\-([0-9]{1,2}) ([0-9]{1,2}):([0-9]{1,2}):([0-9]{1,2})#m', $editorialtimestamp, $editorialtime);
 
 					$editorialtime = strftime("%F",mktime($editorialtime[4],$editorialtime[5],$editorialtime[6],$editorialtime[2],$editorialtime[3],$editorialtime[1]));
 
@@ -826,7 +816,7 @@ if ($row2['radminsuper'] == 1 || $auth_user == 1) {
 
 				$ratingtimestamp = $row4['ratingtimestamp'];
 
-				ereg ("([0-9]{4})-([0-9]{1,2})-([0-9]{1,2}) ([0-9]{1,2}):([0-9]{1,2}):([0-9]{1,2})", $ratingtimestamp, $ratingtime);
+				preg_match ('#([0-9]{4})\-([0-9]{1,2})\-([0-9]{1,2}) ([0-9]{1,2}):([0-9]{1,2}):([0-9]{1,2})#m', $ratingtimestamp, $ratingtime);
 
 				$ratingtime = strftime("%F",mktime($ratingtime[4],$ratingtime[5],$ratingtime[6],$ratingtime[2],$ratingtime[3],$ratingtime[1]));
 
@@ -878,7 +868,7 @@ if ($row2['radminsuper'] == 1 || $auth_user == 1) {
 
 				$ratingtimestamp = $row5['ratingtimestamp'];
 
-				ereg ("([0-9]{4})-([0-9]{1,2})-([0-9]{1,2}) ([0-9]{1,2}):([0-9]{1,2}):([0-9]{1,2})", $ratingtimestamp, $ratingtime);
+				preg_match ('#([0-9]{4})\-([0-9]{1,2})\-([0-9]{1,2}) ([0-9]{1,2}):([0-9]{1,2}):([0-9]{1,2})#m', $ratingtimestamp, $ratingtime);
 
 				$ratingtime = strftime("%F",mktime($ratingtime[4],$ratingtime[5],$ratingtime[6],$ratingtime[2],$ratingtime[3],$ratingtime[1]));
 
@@ -942,7 +932,7 @@ if ($row2['radminsuper'] == 1 || $auth_user == 1) {
 
 				$ratingtimestamp = $row7['ratingtimestamp'];
 
-				ereg ("([0-9]{4})-([0-9]{1,2})-([0-9]{1,2}) ([0-9]{1,2}):([0-9]{1,2}):([0-9]{1,2})", $ratingtimestamp, $ratingtime);
+				preg_match ('#([0-9]{4})\-([0-9]{1,2})\-([0-9]{1,2}) ([0-9]{1,2}):([0-9]{1,2}):([0-9]{1,2})#m', $ratingtimestamp, $ratingtime);
 
 				$ratingtime = strftime("%F",mktime($ratingtime[4],$ratingtime[5],$ratingtime[6],$ratingtime[2],$ratingtime[3],$ratingtime[1]));
 
@@ -990,7 +980,7 @@ if ($row2['radminsuper'] == 1 || $auth_user == 1) {
 
 				$ratingtimestamp = $row8['ratingtimestamp'];
 
-				ereg ("([0-9]{4})-([0-9]{1,2})-([0-9]{1,2}) ([0-9]{1,2}):([0-9]{1,2}):([0-9]{1,2})", $ratingtimestamp, $ratingtime);
+				preg_match ('#([0-9]{4})\-([0-9]{1,2})\-([0-9]{1,2}) ([0-9]{1,2}):([0-9]{1,2}):([0-9]{1,2})#m', $ratingtimestamp, $ratingtime);
 
 				$ratingtime = strftime("%F",mktime($ratingtime[4],$ratingtime[5],$ratingtime[6],$ratingtime[2],$ratingtime[3],$ratingtime[1]));
 
@@ -1052,7 +1042,9 @@ if ($row2['radminsuper'] == 1 || $auth_user == 1) {
 
 	function LinksDelVote($lid, $rid) {
 
-		global $prefix, $db, $admin_file;
+		$finalrating = null;
+  $truecomments = null;
+  global $prefix, $db, $admin_file;
 
 		$rid = intval($rid);
 
@@ -1356,7 +1348,8 @@ if ($row2['radminsuper'] == 1 || $auth_user == 1) {
 
 	function LinksListModRequests() {
 
-		global $bgcolor2, $prefix, $db, $user_prefix, $admin_file;
+		$xorigdescription = null;
+  global $bgcolor2, $prefix, $db, $user_prefix, $admin_file;
 
 		include ("header.php");
 
@@ -1398,7 +1391,7 @@ if ($row2['radminsuper'] == 1 || $auth_user == 1) {
 
 			$description = filter($row['description']);
 
-			$xdescription = eregi_replace("<a href=\"http://", "<a href=\"index.php?url=http://", $description);
+			$xdescription = preg_replace('#<a href="http:\/\/#mi', "<a href=\"index.php?url=http://", $description);
 
 			$modifysubmitter = filter($row['modifysubmitter'], "nohtml");
 
@@ -1416,7 +1409,7 @@ if ($row2['radminsuper'] == 1 || $auth_user == 1) {
 
 			$origdescription = filter($row2['description']);
 
-			$xorigdescription = eregi_replace("<a href=\"http://", "<a href=\"index.php?url=http://", $xorigdescription);
+			$xorigdescription = preg_replace('#<a href="http:\/\/#mi', "<a href=\"index.php?url=http://", $xorigdescription);
 
 			$owner = filter($row2['submitter'], "nohtml");
 
@@ -1618,7 +1611,9 @@ if ($row2['radminsuper'] == 1 || $auth_user == 1) {
 
 	function LinksCleanVotes() {
 
-		global $prefix, $db, $admin_file;
+		$finalrating = null;
+  $truecomments = null;
+  global $prefix, $db, $admin_file;
 
 		$result = $db->sql_query("SELECT distinct ratinglid FROM " .$prefix  . "_links_votedata");
 
@@ -1856,7 +1851,8 @@ if ($row2['radminsuper'] == 1 || $auth_user == 1) {
 
 	function LinksDelCat($cid, $sid, $sub, $ok=0) {
 
-		global $prefix, $db, $admin_file;
+		$nblink = null;
+  global $prefix, $db, $admin_file;
 
 		include("header.php");
 
@@ -1921,13 +1917,9 @@ if ($row2['radminsuper'] == 1 || $auth_user == 1) {
 			OpenTable();
 
 			echo "<br><center><font class=\"option\">";
-
 			echo "<b>" . _EZTHEREIS . " $nbsubcat " . _EZSUBCAT . " " . _EZATTACHEDTOCAT . "</b><br>";
-
-			echo "<b>" . _EZTHEREIS . " $nblink " . _links . " " . _EZATTACHEDTOCAT . "</b><br>";
-
+			echo "<b>" . _EZTHEREIS . " $nblink " . _LINKS . " " . _EZATTACHEDTOCAT . "</b><br>";
 			echo "<b>" . _DELEZLINKCATWARNING . "</b><br><br>";
-
 		}
 
 		echo "[ <a href=\"".$admin_file.".php?op=LinksDelCat&amp;cid=$cid&amp;sid=$sid&amp;sub=$sub&amp;ok=1\">" . _YES . "</a> | <a href=\"".$admin_file.".php?op=Links\">" . _NO . "</a> ]<br><br>";
@@ -2044,7 +2036,8 @@ if ($row2['radminsuper'] == 1 || $auth_user == 1) {
 
 	function LinksAddEditorial($linkid, $editorialtitle, $editorialtext) {
 
-		global $aid, $prefix, $db, $admin_file;
+		$adminid = null;
+  global $aid, $prefix, $db, $admin_file;
 
 		$linkid = intval($linkid);
 
@@ -2196,7 +2189,11 @@ if ($row2['radminsuper'] == 1 || $auth_user == 1) {
 
 	function LinksValidate($cid, $sid, $ttitle) {
 
-		global $bgcolor2, $prefix, $db, $admin_file;
+		$title = null;
+  $result = null;
+  $row3 = [];
+  $url = null;
+  global $bgcolor2, $prefix, $db, $admin_file;
 
 		$cid = intval($cid);
 

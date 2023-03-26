@@ -1,41 +1,26 @@
 <?php
-
 if(!strpos($_SERVER['PHP_SELF'], 'admin.php')) {
-
 	#show right panel:
-
 	define('INDEX_FILE', true);
-
 }
-
 /************************************************************************/
-
 /* PHP-NUKE: Web Portal System                                          */
-
 /* ===========================                                          */
-
 /*                                                                      */
-
 /* Copyright (c) 2023 by Francisco Burzi                                */
-
 /* https://phpnuke.coders.exchange                                      */
-
 /*                                                                      */
-
 /* This program is free software. You can redistribute it and/or modify */
-
 /* it under the terms of the GNU General Public License as published by */
-
 /* the Free Software Foundation; either version 2 of the License.       */
-
 /************************************************************************/
 
-
-
+/* Applied rules:
+ * SetCookieRector (https://www.php.net/setcookie https://wiki.php.net/rfc/same-site-cookie)
+ */
+ 
 if (!defined('MODULE_FILE')) {
-
 	die ("You can't access this file directly...");
-
 }
 
 require_once("mainfile.php");
@@ -46,8 +31,6 @@ $module_name = basename(dirname(__FILE__));
 
 get_lang($module_name);
 
-
-
 if (isset($sid)) { $sid = intval($sid); } else { $sid = ""; }
 
 if (stristr($REQUEST_URI,"mainfile")) {
@@ -57,10 +40,7 @@ if (stristr($REQUEST_URI,"mainfile")) {
 } elseif (empty($sid) && !isset($tid)) {
 
 	Header("Location: index.php");
-
 }
-
-
 
 if ($save AND is_user($user)) {
 
@@ -80,11 +60,8 @@ if ($save AND is_user($user)) {
 
 	$info = base64_encode("$userinfo[user_id]:$userinfo[username]:$userinfo[user_password]:$userinfo[storynum]:$userinfo[umode]:$userinfo[uorder]:$userinfo[thold]:$userinfo[noscore]");
 
-	setcookie("user","$info",time()+$cookieusrtime);
-
+	setcookie("user","$info",['expires' => time()+$cookieusrtime]);
 }
-
-
 
 if ($op == "Reply") {
 
@@ -97,19 +74,14 @@ if ($op == "Reply") {
   if(isset($thold)) { $display .= "&thold=".$thold; }
 
   Header("Location: modules.php?name=$module_name&file=comments&op=Reply&pid=0&sid=".$sid.$display);
-
 }
-
-
 
 $result = $db->sql_query("select catid, aid, time, title, hometext, bodytext, topic, informant, notes, acomm, haspoll, pollID, score, ratings FROM ".$prefix."_stories where sid='$sid'");
 
 if ($numrows = $db->sql_numrows($result) != 1) {
 
 	Header("Location: index.php");
-
-	fdie();
-
+	die();
 }
 
 $row = $db->sql_fetchrow($result);
@@ -142,19 +114,12 @@ $score = intval($row['score']);
 
 $ratings = intval($row['ratings']);
 
-
-
 if (empty($aaid)) {
 
 	Header("Location: modules.php?name=$module_name");
-
 }
 
-
-
 $db->sql_query("UPDATE ".$prefix."_stories SET counter=counter+1 where sid='$sid'");
-
-
 
 $artpage = 1;
 
@@ -163,8 +128,6 @@ $pagetitle = "- $title";
 require("header.php");
 
 $artpage = 0;
-
-
 
 formatTimestamp($time);
 
@@ -183,10 +146,7 @@ if (!empty($notes)) {
 } else {
 
 	$notes = "";
-
 }
-
-
 
 if(empty($bodytext)) {
 
@@ -195,42 +155,25 @@ if(empty($bodytext)) {
 } else {
 
 	$bodytext = "$hometext<br><br>$bodytext$notes";
-
 }
-
-
 
 if(empty($informant)) {
 
 	$informant = $anonymous;
-
 }
 
-
-
 getTopics($sid);
-
-
 
 if ($catid != 0) {
 
 	$row2 = $db->sql_fetchrow($db->sql_query("select title from ".$prefix."_stories_cat where catid='$catid'"));
-
 	$title1 = filter($row2['title'], "nohtml");
-
 	$title = "<a href=\"modules.php?name=$module_name&amp;file=categories&amp;op=newindex&amp;catid=$catid\"><font class=\"storycat\">$title1</font></a>: $title";
-
 }
 
-
-
 //echo "<table width=\"100%\" border=\"0\"><tr><td valign=\"top\" width=\"100%\">\n";
-
 themearticle($aaid, $informant, $datetime, $title, $bodytext, $topic, $topicname, $topicimage, $topictext);
-
 //echo "</td><td>&nbsp;</td><td valign=\"top\">\n";
-
-
 
 if ($multilingual == 1) {
 
@@ -239,13 +182,9 @@ if ($multilingual == 1) {
 } else {
 
 	$querylang = "";
-
 }
 
-
-
 /* Determine if the article has attached a poll */
-
 if ($haspoll == 1) {
 
 	$url = sprintf("modules.php?name=Surveys&amp;op=results&amp;pollID=%d", $pollID);
@@ -263,7 +202,6 @@ if ($haspoll == 1) {
 	$boxTitle = _ARTICLEPOLL;
 
 	//$boxContent .= "<font class=\"content\"><b>$pollTitle</b></font><br><br>\n";
-
 	//$boxContent .= "<table border=\"0\" width=\"100%\">";
 
 	for($i = 1; $i <= 12; $i++) {
@@ -281,11 +219,8 @@ if ($haspoll == 1) {
 			if(!empty($optionText)) {
 
 				//$boxContent .= "<tr><td valign=\"top\"><input type=\"radio\" name=\"voteID\" value=\"".$i."\"></td><td width=\"100%\"><font class=\"content\">$optionText</font></td></tr>\n";
-
 			}
-
 		}
-
 	}
 
 	//$boxContent .= "</table><br><center><font class=\"content\"><input type=\"submit\" value=\""._VOTE."\"></font><br>";
@@ -293,7 +228,6 @@ if ($haspoll == 1) {
 	if (is_user($user)) {
 
 		cookiedecode($user);
-
 	}
 
 	for($i = 0; $i < 12; $i++) {
@@ -303,12 +237,9 @@ if ($haspoll == 1) {
 		$optionCount = $row5['optionCount'];
 
 		$sum = (int)$sum+$optionCount;
-
 	}
 
 	$boxContent .= "<font class=\"content\">[ <a href=\"modules.php?name=Surveys&amp;op=results&amp;pollID=$pollID&amp;mode=".$userinfo['umode']."&amp;order=".$userinfo['uorder']."&amp;thold=".$userinfo['thold']."\"><b>"._RESULTS."</b></a> | <a href=\"modules.php?name=Surveys\"><b>"._POLLS."</b></a> ]<br>";
-
-
 
 	if ($pollcomm) {
 
@@ -321,37 +252,25 @@ if ($haspoll == 1) {
 	} else {
 
 		$boxContent .= "<br>"._VOTES." <b>$sum</b>\n\n";
-
 	}
 
 	$boxContent .= "</font></center></form>\n\n";
 
 	themesidebox($boxTitle, $boxContent);
-
 }
 
-
-
 /* old modules */
-
-
-
 //echo "</td></tr></table>\n";
 
 cookiedecode($user);
 
 include("modules/$module_name/associates.php");
 
-
-
 if (((empty($mode) OR ($mode != "nocomments")) OR ($acomm == 0)) OR ($articlecomm == 1)) {
 
 	include("modules/News/comments.php");
-
 }
 
 include ("footer.php");
-
-
 
 ?>
