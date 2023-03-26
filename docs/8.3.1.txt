@@ -1,2 +1,0 @@
-Fixes all security issues explained here:
-http://www.exploit-db.com/exploits/29733/
