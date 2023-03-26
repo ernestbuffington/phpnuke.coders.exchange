@@ -7126,18 +7126,18 @@ INSERT INTO nuke_groups_points VALUES (19, 0);
 INSERT INTO nuke_groups_points VALUES (20, 0);
 INSERT INTO nuke_groups_points VALUES (21, 0);
 
-INSERT INTO nuke_headlines VALUES (1, 'AbsoluteGames', 'http://files.gameaholic.com/agfa.rdf');
-INSERT INTO nuke_headlines VALUES (3, 'BrunchingShuttlecocks', 'http://www.brunching.com/brunching.rdf');
-INSERT INTO nuke_headlines VALUES (6, 'DotKDE', 'http://dot.kde.org/rdf');
-INSERT INTO nuke_headlines VALUES (11, 'HollywoodBitchslap', 'http://hollywoodbitchslap.com/hbs.rdf');
-INSERT INTO nuke_headlines VALUES (13, 'LinuxCentral', 'http://linuxcentral.com/backend/lcnew.rdf');
-INSERT INTO nuke_headlines VALUES (14, 'LinuxJournal', 'http://www.linuxjournal.com/news.rss');
-INSERT INTO nuke_headlines VALUES (16, 'Listology', 'http://listology.com/recent.rdf');
-INSERT INTO nuke_headlines VALUES (18, 'NewsForge', 'http://www.newsforge.com/newsforge.rdf');
-INSERT INTO nuke_headlines VALUES (19, 'nukeResources', 'http://www.nukeresources.com/backend.php');
-INSERT INTO nuke_headlines VALUES (20, 'WebReference', 'http://webreference.com/webreference.rdf');
-INSERT INTO nuke_headlines VALUES (22, 'PHP-nuke', 'http://phpnuke.coders.exchange/backend.php');
-INSERT INTO nuke_headlines VALUES (26, 'TheNextLevel', 'http://www.the-nextlevel.com/rdf/tnl.rdf');
+REPLACE INTO `#prefix#_headlines VALUES (1, 'AbsoluteGames', 'http://files.gameaholic.com/agfa.rdf');
+REPLACE INTO `#prefix#_headlines VALUES (2, 'BrunchingShuttlecocks', 'http://www.brunching.com/brunching.rdf');
+REPLACE INTO `#prefix#_headlines VALUES (3, 'DotKDE', 'http://dot.kde.org/rdf');
+REPLACE INTO `#prefix#_headlines VALUES (4, 'HollywoodBitchslap', 'http://hollywoodbitchslap.com/hbs.rdf');
+REPLACE INTO `#prefix#_headlines VALUES (5, 'LinuxCentral', 'http://linuxcentral.com/backend/lcnew.rdf');
+REPLACE INTO `#prefix#_headlines VALUES (6, 'LinuxJournal', 'http://www.linuxjournal.com/news.rss');
+REPLACE INTO `#prefix#_headlines VALUES (7, 'Listology', 'http://listology.com/recent.rdf');
+REPLACE INTO `#prefix#_headlines VALUES (8, 'NewsForge', 'http://www.newsforge.com/newsforge.rdf');
+REPLACE INTO `#prefix#_headlines VALUES (9, 'nukeResources', 'http://www.nukeresources.com/backend.php');
+REPLACE INTO `#prefix#_headlines VALUES (10, 'WebReference', 'http://webreference.com/webreference.rdf');
+REPLACE INTO `#prefix#_headlines VALUES (11, 'PHP-nuke', 'http://phpnuke.coders.exchange/backend.php');
+REPLACE INTO `#prefix#_headlines VALUES (12, 'TheNextLevel', 'http://www.the-nextlevel.com/rdf/tnl.rdf');
 
 
 INSERT INTO nuke_main VALUES ('News');
