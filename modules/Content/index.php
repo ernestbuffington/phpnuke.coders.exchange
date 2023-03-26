@@ -143,7 +143,7 @@ function list_pages() {
 		}
     }
     echo "</blockquote>";
-    if (is_admin()) {
+    if (is_admin($admin)) {
 		$result5 = $db->sql_query("SELECT pid, cid, title, subtitle, clanguage FROM ".$prefix."_pages WHERE active='0' ORDER BY date");
 		echo "<br><br><center><b>"._YOURADMINLIST."</b></center><br><br>";
 		echo "<blockquote>";

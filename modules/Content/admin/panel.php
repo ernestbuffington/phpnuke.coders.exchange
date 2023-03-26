@@ -17,7 +17,7 @@ if (!defined('MODULE_FILE')) {
 }
 
 global $cid, $pid, $admin, $db, $prefix, $admin_file;
-if (!is_admin()) { die ("Access Denied"); }
+if (!is_admin($admin)) { die ("Access Denied"); }
 $module_name = "Content";
 echo "<center><b>$module_name Module Administration Panel</b><br><br>";
 if (isset($cid)) {
