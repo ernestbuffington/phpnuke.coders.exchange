@@ -620,20 +620,30 @@ if (!$DBcreated){
    * @date 3/16/2023
    * @(c) Francis Burzi
    */
-  if ($can_proceed) {
+    if ($can_proceed) {
         $fp = fopen("sql/nuke_headlines.sql","r");
         $installscript = "";
         while (!feof($fp)) $installscript .= fgets($fp,1000);
         fclose($fp);
         unset($fp);
-        $installscript = str_replace("#prefix#",$db_prefix,$installscript);
-         if (!empty($installscript) && !$db->sql_query($installscript)) {
-                $can_proceed = false;
-                nuke_sqlerror(substr($installscript,0,100)."...");
-        } 
-        echo "</p>\n";
+        $scripts = explode(";",$installscript);
         unset($installscript);
-  }
+        foreach ($scripts as $script) {
+                if (!preg_match('/^REPLACE INTO `#prefix#_([\\w]*)`[^;]*$/sim', $script, $matches)) 
+				continue;
+                
+				$script .= ";"; //Splitting string removes semicolon
+                $script = str_replace("#prefix#",$db_prefix,$script);
+                if (!$db->sql_query($script)) {
+                        $can_proceed = false;
+                        nuke_sqlerror($script);
+                        break;
+                } 
+                echo "</p>\n";
+                unset($script, $matches);
+     }
+     unset($scripts);
+    }	
   /*
    * @Populating Main
    * @date 3/16/2023
