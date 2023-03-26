@@ -18,38 +18,37 @@
 /**************************************************************************/
 
 
-define("_SEND","Poslat");
-define("_FUNCTIONS","Funkce");
-define("_YES","Ano");
-define("_NO","Ne");
-define("_CATEGORY","Kategorie");
-define("_SAVECHANGES","Uložit zmìny");
-define("_PAGEBREAK","Pokud chcete napsat vícestupòovou stránku použijte <b>[--pagebreak--]</b> v místì, kde ji chcete zalomit.");
-define("_SIGNATURE","Podpis");
-define("_DESCRIPTION","Popis");
-define("_TITLE","Název");
-define("_ACTIVE","Aktivní");
-define("_DEACTIVATE","Deaktivovat");
-define("_INACTIVE","Neaktivní");
-define("_ACTIVATE","Aktivovat");
-define("_CONTENT","Obsah");
-define("_ADDCATEGORY","Pøidat novou kategorii");
-define("_EDITCATEGORY","Upravit kategorii");
-define("_ADD","Pøidat");
-define("_LANGUAGE","Language");
-define("_CONTENTMANAGER","Content Manager");
-define("_DELCONTWARNING","Are you sure you want to delete the page");
-define("_DELCONTENT","Delete Page");
-define("_CURRENTSTATUS","Current Status");
-define("_ADDANEWPAGE","Add a New Page");
-define("_CSUBTITLE","Sub-Title");
-define("_HEADERTEXT","Header Text");
-define("_PAGETEXT","Page Text");
-define("_FOOTERTEXT","Footer Text");
-define("_ACTIVATEPAGE","Activate This Page?");
-define("_EDITPAGECONTENT","Edit Page Content");
-define("_DELCONTENTCAT","WARNING: Are you sure you want to delete this category? Pages under this category, if they exist, will not be removed, but will not be attached to any category.");
-define("_DELCATEGORY","Delete Category");
+define_once("_SEND","Poslat");
+define_once("_FUNCTIONS","Funkce");
+define_once("_YES","Ano");
+define_once("_NO","Ne");
+define_once("_CATEGORY","Kategorie");
+define_once("_SAVECHANGES","Uložit zmìny");
+define_once("_PAGEBREAK","Pokud chcete napsat vícestupòovou stránku použijte <b>[--pagebreak--]</b> v místì, kde ji chcete zalomit.");
+define_once("_SIGNATURE","Podpis");
+define_once("_DESCRIPTION","Popis");
+define_once("_TITLE","Název");
+define_once("_ACTIVE","Aktivní");
+define_once("_DEACTIVATE","Deaktivovat");
+define_once("_INACTIVE","Neaktivní");
+define_once("_ACTIVATE","Aktivovat");
+define_once("_CONTENT","Obsah");
+define_once("_ADDCATEGORY","Pøidat novou kategorii");
+define_once("_EDITCATEGORY","Upravit kategorii");
+define_once("_ADD","Pøidat");
+define_once("_LANGUAGE","Language");
+define_once("_CONTENTMANAGER","Content Manager");
+define_once("_DELCONTWARNING","Are you sure you want to delete the page");
+define_once("_DELCONTENT","Delete Page");
+define_once("_CURRENTSTATUS","Current Status");
+define_once("_ADDANEWPAGE","Add a New Page");
+define_once("_CSUBTITLE","Sub-Title");
+define_once("_HEADERTEXT","Header Text");
+define_once("_PAGETEXT","Page Text");
+define_once("_FOOTERTEXT","Footer Text");
+define_once("_ACTIVATEPAGE","Activate This Page?");
+define_once("_EDITPAGECONTENT","Edit Page Content");
+define_once("_DELCONTENTCAT","WARNING: Are you sure you want to delete this category? Pages under this category, if they exist, will not be removed, but will not be attached to any category.");
+define_once("_DELCATEGORY","Delete Category");
 
 
-?>

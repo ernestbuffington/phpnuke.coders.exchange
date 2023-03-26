@@ -18,38 +18,37 @@
 /**************************************************************************/
 
 
-define("_SEND","Kirim");
-define("_FUNCTIONS","Admin");
-define("_YES","Ya");
-define("_NO","Tidak");
-define("_CATEGORY","Kategori");
-define("_SAVECHANGES","Simpan Perubahan");
-define("_PAGEBREAK","Untuk membuat berhalaman ganda, ketik <b>[--pagebreak--]</b> pada bagian yang ingin dipenggal.");
-define("_SIGNATURE","Tanda tangan");
-define("_DESCRIPTION","Deskripsi");
-define("_TITLE","Judul");
-define("_ACTIVE","Aktif");
-define("_DEACTIVATE","Nonaktifkan");
-define("_INACTIVE","Nonaktif");
-define("_ACTIVATE","Aktifkan");
-define("_CONTENT","Isi");
-define("_ADDCATEGORY","Tambahkan Kategori Baru");
-define("_EDITCATEGORY","Edit Kategori");
-define("_ADD","Tambahkan");
-define("_LANGUAGE","Bahasa");
-define("_CONTENTMANAGER","<i>Content Manager</i>");
-define("_DELCONTWARNING","Anda yakin ingin menghapus halaman ini");
-define("_DELCONTENT","Hapus Halaman");
-define("_CURRENTSTATUS","Status Sekarang");
-define("_ADDANEWPAGE","Tambah halaman baru");
-define("_CSUBTITLE","Sub Judul");
-define("_HEADERTEXT","Teks Atas");
-define("_PAGETEXT","Isi");
-define("_FOOTERTEXT","Teks Bawah");
-define("_ACTIVATEPAGE","Aktifkan Halaman ini?");
-define("_EDITPAGECONTENT","Edit Isi Halaman");
-define("_DELCONTENTCAT","PERINGATAN: Anda yakin ingin menghapus kategori ini? Semua halaman dalam kategori ini, jika ada, tidak terhapus, tetapi tidak akan bisa diakses pengunjung karena tidak terdaftar pada kategori manapun.");
-define("_DELCATEGORY","Hapus Kategori");
+define_once("_SEND","Kirim");
+define_once("_FUNCTIONS","Admin");
+define_once("_YES","Ya");
+define_once("_NO","Tidak");
+define_once("_CATEGORY","Kategori");
+define_once("_SAVECHANGES","Simpan Perubahan");
+define_once("_PAGEBREAK","Untuk membuat berhalaman ganda, ketik <b>[--pagebreak--]</b> pada bagian yang ingin dipenggal.");
+define_once("_SIGNATURE","Tanda tangan");
+define_once("_DESCRIPTION","Deskripsi");
+define_once("_TITLE","Judul");
+define_once("_ACTIVE","Aktif");
+define_once("_DEACTIVATE","Nonaktifkan");
+define_once("_INACTIVE","Nonaktif");
+define_once("_ACTIVATE","Aktifkan");
+define_once("_CONTENT","Isi");
+define_once("_ADDCATEGORY","Tambahkan Kategori Baru");
+define_once("_EDITCATEGORY","Edit Kategori");
+define_once("_ADD","Tambahkan");
+define_once("_LANGUAGE","Bahasa");
+define_once("_CONTENTMANAGER","<i>Content Manager</i>");
+define_once("_DELCONTWARNING","Anda yakin ingin menghapus halaman ini");
+define_once("_DELCONTENT","Hapus Halaman");
+define_once("_CURRENTSTATUS","Status Sekarang");
+define_once("_ADDANEWPAGE","Tambah halaman baru");
+define_once("_CSUBTITLE","Sub Judul");
+define_once("_HEADERTEXT","Teks Atas");
+define_once("_PAGETEXT","Isi");
+define_once("_FOOTERTEXT","Teks Bawah");
+define_once("_ACTIVATEPAGE","Aktifkan Halaman ini?");
+define_once("_EDITPAGECONTENT","Edit Isi Halaman");
+define_once("_DELCONTENTCAT","PERINGATAN: Anda yakin ingin menghapus kategori ini? Semua halaman dalam kategori ini, jika ada, tidak terhapus, tetapi tidak akan bisa diakses pengunjung karena tidak terdaftar pada kategori manapun.");
+define_once("_DELCATEGORY","Hapus Kategori");
 
 
-?>

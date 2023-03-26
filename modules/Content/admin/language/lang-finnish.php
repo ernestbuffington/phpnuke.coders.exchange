@@ -18,38 +18,37 @@
 /**************************************************************************/
 
 
-define("_SEND","L‰het‰");
-define("_FUNCTIONS","Teht‰v‰t");
-define("_YES","Kyll‰");
-define("_NO","Ei");
-define("_CATEGORY","Kategoria");
-define("_SAVECHANGES","Tallenna muutokset");
-define("_PAGEBREAK","Jos tahdotte k‰ytt‰‰ opetuksessa useita sivuja, voitte erotella sivut k‰ytt‰en <b>[--pagebreak--]</b> tagia.");
-define("_SIGNATURE","Allekirjoitus");
-define("_DESCRIPTION","Kuvaus");
-define("_TITLE","Otsikko");
-define("_ACTIVE","Aktiivinen");
-define("_DEACTIVATE","Deaktivoi");
-define("_INACTIVE","Ei aktiivinen");
-define("_ACTIVATE","Aktivoi");
-define("_CONTENT","Sis‰ltˆ");
-define("_ADDCATEGORY","Lis‰‰ kategoria");
-define("_EDITCATEGORY","Muokkaa kategoriaa");
-define("_ADD","Lis‰‰");
-define("_LANGUAGE","Language");
-define("_CONTENTMANAGER","Content Manager");
-define("_DELCONTWARNING","Are you sure you want to delete the page");
-define("_DELCONTENT","Delete Page");
-define("_CURRENTSTATUS","Current Status");
-define("_ADDANEWPAGE","Add a New Page");
-define("_CSUBTITLE","Sub-Title");
-define("_HEADERTEXT","Header Text");
-define("_PAGETEXT","Page Text");
-define("_FOOTERTEXT","Footer Text");
-define("_ACTIVATEPAGE","Activate This Page?");
-define("_EDITPAGECONTENT","Edit Page Content");
-define("_DELCONTENTCAT","WARNING: Are you sure you want to delete this category? Pages under this category, if they exist, will not be removed, but will not be attached to any category.");
-define("_DELCATEGORY","Delete Category");
+define_once("_SEND","L‰het‰");
+define_once("_FUNCTIONS","Teht‰v‰t");
+define_once("_YES","Kyll‰");
+define_once("_NO","Ei");
+define_once("_CATEGORY","Kategoria");
+define_once("_SAVECHANGES","Tallenna muutokset");
+define_once("_PAGEBREAK","Jos tahdotte k‰ytt‰‰ opetuksessa useita sivuja, voitte erotella sivut k‰ytt‰en <b>[--pagebreak--]</b> tagia.");
+define_once("_SIGNATURE","Allekirjoitus");
+define_once("_DESCRIPTION","Kuvaus");
+define_once("_TITLE","Otsikko");
+define_once("_ACTIVE","Aktiivinen");
+define_once("_DEACTIVATE","Deaktivoi");
+define_once("_INACTIVE","Ei aktiivinen");
+define_once("_ACTIVATE","Aktivoi");
+define_once("_CONTENT","Sis‰ltˆ");
+define_once("_ADDCATEGORY","Lis‰‰ kategoria");
+define_once("_EDITCATEGORY","Muokkaa kategoriaa");
+define_once("_ADD","Lis‰‰");
+define_once("_LANGUAGE","Language");
+define_once("_CONTENTMANAGER","Content Manager");
+define_once("_DELCONTWARNING","Are you sure you want to delete the page");
+define_once("_DELCONTENT","Delete Page");
+define_once("_CURRENTSTATUS","Current Status");
+define_once("_ADDANEWPAGE","Add a New Page");
+define_once("_CSUBTITLE","Sub-Title");
+define_once("_HEADERTEXT","Header Text");
+define_once("_PAGETEXT","Page Text");
+define_once("_FOOTERTEXT","Footer Text");
+define_once("_ACTIVATEPAGE","Activate This Page?");
+define_once("_EDITPAGECONTENT","Edit Page Content");
+define_once("_DELCONTENTCAT","WARNING: Are you sure you want to delete this category? Pages under this category, if they exist, will not be removed, but will not be attached to any category.");
+define_once("_DELCATEGORY","Delete Category");
 
 
-?>

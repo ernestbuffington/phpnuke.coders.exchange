@@ -202,6 +202,8 @@ $htmltags .= "The html tags you attempted to use are not allowed</b><br><br>";
 $htmltags .= "[ <a href=\"javascript:history.go(-1)\"><b>Go Back</b></a> ]</center>";
 
 if (!defined('ADMIN_FILE')) {
+ 
+ $_GET = [];
 
  foreach ($_GET as $sec_key => $secvalue) {
 

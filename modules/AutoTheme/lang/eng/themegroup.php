@@ -1,5 +1,5 @@
-<?php
-
-define('_AT_GROUP', 'Group');
-
-?>
+<?php
+
+define('_AT_GROUP', 'Group');
+
+?>

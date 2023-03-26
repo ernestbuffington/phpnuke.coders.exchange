@@ -174,13 +174,13 @@ if (
 		$allowsmilies = ( isset($_POST['allowsmilies']) ) ? ( ($_POST['allowsmilies']) ? TRUE : 0 ) : $userdata['user_allowsmile'];
         }
 
-        $user_style = ( isset($_POST['style']) ) ? intval($_POST['style']) : $board_config['default_style'];
+        $nuke_user_style = ( isset($_POST['style']) ) ? intval($_POST['style']) : $board_config['default_style'];
 
         if ( !empty($_POST['language']) )
         {
                 if ( preg_match('/^[a-z_]+$/i', (string) $_POST['language']) )
                 {
-                        $user_lang = htmlspecialchars((string) $_POST['language']);
+                        $nuke_user_lang = htmlspecialchars((string) $_POST['language']);
                 }
                 else
                 {
@@ -190,10 +190,10 @@ if (
         }
         else
         {
-                $user_lang = $board_config['default_lang'];
+                $nuke_user_lang = $board_config['default_lang'];
         }
 
-        $user_timezone = ( isset($_POST['timezone']) ) ? doubleval($_POST['timezone']) : $board_config['board_timezone'];
+        $nuke_user_timezone = ( isset($_POST['timezone']) ) ? doubleval($_POST['timezone']) : $board_config['board_timezone'];
 
 	$sql = "SELECT config_value
 		FROM " . CONFIG_TABLE . "
@@ -204,7 +204,7 @@ if (
 	}
 	$row = $db->sql_fetchrow($result);
 	$board_config['default_dateformat'] = $row['config_value'];
-        $user_dateformat = ( !empty($_POST['dateformat']) ) ? trim(htmlspecialchars((string) $_POST['dateformat'])) : $board_config['default_dateformat'];
+        $nuke_user_dateformat = ( !empty($_POST['dateformat']) ) ? trim(htmlspecialchars((string) $_POST['dateformat'])) : $board_config['default_dateformat'];
 
         $user_avatar_local = ( isset($_POST['avatarselect']) && !empty($_POST['submitavatar']) && $board_config['allow_avatar_local'] ) ? htmlspecialchars((string) $_POST['avatarselect']) : ( ( isset($_POST['avatarlocal'])  ) ? htmlspecialchars((string) $_POST['avatarlocal']) : '' );
         $user_avatar_category = ( isset($_POST['avatarcatname']) && $board_config['allow_avatar_local'] ) ? htmlspecialchars((string) $_POST['avatarcatname']) : '' ;
@@ -216,7 +216,7 @@ if (
         $user_avatar_filetype = ( !empty($_FILES['avatar']['type']) ) ? $_FILES['avatar']['type'] : '';
 
         $user_avatar = ( empty($user_avatar_local) && $mode == 'editprofile' ) ? $userdata['user_avatar'] : '';
-        $user_avatar_type = ( empty($user_avatar_local) && $mode == 'editprofile' ) ? $userdata['user_avatar_type'] : '';
+        $nuke_user_avatar_type = ( empty($user_avatar_local) && $mode == 'editprofile' ) ? $userdata['nuke_user_avatar_type'] : '';
 
         if ( (isset($_POST['avatargallery']) || isset($_POST['submitavatar']) || isset($_POST['cancelavatar'])) && (!isset($_POST['submit'])) )
         {
@@ -237,13 +237,13 @@ if (
                 $interests = stripslashes((string) $interests);
                 $signature = htmlspecialchars(stripslashes($signature));
 
-                $user_lang = stripslashes((string) $user_lang);
-                $user_dateformat = stripslashes((string) $user_dateformat);
+                $nuke_user_lang = stripslashes((string) $nuke_user_lang);
+                $nuke_user_dateformat = stripslashes((string) $nuke_user_dateformat);
 
                 if ( !isset($_POST['cancelavatar']))
                 {
                         $user_avatar = $user_avatar_category . '/' . $user_avatar_local;
-                        $user_avatar_type = USER_AVATAR_GALLERY;
+                        $nuke_user_avatar_type = USER_AVATAR_GALLERY;
                 }
         }
 }
@@ -468,7 +468,7 @@ if ( isset($_POST['submit']) )
 
         if ( isset($_POST['avatardel']) && $mode == 'editprofile' )
         {
-                $avatar_sql = user_avatar_delete($userdata['user_avatar_type'], $userdata['user_avatar']);
+                $avatar_sql = user_avatar_delete($userdata['nuke_user_avatar_type'], $userdata['user_avatar']);
         }
         else
         if ( ( !empty($user_avatar_upload) || !empty($user_avatar_name) ) && $board_config['allow_avatar_upload'] )
@@ -476,7 +476,7 @@ if ( isset($_POST['submit']) )
                 if ( !empty($user_avatar_upload) )
                 {
                         $avatar_mode = (empty($user_avatar_name)) ? 'remote' : 'local';
-                        $avatar_sql = user_avatar_upload($mode, $avatar_mode, $userdata['user_avatar'], $userdata['user_avatar_type'], $error, $error_msg, $user_avatar_upload, $user_avatar_name, $user_avatar_size, $user_avatar_filetype);
+                        $avatar_sql = user_avatar_upload($mode, $avatar_mode, $userdata['user_avatar'], $userdata['nuke_user_avatar_type'], $error, $error_msg, $user_avatar_upload, $user_avatar_name, $user_avatar_size, $user_avatar_filetype);
                 }
                 else if ( !empty($user_avatar_name) )
                 {
@@ -488,12 +488,12 @@ if ( isset($_POST['submit']) )
         }
         else if ( $user_avatar_remoteurl != '' && $board_config['allow_avatar_remote'] )
         {
-                user_avatar_delete($userdata['user_avatar_type'], $userdata['user_avatar']);
+                user_avatar_delete($userdata['nuke_user_avatar_type'], $userdata['user_avatar']);
                 $avatar_sql = user_avatar_url($mode, $error, $error_msg, $user_avatar_remoteurl);
         }
         else if ( $user_avatar_local != '' && $board_config['allow_avatar_local'] )
         {
-                user_avatar_delete($userdata['user_avatar_type'], $userdata['user_avatar']);
+                user_avatar_delete($userdata['nuke_user_avatar_type'], $userdata['user_avatar']);
                 $avatar_sql = user_avatar_gallery($mode, $error, $error_msg, $user_avatar_local, $user_avatar_category);
         }
 
@@ -527,7 +527,7 @@ if ( isset($_POST['submit']) )
                         }
 
                         $sql = "UPDATE " . USERS_TABLE . "
-				SET " . $username_sql . $passwd_sql . "user_email = '" . str_replace("\'", "''", (string) $email) ."', user_icq = '" . str_replace("\'", "''", (string) $icq) . "', user_website = '" . str_replace("\'", "''", (string) $website) . "', user_occ = '" . str_replace("\'", "''", (string) $occupation) . "', user_from = '" . str_replace("\'", "''", (string) $location) . "', user_interests = '" . str_replace("\'", "''", (string) $interests) . "', user_sig = '" . str_replace("\'", "''", (string) $signature) . "', user_sig_bbcode_uid = '$signature_bbcode_uid', user_viewemail = $viewemail, user_aim = '" . str_replace("\'", "''", str_replace(' ', '+', (string) $aim)) . "', user_yim = '" . str_replace("\'", "''", (string) $yim) . "', user_msnm = '" . str_replace("\'", "''", (string) $msn) . "', user_attachsig = $attachsig, user_allowsmile = $allowsmilies, user_allowhtml = $allowhtml, user_allowbbcode = $allowbbcode, user_allow_viewonline = $allowviewonline, user_notify = $notifyreply, user_notify_pm = $notifypm, user_popup_pm = $popup_pm, user_timezone = $user_timezone, user_dateformat = '" . str_replace("\'", "''", (string) $user_dateformat) . "', user_lang = '" . str_replace("\'", "''", (string) $user_lang) . "', user_style = $user_style, user_active = $user_active, user_actkey = '" . str_replace("\'", "''", $user_actkey) . "'" . $avatar_sql . "
+				SET " . $username_sql . $passwd_sql . "user_email = '" . str_replace("\'", "''", (string) $email) ."', user_icq = '" . str_replace("\'", "''", (string) $icq) . "', user_website = '" . str_replace("\'", "''", (string) $website) . "', user_occ = '" . str_replace("\'", "''", (string) $occupation) . "', user_from = '" . str_replace("\'", "''", (string) $location) . "', user_interests = '" . str_replace("\'", "''", (string) $interests) . "', nuke_user_sig = '" . str_replace("\'", "''", (string) $signature) . "', nuke_user_sig_bbcode_uid = '$signature_bbcode_uid', user_viewemail = $viewemail, user_aim = '" . str_replace("\'", "''", str_replace(' ', '+', (string) $aim)) . "', user_yim = '" . str_replace("\'", "''", (string) $yim) . "', user_msnm = '" . str_replace("\'", "''", (string) $msn) . "', user_attachsig = $attachsig, user_allowsmile = $allowsmilies, user_allowhtml = $allowhtml, user_allowbbcode = $allowbbcode, user_allow_viewonline = $allowviewonline, user_notify = $notifyreply, nuke_user_notify_pm = $notifypm, user_popup_pm = $popup_pm, nuke_user_timezone = $nuke_user_timezone, nuke_user_dateformat = '" . str_replace("\'", "''", (string) $nuke_user_dateformat) . "', nuke_user_lang = '" . str_replace("\'", "''", (string) $nuke_user_lang) . "', nuke_user_style = $nuke_user_style, user_active = $user_active, user_actkey = '" . str_replace("\'", "''", $user_actkey) . "'" . $avatar_sql . "
 				WHERE user_id = $user_id";
                         if ( !($result = $db->sql_query($sql)) )
                         {
@@ -554,7 +554,7 @@ if ( isset($_POST['submit']) )
  					$emailer->from($board_config['board_email']);
  					$emailer->replyto($board_config['board_email']);
 
- 					$emailer->use_template('user_activate', stripslashes((string) $user_lang));
+ 					$emailer->use_template('user_activate', stripslashes((string) $nuke_user_lang));
  					$emailer->email_address($email);
  					$emailer->set_subject($lang['Reactivate']);
 
@@ -570,7 +570,7 @@ if ( isset($_POST['submit']) )
  				}
  				else if ( $board_config['require_activation'] == USER_ACTIVATION_ADMIN )
  				{
- 					$sql = 'SELECT user_email, user_lang 
+ 					$sql = 'SELECT user_email, nuke_user_lang 
  						FROM ' . USERS_TABLE . '
  						WHERE user_level = ' . ADMIN;
 
@@ -585,7 +585,7 @@ if ( isset($_POST['submit']) )
  						$emailer->replyto($board_config['board_email']);
 
  						$emailer->email_address(trim((string) $row['user_email']));
- 						$emailer->use_template("admin_activate", $row['user_lang']);
+ 						$emailer->use_template("admin_activate", $row['nuke_user_lang']);
  						$emailer->set_subject($lang['Reactivate']);
 
  						$emailer->assign_vars(array(
@@ -632,8 +632,8 @@ if ( isset($_POST['submit']) )
                         // Get current date
                         //
                         $reg_date = date("M d, Y");
-			$sql = "INSERT INTO " . USERS_TABLE . "	(user_id, username, user_regdate, user_password, user_email, user_icq, user_website, user_occ, user_from, user_interests, user_sig, user_sig_bbcode_uid, user_avatar, user_avatar_type, user_viewemail, user_aim, user_yim, user_msnm, user_attachsig, user_allowsmile, user_allowhtml, user_allowbbcode, user_allow_viewonline, user_notify, user_notify_pm, user_popup_pm, user_timezone, user_dateformat, user_lang, user_style, user_level, user_allow_pm, user_active, user_actkey)
-				VALUES ($user_id, '" . str_replace("\'", "''", (string) $username) . "', " . time() . ", '" . str_replace("\'", "''", (string) $new_password) . "', '" . str_replace("\'", "''", (string) $email) . "', '" . str_replace("\'", "''", (string) $icq) . "', '" . str_replace("\'", "''", (string) $website) . "', '" . str_replace("\'", "''", (string) $occupation) . "', '" . str_replace("\'", "''", (string) $location) . "', '" . str_replace("\'", "''", (string) $interests) . "', '" . str_replace("\'", "''", (string) $signature) . "', '$signature_bbcode_uid', $avatar_sql, $viewemail, '" . str_replace("\'", "''", str_replace(' ', '+', (string) $aim)) . "', '" . str_replace("\'", "''", (string) $yim) . "', '" . str_replace("\'", "''", (string) $msn) . "', $attachsig, $allowsmilies, $allowhtml, $allowbbcode, $allowviewonline, $notifyreply, $notifypm, $popup_pm, $user_timezone, $reg_date, '" . str_replace("\'", "''", (string) $user_lang) . "', $user_style, 0, 1, ";
+			$sql = "INSERT INTO " . USERS_TABLE . "	(user_id, username, nuke_user_regdate, user_password, user_email, user_icq, user_website, user_occ, user_from, user_interests, nuke_user_sig, nuke_user_sig_bbcode_uid, user_avatar, nuke_user_avatar_type, user_viewemail, user_aim, user_yim, user_msnm, user_attachsig, user_allowsmile, user_allowhtml, user_allowbbcode, user_allow_viewonline, user_notify, nuke_user_notify_pm, user_popup_pm, nuke_user_timezone, nuke_user_dateformat, nuke_user_lang, nuke_user_style, user_level, user_allow_pm, user_active, user_actkey)
+				VALUES ($user_id, '" . str_replace("\'", "''", (string) $username) . "', " . time() . ", '" . str_replace("\'", "''", (string) $new_password) . "', '" . str_replace("\'", "''", (string) $email) . "', '" . str_replace("\'", "''", (string) $icq) . "', '" . str_replace("\'", "''", (string) $website) . "', '" . str_replace("\'", "''", (string) $occupation) . "', '" . str_replace("\'", "''", (string) $location) . "', '" . str_replace("\'", "''", (string) $interests) . "', '" . str_replace("\'", "''", (string) $signature) . "', '$signature_bbcode_uid', $avatar_sql, $viewemail, '" . str_replace("\'", "''", str_replace(' ', '+', (string) $aim)) . "', '" . str_replace("\'", "''", (string) $yim) . "', '" . str_replace("\'", "''", (string) $msn) . "', $attachsig, $allowsmilies, $allowhtml, $allowbbcode, $allowviewonline, $notifyreply, $notifypm, $popup_pm, $nuke_user_timezone, $reg_date, '" . str_replace("\'", "''", (string) $nuke_user_lang) . "', $nuke_user_style, 0, 1, ";
                         if ( $board_config['require_activation'] == USER_ACTIVATION_SELF || $board_config['require_activation'] == USER_ACTIVATION_ADMIN || $coppa )
                         {
                                 $user_actkey = gen_rand_string(true);
@@ -659,10 +659,10 @@ if ( isset($_POST['submit']) )
                                 message_die(GENERAL_ERROR, 'Could not insert data into groups table', '', __LINE__, __FILE__, $sql);
                         }
 
-                        $group_id = $db->sql_nextid();
+                        $nuke_group_id = $db->sql_nextid();
 
-                        $sql = "INSERT INTO " . USER_GROUP_TABLE . " (user_id, group_id, user_pending)
-				VALUES ($user_id, $group_id, 0)";
+                        $sql = "INSERT INTO " . USER_GROUP_TABLE . " (user_id, nuke_group_id, user_pending)
+				VALUES ($user_id, $nuke_group_id, 0)";
                         if( !($result = $db->sql_query($sql, END_TRANSACTION)) )
                         {
                                 message_die(GENERAL_ERROR, 'Could not insert data into user_group table', '', __LINE__, __FILE__, $sql);
@@ -695,7 +695,7 @@ if ( isset($_POST['submit']) )
                         $emailer->from($board_config['board_email']);
                         $emailer->replyto($board_config['board_email']);
 
-                        $emailer->use_template($email_template, stripslashes((string) $user_lang));
+                        $emailer->use_template($email_template, stripslashes((string) $nuke_user_lang));
                         $emailer->email_address($email);
                         $emailer->set_subject(sprintf($lang['Welcome_subject'], $board_config['sitename']));
 
@@ -739,7 +739,7 @@ if ( isset($_POST['submit']) )
 
                         if ( $board_config['require_activation'] == USER_ACTIVATION_ADMIN )
                         {
-                                $sql = "SELECT user_email, user_lang
+                                $sql = "SELECT user_email, nuke_user_lang
                                         FROM " . USERS_TABLE . "
                                         WHERE user_level = " . ADMIN;
 
@@ -754,7 +754,7 @@ if ( isset($_POST['submit']) )
 					$emailer->replyto($board_config['board_email']);
 
 					$emailer->email_address(trim((string) $row['user_email']));
-					$emailer->use_template("admin_activate", $row['user_lang']);
+					$emailer->use_template("admin_activate", $row['nuke_user_lang']);
 					$emailer->set_subject($lang['New_account_subject']);
 
 					$emailer->assign_vars(array(
@@ -800,8 +800,8 @@ if ( $error )
         $signature = stripslashes((string) $signature);
         $signature = ($signature_bbcode_uid != '') ? preg_replace("/:(([a-z0-9]+:)?)$signature_bbcode_uid(=|\])/si", '\\3', $signature) : $signature;
 
-        $user_lang = stripslashes((string) $user_lang);
-        $user_dateformat = stripslashes((string) $user_dateformat);
+        $nuke_user_lang = stripslashes((string) $nuke_user_lang);
+        $nuke_user_dateformat = stripslashes((string) $nuke_user_dateformat);
 
 }
 else if ( $mode == 'editprofile' && !isset($_POST['avatargallery']) && !isset($_POST['submitavatar']) && !isset($_POST['cancelavatar']) )
@@ -823,11 +823,11 @@ else if ( $mode == 'editprofile' && !isset($_POST['avatargallery']) && !isset($_
         $location = $userdata['user_from'];
         $occupation = $userdata['user_occ'];
         $interests = $userdata['user_interests'];
-        $signature_bbcode_uid = $userdata['user_sig_bbcode_uid'];
-        $signature = ($signature_bbcode_uid != '') ? preg_replace("/:(([a-z0-9]+:)?)$signature_bbcode_uid(=|\])/si", '\\3', (string) $userdata['user_sig']) : $userdata['user_sig'];
+        $signature_bbcode_uid = $userdata['nuke_user_sig_bbcode_uid'];
+        $signature = ($signature_bbcode_uid != '') ? preg_replace("/:(([a-z0-9]+:)?)$signature_bbcode_uid(=|\])/si", '\\3', (string) $userdata['nuke_user_sig']) : $userdata['nuke_user_sig'];
 
         $viewemail = $userdata['user_viewemail'];
-        $notifypm = $userdata['user_notify_pm'];
+        $notifypm = $userdata['nuke_user_notify_pm'];
         $popup_pm = $userdata['user_popup_pm'];
         $notifyreply = $userdata['user_notify'];
         $attachsig = $userdata['user_attachsig'];
@@ -837,12 +837,12 @@ else if ( $mode == 'editprofile' && !isset($_POST['avatargallery']) && !isset($_
         $allowviewonline = $userdata['user_allow_viewonline'];
 
         $user_avatar = ( $userdata['user_allowavatar'] ) ? $userdata['user_avatar'] : '';
-        $user_avatar_type = ( $userdata['user_allowavatar'] ) ? $userdata['user_avatar_type'] : USER_AVATAR_NONE;
+        $nuke_user_avatar_type = ( $userdata['user_allowavatar'] ) ? $userdata['nuke_user_avatar_type'] : USER_AVATAR_NONE;
 
-        $user_style = $userdata['user_style'];
-        $user_lang = $userdata['user_lang'];
-        $user_timezone = $userdata['user_timezone'];
-        $user_dateformat = $userdata['user_dateformat'];
+        $nuke_user_style = $userdata['nuke_user_style'];
+        $nuke_user_lang = $userdata['nuke_user_lang'];
+        $nuke_user_timezone = $userdata['nuke_user_timezone'];
+        $nuke_user_dateformat = $userdata['nuke_user_dateformat'];
 }
 
 //
@@ -873,7 +873,7 @@ if( isset($_POST['avatargallery']) && !$error )
 
         $allowviewonline = !$allowviewonline;
 
-        display_avatar_gallery($mode, $avatar_category, $user_id, $email, $current_email, $coppa, $username, $email, $new_password, $cur_password, $password_confirm, $icq, $aim, $msn, $yim, $website, $location, $occupation, $interests, $signature, $viewemail, $notifypm, $popup_pm, $notifyreply, $attachsig, $allowhtml, $allowbbcode, $allowsmilies, $allowviewonline, $user_style, $user_lang, $user_timezone, $user_dateformat, $userdata['session_id']);
+        display_avatar_gallery($mode, $avatar_category, $user_id, $email, $current_email, $coppa, $username, $email, $new_password, $cur_password, $password_confirm, $icq, $aim, $msn, $yim, $website, $location, $occupation, $interests, $signature, $viewemail, $notifypm, $popup_pm, $notifyreply, $attachsig, $allowhtml, $allowbbcode, $allowsmilies, $allowviewonline, $nuke_user_style, $nuke_user_lang, $nuke_user_timezone, $nuke_user_dateformat, $userdata['session_id']);
 }
 else
 {
@@ -884,15 +884,15 @@ else
                 $coppa = FALSE;
         }
 
-        if ( !isset($user_style) )
+        if ( !isset($nuke_user_style) )
         {
-                $user_style = $board_config['default_style'];
+                $nuke_user_style = $board_config['default_style'];
         }
 
         $avatar_img = '';
-        if ( $user_avatar_type )
+        if ( $nuke_user_avatar_type )
         {
-                switch( $user_avatar_type )
+                switch( $nuke_user_avatar_type )
                 {
                         case USER_AVATAR_UPLOAD:
                                 $avatar_img = ( $board_config['allow_avatar_upload'] ) ? '<img src="' . $board_config['avatar_path'] . '/' . $user_avatar . '" alt="" />' : '';
@@ -1069,10 +1069,10 @@ else
                 'ALLOW_AVATAR' => $board_config['allow_avatar_upload'],
                 'AVATAR' => $avatar_img,
                 'AVATAR_SIZE' => $board_config['avatar_filesize'],
-                'LANGUAGE_SELECT' => language_select($user_lang, 'language'),
-                'STYLE_SELECT' => style_select($user_style, 'style'),
-                'TIMEZONE_SELECT' => tz_select($user_timezone, 'timezone'),
-                'DATE_FORMAT' => $user_dateformat,
+                'LANGUAGE_SELECT' => language_select($nuke_user_lang, 'language'),
+                'STYLE_SELECT' => style_select($nuke_user_style, 'style'),
+                'TIMEZONE_SELECT' => tz_select($nuke_user_timezone, 'timezone'),
+                'DATE_FORMAT' => $nuke_user_dateformat,
                 'HTML_STATUS' => $html_status,
                 'BBCODE_STATUS' => sprintf($bbcode_status, '<a href="' . append_sid("faq.$phpEx?mode=bbcode") . '" target="_phpbbcode">', '</a>'),
                 'SMILIES_STATUS' => $smilies_status,

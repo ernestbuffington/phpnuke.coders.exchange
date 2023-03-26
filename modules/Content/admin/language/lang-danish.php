@@ -18,38 +18,37 @@
 /**************************************************************************/
 
 
-define("_SEND","Send");
-define("_FUNCTIONS","Funktioner");
-define("_YES","Ja");
-define("_NO","Nej");
-define("_CATEGORY","Kategori");
-define("_SAVECHANGES","Gem");
-define("_PAGEBREAK","Hvis du har flere sider kan du skrive <b>[--pagebreak--]</b> hvor du vil have et sideskift i din tekst.");
-define("_SIGNATURE","Signatur");
-define("_DESCRIPTION","Beskrivelse");
-define("_TITLE","Titel");
-define("_ACTIVE","Aktiv");
-define("_DEACTIVATE","Deaktiver");
-define("_INACTIVE","Inaktiv");
-define("_ACTIVATE","Aktiver");
-define("_CONTENT","Indhold");
-define("_ADDCATEGORY","Opret en ny kategori");
-define("_EDITCATEGORY","Redigér kategori");
-define("_ADD","Opret");
-define("_LANGUAGE","Sprog");
-define("_CONTENTMANAGER","Content Manager");
-define("_DELCONTWARNING","Er de sikker på at ville slette denne side?");
-define("_DELCONTENT","Slet side");
-define("_CURRENTSTATUS","Nuværende status");
-define("_ADDANEWPAGE","Tilføj en ny side");
-define("_CSUBTITLE","Under-overskrift");
-define("_HEADERTEXT","Overskrift");
-define("_PAGETEXT","Brødtekst");
-define("_FOOTERTEXT","Fodnote");
-define("_ACTIVATEPAGE","Aktiver denne side?");
-define("_EDITPAGECONTENT","Ændre side indholdet");
-define("_DELCONTENTCAT","VIGTIGT: Er de sikker på at ville slette denne kategori? Sider under denne kategori, vil blive slettet!");
-define("_DELCATEGORY","Slet kategori");
+define_once("_SEND","Send");
+define_once("_FUNCTIONS","Funktioner");
+define_once("_YES","Ja");
+define_once("_NO","Nej");
+define_once("_CATEGORY","Kategori");
+define_once("_SAVECHANGES","Gem");
+define_once("_PAGEBREAK","Hvis du har flere sider kan du skrive <b>[--pagebreak--]</b> hvor du vil have et sideskift i din tekst.");
+define_once("_SIGNATURE","Signatur");
+define_once("_DESCRIPTION","Beskrivelse");
+define_once("_TITLE","Titel");
+define_once("_ACTIVE","Aktiv");
+define_once("_DEACTIVATE","Deaktiver");
+define_once("_INACTIVE","Inaktiv");
+define_once("_ACTIVATE","Aktiver");
+define_once("_CONTENT","Indhold");
+define_once("_ADDCATEGORY","Opret en ny kategori");
+define_once("_EDITCATEGORY","Redigér kategori");
+define_once("_ADD","Opret");
+define_once("_LANGUAGE","Sprog");
+define_once("_CONTENTMANAGER","Content Manager");
+define_once("_DELCONTWARNING","Er de sikker på at ville slette denne side?");
+define_once("_DELCONTENT","Slet side");
+define_once("_CURRENTSTATUS","Nuværende status");
+define_once("_ADDANEWPAGE","Tilføj en ny side");
+define_once("_CSUBTITLE","Under-overskrift");
+define_once("_HEADERTEXT","Overskrift");
+define_once("_PAGETEXT","Brødtekst");
+define_once("_FOOTERTEXT","Fodnote");
+define_once("_ACTIVATEPAGE","Aktiver denne side?");
+define_once("_EDITPAGECONTENT","Ændre side indholdet");
+define_once("_DELCONTENTCAT","VIGTIGT: Er de sikker på at ville slette denne kategori? Sider under denne kategori, vil blive slettet!");
+define_once("_DELCATEGORY","Slet kategori");
 
 
-?>

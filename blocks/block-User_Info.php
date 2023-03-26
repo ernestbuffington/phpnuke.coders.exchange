@@ -64,14 +64,14 @@ $preyear = strftime('%Y', $ty);
 $curDateP = "%".$premonth[0].$premonth[1].$premonth[2]."%".$preday."%".$preyear."%";
 
 //Select new today
-$sql = "SELECT COUNT(user_id) AS userCount FROM ".$user_prefix."_users WHERE user_regdate LIKE '$curDate2'";
+$sql = "SELECT COUNT(user_id) AS userCount FROM ".$user_prefix."_users WHERE nuke_user_regdate LIKE '$curDate2'";
 $query = $db->sql_query($sql);
 list($userCount) = $db->sql_fetchrow($query);
 $userCount = intval($userCount);
 //end
 
 //Select new yesterday
-$sql = "SELECT COUNT(user_id) AS userCount FROM ".$user_prefix."_users WHERE user_regdate LIKE '$curDateP'";
+$sql = "SELECT COUNT(user_id) AS userCount FROM ".$user_prefix."_users WHERE nuke_user_regdate LIKE '$curDateP'";
 $query = $db->sql_query($sql);
 list($userCount2) = $db->sql_fetchrow($query);
 $userCount2 = intval($userCount2);

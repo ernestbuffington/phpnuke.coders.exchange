@@ -7127,32 +7127,17 @@ INSERT INTO nuke_groups_points VALUES (20, 0);
 INSERT INTO nuke_groups_points VALUES (21, 0);
 
 INSERT INTO nuke_headlines VALUES (1, 'AbsoluteGames', 'http://files.gameaholic.com/agfa.rdf');
-INSERT INTO nuke_headlines VALUES (2, 'BSDToday', 'http://www.bsdtoday.com/backend/bt.rdf');
-INSERT INTO nuke_headlines VALUES (3, 'BrunchingShuttlecocks', 'http://www.brunching.com/brunching.rdf');
-INSERT INTO nuke_headlines VALUES (4, 'DailyDaemonNews', 'http://daily.daemonnews.org/ddn.rdf.php3');
-INSERT INTO nuke_headlines VALUES (5, 'DigitalTheatre', 'http://www.dtheatre.com/backend.php3?xml=yes');
-INSERT INTO nuke_headlines VALUES (6, 'DotKDE', 'http://dot.kde.org/rdf');
-INSERT INTO nuke_headlines VALUES (7, 'FreeDOS', 'http://www.freedos.org/channels/rss.cgi');
-INSERT INTO nuke_headlines VALUES (8, 'Freshmeat', 'http://rss.freshmeat.net/freshmeat/feeds/fm-releases-global');
-INSERT INTO nuke_headlines VALUES (9, 'Gnome Desktop', 'http://www.gnomedesktop.org/backend.php');
-INSERT INTO nuke_headlines VALUES (10, 'HappyPenguin', 'http://happypenguin.org/html/news.rdf');
-INSERT INTO nuke_headlines VALUES (11, 'HollywoodBitchslap', 'http://hollywoodbitchslap.com/hbs.rdf');
-INSERT INTO nuke_headlines VALUES (12, 'Learning Linux', 'http://www.learninglinux.com/backend.php');
-INSERT INTO nuke_headlines VALUES (13, 'LinuxCentral', 'http://linuxcentral.com/backend/lcnew.rdf');
-INSERT INTO nuke_headlines VALUES (14, 'LinuxJournal', 'http://www.linuxjournal.com/news.rss');
-INSERT INTO nuke_headlines VALUES (15, 'LinuxWeelyNews', 'http://lwn.net/headlines/rss');
-INSERT INTO nuke_headlines VALUES (16, 'Listology', 'http://listology.com/recent.rdf');
-INSERT INTO nuke_headlines VALUES (17, 'MozillaNewsBot', 'http://www.mozilla.org/newsbot/newsbot.rdf');
-INSERT INTO nuke_headlines VALUES (18, 'NewsForge', 'http://www.newsforge.com/newsforge.rdf');
-INSERT INTO nuke_headlines VALUES (19, 'nukeResources', 'http://www.nukeresources.com/backend.php');
-INSERT INTO nuke_headlines VALUES (20, 'WebReference', 'http://webreference.com/webreference.rdf');
-INSERT INTO nuke_headlines VALUES (21, 'PDABuzz', 'http://www.pdabuzz.com/netscape.txt');
-INSERT INTO nuke_headlines VALUES (22, 'PHP-nuke', 'http://phpnuke.org/backend.php');
-INSERT INTO nuke_headlines VALUES (23, 'PHP.net', 'http://www.php.net/news.rss');
-INSERT INTO nuke_headlines VALUES (24, 'PHPBuilder', 'http://phpbuilder.com/rss_feed.php');
-INSERT INTO nuke_headlines VALUES (25, 'PerlMonks', 'http://www.perlmonks.org/headlines.rdf');
-INSERT INTO nuke_headlines VALUES (26, 'TheNextLevel', 'http://www.the-nextlevel.com/rdf/tnl.rdf');
-
+INSERT INTO nuke_headlines VALUES (2, 'BrunchingShuttlecocks', 'http://www.brunching.com/brunching.rdf');
+INSERT INTO nuke_headlines VALUES (3, 'DotKDE', 'http://dot.kde.org/rdf');
+INSERT INTO nuke_headlines VALUES (4, 'HollywoodBitchslap', 'http://hollywoodbitchslap.com/hbs.rdf');
+INSERT INTO nuke_headlines VALUES (5, 'LinuxCentral', 'http://linuxcentral.com/backend/lcnew.rdf');
+INSERT INTO nuke_headlines VALUES (6, 'LinuxJournal', 'http://www.linuxjournal.com/news.rss');
+INSERT INTO nuke_headlines VALUES (7, 'Listology', 'http://listology.com/recent.rdf');
+INSERT INTO nuke_headlines VALUES (8, 'NewsForge', 'http://www.newsforge.com/newsforge.rdf');
+INSERT INTO nuke_headlines VALUES (9, 'nukeResources', 'http://www.nukeresources.com/backend.php');
+INSERT INTO nuke_headlines VALUES (10, 'WebReference', 'http://webreference.com/webreference.rdf');
+INSERT INTO nuke_headlines VALUES (11, 'PHP-nuke', 'http://phpnuke.coders.exchange/backend.php');
+INSERT INTO nuke_headlines VALUES (12, 'TheNextLevel', 'http://www.the-nextlevel.com/rdf/tnl.rdf');
 
 INSERT INTO nuke_main VALUES ('News');
 

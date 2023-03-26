@@ -1,27 +1,12 @@
-REPLACE INTO `#prefix#_headlines` (`hid`, `sitename`, `headlinesurl`) VALUES
-(1, 'AbsoluteGames', 'http://files.gameaholic.com/agfa.rdf'),
-(2, 'BSDToday', 'http://www.bsdtoday.com/backend/bt.rdf'),
-(3, 'BrunchingShuttlecocks', 'http://www.brunching.com/brunching.rdf'),
-(4, 'DailyDaemonNews', 'http://daily.daemonnews.org/ddn.rdf.php3'),
-(5, 'DigitalTheatre', 'http://www.dtheatre.com/backend.php3?xml=yes'),
-(6, 'DotKDE', 'http://dot.kde.org/rdf'),
-(7, 'FreeDOS', 'http://www.freedos.org/channels/rss.cgi'),
-(8, 'Freshmeat', 'http://rss.freshmeat.net/freshmeat/feeds/fm-releases-global'),
-(9, 'Gnome Desktop', 'http://www.gnomedesktop.org/backend.php'),
-(10, 'HappyPenguin', 'http://happypenguin.org/html/news.rdf'),
-(11, 'HollywoodBitchslap', 'http://hollywoodbitchslap.com/hbs.rdf'),
-(12, 'Learning Linux', 'http://www.learninglinux.com/backend.php'),
-(13, 'LinuxCentral', 'http://linuxcentral.com/backend/lcnew.rdf'),
-(14, 'LinuxJournal', 'http://www.linuxjournal.com/news.rss'),
-(15, 'LinuxWeelyNews', 'http://lwn.net/headlines/rss'),
-(16, 'Listology', 'http://listology.com/recent.rdf'),
-(17, 'MozillaNewsBot', 'http://www.mozilla.org/newsbot/newsbot.rdf'),
-(18, 'NewsForge', 'http://www.newsforge.com/newsforge.rdf'),
-(19, 'nukeResources', 'http://www.nukeresources.com/backend.php'),
-(20, 'WebReference', 'http://webreference.com/webreference.rdf'),
-(21, 'PDABuzz', 'http://www.pdabuzz.com/netscape.txt'),
-(22, 'PHP-nuke', 'http://phpnuke.org/backend.php'),
-(23, 'PHP.net', 'http://www.php.net/news.rss'),
-(24, 'PHPBuilder', 'http://phpbuilder.com/rss_feed.php'),
-(25, 'PerlMonks', 'http://www.perlmonks.org/headlines.rdf'),
-(26, 'TheNextLevel', 'http://www.the-nextlevel.com/rdf/tnl.rdf');
+REPLACE INTO `#prefix#_headlines` VALUES (1, 'AbsoluteGames', 'http://files.gameaholic.com/agfa.rdf');
+REPLACE INTO `#prefix#_headlines` VALUES (2, 'BrunchingShuttlecocks', 'http://www.brunching.com/brunching.rdf');
+REPLACE INTO `#prefix#_headlines` VALUES (3, 'DotKDE', 'http://dot.kde.org/rdf');
+REPLACE INTO `#prefix#_headlines` VALUES (4, 'HollywoodBitchslap', 'http://hollywoodbitchslap.com/hbs.rdf');
+REPLACE INTO `#prefix#_headlines` VALUES (5, 'LinuxCentral', 'http://linuxcentral.com/backend/lcnew.rdf');
+REPLACE INTO `#prefix#_headlines` VALUES (6, 'LinuxJournal', 'http://www.linuxjournal.com/news.rss');
+REPLACE INTO `#prefix#_headlines` VALUES (7, 'Listology', 'http://listology.com/recent.rdf');
+REPLACE INTO `#prefix#_headlines` VALUES (8, 'NewsForge', 'http://www.newsforge.com/newsforge.rdf');
+REPLACE INTO `#prefix#_headlines` VALUES (9, 'nukeResources', 'http://www.nukeresources.com/backend.php');
+REPLACE INTO `#prefix#_headlines` VALUES (10, 'WebReference', 'http://webreference.com/webreference.rdf');
+REPLACE INTO `#prefix#_headlines` VALUES (11, 'PHP-nuke', 'http://phpnuke.coders.exchange/backend.php');
+REPLACE INTO `#prefix#_headlines` VALUES (12, 'TheNextLevel', 'http://www.the-nextlevel.com/rdf/tnl.rdf');

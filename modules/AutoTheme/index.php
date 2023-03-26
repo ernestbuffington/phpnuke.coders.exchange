@@ -22,7 +22,8 @@
 //
 // ----------------------------------------------------------------------
 
-if (!eregi("index.php|modules.php", $_SERVER['PHP_SELF'])) {
+if (!preg_match('#index.php|modules.php#mi', (string) $_SERVER['PHP_SELF'])) {
+
     die ("Access Denied");
 }
 include("header.php");

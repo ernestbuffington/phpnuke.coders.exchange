@@ -18,38 +18,37 @@
 /**************************************************************************/
 
 
-define("_SEND","Убгс");
-define("_FUNCTIONS","ЧсЯцЧс");
-define("_YES","фку");
-define("_NO","сЧ");
-define("_CATEGORY","Ъефэн");
-define("_SAVECHANGES","Энй ЧсЪлээбЧЪ");
-define("_PAGEBREAK","ЧаЧ УбЯЪ енЭЧЪ уЪкЯЯЩ нХфп ЪгЪиэк Уф ЪпЪШ  <b>[--pagebreak--]</b> нэ упЧф Чснес.");
-define("_SIGNATURE","ЧсЪцоэк");
-define("_DESCRIPTION","Чсцен");
-define("_TITLE","ЧскфцЧф");
-define("_ACTIVE","фдэи");
-define("_DEACTIVATE","Ъкиэс");
-define("_INACTIVE","укис");
-define("_ACTIVATE","Ъфдэи");
-define("_CONTENT","ЧсуЭЪць");
-define("_ADDCATEGORY","Ужн Ъефэн ЬЯэЯЧ");
-define("_EDITCATEGORY","ЪкЯэс ЧсЪефэн");
-define("_ADD","Ужн");
-define("_LANGUAGE","ЧсслЩ");
-define("_CONTENTMANAGER","ЧсенЭЧЪ ЧсХжЧнэЩ");
-define("_DELCONTWARNING","хс УфЪ уЪУпјЯ Уфјп ЪбэЯ Уф ЪЭан ЧсенЭЩП");
-define("_DELCONTENT","Эан енЭЩ");
-define("_CURRENTSTATUS","Чсцжк ЧсЭЧсэ");
-define("_ADDANEWPAGE","Ужн енЭЩ ЬЯэЯЩ");
-define("_CSUBTITLE","кфцЧф нбкэ");
-define("_HEADERTEXT","фе ЧсЪбцэгЩ");
-define("_PAGETEXT","фе ЧсенЭЩ");
-define("_FOOTERTEXT","фе ЧсЪаээс");
-define("_ACTIVATEPAGE","Ъфдэи хах ЧсенЭЩП");
-define("_EDITPAGECONTENT","ЪкЯэс уЭЪцэЧЪ ЧсенЭЩ");
-define("_DELCONTENTCAT","WARNING: хс ЪбэЯ Эан хаЧ Чсогу ШЧсЪУпэЯП ЧсенЭЧЪ ЪЭЪ хаЧ Чсогу сф ЪЭан цспфхЧ гцн Ъпцф уксоЩ ШЯцф огу.");
-define("_DELCATEGORY","Эан Чсогу");
+define_once("_SEND","Убгс");
+define_once("_FUNCTIONS","ЧсЯцЧс");
+define_once("_YES","фку");
+define_once("_NO","сЧ");
+define_once("_CATEGORY","Ъефэн");
+define_once("_SAVECHANGES","Энй ЧсЪлээбЧЪ");
+define_once("_PAGEBREAK","ЧаЧ УбЯЪ енЭЧЪ уЪкЯЯЩ нХфп ЪгЪиэк Уф ЪпЪШ  <b>[--pagebreak--]</b> нэ упЧф Чснес.");
+define_once("_SIGNATURE","ЧсЪцоэк");
+define_once("_DESCRIPTION","Чсцен");
+define_once("_TITLE","ЧскфцЧф");
+define_once("_ACTIVE","фдэи");
+define_once("_DEACTIVATE","Ъкиэс");
+define_once("_INACTIVE","укис");
+define_once("_ACTIVATE","Ъфдэи");
+define_once("_CONTENT","ЧсуЭЪць");
+define_once("_ADDCATEGORY","Ужн Ъефэн ЬЯэЯЧ");
+define_once("_EDITCATEGORY","ЪкЯэс ЧсЪефэн");
+define_once("_ADD","Ужн");
+define_once("_LANGUAGE","ЧсслЩ");
+define_once("_CONTENTMANAGER","ЧсенЭЧЪ ЧсХжЧнэЩ");
+define_once("_DELCONTWARNING","хс УфЪ уЪУпјЯ Уфјп ЪбэЯ Уф ЪЭан ЧсенЭЩП");
+define_once("_DELCONTENT","Эан енЭЩ");
+define_once("_CURRENTSTATUS","Чсцжк ЧсЭЧсэ");
+define_once("_ADDANEWPAGE","Ужн енЭЩ ЬЯэЯЩ");
+define_once("_CSUBTITLE","кфцЧф нбкэ");
+define_once("_HEADERTEXT","фе ЧсЪбцэгЩ");
+define_once("_PAGETEXT","фе ЧсенЭЩ");
+define_once("_FOOTERTEXT","фе ЧсЪаээс");
+define_once("_ACTIVATEPAGE","Ъфдэи хах ЧсенЭЩП");
+define_once("_EDITPAGECONTENT","ЪкЯэс уЭЪцэЧЪ ЧсенЭЩ");
+define_once("_DELCONTENTCAT","WARNING: хс ЪбэЯ Эан хаЧ Чсогу ШЧсЪУпэЯП ЧсенЭЧЪ ЪЭЪ хаЧ Чсогу сф ЪЭан цспфхЧ гцн Ъпцф уксоЩ ШЯцф огу.");
+define_once("_DELCATEGORY","Эан Чсогу");
 
 
-?>

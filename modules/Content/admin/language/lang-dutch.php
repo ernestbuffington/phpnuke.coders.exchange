@@ -18,38 +18,37 @@
 /**************************************************************************/
 
 
-define("_SEND","Verzenden");
-define("_FUNCTIONS","Functies");
-define("_YES","Ja");
-define("_NO","Nee");
-define("_CATEGORY","Categorie");
-define("_SAVECHANGES","Opslaan");
-define("_PAGEBREAK","Als u meerdere pagina's wilt, voer dan <b>[--pagebreak--]</b> in voor elke nieuwe pagina.");
-define("_SIGNATURE","Handtekening");
-define("_DESCRIPTION","Beschrijving");
-define("_TITLE","Titel");
-define("_ACTIVE","Actief");
-define("_DEACTIVATE","Deactiveren");
-define("_INACTIVE","Inactief");
-define("_ACTIVATE","Activeren");
-define("_CONTENT","Inhoud");
-define("_ADDCATEGORY","Nieuwe categorie toevoegen");
-define("_EDITCATEGORY","Categorie bewerken");
-define("_ADD","Toevoegen");
-define("_LANGUAGE","Taal");
-define("_CONTENTMANAGER","Inhoud");
-define("_DELCONTWARNING","Ben je zeker dat je deze pagina wilt verwijderen?");
-define("_DELCONTENT","Verwijder Pagina");
-define("_CURRENTSTATUS","Huidige Status");
-define("_ADDANEWPAGE","Nieuwe pagina toevoegen");
-define("_CSUBTITLE","Ondertitel");
-define("_HEADERTEXT","Hoofding Tekst");
-define("_PAGETEXT","Pagina Tekst");
-define("_FOOTERTEXT","Voettekst");
-define("_ACTIVATEPAGE","Deze pagina activeren?");
-define("_EDITPAGECONTENT","Bewerk pagina-inhoud");
-define("_DELCONTENTCAT","WAARSCHUWING: Ben je zeker deze categorie te verwijderen?  Alle bestaande pagina's in deze categorie worden niet verwijderd, maar zullen niet meer aan een categorie gekoppeld zijn.");
-define("_DELCATEGORY","Verwijder Categorie");
+define_once("_SEND","Verzenden");
+define_once("_FUNCTIONS","Functies");
+define_once("_YES","Ja");
+define_once("_NO","Nee");
+define_once("_CATEGORY","Categorie");
+define_once("_SAVECHANGES","Opslaan");
+define_once("_PAGEBREAK","Als u meerdere pagina's wilt, voer dan <b>[--pagebreak--]</b> in voor elke nieuwe pagina.");
+define_once("_SIGNATURE","Handtekening");
+define_once("_DESCRIPTION","Beschrijving");
+define_once("_TITLE","Titel");
+define_once("_ACTIVE","Actief");
+define_once("_DEACTIVATE","Deactiveren");
+define_once("_INACTIVE","Inactief");
+define_once("_ACTIVATE","Activeren");
+define_once("_CONTENT","Inhoud");
+define_once("_ADDCATEGORY","Nieuwe categorie toevoegen");
+define_once("_EDITCATEGORY","Categorie bewerken");
+define_once("_ADD","Toevoegen");
+define_once("_LANGUAGE","Taal");
+define_once("_CONTENTMANAGER","Inhoud");
+define_once("_DELCONTWARNING","Ben je zeker dat je deze pagina wilt verwijderen?");
+define_once("_DELCONTENT","Verwijder Pagina");
+define_once("_CURRENTSTATUS","Huidige Status");
+define_once("_ADDANEWPAGE","Nieuwe pagina toevoegen");
+define_once("_CSUBTITLE","Ondertitel");
+define_once("_HEADERTEXT","Hoofding Tekst");
+define_once("_PAGETEXT","Pagina Tekst");
+define_once("_FOOTERTEXT","Voettekst");
+define_once("_ACTIVATEPAGE","Deze pagina activeren?");
+define_once("_EDITPAGECONTENT","Bewerk pagina-inhoud");
+define_once("_DELCONTENTCAT","WAARSCHUWING: Ben je zeker deze categorie te verwijderen?  Alle bestaande pagina's in deze categorie worden niet verwijderd, maar zullen niet meer aan een categorie gekoppeld zijn.");
+define_once("_DELCATEGORY","Verwijder Categorie");
 
 
-?>

@@ -18,38 +18,37 @@
 /**************************************************************************/
 
 
-define("_SEND","Senda");
-define("_FUNCTIONS","Aðgerðir");
-define("_YES","Já");
-define("_NO","Nei");
-define("_CATEGORY","Flokkur");
-define("_SAVECHANGES","Vista breytingar");
-define("_PAGEBREAK","Ef þú vilt hafa margar síður getur skrifað <b>[--pagebreak--]</b> þar sem þú vilt fá síðuskil.");
-define("_SIGNATURE","Undirskrift");
-define("_DESCRIPTION","Lýsing");
-define("_TITLE","Titill");
-define("_ACTIVE","Virkur");
-define("_DEACTIVATE","Gera óvirkan");
-define("_INACTIVE","Óvirkur");
-define("_ACTIVATE","Gera virkan");
-define("_CONTENT","Efni");
-define("_ADDCATEGORY","Bæta við flokki");
-define("_EDITCATEGORY","Breyta flokki");
-define("_ADD","Bæta við");
-define("_LANGUAGE","Tungumál");
-define("_CONTENTMANAGER","Stjórn á innihaldi");
-define("_DELCONTWARNING","Ertu viss um að þú viljir eyða þessari síðu");
-define("_DELCONTENT","Eyða síðu");
-define("_CURRENTSTATUS","Núverandi staða");
-define("_ADDANEWPAGE","Bæta við nýrri síðu");
-define("_CSUBTITLE","Undirtitill");
-define("_HEADERTEXT","Texti í haus");
-define("_PAGETEXT","Texti síðu");
-define("_FOOTERTEXT","Texti í fót");
-define("_ACTIVATEPAGE","Gera þessa síðu virka?");
-define("_EDITPAGECONTENT","Breyta efni síðu");
-define("_DELCONTENTCAT","AÐVÖRUN: Ertu viss um að þú viljir eyða þessum efnisflokki? Síður sem tilheyra þessum efnisflokki, ef þær eru þá til, munu ekki verða fjarlægðar heldur munu þær ekki verða tengdar efnisflokki lengur.");
-define("_DELCATEGORY","Eyða efnisflokki");
+define_once("_SEND","Senda");
+define_once("_FUNCTIONS","Aðgerðir");
+define_once("_YES","Já");
+define_once("_NO","Nei");
+define_once("_CATEGORY","Flokkur");
+define_once("_SAVECHANGES","Vista breytingar");
+define_once("_PAGEBREAK","Ef þú vilt hafa margar síður getur skrifað <b>[--pagebreak--]</b> þar sem þú vilt fá síðuskil.");
+define_once("_SIGNATURE","Undirskrift");
+define_once("_DESCRIPTION","Lýsing");
+define_once("_TITLE","Titill");
+define_once("_ACTIVE","Virkur");
+define_once("_DEACTIVATE","Gera óvirkan");
+define_once("_INACTIVE","Óvirkur");
+define_once("_ACTIVATE","Gera virkan");
+define_once("_CONTENT","Efni");
+define_once("_ADDCATEGORY","Bæta við flokki");
+define_once("_EDITCATEGORY","Breyta flokki");
+define_once("_ADD","Bæta við");
+define_once("_LANGUAGE","Tungumál");
+define_once("_CONTENTMANAGER","Stjórn á innihaldi");
+define_once("_DELCONTWARNING","Ertu viss um að þú viljir eyða þessari síðu");
+define_once("_DELCONTENT","Eyða síðu");
+define_once("_CURRENTSTATUS","Núverandi staða");
+define_once("_ADDANEWPAGE","Bæta við nýrri síðu");
+define_once("_CSUBTITLE","Undirtitill");
+define_once("_HEADERTEXT","Texti í haus");
+define_once("_PAGETEXT","Texti síðu");
+define_once("_FOOTERTEXT","Texti í fót");
+define_once("_ACTIVATEPAGE","Gera þessa síðu virka?");
+define_once("_EDITPAGECONTENT","Breyta efni síðu");
+define_once("_DELCONTENTCAT","AÐVÖRUN: Ertu viss um að þú viljir eyða þessum efnisflokki? Síður sem tilheyra þessum efnisflokki, ef þær eru þá til, munu ekki verða fjarlægðar heldur munu þær ekki verða tengdar efnisflokki lengur.");
+define_once("_DELCATEGORY","Eyða efnisflokki");
 
 
-?>

@@ -6,7 +6,7 @@
 /*                                                                        */
 /* This is the language module with all the system messages               */
 /*                                                                        */
-/* If you made a translation go to the my website and send to me          */
+/* If you made a translation, please go to the site and send to me        */
 /* the translated file. Please keep the original text order by modules,   */
 /* and just one message per line, also double check your translation!     */
 /*                                                                        */
@@ -17,38 +17,19 @@
 /* And, if you use HTML code, please double check it.                     */
 /**************************************************************************/
 
-
-define_once("_SEND","G&#7917;i");
-define_once("_FUNCTIONS","Ch&#7913;c n&#259;ng");
-define_once("_YES","C√≥");
-define_once("_NO","Kh√¥ng");
-define_once("_CATEGORY","Danh m&#7909;c");
-define_once("_SAVECHANGES","L&#432;u tr&#7919; s&#7921; thay &#273;&#7893;i");
-define_once("_PAGEBREAK","N&#7871;u b&#7841;n mu&#7889;n c√≥ nhi&#7873;u trang, b&#7841;n c√≥ th&#7875; vi&#7871;t <b>[--pagebreak--]</b> &#7903; ch&#7895; m√† b&#7841;n mu&#7889;n c&#7855;t.");
-define_once("_SIGNATURE","Ch&#7919; k√Ω");
-define_once("_DESCRIPTION","Description");
-define_once("_TITLE","Ti√™u &#273;&#7873;");
-define_once("_ACTIVE","Ho&#7841;t &#273;&#7897;ng");
-define_once("_DEACTIVATE","Ng&#7915;ng ho&#7841;t &#273;&#7897;ng");
-define_once("_INACTIVE","Kh√¥ng ho&#7841;t &#273;&#7897;ng");
-define_once("_ACTIVATE","K√≠ch ho&#7841;t");
-define_once("_CONTENT","N&#7897;i dung");
-define_once("_ADDCATEGORY","Add a New Category");
-define_once("_EDITCATEGORY","Edit Category");
-define_once("_ADD","Th√™m");
-define_once("_LANGUAGE","Ng√¥n ng&#7919;");
-define_once("_CONTENTMANAGER","Qu&#7843;n l√Ω n&#7897;i dung");
-define_once("_DELCONTWARNING","B&#7841;n c√≥ ch&#7855;c l√† mu&#7889;n x√≥a trang");
-define_once("_DELCONTENT","X√≥a trang");
-define_once("_CURRENTSTATUS","Current Status");
-define_once("_ADDANEWPAGE","Add a New Page");
-define_once("_CSUBTITLE","Sub-Title");
-define_once("_HEADERTEXT","Header Text");
-define_once("_PAGETEXT","Page Text");
-define_once("_FOOTERTEXT","Footer Text");
-define_once("_ACTIVATEPAGE","K√≠ch ho&#7841;t trang n√†y?");
-define_once("_EDITPAGECONTENT","Edit Page Content");
-define_once("_DELCONTENTCAT","WARNING: Are you sure you want to delete this category? Pages under this category, if they exist, will not be removed, but will not be attached to any category.");
-define_once("_DELCATEGORY","Delete Category");
+define("_PREVIOUS","Trang tr&#432;&#7899;c");
+define("_NEXT","Trang sau");
+define("_PAGE","Trang");
+define("_DEACTIVATE","T&#7855;t ho&#7841;t &#273;&#7897;ng");
+define("_ACTIVATE","Ho&#7841;t &#273;&#7897;ng");
+define("_PUBLISHEDON","Xu&#7845;t b&#7843;n vÖo");
+define("_PAGESLIST","Trang kà khai");
+define("_LISTOFCONTENT","Kà khai c†c n&#7897;i dung c¢ trong");
+define("_YOURADMINLIST","B&#7841;n lÖ Ng&#432;&#7901;i Qu&#7843;n ly: d&#432;&#7899;i &#273;Éy lÖ nh&#7919;ng trang khìng ho&#7841;t &#273;&#7897;ng:");
+define("_COPYRIGHT","B&#7843;n quy&#7873;n &copy; b&#7903;i");
+define("_COPYRIGHT2","T†c gi&#7843; gi&#7919; b&#7843;n quy&#7873;n.");
+define("_CONTENTCATEGORIES","Nh&#7919;ng n&#7897;i dung &#273;&#432;&#7907;c s&#7855;p &#273;&#7863;t trong danh m&#7909;c");
+define("_NONCLASSCONT","N&#7897;i dung khìng &#273;&#432;&#7907;c s&#7855;p &#273;&#7863;t");
 
 
+?>

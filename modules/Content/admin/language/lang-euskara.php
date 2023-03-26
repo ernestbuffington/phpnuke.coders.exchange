@@ -18,38 +18,37 @@
 /**************************************************************************/
 
 
-define("_SEND","Bidali");
-define("_FUNCTIONS","Funtzioak");
-define("_YES","Bai");
-define("_NO","Ez");
-define("_CATEGORY","Maila");
-define("_SAVECHANGES","Aldaketak gorde");
-define("_PAGEBREAK","Orrialde batetan baino gehiagotan zatitzeko, idatzi <b>[--pagebreak--]</b> orrialde berri baten mozketa sartzeko");
-define("_SIGNATURE","Sinadura");
-define("_DESCRIPTION","Azalpena");
-define("_TITLE","Tituloa");
-define("_ACTIVE","Aktiboa");
-define("_DEACTIVATE","Desaktibatu");
-define("_INACTIVE","Aktibatu gabe");
-define("_ACTIVATE","Aktibatu");
-define("_CONTENT","Edukia");
-define("_ADDCATEGORY","Kategoria bat gehitu");
-define("_EDITCATEGORY","Kategoria editatu");
-define("_ADD","gehitu");
-define("_LANGUAGE","Hizkuntza");
-define("_CONTENTMANAGER","Edukiak");
-define("_DELCONTWARNING","Ziur zaude orri hau ezabatu nahi duzula");
-define("_DELCONTENT","Ezabatu orria");
-define("_CURRENTSTATUS","Uneko egoera");
-define("_ADDANEWPAGE","Orri berri bat gehitu");
-define("_CSUBTITLE","Azpititulua");
-define("_HEADERTEXT","Testuburua");
-define("_PAGETEXT","Orriko testua");
-define("_FOOTERTEXT","Ointestua");
-define("_ACTIVATEPAGE","Aktibatu orri hau?");
-define("_EDITPAGECONTENT","Editatu orriaren edukia");
-define("_DELCONTENTCAT","WARNING: Are you sure you want to delete this category? Pages under this category, if they exist, will not be removed, but will not be attached to any category.");
-define("_DELCATEGORY","Delete Category");
+define_once("_SEND","Bidali");
+define_once("_FUNCTIONS","Funtzioak");
+define_once("_YES","Bai");
+define_once("_NO","Ez");
+define_once("_CATEGORY","Maila");
+define_once("_SAVECHANGES","Aldaketak gorde");
+define_once("_PAGEBREAK","Orrialde batetan baino gehiagotan zatitzeko, idatzi <b>[--pagebreak--]</b> orrialde berri baten mozketa sartzeko");
+define_once("_SIGNATURE","Sinadura");
+define_once("_DESCRIPTION","Azalpena");
+define_once("_TITLE","Tituloa");
+define_once("_ACTIVE","Aktiboa");
+define_once("_DEACTIVATE","Desaktibatu");
+define_once("_INACTIVE","Aktibatu gabe");
+define_once("_ACTIVATE","Aktibatu");
+define_once("_CONTENT","Edukia");
+define_once("_ADDCATEGORY","Kategoria bat gehitu");
+define_once("_EDITCATEGORY","Kategoria editatu");
+define_once("_ADD","gehitu");
+define_once("_LANGUAGE","Hizkuntza");
+define_once("_CONTENTMANAGER","Edukiak");
+define_once("_DELCONTWARNING","Ziur zaude orri hau ezabatu nahi duzula");
+define_once("_DELCONTENT","Ezabatu orria");
+define_once("_CURRENTSTATUS","Uneko egoera");
+define_once("_ADDANEWPAGE","Orri berri bat gehitu");
+define_once("_CSUBTITLE","Azpititulua");
+define_once("_HEADERTEXT","Testuburua");
+define_once("_PAGETEXT","Orriko testua");
+define_once("_FOOTERTEXT","Ointestua");
+define_once("_ACTIVATEPAGE","Aktibatu orri hau?");
+define_once("_EDITPAGECONTENT","Editatu orriaren edukia");
+define_once("_DELCONTENTCAT","WARNING: Are you sure you want to delete this category? Pages under this category, if they exist, will not be removed, but will not be attached to any category.");
+define_once("_DELCATEGORY","Delete Category");
 
 
-?>

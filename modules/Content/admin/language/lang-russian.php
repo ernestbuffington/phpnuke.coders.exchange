@@ -18,38 +18,37 @@
 /**************************************************************************/
 
 
-define("_SEND","Отправить");
-define("_FUNCTIONS","Функции");
-define("_YES","Да");
-define("_NO","Нет");
-define("_CATEGORY","Категория");
-define("_SAVECHANGES","Сохранить изменения");
-define("_PAGEBREAK","");
-define("_SIGNATURE","Немного о себе");
-define("_DESCRIPTION","Примечание");
-define("_TITLE","Зоголовог");
-define("_ACTIVE","Вкл.");
-define("_DEACTIVATE","Выкл.");
-define("_INACTIVE","Выключить");
-define("_ACTIVATE","Включить");
-define("_CONTENT","Content");
-define("_ADDCATEGORY","Добавить категорию");
-define("_EDITCATEGORY","Редактировать категорию");
-define("_ADD","Добавить");
-define("_LANGUAGE","Language");
-define("_CONTENTMANAGER","Content Manager");
-define("_DELCONTWARNING","Are you sure you want to delete the page");
-define("_DELCONTENT","Delete Page");
-define("_CURRENTSTATUS","Current Status");
-define("_ADDANEWPAGE","Add a New Page");
-define("_CSUBTITLE","Sub-Title");
-define("_HEADERTEXT","Header Text");
-define("_PAGETEXT","Page Text");
-define("_FOOTERTEXT","Footer Text");
-define("_ACTIVATEPAGE","Activate This Page?");
-define("_EDITPAGECONTENT","Edit Page Content");
-define("_DELCONTENTCAT","WARNING: Are you sure you want to delete this category? Pages under this category, if they exist, will not be removed, but will not be attached to any category.");
-define("_DELCATEGORY","Delete Category");
+define_once("_SEND","Отправить");
+define_once("_FUNCTIONS","Функции");
+define_once("_YES","Да");
+define_once("_NO","Нет");
+define_once("_CATEGORY","Категория");
+define_once("_SAVECHANGES","Сохранить изменения");
+define_once("_PAGEBREAK","");
+define_once("_SIGNATURE","Немного о себе");
+define_once("_DESCRIPTION","Примечание");
+define_once("_TITLE","Зоголовог");
+define_once("_ACTIVE","Вкл.");
+define_once("_DEACTIVATE","Выкл.");
+define_once("_INACTIVE","Выключить");
+define_once("_ACTIVATE","Включить");
+define_once("_CONTENT","Content");
+define_once("_ADDCATEGORY","Добавить категорию");
+define_once("_EDITCATEGORY","Редактировать категорию");
+define_once("_ADD","Добавить");
+define_once("_LANGUAGE","Language");
+define_once("_CONTENTMANAGER","Content Manager");
+define_once("_DELCONTWARNING","Are you sure you want to delete the page");
+define_once("_DELCONTENT","Delete Page");
+define_once("_CURRENTSTATUS","Current Status");
+define_once("_ADDANEWPAGE","Add a New Page");
+define_once("_CSUBTITLE","Sub-Title");
+define_once("_HEADERTEXT","Header Text");
+define_once("_PAGETEXT","Page Text");
+define_once("_FOOTERTEXT","Footer Text");
+define_once("_ACTIVATEPAGE","Activate This Page?");
+define_once("_EDITPAGECONTENT","Edit Page Content");
+define_once("_DELCONTENTCAT","WARNING: Are you sure you want to delete this category? Pages under this category, if they exist, will not be removed, but will not be attached to any category.");
+define_once("_DELCATEGORY","Delete Category");
 
 
-?>

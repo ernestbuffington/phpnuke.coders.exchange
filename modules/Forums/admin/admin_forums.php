@@ -704,7 +704,7 @@ if( !empty($mode) )
                                 FROM " . AUTH_ACCESS_TABLE . " a, " . USER_GROUP_TABLE . " ug
                                 WHERE a.forum_id <> $from_id
                                         AND a.auth_mod = 1
-                                        AND ug.group_id = a.group_id";
+                                        AND ug.nuke_group_id = a.nuke_group_id";
                         if( !$result = $db->sql_query($sql) )
                         {
                                 message_die(GENERAL_ERROR, "Couldn't obtain moderator list", "", __LINE__, __FILE__, $sql);
@@ -723,7 +723,7 @@ if( !empty($mode) )
                                         FROM " . AUTH_ACCESS_TABLE . " a, " . USER_GROUP_TABLE . " ug
                                         WHERE a.forum_id = $from_id
                                                 AND a.auth_mod = 1
-                                                AND ug.group_id = a.group_id
+                                                AND ug.nuke_group_id = a.nuke_group_id
                                                 AND ug.user_id NOT IN ($user_ids)";
                                 if( !$result2 = $db->sql_query($sql) )
                                 {

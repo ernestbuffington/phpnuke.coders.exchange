@@ -18,38 +18,37 @@
 /**************************************************************************/
 
 
-define("_SEND","Enviar");
-define("_FUNCTIONS","Funcións");
-define("_YES","Sí");
-define("_NO","Non");
-define("_CATEGORY","Categoría");
-define("_SAVECHANGES","Gardar cambios");
-define("_PAGEBREAK","Se quere dividir en varias páxinas, pode escribir <b>[--pagebreak--]</b> onde queira cortar");
-define("_SIGNATURE","Firma");
-define("_DESCRIPTION","Descripción");
-define("_TITLE","Título");
-define("_ACTIVE","Activo");
-define("_DEACTIVATE","Desactivar");
-define("_INACTIVE","Inactivo");
-define("_ACTIVATE","Activar");
-define("_CONTENT","Contido");
-define("_ADDCATEGORY","Engadir Categoría");
-define("_EDITCATEGORY","Editar Categoría");
-define("_ADD","Engadir");
-define("_LANGUAGE","Idioma");
-define("_CONTENTMANAGER","Administración de Contidos");
-define("_DELCONTWARNING","¿Está seguro de borra-la páxina?");
-define("_DELCONTENT","Borrar Páxina");
-define("_CURRENTSTATUS","Estado Actual");
-define("_ADDANEWPAGE","Engadir Nova Páxina");
-define("_CSUBTITLE","Sub-Título");
-define("_HEADERTEXT","Texto da Cabeceira");
-define("_PAGETEXT","Texto da Páxina");
-define("_FOOTERTEXT","Texto do Pé");
-define("_ACTIVATEPAGE","¿Activar Esta Páxina?");
-define("_EDITPAGECONTENT","Editar Contido da Páxina");
-define("_DELCONTENTCAT","WARNING: Are you sure you want to delete this category? Pages under this category, if they exist, will not be removed, but will not be attached to any category.");
-define("_DELCATEGORY","Delete Category");
+define_once("_SEND","Enviar");
+define_once("_FUNCTIONS","Funcións");
+define_once("_YES","Sí");
+define_once("_NO","Non");
+define_once("_CATEGORY","Categoría");
+define_once("_SAVECHANGES","Gardar cambios");
+define_once("_PAGEBREAK","Se quere dividir en varias páxinas, pode escribir <b>[--pagebreak--]</b> onde queira cortar");
+define_once("_SIGNATURE","Firma");
+define_once("_DESCRIPTION","Descripción");
+define_once("_TITLE","Título");
+define_once("_ACTIVE","Activo");
+define_once("_DEACTIVATE","Desactivar");
+define_once("_INACTIVE","Inactivo");
+define_once("_ACTIVATE","Activar");
+define_once("_CONTENT","Contido");
+define_once("_ADDCATEGORY","Engadir Categoría");
+define_once("_EDITCATEGORY","Editar Categoría");
+define_once("_ADD","Engadir");
+define_once("_LANGUAGE","Idioma");
+define_once("_CONTENTMANAGER","Administración de Contidos");
+define_once("_DELCONTWARNING","¿Está seguro de borra-la páxina?");
+define_once("_DELCONTENT","Borrar Páxina");
+define_once("_CURRENTSTATUS","Estado Actual");
+define_once("_ADDANEWPAGE","Engadir Nova Páxina");
+define_once("_CSUBTITLE","Sub-Título");
+define_once("_HEADERTEXT","Texto da Cabeceira");
+define_once("_PAGETEXT","Texto da Páxina");
+define_once("_FOOTERTEXT","Texto do Pé");
+define_once("_ACTIVATEPAGE","¿Activar Esta Páxina?");
+define_once("_EDITPAGECONTENT","Editar Contido da Páxina");
+define_once("_DELCONTENTCAT","WARNING: Are you sure you want to delete this category? Pages under this category, if they exist, will not be removed, but will not be attached to any category.");
+define_once("_DELCATEGORY","Delete Category");
 
 
-?>

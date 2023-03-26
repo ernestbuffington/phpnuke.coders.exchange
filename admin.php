@@ -61,7 +61,7 @@ function create_first($name, $url, $email, $pwd, $user_new) {
 
 		if ($user_new == 1) {
 
-			$user_regdate = date("M d, Y");
+			$nuke_user_regdate = date("M d, Y");
 
 			$user_avatar = "gallery/blank.gif";
 
@@ -69,7 +69,7 @@ function create_first($name, $url, $email, $pwd, $user_new) {
 
 			if ($url == "http://") { $url = ""; }
 
-			$db->sql_query("INSERT INTO ".$user_prefix."_users (user_id, username, user_email, user_website, user_avatar, user_regdate, user_password, theme, commentmax, user_level, user_lang, user_dateformat) VALUES (NULL,'".addslashes($name)."','".addslashes($email)."','".addslashes($url)."','$user_avatar','$user_regdate','$pwd','$Default_Theme','$commentlimit', '2', 'english','D M d, Y g:i a')");
+			$db->sql_query("INSERT INTO ".$user_prefix."_users (user_id, username, user_email, user_website, user_avatar, nuke_user_regdate, user_password, theme, commentmax, user_level, nuke_user_lang, nuke_user_dateformat) VALUES (NULL,'".addslashes($name)."','".addslashes($email)."','".addslashes($url)."','$user_avatar','$nuke_user_regdate','$pwd','$Default_Theme','$commentlimit', '2', 'english','D M d, Y g:i a')");
 		}
 		login();
 	}
@@ -569,9 +569,9 @@ if(isset($admin) && !empty($admin)) {
 
 							$who_online = "<center><font class=\"option\">"._WHOSONLINE."</font><br><br><font class=\"content\">"._CURRENTLY." $guest_online_num "._GUESTS." $member_online_num "._MEMBERS."<br>";
 
-							list($userCount) = $db->sql_fetchrow($db->sql_query("SELECT COUNT(user_id) AS userCount from ".$user_prefix."_users WHERE user_regdate LIKE '$curDate2'"));
+							list($userCount) = $db->sql_fetchrow($db->sql_query("SELECT COUNT(user_id) AS userCount from ".$user_prefix."_users WHERE nuke_user_regdate LIKE '$curDate2'"));
 
-							list($userCount2) = $db->sql_fetchrow($db->sql_query("SELECT COUNT(user_id) AS userCount FROM ".$user_prefix."_users WHERE user_regdate LIKE '$curDateP'"));
+							list($userCount2) = $db->sql_fetchrow($db->sql_query("SELECT COUNT(user_id) AS userCount FROM ".$user_prefix."_users WHERE nuke_user_regdate LIKE '$curDateP'"));
 
 							echo "<center>$who_online<br>"
 

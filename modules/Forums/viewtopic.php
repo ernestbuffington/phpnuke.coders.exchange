@@ -408,7 +408,7 @@ $select_post_order .= '</select>';
 //
 // Go ahead and pull all data for this topic
 //
-$sql = "SELECT u.username, u.user_id, u.user_posts, u.user_from, u.user_website, u.user_email, u.user_icq, u.user_aim, u.user_yim, u.user_regdate, u.user_msnm, u.user_viewemail, u.user_rank, u.user_sig, u.user_sig_bbcode_uid, u.user_avatar, u.user_avatar_type, u.user_allowavatar, u.user_allowsmile, p.*,  pt.post_text, pt.post_subject, pt.bbcode_uid
+$sql = "SELECT u.username, u.user_id, u.nuke_user_posts, u.user_from, u.user_website, u.user_email, u.user_icq, u.user_aim, u.user_yim, u.nuke_user_regdate, u.user_msnm, u.user_viewemail, u.nuke_user_rank, u.nuke_user_sig, u.nuke_user_sig_bbcode_uid, u.user_avatar, u.nuke_user_avatar_type, u.user_allowavatar, u.user_allowsmile, p.*,  pt.post_text, pt.post_subject, pt.bbcode_uid
         FROM " . POSTS_TABLE . " p, " . USERS_TABLE . " u, " . POSTS_TEXT_TABLE . " pt
         WHERE p.topic_id = '$topic_id'
                 $limit_posts_time
@@ -856,16 +856,16 @@ for($i = 0; $i < $total_posts; $i++)
 
         $post_date = create_date($board_config['default_dateformat'], $postrow[$i]['post_time'], $board_config['board_timezone']);
 
-        $poster_posts = ( $postrow[$i]['user_id'] != ANONYMOUS ) ? $lang['Posts'] . ': ' . $postrow[$i]['user_posts'] : '';
+        $poster_posts = ( $postrow[$i]['user_id'] != ANONYMOUS ) ? $lang['Posts'] . ': ' . $postrow[$i]['nuke_user_posts'] : '';
 
         $poster_from = ( $postrow[$i]['user_from'] && $postrow[$i]['user_id'] != ANONYMOUS ) ? $lang['Location'] . ': ' . $postrow[$i]['user_from'] : '';
         $poster_from = preg_replace('#.gif#m', "", $poster_from);
-        $poster_joined = ( $postrow[$i]['user_id'] != ANONYMOUS ) ? $lang['Joined'] . ': ' . $postrow[$i]['user_regdate'] : '';
+        $poster_joined = ( $postrow[$i]['user_id'] != ANONYMOUS ) ? $lang['Joined'] . ': ' . $postrow[$i]['nuke_user_regdate'] : '';
 
 	$poster_avatar = '';
-	if ( $postrow[$i]['user_avatar_type'] && $poster_id != ANONYMOUS && $postrow[$i]['user_allowavatar'] )
+	if ( $postrow[$i]['nuke_user_avatar_type'] && $poster_id != ANONYMOUS && $postrow[$i]['user_allowavatar'] )
 	{
-		switch( $postrow[$i]['user_avatar_type'] )
+		switch( $postrow[$i]['nuke_user_avatar_type'] )
 		{
 			case USER_AVATAR_UPLOAD:
 				$poster_avatar = ( $board_config['allow_avatar_upload'] ) ? '<img src="' . $board_config['avatar_path'] . '/' . $postrow[$i]['user_avatar'] . '" alt="" border="0" />' : '';
@@ -918,11 +918,11 @@ for($i = 0; $i < $total_posts; $i++)
         if ( $postrow[$i]['user_id'] == ANONYMOUS )
         {
         }
-        else if ( $postrow[$i]['user_rank'] )
+        else if ( $postrow[$i]['nuke_user_rank'] )
         {
                 for($j = 0; $j < count($ranksrow); $j++)
                 {
-                        if ( $postrow[$i]['user_rank'] == $ranksrow[$j]['rank_id'] && $ranksrow[$j]['rank_special'] )
+                        if ( $postrow[$i]['nuke_user_rank'] == $ranksrow[$j]['rank_id'] && $ranksrow[$j]['rank_special'] )
                         {
                                 $poster_rank = $ranksrow[$j]['rank_title'];
                                 $rank_image = ( $ranksrow[$j]['rank_image'] ) ? '<img src="' . $ranksrow[$j]['rank_image'] . '" alt="' . $poster_rank . '" title="' . $poster_rank . '" border="0" /><br />' : '';
@@ -933,7 +933,7 @@ for($i = 0; $i < $total_posts; $i++)
         {
                 for($j = 0; $j < count($ranksrow); $j++)
                 {
-                        if ( $postrow[$i]['user_posts'] >= $ranksrow[$j]['rank_min'] && !$ranksrow[$j]['rank_special'] )
+                        if ( $postrow[$i]['nuke_user_posts'] >= $ranksrow[$j]['rank_min'] && !$ranksrow[$j]['rank_special'] )
                         {
                                 $poster_rank = $ranksrow[$j]['rank_title'];
                                 $rank_image = ( $ranksrow[$j]['rank_image'] ) ? '<img src="' . $ranksrow[$j]['rank_image'] . '" alt="' . $poster_rank . '" title="' . $poster_rank . '" border="0" /><br />' : '';
@@ -1035,8 +1035,8 @@ for($i = 0; $i < $total_posts; $i++)
         $quote = '<a href="' . $temp_url . '">' . $lang['Reply_with_quote'] . '</a>';
 
         $temp_url = append_sid("search.$phpEx?search_author=" . urlencode((string) $postrow[$i]['username']) . "&amp;showresults=posts");
-	$search_img = '<a href="' . $temp_url . '"><img src="' . $images['icon_search'] . '" alt="' . sprintf($lang['Search_user_posts'], $postrow[$i]['username']) . '" title="' . sprintf($lang['Search_user_posts'], $postrow[$i]['username']) . '" border="0" /></a>';
-	$search = '<a href="' . $temp_url . '">' . sprintf($lang['Search_user_posts'], $postrow[$i]['username']) . '</a>';
+	$search_img = '<a href="' . $temp_url . '"><img src="' . $images['icon_search'] . '" alt="' . sprintf($lang['Search_nuke_user_posts'], $postrow[$i]['username']) . '" title="' . sprintf($lang['Search_nuke_user_posts'], $postrow[$i]['username']) . '" border="0" /></a>';
+	$search = '<a href="' . $temp_url . '">' . sprintf($lang['Search_nuke_user_posts'], $postrow[$i]['username']) . '</a>';
 
         if ( ( $userdata['user_id'] == $poster_id && $is_auth['auth_edit'] ) || $is_auth['auth_mod'] )
         {
@@ -1083,8 +1083,8 @@ for($i = 0; $i < $total_posts; $i++)
         $message = $postrow[$i]['post_text'];
         $bbcode_uid = $postrow[$i]['bbcode_uid'];
 
-        $user_sig = ( $postrow[$i]['enable_sig'] && $postrow[$i]['user_sig'] != '' && $board_config['allow_sig'] ) ? $postrow[$i]['user_sig'] : '';
-        $user_sig_bbcode_uid = $postrow[$i]['user_sig_bbcode_uid'];
+        $nuke_user_sig = ( $postrow[$i]['enable_sig'] && $postrow[$i]['nuke_user_sig'] != '' && $board_config['allow_sig'] ) ? $postrow[$i]['nuke_user_sig'] : '';
+        $nuke_user_sig_bbcode_uid = $postrow[$i]['nuke_user_sig_bbcode_uid'];
 
         //
         // Note! The order used for parsing the message _is_ important, moving things around could break any
@@ -1097,9 +1097,9 @@ for($i = 0; $i < $total_posts; $i++)
         //
 	if ( !$board_config['allow_html'] || !$userdata['user_allowhtml'])
         {
-                if ( $user_sig != '' )
+                if ( $nuke_user_sig != '' )
                 {
-                        $user_sig = preg_replace('#(<)([\/]?.*?)(>)#is', "&lt;\\2&gt;", (string) $user_sig);
+                        $nuke_user_sig = preg_replace('#(<)([\/]?.*?)(>)#is', "&lt;\\2&gt;", (string) $nuke_user_sig);
                 }
 
                 if ( $postrow[$i]['enable_html'] )
@@ -1111,9 +1111,9 @@ for($i = 0; $i < $total_posts; $i++)
         //
         // Parse message and/or sig for BBCode if reqd
         //
-	if ($user_sig != '' && $user_sig_bbcode_uid != '')
+	if ($nuke_user_sig != '' && $nuke_user_sig_bbcode_uid != '')
 	{
-		$user_sig = ($board_config['allow_bbcode']) ? bbencode_second_pass($user_sig, $user_sig_bbcode_uid) : preg_replace("/\:$user_sig_bbcode_uid/si", '', (string) $user_sig);
+		$nuke_user_sig = ($board_config['allow_bbcode']) ? bbencode_second_pass($nuke_user_sig, $nuke_user_sig_bbcode_uid) : preg_replace("/\:$nuke_user_sig_bbcode_uid/si", '', (string) $nuke_user_sig);
 	}
 
 	if ($bbcode_uid != '')
@@ -1121,9 +1121,9 @@ for($i = 0; $i < $total_posts; $i++)
 		$message = ($board_config['allow_bbcode']) ? bbencode_second_pass($message, $bbcode_uid) : preg_replace("/\:$bbcode_uid/si", '', (string) $message);
 	}
 
-        if ( $user_sig != '' )
+        if ( $nuke_user_sig != '' )
         {
-                $user_sig = make_clickable($user_sig);
+                $nuke_user_sig = make_clickable($nuke_user_sig);
         }
         $message = make_clickable($message);
 
@@ -1132,9 +1132,9 @@ for($i = 0; $i < $total_posts; $i++)
         //
         if ( $board_config['allow_smilies'] )
         {
-                if ( $postrow[$i]['user_allowsmile'] && $user_sig != '' )
+                if ( $postrow[$i]['user_allowsmile'] && $nuke_user_sig != '' )
                 {
-                        $user_sig = smilies_pass($user_sig);
+                        $nuke_user_sig = smilies_pass($nuke_user_sig);
                 }
 
                 if ( $postrow[$i]['enable_smilies'] )
@@ -1159,9 +1159,9 @@ for($i = 0; $i < $total_posts; $i++)
         {
                 $post_subject = preg_replace($orig_word, $replacement_word, (string) $post_subject);
 
-                if ($user_sig != '')
+                if ($nuke_user_sig != '')
                 {
-			$user_sig = str_replace('\"', '"', substr(preg_replace_callback('#(\>(((?>([^><]+|(?R)))*)\<))#s', fn($matches) => preg_replace($orig_word, $replacement_word, (string) $matches[0]), '>' . $user_sig . '<'), 1, -1));
+			$nuke_user_sig = str_replace('\"', '"', substr(preg_replace_callback('#(\>(((?>([^><]+|(?R)))*)\<))#s', fn($matches) => preg_replace($orig_word, $replacement_word, (string) $matches[0]), '>' . $nuke_user_sig . '<'), 1, -1));
                 }
 
 		$message = str_replace('\"', '"', substr(preg_replace_callback('#(\>(((?>([^><]+|(?R)))*)\<))#s', fn($matches) => preg_replace($orig_word, $replacement_word, (string) $matches[0]), '>' . $message . '<'), 1, -1));
@@ -1171,9 +1171,9 @@ for($i = 0; $i < $total_posts; $i++)
         // Replace newlines (we use this rather than nl2br because
         // till recently it wasn't XHTML compliant)
         //
-        if ( $user_sig != '' )
+        if ( $nuke_user_sig != '' )
         {
-                $user_sig = '<br />_________________<br />' . str_replace("\n", "\n<br />\n", (string) $user_sig);
+                $nuke_user_sig = '<br />_________________<br />' . str_replace("\n", "\n<br />\n", (string) $nuke_user_sig);
         }
 
         $message = str_replace("\n", "\n<br />\n", (string) $message);
@@ -1212,7 +1212,7 @@ for($i = 0; $i < $total_posts; $i++)
                 'POST_DATE' => $post_date,
                 'POST_SUBJECT' => $post_subject,
                 'MESSAGE' => $message,
-                'SIGNATURE' => $user_sig,
+                'SIGNATURE' => $nuke_user_sig,
                 'EDITED_MESSAGE' => $l_edited_by,
 
                 'MINI_POST_IMG' => $mini_post_img,

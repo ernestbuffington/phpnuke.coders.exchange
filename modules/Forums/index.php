@@ -240,8 +240,8 @@ if( ( $total_categories = count($category_rows) ) )
 		FROM " . AUTH_ACCESS_TABLE . " aa, " . USER_GROUP_TABLE . " ug, " . GROUPS_TABLE . " g, " . USERS_TABLE . " u
 		WHERE aa.auth_mod = " . TRUE . " 
 			AND g.group_single_user = 1 
-			AND ug.group_id = aa.group_id 
-			AND g.group_id = aa.group_id 
+			AND ug.nuke_group_id = aa.nuke_group_id 
+			AND g.nuke_group_id = aa.nuke_group_id 
 			AND u.user_id = ug.user_id 
 		GROUP BY u.user_id, u.username, aa.forum_id 
 		ORDER BY aa.forum_id, u.user_id";
@@ -257,15 +257,15 @@ if( ( $total_categories = count($category_rows) ) )
 	}
 	$db->sql_freeresult($result);
 
-	$sql = "SELECT aa.forum_id, g.group_id, g.group_name 
+	$sql = "SELECT aa.forum_id, g.nuke_group_id, g.group_name 
 		FROM " . AUTH_ACCESS_TABLE . " aa, " . USER_GROUP_TABLE . " ug, " . GROUPS_TABLE . " g 
 		WHERE aa.auth_mod = " . TRUE . " 
 			AND g.group_single_user = 0 
 			AND g.group_type <> " . GROUP_HIDDEN . "
-			AND ug.group_id = aa.group_id 
-			AND g.group_id = aa.group_id 
-		GROUP BY g.group_id, g.group_name, aa.forum_id 
-		ORDER BY aa.forum_id, g.group_id";
+			AND ug.nuke_group_id = aa.nuke_group_id 
+			AND g.nuke_group_id = aa.nuke_group_id 
+		GROUP BY g.nuke_group_id, g.group_name, aa.forum_id 
+		ORDER BY aa.forum_id, g.nuke_group_id";
 	if ( !($result = $db->sql_query($sql)) )
 	{
 		message_die(GENERAL_ERROR, 'Could not query forum moderator information', '', __LINE__, __FILE__, $sql);
@@ -273,7 +273,7 @@ if( ( $total_categories = count($category_rows) ) )
 
 	while( $row = $db->sql_fetchrow($result) )
 	{
-		$forum_moderators[$row['forum_id']][] = '<a href="' . append_sid("groupcp.$phpEx?" . POST_GROUPS_URL . "=" . $row['group_id']) . '">' . $row['group_name'] . '</a>';
+		$forum_moderators[$row['forum_id']][] = '<a href="' . append_sid("groupcp.$phpEx?" . POST_GROUPS_URL . "=" . $row['nuke_group_id']) . '">' . $row['group_name'] . '</a>';
 	}
 	$db->sql_freeresult($result);
 

@@ -93,7 +93,7 @@ if ( !$userdata['session_logged_in'] )
         exit;
 }
 
-$sql = "SELECT username, user_email, user_viewemail, user_lang
+$sql = "SELECT username, user_email, user_viewemail, nuke_user_lang
         FROM " . USERS_TABLE . "
         WHERE user_id = '$user_id'";
 if ( $result = $db->sql_query($sql) )
@@ -102,11 +102,11 @@ if ( $result = $db->sql_query($sql) )
 
         $username = $row['username'];
         $user_email = $row['user_email'];
-        $user_lang = $row['user_lang'];
+        $nuke_user_lang = $row['nuke_user_lang'];
 
         if ( $row['user_viewemail'] || $userdata['user_level'] == ADMIN )
         {
-                if ( time() - $userdata['user_emailtime'] < $board_config['flood_interval'] )
+                if ( time() - $userdata['nuke_user_emailtime'] < $board_config['flood_interval'] )
                 {
                         message_die(GENERAL_MESSAGE, $lang['Flood_email_limit']);
                 }
@@ -138,7 +138,7 @@ if ( $result = $db->sql_query($sql) )
                         if ( !$error )
                         {
                                 $sql = "UPDATE " . USERS_TABLE . "
-                                        SET user_emailtime = " . time() . "
+                                        SET nuke_user_emailtime = " . time() . "
                                         WHERE user_id = " . $userdata['user_id'];
                                 if ( $result = $db->sql_query($sql) )
                                 {
@@ -153,7 +153,7 @@ if ( $result = $db->sql_query($sql) )
                                         $email_headers .= 'X-AntiAbuse: Username - ' . $userdata['username'] . "\n";
                                         $email_headers .= 'X-AntiAbuse: User IP - ' . decode_ip($user_ip) . "\n";
 
-                                        $emailer->use_template('profile_send_email', $user_lang);
+                                        $emailer->use_template('profile_send_email', $nuke_user_lang);
                                         $emailer->email_address($user_email);
                                         $emailer->set_subject($subject);
                                         $emailer->extra_headers($email_headers);

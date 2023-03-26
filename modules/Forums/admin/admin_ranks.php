@@ -184,8 +184,8 @@ if( $mode != "" )
                         if (!$special_rank)
                         {
                                 $sql = "UPDATE " . USERS_TABLE . "
-                                        SET user_rank = 0
-                                        WHERE user_rank = $rank_id";
+                                        SET nuke_user_rank = 0
+                                        WHERE nuke_user_rank = $rank_id";
 
                                 if( !$result = $db->sql_query($sql) )
                                 {
@@ -244,8 +244,8 @@ if( $mode != "" )
                         }
 
                         $sql = "UPDATE " . USERS_TABLE . "
-                                SET user_rank = 0
-                                WHERE user_rank = $rank_id";
+                                SET nuke_user_rank = 0
+                                WHERE nuke_user_rank = $rank_id";
 
                         if( !$result = $db->sql_query($sql) )
                         {

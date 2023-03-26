@@ -46,11 +46,11 @@ require('./pagestart.' . $phpEx);
 
 if ( isset($_POST[POST_GROUPS_URL]) || isset($_GET[POST_GROUPS_URL]) )
 {
-        $group_id = ( isset($_POST[POST_GROUPS_URL]) ) ? intval($_POST[POST_GROUPS_URL]) : intval($_GET[POST_GROUPS_URL]);
+        $nuke_group_id = ( isset($_POST[POST_GROUPS_URL]) ) ? intval($_POST[POST_GROUPS_URL]) : intval($_GET[POST_GROUPS_URL]);
 }
 else
 {
-        $group_id = 0;
+        $nuke_group_id = 0;
 }
 
 if ( isset($_POST['mode']) || isset($_GET['mode']) )
@@ -80,7 +80,7 @@ if ( isset($_POST['edit']) || isset($_POST['new']) )
                 $sql = "SELECT *
                         FROM " . GROUPS_TABLE . "
                         WHERE group_single_user <> " . TRUE . "
-                        AND group_id = $group_id";
+                        AND nuke_group_id = $nuke_group_id";
                 if ( !($result = $db->sql_query($sql)) )
                 {
                         message_die(GENERAL_ERROR, 'Error getting group information', '', __LINE__, __FILE__, $sql);
@@ -137,7 +137,7 @@ if ( isset($_POST['edit']) || isset($_POST['new']) )
         $group_closed = ( $group_info['group_type'] == GROUP_CLOSED ) ? ' checked="checked"' : '';
         $group_hidden = ( $group_info['group_type'] == GROUP_HIDDEN ) ? ' checked="checked"' : '';
 
-        $s_hidden_fields = '<input type="hidden" name="mode" value="' . $mode . '" /><input type="hidden" name="' . POST_GROUPS_URL . '" value="' . $group_id . '" />';
+        $s_hidden_fields = '<input type="hidden" name="mode" value="' . $mode . '" /><input type="hidden" name="' . POST_GROUPS_URL . '" value="' . $nuke_group_id . '" />';
 
         $template->assign_vars(array(
                 'GROUP_NAME' => $group_info['group_name'],
@@ -190,7 +190,7 @@ else if ( isset($_POST['group_update']) )
 
                 // Is Group moderating a forum ?
                 $sql = "SELECT auth_mod FROM " . AUTH_ACCESS_TABLE . "
-                        WHERE group_id = " . $group_id;
+                        WHERE nuke_group_id = " . $nuke_group_id;
                 if ( !($result = $db->sql_query($sql)) )
                 {
                         message_die(GENERAL_ERROR, 'Could not select auth_access', '', __LINE__, __FILE__, $sql);
@@ -201,7 +201,7 @@ else if ( isset($_POST['group_update']) )
                 {
                         // Yes, get the assigned users and update their Permission if they are no longer moderator of one of the forums
                         $sql = "SELECT user_id FROM " . USER_GROUP_TABLE . "
-                                WHERE group_id = " . $group_id;
+                                WHERE nuke_group_id = " . $nuke_group_id;
                         if ( !($result = $db->sql_query($sql)) )
                         {
                                 message_die(GENERAL_ERROR, 'Could not select user_group', '', __LINE__, __FILE__, $sql);
@@ -210,9 +210,9 @@ else if ( isset($_POST['group_update']) )
                         $rows = $db->sql_fetchrowset($result);
                         for ($i = 0; $i < (is_countable($rows) ? count($rows) : 0); $i++)
                         {
-                                $sql = "SELECT g.group_id FROM " . AUTH_ACCESS_TABLE . " a, " . GROUPS_TABLE . " g, " . USER_GROUP_TABLE . " ug
-                                WHERE (a.auth_mod = 1) AND (g.group_id = a.group_id) AND (a.group_id = ug.group_id) AND (g.group_id = ug.group_id)
-                                        AND (ug.user_id = " . intval($rows[$i]['user_id']) . ") AND (ug.group_id <> " . $group_id . ")";
+                                $sql = "SELECT g.nuke_group_id FROM " . AUTH_ACCESS_TABLE . " a, " . GROUPS_TABLE . " g, " . USER_GROUP_TABLE . " ug
+                                WHERE (a.auth_mod = 1) AND (g.nuke_group_id = a.nuke_group_id) AND (a.nuke_group_id = ug.nuke_group_id) AND (g.nuke_group_id = ug.nuke_group_id)
+                                        AND (ug.user_id = " . intval($rows[$i]['user_id']) . ") AND (ug.nuke_group_id <> " . $nuke_group_id . ")";
                                 if ( !($result = $db->sql_query($sql)) )
                                 {
                                         message_die(GENERAL_ERROR, 'Could not obtain moderator permissions', '', __LINE__, __FILE__, $sql);
@@ -235,21 +235,21 @@ else if ( isset($_POST['group_update']) )
                 // Delete Group
                 //
                 $sql = "DELETE FROM " . GROUPS_TABLE . "
-                        WHERE group_id = " . $group_id;
+                        WHERE nuke_group_id = " . $nuke_group_id;
                 if ( !$db->sql_query($sql) )
                 {
                         message_die(GENERAL_ERROR, 'Could not update group', '', __LINE__, __FILE__, $sql);
                 }
 
                 $sql = "DELETE FROM " . USER_GROUP_TABLE . "
-                        WHERE group_id = " . $group_id;
+                        WHERE nuke_group_id = " . $nuke_group_id;
                 if ( !$db->sql_query($sql) )
                 {
                         message_die(GENERAL_ERROR, 'Could not update user_group', '', __LINE__, __FILE__, $sql);
                 }
 
                 $sql = "DELETE FROM " . AUTH_ACCESS_TABLE . "
-                        WHERE group_id = " . $group_id;
+                        WHERE nuke_group_id = " . $nuke_group_id;
                 if ( !$db->sql_query($sql) )
                 {
                         message_die(GENERAL_ERROR, 'Could not update auth_access', '', __LINE__, __FILE__, $sql);
@@ -289,7 +289,7 @@ else if ( isset($_POST['group_update']) )
                         $sql = "SELECT *
                                 FROM " . GROUPS_TABLE . "
                                 WHERE group_single_user <> " . TRUE . "
-                                AND group_id = " . $group_id;
+                                AND nuke_group_id = " . $nuke_group_id;
                         if ( !($result = $db->sql_query($sql)) )
                         {
                                 message_die(GENERAL_ERROR, 'Error getting group information', '', __LINE__, __FILE__, $sql);
@@ -306,7 +306,7 @@ else if ( isset($_POST['group_update']) )
                                 {
                                         $sql = "DELETE FROM " . USER_GROUP_TABLE . "
                                                 WHERE user_id = " . $group_info['group_moderator'] . "
-                                                        AND group_id = " . $group_id;
+                                                        AND nuke_group_id = " . $nuke_group_id;
                                         if ( !$db->sql_query($sql) )
                                         {
                                                 message_die(GENERAL_ERROR, 'Could not update group moderator', '', __LINE__, __FILE__, $sql);
@@ -316,7 +316,7 @@ else if ( isset($_POST['group_update']) )
                                 $sql = "SELECT user_id
                                         FROM " . USER_GROUP_TABLE . "
                                         WHERE user_id = $group_moderator
-                                                AND group_id = $group_id";
+                                                AND nuke_group_id = $nuke_group_id";
                                 if ( !($result = $db->sql_query($sql)) )
                                 {
                                         message_die(GENERAL_ERROR, 'Failed to obtain current group moderator info', '', __LINE__, __FILE__, $sql);
@@ -324,8 +324,8 @@ else if ( isset($_POST['group_update']) )
 
                                 if ( !($row = $db->sql_fetchrow($result)) )
                                 {
-                                        $sql = "INSERT INTO " . USER_GROUP_TABLE . " (group_id, user_id, user_pending)
-                                                VALUES (" . $group_id . ", " . $group_moderator . ", 0)";
+                                        $sql = "INSERT INTO " . USER_GROUP_TABLE . " (nuke_group_id, user_id, user_pending)
+                                                VALUES (" . $nuke_group_id . ", " . $group_moderator . ", 0)";
                                         if ( !$db->sql_query($sql) )
                                         {
                                                 message_die(GENERAL_ERROR, 'Could not update group moderator', '', __LINE__, __FILE__, $sql);
@@ -335,7 +335,7 @@ else if ( isset($_POST['group_update']) )
 
                         $sql = "UPDATE " . GROUPS_TABLE . "
                                 SET group_type = $group_type, group_name = '" . str_replace("\'", "''", $group_name) . "', group_description = '" . str_replace("\'", "''", $group_description) . "', group_moderator = $group_moderator
-                                WHERE group_id = $group_id";
+                                WHERE nuke_group_id = $nuke_group_id";
                         if ( !$db->sql_query($sql) )
                         {
                                 message_die(GENERAL_ERROR, 'Could not update group', '', __LINE__, __FILE__, $sql);
@@ -353,10 +353,10 @@ else if ( isset($_POST['group_update']) )
                         {
                                 message_die(GENERAL_ERROR, 'Could not insert new group', '', __LINE__, __FILE__, $sql);
                         }
-                        $new_group_id = $db->sql_nextid();
+                        $new_nuke_group_id = $db->sql_nextid();
 
-                        $sql = "INSERT INTO " . USER_GROUP_TABLE . " (group_id, user_id, user_pending)
-                                VALUES ($new_group_id, $group_moderator, 0)";
+                        $sql = "INSERT INTO " . USER_GROUP_TABLE . " (nuke_group_id, user_id, user_pending)
+                                VALUES ($new_nuke_group_id, $group_moderator, 0)";
                         if ( !$db->sql_query($sql) )
                         {
                                 message_die(GENERAL_ERROR, 'Could not insert new user-group info', '', __LINE__, __FILE__, $sql);
@@ -375,7 +375,7 @@ else if ( isset($_POST['group_update']) )
 }
 else
 {
-        $sql = "SELECT group_id, group_name
+        $sql = "SELECT nuke_group_id, group_name
                 FROM " . GROUPS_TABLE . "
                 WHERE group_single_user <> " . TRUE . "
                 ORDER BY group_name";
@@ -390,7 +390,7 @@ else
                 $select_list .= '<select name="' . POST_GROUPS_URL . '">';
                 do
                 {
-                        $select_list .= '<option value="' . $row['group_id'] . '">' . $row['group_name'] . '</option>';
+                        $select_list .= '<option value="' . $row['nuke_group_id'] . '">' . $row['group_name'] . '</option>';
                 }
                 while ( $row = $db->sql_fetchrow($result) );
                 $select_list .= '</select>';

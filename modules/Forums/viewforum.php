@@ -254,8 +254,8 @@ $sql = "SELECT u.user_id, u.username
         WHERE aa.forum_id = '$forum_id'
                 AND aa.auth_mod = " . TRUE . "
                 AND g.group_single_user = '1'
-                AND ug.group_id = aa.group_id
-                AND g.group_id = aa.group_id
+                AND ug.nuke_group_id = aa.nuke_group_id
+                AND g.nuke_group_id = aa.nuke_group_id
                 AND u.user_id = ug.user_id
         GROUP BY u.user_id, u.username
         ORDER BY u.user_id";
@@ -270,16 +270,16 @@ while( $row = $db->sql_fetchrow($result) )
         $moderators[] = '<a href="' . append_sid("profile.$phpEx?mode=viewprofile&amp;" . POST_USERS_URL . "=" . $row['user_id']) . '">' . $row['username'] . '</a>';
 }
 
-$sql = "SELECT g.group_id, g.group_name
+$sql = "SELECT g.nuke_group_id, g.group_name
         FROM " . AUTH_ACCESS_TABLE . " aa, " . USER_GROUP_TABLE . " ug, " . GROUPS_TABLE . " g
         WHERE aa.forum_id = '$forum_id'
                 AND aa.auth_mod = " . TRUE . "
                 AND g.group_single_user = '0'
                 AND g.group_type <> ". GROUP_HIDDEN ."
-                AND ug.group_id = aa.group_id
-                AND g.group_id = aa.group_id
-        GROUP BY g.group_id, g.group_name
-        ORDER BY g.group_id";
+                AND ug.nuke_group_id = aa.nuke_group_id
+                AND g.nuke_group_id = aa.nuke_group_id
+        GROUP BY g.nuke_group_id, g.group_name
+        ORDER BY g.nuke_group_id";
 if ( !($result = $db->sql_query($sql)) )
 {
         message_die(GENERAL_ERROR, 'Could not query forum moderator information', '', __LINE__, __FILE__, $sql);
@@ -287,7 +287,7 @@ if ( !($result = $db->sql_query($sql)) )
 
 while( $row = $db->sql_fetchrow($result) )
 {
-        $moderators[] = '<a href="' . append_sid("groupcp.$phpEx?" . POST_GROUPS_URL . "=" . $row['group_id']) . '">' . $row['group_name'] . '</a>';
+        $moderators[] = '<a href="' . append_sid("groupcp.$phpEx?" . POST_GROUPS_URL . "=" . $row['nuke_group_id']) . '">' . $row['group_name'] . '</a>';
 }
 
 $l_moderators = ( count($moderators) == 1 ) ? $lang['Moderator'] : $lang['Moderators'];

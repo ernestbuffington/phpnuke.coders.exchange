@@ -226,7 +226,7 @@ switch ( $mode )
 			message_die(GENERAL_MESSAGE, $lang['No_post_id']);
 		}
 
-		$select_sql = (!$submit) ? ', t.topic_title, p.enable_bbcode, p.enable_html, p.enable_smilies, p.enable_sig, p.post_username, pt.post_subject, pt.post_text, pt.bbcode_uid, u.username, u.user_id, u.user_sig, u.user_sig_bbcode_uid' : '';
+		$select_sql = (!$submit) ? ', t.topic_title, p.enable_bbcode, p.enable_html, p.enable_smilies, p.enable_sig, p.post_username, pt.post_subject, pt.post_text, pt.bbcode_uid, u.username, u.user_id, u.nuke_user_sig, u.nuke_user_sig_bbcode_uid' : '';
 		$from_sql = ( !$submit ) ? ", " . POSTS_TEXT_TABLE . " pt, " . USERS_TABLE . " u" : '';
 		$where_sql = ( !$submit ) ? "AND pt.post_id = p.post_id AND u.user_id = p.poster_id" : '';
 
@@ -658,12 +658,12 @@ if( $refresh || isset($_POST['del_poll_option']) || $error_msg != '' )
 
 	if ( $mode == 'newtopic' || $mode == 'reply')
 	{
-		$user_sig = ( $userdata['user_sig'] != '' && $board_config['allow_sig'] ) ? $userdata['user_sig'] : '';
+		$nuke_user_sig = ( $userdata['nuke_user_sig'] != '' && $board_config['allow_sig'] ) ? $userdata['nuke_user_sig'] : '';
 	}
 	else if ( $mode == 'editpost' )
 	{
-		$user_sig = ( $post_info['user_sig'] != '' && $board_config['allow_sig'] ) ? $post_info['user_sig'] : '';
-		$userdata['user_sig_bbcode_uid'] = $post_info['user_sig_bbcode_uid'];
+		$nuke_user_sig = ( $post_info['nuke_user_sig'] != '' && $board_config['allow_sig'] ) ? $post_info['nuke_user_sig'] : '';
+		$userdata['nuke_user_sig_bbcode_uid'] = $post_info['nuke_user_sig_bbcode_uid'];
 	}
 	
 	if( $preview )
@@ -682,15 +682,15 @@ if( $refresh || isset($_POST['del_poll_option']) || $error_msg != '' )
 		//
 		if( !$html_on )
 		{
-			if( $user_sig != '' || !$userdata['user_allowhtml'] )
+			if( $nuke_user_sig != '' || !$userdata['user_allowhtml'] )
 			{
-				$user_sig = preg_replace('#(<)([\/]?.*?)(>)#is', '&lt;\2&gt;', (string) $user_sig);
+				$nuke_user_sig = preg_replace('#(<)([\/]?.*?)(>)#is', '&lt;\2&gt;', (string) $nuke_user_sig);
 			}
 		}
 
-		if( $attach_sig && $user_sig != '' && $userdata['user_sig_bbcode_uid'] )
+		if( $attach_sig && $nuke_user_sig != '' && $userdata['nuke_user_sig_bbcode_uid'] )
 		{
-			$user_sig = bbencode_second_pass($user_sig, $userdata['user_sig_bbcode_uid']);
+			$nuke_user_sig = bbencode_second_pass($nuke_user_sig, $userdata['nuke_user_sig_bbcode_uid']);
 		}
 
 		if( $bbcode_on )
@@ -705,25 +705,25 @@ if( $refresh || isset($_POST['del_poll_option']) || $error_msg != '' )
 			$preview_message = ( !empty($preview_message) ) ? preg_replace($orig_word, $replacement_word, (string) $preview_message) : '';
 		}
 
-		if( $user_sig != '' )
+		if( $nuke_user_sig != '' )
 		{
-			$user_sig = make_clickable($user_sig);
+			$nuke_user_sig = make_clickable($nuke_user_sig);
 		}
 		$preview_message = make_clickable($preview_message);
 
 		if( $smilies_on )
 		{
-			if( $userdata['user_allowsmile'] && $user_sig != '' )
+			if( $userdata['user_allowsmile'] && $nuke_user_sig != '' )
 			{
-				$user_sig = smilies_pass($user_sig);
+				$nuke_user_sig = smilies_pass($nuke_user_sig);
 			}
 
 			$preview_message = smilies_pass($preview_message);
 		}
 
-		if( $attach_sig && $user_sig != '' )
+		if( $attach_sig && $nuke_user_sig != '' )
 		{
-			$preview_message = $preview_message . '<br /><br />_________________<br />' . $user_sig;
+			$preview_message = $preview_message . '<br /><br />_________________<br />' . $nuke_user_sig;
 		}
 
 		$preview_message = str_replace("\n", '<br />', (string) $preview_message);
@@ -764,7 +764,7 @@ else
 	//
 	if ( $mode == 'newtopic' )
 	{
-		$user_sig = ( $userdata['user_sig'] != '' ) ? $userdata['user_sig'] : '';
+		$nuke_user_sig = ( $userdata['nuke_user_sig'] != '' ) ? $userdata['nuke_user_sig'] : '';
 
 		$username = ($userdata['session_logged_in']) ? $userdata['username'] : '';
 		$poll_title = '';
@@ -774,7 +774,7 @@ else
 	}
 	else if ( $mode == 'reply' )
 	{
-		$user_sig = ( $userdata['user_sig'] != '' ) ? $userdata['user_sig'] : '';
+		$nuke_user_sig = ( $userdata['nuke_user_sig'] != '' ) ? $userdata['nuke_user_sig'] : '';
 
 		$username = ( $userdata['session_logged_in'] ) ? $userdata['username'] : '';
 		$subject = '';
@@ -788,8 +788,8 @@ else
 
 		if ( $mode == 'editpost' )
 		{
-			$attach_sig = ( $post_info['enable_sig'] && $post_info['user_sig'] != '' ) ? TRUE : 0; 
-			$user_sig = $post_info['user_sig'];
+			$attach_sig = ( $post_info['enable_sig'] && $post_info['nuke_user_sig'] != '' ) ? TRUE : 0; 
+			$nuke_user_sig = $post_info['nuke_user_sig'];
 
 			$html_on = ( $post_info['enable_html'] ) ? true : false;
 			$bbcode_on = ( $post_info['enable_bbcode'] ) ? true : false;
@@ -798,7 +798,7 @@ else
 		else
 		{
 			$attach_sig = ( $userdata['user_attachsig'] ) ? TRUE : 0;
-			$user_sig = $userdata['user_sig'];
+			$nuke_user_sig = $userdata['nuke_user_sig'];
 		}
 
 		if ( $post_info['bbcode_uid'] != '' )
@@ -845,7 +845,7 @@ else
 //
 // Signature toggle selection
 //
-if( $user_sig != '' )
+if( $nuke_user_sig != '' )
 {
 	$template->assign_block_vars('switch_signature_checkbox', array());
 }

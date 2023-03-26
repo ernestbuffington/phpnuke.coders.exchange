@@ -18,38 +18,37 @@
 /**************************************************************************/
 
 
-define("_SEND","Відправити");
-define("_FUNCTIONS","Функції");
-define("_YES","Так");
-define("_NO","Ні");
-define("_CATEGORY","Категорія");
-define("_SAVECHANGES","Зберегти зміни");
-define("_PAGEBREAK","Если Вы хотите некоторые страницы, Вы можете написать <b>[--pagebreak--]</b> там, где хотите вырезать.");
-define("_SIGNATURE","Підпис");
-define("_DESCRIPTION","Опис");
-define("_TITLE","Назва");
-define("_ACTIVE","Активний");
-define("_DEACTIVATE","Зробити неактивним");
-define("_INACTIVE","Неактивний");
-define("_ACTIVATE","Зробити активним");
-define("_CONTENT","Зміст");
-define("_ADDCATEGORY","Створити нову категорію");
-define("_EDITCATEGORY","Редагувати категорію");
-define("_ADD","Додати");
-define("_LANGUAGE","Language");
-define("_CONTENTMANAGER","Content Manager");
-define("_DELCONTWARNING","Are you sure you want to delete the page");
-define("_DELCONTENT","Delete Page");
-define("_CURRENTSTATUS","Current Status");
-define("_ADDANEWPAGE","Add a New Page");
-define("_CSUBTITLE","Sub-Title");
-define("_HEADERTEXT","Header Text");
-define("_PAGETEXT","Page Text");
-define("_FOOTERTEXT","Footer Text");
-define("_ACTIVATEPAGE","Activate This Page?");
-define("_EDITPAGECONTENT","Edit Page Content");
-define("_DELCONTENTCAT","WARNING: Are you sure you want to delete this category? Pages under this category, if they exist, will not be removed, but will not be attached to any category.");
-define("_DELCATEGORY","Delete Category");
+define_once("_SEND","Відправити");
+define_once("_FUNCTIONS","Функції");
+define_once("_YES","Так");
+define_once("_NO","Ні");
+define_once("_CATEGORY","Категорія");
+define_once("_SAVECHANGES","Зберегти зміни");
+define_once("_PAGEBREAK","Если Вы хотите некоторые страницы, Вы можете написать <b>[--pagebreak--]</b> там, где хотите вырезать.");
+define_once("_SIGNATURE","Підпис");
+define_once("_DESCRIPTION","Опис");
+define_once("_TITLE","Назва");
+define_once("_ACTIVE","Активний");
+define_once("_DEACTIVATE","Зробити неактивним");
+define_once("_INACTIVE","Неактивний");
+define_once("_ACTIVATE","Зробити активним");
+define_once("_CONTENT","Зміст");
+define_once("_ADDCATEGORY","Створити нову категорію");
+define_once("_EDITCATEGORY","Редагувати категорію");
+define_once("_ADD","Додати");
+define_once("_LANGUAGE","Language");
+define_once("_CONTENTMANAGER","Content Manager");
+define_once("_DELCONTWARNING","Are you sure you want to delete the page");
+define_once("_DELCONTENT","Delete Page");
+define_once("_CURRENTSTATUS","Current Status");
+define_once("_ADDANEWPAGE","Add a New Page");
+define_once("_CSUBTITLE","Sub-Title");
+define_once("_HEADERTEXT","Header Text");
+define_once("_PAGETEXT","Page Text");
+define_once("_FOOTERTEXT","Footer Text");
+define_once("_ACTIVATEPAGE","Activate This Page?");
+define_once("_EDITPAGECONTENT","Edit Page Content");
+define_once("_DELCONTENTCAT","WARNING: Are you sure you want to delete this category? Pages under this category, if they exist, will not be removed, but will not be attached to any category.");
+define_once("_DELCATEGORY","Delete Category");
 
 
-?>
