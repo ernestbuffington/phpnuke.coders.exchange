@@ -430,6 +430,11 @@ $config .= "?>";
     
 	$clean_str = strtolower($setup_admin);
 
+    // update group moerator as Frank left the group moderator set at 5 instead of 2
+	$sql="UPDATE `nuke_bbgroups` SET 
+	`group_moderator`='2' WHERE nuke_group_id='3' ";
+    $result=$db->sql_query($sql);
+
     // update admin
 	$sql="UPDATE `nuke_users` SET 
 	`name`='$setup_admin',
@@ -477,6 +482,7 @@ $config .= "?>";
 	`nuke_user_lang`='english',
 	`nuke_user_regdate`='".$date."',
 	`user_level`='1',
+	`user_admin_notes`='This Account Was Created With The PHP-Nuke Installer : Written By Ernest Allen Buffington',
 	`nuke_user_dateformat`='D M d, Y g:i a',
 	`nuke_group_id`='1' WHERE user_id='1' ";
     $result=$db->sql_query($sql);

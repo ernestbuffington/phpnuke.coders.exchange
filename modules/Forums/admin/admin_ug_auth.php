@@ -745,8 +745,12 @@ endif;
         $auth_ug[$forum_id]['auth_mod'] = ( empty($auth_access_count[$forum_id]) ) ? 0 : check_auth(AUTH_MOD, 'auth_mod', $auth_access[$forum_id], 0);
     }
     $i = 0;
-    reset($auth_ug);
-    //while( [$forum_id, $user_ary] = @each($auth_ug) )
+	
+	if(isset($auth_ug)){
+      reset($auth_ug);
+	}
+    
+	//while( [$forum_id, $user_ary] = @each($auth_ug) )
 	foreach ($auth_ug as $forum_id => $user_ary)
     {
             if ( empty($adv) )
