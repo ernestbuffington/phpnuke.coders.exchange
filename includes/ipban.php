@@ -50,7 +50,7 @@ $past = time()-2;
 $sql = "DELETE FROM ".$prefix."_antiflood WHERE time < '$past'";
 $db->sql_query($sql);
 $ctime = time();
-$db->sql_query("INSERT INTO ".$prefix."_antiflood (ip_addr, time) VALUES ('$ip', '$ctime')");
+$db->sql_query("REPLACE INTO ".$prefix."_antiflood (ip_addr, time) VALUES ('$ip', '$ctime')");
 $numrow = $db->sql_numrows($db->sql_query("SELECT * FROM ".$prefix."_antiflood WHERE ip_addr='$ip'"));
 if ($numrow >= 5) {
 	echo "<br><br><center><b>Sorry, too many page loads in so little time!</b></center>";
