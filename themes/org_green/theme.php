@@ -26,15 +26,10 @@
 /************************************************************/
 
 $bgcolor1 = "";
-
 $bgcolor2 = "";
-
 $bgcolor3 = "";
-
 $bgcolor4 = "";
-
 $textcolor1 = "";
-
 $textcolor2 = "";
 
 if(file_exists("themes/org_green/tables.php")){
@@ -101,59 +96,38 @@ function themeheader() {
     if (defined('INDEX_FILE')) {
 
     $tmpl_file = "themes/org_green/header.html";
-
     $thefile = implode("", file($tmpl_file));
-
     $thefile = addslashes($thefile);
-
     $thefile = "\$r_file=\"".$thefile."\";";
-
     eval($thefile);
-
     print $r_file;
 
   }else{
 
     $tmpl_file = "themes/org_green/headernrb.html";
-
     $thefile = implode("", file($tmpl_file));
-
     $thefile = addslashes($thefile);
-
     $thefile = "\$r_file=\"".$thefile."\";";
-
     eval($thefile);
-
     print $r_file;  	
 
   }
 
     $swapblock = "1"; 
-
     $tmpl_file = "themes/org_green/leftb.html";
-
     $thefile = implode("", file($tmpl_file));
-
     $thefile = addslashes($thefile);
-
     $thefile = "\$r_file=\"".$thefile."\";";
-
     eval($thefile);
-
     print $r_file;
 
     blocks('left'); 
 
     $tmpl_file = "themes/org_green/leftbb.html";
-
     $thefile = implode("", file($tmpl_file));
-
     $thefile = addslashes($thefile);
-
     $thefile = "\$r_file=\"".$thefile."\";";
-
     eval($thefile);
-
     print $r_file;
 
     $swapblock = "0";
