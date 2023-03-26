@@ -6,7 +6,7 @@
 /*                                                                        */
 /* This is the language module with all the system messages               */
 /*                                                                        */
-/* If you made a translation go to the my website and send to me          */
+/* If you made a translation, please go to the site and send to me        */
 /* the translated file. Please keep the original text order by modules,   */
 /* and just one message per line, also double check your translation!     */
 /*                                                                        */
@@ -17,38 +17,18 @@
 /* And, if you use HTML code, please double check it.                     */
 /**************************************************************************/
 
+define("_PREVIOUS","«·’›Õ… «·”«»ﬁ…");
+define("_NEXT","«·’›Õ… «· «·Ì…");
+define("_PAGE","’›Õ…");
+define("_DEACTIVATE"," ⁄ÿÌ·");
+define("_ACTIVATE"," ‰‘Ìÿ");
+define("_PUBLISHEDON","‰‘—  » «—ÌŒ");
+define("_PAGESLIST","ﬁ«∆„… «·’›Õ« ");
+define("_LISTOFCONTENT","ﬁ«∆„… «·„Õ ÊÌ«  «·„ «Õ… ›Ì");
+define("_YOURADMINLIST","√‰  «·„‘—›: ﬁ«∆„… «·’›Õ«  «·„⁄ÿ·… ﬂ«· «·Ì:");
+define("_COPYRIGHT","ÕﬁÊﬁ «·‰”Œ &copy; »Ê«”ÿ… $sitename. Ã„Ì⁄ «·ÕﬁÊﬁ „Õ›ÊŸ….");
+define("_COPYRIGHT2","Ã„Ì⁄ «·ÕﬁÊﬁ „Õ›ÊŸ….");
+define("_CONTENTCATEGORIES","√ﬁ”«„ «·„Õ ÊÌ«  «·Õ«·Ì…");
+define("_NONCLASSCONT","·« ÌÊÃœ „Õ ÊÌ«  „ﬁ”„…");
 
-define_once("_SEND","√—”·");
-define_once("_FUNCTIONS","«·œÊ«·");
-define_once("_YES","‰⁄„");
-define_once("_NO","·«");
-define_once("_CATEGORY"," ’‰Ì›");
-define_once("_SAVECHANGES","Õ›Ÿ «· €ÌÌ—« ");
-define_once("_PAGEBREAK","«–« √—œ  ’›Õ«  „ ⁄œœ… ›≈‰ﬂ  ” ÿÌ⁄ √‰  ﬂ »  <b>[--pagebreak--]</b> ›Ì „ﬂ«‰ «·›’·.");
-define_once("_SIGNATURE","«· ÊﬁÌ⁄");
-define_once("_DESCRIPTION","«·Ê’›");
-define_once("_TITLE","«·⁄‰Ê«‰");
-define_once("_ACTIVE","‰‘Ìÿ");
-define_once("_DEACTIVATE"," ⁄ÿÌ·");
-define_once("_INACTIVE","„⁄ÿ·");
-define_once("_ACTIVATE"," ‰‘Ìÿ");
-define_once("_CONTENT","«·„Õ ÊÏ");
-define_once("_ADDCATEGORY","√÷›  ’‰Ì› ÃœÌœ«");
-define_once("_EDITCATEGORY"," ⁄œÌ· «· ’‰Ì›");
-define_once("_ADD","√÷›");
-define_once("_LANGUAGE","«··€…");
-define_once("_CONTENTMANAGER","«·’›Õ«  «·≈÷«›Ì…");
-define_once("_DELCONTWARNING","Â· √‰  „ √ﬂ¯œ √‰¯ﬂ  —Ìœ √‰  Õ–› «·’›Õ…ø");
-define_once("_DELCONTENT","Õ–› ’›Õ…");
-define_once("_CURRENTSTATUS","«·Ê÷⁄ «·Õ«·Ì");
-define_once("_ADDANEWPAGE","√÷› ’›Õ… ÃœÌœ…");
-define_once("_CSUBTITLE","⁄‰Ê«‰ ›—⁄Ì");
-define_once("_HEADERTEXT","‰’ «· —ÊÌ”…");
-define_once("_PAGETEXT","‰’ «·’›Õ…");
-define_once("_FOOTERTEXT","‰’ «· –ÌÌ·");
-define_once("_ACTIVATEPAGE"," ‰‘Ìÿ Â–Â «·’›Õ…ø");
-define_once("_EDITPAGECONTENT"," ⁄œÌ· „Õ ÊÌ«  «·’›Õ…");
-define_once("_DELCONTENTCAT","WARNING: Â·  —Ìœ Õ–› Â–« «·ﬁ”„ »«· √ﬂÌœø «·’›Õ«   Õ  Â–« «·ﬁ”„ ·‰  Õ–› Ê·ﬂ‰Â« ”Ê›  ﬂÊ‰ „⁄·ﬁ… »œÊ‰ ﬁ”„.");
-define_once("_DELCATEGORY","Õ–› «·ﬁ”„");
-
-
+?>

@@ -18,38 +18,37 @@
 /**************************************************************************/
 
 
-define("_SEND","Invia");
-define("_FUNCTIONS","Funzioni");
-define("_YES","Si");
-define("_NO","No");
-define("_CATEGORY","Categoria");
-define("_SAVECHANGES","Salva Modifiche");
-define("_PAGEBREAK","Se desideri pagine multiple inserisci <b>[--pagebreak--]</b> nei punti di taglio.");
-define("_SIGNATURE","Firma");
-define("_DESCRIPTION","Descrizione");
-define("_TITLE","Titolo");
-define("_ACTIVE","Attivo");
-define("_DEACTIVATE","Disattiva");
-define("_INACTIVE","Inattivo");
-define("_ACTIVATE","Attiva");
-define("_CONTENT","Contenuto");
-define("_ADDCATEGORY","Aggiungi Nuova Categoria");
-define("_EDITCATEGORY","Edita Categoria");
-define("_ADD","Aggiungi");
-define("_LANGUAGE","Lingua");
-define("_CONTENTMANAGER","Manager Contenuti");
-define("_DELCONTWARNING","Sicuro di voler cancellare la pagina");
-define("_DELCONTENT","Cancella la pagina");
-define("_CURRENTSTATUS","Status corrente");
-define("_ADDANEWPAGE","Aggiungi nuova pagina");
-define("_CSUBTITLE","Sottotitolo");
-define("_HEADERTEXT","Testo Intestazione");
-define("_PAGETEXT","Testo Pagina");
-define("_FOOTERTEXT","Testo pi&egrave; di pagina");
-define("_ACTIVATEPAGE","Attivare la pagina?");
-define("_EDITPAGECONTENT","Edita il Contenuto della Pagina");
-define("_DELCONTENTCAT","ATTENZIONE: Sei sicuro di voler cancellare questa categoria? Tutte le pagine che ne fanno parte, se esistono, non saranno rimosse, ma non potranno essere collegate a nessun'altra categoria.");
-define("_DELCATEGORY","Cancella Categoria");
+define_once("_SEND","Invia");
+define_once("_FUNCTIONS","Funzioni");
+define_once("_YES","Si");
+define_once("_NO","No");
+define_once("_CATEGORY","Categoria");
+define_once("_SAVECHANGES","Salva Modifiche");
+define_once("_PAGEBREAK","Se desideri pagine multiple inserisci <b>[--pagebreak--]</b> nei punti di taglio.");
+define_once("_SIGNATURE","Firma");
+define_once("_DESCRIPTION","Descrizione");
+define_once("_TITLE","Titolo");
+define_once("_ACTIVE","Attivo");
+define_once("_DEACTIVATE","Disattiva");
+define_once("_INACTIVE","Inattivo");
+define_once("_ACTIVATE","Attiva");
+define_once("_CONTENT","Contenuto");
+define_once("_ADDCATEGORY","Aggiungi Nuova Categoria");
+define_once("_EDITCATEGORY","Edita Categoria");
+define_once("_ADD","Aggiungi");
+define_once("_LANGUAGE","Lingua");
+define_once("_CONTENTMANAGER","Manager Contenuti");
+define_once("_DELCONTWARNING","Sicuro di voler cancellare la pagina");
+define_once("_DELCONTENT","Cancella la pagina");
+define_once("_CURRENTSTATUS","Status corrente");
+define_once("_ADDANEWPAGE","Aggiungi nuova pagina");
+define_once("_CSUBTITLE","Sottotitolo");
+define_once("_HEADERTEXT","Testo Intestazione");
+define_once("_PAGETEXT","Testo Pagina");
+define_once("_FOOTERTEXT","Testo pi&egrave; di pagina");
+define_once("_ACTIVATEPAGE","Attivare la pagina?");
+define_once("_EDITPAGECONTENT","Edita il Contenuto della Pagina");
+define_once("_DELCONTENTCAT","ATTENZIONE: Sei sicuro di voler cancellare questa categoria? Tutte le pagine che ne fanno parte, se esistono, non saranno rimosse, ma non potranno essere collegate a nessun'altra categoria.");
+define_once("_DELCATEGORY","Cancella Categoria");
 
 
-?>

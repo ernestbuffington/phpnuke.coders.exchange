@@ -18,38 +18,37 @@
 /**************************************************************************/
 
 
-define("_SEND","Küldés");
-define("_FUNCTIONS","Funkciók");
-define("_YES","Igen");
-define("_NO","Nem");
-define("_CATEGORY","Kategória");
-define("_SAVECHANGES","Változások mentése");
-define("_PAGEBREAK","Ha több oldalra szeretnéd bontani az írást, írj <b>[--pagebreak--]</b>-et oda, ahol vágni szeretnél!");
-define("_SIGNATURE","Aláírás");
-define("_DESCRIPTION","Leírás");
-define("_TITLE","Cím");
-define("_ACTIVE","Aktív");
-define("_DEACTIVATE","Kikapcsolás");
-define("_INACTIVE","Inaktív");
-define("_ACTIVATE","Bekapcsolás");
-define("_CONTENT","Tartalom");
-define("_ADDCATEGORY","Új kategória");
-define("_EDITCATEGORY","Kategória szerkesztése");
-define("_ADD","Hozzáadás");
-define("_LANGUAGE","Language");
-define("_CONTENTMANAGER","Content Manager");
-define("_DELCONTWARNING","Are you sure you want to delete the page");
-define("_DELCONTENT","Delete Page");
-define("_CURRENTSTATUS","Current Status");
-define("_ADDANEWPAGE","Add a New Page");
-define("_CSUBTITLE","Sub-Title");
-define("_HEADERTEXT","Header Text");
-define("_PAGETEXT","Page Text");
-define("_FOOTERTEXT","Footer Text");
-define("_ACTIVATEPAGE","Activate This Page?");
-define("_EDITPAGECONTENT","Edit Page Content");
-define("_DELCONTENTCAT","WARNING: Are you sure you want to delete this category? Pages under this category, if they exist, will not be removed, but will not be attached to any category.");
-define("_DELCATEGORY","Delete Category");
+define_once("_SEND","Küldés");
+define_once("_FUNCTIONS","Funkciók");
+define_once("_YES","Igen");
+define_once("_NO","Nem");
+define_once("_CATEGORY","Kategória");
+define_once("_SAVECHANGES","Változások mentése");
+define_once("_PAGEBREAK","Ha több oldalra szeretnéd bontani az írást, írj <b>[--pagebreak--]</b>-et oda, ahol vágni szeretnél!");
+define_once("_SIGNATURE","Aláírás");
+define_once("_DESCRIPTION","Leírás");
+define_once("_TITLE","Cím");
+define_once("_ACTIVE","Aktív");
+define_once("_DEACTIVATE","Kikapcsolás");
+define_once("_INACTIVE","Inaktív");
+define_once("_ACTIVATE","Bekapcsolás");
+define_once("_CONTENT","Tartalom");
+define_once("_ADDCATEGORY","Új kategória");
+define_once("_EDITCATEGORY","Kategória szerkesztése");
+define_once("_ADD","Hozzáadás");
+define_once("_LANGUAGE","Language");
+define_once("_CONTENTMANAGER","Content Manager");
+define_once("_DELCONTWARNING","Are you sure you want to delete the page");
+define_once("_DELCONTENT","Delete Page");
+define_once("_CURRENTSTATUS","Current Status");
+define_once("_ADDANEWPAGE","Add a New Page");
+define_once("_CSUBTITLE","Sub-Title");
+define_once("_HEADERTEXT","Header Text");
+define_once("_PAGETEXT","Page Text");
+define_once("_FOOTERTEXT","Footer Text");
+define_once("_ACTIVATEPAGE","Activate This Page?");
+define_once("_EDITPAGECONTENT","Edit Page Content");
+define_once("_DELCONTENTCAT","WARNING: Are you sure you want to delete this category? Pages under this category, if they exist, will not be removed, but will not be attached to any category.");
+define_once("_DELCATEGORY","Delete Category");
 
 
-?>

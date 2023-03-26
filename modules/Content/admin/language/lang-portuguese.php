@@ -18,38 +18,37 @@
 /**************************************************************************/
 
 
-define("_SEND","Enviar");
-define("_FUNCTIONS","Funções");
-define("_YES","Sim");
-define("_NO","Não");
-define("_CATEGORY","Categoria");
-define("_SAVECHANGES","Gravar alterações");
-define("_PAGEBREAK","Se você quiser o seu texto em várias páginas escreva <b>[--pagebreak--]</b> onde queira separar o texto.");
-define("_SIGNATURE","Assinatura");
-define("_DESCRIPTION","Descrição");
-define("_TITLE","Título");
-define("_ACTIVE","Activo");
-define("_DEACTIVATE","Desactivar");
-define("_INACTIVE","Inactivo");
-define("_ACTIVATE","Activo");
-define("_CONTENT","Conteúdo");
-define("_ADDCATEGORY","Adicionar uma Nova Categoria");
-define("_EDITCATEGORY","Editar Categoria");
-define("_ADD","Adicionar");
-define("_LANGUAGE","Língua");
-define("_CONTENTMANAGER","Gerencia de conteúdo");
-define("_DELCONTWARNING","Tem a certesa que deseja apagar o conteúdo?");
-define("_DELCONTENT","Apagar página");
-define("_CURRENTSTATUS","Estatuto corrente");
-define("_ADDANEWPAGE","Adicionar uma nova página");
-define("_CSUBTITLE","Sub-Titlo");
-define("_HEADERTEXT","Texto de Cabeçalho");
-define("_PAGETEXT","Texto da página");
-define("_FOOTERTEXT","Texto de Rodapé");
-define("_ACTIVATEPAGE","Activar esta Página?");
-define("_EDITPAGECONTENT","Editar conteúdo da página");
-define("_DELCONTENTCAT","ATENÇÃO: Tem a certeza que deseja apagar esta categoria? Páginas em construção, caso existam, não seram removidas, mas não serão ligadas a nenhuma categoria.");
-define("_DELCATEGORY","Apagar Categoria");
+define_once("_SEND","Enviar");
+define_once("_FUNCTIONS","Funções");
+define_once("_YES","Sim");
+define_once("_NO","Não");
+define_once("_CATEGORY","Categoria");
+define_once("_SAVECHANGES","Gravar alterações");
+define_once("_PAGEBREAK","Se você quiser o seu texto em várias páginas escreva <b>[--pagebreak--]</b> onde queira separar o texto.");
+define_once("_SIGNATURE","Assinatura");
+define_once("_DESCRIPTION","Descrição");
+define_once("_TITLE","Título");
+define_once("_ACTIVE","Activo");
+define_once("_DEACTIVATE","Desactivar");
+define_once("_INACTIVE","Inactivo");
+define_once("_ACTIVATE","Activo");
+define_once("_CONTENT","Conteúdo");
+define_once("_ADDCATEGORY","Adicionar uma Nova Categoria");
+define_once("_EDITCATEGORY","Editar Categoria");
+define_once("_ADD","Adicionar");
+define_once("_LANGUAGE","Língua");
+define_once("_CONTENTMANAGER","Gerencia de conteúdo");
+define_once("_DELCONTWARNING","Tem a certesa que deseja apagar o conteúdo?");
+define_once("_DELCONTENT","Apagar página");
+define_once("_CURRENTSTATUS","Estatuto corrente");
+define_once("_ADDANEWPAGE","Adicionar uma nova página");
+define_once("_CSUBTITLE","Sub-Titlo");
+define_once("_HEADERTEXT","Texto de Cabeçalho");
+define_once("_PAGETEXT","Texto da página");
+define_once("_FOOTERTEXT","Texto de Rodapé");
+define_once("_ACTIVATEPAGE","Activar esta Página?");
+define_once("_EDITPAGECONTENT","Editar conteúdo da página");
+define_once("_DELCONTENTCAT","ATENÇÃO: Tem a certeza que deseja apagar esta categoria? Páginas em construção, caso existam, não seram removidas, mas não serão ligadas a nenhuma categoria.");
+define_once("_DELCATEGORY","Apagar Categoria");
 
 
-?>

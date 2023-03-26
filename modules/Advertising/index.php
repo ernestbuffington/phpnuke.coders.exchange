@@ -5,7 +5,7 @@
 /* ===========================                                          */
 /*                                                                      */
 /* Copyright (c) 2023 by Francisco Burzi                                */
-/* https://phpnuke.coders.exchange                                      */
+/* http://www.phpnuke.coders.exchange                                   */
 /*                                                                      */
 /* Google Page Rank Calculation                                         */
 /* Copyright 2004 by GoogleCommunity.com                                */
@@ -21,6 +21,14 @@
 // Google Page Rank Calculator script, please go to: http://www.GoogleCommunity.com
 // and download the latest and stand alone release.
 
+/* Applied rules:
+ * AddDefaultValueForUndefinedVariableRector (https://github.com/vimeo/psalm/blob/29b70442b11e3e66113935a2ee22e165a70c74a4/docs/fixing_code.md#possiblyundefinedvariable)
+ * EregToPregMatchRector (http://php.net/reference.pcre.pattern.posix https://stackoverflow.com/a/17033826/1348344 https://docstore.mik.ua/orelly/webprog/pcook/ch13_02.htm)
+ * SetCookieRector (https://www.php.net/setcookie https://wiki.php.net/rfc/same-site-cookie)
+ * CurlyToSquareBracketArrayStringRector (https://www.php.net/manual/en/migration74.deprecated.php)
+ * NullToStrictStringFuncCallArgRector
+ */
+ 
 if (!defined('MODULE_FILE')) {
     die ("You can't access this file directly...");
 }
@@ -32,7 +40,7 @@ get_lang($module_name);
 function is_client($client) {
 	global $prefix, $db;
 	if(!is_array($client)) {
-		$client = base64_decode($client);
+		$client = base64_decode((string) $client);
 		$client = addslashes($client);
 		$client = explode(":", $client);
 		$cid = "$client[0]";
@@ -141,6 +149,7 @@ function sitestats() {
 }
 
 function plans() {
+    $delivery = null;
     global $module_name, $prefix, $db, $bgcolor2, $sitename;
     include("header.php");
     title("$sitename: "._PLANSPRICES."");
@@ -183,8 +192,8 @@ function terms() {
     include("header.php");
     title("$sitename: "._TERMSCONDITIONS."");
     $row = $db->sql_fetchrow($db->sql_query("SELECT * FROM ".$prefix."_banner_terms"));
-    $terms = eregi_replace("\[sitename\]", $sitename, $row['terms_body']);
-	$terms = eregi_replace("\[country\]", $row['country'], $terms);
+    $terms = preg_replace('#\[sitename\]#mi', (string) $sitename, (string) $row['terms_body']);
+	$terms = preg_replace('#\[country\]#mi', (string) $row['country'], (string) $terms);
     OpenTable();
     echo "<center><font class='title'><b>$sitename: "._TERMSCONDITIONS."</b></font></center><br><br>"
 		."$terms"
@@ -227,6 +236,9 @@ function zeroFill($a, $b) {
 }
 
 function mix($a,$b,$c) {
+
+// what to do with this who knows maybe ghost	
+/*	
   $a -= $b; $a -= $c; $a ^= (zeroFill($c,13));
   $b -= $c; $b -= $a; $b ^= ($a<<8);
   $c -= $a; $c -= $b; $c ^= (zeroFill($b,13));
@@ -236,6 +248,7 @@ function mix($a,$b,$c) {
   $a -= $b; $a -= $c; $a ^= (zeroFill($c,3));   
   $b -= $c; $b -= $a; $b ^= ($a<<10);
   $c -= $a; $c -= $b; $c ^= (zeroFill($b,15));
+*/  
   return array($a,$b,$c);
 }
 
@@ -275,20 +288,24 @@ function GoogleCH($url, $length=null, $init=GOOGLE_MAGIC) {
 }
 
 function strord($string) {
-    for($i=0;$i<strlen($string);$i++) {
-        $result[$i] = ord($string{$i});
+    $result = [];
+    for($i=0;$i<strlen((string) $string);$i++) {
+        $result[$i] = ord($string[$i]);
     }
     return $result;
 }
 
 function getrank($url) {
-	define('GOOGLE_MAGIC', 0xE6359A60);
+/*
+	define_once('GOOGLE_MAGIC', 0xE6359A60);
     $url = 'info:'.$url;
     $ch = GoogleCH(strord($url));
     $file = "http://www.google.com/search?client=navclient-auto&ch=6$ch&features=Rank&q=$url";
     $data = file($file);
     $rankarray = explode (':', $data[2]);
     $rank = $rankarray[2];
+*/	
+    $rank = 'Disabled';
     return $rank;
 }
 
@@ -318,18 +335,19 @@ function client_valid($login, $pass) {
 		$row = $db->sql_fetchrow($db->sql_query("SELECT cid FROM ".$prefix."_banner_clients WHERE login='$login' AND passwd='$pass'"));
 		$cid = $row['cid'];
 		$info = base64_encode("$cid:$login:$pass");
-		setcookie("client","$info",time()+86400);
+		setcookie("client","$info",['expires' => time()+86400]);
 		Header("Location: modules.php?name=$module_name&op=client_home");
 	}
 }
 
 function client_home() {
-	global $prefix, $db, $sitename, $bgcolor2, $module_name, $client;
+	$a = null;
+ global $prefix, $db, $sitename, $bgcolor2, $module_name, $client;
 	if (!is_client($client)) {
 		Header("Location: modules.php?name=$module_name&op=client");
 		die();
 	} else {
-		$client = base64_decode($client);
+		$client = base64_decode((string) $client);
 		$client = addslashes($client);
 		$client = explode(":", $client);
 		$cid = $client[0];
@@ -384,7 +402,7 @@ function client_home() {
 				."<td align=\"center\">$left</td>"
 				."<td align=\"center\">$clicks</td>"
 				."<td align=\"center\">$percent</td>"
-				."<td align=\"center\">".ucFirst($row['ad_class'])."</td>"
+				."<td align=\"center\">".ucFirst((string) $row['ad_class'])."</td>"
 				."<td align=\"center\"><a href=\"modules.php?name=$module_name&op=client_report&cid=$cid&bid=$bid\"><img src=\"images/edit.gif\" border=\"0\" alt=\""._EMAILSTATS."\" title=\""._EMAILSTATS."\"></a>  <a href=\"modules.php?name=$module_name&op=view_banner&cid=$cid&bid=$bid\"><img src=\"images/view.gif\" border=\"0\" alt=\""._VIEWBANNER."\" title=\""._VIEWBANNER."\"></a></td><tr>";
 		}
 		echo "</table>";
@@ -436,7 +454,7 @@ function client_home() {
 				."<td align=\"center\">$left</td>"
 				."<td align=\"center\">$clicks</td>"
 				."<td align=\"center\">$percent</td>"
-				."<td align=\"center\">".ucFirst($row['ad_class'])."</td>"
+				."<td align=\"center\">".ucFirst((string) $row['ad_class'])."</td>"
 				."<td align=\"center\"><a href=\"modules.php?name=$module_name&op=client_report&cid=$cid&bid=$bid\"><img src=\"images/edit.gif\" border=\"0\" alt=\""._EMAILSTATS."\" title=\""._EMAILSTATS."\"></a>  <a href=\"modules.php?name=$module_name&op=view_banner&cid=$cid&bid=$bid\"><img src=\"images/view.gif\" border=\"0\" alt=\""._VIEWBANNER."\" title=\""._VIEWBANNER."\"></a></td><tr>";
 			$a = 1;
 		}
@@ -451,12 +469,13 @@ function client_home() {
 }
 
 function view_banner($cid, $bid) {
-	global $prefix, $db, $module_name, $client, $bgcolor2, $sitename;
+	$status = null;
+ global $prefix, $db, $module_name, $client, $bgcolor2, $sitename;
 	if (!is_client($client)) {
 		Header("Location: modules.php?name=$module_name&op=client");
 		die();
 	} else {
-		$client = base64_decode($client);
+		$client = base64_decode((string) $client);
 		$client = addslashes($client);
 		$client = explode(":", $client);
 		$client_id = $client[0];
@@ -487,7 +506,7 @@ function view_banner($cid, $bid) {
 			$alttext = $row['alttext'];
 			echo "<center><font class=\"title\"><b>" . _YOURBANNER . ": ".$row['name']."</b></font><br><br>";
 			if ($ad_class == "code") {
-				$ad_code = stripslashes(FixQuotes($ad_code));
+				$ad_code = stripslashes((string) FixQuotes($ad_code));
 				echo "<table border=\"0\" align=\"center\"><tr><td>$ad_code</td></tr></table><br><br>";
 			} elseif ($ad_class == "flash") {
 				echo "<center>
@@ -553,7 +572,7 @@ function view_banner($cid, $bid) {
 				."<td align=\"center\">$left</td>"
 				."<td align=\"center\">$clicks</td>"
 				."<td align=\"center\">$percent</td>"
-				."<td align=\"center\">".ucFirst($row['ad_class'])."</td></tr><tr>"
+				."<td align=\"center\">".ucFirst((string) $row['ad_class'])."</td></tr><tr>"
 				."<td align=\"center\" colspan=\"7\">"._CURRENTSTATUS." $status</td></tr>"
 				."</table><br><br>"
 				."[ <a href=\"modules.php?name=$module_name&op=client_report&cid=$cid&bid=$bid\">"._EMAILSTATS."</a> | <a href=\"modules.php?name=$module_name&op=logout\">"._LOGOUT."</a> ]";
@@ -565,12 +584,13 @@ function view_banner($cid, $bid) {
 }
 
 function client_report($cid, $bid) {
-	global $prefix, $db, $module_name, $client, $sitename;
+	$message = null;
+ global $prefix, $db, $module_name, $client, $sitename;
 	if (!is_client($client)) {
 		Header("Location: modules.php?name=$module_name&op=client");
 		die();
 	} else {
-		$client = base64_decode($client);
+		$client = base64_decode((string) $client);
 		$client = addslashes($client);
 		$client = explode(":", $client);
 		$client_id = $client[0];
@@ -592,7 +612,7 @@ function client_report($cid, $bid) {
 			$sql = "SELECT name, email FROM ".$prefix."_banner_clients WHERE cid='$cid'";
 			$result = $db->sql_query($sql);
 			$row = $db->sql_fetchrow($result);
-			$name = htmlentities($row['name']);
+			$name = htmlentities((string) $row['name']);
 			$email = $row['email'];
 			if ($email == "") {
 				echo "<center><br><br>"
@@ -638,7 +658,7 @@ function client_report($cid, $bid) {
 					$message = ""._FOLLOWINGSTATS." $sitename:\n\n\n"._CLIENTNAME.": $name\n"._BANNERID.": $bid\n"._BANNERNAME.": ".$row['name']."\n\n"._IMPPURCHASED.": $imptotal\n"._IMPREMADE.": $impmade\n"._IMPRELEFT.": $left\n"._RECEIVEDCLICKS.": N/A\n"._CLICKSPERCENT.": N/A\n\n\n"._GENERATEDON.": $fecha";
 				}
 				$from = "$sitename";
-				mail($email, $subject, $message, "From: $from\nX-Mailer: PHP/" . phpversion());
+				mail((string) $email, $subject, $message, "From: $from\nX-Mailer: PHP/" . phpversion());
 				echo "<center><br><br><br>"
 					."<b>"._STATSSENT." $email</b><br><br>"
 					."[ <a href=\"javascript:history.go(-1)\">"._GOBACK."</a> ]";
@@ -694,4 +714,3 @@ switch ($op) {
 
 }
 
-?>

@@ -18,38 +18,37 @@
 /**************************************************************************/
 
 
-define("_SEND","Dërgo");
-define("_FUNCTIONS","Funksione");
-define("_YES","Po");
-define("_NO","Jo");
-define("_CATEGORY","Kategoria");
-define("_SAVECHANGES","Shpëto Ndryshimet");
-define("_PAGEBREAK","Nëse dëshiron më shumë se një faqe shto <b>[--pagebreak--]</b> në pikat e ndërprerjes.");
-define("_SIGNATURE","Firma");
-define("_DESCRIPTION","Përshkrimi");
-define("_TITLE","Titulli");
-define("_ACTIVE","Aktiv");
-define("_DEACTIVATE","Disaktivo");
-define("_INACTIVE","Jo aktiv");
-define("_ACTIVATE","Aktivo");
-define("_CONTENT","Përmbajtja");
-define("_ADDCATEGORY","Shto një Kategori të Re");
-define("_EDITCATEGORY","Shkruaj Kategorinë");
-define("_ADD","Shto");
-define("_LANGUAGE","Gjuha");
-define("_CONTENTMANAGER","Manazheri i Përmbajtjes");
-define("_DELCONTWARNING","I sigurt që dëshiron të fshish faqen");
-define("_DELCONTENT","Fshi faqen");
-define("_CURRENTSTATUS","Gjëndja aktuale");
-define("_ADDANEWPAGE","Shto një faqe të re");
-define("_CSUBTITLE","Nën-titull");
-define("_HEADERTEXT","Teksti i Fillimit të Faqes");
-define("_PAGETEXT","Teksti Faqes");
-define("_FOOTERTEXT","Teksti i Fund'Faqes");
-define("_ACTIVATEPAGE","Aktivon faqen?");
-define("_EDITPAGECONTENT","Shkruaj Përmbajtjen e Faqes");
-define("_DELCONTENTCAT","KUJDES : Jeni i sigurt që deshironi të eleminoni këtë kategori? Faqet nën këtë kategori, nëse ekzistojnë, nuk do të eleminohen, por nuk do ti përkasin më asnjë kategorie.");
-define("_DELCATEGORY","Elemino Kategorinë");
+define_once("_SEND","Dërgo");
+define_once("_FUNCTIONS","Funksione");
+define_once("_YES","Po");
+define_once("_NO","Jo");
+define_once("_CATEGORY","Kategoria");
+define_once("_SAVECHANGES","Shpëto Ndryshimet");
+define_once("_PAGEBREAK","Nëse dëshiron më shumë se një faqe shto <b>[--pagebreak--]</b> në pikat e ndërprerjes.");
+define_once("_SIGNATURE","Firma");
+define_once("_DESCRIPTION","Përshkrimi");
+define_once("_TITLE","Titulli");
+define_once("_ACTIVE","Aktiv");
+define_once("_DEACTIVATE","Disaktivo");
+define_once("_INACTIVE","Jo aktiv");
+define_once("_ACTIVATE","Aktivo");
+define_once("_CONTENT","Përmbajtja");
+define_once("_ADDCATEGORY","Shto një Kategori të Re");
+define_once("_EDITCATEGORY","Shkruaj Kategorinë");
+define_once("_ADD","Shto");
+define_once("_LANGUAGE","Gjuha");
+define_once("_CONTENTMANAGER","Manazheri i Përmbajtjes");
+define_once("_DELCONTWARNING","I sigurt që dëshiron të fshish faqen");
+define_once("_DELCONTENT","Fshi faqen");
+define_once("_CURRENTSTATUS","Gjëndja aktuale");
+define_once("_ADDANEWPAGE","Shto një faqe të re");
+define_once("_CSUBTITLE","Nën-titull");
+define_once("_HEADERTEXT","Teksti i Fillimit të Faqes");
+define_once("_PAGETEXT","Teksti Faqes");
+define_once("_FOOTERTEXT","Teksti i Fund'Faqes");
+define_once("_ACTIVATEPAGE","Aktivon faqen?");
+define_once("_EDITPAGECONTENT","Shkruaj Përmbajtjen e Faqes");
+define_once("_DELCONTENTCAT","KUJDES : Jeni i sigurt që deshironi të eleminoni këtë kategori? Faqet nën këtë kategori, nëse ekzistojnë, nuk do të eleminohen, por nuk do ti përkasin më asnjë kategorie.");
+define_once("_DELCATEGORY","Elemino Kategorinë");
 
 
-?>
