@@ -433,18 +433,47 @@ $config .= "?>";
     // update admin
 	$sql="UPDATE `nuke_users` SET 
 	`name`='$setup_admin',
+	`user_from_flag`='usa.png',
 	`username`='$setup_admin',
 	`username_clean`='$clean_str',
+	`umode`='thread',
+	`user_allow_arcadepm`='1',
+	`user_occ`='Board Administrator',
+	`user_from`='United States',
 	`nuke_user_lang`='english',
 	`nuke_user_regdate`='".$date."',
 	`user_level`='2',
+	`user_active`='1',
+	`user_admin_notes`='This Account Was Created With The PHP-Nuke Installer : Written By Ernest Allen Buffington',
 	`nuke_user_dateformat`='D M d, Y g:i a',
-	`nuke_group_id`='1' WHERE user_id='2' ";
+	`nuke_group_id`='5' WHERE user_id='2' ";
     $result=$db->sql_query($sql);
 
     // update anonymous
 	$sql="UPDATE `nuke_users` SET 
+	`name`='Anonymous',
 	`username`='Anonymous',
+	`user_avatar`='blank.png',
+	`user_viewemail`='0',
+	`user_theme`='0',
+	`storynum`='10',
+	`uorder`='0',
+	`thold`='0',
+	`noscore`='0',
+	`commentmax`='4096',
+	`counter`='0',
+	`newsletter`='0',
+	`nuke_user_posts`='0',
+	`user_rank`='0',
+	`user_rank2`='-1',
+	`user_rank3`='-2',
+	`user_rank4`='-2',
+	`user_rank`='0',
+	`user_level`='1',
+	`user_active`='1',
+	`user_allowhtml`='1',
+	`user_allow_arcadepm`='0',
+	`ublockon`='0',
 	`nuke_user_lang`='english',
 	`nuke_user_regdate`='".$date."',
 	`user_level`='1',
