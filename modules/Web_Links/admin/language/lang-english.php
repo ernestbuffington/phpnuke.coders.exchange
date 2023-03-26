@@ -17,7 +17,7 @@
 /* And, if you use HTML code, please double check it.                     */
 /**************************************************************************/
 
-
+define_once("_LINKS","Links");
 define_once("_URL","URL");
 define_once("_EMAIL","Email");
 define_once("_FUNCTIONS","Functions");
@@ -107,6 +107,5 @@ define_once("_EZSUBCAT","sub-categories");
 define_once("_EZATTACHEDTOCAT","under this category");
 define_once("_EZBROKENLINKS","Broken Links");
 define_once("_LINKAPPROVEDMSG", "Congratulations! The web link you submitted to our links database has been approved right now.");
-
 define_once("_OWNERISADMIN","Administration");
 
