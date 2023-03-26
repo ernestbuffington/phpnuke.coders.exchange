@@ -424,25 +424,28 @@ $config .= "?>";
 	$date = date("F j, Y");
 
 	// create the 1st user
-	$sql="REPLACE INTO `nuke_users` (`user_id`, `name`, `username`, `user_email`, `femail`, `user_website`, `user_avatar`, `nuke_user_regdate`, `user_icq`, `user_occ`, `user_from`, `user_interests`, `nuke_user_sig`, `user_viewemail`, `user_theme`, `user_aim`, `user_yim`, `user_msnm`, `user_password`, `storynum`, `umode`, `uorder`, `thold`, `noscore`, `bio`, `ublockon`, `ublock`, `theme`, `commentmax`, `counter`, `newsletter`, `nuke_user_posts`, `user_attachsig`, `nuke_user_rank`, `user_level`, `broadcast`, `popmeson`, `user_active`, `user_session_time`, `user_session_page`, `user_lastvisit`, `nuke_user_timezone`, `nuke_user_style`, `user_lang`, `nuke_user_dateformat`, `user_new_privmsg`, `user_unread_privmsg`, `user_last_privmsg`, `nuke_user_emailtime`, `user_allowhtml`, `user_allowbbcode`, `user_allowsmile`, `user_allowavatar`, `user_allow_pm`, `user_allow_viewonline`, `user_notify`, `nuke_user_notify_pm`, `user_popup_pm`, `nuke_user_avatar_type`, `nuke_user_sig_bbcode_uid`, `user_actkey`, `user_newpasswd`, `points`, `last_ip`, `karma`) VALUES
+	$sql="REPLACE INTO `nuke_users` (`user_id`, `name`, `username`, `user_email`, `femail`, `user_website`, `user_avatar`, `nuke_user_regdate`, `user_icq`, `user_occ`, `user_from`, `user_interests`, `nuke_user_sig`, `user_viewemail`, `user_theme`, `user_aim`, `user_yim`, `user_msnm`, `user_password`, `storynum`, `umode`, `uorder`, `thold`, `noscore`, `bio`, `ublockon`, `ublock`, `theme`, `commentmax`, `counter`, `newsletter`, `nuke_user_posts`, `user_attachsig`, `nuke_user_rank`, `user_level`, `broadcast`, `popmeson`, `user_active`, `user_session_time`, `user_session_page`, `user_lastvisit`, `nuke_user_timezone`, `nuke_user_style`, `nuke_user_lang`, `nuke_user_dateformat`, `user_new_privmsg`, `user_unread_privmsg`, `user_last_privmsg`, `nuke_user_emailtime`, `user_allowhtml`, `user_allowbbcode`, `user_allowsmile`, `user_allowavatar`, `user_allow_pm`, `user_allow_viewonline`, `user_notify`, `nuke_user_notify_pm`, `user_popup_pm`, `nuke_user_avatar_type`, `nuke_user_sig_bbcode_uid`, `user_actkey`, `user_newpasswd`, `points`, `last_ip`, `karma`) VALUES
 (2, '', '$setup_admin', '$adminEmail', '', '', 'blank.gif', '$date', '', '', '', '', '', 0, 0, '', '', '', '$cryptpass', 10, '', 0, 0, 0, '', 0, '', '', 4096, 0, 0, 0, 0, 0, 2, 0, 0, 1, 0, 0, 0, 10, NULL, 'english', 'D M d, Y g:i a', 0, 0, 0, NULL, 1, 1, 1, 1, 1, 1, 1, 1, 0, 3, NULL, NULL, NULL, 0, '0', 0) ";
 	$result=$db->sql_query($sql);
     
 	$clean_str = strtolower($setup_admin);
 
+    // update admin
 	$sql="UPDATE `nuke_users` SET 
+	`name`='$setup_admin',
 	`username`='$setup_admin',
 	`username_clean`='$clean_str',
-	`user_lang`='english',
+	`nuke_user_lang`='english',
 	`nuke_user_regdate`='".$date."',
 	`user_level`='2',
 	`nuke_user_dateformat`='D M d, Y g:i a',
 	`nuke_group_id`='1' WHERE user_id='2' ";
     $result=$db->sql_query($sql);
 
+    // update anonymous
 	$sql="UPDATE `nuke_users` SET 
 	`username`='Anonymous',
-	`user_lang`='english',
+	`nuke_user_lang`='english',
 	`nuke_user_regdate`='".$date."',
 	`user_level`='1',
 	`nuke_user_dateformat`='D M d, Y g:i a',

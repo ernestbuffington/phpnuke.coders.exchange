@@ -331,7 +331,7 @@ function activate($username, $check_num) {
 
 		if ($check_num == $row['check_num']) {
 
-			$db->sql_query("INSERT INTO ".$user_prefix."_users (user_id, username, user_email, user_password, user_avatar, nuke_user_avatar_type, nuke_user_regdate, user_lang) VALUES (NULL, '".$row['username']."', '".$row['user_email']."', '$user_password', 'gallery/blank.gif', '3', '".$row['nuke_user_regdate']."', '$language')");
+			$db->sql_query("INSERT INTO ".$user_prefix."_users (user_id, username, user_email, user_password, user_avatar, nuke_user_avatar_type, nuke_user_regdate, nuke_user_lang) VALUES (NULL, '".$row['username']."', '".$row['user_email']."', '$user_password', 'gallery/blank.gif', '3', '".$row['nuke_user_regdate']."', '$language')");
 
 			$result2 = $db->sql_query("SELECT user_id FROM ".$user_prefix."_users WHERE username='".$row['username']."'");
 

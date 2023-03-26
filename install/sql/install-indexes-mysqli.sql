@@ -372,6 +372,7 @@ ALTER TABLE `#prefix#_users`
   ADD PRIMARY KEY (`user_id`),
   ADD UNIQUE KEY `username_clean` (`username_clean`),
   ADD KEY `user_birthday` (`user_birthday`),
+  ADD KEY `user_birthday2` (`user_birthday2`),
   ADD KEY `user_email_hash` (`user_email_hash`),
   ADD KEY `user_type` (`user_type`),
   ADD KEY `uid` (`user_id`),

@@ -180,7 +180,7 @@ if (
         {
                 if ( preg_match('/^[a-z_]+$/i', (string) $_POST['language']) )
                 {
-                        $user_lang = htmlspecialchars((string) $_POST['language']);
+                        $nuke_user_lang = htmlspecialchars((string) $_POST['language']);
                 }
                 else
                 {
@@ -190,7 +190,7 @@ if (
         }
         else
         {
-                $user_lang = $board_config['default_lang'];
+                $nuke_user_lang = $board_config['default_lang'];
         }
 
         $nuke_user_timezone = ( isset($_POST['timezone']) ) ? doubleval($_POST['timezone']) : $board_config['board_timezone'];
@@ -237,7 +237,7 @@ if (
                 $interests = stripslashes((string) $interests);
                 $signature = htmlspecialchars(stripslashes($signature));
 
-                $user_lang = stripslashes((string) $user_lang);
+                $nuke_user_lang = stripslashes((string) $nuke_user_lang);
                 $nuke_user_dateformat = stripslashes((string) $nuke_user_dateformat);
 
                 if ( !isset($_POST['cancelavatar']))
@@ -527,7 +527,7 @@ if ( isset($_POST['submit']) )
                         }
 
                         $sql = "UPDATE " . USERS_TABLE . "
-				SET " . $username_sql . $passwd_sql . "user_email = '" . str_replace("\'", "''", (string) $email) ."', user_icq = '" . str_replace("\'", "''", (string) $icq) . "', user_website = '" . str_replace("\'", "''", (string) $website) . "', user_occ = '" . str_replace("\'", "''", (string) $occupation) . "', user_from = '" . str_replace("\'", "''", (string) $location) . "', user_interests = '" . str_replace("\'", "''", (string) $interests) . "', nuke_user_sig = '" . str_replace("\'", "''", (string) $signature) . "', nuke_user_sig_bbcode_uid = '$signature_bbcode_uid', user_viewemail = $viewemail, user_aim = '" . str_replace("\'", "''", str_replace(' ', '+', (string) $aim)) . "', user_yim = '" . str_replace("\'", "''", (string) $yim) . "', user_msnm = '" . str_replace("\'", "''", (string) $msn) . "', user_attachsig = $attachsig, user_allowsmile = $allowsmilies, user_allowhtml = $allowhtml, user_allowbbcode = $allowbbcode, user_allow_viewonline = $allowviewonline, user_notify = $notifyreply, nuke_user_notify_pm = $notifypm, user_popup_pm = $popup_pm, nuke_user_timezone = $nuke_user_timezone, nuke_user_dateformat = '" . str_replace("\'", "''", (string) $nuke_user_dateformat) . "', user_lang = '" . str_replace("\'", "''", (string) $user_lang) . "', nuke_user_style = $nuke_user_style, user_active = $user_active, user_actkey = '" . str_replace("\'", "''", $user_actkey) . "'" . $avatar_sql . "
+				SET " . $username_sql . $passwd_sql . "user_email = '" . str_replace("\'", "''", (string) $email) ."', user_icq = '" . str_replace("\'", "''", (string) $icq) . "', user_website = '" . str_replace("\'", "''", (string) $website) . "', user_occ = '" . str_replace("\'", "''", (string) $occupation) . "', user_from = '" . str_replace("\'", "''", (string) $location) . "', user_interests = '" . str_replace("\'", "''", (string) $interests) . "', nuke_user_sig = '" . str_replace("\'", "''", (string) $signature) . "', nuke_user_sig_bbcode_uid = '$signature_bbcode_uid', user_viewemail = $viewemail, user_aim = '" . str_replace("\'", "''", str_replace(' ', '+', (string) $aim)) . "', user_yim = '" . str_replace("\'", "''", (string) $yim) . "', user_msnm = '" . str_replace("\'", "''", (string) $msn) . "', user_attachsig = $attachsig, user_allowsmile = $allowsmilies, user_allowhtml = $allowhtml, user_allowbbcode = $allowbbcode, user_allow_viewonline = $allowviewonline, user_notify = $notifyreply, nuke_user_notify_pm = $notifypm, user_popup_pm = $popup_pm, nuke_user_timezone = $nuke_user_timezone, nuke_user_dateformat = '" . str_replace("\'", "''", (string) $nuke_user_dateformat) . "', nuke_user_lang = '" . str_replace("\'", "''", (string) $nuke_user_lang) . "', nuke_user_style = $nuke_user_style, user_active = $user_active, user_actkey = '" . str_replace("\'", "''", $user_actkey) . "'" . $avatar_sql . "
 				WHERE user_id = $user_id";
                         if ( !($result = $db->sql_query($sql)) )
                         {
@@ -554,7 +554,7 @@ if ( isset($_POST['submit']) )
  					$emailer->from($board_config['board_email']);
  					$emailer->replyto($board_config['board_email']);
 
- 					$emailer->use_template('user_activate', stripslashes((string) $user_lang));
+ 					$emailer->use_template('user_activate', stripslashes((string) $nuke_user_lang));
  					$emailer->email_address($email);
  					$emailer->set_subject($lang['Reactivate']);
 
@@ -570,7 +570,7 @@ if ( isset($_POST['submit']) )
  				}
  				else if ( $board_config['require_activation'] == USER_ACTIVATION_ADMIN )
  				{
- 					$sql = 'SELECT user_email, user_lang 
+ 					$sql = 'SELECT user_email, nuke_user_lang 
  						FROM ' . USERS_TABLE . '
  						WHERE user_level = ' . ADMIN;
 
@@ -585,7 +585,7 @@ if ( isset($_POST['submit']) )
  						$emailer->replyto($board_config['board_email']);
 
  						$emailer->email_address(trim((string) $row['user_email']));
- 						$emailer->use_template("admin_activate", $row['user_lang']);
+ 						$emailer->use_template("admin_activate", $row['nuke_user_lang']);
  						$emailer->set_subject($lang['Reactivate']);
 
  						$emailer->assign_vars(array(
@@ -632,8 +632,8 @@ if ( isset($_POST['submit']) )
                         // Get current date
                         //
                         $reg_date = date("M d, Y");
-			$sql = "INSERT INTO " . USERS_TABLE . "	(user_id, username, nuke_user_regdate, user_password, user_email, user_icq, user_website, user_occ, user_from, user_interests, nuke_user_sig, nuke_user_sig_bbcode_uid, user_avatar, nuke_user_avatar_type, user_viewemail, user_aim, user_yim, user_msnm, user_attachsig, user_allowsmile, user_allowhtml, user_allowbbcode, user_allow_viewonline, user_notify, nuke_user_notify_pm, user_popup_pm, nuke_user_timezone, nuke_user_dateformat, user_lang, nuke_user_style, user_level, user_allow_pm, user_active, user_actkey)
-				VALUES ($user_id, '" . str_replace("\'", "''", (string) $username) . "', " . time() . ", '" . str_replace("\'", "''", (string) $new_password) . "', '" . str_replace("\'", "''", (string) $email) . "', '" . str_replace("\'", "''", (string) $icq) . "', '" . str_replace("\'", "''", (string) $website) . "', '" . str_replace("\'", "''", (string) $occupation) . "', '" . str_replace("\'", "''", (string) $location) . "', '" . str_replace("\'", "''", (string) $interests) . "', '" . str_replace("\'", "''", (string) $signature) . "', '$signature_bbcode_uid', $avatar_sql, $viewemail, '" . str_replace("\'", "''", str_replace(' ', '+', (string) $aim)) . "', '" . str_replace("\'", "''", (string) $yim) . "', '" . str_replace("\'", "''", (string) $msn) . "', $attachsig, $allowsmilies, $allowhtml, $allowbbcode, $allowviewonline, $notifyreply, $notifypm, $popup_pm, $nuke_user_timezone, $reg_date, '" . str_replace("\'", "''", (string) $user_lang) . "', $nuke_user_style, 0, 1, ";
+			$sql = "INSERT INTO " . USERS_TABLE . "	(user_id, username, nuke_user_regdate, user_password, user_email, user_icq, user_website, user_occ, user_from, user_interests, nuke_user_sig, nuke_user_sig_bbcode_uid, user_avatar, nuke_user_avatar_type, user_viewemail, user_aim, user_yim, user_msnm, user_attachsig, user_allowsmile, user_allowhtml, user_allowbbcode, user_allow_viewonline, user_notify, nuke_user_notify_pm, user_popup_pm, nuke_user_timezone, nuke_user_dateformat, nuke_user_lang, nuke_user_style, user_level, user_allow_pm, user_active, user_actkey)
+				VALUES ($user_id, '" . str_replace("\'", "''", (string) $username) . "', " . time() . ", '" . str_replace("\'", "''", (string) $new_password) . "', '" . str_replace("\'", "''", (string) $email) . "', '" . str_replace("\'", "''", (string) $icq) . "', '" . str_replace("\'", "''", (string) $website) . "', '" . str_replace("\'", "''", (string) $occupation) . "', '" . str_replace("\'", "''", (string) $location) . "', '" . str_replace("\'", "''", (string) $interests) . "', '" . str_replace("\'", "''", (string) $signature) . "', '$signature_bbcode_uid', $avatar_sql, $viewemail, '" . str_replace("\'", "''", str_replace(' ', '+', (string) $aim)) . "', '" . str_replace("\'", "''", (string) $yim) . "', '" . str_replace("\'", "''", (string) $msn) . "', $attachsig, $allowsmilies, $allowhtml, $allowbbcode, $allowviewonline, $notifyreply, $notifypm, $popup_pm, $nuke_user_timezone, $reg_date, '" . str_replace("\'", "''", (string) $nuke_user_lang) . "', $nuke_user_style, 0, 1, ";
                         if ( $board_config['require_activation'] == USER_ACTIVATION_SELF || $board_config['require_activation'] == USER_ACTIVATION_ADMIN || $coppa )
                         {
                                 $user_actkey = gen_rand_string(true);
@@ -695,7 +695,7 @@ if ( isset($_POST['submit']) )
                         $emailer->from($board_config['board_email']);
                         $emailer->replyto($board_config['board_email']);
 
-                        $emailer->use_template($email_template, stripslashes((string) $user_lang));
+                        $emailer->use_template($email_template, stripslashes((string) $nuke_user_lang));
                         $emailer->email_address($email);
                         $emailer->set_subject(sprintf($lang['Welcome_subject'], $board_config['sitename']));
 
@@ -739,7 +739,7 @@ if ( isset($_POST['submit']) )
 
                         if ( $board_config['require_activation'] == USER_ACTIVATION_ADMIN )
                         {
-                                $sql = "SELECT user_email, user_lang
+                                $sql = "SELECT user_email, nuke_user_lang
                                         FROM " . USERS_TABLE . "
                                         WHERE user_level = " . ADMIN;
 
@@ -754,7 +754,7 @@ if ( isset($_POST['submit']) )
 					$emailer->replyto($board_config['board_email']);
 
 					$emailer->email_address(trim((string) $row['user_email']));
-					$emailer->use_template("admin_activate", $row['user_lang']);
+					$emailer->use_template("admin_activate", $row['nuke_user_lang']);
 					$emailer->set_subject($lang['New_account_subject']);
 
 					$emailer->assign_vars(array(
@@ -800,7 +800,7 @@ if ( $error )
         $signature = stripslashes((string) $signature);
         $signature = ($signature_bbcode_uid != '') ? preg_replace("/:(([a-z0-9]+:)?)$signature_bbcode_uid(=|\])/si", '\\3', $signature) : $signature;
 
-        $user_lang = stripslashes((string) $user_lang);
+        $nuke_user_lang = stripslashes((string) $nuke_user_lang);
         $nuke_user_dateformat = stripslashes((string) $nuke_user_dateformat);
 
 }
@@ -840,7 +840,7 @@ else if ( $mode == 'editprofile' && !isset($_POST['avatargallery']) && !isset($_
         $nuke_user_avatar_type = ( $userdata['user_allowavatar'] ) ? $userdata['nuke_user_avatar_type'] : USER_AVATAR_NONE;
 
         $nuke_user_style = $userdata['nuke_user_style'];
-        $user_lang = $userdata['user_lang'];
+        $nuke_user_lang = $userdata['nuke_user_lang'];
         $nuke_user_timezone = $userdata['nuke_user_timezone'];
         $nuke_user_dateformat = $userdata['nuke_user_dateformat'];
 }
@@ -873,7 +873,7 @@ if( isset($_POST['avatargallery']) && !$error )
 
         $allowviewonline = !$allowviewonline;
 
-        display_avatar_gallery($mode, $avatar_category, $user_id, $email, $current_email, $coppa, $username, $email, $new_password, $cur_password, $password_confirm, $icq, $aim, $msn, $yim, $website, $location, $occupation, $interests, $signature, $viewemail, $notifypm, $popup_pm, $notifyreply, $attachsig, $allowhtml, $allowbbcode, $allowsmilies, $allowviewonline, $nuke_user_style, $user_lang, $nuke_user_timezone, $nuke_user_dateformat, $userdata['session_id']);
+        display_avatar_gallery($mode, $avatar_category, $user_id, $email, $current_email, $coppa, $username, $email, $new_password, $cur_password, $password_confirm, $icq, $aim, $msn, $yim, $website, $location, $occupation, $interests, $signature, $viewemail, $notifypm, $popup_pm, $notifyreply, $attachsig, $allowhtml, $allowbbcode, $allowsmilies, $allowviewonline, $nuke_user_style, $nuke_user_lang, $nuke_user_timezone, $nuke_user_dateformat, $userdata['session_id']);
 }
 else
 {
@@ -1069,7 +1069,7 @@ else
                 'ALLOW_AVATAR' => $board_config['allow_avatar_upload'],
                 'AVATAR' => $avatar_img,
                 'AVATAR_SIZE' => $board_config['avatar_filesize'],
-                'LANGUAGE_SELECT' => language_select($user_lang, 'language'),
+                'LANGUAGE_SELECT' => language_select($nuke_user_lang, 'language'),
                 'STYLE_SELECT' => style_select($nuke_user_style, 'style'),
                 'TIMEZONE_SELECT' => tz_select($nuke_user_timezone, 'timezone'),
                 'DATE_FORMAT' => $nuke_user_dateformat,

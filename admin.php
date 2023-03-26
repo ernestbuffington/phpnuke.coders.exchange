@@ -69,7 +69,7 @@ function create_first($name, $url, $email, $pwd, $user_new) {
 
 			if ($url == "http://") { $url = ""; }
 
-			$db->sql_query("INSERT INTO ".$user_prefix."_users (user_id, username, user_email, user_website, user_avatar, nuke_user_regdate, user_password, theme, commentmax, user_level, user_lang, nuke_user_dateformat) VALUES (NULL,'".addslashes($name)."','".addslashes($email)."','".addslashes($url)."','$user_avatar','$nuke_user_regdate','$pwd','$Default_Theme','$commentlimit', '2', 'english','D M d, Y g:i a')");
+			$db->sql_query("INSERT INTO ".$user_prefix."_users (user_id, username, user_email, user_website, user_avatar, nuke_user_regdate, user_password, theme, commentmax, user_level, nuke_user_lang, nuke_user_dateformat) VALUES (NULL,'".addslashes($name)."','".addslashes($email)."','".addslashes($url)."','$user_avatar','$nuke_user_regdate','$pwd','$Default_Theme','$commentlimit', '2', 'english','D M d, Y g:i a')");
 		}
 		login();
 	}

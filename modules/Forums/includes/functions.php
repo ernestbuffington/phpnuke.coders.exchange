@@ -331,9 +331,9 @@ function init_userprefs($userdata)
 
 	if ( $userdata['user_id'] != ANONYMOUS )
 	{
-		if ( !empty($userdata['user_lang']))
+		if ( !empty($userdata['nuke_user_lang']))
 		{
-			$default_lang = phpbb_ltrim(basename((string) phpbb_rtrim($userdata['user_lang'])), "'");
+			$default_lang = phpbb_ltrim(basename((string) phpbb_rtrim($userdata['nuke_user_lang'])), "'");
 		}
 
 		if ( !empty($userdata['nuke_user_dateformat']) )
@@ -374,18 +374,18 @@ function init_userprefs($userdata)
 
 	// If we've had to change the value in any way then let's write it back to the database
 	// before we go any further since it means there is something wrong with it
-	if ( $userdata['user_id'] != ANONYMOUS && $userdata['user_lang'] !== $default_lang )
+	if ( $userdata['user_id'] != ANONYMOUS && $userdata['nuke_user_lang'] !== $default_lang )
 	{
 		$sql = 'UPDATE ' . USERS_TABLE . "
-			SET user_lang = '" . $default_lang . "'
-			WHERE user_lang = '" . $userdata['user_lang'] . "'";
+			SET nuke_user_lang = '" . $default_lang . "'
+			WHERE nuke_user_lang = '" . $userdata['nuke_user_lang'] . "'";
 
 		if ( !($result = $db->sql_query($sql)) )
 		{
 			message_die(CRITICAL_ERROR, 'Could not update user language info');
 		}
 
-		$userdata['user_lang'] = $default_lang;
+		$userdata['nuke_user_lang'] = $default_lang;
 	}
 	elseif ( $userdata['user_id'] === ANONYMOUS && $board_config['default_lang'] !== $default_lang )
 	{

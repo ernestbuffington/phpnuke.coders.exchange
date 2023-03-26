@@ -582,7 +582,7 @@ function user_notification($mode, &$post_data, &$topic_title, &$forum_id, &$topi
                                 }
                         }
 
-                        $sql = "SELECT u.user_id, u.user_email, u.user_lang
+                        $sql = "SELECT u.user_id, u.user_email, u.nuke_user_lang
                                 FROM " . TOPICS_WATCH_TABLE . " tw, " . USERS_TABLE . " u
 				WHERE tw.topic_id = $topic_id 
                                         AND tw.user_id NOT IN (" . $userdata['user_id'] . ", " . ANONYMOUS . $user_id_sql . ")
@@ -605,7 +605,7 @@ function user_notification($mode, &$post_data, &$topic_title, &$forum_id, &$topi
                                 {
                                         if ($row['user_email'] != '')
                                         {
-                                                $bcc_list_ary[$row['user_lang']][] = $row['user_email'];
+                                                $bcc_list_ary[$row['nuke_user_lang']][] = $row['user_email'];
                                         }
                                         $update_watched_sql .= ($update_watched_sql != '') ? ', ' . $row['user_id'] : $row['user_id'];
                                 }
@@ -646,8 +646,8 @@ function user_notification($mode, &$post_data, &$topic_title, &$forum_id, &$topi
                                         $topic_title = (count($orig_word)) ? preg_replace($orig_word, $replacement_word, (string) unprepare_message($topic_title)) : unprepare_message($topic_title);
 
                                         reset($bcc_list_ary);
-                                        foreach ($bcc_list_ary as $user_lang => $bcc_list) {
-                                            $emailer->use_template('topic_notify', $user_lang);
+                                        foreach ($bcc_list_ary as $nuke_user_lang => $bcc_list) {
+                                            $emailer->use_template('topic_notify', $nuke_user_lang);
                                             for ($i = 0; $i < (is_countable($bcc_list) ? count($bcc_list) : 0); $i++)
                                             {
                                                     $emailer->bcc($bcc_list[$i]);

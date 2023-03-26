@@ -32,7 +32,7 @@ if ( !defined('IN_PHPBB') )
         exit;
 }
 
-$sql = "SELECT user_active, user_id, username, user_email, user_newpasswd, user_lang, user_actkey
+$sql = "SELECT user_active, user_id, username, user_email, user_newpasswd, nuke_user_lang, user_actkey
         FROM " . USERS_TABLE . "
         WHERE user_id = " . intval($_GET[POST_USERS_URL]);
 if ( !($result = $db->sql_query($sql)) )
@@ -75,7 +75,7 @@ if ( $row = $db->sql_fetchrow($result) )
                         $emailer->from($board_config['board_email']);
                         $emailer->replyto($board_config['board_email']);
 
-                        $emailer->use_template('admin_welcome_activated', $row['user_lang']);
+                        $emailer->use_template('admin_welcome_activated', $row['nuke_user_lang']);
                         $emailer->email_address($row['user_email']);
                         $emailer->set_subject($lang['Account_activated_subject']);
 

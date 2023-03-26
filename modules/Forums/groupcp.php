@@ -282,7 +282,7 @@ else if ( isset($_POST['joingroup']) && $nuke_group_id )
                 message_die(GENERAL_ERROR, "Error inserting user group subscription", "", __LINE__, __FILE__, $sql);
         }
 
-        $sql = "SELECT u.user_email, u.username, u.user_lang, g.group_name
+        $sql = "SELECT u.user_email, u.username, u.nuke_user_lang, g.group_name
                 FROM ".USERS_TABLE . " u, " . GROUPS_TABLE . " g
                 WHERE u.user_id = g.group_moderator
                         AND g.nuke_group_id = '$nuke_group_id'";
@@ -299,7 +299,7 @@ else if ( isset($_POST['joingroup']) && $nuke_group_id )
         $emailer->from($board_config['board_email']);
         $emailer->replyto($board_config['board_email']);
 
-        $emailer->use_template('group_request', $moderator['user_lang']);
+        $emailer->use_template('group_request', $moderator['nuke_user_lang']);
         $emailer->email_address($moderator['user_email']);
         $emailer->set_subject($lang['Group_request']);
 
@@ -499,7 +499,7 @@ else if ( $nuke_group_id )
                         {
 				$username = ( isset($_POST['username']) ) ? phpbb_clean_username($_POST['username']) : '';
 
-                                $sql = "SELECT user_id, user_email, user_lang, user_level
+                                $sql = "SELECT user_id, user_email, nuke_user_lang, user_level
                                         FROM " . USERS_TABLE . "
                                         WHERE username = '" . str_replace("\'", "''", (string) $username) . "'";
                                 if ( !($result = $db->sql_query($sql)) )
@@ -581,7 +581,7 @@ else if ( $nuke_group_id )
                                         $emailer->from($board_config['board_email']);
                                         $emailer->replyto($board_config['board_email']);
 
-                                        $emailer->use_template('group_added', $row['user_lang']);
+                                        $emailer->use_template('group_added', $row['nuke_user_lang']);
                                         $emailer->email_address($row['user_email']);
                                         $emailer->set_subject($lang['Group_added']);
 

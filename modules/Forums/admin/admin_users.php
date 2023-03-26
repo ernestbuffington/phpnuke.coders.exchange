@@ -274,7 +274,7 @@ if ( $mode == 'edit' || $mode == 'save' && ( isset($_POST['username']) || isset(
                 $allowsmilies = ( isset( $_POST['allowsmilies']) ) ? intval( $_POST['allowsmilies'] ) : $board_config['allow_smilies'];
 
 		$nuke_user_style = ( isset( $_POST['style'] ) ) ? intval( $_POST['style'] ) : $board_config['default_style'];
-                $user_lang = ( $_POST['language'] ) ? $_POST['language'] : $board_config['default_lang'];
+                $nuke_user_lang = ( $_POST['language'] ) ? $_POST['language'] : $board_config['default_lang'];
                 $nuke_user_timezone = ( isset( $_POST['timezone']) ) ? doubleval( $_POST['timezone'] ) : $board_config['board_timezone'];
                 $nuke_user_dateformat = ( $_POST['dateformat'] ) ? trim( (string) $_POST['dateformat'] ) : $board_config['default_dateformat'];
 
@@ -314,7 +314,7 @@ if ( $mode == 'edit' || $mode == 'save' && ( isset($_POST['username']) || isset(
                         $interests = htmlspecialchars(stripslashes($interests));
                         $signature = htmlspecialchars(stripslashes($signature));
 
-                        $user_lang = stripslashes((string) $user_lang);
+                        $nuke_user_lang = stripslashes((string) $nuke_user_lang);
                         $nuke_user_dateformat = htmlspecialchars(stripslashes((string) $nuke_user_dateformat));
 
                         if ( !isset($_POST['cancelavatar']))
@@ -680,7 +680,7 @@ if ( $mode == 'edit' || $mode == 'save' && ( isset($_POST['username']) || isset(
                 if( !$error )
                 {
                         $sql = "UPDATE " . USERS_TABLE . "
-                                SET " . $username_sql . $passwd_sql . "user_email = '" . str_replace("\'", "''", (string) $email) . "', user_icq = '" . str_replace("\'", "''", (string) $icq) . "', user_website = '" . str_replace("\'", "''", (string) $website) . "', user_occ = '" . str_replace("\'", "''", (string) $occupation) . "', user_from = '" . str_replace("\'", "''", (string) $location) . "', user_interests = '" . str_replace("\'", "''", (string) $interests) . "', nuke_user_sig = '" . str_replace("\'", "''", (string) $signature) . "', user_viewemail = $viewemail, user_aim = '" . str_replace("\'", "''", (string) $aim) . "', user_yim = '" . str_replace("\'", "''", (string) $yim) . "', user_msnm = '" . str_replace("\'", "''", (string) $msn) . "', user_attachsig = $attachsig, nuke_user_sig_bbcode_uid = '$signature_bbcode_uid', user_allowsmile = $allowsmilies, user_allowhtml = $allowhtml, user_allowavatar = $user_allowavatar, user_allowbbcode = $allowbbcode, user_allow_viewonline = $allowviewonline, user_notify = $notifyreply, user_allow_pm = $user_allowpm, nuke_user_notify_pm = $notifypm, user_popup_pm = $popuppm, user_lang = '" . str_replace("\'", "''", (string) $user_lang) . "', nuke_user_style = $nuke_user_style, nuke_user_timezone = $nuke_user_timezone, nuke_user_dateformat = '" . str_replace("\'", "''", (string) $nuke_user_dateformat) . "', user_active = $user_status, nuke_user_rank = $nuke_user_rank" . $avatar_sql . "
+                                SET " . $username_sql . $passwd_sql . "user_email = '" . str_replace("\'", "''", (string) $email) . "', user_icq = '" . str_replace("\'", "''", (string) $icq) . "', user_website = '" . str_replace("\'", "''", (string) $website) . "', user_occ = '" . str_replace("\'", "''", (string) $occupation) . "', user_from = '" . str_replace("\'", "''", (string) $location) . "', user_interests = '" . str_replace("\'", "''", (string) $interests) . "', nuke_user_sig = '" . str_replace("\'", "''", (string) $signature) . "', user_viewemail = $viewemail, user_aim = '" . str_replace("\'", "''", (string) $aim) . "', user_yim = '" . str_replace("\'", "''", (string) $yim) . "', user_msnm = '" . str_replace("\'", "''", (string) $msn) . "', user_attachsig = $attachsig, nuke_user_sig_bbcode_uid = '$signature_bbcode_uid', user_allowsmile = $allowsmilies, user_allowhtml = $allowhtml, user_allowavatar = $user_allowavatar, user_allowbbcode = $allowbbcode, user_allow_viewonline = $allowviewonline, user_notify = $notifyreply, user_allow_pm = $user_allowpm, nuke_user_notify_pm = $notifypm, user_popup_pm = $popuppm, nuke_user_lang = '" . str_replace("\'", "''", (string) $nuke_user_lang) . "', nuke_user_style = $nuke_user_style, nuke_user_timezone = $nuke_user_timezone, nuke_user_dateformat = '" . str_replace("\'", "''", (string) $nuke_user_dateformat) . "', user_active = $user_status, nuke_user_rank = $nuke_user_rank" . $avatar_sql . "
 				WHERE user_id = $user_id";
 
                         if( $result = $db->sql_query($sql) )
@@ -754,7 +754,7 @@ if ( $mode == 'edit' || $mode == 'save' && ( isset($_POST['username']) || isset(
                         $interests = htmlspecialchars(stripslashes((string) $interests));
                         $signature = htmlspecialchars(stripslashes((string) $signature));
 
-                        $user_lang = stripslashes((string) $user_lang);
+                        $nuke_user_lang = stripslashes((string) $nuke_user_lang);
                         $nuke_user_dateformat = htmlspecialchars(stripslashes((string) $nuke_user_dateformat));
                 }
         }
@@ -813,7 +813,7 @@ if ( $mode == 'edit' || $mode == 'save' && ( isset($_POST['username']) || isset(
                 $user_avatar = $this_userdata['user_avatar'];
                 $nuke_user_avatar_type = $this_userdata['nuke_user_avatar_type'];
                 $nuke_user_style = $this_userdata['nuke_user_style'];
-                $user_lang = $this_userdata['user_lang'];
+                $nuke_user_lang = $this_userdata['nuke_user_lang'];
                 $nuke_user_timezone = $this_userdata['nuke_user_timezone'];
                 $nuke_user_dateformat = htmlspecialchars((string) $this_userdata['nuke_user_dateformat']);
 
@@ -933,7 +933,7 @@ if ( $mode == 'edit' || $mode == 'save' && ( isset($_POST['username']) || isset(
                         $s_hidden_fields .= '<input type="hidden" name="allowsmilies" value="' . $allowsmilies . '" />';
                         $s_hidden_fields .= '<input type="hidden" name="hideonline" value="' . !$allowviewonline . '" />';
                         $s_hidden_fields .= '<input type="hidden" name="style" value="' . $nuke_user_style . '" />';
-                        $s_hidden_fields .= '<input type="hidden" name="language" value="' . $user_lang . '" />';
+                        $s_hidden_fields .= '<input type="hidden" name="language" value="' . $nuke_user_lang . '" />';
                         $s_hidden_fields .= '<input type="hidden" name="timezone" value="' . $nuke_user_timezone . '" />';
                         $s_hidden_fields .= '<input type="hidden" name="dateformat" value="' . str_replace("\"", "&quot;", (string) $nuke_user_dateformat) . '" />';
 
@@ -1049,7 +1049,7 @@ if ( $mode == 'edit' || $mode == 'save' && ( isset($_POST['username']) || isset(
                         'ALWAYS_ALLOW_SMILIES_YES' => ($allowsmilies) ? 'checked="checked"' : '',
                         'ALWAYS_ALLOW_SMILIES_NO' => (!$allowsmilies) ? 'checked="checked"' : '',
                         'AVATAR' => $avatar,
-                        'LANGUAGE_SELECT' => language_select($user_lang, 'language', '../language'),
+                        'LANGUAGE_SELECT' => language_select($nuke_user_lang, 'language', '../language'),
                         'TIMEZONE_SELECT' => tz_select($nuke_user_timezone),
                         'STYLE_SELECT' => style_select($nuke_user_style, 'style'),
                         'DATE_FORMAT' => $nuke_user_dateformat,

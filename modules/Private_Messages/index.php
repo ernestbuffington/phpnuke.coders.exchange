@@ -1214,7 +1214,7 @@ else if ( $submit || $refresh || $mode != '' )
                 {
 			            $to_username = phpbb_clean_username($_POST['username']);
 
-                        $sql = "SELECT user_id, user_notify_pm, user_email, user_lang, user_active
+                        $sql = "SELECT user_id, user_notify_pm, user_email, nuke_user_lang, user_active
                                 FROM " . USERS_TABLE . "
                                 WHERE username = '" . str_replace("\'", "''", (string) $to_username) . "'
                                         AND user_id <> " . ANONYMOUS;
@@ -1387,7 +1387,7 @@ else if ( $submit || $refresh || $mode != '' )
                                 $emailer->from($board_config['board_email']);
                                 $emailer->replyto($board_config['board_email']);
 
-                                $emailer->use_template('privmsg_notify', $to_userdata['user_lang']);
+                                $emailer->use_template('privmsg_notify', $to_userdata['nuke_user_lang']);
                                 $emailer->email_address($to_userdata['user_email']);
                                 $emailer->set_subject($lang['Notification_subject']);
 

@@ -32,7 +32,7 @@ if ( isset($_POST['submit']) )
 	$username = ( !empty($_POST['username']) ) ? phpbb_clean_username($_POST['username']) : '';
 	$email = ( !empty($_POST['email']) ) ? trim(strip_tags(htmlspecialchars($_POST['email']))) : '';
 
-        $sql = "SELECT user_id, username, user_email, user_active, user_lang
+        $sql = "SELECT user_id, username, user_email, user_active, nuke_user_lang
                 FROM " . USERS_TABLE . "
                 WHERE user_email = '" . str_replace("\'", "''", $email) . "'
 			AND username = '" . str_replace("\'", "''", $username) . "'";
@@ -68,7 +68,7 @@ if ( isset($_POST['submit']) )
 			$emailer->from($board_config['board_email']);
 			$emailer->replyto($board_config['board_email']);
 
-			$emailer->use_template('user_activate_passwd', $row['user_lang']);
+			$emailer->use_template('user_activate_passwd', $row['nuke_user_lang']);
 			$emailer->email_address($row['user_email']);
 			$emailer->set_subject($lang['New_password_activation']);
 

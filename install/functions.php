@@ -437,16 +437,16 @@ function validate_admin(){
 																						   `user_email`, 
 																						 `user_website`, 
 																						  `user_avatar`, 
-																						 `nuke_user_regdate`, 
+																				    `nuke_user_regdate`, 
 																						`user_password`, 
 																						        `theme`, 
 																						   `commentmax`, 
 																						   `user_level`, 
-																						    `user_lang`, 
-																					  `nuke_user_dateformat`, 
+																				       `nuke_user_lang`, 
+																				 `nuke_user_dateformat`, 
 																					    `user_color_gc`, 
 																						`user_color_gi`, 
-																						   `nuke_user_posts`) 
+																				      `nuke_user_posts`) 
 																						   
 		VALUES (2,
 		'$user_nick',
