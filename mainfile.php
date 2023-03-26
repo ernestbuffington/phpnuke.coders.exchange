@@ -197,13 +197,15 @@ if(isset($user) && $user == $_COOKIE['user'])
 }
 
 // Die message for not allowed HTML tags
-$htmltags = "<center><img src=\"images/logo.gif\"><br><br><b>";
-$htmltags .= "The html tags you attempted to use are not allowed</b><br><br>";
-$htmltags .= "[ <a href=\"javascript:history.go(-1)\"><b>Go Back</b></a> ]</center>";
+$htmltags = "<div align=\"center\"><img src=\"images/logo.gif\"><br><br><b>";
+$htmltags .= "The html tags you attempted to use is forbidden!</b><br><br>";
+$htmltags .= "[ <a href=\"javascript:history.go(-1)\"><b>Go Back</b></a> ]</div>";
 
 if (!defined('ADMIN_FILE')) {
  
- $_GET = [];
+ if(!isset($_GET)){
+   $_GET = '';
+ }
 
  foreach ($_GET as $sec_key => $secvalue) {
 
@@ -316,7 +318,7 @@ else:
 endif;
 
 if(!$dbname) {
-    die("<br><br><center><img src=images/logo.gif><br><br><b>There seems that PHP-Nuke isn't installed yet.<br>(The values in config.php file are the default ones)<br><br>You can proceed with the <a href='./install/index.php'>web installation</a> now.</center></b>");
+    die("<br><br><div align=\"center\"><img src=images/logo.gif><br><br><b>Is seems that PHP-Nuke isn't installed yet.<br>(The values in config.php file are the default ones)<br><br>You can proceed with the <a href='./install/index.php'>web installation</a> now.</div></b>");
 }
 
 require_once(INCLUDE_PATH."db/db.php");
@@ -577,8 +579,8 @@ function is_user($user) {
         $user = explode(":", $user);
     }
 
-    $uid = $user[0];
-    $pwd = $user[2];
+    $uid = $user[0] ?? 0;
+    $pwd = $user[2] ?? '';
     $uid = intval($uid);
 
     if (!empty($uid) AND !empty($pwd)) {
@@ -763,7 +765,7 @@ function title($text) {
 
 	OpenTable();
 
-	echo "<center><span class=\"title\"><strong>$text</strong></span></center>";
+	echo "<div align=\"center\"><span class=\"title\"><strong>$text</strong></span></div>";
 
 	CloseTable();
 
@@ -1023,13 +1025,13 @@ function message_box() {
 
 					OpenTable();
 
-					echo "<center><font class=\"option\" color=\"$textcolor2\"><b>$title</b></font></center><br>\n"
+					echo "<div align=\"center\"><span class=\"option\" style=\"color:$textcolor2;\"><b>$title</b></span></div><br>\n"
 
-					."<font class=\"content\">$content</font>";
+					."<span class=\"content\">$content</span>";
 
 					if (is_admin($admin)) {
 
-						echo "<br><br><center><font class=\"content\">[ "._MVIEWSUBUSERS." - $remain - <a href=\"".$admin_file.".php?op=editmsg&amp;mid=$mid\">"._EDIT."</a> ]</font></center>";
+						echo "<br><br><div align=\"center\"><span class=\"content\">[ "._MVIEWSUBUSERS." - $remain - <a href=\"".$admin_file.".php?op=editmsg&amp;mid=$mid\">"._EDIT."</a> ]</span></div>";
 
 					}
 
@@ -1041,11 +1043,11 @@ function message_box() {
 
 					OpenTable();
 
-					echo "<center><font class=\"option\" color=\"$textcolor2\"><b>$title</b></font></center><br>\n"
+					echo "<div align=\"center\"><span class=\"option\" style=\"color:$textcolor2;\"><b>$title</b></span></div><br>\n"
 
-					."<font class=\"content\">$content</font>"
+					."<span class=\"content\">$content</span>"
 
-					."<br><br><center><font class=\"content\">[ "._MVIEWADMIN." - $remain - <a href=\"".$admin_file.".php?op=editmsg&amp;mid=$mid\">"._EDIT."</a> ]</font></center>";
+					."<br><br><div align=\"center\"><span class=\"content\">[ "._MVIEWADMIN." - $remain - <a href=\"".$admin_file.".php?op=editmsg&amp;mid=$mid\">"._EDIT."</a> ]</span></div>";
 
 					CloseTable();
 
@@ -1055,13 +1057,13 @@ function message_box() {
 
 					OpenTable();
 
-					echo "<center><font class=\"option\" color=\"$textcolor2\"><b>$title</b></font></center><br>\n"
+					echo "<div align=\"center\"><span class=\"option\" color=\"$textcolor2\"><b>$title</b></span></div><br>\n"
 
-					."<font class=\"content\">$content</font>";
+					."<span class=\"content\">$content</span>";
 
 					if (is_admin($admin)) {
 
-						echo "<br><br><center><font class=\"content\">[ "._MVIEWUSERS." - $remain - <a href=\"".$admin_file.".php?op=editmsg&amp;mid=$mid\">"._EDIT."</a> ]</font></center>";
+						echo "<br><br><div align=\"center\"><span class=\"content\">[ "._MVIEWUSERS." - $remain - <a href=\"".$admin_file.".php?op=editmsg&amp;mid=$mid\">"._EDIT."</a> ]</span></div>";
 
 					}
 
@@ -1073,13 +1075,13 @@ function message_box() {
 
 					OpenTable();
 
-					echo "<center><font class=\"option\" color=\"$textcolor2\"><b>$title</b></font></center><br>\n"
+					echo "<div align=\"center\"><span class=\"option\" style=\"color:$textcolor2;\"><b>$title</b></span></div><br>\n"
 
-					."<font class=\"content\">$content</font>";
+					."<span class=\"content\">$content</span>";
 
 					if (is_admin($admin)) {
 
-						echo "<br><br><center><font class=\"content\">[ "._MVIEWANON." - $remain - <a href=\"".$admin_file.".php?op=editmsg&amp;mid=$mid\">"._EDIT."</a> ]</font></center>";
+						echo "<br><br><div align=\"center\"><span class=\"content\">[ "._MVIEWANON." - $remain - <a href=\"".$admin_file.".php?op=editmsg&amp;mid=$mid\">"._EDIT."</a> ]</span></div>";
 
 					}
 
@@ -1091,13 +1093,13 @@ function message_box() {
 
 					OpenTable();
 
-					echo "<center><font class=\"option\" color=\"$textcolor2\"><b>$title</b></font></center><br>\n"
+					echo "<div align=\"center\"><span class=\"option\" style=\"color=:$textcolor2;\"><b>$title</b></span></div><br>\n"
 
-					."<font class=\"content\">$content</font>";
+					."<span class=\"content\">$content</span>";
 
 					if (is_admin($admin)) {
 
-						echo "<br><br><center><font class=\"content\">[ "._MVIEWALL." - $remain - <a href=\"".$admin_file.".php?op=editmsg&amp;mid=$mid\">"._EDIT."</a> ]</font></center>";
+						echo "<br><br><div align=\"center\"><span class=\"content\">[ "._MVIEWALL." - $remain - <a href=\"".$admin_file.".php?op=editmsg&amp;mid=$mid\">"._EDIT."</a> ]</span></div>";
 
 					}
 
@@ -1211,7 +1213,7 @@ function selectlanguage() {
 	if ($useflags == 1) {
 
 		$title = _SELECTLANGUAGE;
-		$content = "<center><font class=\"content\">"._SELECTGUILANG."<br><br>";
+		$content = "<div align=\"center\"><span class=\"content\">"._SELECTGUILANG."<br><br>";
 		$langdir = dir("language");
 
 		while($func=$langdir->read()) {
@@ -1238,7 +1240,7 @@ function selectlanguage() {
 			}
 		}
 
-		$content .= "</font></center>";
+		$content .= "</span></div>";
 
 		themesidebox($title, $content);
 
@@ -1246,7 +1248,7 @@ function selectlanguage() {
 
 		$title = _SELECTLANGUAGE;
 
-		$content = "<center><font class=\"content\">"._SELECTGUILANG."<br><br></font>";
+		$content = "<div align=\"center\"><span class=\"content\">"._SELECTGUILANG."<br><br></span>";
 
 		$content .= "<form action=\"index.php\" method=\"get\"><select name=\"newlanguage\" onChange=\"top.location.href=this.options[this.selectedIndex].value\">";
 
@@ -1281,7 +1283,7 @@ function selectlanguage() {
 			}
 		}
 
-		$content .= "</select></form></center>";
+		$content .= "</select></form></div>";
 
 		themesidebox($title, $content);
 	}
@@ -1808,13 +1810,9 @@ function loginbox() {
 	mt_srand ((double)microtime()*1000000);
 
 	$maxran = 1000000;
-
 	$random_num = random_int(0, $maxran);
-
 	$datekey = date("F j");
-
 	$rcode = hexdec(md5($_SERVER['HTTP_USER_AGENT'] . $sitekey . $random_num . $datekey));
-
 	$code = substr($rcode, 2, 6);
 
 	if (!is_user($user)) {
@@ -1822,36 +1820,28 @@ function loginbox() {
 		$title = _LOGIN;
 
 		$boxstuff = "<form action=\"modules.php?name=Your_Account\" method=\"post\">";
-
-		$boxstuff .= "<center><font class=\"content\">"._NICKNAME."<br>";
-
+		$boxstuff .= "<div align=\"center\"><span class=\"content\">"._NICKNAME."<br>";
 		$boxstuff .= "<input type=\"text\" name=\"username\" size=\"8\" maxlength=\"25\"><br>";
-
 		$boxstuff .= ""._PASSWORD."<br>";
-
 		$boxstuff .= "<input type=\"password\" name=\"user_password\" size=\"8\" maxlength=\"20\"><br>";
 
 		if (extension_loaded("gd") AND ($gfx_chk == 2 OR $gfx_chk == 4 OR $gfx_chk == 5 OR $gfx_chk == 7)) {
 
 			$boxstuff .= ""._SECURITYCODE.": <img src='?gfx=gfx&amp;random_num=$random_num' border='1' alt='"._SECURITYCODE."' title='"._SECURITYCODE."'><br>\n";
-
 			$boxstuff .= ""._TYPESECCODE."<br><input type=\"text\" NAME=\"gfx_check\" SIZE=\"7\" MAXLENGTH=\"6\">\n";
-
 			$boxstuff .= "<input type=\"hidden\" name=\"random_num\" value=\"$random_num\"><br>\n";
 
 		} else {
 
 			$boxstuff .= "<input type=\"hidden\" name=\"random_num\" value=\"$random_num\">";
-
 			$boxstuff .= "<input type=\"hidden\" name=\"gfx_check\" value=\"$code\">";
-
 		}
 
 		$boxstuff .= "<input type=\"hidden\" name=\"op\" value=\"login\">";
 
-		$boxstuff .= "<input type=\"submit\" value=\""._LOGIN."\"></font></center></form>";
+		$boxstuff .= "<input type=\"submit\" value=\""._LOGIN."\"></span></div></form>";
 
-		$boxstuff .= "<center><font class=\"content\">"._ASREGISTERED."</font></center>";
+		$boxstuff .= "<div align=\"center\"><span class=\"content\">"._ASREGISTERED."</span></div>";
 
 		themesidebox($title, $boxstuff);
 	}
@@ -1900,17 +1890,12 @@ function headlines($bid, $cenbox=0) {
 	$bid = intval($bid);
 
 	$result = $db->sql_query("SELECT title, content, url, refresh, time FROM ".$prefix."_blocks WHERE bid='$bid'");
-
 	$row = $db->sql_fetchrow($result);
 
 	$title = filter($row['title'], "nohtml");
-
 	$content = filter($row['content']);
-
 	$url = filter($row['url'], "nohtml");
-
 	$refresh = intval($row['refresh']);
-
 	$otime = $row['time'];
 
 	$past = time()-$refresh;
@@ -1920,9 +1905,7 @@ function headlines($bid, $cenbox=0) {
 	if ($otime < $past) {
 
 		$btime = time();
-
 		$rdf = parse_url($url);
-
 		$fp = fsockopen($rdf['host'], 80, $errno, $errstr, 15);
 
 		if (!$fp) {
@@ -1967,7 +1950,7 @@ function headlines($bid, $cenbox=0) {
 
 			$items = explode("</item>",$string);
 
-			$content = "<font class=\"content\">";
+			$content = "<span class=\"content\">";
 
 			for ($i=0;$i<10;$i++) {
 
@@ -2015,11 +1998,11 @@ function headlines($bid, $cenbox=0) {
 
 	if (($cont == 1) OR (!empty($content))) {
 
-		$content .= "<br><a href=\"http://$siteurl[0]\" target=\"blank\"><b>"._HREADMORE."</b></a></font>";
+		$content .= "<br><a href=\"http://$siteurl[0]\" target=\"blank\"><b>"._HREADMORE."</b></a></span>";
 
 	} elseif (($cont == 0) OR (empty($content))) {
 
-		$content = "<font class=\"content\">"._RSSPROBLEM."</font>";
+		$content = "<span class=\"content\">"._RSSPROBLEM."</span>";
 	}
 
 	if ($cenbox == 0) {
@@ -2169,7 +2152,7 @@ function themecenterbox($title, $content) {
 
 	OpenTable();
 
-	echo "<center><font class=\"option\"><b>$title</b></font></center><br>".$content;
+	echo "<div align=\"center\"><span class=\"option\"><b>$title</b></spans></div><br>".$content;
 
 	CloseTable();
 
@@ -2198,7 +2181,7 @@ function public_message() {
 
 				$t_off = "<br><p align=\"right\">[ <a href=\"modules.php?name=Your_Account&amp;op=edithome\">";
 
-				$t_off .= "<font size=\"2\">"._TURNOFFMSG."</font></a> ]";
+				$t_off .= "<span style=\"font-size:2;\">"._TURNOFFMSG."</span></a> ]";
 
 				$pm_show = 1;
 
@@ -2238,15 +2221,10 @@ function public_message() {
 			if ((!isset($c_mid)) OR ($c_mid = $mid)) {
 
 				$public_msg = "<br><table width=\"90%\" border=\"1\" cellspacing=\"2\" cellpadding=\"0\" bgcolor=\"FFFFFF\" align=\"center\"><tr><td>\n";
-
 				$public_msg .= "<table width=\"100%\" border=\"0\" cellspacing=\"1\" cellpadding=\"2\" bgcolor=\"FF0000\"><tr><td>\n";
-
-				$public_msg .= "<font color=\"FFFFFF\" size=\"3\"><b>"._BROADCASTFROM." <a href=\"modules.php?name=Your_Account&amp;op=userinfo&amp;username=$who\"><font color=\"FFFFFF\" size=\"3\">$who</font></a>: \"$content\"</b>";
-
+				$public_msg .= "<span style=\"font-size:3; color:#FFFFFF;\"><b>"._BROADCASTFROM." <a href=\"modules.php?name=Your_Account&amp;op=userinfo&amp;username=$who\">$who></a>: \"$content\"</b></span";
 				$public_msg .= "$t_off";
-
 				$public_msg .= "</td></tr></table>";
-
 				$public_msg .= "</td></tr></table>";
 
 				$ref_date = $tdate+600;
@@ -2521,37 +2499,26 @@ function ads($position) {
 
 			$ad_code = stripslashes(FixQuotes($ad_code));
 
-			$ads = "<center>$ad_code</center>";
+			$ads = "<div align=\"center\">$ad_code</div>";
 
 		} elseif ($ad_class == "flash") {
 
-			$ads = "<center>
-
-				<OBJECT classid=\"clsid:D27CDB6E-AE6D-11cf-96B8-444553540000\"
-
+			$ads = "<div align=\"center\">
+				<object classid=\"clsid:D27CDB6E-AE6D-11cf-96B8-444553540000\"
 				codebase=\"http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=6,0,40,0\"
-
-				WIDTH=\"$ad_width\" HEIGHT=\"$ad_height\" id=\"$bid\">
-
-				<PARAM NAME=movie VALUE=\"$imageurl\">
-
-				<PARAM NAME=quality VALUE=high>
-
-				<EMBED src=\"$imageurl\" quality=high WIDTH=\"$ad_width\" HEIGHT=\"$ad_height\"
-
-				NAME=\"$bid\" ALIGN=\"\" TYPE=\"application/x-shockwave-flash\"
-
-				PLUGINSPAGE=\"http://www.macromedia.com/go/getflashplayer\">
-
-				</EMBED>
-
-				</OBJECT>
-
-				</center>";
+				width=\"$ad_width\" height=\"$ad_height\" id=\"$bid\">
+				<param name=movie value=\"$imageurl\">
+				<param name=quality value=high>
+				<embed src=\"$imageurl\" quality=high width=\"$ad_width\" height=\"$ad_height\"
+				name=\"$bid\" align=\"\" type=\"application/x-shockwave-flash\"
+				pluginspage=\"http://www.macromedia.com/go/getflashplayer\">
+				</embed>
+				</object>
+				</div>";
 
 		} else {
 
-			$ads = "<center><a href=\"index.php?op=ad_click&amp;bid=$bid\" target=\"_blank\"><img src=\"$imageurl\" border=\"0\" alt=\"$alttext\" title=\"$alttext\"></a></center>";
+			$ads = "<div align=\"center\"><a href=\"index.php?op=ad_click&amp;bid=$bid\" target=\"_blank\"><img src=\"$imageurl\" border=\"0\" alt=\"$alttext\" title=\"$alttext\"></a></div>";
 		}
 	} else {
 

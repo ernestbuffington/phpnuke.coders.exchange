@@ -2,6 +2,7 @@ ALTER TABLE `#prefix#_security_agents`
   ADD PRIMARY KEY (`agent_name`);
 
 ALTER TABLE `#prefix#_antiflood`
+  ADD PRIMARY KEY (`ip_addr`),
   ADD KEY `ip_addr` (`ip_addr`),
   ADD KEY `time` (`time`);
 
