@@ -6,6 +6,33 @@ Jan 2023: Version 8.3.2
 - Return from 16 year Break
 - Patched for PHP 8.x
 - Fixed various Bugs
+- Added auto mimetype loader v1.0
+- Added auto language detector
+- Added dynamic loader tools for CSS, PHPCSS. and JS
+- Added samesite cookie array for future use
+- Added new super globals check
+- Added define_once function
+- Added get_microtime function
+- Updated output buffering routines
+- Added Absolute Nuke directory
+- Added function classAutoloader to main
+- Added directory mode vars
+- Added rectorphp autoloader
+- Added 3rd party vendor support
+- Added Core exceptions handler
+- Updated system cookie functions
+- Updated function makepass
+- Updated function is_user
+- Updated UNION SQL Injection protection
+- Updated function blocks
+- Updated function selectlanguage
+- Updated function ultramode
+- Updated function check_words
+- Updated function check_html
+- Updated headlines and removed dead links
+- Updated function automated_news
+- Updated function public_message
+- Updated function redir
 
 August 2007: Version 8.1
 ========================
