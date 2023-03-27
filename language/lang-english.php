@@ -19,7 +19,7 @@ if(!isset($subscription_url)) $subscription_url = '';
 /**************************************************************************/
 
 
-define_once("_CHARSET","ISO-8859-1");
+define_once("_CHARSET","UTF-8");
 define_once("_SEARCH","Search");
 define_once("_LOGIN","Login");
 define_once("_WRITES","writes");
