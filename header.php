@@ -63,15 +63,14 @@ function head() {
     echo '<head>'."\n";
     endif;	# OLD SCHOOL DEFAULT MIMETYPE END
 
-    echo '<!--[if IE]>'."\n";
-    echo '<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />'."\n";
-    echo '<![endif]-->'."\n";
-    echo '<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />'."\n";
+	echo '<meta http-equiv="Content-Type" content="text/html; charset='._CHARSET.'">'."\n";
     echo '<meta http-equiv="Content-Language" content="'._LANGCODE.'" />'."\n";
     echo '<meta http-equiv="Content-Style-Type" content="text/css" />'."\n";
     echo '<meta http-equiv="Content-Script-Type" content="text/javascript" />'."\n";
+
+    include("includes/meta.php");
 	
-	echo "<title>$sitename $pagetitle</title>\n";
+	echo "\n<title>$sitename $pagetitle</title>\n\n";
 	?>
 <!-- banner org_green -->
 <!-- Attach our CSS -->
@@ -94,7 +93,6 @@ div.caption { background:transparent; filter:progid:DXImageTransform.Microsoft.g
 <!-- end banner org_green -->
 <!-- End Quantcast tag -->
 <?php
-    include("includes/meta.php");
 
     include("includes/javascript.php");
 
