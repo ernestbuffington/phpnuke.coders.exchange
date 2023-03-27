@@ -33,6 +33,9 @@ Jan 2023: Version 8.3.2
 - Updated function automated_news
 - Updated function public_message
 - Updated function redir
+- Updated English charset to UTF-8 as it should be (language files change this on the fly)
+- Updated Meta Tags Loading Order
+-
 
 August 2007: Version 8.1
 ========================
