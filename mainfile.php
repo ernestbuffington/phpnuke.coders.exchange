@@ -201,46 +201,6 @@ $htmltags = "<div align=\"center\"><img src=\"images/logo.gif\"><br><br><b>";
 $htmltags .= "The html tags you attempted to use is forbidden!</b><br><br>";
 $htmltags .= "[ <a href=\"javascript:history.go(-1)\"><b>Go Back</b></a> ]</div>";
 
-if (!defined('ADMIN_FILE')) {
- 
- if(!isset($_GET)){
-   $_GET = '';
- }
-
- foreach ($_GET as $sec_key => $secvalue) {
-
- if((preg_match('#<[^>]*script*"?[^>]*#mi', $secvalue)) ||
-  (preg_match('#<[^>]*object*"?[^>]*#mi', $secvalue)) ||
-  (preg_match('#<[^>]*iframe*"?[^>]*#mi', $secvalue)) ||
-  (preg_match('#<[^>]*applet*"?[^>]*#mi', $secvalue)) ||
-  (preg_match('#<[^>]*meta*"?[^>]*#mi', $secvalue)) ||
-  (preg_match('#<[^>]*style*"?[^>]*#mi', $secvalue)) ||
-  (preg_match('#<[^>]*form*"?[^>]*#mi', $secvalue)) ||
-  (preg_match('#<[^>]*img*"?[^>]*#mi', $secvalue)) ||
-  (preg_match('#<[^>]*onmouseover *"?[^>]*#mi', $secvalue)) ||
-  (preg_match('#<[^>]*body *"?[^>]*#mi', $secvalue)) ||
-  (preg_match('#\([^>]*"?[^\)]*\)#mi', $secvalue)) ||
-  (preg_match('#"#mi', $secvalue)) ||
-  (preg_match('#forum_admin#mi', $sec_key)) ||
-  (preg_match('#inside_mod#mi', $sec_key)))
-  {
-   die ($htmltags);
-  }
- foreach ($_POST as $secvalue) {
-
-  if ((preg_match('#<[^>]*iframe*"?[^>]*#mi', $secvalue)) ||
-  (preg_match('#<[^>]*object*"?[^>]*#mi', $secvalue)) ||
-  (preg_match('#<[^>]*applet*"?[^>]*#mi', $secvalue)) ||
-  (preg_match('#<[^>]*meta*"?[^>]*#mi', $secvalue)) ||
-  (preg_match('#<[^>]*onmouseover*"?[^>]*#mi', $secvalue)) ||
-  (preg_match('#<[^>]script*"?[^>]*#mi', $secvalue)) ||
-  (preg_match('#<[^>]*body*"?[^>]*#mi', $secvalue)) ||
-  (preg_match('#<[^>]style*"?[^>]*#mi', $secvalue))) {
-   die ($htmltags);
-   }
-  }
- }
-}
 # add 3rd party backward version comapatibility defines
 # Inspired by phoenix-cms at website-portals.net
 # Absolute Nuke directory
@@ -331,6 +291,10 @@ $dbi = sql_connect($dbhost, $dbuname, $dbpass, $dbname);
 
 require_once(INCLUDE_PATH."includes/ipban.php");
 
+
+if (!defined('ADMIN_FILE')) {
+  require_once(INCLUDE_PATH."includes/classes/class.variables.php");
+}
 
 /*
  * functions added to support dynamic and ordered loading of CSS, PHPCSS, and JS in <HEAD> and before </BODY>
