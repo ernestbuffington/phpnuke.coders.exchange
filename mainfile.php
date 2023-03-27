@@ -331,6 +331,22 @@ $dbi = sql_connect($dbhost, $dbuname, $dbpass, $dbname);
 
 require_once(INCLUDE_PATH."includes/ipban.php");
 
+
+/*
+ * functions added to support dynamic and ordered loading of CSS, PHPCSS, and JS in <HEAD> and before </BODY>
+ * Code origin Raven Nuke CMS (http://www.ravenphpscripts.com)
+ * loader addons by Ernest Buffington aka TheGhost https://theghost.86it.us
+ */
+if (file_exists(INCLUDE_PATH."includes/mods/Raven/dynamic_loader_functions.php")) {
+	include_once(INCLUDE_PATH."includes/mods/Raven/dynamic_loader_functions.php");
+}
+
+# Base: Language Selector v3.0.0 START
+if (file_exists(INCLUDE_PATH."includes/mods/Dragonfly/language.php")) {
+	include_once(INCLUDE_PATH."includes/mods/Dragonfly/language.php");
+}
+# Base: Language Selector v3.0.0 END
+
 if (file_exists(INCLUDE_PATH."includes/custom_files/custom_mainfile.php")) {
 	include_once(INCLUDE_PATH."includes/custom_files/custom_mainfile.php");
 }
@@ -492,35 +508,6 @@ function makePass() {
 	$makepass = $con[0] . $voc[0] .$con[2] . $num1 . $num2 . $con[3] . $voc[3] . $con[4];
 
 	return($makepass);
-}
-
-function get_lang($module) {
-
-   global $currentlang, $language;
-
-   if ($module == "admin" AND $module != "Forums") {
-
-      if (file_exists("admin/language/lang-".$currentlang.".php")) {
-
-         include_secure("admin/language/lang-".$currentlang.".php");
-
-      } elseif (file_exists("admin/language/lang-".$language.".php")) {
-
-         include_secure("admin/language/lang-".$language.".php");
-
-      }
-
-   } else {
-
-      if (file_exists("modules/$module/language/lang-".$currentlang.".php")) {
-
-         include_secure("modules/$module/language/lang-".$currentlang.".php");
-
-      } elseif (file_exists("modules/$module/language/lang-".$language.".php")) {
-
-         include_secure("modules/$module/language/lang-".$language.".php");
-      }
-   }
 }
 
 function is_admin($admin) {
@@ -2697,11 +2684,8 @@ switch($gfx) {
 	$text_color = ImageColorAllocate($image, 80, 80, 80);
 
 	Header("Content-type: image/jpeg");
-
 	ImageString ($image, 5, 12, 2, $code, $text_color);
-
 	ImageJPEG($image, '', 75);
-
 	ImageDestroy($image);
 
 	die();
