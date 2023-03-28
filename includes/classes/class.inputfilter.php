@@ -63,11 +63,11 @@ class InputFilter {
                         );
         if(function_exists('log_write')) {
             log_write('error', $logdata, 'Script Attack');
-			log_write('error', $logdata, 'Suck it Tonight Fargnoggel!');
+			log_write('error', $logdata, 'Script Kiddie Alert!');
         } else {
-            include_once(NUKE_INCLUDE_DIR.'log.php');
+            include_once(NUKE_INCLUDE_DIR.'mods/Evo/log.php');
             log_write('error', $logdata, 'Script Attack');
-			log_write('error', $logdata, 'Suck it Tonight Fargnoggel!');
+			log_write('error', $logdata, 'Script Kiddie Alert!');
         }
         OpenTable();
 		echo '"' . htmlspecialchars($filtered) . '" is an XSS and was blocked in:<br />'. htmlspecialchars($source);
