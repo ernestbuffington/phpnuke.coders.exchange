@@ -290,7 +290,6 @@ require_once(INCLUDE_PATH."db/db.php");
  */
 require_once(INCLUDE_PATH."includes/mods/Evo/functions_database.php");
 
-
 /*
  * Moved back to includes folder (one still exists inside the forums folder)
  * Code origin phpBB
