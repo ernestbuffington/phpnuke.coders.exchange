@@ -295,7 +295,7 @@ require_once(INCLUDE_PATH."includes/mods/Evo/functions_database.php");
  * Code origin phpBB
  * @date 03/28/2023 8:23 AM Ernest Allen Buffington
  */
-include_once(NUKE_INCLUDE_DIR.'constants.php');
+require_once(INCLUDE_PATH."includes/mods/phpbb2/constants.php");
 
 /*
  * Added for Zend Zf1 future
