@@ -445,19 +445,14 @@ class InputFilter {
 		
 		# url decode
         $source = html_entity_decode($source, ENT_QUOTES, $charset);
-        
 		# Convert enties without semicolons
         $source = preg_replace('#(&\#x*)([0-9A-F]+);*#iu', "$1$2;", $source);
-        
 		# Convert to decimal
         $source = preg_replace('/&#0{4,5}(\d+);/me',"chr(\\1)", $source);
-        
 		# convert decimal
         $source = preg_replace('/&#(\d+);/me',"chr(\\1)", $source);              # decimal notation
-        
 		# convert hex
         $source = preg_replace('/&#x([a-f0-9]+);/mei',"chr(0x\\1)", $source);    # hex notation
-        
 		#Convert newlines
         $source = preg_replace('#(&\#*\w+)[\x00-\x20]+;#U', "$1;", $source);
         
