@@ -303,7 +303,6 @@ require_once(INCLUDE_PATH."includes/mods/phpbb2/constants.php");
  * @date 03/28/2023 8:23 AM Ernest Allen Buffington
  */
 require_once(NUKE_CLASSES_DIR.'class.cache.php');
-require_once(NUKE_INCLUDE_DIR.'functions_cache.php');
 
 /*
  * Added version 1.x of PclZip
@@ -350,6 +349,7 @@ if (!defined('ADMIN_FILE')) {
  * Code origin Nuke Evolution / Xtreme v2.0.9e
  * @date 03/28/2023 8:23 AM Ernest Allen Buffington
  */
+require_once(INCLUDE_PATH."includes/mods/Evo/functions_cache.php");
 include_once(INCLUDE_PATH."includes/mods/Evo/functions_evo.php");
 include_once(INCLUDE_PATH."includes/mods/Evo/functions_evo_custom.php");
 include_once(INCLUDE_PATH."includes/mods/Evo/functions_log.php");
@@ -361,16 +361,16 @@ include_once(INCLUDE_PATH."includes/mods/Evo/validation.php");
  * Code origin Nuke Titanium v4.0.4
  * @date 03/28/2023 8:23 AM Ernest Allen Buffington
  */
-include_once(INCLUDE_PATH."includes/mods/phpbb2/functions_validate.php");
+require_once(INCLUDE_PATH."includes/mods/phpbb2/functions_validate.php");
 
 /*
  * Adopted Nuke Titanium functions and added for Titanium Support
  * Code origin PHP-Nuke Titanium v4.0.4
  * @date 03/28/2023 8:23 AM Ernest Allen Buffington
  */
-include_once(INCLUDE_PATH."includes/mods/Titanium/functions_titanium.php");
-include_once(INCLUDE_PATH."includes/mods/Titanium/functions_titanium_custom.php");
-include_once(INCLUDE_PATH."includes/mods/Titanium/functions_img.php");
+require_once(INCLUDE_PATH."includes/mods/Titanium/functions_titanium.php");
+require_once(INCLUDE_PATH."includes/mods/Titanium/functions_titanium_custom.php");
+require_once(INCLUDE_PATH."includes/mods/Titanium/functions_img.php");
 
 /*
  * functions added to support dynamic and ordered loading of CSS, PHPCSS, and JS in <HEAD> and before </BODY>
@@ -378,17 +378,17 @@ include_once(INCLUDE_PATH."includes/mods/Titanium/functions_img.php");
  * loader addons by Ernest Buffington aka TheGhost https://theghost.86it.us
  */
 if (file_exists(INCLUDE_PATH."includes/mods/Raven/dynamic_loader_functions.php")) {
-	include_once(INCLUDE_PATH."includes/mods/Raven/dynamic_loader_functions.php");
+	require_once(INCLUDE_PATH."includes/mods/Raven/dynamic_loader_functions.php");
 }
 
 # Base: Language Selector v3.0.0 START
 if (file_exists(INCLUDE_PATH."includes/mods/Dragonfly/language.php")) {
-	include_once(INCLUDE_PATH."includes/mods/Dragonfly/language.php");
+	require_once(INCLUDE_PATH."includes/mods/Dragonfly/language.php");
 }
 # Base: Language Selector v3.0.0 END
 
 if (file_exists(INCLUDE_PATH."includes/custom_files/custom_mainfile.php")) {
-	include_once(INCLUDE_PATH."includes/custom_files/custom_mainfile.php");
+	require_once(INCLUDE_PATH."includes/custom_files/custom_mainfile.php");
 }
 
 # add external Rector vendor library support so that we can use composer with Nuke
@@ -407,8 +407,8 @@ endif;
 # Vendor Autoload - only if vendor directory exists with an autoload file! END
 
 # Core exceptions handler START
-include_once(NUKE_INCLUDE_DIR . 'exception.php');
-include_once(NUKE_INCLUDE_DIR . 'abstract/abstract.exception.php');
+require_once(NUKE_INCLUDE_DIR . 'exception.php');
+require_once(NUKE_INCLUDE_DIR . 'abstract/abstract.exception.php');
 # Core exceptions handler END
 
 if (!defined('FORUM_ADMIN')) {
