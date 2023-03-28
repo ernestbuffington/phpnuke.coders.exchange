@@ -355,7 +355,13 @@ include_once(INCLUDE_PATH."includes/mods/Evo/functions_evo_custom.php");
 include_once(INCLUDE_PATH."includes/mods/Evo/functions_log.php");
 include_once(INCLUDE_PATH."includes/mods/Evo/log.php");
 include_once(INCLUDE_PATH."includes/mods/Evo/validation.php");
-include_once(INCLUDE_PATH."includes/functions_validate.php");
+
+/*
+ * phpbb2 Mods and changes
+ * Code origin Nuke Titanium v4.0.4
+ * @date 03/28/2023 8:23 AM Ernest Allen Buffington
+ */
+include_once(INCLUDE_PATH."includes/mods/phpbb2/functions_validate.php");
 
 /*
  * Adopted Nuke Titanium functions and added for Titanium Support
