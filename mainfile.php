@@ -290,6 +290,13 @@ require_once(INCLUDE_PATH."db/db.php");
  */
 require_once(NUKE_CLASSES_DIR.'class.cache.php');
 
+/*
+ * Added for Evo debugger support
+ * Code origin Nuke Evolution / Xtreme v2.0.9e
+ * @date 03/28/2023 8:23 AM Ernest Allen Buffington
+ */
+require_once(NUKE_CLASSES_DIR.'class.debugger.php');
+
 /* FOLLOWING TWO LINES ARE DEPRECATED BUT ARE HERE FOR OLD MODULES COMPATIBILITY */
 /* PLEASE START USING THE NEW SQL ABSTRACTION LAYER. SEE MODULES DOC FOR DETAILS */
 require_once(INCLUDE_PATH."includes/sql_layer.php");
