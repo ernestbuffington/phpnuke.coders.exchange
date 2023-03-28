@@ -296,6 +296,10 @@ if (!defined('ADMIN_FILE')) {
   require_once(INCLUDE_PATH."includes/classes/class.variables.php");
 }
 
+if (!defined('ADMIN_FILE')) {
+  require_once(INCLUDE_PATH."includes/classes/class.inputfilter.php");
+}
+
 /*
  * functions added to support dynamic and ordered loading of CSS, PHPCSS, and JS in <HEAD> and before </BODY>
  * Code origin Raven Nuke CMS (http://www.ravenphpscripts.com)
@@ -1511,12 +1515,13 @@ function delQuotes($string){
 function check_html($str, $strip='') 
 {
 	global $admin;
-
+  
 	if(is_admin($admin)):
       $str = Fix_Quotes($str, !empty($strip));
       return $str;
 	endif;
-    
+
+  if (!defined('ADMIN_FILE')){
     if(defined('INPUT_FILTER')): 
 	
 		if($strip == 'nohtml'):
@@ -1547,6 +1552,12 @@ function check_html($str, $strip='')
     endif;
 
     return $str;
+	
+  }
+  else
+  {
+    return $str;
+  }
 }
 
 function filter_text($Message, $strip="") {
@@ -1566,7 +1577,6 @@ function filter($what, $strip="", $save="", $type="") {
 		$what = htmlentities(trim($what), ENT_QUOTES);
 
 		// If the variable $what doesn't comes from a preview screen should be converted
-
 		if ($type != "preview" AND $save != 1) {
 
 			$what = html_entity_decode($what, ENT_QUOTES);
