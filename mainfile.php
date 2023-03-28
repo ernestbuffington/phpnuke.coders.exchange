@@ -1357,6 +1357,18 @@ function getusrinfo($user) {
     unset($userinfo);
 }
 
+# Adds slashes to string and strips PHP+HTML for SQL insertion and hack prevention
+# $str: the string to modify
+# $nohtml: strip PHP+HTML tags, false=no, true=yes, default=false
+function Fix_Quotes($str, $nohtml=false) 
+{
+    if($nohtml): 
+	  $str = strip_tags($str);
+	endif;
+    
+	return $str;
+}
+
 function FixQuotes ($what = "") {
 
 	while (stristr($what, "\\\\'")) {
@@ -1364,6 +1376,13 @@ function FixQuotes ($what = "") {
 		$what = str_replace("\\\\'","'",$what);
 	}
 	return $what;
+}
+
+function Remove_Slashes($str) 
+{
+    global $_GETVAR;
+    
+	return $_GETVAR->stripSlashes($str);
 }
 
 /*********************************************************/
@@ -1489,66 +1508,45 @@ function delQuotes($string){
 	return $result;
 }
 
-function check_html ($str, $strip="") {
-	$AllowableHTML = [];
-    /* The core of this code has been lifted from phpslash */
-	/* which is licenced under the GPL. */
-	include("config.php");
-	if ($strip == "nohtml")
-	$AllowableHTML=array('');
-	$str = stripslashes($str ?? ''); // maybe ghost
-	$str = preg_replace('#<[013\s]*([^>]*)[013\s]*>#mi','<\\1>', $str);
-	// Delete all spaces from html tags .
-	$str = preg_replace('#<a[^>]*href[013\s]*=[013\s]*"?[013\s]*([^" >]*)[013\s]*"?[^>]*>#mi','<a href="\\1">', $str);
-	// Delete all attribs from Anchor, except an href, double quoted.
-	$str = preg_replace('#<[013\s]* img[013\s]*([^>]*)[013\s]*>#mi', '', $str);
-	// Delete all img tags
-	$str = preg_replace('#<a[^>]*href[013\s]*=[013\s]*"?javascript[[:punct:]]*"?[^>]*>#mi', '', $str);
-	// Delete javascript code from a href tags -- Zhen-Xjell @ http://nukecops.com
-	$tmp = "";
-	while (preg_match('#<(\/?[[:alpha:]]*)[013\s]*([^>]*)>#m',$str,$reg)) 
-	{
-		$i = strpos($str,$reg[0]);
-		$l = strlen($reg[0]);
-		$a = [];
-		
-		if (isset($reg[1][0]) && $reg[1][0] == "/") 
-		{
-		  $tag = strtolower(substr($reg[1],1));
-		}
-		else 
-		{ 
-		  $tag = strtolower($reg[1]);
-		}
-		
-		if(isset($AllowableHTML[$tag])) 
-		{
-		  if ($a = $AllowableHTML[$tag]) {
-		     if ($reg[1][0] == "/") { 
-		       $tag = "</$tag>";
-		     }
-		     elseif (($a == 1) || ($reg[2] == "")) {
-		       $tag = "<$tag>";
-		     } else {
-			   # Place here the double quote fix function.
-			   $attrb_list=delQuotes($reg[2]);
-			   // A VER
-			   //$attrb_list = ereg_replace("&","&amp;",$attrb_list);
-			   $tag = "<$tag" . $attrb_list . ">";
-		     } # Attribs in tag allowed
-		   } else { 
-		     $tag = "";
-		   }
-		}
-		$tmp .= substr($str,0,$i) . $tag;
-		$str = substr($str,$i+$l);
-	}
-	$str = $tmp . $str;
-	return $str;
-	exit;
-	/* Squash PHP tags unconditionally */
-	$str = preg_replace('#<\?#m',"",$str);
-	return $str;
+function check_html($str, $strip='') 
+{
+	global $admin;
+
+	if(is_admin($admin)):
+      $str = Fix_Quotes($str, !empty($strip));
+      return $str;
+	endif;
+    
+    if(defined('INPUT_FILTER')): 
+	
+		if($strip == 'nohtml'):
+          global $AllowableHTML;
+		endif;
+	
+	    if(!is_array($AllowableHTML)): 
+		  $html = '';
+		else: 
+		  $html = '';
+          
+		  foreach($AllowableHTML as $type => $key):
+          
+		  if($key == 1): 
+            $html[] = $type;
+		  endif;
+          
+		  endforeach;
+        
+		endif;
+        
+		$html_filter = new InputFilter($html, "", 0, 0, 1);
+        $str = $html_filter->process($str);
+	else: 
+
+    $str = Fix_Quotes($str, !empty($strip));
+
+    endif;
+
+    return $str;
 }
 
 function filter_text($Message, $strip="") {
