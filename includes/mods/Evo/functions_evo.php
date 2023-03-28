@@ -1006,7 +1006,7 @@ function GetRank($user_id)
 }
 
 # redirect function by Quake
-function redirect($url, $refresh = 0) 
+function redirect_evo($url, $refresh = 0) 
 {
     global $db, $db2, $cache;
     if(is_object($cache)) $cache->resync();
