@@ -283,6 +283,13 @@ if(!$dbname) {
 
 require_once(INCLUDE_PATH."db/db.php");
 
+/*
+ * Added for Zend Zf1 future
+ * Code origin Nuke Titanium v4.0.4
+ * @date 03/28/2023 8:23 AM Ernest Allen Buffington
+ */
+require_once(NUKE_CLASSES_DIR.'class.cache.php');
+
 /* FOLLOWING TWO LINES ARE DEPRECATED BUT ARE HERE FOR OLD MODULES COMPATIBILITY */
 /* PLEASE START USING THE NEW SQL ABSTRACTION LAYER. SEE MODULES DOC FOR DETAILS */
 require_once(INCLUDE_PATH."includes/sql_layer.php");
