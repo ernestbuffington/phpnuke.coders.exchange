@@ -293,7 +293,7 @@ require_once(INCLUDE_PATH."includes/ipban.php");
 
 /*
  * Adopted Evo Variable Style Checking
- * Code origin Nuke Evolution / Xtreme
+ * Code origin Nuke Evolution / Xtreme v2.0.9e
  * @date 03/28/2023 8:23 AM Ernest Allen Buffington
  */
 if (!defined('ADMIN_FILE')) {
@@ -327,7 +327,6 @@ include_once(INCLUDE_PATH."includes/mods/Evo/log.php");
 include_once(INCLUDE_PATH."includes/mods/Titanium/functions_titanium.php");
 include_once(INCLUDE_PATH."includes/mods/Titanium/functions_titanium_custom.php");
 include_once(INCLUDE_PATH."includes/mods/Titanium/functions_img.php");
-include_once(INCLUDE_PATH."includes/mods/Titanium/cookies.php");
 
 /*
  * functions added to support dynamic and ordered loading of CSS, PHPCSS, and JS in <HEAD> and before </BODY>
