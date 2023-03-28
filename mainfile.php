@@ -461,7 +461,6 @@ function makePass() {
 		mt_srand ((double) microtime() * 1000000);
 		$con[$x] = substr($cons, random_int(0, strlen($cons)-1), 1);
 		$voc[$x] = substr($vocs, random_int(0, strlen($vocs)-1), 1);
-
 	}
 
 	mt_srand((double)microtime()*1000000);
@@ -489,7 +488,6 @@ function is_admin($admin) {
         $admin = addslashes($admin);
 
         $admin = explode(':', $admin);
-
     }
 
     $aid = $admin[0];
@@ -530,7 +528,7 @@ function is_user($user) {
         $user = explode(":", $user);
     }
 
-    $uid = $user[0] ?? 0;
+    $uid = $user[0] ?? 1;
     $pwd = $user[2] ?? '';
     $uid = intval($uid);
 
@@ -557,18 +555,18 @@ function is_group($user, $name) {
 
           global $prefix, $db, $user_prefix, $cookie, $user;
 
-     if (is_user($user)) {
+          if (is_user($user)) {
 
-          if(!is_array($user)) {
+             if(!is_array($user)) {
 
-          $cookie = cookiedecode($user);
-          $uid = intval($cookie[0]);
+             $cookie = cookiedecode($user);
+             $uid = intval($cookie[0]);
 
-          } else {
+             } else {
 
-          $uid = intval($user[0]);
+             $uid = intval($user[0]);
 
-          }
+             }
 
           $result = $db->sql_query("SELECT points FROM ".$user_prefix."_users WHERE user_id='$uid'");
           $row = $db->sql_fetchrow($result);
@@ -588,7 +586,6 @@ function is_group($user, $name) {
           if (($points >= 0 AND $points >= $grp) OR $mod_group == 0) {
 
         	return 1;
-
           }
      }
      return 0;
