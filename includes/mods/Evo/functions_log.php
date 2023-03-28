@@ -20,9 +20,8 @@
  *
  ***************************************************************************/
 
-if (!defined('IN_PHPBB'))
-{
-    die('Hacking attempt');
+if (realpath(__FILE__) == realpath($_SERVER['SCRIPT_FILENAME'])) {
+    exit('Access Denied');
 }
 
 function log_action($action, $new_topic_id, $topic_id, $user_id, $forum_id, $new_forum_id)

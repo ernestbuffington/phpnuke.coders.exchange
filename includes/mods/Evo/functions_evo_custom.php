@@ -1,5 +1,9 @@
 <?php
 
+if (realpath(__FILE__) == realpath($_SERVER['SCRIPT_FILENAME'])) {
+    exit('Access Denied');
+}
+
 /**
  * Gets the variable and runs all the proper sub functions
  *
