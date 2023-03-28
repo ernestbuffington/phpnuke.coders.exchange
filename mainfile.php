@@ -291,14 +291,43 @@ $dbi = sql_connect($dbhost, $dbuname, $dbpass, $dbname);
 
 require_once(INCLUDE_PATH."includes/ipban.php");
 
-
+/*
+ * Adopted Evo Variable Style Checking
+ * Code origin Nuke Evolution / Xtreme
+ * @date 03/28/2023 8:23 AM Ernest Allen Buffington
+ */
 if (!defined('ADMIN_FILE')) {
   require_once(INCLUDE_PATH."includes/classes/class.variables.php");
 }
 
+/*
+ * Adopted Evo Input Filtering
+ * Code origin Nuke Evolution / Xtreme v2.0.9e
+ * @date 03/28/2023 8:23 AM Ernest Allen Buffington
+ */
 if (!defined('ADMIN_FILE')) {
   require_once(INCLUDE_PATH."includes/classes/class.inputfilter.php");
 }
+
+/*
+ * Adopted functions and added for Evo Support
+ * Code origin Nuke Evolution / Xtreme v2.0.9e
+ * @date 03/28/2023 8:23 AM Ernest Allen Buffington
+ */
+include_once(INCLUDE_PATH."includes/mods/Evo/functions_evo.php");
+include_once(INCLUDE_PATH."includes/mods/Evo/functions_evo_custom.php");
+include_once(INCLUDE_PATH."includes/mods/Evo/functions_log.php");
+include_once(INCLUDE_PATH."includes/mods/Evo/log.php");
+
+/*
+ * Adopted Nuke Titanium functions and added for Titanium Support
+ * Code origin PHP-Nuke Titanium v4.0.4
+ * @date 03/28/2023 8:23 AM Ernest Allen Buffington
+ */
+include_once(INCLUDE_PATH."includes/mods/Titanium/functions_titanium.php");
+include_once(INCLUDE_PATH."includes/mods/Titanium/functions_titanium_custom.php");
+include_once(INCLUDE_PATH."includes/mods/Titanium/functions_img.php");
+include_once(INCLUDE_PATH."includes/mods/Titanium/cookies.php");
 
 /*
  * functions added to support dynamic and ordered loading of CSS, PHPCSS, and JS in <HEAD> and before </BODY>
