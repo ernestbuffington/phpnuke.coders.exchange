@@ -287,15 +287,18 @@ CREATE TABLE IF NOT EXISTS `#prefix#_bbsearch_wordmatch` (
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 CREATE TABLE IF NOT EXISTS `#prefix#_bbsessions` (
-  `session_id` char(32) NOT NULL DEFAULT '',
+  `session_id` varchar(32) NOT NULL DEFAULT '',
   `session_user_id` mediumint(8) NOT NULL DEFAULT 0,
   `session_start` int(11) NOT NULL DEFAULT 0,
   `session_time` int(11) NOT NULL DEFAULT 0,
-  `session_ip` char(8) NOT NULL DEFAULT '0',
+  `session_ip` varchar(8) NOT NULL DEFAULT '0',
   `session_page` int(11) NOT NULL DEFAULT 0,
   `session_logged_in` tinyint(1) NOT NULL DEFAULT 0,
-  `session_admin` tinyint(2) NOT NULL DEFAULT 0
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+  `session_admin` tinyint(2) NOT NULL DEFAULT 0,
+  `session_url_qs` varchar(255) NOT NULL DEFAULT '',
+  `session_url_ps` varchar(255) NOT NULL DEFAULT '',
+  `session_url_specific` int(10) NOT NULL DEFAULT 0
+  ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 CREATE TABLE IF NOT EXISTS `#prefix#_bbsmilies` (
   `smilies_id` smallint(5) UNSIGNED NOT NULL,
