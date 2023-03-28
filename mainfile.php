@@ -337,7 +337,8 @@ if (!defined('ADMIN_FILE')) {
 
 
 /*
- * Adopted Evo Variable Style Checking
+ * @version v2.8.41
+ * @package PegasusPHP
  * Code origin Nuke Titanium v4.0.4
  * @date 03/28/2023 8:23 AM Ernest Allen Buffington
  */
