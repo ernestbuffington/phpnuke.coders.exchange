@@ -327,14 +327,13 @@ $dbi = sql_connect($dbhost, $dbuname, $dbpass, $dbname);
 require_once(INCLUDE_PATH."includes/ipban.php");
 
 /*
- * Adopted Titanium Browser Functions
+ * Adopted Evo Variable Functions
  * Code origin Nuke Evolution / Xtreme v2.0.9e
  * @date 03/28/2023 8:23 AM Ernest Allen Buffington
  */
 if (!defined('ADMIN_FILE')) {
   require_once(INCLUDE_PATH."includes/classes/class.variables.php");
 }
-
 
 /*
  * @version v2.8.41
@@ -356,7 +355,7 @@ if (!defined('ADMIN_FILE')) {
 }
 
 /*
- * Adopted functions and added for Evo Support
+ * Adopted functions and added support for Evo Modules and Blocks etc
  * Code origin Nuke Evolution / Xtreme v2.0.9e
  * @date 03/28/2023 8:23 AM Ernest Allen Buffington
  */
@@ -375,7 +374,7 @@ include_once(INCLUDE_PATH."includes/mods/Evo/validation.php");
 require_once(INCLUDE_PATH."includes/mods/phpbb2/functions_validate.php");
 
 /*
- * Adopted Nuke Titanium functions and added for Titanium Support
+ * Adopted Nuke Titanium functions
  * Code origin PHP-Nuke Titanium v4.0.4
  * @date 03/28/2023 8:23 AM Ernest Allen Buffington
  */
@@ -384,7 +383,7 @@ require_once(INCLUDE_PATH."includes/mods/Titanium/functions_titanium_custom.php"
 require_once(INCLUDE_PATH."includes/mods/Titanium/functions_img.php");
 
 /*
- * functions added to support dynamic and ordered loading of CSS, PHPCSS, and JS in <HEAD> and before </BODY>
+ * functions added to support dynamic and ordered loading of CSS, PHPCSS, and JS in <head> and before </body>
  * Code origin Raven Nuke CMS (http://www.ravenphpscripts.com)
  * loader addons by Ernest Buffington aka TheGhost https://theghost.86it.us
  */
