@@ -60,7 +60,6 @@ function language_select($default, $select_name = "language", $dirname="modules/
         }
 
         closedir($dir);
-
         asort($lang);
         reset($lang);
 
