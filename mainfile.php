@@ -284,11 +284,26 @@ if(!$dbname) {
 require_once(INCLUDE_PATH."db/db.php");
 
 /*
+ * Adopted Nuke Evo database functions
+ * Code origin Nuke Evolution / Xtreme v2.0.9e
+ * @date 03/28/2023 8:23 AM Ernest Allen Buffington
+ */
+require_once(NUKE_INCLUDE_DIR.'functions_database.php');
+
+/*
+ * Moved back to includes folder (one still exists inside the forums folder)
+ * Code origin phpBB
+ * @date 03/28/2023 8:23 AM Ernest Allen Buffington
+ */
+include_once(NUKE_INCLUDE_DIR.'constants.php');
+
+/*
  * Added for Zend Zf1 future
  * Code origin Nuke Titanium v4.0.4
  * @date 03/28/2023 8:23 AM Ernest Allen Buffington
  */
 require_once(NUKE_CLASSES_DIR.'class.cache.php');
+require_once(NUKE_INCLUDE_DIR.'functions_cache.php');
 
 /*
  * Added for Evo debugger support
