@@ -68,7 +68,9 @@ function head() {
     echo '<meta http-equiv="Content-Style-Type" content="text/css" />'."\n";
     echo '<meta http-equiv="Content-Script-Type" content="text/javascript" />'."\n";
 
+    echo "<!-- Loading dynamic meta tags from database from includes/meta.php START -->\n";
     include("includes/meta.php");
+    echo "<!-- Loading dynamic meta tags from database from includes/meta.php END -->\n";
 	
 	echo "\n<title>$sitename $pagetitle</title>\n\n";
 	?>
@@ -121,15 +123,43 @@ div.caption { background:transparent; filter:progid:DXImageTransform.Microsoft.g
 	echo "<link rel=\"alternate\" type=\"application/rss+xml\" title=\"RSS\" href=\"backend.php\">\n";
 	echo "<link rel=\"StyleSheet\" href=\"themes/$ThemeSel/style/style.css\" type=\"text/css\">\n\n\n";
 
-	if (file_exists("includes/custom_files/custom_head.php")) {
-		include_secure("includes/custom_files/custom_head.php");
-	}
-	
-	echo "\n\n\n</head>\n\n";
+    if (!($custom_head = $cache->load('custom_head', 'config'))): 
+    
+	    $custom_head = array();
 
-	if (file_exists("includes/custom_files/custom_header.php")) {
-		include_secure("includes/custom_files/custom_header.php");
-	}
+	    if (file_exists(NUKE_INCLUDE_DIR.'custom_files/custom_head.php')): 
+	       echo "\n<!-- Loadiing custom_head.php from header.php -->\n\n";
+           $custom_head[] = 'custom_head';
+		endif;
+
+ 		if (file_exists(NUKE_INCLUDE_DIR.'custom_files/custom_header.php')): 
+	       echo "\n<!-- Loadiing custom_header.php from header.php -->\n\n";
+           $custom_head[] = 'custom_header';
+		endif;
+
+        if (!empty($custom_head)): 
+          
+		    foreach ($custom_head as $file):
+	            echo "\n<!-- Loadiing includes/".$file.".php from header.php -->\n\n";
+                include_once(NUKE_INCLUDE_DIR.'custom_files/'.$file.'.php');
+            endforeach;
+        
+		endif;
+		$cache->save('custom_head', 'config', $custom_head);
+	else: 
+        
+		if (!empty($custom_head)): 
+        
+		    foreach ($custom_head as $file): 
+                include_once(NUKE_INCLUDE_DIR.'custom_files/'.$file.'.php');
+            endforeach;
+        
+		endif;
+    endif;
+	
+	echo "</head>\n";
+
+	echo "\n<!-- Loadiing function themeheader() from header.php -->\n\n";
 	themeheader();
 }
 
