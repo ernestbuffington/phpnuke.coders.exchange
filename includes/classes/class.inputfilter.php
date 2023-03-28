@@ -10,7 +10,7 @@ if (realpath(__FILE__) == realpath($_SERVER['SCRIPT_FILENAME'])) {
   * @date: 10-05-2005
   * @version: 1.2.2_php4/php5/php7/php8
   * @author: Daniel Morris
-  * @contributors: Gianpaolo Racca, Ghislain Picard, Marco Wandschneider, Chris Tobin and Andrew Eddie.
+  * @contributors: Gianpaolo Racca, Ghislain Picard, Marco Wandschneider, Chris Tobin, Ernest Buffington and Andrew Eddie.
   * @copyright: Daniel Morris
   * @email: dan@rootcube.com
   * @license: GNU General Public License (GPL)
