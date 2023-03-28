@@ -1552,13 +1552,9 @@ function check_html($str, $strip='')
 function filter_text($Message, $strip="") {
 
 	global $EditedMessage;
-
 	check_words($Message);
-
 	$EditedMessage=check_html($EditedMessage, $strip);
-
 	return ($EditedMessage);
-
 }
 
 function filter($what, $strip="", $save="", $type="") {
