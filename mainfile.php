@@ -327,12 +327,22 @@ $dbi = sql_connect($dbhost, $dbuname, $dbpass, $dbname);
 require_once(INCLUDE_PATH."includes/ipban.php");
 
 /*
- * Adopted Evo Variable Style Checking
+ * Adopted Titanium Browser Functions
  * Code origin Nuke Evolution / Xtreme v2.0.9e
  * @date 03/28/2023 8:23 AM Ernest Allen Buffington
  */
 if (!defined('ADMIN_FILE')) {
   require_once(INCLUDE_PATH."includes/classes/class.variables.php");
+}
+
+
+/*
+ * Adopted Evo Variable Style Checking
+ * Code origin Nuke Titanium v4.0.4
+ * @date 03/28/2023 8:23 AM Ernest Allen Buffington
+ */
+if (!defined('ADMIN_FILE')) {
+  require_once(INCLUDE_PATH."includes/classes/class.browsers.php");
 }
 
 /*
