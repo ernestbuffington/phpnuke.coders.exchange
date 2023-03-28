@@ -354,6 +354,7 @@ include_once(INCLUDE_PATH."includes/mods/Evo/functions_evo.php");
 include_once(INCLUDE_PATH."includes/mods/Evo/functions_evo_custom.php");
 include_once(INCLUDE_PATH."includes/mods/Evo/functions_log.php");
 include_once(INCLUDE_PATH."includes/mods/Evo/log.php");
+include_once(INCLUDE_PATH."includes/mods/Evo/validation.php");
 include_once(INCLUDE_PATH."includes/functions_validate.php");
 
 /*
