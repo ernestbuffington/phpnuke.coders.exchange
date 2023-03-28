@@ -84,8 +84,14 @@ global $dbtype;
 switch ($dbtype) {
 
     case "MySQL":
-        $dbi=@mysql_connect($host, $user, $password);
-	mysql_select_db($db);
+        $dbi=mysql_connect($host, $user, $password);
+	    mysql_select_db($db);
+        return $dbi;
+    break;;
+
+    case "MySQLi":
+        $dbi=mysqli_connect($host, $user, $password);
+	    mysqli_select_db($db);
         return $dbi;
     break;;
 
@@ -96,32 +102,32 @@ switch ($dbtype) {
     break;;
 
     case "postgres":
-         $dbi=@pg_connect("host=$host user=$user password=$password port=5432 dbname=$db");
+         $dbi=pg_connect("host=$host user=$user password=$password port=5432 dbname=$db");
          return $dbi;
     break;;
 
     case "postgres_local":
-         $dbi=@pg_connect("user=$user password=$password dbname=$db");
+         $dbi=pg_connect("user=$user password=$password dbname=$db");
          return $dbi;
     break;;
 
     case "ODBC":
-         $dbi=@odbc_connect($db,$user,$password);
+         $dbi=odbc_connect($db,$user,$password);
          return $dbi;
     break;;
 
     case "ODBC_Adabas":
-         $dbi=@odbc_connect($host.":".$db,$user,$password);
+         $dbi=odbc_connect($host.":".$db,$user,$password);
 	 return $dbi;
     break;;
 
     case "Interbase":
-         $dbi=@ibase_connect($host.":".$db,$user,$password);
+         $dbi=ibase_connect($host.":".$db,$user,$password);
          return $dbi;
     break;;
 
     case "Sybase":
-        $dbi=@sybase_connect($host, $user, $password);
+        $dbi=sybase_connect($host, $user, $password);
     	sybase_select_db($db,$dbi);
 	return $dbi;
     break;;
@@ -140,34 +146,39 @@ global $dbtype;
 switch ($dbtype) {
 
     case "MySQL":
-        $dbi=@mysql_close($id);
+        $dbi=mysql_close($id);
+        return $dbi;
+    break;;
+
+    case "MySQLi":
+        $dbi=mysqli_close($id);
         return $dbi;
     break;;
 
     case "mSQL":
-         $dbi=@msql_close($id);
+         $dbi=msql_close($id);
          return $dbi;
     break;;
 
     case "postgres":
     case "postgres_local":
-         $dbi=@pg_close($id);
+         $dbi=pg_close($id);
          return $dbi;
     break;;
 
     case "ODBC":
     case "ODBC_Adabas":
-         $dbi=@odbc_close($id);
+         $dbi=odbc_close($id);
          return $dbi;  
     break;;
 
     case "Interbase":
-         $dbi=@ibase_close($id);
+         $dbi=ibase_close($id);
          return $dbi;
     break;;
 
     case "Sybase":
-        $dbi=@sybase_close($id);
+        $dbi=sybase_close($id);
         return $dbi;
     break;;
 
@@ -193,12 +204,17 @@ if($sql_debug) echo "SQL query: ".str_replace(",",", ",$query)."<BR>";
 switch ($dbtype) {
 
     case "MySQL":
-        $res=@mysql_query($query, $id);
+        $res=mysql_query($query, $id);
+        return $res;
+    break;;
+
+    case "MySQLi":
+        $res=mysqli_query($query, $id);
         return $res;
     break;;
 
     case "mSQL":
-        $res=@msql_query($query, $id);
+        $res=msql_query($query, $id);
         return $res;
     break;;
 
@@ -214,17 +230,17 @@ switch ($dbtype) {
 
     case "ODBC":
     case "ODBC_Adabas":
-        $res=@odbc_exec($id,$query);
+        $res=odbc_exec($id,$query);
         return $res;
     break;;
 
     case "Interbase":
-        $res=@ibase_query($id,$query);
+        $res=ibase_query($id,$query);
         return $res;
     break;;
 
     case "Sybase":
-        $res=@sybase_query($query, $id);
+        $res=sybase_query($query, $id);
         return $res;
     break;;
 
@@ -248,6 +264,11 @@ switch ($dbtype) {
 
     case "MySQL":
         $rows=mysql_num_rows($res);
+        return $rows;
+    break;;
+
+    case "MySQLi":
+        $rows=mysqli_num_rows($res);
         return $rows;
     break;;
 
@@ -298,6 +319,11 @@ switch ($dbtype) {
 
     case "MySQL":
         $row = mysql_fetch_row($res);
+        return $row;
+    break;;
+
+    case "MySQLi":
+        $row = mysqli_fetch_row($res);
         return $row;
     break;;
 
@@ -362,6 +388,12 @@ switch ($dbtype)
     case "MySQL":
         $row = array();
         $row = mysql_fetch_array($res);
+        return $row;
+    break;;
+
+    case "MySQLi":
+        $row = array();
+        $row = mysqli_fetch_array($res);
         return $row;
     break;;
 
@@ -450,6 +482,12 @@ switch ($dbtype)
 	else return false;
     break;;
 
+    case "MySQLi":
+        $row = mysqli_fetch_object($res);
+	if($row) return $row;
+	else return false;
+    break;;
+
     case "mSQL":
         $row = msql_fetch_object($res);
 	if($row) return $row;
@@ -533,6 +571,11 @@ switch ($dbtype) {
 
     case "MySQL":
         $row = mysql_free_result($res);
+        return $row;
+    break;;
+
+    case "MySQLi":
+        $row = mysqli_free_result($res);
         return $row;
     break;;
 
