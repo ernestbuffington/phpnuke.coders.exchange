@@ -1,4 +1,5 @@
 <?php
+
 /***************************************************************************
  *                          functions_validate.php
  *                            -------------------
@@ -7,7 +8,6 @@
  *   email                : support@phpbb.com
  *
  *   Id: functions_validate.php,v 1.6.2.13 2005/07/19 20:01:15 acydburn Exp
- *
  *
  ***************************************************************************/
 
@@ -20,35 +20,34 @@
  *
  ***************************************************************************/
 
-/* Applied rules:
- * WrapVariableVariableNameInCurlyBracesRector (https://www.php.net/manual/en/language.variables.variable.php)
- * NullToStrictStringFuncCallArgRector
- */
- 
+/*****[CHANGES]**********************************************************
+-=[Mod]=-
+      Custom mass PM                           v1.4.7       07/04/2005
+ ************************************************************************/
+
+if (realpath(__FILE__) == realpath($_SERVER['SCRIPT_FILENAME'])) {
+	exit('Access Denied');
+}
+
 //
 // Check to see if the username has been taken, or if it is disallowed.
 // Also checks if it includes the " character, which we don't allow in usernames.
 // Used for registering, changing names, and posting anonymously with a username
 //
-
-if (!defined('IN_PHPBB')) {
-	die();
-}
-
-function validate_username_phpbb2($username)
+function validate_username($username)
 {
         global $db, $lang, $userdata;
 
         // Remove doubled up spaces
-	$username = preg_replace('#\s+#', ' ', trim((string) $username)); 
-	$username = phpbb_clean_username($username);
+        $username = preg_replace('#\s+#', ' ', trim($username));
+        $username = phpbb_clean_username($username);
 
         $sql = "SELECT username
-                FROM " . USERS_TABLE . "
-                WHERE LOWER(username) = '" . strtolower((string) $username) . "'";
+        FROM " . USERS_TABLE . "
+                WHERE LOWER(username) = '" . strtolower($username) . "'";
         if ($result = $db->sql_query($sql))
         {
-                if ($row = $db->sql_fetchrow($result))
+                while ($row = $db->sql_fetchrow($result))
                 {
                         if (($userdata['session_logged_in'] && $row['username'] != $userdata['username']) || !$userdata['session_logged_in'])
                         {
@@ -61,7 +60,7 @@ function validate_username_phpbb2($username)
 
         $sql = "SELECT group_name
                 FROM " . GROUPS_TABLE . "
-                WHERE LOWER(group_name) = '" . strtolower((string) $username) . "'";
+                WHERE LOWER(group_name) = '" . strtolower($username) . "'";
         if ($result = $db->sql_query($sql))
         {
                 if ($row = $db->sql_fetchrow($result))
@@ -72,6 +71,21 @@ function validate_username_phpbb2($username)
         }
         $db->sql_freeresult($result);
 
+        global $prefix;
+        $sql = "SELECT config_value FROM `".$prefix."_cnbya_config` WHERE config_name='bad_nick'";
+        $result = $db->sql_query($sql);
+        $row = $db->sql_fetchrowset($result);
+        $BadNickList = explode("\r\n",trim($row[0]["config_value"]));
+        $db->sql_freeresult($result);
+        for ($i=0; $i < count($BadNickList); $i++) {
+            if(!empty($BadNickList[$i])) {
+                if (preg_match("#\b(" . str_replace("\*", ".*?", preg_quote($BadNickList[$i], '#')) . ")\b#i", $username))
+                {
+                        return array('error' => true, 'error_msg' => $lang['Username_disallowed']);
+                }
+            }
+        }
+
         $sql = "SELECT disallow_username
                 FROM " . DISALLOW_TABLE;
         if ($result = $db->sql_query($sql))
@@ -80,7 +94,7 @@ function validate_username_phpbb2($username)
                 {
                         do
                         {
-                                if (preg_match("#\b(" . str_replace("\*", ".*?", (string) phpbb_preg_quote($row['disallow_username'], '#')) . ")\b#i", (string) $username))
+                                if (preg_match("#\b(" . str_replace("\*", ".*?", preg_quote($row['disallow_username'], '#')) . ")\b#i", $username))
                                 {
                                         $db->sql_freeresult($result);
                                         return array('error' => true, 'error_msg' => $lang['Username_disallowed']);
@@ -99,7 +113,7 @@ function validate_username_phpbb2($username)
                 {
                         do
                         {
-                                if (preg_match("#\b(" . str_replace("\*", ".*?", (string) phpbb_preg_quote($row['word'], '#')) . ")\b#i", (string) $username))
+                                if (preg_match("#\b(" . str_replace("\*", ".*?", preg_quote($row['word'], '#')) . ")\b#i", $username))
                                 {
                                         $db->sql_freeresult($result);
                                         return array('error' => true, 'error_msg' => $lang['Username_disallowed']);
@@ -111,7 +125,13 @@ function validate_username_phpbb2($username)
         $db->sql_freeresult($result);
 
         // Don't allow " and ALT-255 in username.
-        if (strstr((string) $username, '"') || strstr((string) $username, '&quot;') || strstr((string) $username, chr(160)))
+        /*****[BEGIN]******************************************
+         [ Mod:     Custom mass PM                     v1.4.7 ]
+         ******************************************************/
+        if (strstr($username, '"') || strstr($username, '&quot;') || strstr($username, chr(160)) || strstr($username, ';') || strstr($username, chr(173)))
+        /*****[END]********************************************
+         [ Mod:     Custom mass PM                     v1.4.7 ]
+         ******************************************************/
         {
                 return array('error' => true, 'error_msg' => $lang['Username_invalid']);
         }
@@ -123,11 +143,7 @@ function validate_username_phpbb2($username)
 // Check to see if email address is banned
 // or already present in the DB
 //
-//
-// Check to see if email address is banned
-// or already present in the DB
-//
-function validate_email_phpbb2($email)
+function validate_email($email)
 {
         global $db, $lang;
 
@@ -180,9 +196,9 @@ function validate_email_phpbb2($email)
 // Does supplementary validation of optional profile fields. This expects common stuff like trim() and strip_tags()
 // to have already been run. Params are passed by-ref, so we can set them to the empty string if they fail.
 //
-function validate_optional_fields(&$icq, &$aim, &$msnm, &$yim, &$website, &$location, &$occupation, &$interests, &$sig)
+function validate_optional_fields_modded(&$website, &$location, &$occupation, &$interests, &$sig, &$facebook)
 {
-        $check_var_length = count(['aim', 'msnm', 'yim', 'location', 'occupation', 'interests', 'sig']);
+		$check_var_length = count(['location', 'occupation', 'interests', 'sig', 'facebook']);
  
         for($i = 0; $i < ($check_var_length); $i++)
         {
@@ -212,3 +228,4 @@ function validate_optional_fields(&$icq, &$aim, &$msnm, &$yim, &$website, &$loca
         return;
 }
 
+?>

@@ -1,52 +1,14 @@
 <?php
+
 /***************************************************************************
  *                            function_selects.php
  *                            -------------------
+ *   updated              : Tuesday, Mar 28, 2023
  *   begin                : Saturday, Feb 13, 2001
  *   copyright            : (C) 2001 The phpBB Group
  *   email                : support@phpbb.com
  *
  *   Id: functions_selects.php,v 1.3.2.4 2002/12/22 12:20:35 psotfx Exp
- *
- ***************************************************************************/
-
-/***************************************************************************
-* phpbb2 forums port version 2.0.5 (c) 2003 - Nuke Cops (http://nukecops.com)
-*
-* Ported by Nuke Cops to phpbb2 standalone 2.0.5 Test
-* and debugging completed by the Elite Nukers and site members.
-*
-* You run this package at your sole risk. Nuke Cops and affiliates cannot
-* be held liable if anything goes wrong. You are advised to test this
-* package on a development system. Backup everything before implementing
-* in a production environment. If something goes wrong, you can always
-* backout and restore your backups.
-*
-* Installing and running this also means you agree to the terms of the AUP
-* found at Nuke Cops.
-*
-* This is version 2.0.5 of the phpbb2 forum port for PHP-Nuke. Work is based
-* on Tom Nitzschner's forum port version 2.0.6. Tom's 2.0.6 port was based
-* on the phpbb2 standalone version 2.0.3. Our version 2.0.5 from Nuke Cops is
-* now reflecting phpbb2 standalone 2.0.5 that fixes some bugs and the
-* invalid_session error message.
-***************************************************************************/
-
-/***************************************************************************
- *   This file is part of the phpBB2 port to Nuke 6.0 (c) copyright 2002
- *   by Tom Nitzschner (tom@toms-home.com)
- *   http://bbtonuke.sourceforge.net (or http://www.toms-home.com)
- *
- *   As always, make a backup before messing with anything. All code
- *   release by me is considered sample code only. It may be fully
- *   functual, but you use it at your own risk, if you break it,
- *   you get to fix it too. No waranty is given or implied.
- *
- *   Please post all questions/request about this port on http://bbtonuke.sourceforge.net first,
- *   then on my site. All original header code and copyright messages will be maintained
- *   to give credit where credit is due. If you modify this, the only requirement is
- *   that you also maintain all original copyright messages. All my work is released
- *   under the GNU GENERAL PUBLIC LICENSE. Please see the README for more information.
  *
  ***************************************************************************/
 
@@ -61,14 +23,14 @@
 
 /*****[CHANGES]**********************************************************
 -=[Base]=-
-      Theme Management                         v1.0.2       12/14/2005
+      Theme Management                         v1.0.4       12/14/2023
 -=[Mod]=-
-      Super Quick Reply                        v1.3.0       06/14/2005
-      Advanced Time Management                 v2.2.0       07/26/2005
-      At a Glance Options                      v1.0.0       08/17/2005
-      Group Colors and Ranks                   v1.0.0       08/24/2005
-      Log Actions Mod - Topic View             v2.0.0       09/18/2005
-	  Birthdays                                v3.0.0
+      Super Quick Reply                        v1.3.1       03/28/2023
+      Advanced Time Management                 v2.2.1       03/28/2023
+      At a Glance Options                      v1.0.1       03/28/2023
+      Group Colors and Ranks                   v1.0.1       03/28/2023
+      Log Actions Mod - Topic View             v2.0.1       03/28/2023
+	  Birthdays                                v3.0.1       03/28/2023
  ************************************************************************/
 
 if (!defined('IN_PHPBB'))
@@ -98,7 +60,6 @@ function language_select($default, $select_name = "language", $dirname="modules/
         }
 
         closedir($dir);
-
         asort($lang);
         reset($lang);
 

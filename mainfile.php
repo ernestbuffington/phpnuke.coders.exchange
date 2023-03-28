@@ -283,6 +283,41 @@ if(!$dbname) {
 
 require_once(INCLUDE_PATH."db/db.php");
 
+/*
+ * Adopted Nuke Evo database functions
+ * Code origin Nuke Evolution / Xtreme v2.0.9e
+ * @date 03/28/2023 8:23 AM Ernest Allen Buffington
+ */
+require_once(INCLUDE_PATH."includes/mods/Evo/functions_database.php");
+
+/*
+ * Moved back to includes folder (one still exists inside the forums folder)
+ * Code origin phpBB
+ * @date 03/28/2023 8:23 AM Ernest Allen Buffington
+ */
+require_once(INCLUDE_PATH."includes/mods/phpbb2/constants.php");
+
+/*
+ * Added for Zend Zf1 future
+ * Code origin Nuke Titanium v4.0.4
+ * @date 03/28/2023 8:23 AM Ernest Allen Buffington
+ */
+require_once(NUKE_CLASSES_DIR.'class.cache.php');
+
+/*
+ * Added version 1.x of PclZip
+ * Code origin Nuke Titanium v4.0.4
+ * @date 03/28/2023 8:23 AM Ernest Allen Buffington
+ */
+include_once(NUKE_CLASSES_DIR.'class.zip.php');
+
+/*
+ * Added for Evo debugger support
+ * Code origin Nuke Evolution / Xtreme v2.0.9e
+ * @date 03/28/2023 8:23 AM Ernest Allen Buffington
+ */
+require_once(NUKE_CLASSES_DIR.'class.debugger.php');
+
 /* FOLLOWING TWO LINES ARE DEPRECATED BUT ARE HERE FOR OLD MODULES COMPATIBILITY */
 /* PLEASE START USING THE NEW SQL ABSTRACTION LAYER. SEE MODULES DOC FOR DETAILS */
 require_once(INCLUDE_PATH."includes/sql_layer.php");
@@ -291,10 +326,51 @@ $dbi = sql_connect($dbhost, $dbuname, $dbpass, $dbname);
 
 require_once(INCLUDE_PATH."includes/ipban.php");
 
-
+/*
+ * Adopted Evo Variable Style Checking
+ * Code origin Nuke Evolution / Xtreme v2.0.9e
+ * @date 03/28/2023 8:23 AM Ernest Allen Buffington
+ */
 if (!defined('ADMIN_FILE')) {
   require_once(INCLUDE_PATH."includes/classes/class.variables.php");
 }
+
+/*
+ * Adopted Evo Input Filtering
+ * Code origin Nuke Evolution / Xtreme v2.0.9e
+ * @date 03/28/2023 8:23 AM Ernest Allen Buffington
+ */
+if (!defined('ADMIN_FILE')) {
+  require_once(INCLUDE_PATH."includes/classes/class.inputfilter.php");
+}
+
+/*
+ * Adopted functions and added for Evo Support
+ * Code origin Nuke Evolution / Xtreme v2.0.9e
+ * @date 03/28/2023 8:23 AM Ernest Allen Buffington
+ */
+require_once(INCLUDE_PATH."includes/mods/Evo/functions_cache.php");
+include_once(INCLUDE_PATH."includes/mods/Evo/functions_evo.php");
+include_once(INCLUDE_PATH."includes/mods/Evo/functions_evo_custom.php");
+include_once(INCLUDE_PATH."includes/mods/Evo/functions_log.php");
+include_once(INCLUDE_PATH."includes/mods/Evo/log.php");
+include_once(INCLUDE_PATH."includes/mods/Evo/validation.php");
+
+/*
+ * phpbb2 Mods and changes
+ * Code origin Nuke Titanium v4.0.4
+ * @date 03/28/2023 8:23 AM Ernest Allen Buffington
+ */
+require_once(INCLUDE_PATH."includes/mods/phpbb2/functions_validate.php");
+
+/*
+ * Adopted Nuke Titanium functions and added for Titanium Support
+ * Code origin PHP-Nuke Titanium v4.0.4
+ * @date 03/28/2023 8:23 AM Ernest Allen Buffington
+ */
+require_once(INCLUDE_PATH."includes/mods/Titanium/functions_titanium.php");
+require_once(INCLUDE_PATH."includes/mods/Titanium/functions_titanium_custom.php");
+require_once(INCLUDE_PATH."includes/mods/Titanium/functions_img.php");
 
 /*
  * functions added to support dynamic and ordered loading of CSS, PHPCSS, and JS in <HEAD> and before </BODY>
@@ -302,17 +378,17 @@ if (!defined('ADMIN_FILE')) {
  * loader addons by Ernest Buffington aka TheGhost https://theghost.86it.us
  */
 if (file_exists(INCLUDE_PATH."includes/mods/Raven/dynamic_loader_functions.php")) {
-	include_once(INCLUDE_PATH."includes/mods/Raven/dynamic_loader_functions.php");
+	require_once(INCLUDE_PATH."includes/mods/Raven/dynamic_loader_functions.php");
 }
 
 # Base: Language Selector v3.0.0 START
 if (file_exists(INCLUDE_PATH."includes/mods/Dragonfly/language.php")) {
-	include_once(INCLUDE_PATH."includes/mods/Dragonfly/language.php");
+	require_once(INCLUDE_PATH."includes/mods/Dragonfly/language.php");
 }
 # Base: Language Selector v3.0.0 END
 
 if (file_exists(INCLUDE_PATH."includes/custom_files/custom_mainfile.php")) {
-	include_once(INCLUDE_PATH."includes/custom_files/custom_mainfile.php");
+	require_once(INCLUDE_PATH."includes/custom_files/custom_mainfile.php");
 }
 
 # add external Rector vendor library support so that we can use composer with Nuke
@@ -331,8 +407,8 @@ endif;
 # Vendor Autoload - only if vendor directory exists with an autoload file! END
 
 # Core exceptions handler START
-include_once(NUKE_INCLUDE_DIR . 'exception.php');
-include_once(NUKE_INCLUDE_DIR . 'abstract/abstract.exception.php');
+require_once(NUKE_INCLUDE_DIR . 'exception.php');
+require_once(NUKE_INCLUDE_DIR . 'abstract/abstract.exception.php');
 # Core exceptions handler END
 
 if (!defined('FORUM_ADMIN')) {
@@ -1381,7 +1457,6 @@ function FixQuotes ($what = "") {
 function Remove_Slashes($str) 
 {
     global $_GETVAR;
-    
 	return $_GETVAR->stripSlashes($str);
 }
 
@@ -1511,12 +1586,13 @@ function delQuotes($string){
 function check_html($str, $strip='') 
 {
 	global $admin;
-
+  
 	if(is_admin($admin)):
       $str = Fix_Quotes($str, !empty($strip));
       return $str;
 	endif;
-    
+
+  if (!defined('ADMIN_FILE')){
     if(defined('INPUT_FILTER')): 
 	
 		if($strip == 'nohtml'):
@@ -1547,6 +1623,12 @@ function check_html($str, $strip='')
     endif;
 
     return $str;
+	
+  }
+  else
+  {
+    return $str;
+  }
 }
 
 function filter_text($Message, $strip="") {
@@ -1566,7 +1648,6 @@ function filter($what, $strip="", $save="", $type="") {
 		$what = htmlentities(trim($what), ENT_QUOTES);
 
 		// If the variable $what doesn't comes from a preview screen should be converted
-
 		if ($type != "preview" AND $save != 1) {
 
 			$what = html_entity_decode($what, ENT_QUOTES);

@@ -1073,7 +1073,7 @@ endif;
             if (is_array($input[$k])) {
                 foreach (array_keys($input[$k]) as $k2) {
                     if (in_array(strtolower($k2), $banned)) {
-                        die('Dork Alert: Input hack attempt!!');
+                        die('Script Kiddie Alert: Input Hack attempt!!');
                     }
                 }
             } elseif (in_array(strtolower((string) $k), $banned)) {

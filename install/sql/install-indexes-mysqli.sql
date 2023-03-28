@@ -584,3 +584,24 @@ ALTER TABLE `#prefix#_users_temp`
   
 ALTER TABLE `#prefix#_users`
   MODIFY `user_id` mediumint(8) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+ALTER TABLE `nuke_cnbya_config`
+  ADD UNIQUE KEY `config_name` (`config_name`);
+
+ALTER TABLE `nuke_cnbya_field`
+  ADD PRIMARY KEY (`fid`);
+
+ALTER TABLE `nuke_cnbya_value`
+  ADD PRIMARY KEY (`vid`);
+
+ALTER TABLE `nuke_cnbya_value_temp`
+  ADD PRIMARY KEY (`vid`);
+
+ALTER TABLE `nuke_cnbya_field`
+  MODIFY `fid` int(10) NOT NULL AUTO_INCREMENT;
+
+ALTER TABLE `nuke_cnbya_value`
+  MODIFY `vid` int(10) NOT NULL AUTO_INCREMENT;
+
+ALTER TABLE `nuke_cnbya_value_temp`
+  MODIFY `vid` int(10) NOT NULL AUTO_INCREMENT;
