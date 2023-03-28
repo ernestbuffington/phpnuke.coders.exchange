@@ -306,6 +306,13 @@ require_once(NUKE_CLASSES_DIR.'class.cache.php');
 require_once(NUKE_INCLUDE_DIR.'functions_cache.php');
 
 /*
+ * Added version 1.x of PclZip
+ * Code origin Nuke Titanium v4.0.4
+ * @date 03/28/2023 8:23 AM Ernest Allen Buffington
+ */
+include_once(NUKE_CLASSES_DIR.'class.zip.php');
+
+/*
  * Added for Evo debugger support
  * Code origin Nuke Evolution / Xtreme v2.0.9e
  * @date 03/28/2023 8:23 AM Ernest Allen Buffington
