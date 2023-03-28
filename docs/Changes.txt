@@ -37,6 +37,8 @@ Jan 2023: Version 8.3.2
 - Updated Meta Tags Loading Order
 - Updated Nuke Installer
 - Added UTF Tools
+- Added a new InputFilter
+-
 
 August 2007: Version 8.1
 ========================
