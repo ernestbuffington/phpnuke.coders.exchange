@@ -12,46 +12,6 @@
  ***************************************************************************/
 
 /***************************************************************************
-* phpbb2 forums port version 2.0.5 (c) 2003 - Nuke Cops (http://nukecops.com)
-*
-* Ported by Nuke Cops to phpbb2 standalone 2.0.5 Test
-* and debugging completed by the Elite Nukers and site members.
-*
-* You run this package at your sole risk. Nuke Cops and affiliates cannot
-* be held liable if anything goes wrong. You are advised to test this
-* package on a development system. Backup everything before implementing
-* in a production environment. If something goes wrong, you can always
-* backout and restore your backups.
-*
-* Installing and running this also means you agree to the terms of the AUP
-* found at Nuke Cops.
-*
-* This is version 2.0.5 of the phpbb2 forum port for PHP-Nuke. Work is based
-* on Tom Nitzschner's forum port version 2.0.6. Tom's 2.0.6 port was based
-* on the phpbb2 standalone version 2.0.3. Our version 2.0.5 from Nuke Cops is
-* now reflecting phpbb2 standalone 2.0.5 that fixes some bugs and the
-* invalid_session error message.
-***************************************************************************/
-
-/***************************************************************************
- *   This file is part of the phpBB2 port to Nuke 6.0 (c) copyright 2002
- *   by Tom Nitzschner (tom@toms-home.com)
- *   http://bbtonuke.sourceforge.net (or http://www.toms-home.com)
- *
- *   As always, make a backup before messing with anything. All code
- *   release by me is considered sample code only. It may be fully
- *   functual, but you use it at your own risk, if you break it,
- *   you get to fix it too. No waranty is given or implied.
- *
- *   Please post all questions/request about this port on http://bbtonuke.sourceforge.net first,
- *   then on my site. All original header code and copyright messages will be maintained
- *   to give credit where credit is due. If you modify this, the only requirement is
- *   that you also maintain all original copyright messages. All my work is released
- *   under the GNU GENERAL PUBLIC LICENSE. Please see the README for more information.
- *
- ***************************************************************************/
-
-/***************************************************************************
  *
  *   This program is free software; you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -65,9 +25,8 @@
       Custom mass PM                           v1.4.7       07/04/2005
  ************************************************************************/
 
-if (!defined('IN_PHPBB'))
-{
-    die('Hacking attempt');
+if (realpath(__FILE__) == realpath($_SERVER['SCRIPT_FILENAME'])) {
+	exit('Access Denied');
 }
 
 //
@@ -83,7 +42,7 @@ function validate_username($username)
         $username = preg_replace('#\s+#', ' ', trim($username));
         $username = phpbb_clean_username($username);
 
-    $sql = "SELECT username
+        $sql = "SELECT username
         FROM " . USERS_TABLE . "
                 WHERE LOWER(username) = '" . strtolower($username) . "'";
         if ($result = $db->sql_query($sql))
@@ -166,13 +125,13 @@ function validate_username($username)
         $db->sql_freeresult($result);
 
         // Don't allow " and ALT-255 in username.
-/*****[BEGIN]******************************************
- [ Mod:     Custom mass PM                     v1.4.7 ]
- ******************************************************/
+        /*****[BEGIN]******************************************
+         [ Mod:     Custom mass PM                     v1.4.7 ]
+         ******************************************************/
         if (strstr($username, '"') || strstr($username, '&quot;') || strstr($username, chr(160)) || strstr($username, ';') || strstr($username, chr(173)))
-/*****[END]********************************************
- [ Mod:     Custom mass PM                     v1.4.7 ]
- ******************************************************/
+        /*****[END]********************************************
+         [ Mod:     Custom mass PM                     v1.4.7 ]
+         ******************************************************/
         {
                 return array('error' => true, 'error_msg' => $lang['Username_invalid']);
         }
@@ -237,7 +196,7 @@ function validate_email($email)
 // Does supplementary validation of optional profile fields. This expects common stuff like trim() and strip_tags()
 // to have already been run. Params are passed by-ref, so we can set them to the empty string if they fail.
 //
-function validate_optional_fields(&$website, &$location, &$occupation, &$interests, &$sig, &$facebook)
+function validate_optional_fields_modded(&$website, &$location, &$occupation, &$interests, &$sig, &$facebook)
 {
 		$check_var_length = count(['location', 'occupation', 'interests', 'sig', 'facebook']);
  

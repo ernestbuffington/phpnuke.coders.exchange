@@ -35,7 +35,7 @@ if (!defined('IN_PHPBB')) {
 	die();
 }
 
-function validate_username($username)
+function validate_username_phpbb2($username)
 {
         global $db, $lang, $userdata;
 
@@ -127,7 +127,7 @@ function validate_username($username)
 // Check to see if email address is banned
 // or already present in the DB
 //
-function validate_email($email)
+function validate_email_phpbb2($email)
 {
         global $db, $lang;
 
