@@ -39,7 +39,7 @@ Jan 2023: Version 8.3.2
 - Added UTF Tools
 - Added a new InputFilter
 - Added Zend (zf1 Future) for PHP-Nuke
-
+- Added new debugger
 
 August 2007: Version 8.1
 ========================
