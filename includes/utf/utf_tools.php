@@ -1,8 +1,4 @@
 <?php
-/*======================================================================= 
-  PHP-Nuke Titanium | Nuke-Evolution Xtreme : PHP-Nuke Web Portal System
- =======================================================================*/
-
 
 /**
 *
@@ -724,7 +720,7 @@ function utf8_recode($string, $encoding)
   // First, try iconv()
   if (function_exists('iconv'))
   {
-    $ret = @iconv($encoding, 'utf-8', $string);
+    $ret = iconv($encoding, 'utf-8', $string);
 
     if (!empty($ret))
     {
@@ -751,7 +747,7 @@ function utf8_recode($string, $encoding)
       case 'euc-kr':
       case 'big5':
       case 'gb2312':
-        $ret = @mb_convert_encoding($string, 'utf-8', $encoding);
+        $ret = mb_convert_encoding($string, 'utf-8', $encoding);
 
         if (!empty($ret))
         {
@@ -763,7 +759,7 @@ function utf8_recode($string, $encoding)
   // Try the recode extension
   if (function_exists('recode_string'))
   {
-    $ret = @recode_string($encoding . '..utf-8', $string);
+    $ret = recode_string($encoding . '..utf-8', $string);
 
     if (!empty($ret))
     {
