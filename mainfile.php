@@ -431,9 +431,7 @@ if(empty($admin_file)) {
 } elseif (!empty($admin_file) && !file_exists(INCLUDE_PATH.$admin_file.".php")) {
 
    	die ("The admin_file you defined in config.php does not exist");
-
   }
-
 }
 
 $row = $db->sql_fetchrow($db->sql_query("SELECT * FROM ".$prefix."_config"));
