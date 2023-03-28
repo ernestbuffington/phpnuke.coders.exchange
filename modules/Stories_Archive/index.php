@@ -1,38 +1,28 @@
 <?php
 
-
-
 /************************************************************************/
-
 /* PHP-NUKE: Web Portal System                                          */
-
 /* ===========================                                          */
-
 /*                                                                      */
-
 /* Copyright (c) 2023 by Francisco Burzi                                */
-
 /* https://phpnuke.coders.exchange                                      */
-
 /*                                                                      */
-
 /* This program is free software. You can redistribute it and/or modify */
-
 /* it under the terms of the GNU General Public License as published by */
-
 /* the Free Software Foundation; either version 2 of the License.       */
-
 /************************************************************************/
 
-
-
+/* Applied rules:
+ * AddDefaultValueForUndefinedVariableRector (https://github.com/vimeo/psalm/blob/29b70442b11e3e66113935a2ee22e165a70c74a4/docs/fixing_code.md#possiblyundefinedvariable)
+ * EregToPregMatchRector (http://php.net/reference.pcre.pattern.posix https://stackoverflow.com/a/17033826/1348344 https://docstore.mik.ua/orelly/webprog/pcook/ch13_02.htm)
+ * TernaryToNullCoalescingRector
+ * NullCoalescingOperatorRector (https://wiki.php.net/rfc/null_coalesce_equal_operator)
+ */
+ 
 if (!defined('MODULE_FILE')) {
 
 	die ("You can't access this file directly...");
-
 }
-
-
 
 require_once("mainfile.php");
 
@@ -40,11 +30,11 @@ $module_name = basename(dirname(__FILE__));
 
 get_lang($module_name);
 
-
-
 function select_month() {
 
-	global $prefix, $user_prefix, $db, $module_name;
+	$getdate = [];
+    $month = null;
+    global $prefix, $user_prefix, $db, $module_name;
 
 	include("header.php");
 
@@ -64,7 +54,7 @@ function select_month() {
 
 		$time = $row['time'];
 
-		ereg ("([0-9]{4})-([0-9]{1,2})-([0-9]{1,2}) ([0-9]{1,2}):([0-9]{1,2}):([0-9]{1,2})", $time, $getdate);
+		preg_match ('#([0-9]{4})\-([0-9]{1,2})\-([0-9]{1,2}) ([0-9]{1,2}):([0-9]{1,2}):([0-9]{1,2})#m', $time, $getdate);
 
 		if ($getdate[2] == "01") { $month = _JANUARY; } elseif ($getdate[2] == "02") { $month = _FEBRUARY; } elseif ($getdate[2] == "03") { $month = _MARCH; } elseif ($getdate[2] == "04") { $month = _APRIL; } elseif ($getdate[2] == "05") { $month = _MAY; } elseif ($getdate[2] == "06") { $month = _JUNE; } elseif ($getdate[2] == "07") { $month = _JULY; } elseif ($getdate[2] == "08") { $month = _AUGUST; } elseif ($getdate[2] == "09") { $month = _SEPTEMBER; } elseif ($getdate[2] == "10") { $month = _OCTOBER; } elseif ($getdate[2] == "11") { $month = _NOVEMBER; } elseif ($getdate[2] == "12") { $month = _DECEMBER; }
 
@@ -81,17 +71,11 @@ function select_month() {
 	}
 
 	echo "</ul>"
-
 	."<br><br><br><center>"
-
 	."<form action=\"modules.php?name=Search\" method=\"post\">"
-
 	."<input type=\"text\" name=\"query\" size=\"30\">&nbsp;"
-
 	."<input type=\"submit\" value=\""._SEARCH."\">"
-
 	."</form><br><br>"
-
 	."[ <a href=\"modules.php?name=$module_name&amp;sa=show_all\">"._SHOWALLSTORIES."</a> ]</center>";
 
 	CloseTable();
@@ -104,6 +88,8 @@ function select_month() {
 
 function show_month($year, $month, $month_l) {
 
+	$getdate = [];
+    
 	global $userinfo, $prefix, $user_prefix, $db, $bgcolor1, $bgcolor2, $user, $cookie, $sitename, $multilingual, $language, $module_name, $articlecomm;
 
 	$year = intval($year);
@@ -171,17 +157,11 @@ function show_month($year, $month, $month_l) {
 	OpenTable();
 
 	echo "<table border=\"0\" width=\"100%\"><tr>"
-
 	."<td bgcolor=\"$bgcolor2\" align=\"left\"><b>"._ARTICLES."</b></td>"
-
 	."<td bgcolor=\"$bgcolor2\" align=\"center\"><b>"._COMMENTS."</b></td>"
-
 	."<td bgcolor=\"$bgcolor2\" align=\"center\"><b>"._READS."</b></td>"
-
 	."<td bgcolor=\"$bgcolor2\" align=\"center\"><b>"._USCORE."</b></td>"
-
 	."<td bgcolor=\"$bgcolor2\" align=\"center\"><b>"._DATE."</b></td>"
-
 	."<td bgcolor=\"$bgcolor2\" align=\"center\"><b>"._ACTIONS."</b></td></tr>";
 
 	$result = $db->sql_query("SELECT sid, catid, title, time, comments, counter, topic, alanguage, score, ratings from ".$prefix."_stories WHERE time >= '$year-$month-01 00:00:00' AND time <= '$year-$month-31 23:59:59' order by sid DESC");
@@ -261,25 +241,17 @@ function show_month($year, $month, $month_l) {
 		}
 
 		echo "<tr>"
-
 		."<td bgcolor=\"$bgcolor1\" align=\"left\">$lang_img $title</td>"
-
 		."<td bgcolor=\"$bgcolor1\" align=\"center\">$comments</td>"
-
 		."<td bgcolor=\"$bgcolor1\" align=\"center\">$counter</td>"
-
 		."<td bgcolor=\"$bgcolor1\" align=\"center\">$rated</td>"
-
 		."<td bgcolor=\"$bgcolor1\" align=\"center\">$time[0]</td>"
-
 		."<td bgcolor=\"$bgcolor1\" align=\"center\">$actions</td></tr>";
 
 	}
 
 	echo "</table>"
-
 	."<br><br><br><hr size=\"1\" noshade>"
-
 	."<font class=\"content\">"._SELECTMONTH2VIEW."</font><br>";
 
 	$result2 = $db->sql_query("SELECT time from ".$prefix."_stories order by time DESC");
@@ -292,7 +264,7 @@ function show_month($year, $month, $month_l) {
 
 		$time = $row2['time'];
 
-		ereg ("([0-9]{4})-([0-9]{1,2})-([0-9]{1,2}) ([0-9]{1,2}):([0-9]{1,2}):([0-9]{1,2})", $time, $getdate);
+		preg_match ('#([0-9]{4})\-([0-9]{1,2})\-([0-9]{1,2}) ([0-9]{1,2}):([0-9]{1,2}):([0-9]{1,2})#m', $time, $getdate);
 
 		if ($getdate[2] == "01") { $month = _JANUARY; } elseif ($getdate[2] == "02") { $month = _FEBRUARY; } elseif ($getdate[2] == "03") { $month = _MARCH; } elseif ($getdate[2] == "04") { $month = _APRIL; } elseif ($getdate[2] == "05") { $month = _MAY; } elseif ($getdate[2] == "06") { $month = _JUNE; } elseif ($getdate[2] == "07") { $month = _JULY; } elseif ($getdate[2] == "08") { $month = _AUGUST; } elseif ($getdate[2] == "09") { $month = _SEPTEMBER; } elseif ($getdate[2] == "10") { $month = _OCTOBER; } elseif ($getdate[2] == "11") { $month = _NOVEMBER; } elseif ($getdate[2] == "12") { $month = _DECEMBER; }
 
@@ -309,15 +281,10 @@ function show_month($year, $month, $month_l) {
 	}
 
 	echo "</ul><br><br><center>"
-
 	."<form action=\"modules.php?name=Search\" method=\"post\">"
-
 	."<input type=\"text\" name=\"query\" size=\"30\">&nbsp;"
-
 	."<input type=\"submit\" value=\""._SEARCH."\">"
-
 	."</form>"
-
 	."[ <a href=\"modules.php?name=$module_name\">"._ARCHIVESINDEX."</a> | <a href=\"modules.php?name=$module_name&amp;sa=show_all\">"._SHOWALLSTORIES."</a> ]</center>";
 
 	CloseTable();
@@ -330,12 +297,14 @@ function show_month($year, $month, $month_l) {
 
 function show_all($min) {
 
+	$getdate = [];
+    $month = null;
+    
 	global $prefix, $user_prefix, $db, $bgcolor1, $bgcolor2, $user, $cookie, $sitename, $multilingual, $language, $module_name, $userinfo;
 
 	if (!isset($min) || intval($min) <= 0) {
 
 		$min = 0;
-
 	}
 
 	else $min = intval($min);
@@ -365,17 +334,11 @@ function show_all($min) {
 	OpenTable();
 
 	echo "<table border=\"0\" width=\"100%\"><tr>"
-
 	."<td bgcolor=\"$bgcolor2\" align=\"left\"><b>"._ARTICLES."</b></td>"
-
 	."<td bgcolor=\"$bgcolor2\" align=\"center\"><b>"._COMMENTS."</b></td>"
-
 	."<td bgcolor=\"$bgcolor2\" align=\"center\"><b>"._READS."</b></td>"
-
 	."<td bgcolor=\"$bgcolor2\" align=\"center\"><b>"._USCORE."</b></td>"
-
 	."<td bgcolor=\"$bgcolor2\" align=\"center\"><b>"._DATE."</b></td>"
-
 	."<td bgcolor=\"$bgcolor2\" align=\"center\"><b>"._ACTIONS."</b></td></tr>";
 
 	$result = $db->sql_query("SELECT sid, catid, title, time, comments, counter, topic, alanguage, score, ratings from ".$prefix."_stories order by sid DESC limit $min,$max");
@@ -451,17 +414,11 @@ function show_all($min) {
 		}
 
 		echo "<tr>"
-
 		."<td bgcolor=\"$bgcolor1\" align=\"left\">$lang_img $title</td>"
-
 		."<td bgcolor=\"$bgcolor1\" align=\"center\">$comments</td>"
-
 		."<td bgcolor=\"$bgcolor1\" align=\"center\">$counter</td>"
-
 		."<td bgcolor=\"$bgcolor1\" align=\"center\">$rated</td>"
-
 		."<td bgcolor=\"$bgcolor1\" align=\"center\">$time[0]</td>"
-
 		."<td bgcolor=\"$bgcolor1\" align=\"center\">$actions</td></tr>";
 
 	}
@@ -516,7 +473,7 @@ function show_all($min) {
 
 		$time = $row2['time'];
 
-		ereg ("([0-9]{4})-([0-9]{1,2})-([0-9]{1,2}) ([0-9]{1,2}):([0-9]{1,2}):([0-9]{1,2})", $time, $getdate);
+		preg_match ('#([0-9]{4})\-([0-9]{1,2})\-([0-9]{1,2}) ([0-9]{1,2}):([0-9]{1,2}):([0-9]{1,2})#m', $time, $getdate);
 
 		if ($getdate[2] == "01") { $month = _JANUARY; } elseif ($getdate[2] == "02") { $month = _FEBRUARY; } elseif ($getdate[2] == "03") { $month = _MARCH; } elseif ($getdate[2] == "04") { $month = _APRIL; } elseif ($getdate[2] == "05") { $month = _MAY; } elseif ($getdate[2] == "06") { $month = _JUNE; } elseif ($getdate[2] == "07") { $month = _JULY; } elseif ($getdate[2] == "08") { $month = _AUGUST; } elseif ($getdate[2] == "09") { $month = _SEPTEMBER; } elseif ($getdate[2] == "10") { $month = _OCTOBER; } elseif ($getdate[2] == "11") { $month = _NOVEMBER; } elseif ($getdate[2] == "12") { $month = _DECEMBER; }
 
@@ -533,15 +490,10 @@ function show_all($min) {
 	}
 
 	echo "</ul><br><br><center>"
-
 	."<form action=\"modules.php?name=Search\" method=\"post\">"
-
 	."<input type=\"text\" name=\"query\" size=\"30\">&nbsp;"
-
 	."<input type=\"submit\" value=\""._SEARCH."\">"
-
 	."</form>"
-
 	."[ <a href=\"modules.php?name=$module_name\">"._ARCHIVESINDEX."</a> ]</center>";
 
 	CloseTable();
@@ -552,7 +504,7 @@ function show_all($min) {
 
 
 
-$sa = isset($sa) ? $sa : "";
+$sa ??= "";
 
 $min = isset($min) ? intval($min) : 0;
 
@@ -566,34 +518,17 @@ $month_l = isset($month_l)? FixQuotes($month_l) : "";
 
 switch($sa) {
 
-
-
 	case "show_all":
-
 	show_all($min);
-
 	break;
-
-
 
 	case "show_month":
-
 	show_month($year, $month, $month_l);
-
 	break;
-
-
 
 	default:
-
 	select_month();
-
 	break;
-
-
-
 }
-
-
 
 ?>

@@ -452,7 +452,9 @@ function NewLinksDate($selectdate) {
 }
 
 function TopRated($ratenum, $ratetype) {
-	$toplinkspercentrigger = null;
+	$toplinkspercent = null;
+ $totalratedlinks = null;
+ $toplinkspercentrigger = null;
  $toplinks = null;
  $linkvotemin = null;
  global $prefix, $db, $admin, $module_name, $user, $locale, $mainvotedecimal, $datetime, $admin_file;
@@ -554,7 +556,9 @@ function TopRated($ratenum, $ratetype) {
 }
 
 function MostPopular($ratenum, $ratetype) {
-	$mostpoplinkspercentrigger = null;
+	$toplinkspercent = null;
+ $totalmostpoplinks = null;
+ $mostpoplinkspercentrigger = null;
  $mostpoplinks = null;
  global $prefix, $db, $admin, $module_name, $user, $admin_file, $locale, $mainvotedecimal, $datetime;
 	$admin = base64_decode((string) $admin);

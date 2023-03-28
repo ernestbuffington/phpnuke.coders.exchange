@@ -201,46 +201,6 @@ $htmltags = "<div align=\"center\"><img src=\"images/logo.gif\"><br><br><b>";
 $htmltags .= "The html tags you attempted to use is forbidden!</b><br><br>";
 $htmltags .= "[ <a href=\"javascript:history.go(-1)\"><b>Go Back</b></a> ]</div>";
 
-if (!defined('ADMIN_FILE')) {
- 
- if(!isset($_GET)){
-   $_GET = '';
- }
-
- foreach ($_GET as $sec_key => $secvalue) {
-
- if((preg_match('#<[^>]*script*"?[^>]*#mi', $secvalue)) ||
-  (preg_match('#<[^>]*object*"?[^>]*#mi', $secvalue)) ||
-  (preg_match('#<[^>]*iframe*"?[^>]*#mi', $secvalue)) ||
-  (preg_match('#<[^>]*applet*"?[^>]*#mi', $secvalue)) ||
-  (preg_match('#<[^>]*meta*"?[^>]*#mi', $secvalue)) ||
-  (preg_match('#<[^>]*style*"?[^>]*#mi', $secvalue)) ||
-  (preg_match('#<[^>]*form*"?[^>]*#mi', $secvalue)) ||
-  (preg_match('#<[^>]*img*"?[^>]*#mi', $secvalue)) ||
-  (preg_match('#<[^>]*onmouseover *"?[^>]*#mi', $secvalue)) ||
-  (preg_match('#<[^>]*body *"?[^>]*#mi', $secvalue)) ||
-  (preg_match('#\([^>]*"?[^\)]*\)#mi', $secvalue)) ||
-  (preg_match('#"#mi', $secvalue)) ||
-  (preg_match('#forum_admin#mi', $sec_key)) ||
-  (preg_match('#inside_mod#mi', $sec_key)))
-  {
-   die ($htmltags);
-  }
- foreach ($_POST as $secvalue) {
-
-  if ((preg_match('#<[^>]*iframe*"?[^>]*#mi', $secvalue)) ||
-  (preg_match('#<[^>]*object*"?[^>]*#mi', $secvalue)) ||
-  (preg_match('#<[^>]*applet*"?[^>]*#mi', $secvalue)) ||
-  (preg_match('#<[^>]*meta*"?[^>]*#mi', $secvalue)) ||
-  (preg_match('#<[^>]*onmouseover*"?[^>]*#mi', $secvalue)) ||
-  (preg_match('#<[^>]script*"?[^>]*#mi', $secvalue)) ||
-  (preg_match('#<[^>]*body*"?[^>]*#mi', $secvalue)) ||
-  (preg_match('#<[^>]style*"?[^>]*#mi', $secvalue))) {
-   die ($htmltags);
-   }
-  }
- }
-}
 # add 3rd party backward version comapatibility defines
 # Inspired by phoenix-cms at website-portals.net
 # Absolute Nuke directory
@@ -331,6 +291,10 @@ $dbi = sql_connect($dbhost, $dbuname, $dbpass, $dbname);
 
 require_once(INCLUDE_PATH."includes/ipban.php");
 
+
+if (!defined('ADMIN_FILE')) {
+  require_once(INCLUDE_PATH."includes/classes/class.variables.php");
+}
 
 /*
  * functions added to support dynamic and ordered loading of CSS, PHPCSS, and JS in <HEAD> and before </BODY>
@@ -497,7 +461,6 @@ function makePass() {
 		mt_srand ((double) microtime() * 1000000);
 		$con[$x] = substr($cons, random_int(0, strlen($cons)-1), 1);
 		$voc[$x] = substr($vocs, random_int(0, strlen($vocs)-1), 1);
-
 	}
 
 	mt_srand((double)microtime()*1000000);
@@ -525,7 +488,6 @@ function is_admin($admin) {
         $admin = addslashes($admin);
 
         $admin = explode(':', $admin);
-
     }
 
     $aid = $admin[0];
@@ -566,7 +528,7 @@ function is_user($user) {
         $user = explode(":", $user);
     }
 
-    $uid = $user[0] ?? 0;
+    $uid = $user[0] ?? 1;
     $pwd = $user[2] ?? '';
     $uid = intval($uid);
 
@@ -593,18 +555,18 @@ function is_group($user, $name) {
 
           global $prefix, $db, $user_prefix, $cookie, $user;
 
-     if (is_user($user)) {
+          if (is_user($user)) {
 
-          if(!is_array($user)) {
+             if(!is_array($user)) {
 
-          $cookie = cookiedecode($user);
-          $uid = intval($cookie[0]);
+             $cookie = cookiedecode($user);
+             $uid = intval($cookie[0]);
 
-          } else {
+             } else {
 
-          $uid = intval($user[0]);
+             $uid = intval($user[0]);
 
-          }
+             }
 
           $result = $db->sql_query("SELECT points FROM ".$user_prefix."_users WHERE user_id='$uid'");
           $row = $db->sql_fetchrow($result);
@@ -624,7 +586,6 @@ function is_group($user, $name) {
           if (($points >= 0 AND $points >= $grp) OR $mod_group == 0) {
 
         	return 1;
-
           }
      }
      return 0;
@@ -1396,6 +1357,18 @@ function getusrinfo($user) {
     unset($userinfo);
 }
 
+# Adds slashes to string and strips PHP+HTML for SQL insertion and hack prevention
+# $str: the string to modify
+# $nohtml: strip PHP+HTML tags, false=no, true=yes, default=false
+function Fix_Quotes($str, $nohtml=false) 
+{
+    if($nohtml): 
+	  $str = strip_tags($str);
+	endif;
+    
+	return $str;
+}
+
 function FixQuotes ($what = "") {
 
 	while (stristr($what, "\\\\'")) {
@@ -1403,6 +1376,13 @@ function FixQuotes ($what = "") {
 		$what = str_replace("\\\\'","'",$what);
 	}
 	return $what;
+}
+
+function Remove_Slashes($str) 
+{
+    global $_GETVAR;
+    
+	return $_GETVAR->stripSlashes($str);
 }
 
 /*********************************************************/
@@ -1528,78 +1508,53 @@ function delQuotes($string){
 	return $result;
 }
 
-function check_html ($str, $strip="") {
-	$AllowableHTML = [];
-    /* The core of this code has been lifted from phpslash */
-	/* which is licenced under the GPL. */
-	include("config.php");
-	if ($strip == "nohtml")
-	$AllowableHTML=array('');
-	$str = stripslashes($str ?? ''); // maybe ghost
-	$str = preg_replace('#<[013\s]*([^>]*)[013\s]*>#mi','<\\1>', $str);
-	// Delete all spaces from html tags .
-	$str = preg_replace('#<a[^>]*href[013\s]*=[013\s]*"?[013\s]*([^" >]*)[013\s]*"?[^>]*>#mi','<a href="\\1">', $str);
-	// Delete all attribs from Anchor, except an href, double quoted.
-	$str = preg_replace('#<[013\s]* img[013\s]*([^>]*)[013\s]*>#mi', '', $str);
-	// Delete all img tags
-	$str = preg_replace('#<a[^>]*href[013\s]*=[013\s]*"?javascript[[:punct:]]*"?[^>]*>#mi', '', $str);
-	// Delete javascript code from a href tags -- Zhen-Xjell @ http://nukecops.com
-	$tmp = "";
-	while (preg_match('#<(\/?[[:alpha:]]*)[013\s]*([^>]*)>#m',$str,$reg)) 
-	{
-		$i = strpos($str,$reg[0]);
-		$l = strlen($reg[0]);
-		$a = [];
-		
-		if (isset($reg[1][0]) && $reg[1][0] == "/") 
-		{
-		  $tag = strtolower(substr($reg[1],1));
-		}
-		else 
-		{ 
-		  $tag = strtolower($reg[1]);
-		}
-		
-		if(isset($AllowableHTML[$tag])) 
-		{
-		  if ($a = $AllowableHTML[$tag]) {
-		     if ($reg[1][0] == "/") { 
-		       $tag = "</$tag>";
-		     }
-		     elseif (($a == 1) || ($reg[2] == "")) {
-		       $tag = "<$tag>";
-		     } else {
-			   # Place here the double quote fix function.
-			   $attrb_list=delQuotes($reg[2]);
-			   // A VER
-			   //$attrb_list = ereg_replace("&","&amp;",$attrb_list);
-			   $tag = "<$tag" . $attrb_list . ">";
-		     } # Attribs in tag allowed
-		   } else { 
-		     $tag = "";
-		   }
-		}
-		$tmp .= substr($str,0,$i) . $tag;
-		$str = substr($str,$i+$l);
-	}
-	$str = $tmp . $str;
-	return $str;
-	exit;
-	/* Squash PHP tags unconditionally */
-	$str = preg_replace('#<\?#m',"",$str);
-	return $str;
+function check_html($str, $strip='') 
+{
+	global $admin;
+
+	if(is_admin($admin)):
+      $str = Fix_Quotes($str, !empty($strip));
+      return $str;
+	endif;
+    
+    if(defined('INPUT_FILTER')): 
+	
+		if($strip == 'nohtml'):
+          global $AllowableHTML;
+		endif;
+	
+	    if(!is_array($AllowableHTML)): 
+		  $html = '';
+		else: 
+		  $html = '';
+          
+		  foreach($AllowableHTML as $type => $key):
+          
+		  if($key == 1): 
+            $html[] = $type;
+		  endif;
+          
+		  endforeach;
+        
+		endif;
+        
+		$html_filter = new InputFilter($html, "", 0, 0, 1);
+        $str = $html_filter->process($str);
+	else: 
+
+    $str = Fix_Quotes($str, !empty($strip));
+
+    endif;
+
+    return $str;
 }
 
 function filter_text($Message, $strip="") {
 
 	global $EditedMessage;
-
 	check_words($Message);
-
 	$EditedMessage=check_html($EditedMessage, $strip);
-
 	return ($EditedMessage);
-
 }
 
 function filter($what, $strip="", $save="", $type="") {

@@ -1,7 +1,9 @@
 <?php
+
 /***************************************************************************
                                 emailer.php
                              -------------------
+	updated              : Monday Mar. 27, 2023
     begin                : Sunday Aug. 12, 2001
     copyright            : (C) 2001 The phpBB Group
     email                : support@phpbb.com
@@ -9,6 +11,7 @@
     Id: emailer.php,v 1.15.2.34 2003/07/26 11:41:35 acydburn Exp
 
 ***************************************************************************/
+
 /***************************************************************************
 * phpbb2 forums port version 2.0.5 (c) 2003 - Nuke Cops (http://nukecops.com)
 *
@@ -30,6 +33,7 @@
 * now reflecting phpbb2 standalone 2.0.5 that fixes some bugs and the
 * invalid_session error message.
 ***************************************************************************/
+
 /***************************************************************************
  *   This file is part of the phpBB2 port to Nuke 6.0 (c) copyright 2002
  *   by Tom Nitzschner (tom@toms-home.com)
@@ -47,6 +51,7 @@
  *   under the GNU GENERAL PUBLIC LICENSE. Please see the README for more information.
  *
  ***************************************************************************/
+
 /***************************************************************************
  *
  *   This program is free software; you can redistribute it and/or modify
@@ -56,65 +61,56 @@
  *
  ***************************************************************************/
 
-/* Applied rules:
- * AddDefaultValueForUndefinedVariableRector (https://github.com/vimeo/psalm/blob/29b70442b11e3e66113935a2ee22e165a70c74a4/docs/fixing_code.md#possiblyundefinedvariable)
- * Php4ConstructorRector (https://wiki.php.net/rfc/remove_php4_constructors)
- * WrapVariableVariableNameInCurlyBracesRector (https://www.php.net/manual/en/language.variables.variable.php)
- * WhileEachToForeachRector (https://wiki.php.net/rfc/deprecations_php_7_2#each)
- * NullToStrictStringFuncCallArgRector
- */
+if (!defined('IN_PHPBB'))
+{
+    die('Hacking attempt');
+}
 
 //
 // The emailer class has support for attaching files, that isn't implemented
 // in the 2.0 release but we can probable find some way of using it in a future
 // release
 //
-
-if (!defined('IN_PHPBB')) {
-	die();
-}
-
 class emailer
 {
-        var $msg, $subject, $extra_headers;
-        var $addresses, $reply_to, $from;
-        var $use_smtp;
+        public $msg, $subject, $extra_headers;
+        public $addresses, $reply_to, $from;
+		public $use_smtp;
 
-        var $tpl_msg = array();
+        public $tpl_msg = [];
 
         function __construct($use_smtp)
         {
-                $this->reset();
-                $this->use_smtp = $use_smtp;
-		$this->reply_to = $this->from = '';
-	}
+           $this->reset();
+           $this->reply_to = $this->from = '';
+        }
 
-	// Resets all the data (address, template file, etc etc to default
-	function reset()
-	{
-		$this->addresses = array();
-		$this->vars = $this->msg = $this->extra_headers = '';
-	}
+    // Resets all the data (address, template file, etc etc to default
+    function reset()
+    {
+        $this->addresses = [];
+        $this->vars = $this->msg = $this->extra_headers = '';
+    }
 
-	// Sets an email address to send to
-	function email_address($address)
-	{
-		$this->addresses['to'] = trim((string) $address);
-	}
+    // Sets an email address to send to
+    function email_address($address)
+    {
+        $this->addresses['to'] = trim((string) $address);
+    }
 
-	function cc($address)
-	{
-		$this->addresses['cc'][] = trim((string) $address);
-	}
+    function cc($address)
+    {
+        $this->addresses['cc'][] = trim((string) $address);
+    }
 
-	function bcc($address)
-	{
-		$this->addresses['bcc'][] = trim((string) $address);
-	}
+    function bcc($address)
+    {
+        $this->addresses['bcc'][] = trim((string) $address);
+    }
 
-	function replyto($address)
-	{
-		$this->reply_to = trim((string) $address);
+    function replyto($address)
+    {
+        $this->reply_to = trim((string) $address);
         }
 
         function from($address)
@@ -183,36 +179,46 @@ class emailer
         }
 
         // Send the mail out to the recipients set previously in var $this->address
-        function send()
+         /*****[BEGIN]******************************************
+         [ Mod:     Custom mass PM                     v1.4.7 ]
+         ******************************************************/
+        function send($error_level=0)
+        /*****[END]********************************************
+         [ Mod:     Custom mass PM                     v1.4.7 ]
+         ******************************************************/
         {
-                global $board_config, $lang, $phpEx, $phpbb_root_path, $db;
+                global $board_config, $lang, $phpEx, $phpbb_root_path, $db, $cache;
 
-            // Escape all quotes, else the eval will fail.
+                // Escape all quotes, else the eval will fail.
                 $this->msg = str_replace ("'", "\'", (string) $this->msg);
                 $this->msg = preg_replace('#\{([a-z0-9\-_]*?)\}#is', "' . $\\1 . '", $this->msg);
 
                 // Set vars
                 reset ($this->vars);
-                foreach ($this->vars as $key => $val) {
-                    ${$key} = $val;
+
+				foreach ($this->vars as $key => $val)
+                {
+                        ${$key} = $val;
                 }
 
                 eval("\$this->msg = '$this->msg';");
 
                 // Clear vars
                 reset ($this->vars);
-                foreach ($this->vars as $key => $val) {
-                    unset(${$key});
+
+				foreach ($this->vars as $key => $val)
+                {
+                        unset(${$key});
                 }
 
                 // We now try and pull a subject from the email body ... if it exists,
                 // do this here because the subject may contain a variable
                 $drop_header = '';
-                $match = array();
+                $match = [];
                 if (preg_match('#^(Subject:(.*?))$#m', $this->msg, $match))
                 {
                         $this->subject = (trim($match[2]) != '') ? trim($match[2]) : (($this->subject != '') ? $this->subject : 'No Subject');
-                        $drop_header .= '[\r\n]*?' . phpbb_preg_quote($match[1], '#');
+                        $drop_header .= '[\r\n]*?' . preg_quote($match[1], '#');
                 }
                 else
                 {
@@ -222,7 +228,7 @@ class emailer
                 if (preg_match('#^(Charset:(.*?))$#m', $this->msg, $match))
                 {
                         $this->encoding = (trim($match[2]) != '') ? trim($match[2]) : trim((string) $lang['ENCODING']);
-                        $drop_header .= '[\r\n]*?' . phpbb_preg_quote($match[1], '#');
+                        $drop_header .= '[\r\n]*?' . preg_quote($match[1], '#');
                 }
                 else
                 {
@@ -234,28 +240,47 @@ class emailer
                         $this->msg = trim(preg_replace('#' . $drop_header . '#s', '', $this->msg));
                 }
 
-		$to = $this->addresses['to'];
+        $to = $this->addresses['to'];
 
-		$cc = (count($this->addresses['cc'])) ? implode(', ', $this->addresses['cc']) : '';
-		$bcc = (count($this->addresses['bcc'])) ? implode(', ', $this->addresses['bcc']) : '';
+        if(!isset($this->addresses['cc']))
+		$this->addresses['cc'] = '';
 
-		// Build header
-		$this->extra_headers = (($this->reply_to != '') ? "Reply-to: $this->reply_to\n" : '') . (($this->from != '') ? "From: $this->from\n" : "From: " . $board_config['board_email'] . "\n") . "Return-Path: " . $board_config['board_email'] . "\nMessage-ID: <" . md5(uniqid(time())) . "@" . $board_config['server_name'] . ">\nMIME-Version: 1.0\nContent-type: text/plain; charset=" . $this->encoding . "\nContent-transfer-encoding: 8bit\nDate: " . date('r', time()) . "\nX-Priority: 3\nX-MSMail-Priority: Normal\nX-Mailer: PHP\nX-MimeOLE: Produced By PHP-Nuke v8.3.2\n" . $this->extra_headers . (($cc != '') ? "Cc: $cc\n" : '')  . (($bcc != '') ? "Bcc: $bcc\n" : '');
+        if(!isset($cc))
+		$cc = '';
+
+        if(!isset($this->addresses['bcc']))
+		$this->addresses['bcc'] = '';
+
+        if(!isset($bcc))
+		$bcc = '';
+		
+		if ( is_array( $this->addresses['cc'] ) ) 
+            $cc = (count($this->addresses['cc'])) ? implode(', ', $this->addresses['cc']) : '';
+        else
+            $cc = '';
+
+        if ( is_array( $this->addresses['cc'] ) )
+            $bcc = (count($this->addresses['bcc'])) ? implode(', ', $this->addresses['bcc']) : '';
+        else
+            $bcc = '';
+
+        // Build header
+        $this->extra_headers = (($this->reply_to != '') ? "Reply-to: $this->reply_to\n" : '') . (($this->from != '') ? "From: $this->from\n" : "From: " . $board_config['board_email'] . "\n") . "Return-Path: " . $board_config['board_email'] . "\nMessage-ID: <" . md5(uniqid(time())) . "@" . $board_config['server_name'] . ">\nMIME-Version: 1.0\nContent-type: text/plain; charset=" . $this->encoding . "\nContent-transfer-encoding: 8bit\nDate: " . date('r', time()) . "\nX-Priority: 3\nX-MSMail-Priority: Normal\nX-Mailer: PHP\nX-MimeOLE: Produced By phpBB2\n" . $this->extra_headers . (($cc != '') ? "Cc: $cc\n" : '')  . (($bcc != '') ? "Bcc: $bcc\n" : '');
 
                 // Send message ... removed $this->encode() from subject for time being
                 if ( $this->use_smtp )
                 {
                         if ( !defined('SMTP_INCLUDED') )
                         {
-                                include("modules/Forums/includes/smtp.php");
+                                include(__DIR__."/smtp.php");
                         }
 
                         $result = smtpmail($to, $this->subject, $this->msg, $this->extra_headers);
                 }
                 else
                 {
-			            $empty_to_header = ($to == '') ? TRUE : FALSE;
-			            $to = ($to == '') ? (($board_config['sendmail_fix']) ? ' ' : 'Undisclosed-recipients:;') : $to;
+            $empty_to_header = ($to == '') ? TRUE : FALSE;
+            $to = ($to == '') ? (($board_config['sendmail_fix']) ? ' ' : 'Undisclosed-recipients:;') : $to;
                         $result = mail((string) $to, (string) $this->subject, preg_replace("#(?<!\r)\n#s", "\n", $this->msg), $this->extra_headers);
 
                         if (!$result && !$board_config['sendmail_fix'] && $empty_to_header)
@@ -269,19 +294,37 @@ class emailer
                                 {
                                         message_die(GENERAL_ERROR, 'Unable to update config table', '', __LINE__, __FILE__, $sql);
                                 }
-
+                               /*****['BEGIN']******************************************
+                                [ Base:    Caching System                     v3.0.0 ]
+                                ******************************************************/
+                                //$cache->delete('board_config', 'config');
+                               /*****['END']********************************************
+                                [ Base:    Caching System                     v3.0.0 ]
+                                ******************************************************/
                                 $board_config['sendmail_fix'] = 1;
                                 $result = mail($to, (string) $this->subject, preg_replace("#(?<!\r)\n#s", "\n", $this->msg), $this->extra_headers);
                         }
                 }
 
                 // Did it work?
-                if (!$result)
+                /*****[BEGIN]******************************************
+                 [ Mod:     Custom mass PM                     v1.4.7 ]
+                 ******************************************************/
+                if (!$result && !$error_level)
+                /*****[END]********************************************
+                 [ Mod:     Custom mass PM                     v1.4.7 ]
+                 ******************************************************/
                 {
-                        message_die(GENERAL_ERROR, 'Failed sending email :: ' . (($this->use_smtp) ? 'SMTP' : 'PHP') . ' :: ' . $result, '', __LINE__, __FILE__);
+                   message_die(GENERAL_ERROR, 'Failed sending email :: ' . (($this->use_smtp) ? 'SMTP' : 'PHP') . ' :: ' . $result, '', __LINE__, __FILE__);
                 }
 
-                return true;
+                /*****[BEGIN]******************************************
+                 [ Mod:     Custom mass PM                     v1.4.7 ]
+                ******************************************************/
+                return $result;
+               /*****[END]********************************************
+                [ Mod:     Custom mass PM                     v1.4.7 ]
+                ******************************************************/
         }
 
         // Encodes the given string for proper display for this encoding ... nabbed
@@ -308,7 +351,7 @@ class emailer
                 $str = chunk_split(base64_encode((string) $str), $length, $spacer);
 
                 // remove trailing spacer and add start and end delimiters
-                $str = preg_replace('#' . phpbb_preg_quote($spacer, '#') . '$#', '', $str);
+                $str = preg_replace('#' . preg_quote($spacer, '#') . '$#', '', $str);
 
                 return $start . $str . $end;
         }
@@ -316,7 +359,7 @@ class emailer
         //
         // Attach files via MIME.
         //
-        function attachFile($filename, $mimetype = "application/octet-stream", $szFromAddress, $szFilenameToDisplay)
+        function attachFile($filename, $szFilenameToDisplay, $mimetype = "application/octet-stream", $szFromAddress = '')
         {
                 $mime_filename = null;
                 $out = null;
@@ -375,7 +418,7 @@ class emailer
         }
 
         //
-   // Split string by RFC 2045 semantics (76 chars per line, end with \r\n).
+        // Split string by RFC 2045 semantics (76 chars per line, end with \r\n).
         //
         function myChunkSplit($str)
         {
@@ -402,7 +445,7 @@ class emailer
         }
 
         //
-   // Split the specified file up into a string and return it
+        // Split the specified file up into a string and return it
         //
         function encode_file($sourcefile)
         {
@@ -420,3 +463,4 @@ class emailer
 
 } // class emailer
 
+?>
