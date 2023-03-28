@@ -96,18 +96,35 @@ div.caption { background:transparent; filter:progid:DXImageTransform.Microsoft.g
 
     include("includes/javascript.php");
 
-	if (file_exists("themes/$ThemeSel/images/favicon.png")) {
-		echo "<link REL=\"apple-touch-icon\" HREF=\"themes/$ThemeSel/images/favicon.png\">\n";
-	} else {
-	   echo "<link REL=\"apple-touch-icon\" HREF=\"favicon.png\">\n";
-	}
-
+    global $cache;
+	
+	echo "\n<!-- Loadiing favicon from header.php -->\n\n";
+    if (!($favicon = $cache->load('favicon', 'config'))): 
+        if (file_exists(NUKE_BASE_DIR.'favicon.ico')) 
+		$favicon = "favicon.ico";
+		else 
+		if (file_exists(NUKE_IMAGES_DIR.'favicon.ico')) 
+		$favicon = "images/favicon.ico";
+		else 
+		if (file_exists(NUKE_THEMES_DIR.$ThemeSel.'/images/favicon.ico')) 
+		$favicon = "themes/$ThemeSel/images/favicon.ico";
+		else 
+        $favicon = 'none';
+		if ($favicon != 'none') 
+        echo "<link rel=\"shortcut icon\" href=\"$favicon\" type=\"image/x-icon\" />\n";
+        $cache->save('favicon', 'config', $favicon);
+	else: 
+        if ($favicon != 'none') 
+        echo "<link rel=\"shortcut icon\" href=\"$favicon\" type=\"image/x-icon\" />\n";
+    endif;
+	
 	echo "<link rel=\"alternate\" type=\"application/rss+xml\" title=\"RSS\" href=\"backend.php\">\n";
 	echo "<link rel=\"StyleSheet\" href=\"themes/$ThemeSel/style/style.css\" type=\"text/css\">\n\n\n";
 
 	if (file_exists("includes/custom_files/custom_head.php")) {
 		include_secure("includes/custom_files/custom_head.php");
 	}
+	
 	echo "\n\n\n</head>\n\n";
 
 	if (file_exists("includes/custom_files/custom_header.php")) {
