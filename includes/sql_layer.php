@@ -21,6 +21,7 @@ if (stristr(htmlentities($_SERVER['PHP_SELF']), "sql_layer.php")) {
 }
 
 /* $dbtype = "MySQL"; */
+/* $dbtype = "MySQLi"; */
 /* $dbtype = "mSQL"; */
 /* $dbtype = "postgres"; */
 /* $dbtype = "postgres_local";// When postmaster start without "-i" option. */
