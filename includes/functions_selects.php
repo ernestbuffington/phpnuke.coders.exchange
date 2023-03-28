@@ -1,4 +1,5 @@
 <?php
+
 /***************************************************************************
  *                            function_selects.php
  *                            -------------------
@@ -61,14 +62,14 @@
 
 /*****[CHANGES]**********************************************************
 -=[Base]=-
-      Theme Management                         v1.0.2       12/14/2005
+      Theme Management                         v1.0.3       12/14/2023
 -=[Mod]=-
-      Super Quick Reply                        v1.3.0       06/14/2005
-      Advanced Time Management                 v2.2.0       07/26/2005
-      At a Glance Options                      v1.0.0       08/17/2005
-      Group Colors and Ranks                   v1.0.0       08/24/2005
-      Log Actions Mod - Topic View             v2.0.0       09/18/2005
-	  Birthdays                                v3.0.0
+      Super Quick Reply                        v1.3.1       03/28/2023
+      Advanced Time Management                 v2.2.1       03/28/2023
+      At a Glance Options                      v1.0.1       03/28/2023
+      Group Colors and Ranks                   v1.0.1       03/28/2023
+      Log Actions Mod - Topic View             v2.0.1       03/28/2023
+	  Birthdays                                v3.0.1       03/28/2023
  ************************************************************************/
 
 if (!defined('IN_PHPBB'))
