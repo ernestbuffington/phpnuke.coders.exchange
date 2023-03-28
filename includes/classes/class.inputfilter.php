@@ -7,7 +7,7 @@ if (realpath(__FILE__) == realpath($_SERVER['SCRIPT_FILENAME'])) {
 
 /** @class: InputFilter (PHP4, PHP5, PHP7 & PHP8 with comments)
   * @project: PHP Input Filter
-  * @date: 10-05-2005
+  * @date: 03-28-2023
   * @version: 1.2.2_php4/php5/php7/php8
   * @author: Daniel Morris
   * @contributors: Gianpaolo Racca, Ghislain Picard, Marco Wandschneider, Chris Tobin, Ernest Buffington and Andrew Eddie.
