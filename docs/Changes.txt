@@ -38,7 +38,8 @@ Jan 2023: Version 8.3.2
 - Updated Nuke Installer
 - Added UTF Tools
 - Added a new InputFilter
--
+- Added Zend (zf1 Future) for PHP-Nuke
+
 
 August 2007: Version 8.1
 ========================
