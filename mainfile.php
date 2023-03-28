@@ -288,7 +288,8 @@ require_once(INCLUDE_PATH."db/db.php");
  * Code origin Nuke Evolution / Xtreme v2.0.9e
  * @date 03/28/2023 8:23 AM Ernest Allen Buffington
  */
-require_once(NUKE_INCLUDE_DIR.'functions_database.php');
+require_once(INCLUDE_PATH."includes/mods/Evo/functions_database.php");
+
 
 /*
  * Moved back to includes folder (one still exists inside the forums folder)
