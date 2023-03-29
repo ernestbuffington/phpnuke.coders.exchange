@@ -42,6 +42,12 @@ Jan 2023: Version 8.3.2
 - Added new debugger
 - Added CNBA Your_Account Mod
 - Added Auto MimeType v1.0.0 (used for loading multiple doctype themes HTML4/HTML5/XHTML/XHTML5 etc)
+- Added Assets folder to includes for theme use
+- Added Bootstrap v5.2.0 (https://getbootstrap.com/)
+- Added Bootstrap v3.4.1 (https://getbootstrap.com/)
+- Added Bootstrap Icons v1.9.1 (https://getbootstrap.com/)
+- Added Font Awesome (free) v6.2.0
+-
 
 August 2007: Version 8.1
 ========================
