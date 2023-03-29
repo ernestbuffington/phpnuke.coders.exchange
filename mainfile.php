@@ -327,12 +327,22 @@ $dbi = sql_connect($dbhost, $dbuname, $dbpass, $dbname);
 require_once(INCLUDE_PATH."includes/ipban.php");
 
 /*
- * Adopted Evo Variable Style Checking
+ * Adopted Evo Variable Functions
  * Code origin Nuke Evolution / Xtreme v2.0.9e
  * @date 03/28/2023 8:23 AM Ernest Allen Buffington
  */
 if (!defined('ADMIN_FILE')) {
   require_once(INCLUDE_PATH."includes/classes/class.variables.php");
+}
+
+/*
+ * @version v2.8.41
+ * @package PegasusPHP
+ * Code origin Nuke Titanium v4.0.4
+ * @date 03/28/2023 8:23 AM Ernest Allen Buffington
+ */
+if (!defined('ADMIN_FILE')) {
+  require_once(INCLUDE_PATH."includes/classes/class.browsers.php");
 }
 
 /*
@@ -345,7 +355,7 @@ if (!defined('ADMIN_FILE')) {
 }
 
 /*
- * Adopted functions and added for Evo Support
+ * Adopted functions and added support for Evo Modules and Blocks etc
  * Code origin Nuke Evolution / Xtreme v2.0.9e
  * @date 03/28/2023 8:23 AM Ernest Allen Buffington
  */
@@ -364,7 +374,7 @@ include_once(INCLUDE_PATH."includes/mods/Evo/validation.php");
 require_once(INCLUDE_PATH."includes/mods/phpbb2/functions_validate.php");
 
 /*
- * Adopted Nuke Titanium functions and added for Titanium Support
+ * Adopted Nuke Titanium functions
  * Code origin PHP-Nuke Titanium v4.0.4
  * @date 03/28/2023 8:23 AM Ernest Allen Buffington
  */
@@ -373,7 +383,7 @@ require_once(INCLUDE_PATH."includes/mods/Titanium/functions_titanium_custom.php"
 require_once(INCLUDE_PATH."includes/mods/Titanium/functions_img.php");
 
 /*
- * functions added to support dynamic and ordered loading of CSS, PHPCSS, and JS in <HEAD> and before </BODY>
+ * functions added to support dynamic and ordered loading of CSS, PHPCSS, and JS in <head> and before </body>
  * Code origin Raven Nuke CMS (http://www.ravenphpscripts.com)
  * loader addons by Ernest Buffington aka TheGhost https://theghost.86it.us
  */
@@ -420,9 +430,7 @@ if(empty($admin_file)) {
 } elseif (!empty($admin_file) && !file_exists(INCLUDE_PATH.$admin_file.".php")) {
 
    	die ("The admin_file you defined in config.php does not exist");
-
   }
-
 }
 
 $row = $db->sql_fetchrow($db->sql_query("SELECT * FROM ".$prefix."_config"));
@@ -1734,35 +1742,23 @@ function get_author($aid) {
 }
 
 function formatAidHeader($aid) {
-
   $AidHeader = get_author($aid);
-
   echo $AidHeader;
-
 }
 
 if(!defined('FORUM_ADMIN')) {
-
   $ThemeSel = get_theme();
-
   include_secure("themes/$ThemeSel/theme.php");
 }
 
 if(!function_exists("themepreview")) {
-
 	function themepreview($title, $hometext, $bodytext="", $notes="") {
-
 		echo "<b>$title</b><br><br>$hometext";
-
 		if (!empty($bodytext)) {
-
 			echo "<br><br>$bodytext";
 		}
-
 		if (!empty($notes)) {
-
 			echo "<br><br><b>"._NOTE."</b> <i>$notes</i>";
-
 		}
     }
 }
@@ -1777,50 +1773,35 @@ function adminblock() {
 		$result = $db->sql_query($sql);
 
 		while (list($title, $content) = $db->sql_fetchrow($result)) {
-
 			$content = filter($content);
 			$title = filter($title, "nohtml");
 			$content = "<span class=\"content\">".$content."</span>";
-
 			themesidebox($title, $content);
-
 		}
 
 		$title = _WAITINGCONT;
-
 		$num = $db->sql_numrows($db->sql_query("SELECT * FROM ".$prefix."_queue"));
+		$content = "<span style=\"white-space: nowrap;\" class=\"content\">";
 
-		$content = "<span class=\"content\">";
-
-		$content .= "<strong><big>&middot;</big></strong>&nbsp;<a href=\"".$admin_file.".php?op=submissions\">"._SUBMISSIONS."</a>: $num<br>";
-
+		$content .= "<a href=\"".$admin_file.".php?op=submissions\">"._SUBMISSIONS.": $num</a>";
 		$num = $db->sql_numrows($db->sql_query("SELECT * FROM ".$prefix."_reviews_add"));
 
-		$content .= "<strong><big>&middot;</big></strong>&nbsp;<a href=\"".$admin_file.".php?op=reviews\">"._WREVIEWS."</a>: $num<br>";
+		$content .= "<a href=\"".$admin_file.".php?op=reviews\">"._WREVIEWS.": $num</a>";
 
 		$num = $db->sql_numrows($db->sql_query("SELECT * FROM ".$prefix."_links_newlink"));
-
 		$brokenl = $db->sql_numrows($db->sql_query("SELECT * FROM ".$prefix."_links_modrequest WHERE brokenlink='1'"));
-
 		$modreql = $db->sql_numrows($db->sql_query("SELECT * FROM ".$prefix."_links_modrequest WHERE brokenlink='0'"));
+		$content .= "<a href=\"".$admin_file.".php?op=Links\">"._WLINKS.": $num</a>";
+		$content .= "<a href=\"".$admin_file.".php?op=LinksListModRequests\">"._MODREQLINKS.": $modreql</a>";
 
-		$content .= "<strong><big>&middot;</big></strong>&nbsp;<a href=\"".$admin_file.".php?op=Links\">"._WLINKS."</a>: $num<br>";
-
-		$content .= "<strong><big>&middot;</big></strong>&nbsp;<a href=\"".$admin_file.".php?op=LinksListModRequests\">"._MODREQLINKS."</a>: $modreql<br>";
-
-		$content .= "<strong><big>&middot;</big></strong>&nbsp;<a href=\"".$admin_file.".php?op=LinksListBrokenLinks\">"._BROKENLINKS."</a>: $brokenl<br>";
-
+		$content .= "<a href=\"".$admin_file.".php?op=LinksListBrokenLinks\">"._BROKENLINKS.": $brokenl</a>";
 		$num = $db->sql_numrows($db->sql_query("SELECT * FROM ".$prefix."_downloads_newdownload"));
 
 		$brokend = $db->sql_numrows($db->sql_query("SELECT * FROM ".$prefix."_downloads_modrequest WHERE brokendownload='1'"));
-
 		$modreqd = $db->sql_numrows($db->sql_query("SELECT * FROM ".$prefix."_downloads_modrequest WHERE brokendownload='0'"));
-
-		$content .= "<strong><big>&middot;</big></strong>&nbsp;<a href=\"".$admin_file.".php?op=downloads\">"._UDOWNLOADS."</a>: $num<br>";
-
-		$content .= "<strong><big>&middot;</big></strong>&nbsp;<a href=\"".$admin_file.".php?op=DownloadsListModRequests\">"._MODREQDOWN."</a>: $modreqd<br>";
-
-		$content .= "<strong><big>&middot;</big></strong>&nbsp;<a href=\"".$admin_file.".php?op=DownloadsListBrokenDownloads\">"._BROKENDOWN."</a>: $brokend<br></span>";
+		$content .= "<a href=\"".$admin_file.".php?op=downloads\">"._UDOWNLOADS.": $num</a>";
+		$content .= "<a href=\"".$admin_file.".php?op=DownloadsListModRequests\">"._MODREQDOWN.": $modreqd</a>";
+		$content .= "<a href=\"".$admin_file.".php?op=DownloadsListBrokenDownloads\">"._BROKENDOWN.": $brokend</a></span>";
 
 		themesidebox($title, $content);
 	}
@@ -2729,3 +2710,4 @@ switch($gfx) {
 	break;
    }
 }
+

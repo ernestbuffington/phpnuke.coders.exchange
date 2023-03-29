@@ -787,7 +787,7 @@ if (!$DBcreated){
    * @ c) escudero@phpnuke.org.br
    */
   if ($can_proceed) {
-        $fp = fopen("sql/nuke_cnbya_config","r");
+        $fp = fopen("sql/nuke_cnbya_config.sql","r");
         $installscript = "";
         while (!feof($fp)) $installscript .= fgets($fp,1000);
         fclose($fp);

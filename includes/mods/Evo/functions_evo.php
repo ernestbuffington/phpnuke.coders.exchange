@@ -978,7 +978,7 @@ function compare_ips($username)
 [ Mod:     User IP Lock                       v1.0.0 ]
 ******************************************************/
 
-function GetRank($user_id) 
+function GetRankForums($user_id) 
 {
     global $db, $prefix, $user_prefix;
     static $rankData = array();

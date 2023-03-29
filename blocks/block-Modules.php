@@ -20,7 +20,6 @@ if ( !defined('BLOCK_FILE') ) {
 global $prefix, $default_module, $db, $admin, $language, $currentlang;
 
 $ThemeSel = get_theme();
-
 $def_module = "";
 
 if (file_exists("themes/$ThemeSel/module.php")) {
@@ -37,19 +36,22 @@ if (file_exists("themes/$ThemeSel/module.php")) {
 
     /* If the module doesn't exist, it will be removed from the database automaticaly */
     $result2 = $db->sql_query("SELECT title FROM " . $prefix . "_modules");
-    while ($row2 = $db->sql_fetchrow($result2)) {
+    
+	while ($row2 = $db->sql_fetchrow($result2)) {
 	$title = filter($row2['title'], "nohtml");
 	$a = 0;
 	$handle=opendir('modules');
+	
 	while ($file = readdir($handle)) {
     	    if ($file == $title) {
 		$a = 1;
 	    }
 	}
 	closedir($handle);
-	if ($a == 0) {
+	
+	  if ($a == 0) {
 	    $db->sql_query("DELETE FROM ".$prefix."_modules WHERE title='$title'");
-	}
+	  }
     }
 
     /* Now we make the Modules block with the correspondent links */
@@ -57,11 +59,13 @@ if (file_exists("themes/$ThemeSel/module.php")) {
     $content .= "<li><a href=\"index.php\">"._HOME."</a></li>";
     //$content .= "<strong><big>&middot;</big></strong>&nbsp;<a href=\"/pixel\">PIXEL ADS</a><br>\n";
     $result3 = $db->sql_query("SELECT title, custom_title, view FROM " . $prefix . "_modules WHERE active='1' AND title!='$def_module' AND inmenu='1' ORDER BY custom_title ASC");
-    while ($row3 = $db->sql_fetchrow($result3)) {
+    
+	while ($row3 = $db->sql_fetchrow($result3)) {
 	$m_title = filter($row3['title'], "nohtml");
 	$custom_title = filter($row3['custom_title'], "nohtml");
 	$view = intval($row3['view']);
 	$m_title2 = preg_replace('#_#m', " ", $m_title);
+	
 	if ($custom_title != "") {
 	    $m_title2 = $custom_title;
 	}
@@ -96,16 +100,20 @@ if (file_exists("themes/$ThemeSel/module.php")) {
 		}
 	    }
 	}
-	$content .= "<br><center><b>"._INVISIBLEMODULES."</b><br>";
-	$content .= "<font class=\"tiny\">"._ACTIVEBUTNOTSEE."</font></center><br>";
+	$content .= "<br><div align=\"center\"><b>"._INVISIBLEMODULES."</b><br>";
+	$content .= "<font class=\"tiny\">"._ACTIVEBUTNOTSEE."</font></div><br>";
+	
 	$result5 = $db->sql_query("SELECT title, custom_title FROM ".$prefix."_modules WHERE active='1' AND inmenu='0' ORDER BY title ASC");
+	
 	while ($row5 = $db->sql_fetchrow($result5)) {
 	    $mn_title = filter($row5['title'], "nohtml");
 	    $custom_title = filter($row5['custom_title'], "nohtml");
 	    $mn_title2 = preg_replace('#_#m', " ", $mn_title);
+	
 	    if ($custom_title != "") {
 		$mn_title2 = $custom_title;
 	    }
+	
 	    if ($mn_title2 != "") {
 		$content .= "<li><a href=\"modules.php?name=$mn_title\">$mn_title2</a></li>";
 		$dummy = 1;
@@ -116,9 +124,11 @@ if (file_exists("themes/$ThemeSel/module.php")) {
 	if ($a == 1 AND $dummy != 1) {
     	    $content .= "<li>"._NONE."</li>";
 	}
-	$content .= "<li>"._NOACTIVEMODULES."</li>";
+	
+	$content .= "<li style=\"list-style-type: circle;\">"._NOACTIVEMODULES."</li>";
 	$content .= "<font class=\"tiny\">"._FORADMINTESTS."</font></center><br>";
 	$result6 = $db->sql_query("SELECT title, custom_title FROM ".$prefix."_modules WHERE active='0' ORDER BY title ASC");
+	
 	while ($row6 = $db->sql_fetchrow($result6)) {
 	    $mn_title = filter($row6['title'], "nohtml");
 	    $custom_title = filter($row6['custom_title'], "nohtml");

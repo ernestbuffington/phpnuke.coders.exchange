@@ -12,54 +12,56 @@
 /* the Free Software Foundation; either version 2 of the License.       */
 /************************************************************************/
 
-if (stristr(htmlentities($_SERVER['PHP_SELF']), "header.php")) {
-	Header("Location: index.php");
-	die();
-}
+if (realpath(__FILE__) == realpath($_SERVER['SCRIPT_FILENAME'])):
+  Header("Location: index.php");
+  die();
+endif;
 
-define('NUKE_HEADER', true);
-require_once("mainfile.php");
-##################################################
-# Include some common header for HTML generation #
-##################################################
+if(!defined('HEADER')) { define('HEADER', true); }
+
+require_once(dirname(__FILE__).'/mainfile.php');
+
+echo "<!--
+          | |         | \ | |     | |       
+     _ __ | |__  _ __ |  \| |_   _| | _____ 
+    | '_ \| '_ \| '_ \| . ` | | | | |/ / _ \
+    | |_) | | | | |_) | |\  | |_| |   <  __/
+    | .__/|_| |_| .__/|_| \_|\__,_|_|\_\___|
+    | |         | |                         
+    |_|         |_|                        
+                                        -->\n";
 
 function head() {
 
-	global $slogan, 
-	     $sitename, 
-		  $banners, 
-		  $nukeurl, 
-	  $Version_Num, 
-	      $artpage, 
-		    $topic, 
-		  $hlpfile, 
-		     $user, 
-			   $hr, 
-			$theme, 
-		   $cookie, 
-		 $bgcolor1, 
-		 $bgcolor2, 
-		 $bgcolor3, 
-		 $bgcolor4, 
-	   $textcolor1, 
-	   $textcolor2, 
-	    $forumpage, 
-		$adminpage, 
-		 $userpage, 
-		$pagetitle;
+	global $slogan, $sitename, $banners, $nukeurl, 
+	  $Version_Num, $artpage, $topic, $hlpfile, 
+		     $user, $hr, $theme, $cookie, $bgcolor1, 
+		 $bgcolor2, $bgcolor3, $bgcolor4, $textcolor1, 
+	   $textcolor2, $forumpage, $adminpage, $userpage, 
+		$pagetitle, $cache, $ThemeSel;
 
 	$ThemeSel = get_theme();
-
 	include_secure("themes/$ThemeSel/theme.php");
 
-    echo "<!-- Loading Auto MimeType v1.0.0 from header.php -->\n";
-	if (file_exists(NUKE_THEMES_DIR.$ThemeSel.'/includes/mimetype.php')):  
+  /**
+   * Doctype/Mime Type auto selector - This checks each theme as it is switched and will load a mimetype.php from the themes includes folder.
+   * This allows for many different doctypes to be used on the Fly by whichever theme is selected.
+   * This is great for porting Legacy themes or even just to show the versatility of PHP-Nuke.
+   * If a mimetype.php file is not detected it uses the default doctype of XHTML 1.0 Transitional
+   *
+   * @author Ernest Allen Bufffington
+   * @version 1.0
+   * @license GPL-3.0
+   */
+  	if (file_exists(NUKE_THEMES_DIR.$ThemeSel.'/includes/mimetype.php')):  
     include(NUKE_THEMES_DIR.$ThemeSel.'/includes/mimetype.php');
+	echo "<!-- HEADER START ================================================================================================================================================================================================= -->\n";
+    echo '<head>'."\n";
 	else:  # OLD SCHOOL DEFAULT MIMETYPE START
 	
 	echo '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">'."\n";
 	echo '<html xmlns="http://www.w3.org/1999/xhtml">'."\n";
-    echo "<!-- START <head> -->\n";
+	echo "<!-- HEADER START ================================================================================================================================================================================================= -->\n";
     echo '<head>'."\n";
     endif;	# OLD SCHOOL DEFAULT MIMETYPE END
 
@@ -68,63 +70,119 @@ function head() {
     echo '<meta http-equiv="Content-Style-Type" content="text/css" />'."\n";
     echo '<meta http-equiv="Content-Script-Type" content="text/javascript" />'."\n";
 
+    echo "<!-- Loading dynamic meta tags from database from includes/meta.php START -->\n";
     include("includes/meta.php");
+    echo "<!-- Loading dynamic meta tags from database from includes/meta.php END -->\n";
 	
-	echo "\n<title>$sitename $pagetitle</title>\n\n";
-	?>
-<!-- banner org_green -->
-<!-- Attach our CSS -->
-<link rel="stylesheet" href="themes/<?php echo $ThemeSel?>/orbit-1.2.3.css">
-<!-- Attach necessary JS -->
-<script type="text/javascript" src="themes/<?php echo $ThemeSel?>/jquery-1.5.1.min.js"></script>
-<script type="text/javascript" src="themes/<?php echo $ThemeSel?>/jquery.orbit-1.2.3.min.js"></script>	
-<!--[if IE]>
-<style type="text/css">
-.timer { display: none !important; }
-div.caption { background:transparent; filter:progid:DXImageTransform.Microsoft.gradient(startColorstr=#99000000,endColorstr=#99000000);zoom: 1; }
-</style>
-<![endif]-->
-<!-- Run the plugin -->
-<script type="text/javascript">
-  $(window).load(function() {
-  $('#featured').orbit();
-  });
-</script>
-<!-- end banner org_green -->
-<!-- End Quantcast tag -->
-<?php
+	echo "\n<title>$sitename $pagetitle</title>\n";
 
-    include("includes/javascript.php");
+    echo "\n<!-- Loading includes/javascript.php from header.php -->\n";  
+	include_once(NUKE_INCLUDE_DIR.'javascript.php');
+	  
+   /**
+    * Include current Theme Javascript Functions
+    * for Theme Copyright and Bootstrap loading!
+    *
+    * @author Ernest Allen Bufffington
+    * @version 1.0
+    * @license GPL-3.0
+    */
+    if (file_exists(NUKE_THEMES_DIR.$ThemeSel.'/includes/javascript.php')): 
+	  echo "\n<!-- Loading themes/".$ThemeSel."/includes/javascript.php from header.php -->\n\n";
+      include_once(NUKE_THEMES_DIR.$ThemeSel.'/includes/javascript.php');
+	endif;
+	
+    include_once(NUKE_INCLUDE_DIR.'javascript.php');
 
-	if (file_exists("themes/$ThemeSel/images/favicon.png")) {
-		echo "<link REL=\"apple-touch-icon\" HREF=\"themes/$ThemeSel/images/favicon.png\">\n";
-	} else {
-	   echo "<link REL=\"apple-touch-icon\" HREF=\"favicon.png\">\n";
-	}
-
+	echo "\n\n<!-- Loading favicon from header.php START -->\n";
+    if (!($favicon = $cache->load('favicon', 'config'))): 
+        if (file_exists(NUKE_BASE_DIR.'favicon.ico')) 
+		$favicon = "favicon.ico";
+		else 
+		if (file_exists(NUKE_IMAGES_DIR.'favicon.ico')) 
+		$favicon = "images/favicon.ico";
+		else 
+		if (file_exists(NUKE_THEMES_DIR.$ThemeSel.'/images/favicon.ico')) 
+		$favicon = "themes/$ThemeSel/images/favicon.ico";
+		else 
+        $favicon = 'none';
+		if ($favicon != 'none') 
+        echo "<link rel=\"shortcut icon\" href=\"$favicon\" type=\"image/x-icon\" />\n";
+        $cache->save('favicon', 'config', $favicon);
+	else: 
+        if ($favicon != 'none') 
+        echo "<link rel=\"shortcut icon\" href=\"$favicon\" type=\"image/x-icon\" />\n";
+    endif;
+	echo "<!-- Loading favicon from header.php END -->\n\n";
+	
 	echo "<link rel=\"alternate\" type=\"application/rss+xml\" title=\"RSS\" href=\"backend.php\">\n";
-	echo "<link rel=\"StyleSheet\" href=\"themes/$ThemeSel/style/style.css\" type=\"text/css\">\n\n\n";
+	echo "<link rel=\"StyleSheet\" href=\"themes/$ThemeSel/style/style.css\" type=\"text/css\">\n\n";
 
-	if (file_exists("includes/custom_files/custom_head.php")) {
-		include_secure("includes/custom_files/custom_head.php");
-	}
-	echo "\n\n\n</head>\n\n";
+    if (!($custom_head = $cache->load('custom_head', 'config'))): 
+    
+	    $custom_head = array();
 
-	if (file_exists("includes/custom_files/custom_header.php")) {
-		include_secure("includes/custom_files/custom_header.php");
+	    if (file_exists(NUKE_INCLUDE_DIR.'custom_files/custom_head.php')): 
+	       echo "\n<!-- Loading custom_head.php from header.php -->\n\n";
+           $custom_head[] = 'custom_head';
+		endif;
+
+ 		if (file_exists(NUKE_INCLUDE_DIR.'custom_files/custom_header.php')): 
+	       echo "\n<!-- Loading custom_header.php from header.php -->\n\n";
+           $custom_head[] = 'custom_header';
+		endif;
+
+        if (!empty($custom_head)): 
+          
+		    foreach ($custom_head as $file):
+	            echo "\n<!-- Loading includes/".$file.".php from header.php -->\n\n";
+                include_once(NUKE_INCLUDE_DIR.'custom_files/'.$file.'.php');
+            endforeach;
+        
+		endif;
+		$cache->save('custom_head', 'config', $custom_head);
+	else: 
+        
+		if (!empty($custom_head)): 
+        
+		    foreach ($custom_head as $file): 
+                include_once(NUKE_INCLUDE_DIR.'custom_files/'.$file.'.php');
+            endforeach;
+        
+		endif;
+    endif;
+
+    // for nuke 8.3.x theme compatibility
+	if (file_exists(NUKE_THEMES_DIR.$ThemeSel.'/nuke83x.php')) {
+      echo "<!-- Loading Theme Name: $ThemeSel START -->\n";
+	  include(NUKE_THEMES_DIR.$ThemeSel.'/nuke83x.php');
 	}
-	themeheader();
+	
+	echo "</head>\n";
+	echo "<!-- Finished Loading The Header from header.php -->\n";
+	echo "<!-- HEADER END =================================================================================================================================================================================================== -->\n";
+
+	if (file_exists(NUKE_THEMES_DIR.$ThemeSel.'/nuke83x.php')) {
+	echo "\n<!-- Loading function themeheader() from themes/og_green/theme.php -->\n";
+	echo "<!-- WARNING PHP-NUKE IS IN THEME COMPATIBILITY MODE -->\n";	
+	echo "<!-- Loading Primary Body Tag from themeheader() in themes/$ThemeSel/theme.php -->\n\n";	
+    themeheader();
+	} else {	
+	echo "<!-- Loading Primary Body Tag from header.php -->\n";
+	echo "<body>\n\n\n\n";
+	}
 }
 
-online();
 head();
 
-include("includes/counter.php");
+if (!defined('ADMIN_FILE')):
+	include_once(NUKE_INCLUDE_DIR.'counter.php');
+	if (defined('HOME_FILE')):
+	    message_box();
+		blocks('Center');
+    endif;
+endif;
 
-if(defined('HOME_FILE')) {
-
-	message_box();
-	blocks("Center");
-}
+online();
 
 ?>

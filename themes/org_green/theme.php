@@ -57,11 +57,10 @@ function themeheader() {
         $username = $anonymous;
     }
 	?>
-    <!-- contenido arriba body -->
+    <!-- Theme body -->
     <?php
-
-    echo "<body>";
-
+	echo '<body>';
+	
 	//ads(0);
 
     $topics_list = "<select name=\"topic\" onChange='submit()'>\n";
@@ -74,45 +73,33 @@ function themeheader() {
 	$topicid = intval($topicid);
 
     if ($topicid == $topic) { $sel = "selected "; }
-
 	$topics_list .= "<option $sel value=\"$topicid\">$topics</option>\n";
-
 	$sel = "";
-
     }
 
     if ($username == $anonymous) {
-
 	$theuser = "&nbsp;&nbsp;<a href=\"modules.php?name=Your_Account\">Create an account";
-
     } else {
-
 	$theuser = "&nbsp;&nbsp;Welcome $username!";
-
     }
 
     $public_msg = public_message();
 
     if (defined('INDEX_FILE')) {
-
     $tmpl_file = "themes/org_green/header.html";
     $thefile = implode("", file($tmpl_file));
     $thefile = addslashes($thefile);
     $thefile = "\$r_file=\"".$thefile."\";";
     eval($thefile);
     print $r_file;
-
   }else{
-
     $tmpl_file = "themes/org_green/headernrb.html";
     $thefile = implode("", file($tmpl_file));
     $thefile = addslashes($thefile);
     $thefile = "\$r_file=\"".$thefile."\";";
     eval($thefile);
     print $r_file;  	
-
   }
-
     $swapblock = "1"; 
     $tmpl_file = "themes/org_green/leftb.html";
     $thefile = implode("", file($tmpl_file));
@@ -133,33 +120,19 @@ function themeheader() {
     $swapblock = "0";
 
      if (defined('INDEX_FILE')) {
-
     $tmpl_file = "themes/org_green/left_center.html";
-
     $thefile = implode("", file($tmpl_file));
-
     $thefile = addslashes($thefile);
-
     $thefile = "\$r_file=\"".$thefile."\";";
-
     eval($thefile);
-
     print $r_file;
-
    }else{
-
    	//$swapblock = "0";
-
    	$tmpl_file = "themes/org_green/left_centernrb.html";
-
     $thefile = implode("", file($tmpl_file));
-
     $thefile = addslashes($thefile);
-
     $thefile = "\$r_file=\"".$thefile."\";";
-
     eval($thefile);
-
     print $r_file;
   }
 }
@@ -178,76 +151,48 @@ function themefooter() {
     global $index,$swapblock, $foot1, $foot2, $foot3, $foot4;
 
 	$tmpl_file = "themes/org_green/center_right.html";
-
 	$thefile = implode("", file($tmpl_file));
-
 	$thefile = addslashes($thefile);
-
 	$thefile = "\$r_file=\"".$thefile."\";";
-
 	eval($thefile);
-
 	print $r_file;
 
-	 if (defined('INDEX_FILE')) {
-
+    if (defined('INDEX_FILE')) {
 	$swapblock = "0"; 
-
 	$tmpl_file = "themes/org_green/rightb.html";
-
     $thefile = implode("", file($tmpl_file));
-
     $thefile = addslashes($thefile);
-
     $thefile = "\$r_file=\"".$thefile."\";";
-
     eval($thefile);
-
     print $r_file;
 
 	blocks("right");
 
 	$tmpl_file = "themes/org_green/rightbb.html";
-
     $thefile = implode("", file($tmpl_file));
-
     $thefile = addslashes($thefile);
-
     $thefile = "\$r_file=\"".$thefile."\";";
-
     eval($thefile);
-
     print $r_file;
     }
 
     $footer_message = "$foot1<br />$foot2<br />$foot3<br />$foot4";
 
     if (defined('INDEX_FILE')) {
-
     $tmpl_file = "themes/org_green/footer.html";
-
     $thefile = implode("", file($tmpl_file));
-
     $thefile = addslashes($thefile);
-
     $thefile = "\$r_file=\"".$thefile."\";";
-
     eval($thefile);
-
     print $r_file;
 
   }else{
 
   	$tmpl_file = "themes/org_green/footernrb.html";
-
     $thefile = implode("", file($tmpl_file));
-
     $thefile = addslashes($thefile);
-
     $thefile = "\$r_file=\"".$thefile."\";";
-
     eval($thefile);
-
     print $r_file;
   }
 }
@@ -263,61 +208,38 @@ function themeindex ($aid, $informant, $time, $title, $counter, $topic, $thetext
     $ThemeSel = get_theme();
 
     if (file_exists("themes/$ThemeSel/images/topics/$topicimage")) {
-
 	$t_image = "themes/$ThemeSel/images/topics/$topicimage";
-
     } else {
-
 	$t_image = "$tipath$topicimage";
-
     }
 
     if (!empty($notes)) {
-
 	$notes = "<br /><br /><b>"._NOTE."</b> <i>$notes</i>\n";
-
     } else {
-
 	$notes = "";
-
     }
 
     if ("$aid" == "$informant") {
-
 	$content = "$thetext$notes\n";
-
     } else {
 
 	if(!empty($informant)) {
-
 	    $content = "<a href=\"modules.php?name=Your_Account&amp;op=userinfo&amp;username=$informant\">$informant</a> ";
-
 	} else {
-
 	    $content = "$anonymous ";
-
 	}
 
 	$content .= ""._WRITES." <i>\"$thetext\"</i>$notes\n";
-
     }
 
     $posted = ""._POSTEDBY." ";
-
     $posted .= get_author($aid);
-
     $posted .= " "._ON." $time $timezone ($counter "._READS.")";
-
     $tmpl_file = "themes/org_green/story_home.html";
-
     $thefile = implode("", file($tmpl_file));
-
     $thefile = addslashes($thefile);
-
     $thefile = "\$r_file=\"".$thefile."\";";
-
     eval($thefile);
-
     print $r_file;
 }
 /************************************************************/
@@ -333,59 +255,37 @@ function themearticle ($aid, $informant, $datetime, $title, $thetext, $topic, $t
     $ThemeSel = get_theme();
 
     if (file_exists("themes/$ThemeSel/images/topics/$topicimage")) {
-
 	$t_image = "themes/$ThemeSel/images/topics/$topicimage";
-
     } else {
-
 	$t_image = "$tipath$topicimage";
-
     }
 
     $posted = ""._POSTEDON." $datetime "._BY." ";
-
     $posted .= get_author($aid);
 
     if (!empty($notes)) {
-
 	$notes = "<br /><br /><b>"._NOTE."</b> <i>$notes</i>\n";
-
     } else {
-
 	$notes = "";
-
     }
 
     if ("$aid" == "$informant") {
-
 	$content = "$thetext$notes\n";
-
     } else {
-
 	if(!empty($informant)) {
-
 	    $content = "<a href=\"modules.php?name=Your_Account&amp;op=userinfo&amp;username=$informant\">$informant</a> ";
-
 	} else {
-
 	    $content = "$anonymous ";
-
 	}
-
 	$content .= ""._WRITES." <i>\"$thetext\"</i>$notes\n";
 
     }
 
     $tmpl_file = "themes/org_green/story_page.html";
-
     $thefile = implode("", file($tmpl_file));
-
     $thefile = addslashes($thefile);
-
     $thefile = "\$r_file=\"".$thefile."\";";
-
     eval($thefile);
-
     print $r_file;
 }
 /************************************************************/
@@ -398,28 +298,18 @@ function themesidebox($title, $content) {
    global $swapblock, $name;
 
    if ($swapblock=="0") { 
-
     $tmpl_file = "themes/org_green/blocks_Right.html";
-
 	if ($name == "News") {
-
 		$tmpl_file = "themes/org_green/Newsblocks.html";
-
 	  }
-
 	} else { 
-
 		$tmpl_file = "themes/org_green/blocks.html";
 	}
 
     $thefile = implode("", file($tmpl_file));
-
     $thefile = addslashes($thefile);
-
     $thefile = "\$r_file=\"".$thefile."\";";
-
     eval($thefile);
-
     print $r_file;
 }
 
