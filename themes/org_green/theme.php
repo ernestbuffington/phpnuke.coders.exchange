@@ -14,7 +14,8 @@
 /* If you don't know where to start with your theme, just   */
 /* start modifying this theme, it's validate and is cool ;) */
 /************************************************************/
-
+echo "\n<!-- Loadiing function themeheader() from themes/og_green/theme.php -->\n\n";
+themeheader();
 /************************************************************/
 /* Theme Colors Definition                                  */
 /*                                                          */
