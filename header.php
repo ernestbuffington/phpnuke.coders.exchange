@@ -12,40 +12,22 @@
 /* the Free Software Foundation; either version 2 of the License.       */
 /************************************************************************/
 
-if (stristr(htmlentities($_SERVER['PHP_SELF']), "header.php")) {
-	Header("Location: index.php");
-	die();
-}
+if (realpath(__FILE__) == realpath($_SERVER['SCRIPT_FILENAME'])):
+  Header("Location: index.php");
+  die();
+endif;
 
-define('NUKE_HEADER', true);
-require_once("mainfile.php");
-##################################################
-# Include some common header for HTML generation #
-##################################################
+if(!defined('HEADER')) { define('HEADER', true); }
+
+require_once(dirname(__FILE__).'/mainfile.php');
 
 function head() {
 
-	global $slogan, 
-	     $sitename, 
-		  $banners, 
-		  $nukeurl, 
-	  $Version_Num, 
-	      $artpage, 
-		    $topic, 
-		  $hlpfile, 
-		     $user, 
-			   $hr, 
-			$theme, 
-		   $cookie, 
-		 $bgcolor1, 
-		 $bgcolor2, 
-		 $bgcolor3, 
-		 $bgcolor4, 
-	   $textcolor1, 
-	   $textcolor2, 
-	    $forumpage, 
-		$adminpage, 
-		 $userpage, 
+	global $slogan, $sitename, $banners, $nukeurl, 
+	  $Version_Num, $artpage, $topic, $hlpfile, 
+		     $user, $hr, $theme, $cookie, $bgcolor1, 
+		 $bgcolor2, $bgcolor3, $bgcolor4, $textcolor1, 
+	   $textcolor2, $forumpage, $adminpage, $userpage, 
 		$pagetitle;
 
 	$ThemeSel = get_theme();
@@ -72,28 +54,11 @@ function head() {
     echo "<!-- Loading dynamic meta tags from database from includes/meta.php END -->\n";
 	
 	echo "\n<title>$sitename $pagetitle</title>\n\n";
-	?>
-<!-- banner org_green -->
-<!-- Attach our CSS -->
-<link rel="stylesheet" href="themes/<?php echo $ThemeSel?>/orbit-1.2.3.css">
-<!-- Attach necessary JS -->
-<script type="text/javascript" src="themes/<?php echo $ThemeSel?>/jquery-1.5.1.min.js"></script>
-<script type="text/javascript" src="themes/<?php echo $ThemeSel?>/jquery.orbit-1.2.3.min.js"></script>	
-<!--[if IE]>
-<style type="text/css">
-.timer { display: none !important; }
-div.caption { background:transparent; filter:progid:DXImageTransform.Microsoft.gradient(startColorstr=#99000000,endColorstr=#99000000);zoom: 1; }
-</style>
-<![endif]-->
-<!-- Run the plugin -->
-<script type="text/javascript">
-  $(window).load(function() {
-  $('#featured').orbit();
-  });
-</script>
-<!-- end banner org_green -->
-<!-- End Quantcast tag -->
-<?php
+
+    // for nuke 8.3.2 theme compatibility
+	if (file_exists(NUKE_THEMES_DIR.$ThemeSel.'/nuke832.php')) {
+      require_once(NUKE_THEMES_DIR.$ThemeSel.'/nuke832.php');
+	}
 
     require_once(NUKE_INCLUDE_DIR.'javascript.php');
 
@@ -160,16 +125,16 @@ div.caption { background:transparent; filter:progid:DXImageTransform.Microsoft.g
 
 
 }
-
 online();
 head();
 
-include("includes/counter.php");
 
-if(defined('HOME_FILE')) {
-
-	message_box();
-	blocks("Center");
-}
+if (!defined('ADMIN_FILE')):
+	include_once(NUKE_INCLUDE_DIR.'counter.php');
+	if (defined('HOME_FILE')):
+	    message_box();
+		blocks('Center');
+    endif;
+endif;
 
 ?>
