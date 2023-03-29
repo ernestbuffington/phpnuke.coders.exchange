@@ -172,11 +172,8 @@ function stripos_clone($haystack, $needle, $offset=0) {
   $return = stripos($haystack, (string) $needle, $offset=0);
 
   if ($return === false) {
-
     return false;
-
     } else {
-
     return true;
     }
   }
@@ -200,6 +197,57 @@ if(isset($user) && $user == $_COOKIE['user'])
 $htmltags = "<div align=\"center\"><img src=\"images/logo.gif\"><br><br><b>";
 $htmltags .= "The html tags you attempted to use is forbidden!</b><br><br>";
 $htmltags .= "[ <a href=\"javascript:history.go(-1)\"><b>Go Back</b></a> ]</div>";
+
+# Absolute Path Mod - 01/01/2012 by Ernest Allen Buffington START (added for old theme compatibility)
+$rel_path=[];
+$rel_path['file']   = str_replace('\\', "/", realpath(__DIR__));
+$server_ary         = pathinfo(realpath(basename((string) $_SERVER['PHP_SELF'])));
+$rel_path['server'] = str_replace('\\', "/", $server_ary['dirname']);
+$rel_path['uri']    = realpath(basename(substr((string) $_SERVER['REQUEST_URI'], 0, strpos((string) $_SERVER['REQUEST_URI'], '?'))));
+$script_abs_path    = pathinfo(realpath($_SERVER['SCRIPT_FILENAME']));
+$rel_path['script'] = str_replace('\\', "/",$script_abs_path['dirname']);
+
+if(($rel_path['file'] === $rel_path['script']) && (strlen((string) $_SERVER['DOCUMENT_ROOT']) < strlen($script_abs_path['dirname']))): 
+
+    $href_path = '/'.str_replace($_SERVER['DOCUMENT_ROOT'], '', $rel_path['script']);
+
+    if (substr($href_path, 0, 2) == '//'): 
+    $href_path = substr($href_path, 1);
+	endif;
+
+elseif(strlen($rel_path['file']) == (strlen((string) $_SERVER['DOCUMENT_ROOT']) - 1)): 
+
+    $href_path = '';
+
+elseif(strlen($rel_path['script']) > strlen((string) $_SERVER['DOCUMENT_ROOT']) && (strlen((string) $_SERVER['DOCUMENT_ROOT']) > strlen($rel_path['file']))): 
+
+    $href_path = '';
+
+elseif(strlen($rel_path['file']) > strlen((string) $_SERVER['DOCUMENT_ROOT'])):
+
+	$href_path = '/'.str_replace($_SERVER['DOCUMENT_ROOT'], '', $rel_path['file']);
+
+	if(substr($href_path, 0, 2) == '//'): 
+        $href_path = substr($href_path, 1);
+	endif;
+
+else: 
+
+    $href_path = 'https://'.$_SERVER['SERVER_NAME'];
+	$href_path_http = 'http://'.$_SERVER['SERVER_NAME'];
+
+endif;
+
+unset ($rel_path);
+unset ($server_ary);
+unset ($script_abs_path);
+
+# HTTP & HTTPS
+define('HTTPS', $href_path . '/');
+define('HTTP', $href_path_http . '/');
+
+define('EXAMPLE_USE_DIR', $href_path . '/example/');
+# Absolute Path Mod - 01/01/2012 by Ernest Allen Buffington END (added for old theme compatibility)
 
 # add 3rd party backward version comapatibility defines
 # Inspired by phoenix-cms at website-portals.net
