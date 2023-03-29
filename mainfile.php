@@ -32,6 +32,8 @@ if(!defined('END_TRANSACTION')) {
 // Get php version
 $phpver = phpversion();
 
+define('PHP_7', version_compare($phpver, '7.0.0', '>='));
+
 define('GZIPSUPPORT', extension_loaded('zlib'));
 define('GDSUPPORT', extension_loaded('gd'));
 define('CAN_MOD_INI', !stristr(ini_get('disable_functions'), 'ini_set'));
@@ -158,6 +160,37 @@ if((isset($_POST['name']) && !empty($_POST['name'])) && (isset($_GET['name']) &&
 else: 
   $name = (isset($_REQUEST['name']) && !stristr($_REQUEST['name'],'..') && !stristr($_REQUEST['name'],'://')) ? addslashes(trim($_REQUEST['name'])) : false;
 endif;
+
+$start_mem = function_exists('memory_get_usage') ? memory_get_usage() : 0;
+
+if(preg_match('/IIS/', $_SERVER['SERVER_SOFTWARE']) && isset($_SERVER['SCRIPT_NAME'])):
+    $requesturi = $_SERVER['SCRIPT_NAME'];
+    if (isset($_SERVER['QUERY_STRING'])):
+      $requesturi .= '?'.$_SERVER['QUERY_STRING'];
+	endif;
+    $_SERVER['REQUEST_URI'] = $requesturi;
+endif;
+
+if(PHP_7 && (!ini_get('register_long_arrays') || ini_get('register_long_arrays') == '0' || strtolower(ini_get('register_long_arrays')) == 'off')):
+    $HTTP_POST_VARS =& $_POST;
+    $HTTP_GET_VARS =& $_GET;
+    $HTTP_SERVER_VARS =& $_SERVER;
+    $HTTP_COOKIE_VARS =& $_COOKIE;
+    $HTTP_ENV_VARS =& $_ENV;
+    $HTTP_POST_FILES =& $_FILES;
+    if(isset($_SESSION)): 
+	  $HTTP_SESSION_VARS =& $_SESSION;
+	endif;
+endif;
+
+if(isset($_COOKIE['DONATION'])):
+  setcookie('DONATION', null, time()-3600);
+  $type = preg_match('/IIS|Microsoft|WebSTAR|Xitami/', $_SERVER['SERVER_SOFTWARE']) ? 'Refresh: 0; URL=' : 'Location: ';
+  $url = str_replace('&amp;', "&", $url);
+  header($type . 'modules.php?name=Donations&op=thankyou');
+endif;
+
+use function PHP81_BC\strftime;
 
 if(!function_exists('stripos')) {
 
@@ -353,6 +386,13 @@ require_once(INCLUDE_PATH."includes/mods/Evo/functions_database.php");
  * @date 03/28/2023 8:23 AM Ernest Allen Buffington
  */
 require_once(INCLUDE_PATH."includes/mods/phpbb2/constants.php");
+
+/*
+ * Get user ip and try to detect bots
+ * Code origin Nuke Evolution / Xtreme v2.0.9e
+ * @date 03/28/2023 8:23 AM Ernest Allen Buffington
+ */
+require_once(NUKE_CLASSES_DIR.'class.identify.php');
 
 /*
  * Added for Zend Zf1 future
