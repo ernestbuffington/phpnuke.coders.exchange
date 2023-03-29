@@ -49,7 +49,6 @@ function head() {
 		$pagetitle;
 
 	$ThemeSel = get_theme();
-
 	include_secure("themes/$ThemeSel/theme.php");
 
     echo "<!-- Loading Auto MimeType v1.0.0 from header.php -->\n";
