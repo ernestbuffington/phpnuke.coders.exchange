@@ -145,10 +145,19 @@ foreach($_REQUEST as $key=>$value)
     }    
 }
 
+$admin = (isset($_COOKIE['admin'])) ? $_COOKIE['admin'] : false;
+$user = (isset($_COOKIE['user'])) ? $_COOKIE['user'] : false;
+
 // This block of code makes sure $admin and $user are COOKIES
 if((isset($admin) && $admin != $_COOKIE['admin']) OR (isset($user) && $user != $_COOKIE['user'])) {
 	die("Illegal Operation");
 }
+
+if((isset($_POST['name']) && !empty($_POST['name'])) && (isset($_GET['name']) && !empty($_GET['name']))): 
+  $name = (isset($_GET['name']) && !stristr($_GET['name'],'..') && !stristr($_GET['name'],'://')) ? addslashes(trim($_GET['name'])) : false;
+else: 
+  $name = (isset($_REQUEST['name']) && !stristr($_REQUEST['name'],'..') && !stristr($_REQUEST['name'],'://')) ? addslashes(trim($_REQUEST['name'])) : false;
+endif;
 
 if(!function_exists('stripos')) {
 
