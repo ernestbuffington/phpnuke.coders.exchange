@@ -21,6 +21,16 @@ if(!defined('HEADER')) { define('HEADER', true); }
 
 require_once(dirname(__FILE__).'/mainfile.php');
 
+echo "<!--
+          | |         | \ | |     | |       
+     _ __ | |__  _ __ |  \| |_   _| | _____ 
+    | '_ \| '_ \| '_ \| . ` | | | | |/ / _ \
+    | |_) | | | | |_) | |\  | |_| |   <  __/
+    | .__/|_| |_| .__/|_| \_|\__,_|_|\_\___|
+    | |         | |                         
+    |_|         |_|                        
+                                        -->\n";
+
 function head() {
 
 	global $slogan, $sitename, $banners, $nukeurl, 
@@ -64,8 +74,11 @@ function head() {
     include("includes/meta.php");
     echo "<!-- Loading dynamic meta tags from database from includes/meta.php END -->\n";
 	
-	echo "\n<title>$sitename $pagetitle</title>\n\n";
+	echo "\n<title>$sitename $pagetitle</title>\n";
 
+    echo "\n<!-- Loadiing includes/javascript.php from header.php -->\n";  
+	include_once(NUKE_INCLUDE_DIR.'javascript.php');
+	  
    /**
     * Include current Theme Javascript Functions
     * for Theme Copyright and Bootstrap loading!
