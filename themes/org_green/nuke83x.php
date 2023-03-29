@@ -9,8 +9,8 @@ $ThemeSel = get_theme();
 <!-- Attach our CSS -->
 <link rel="stylesheet" href="themes/<?php echo $ThemeSel?>/orbit-1.2.3.css">
 <!-- Attach necessary JS -->
-<script type="text/javascript" src="themes/<?php echo $ThemeSel?>/jquery-1.5.1.min.js"></script>
-<script type="text/javascript" src="themes/<?php echo $ThemeSel?>/jquery.orbit-1.2.3.min.js"></script>	
+<script src="themes/<?php echo $ThemeSel?>/jquery-1.5.1.min.js"></script>
+<script src="themes/<?php echo $ThemeSel?>/jquery.orbit-1.2.3.min.js"></script>	
 <!--[if IE]>
 <style type="text/css">
 .timer { display: none !important; }
@@ -18,7 +18,7 @@ div.caption { background:transparent; filter:progid:DXImageTransform.Microsoft.g
 </style>
 <![endif]-->
 <!-- Run the plugin -->
-<script type="text/javascript">
+<script>
   $(window).load(function() {
   $('#featured').orbit();
   });
@@ -36,6 +36,4 @@ div.caption { background:transparent; filter:progid:DXImageTransform.Microsoft.g
 /* If you don't know where to start with your theme, just   */
 /* start modifying this theme, it's validate and is cool ;) */
 /************************************************************/
-echo "\n<!-- Loadiing function themeheader() from themes/og_green/theme.php -->\n\n";
-themeheader();
 ?>
