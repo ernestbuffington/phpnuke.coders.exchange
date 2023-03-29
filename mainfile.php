@@ -491,13 +491,9 @@ $pagetitle = "";
 error_reporting(E_ALL^E_NOTICE);
 
 if ($display_errors == 1) {
-
   ini_set('display_errors', 1);
-
 } else {
-
   ini_set('display_errors', 0);
-
 }
 
 if (!defined('FORUM_ADMIN')) {
@@ -680,11 +676,8 @@ $postString = "";
 foreach ($_POST as $postkey => $postvalue) {
 
     if ($postString > "") {
-
      $postString .= "&".$postkey."=".$postvalue;
-
     } else {
-
      $postString .= $postkey."=".$postvalue;
     }
 }
@@ -796,11 +789,8 @@ function update_points($id) {
 function title($text) {
 
 	OpenTable();
-
 	echo "<div align=\"center\"><span class=\"title\"><strong>$text</strong></span></div>";
-
 	CloseTable();
-
 	echo "<br>";
 }
 
@@ -1056,17 +1046,12 @@ function message_box() {
 				if ($view == 5 AND paid()) {
 
 					OpenTable();
-
 					echo "<div align=\"center\"><span class=\"option\" style=\"color:$textcolor2;\"><b>$title</b></span></div><br>\n"
-
 					."<span class=\"content\">$content</span>";
 
 					if (is_admin($admin)) {
-
 						echo "<br><br><div align=\"center\"><span class=\"content\">[ "._MVIEWSUBUSERS." - $remain - <a href=\"".$admin_file.".php?op=editmsg&amp;mid=$mid\">"._EDIT."</a> ]</span></div>";
-
 					}
-
 					CloseTable();
 
 					echo "<br>";
@@ -1074,13 +1059,9 @@ function message_box() {
 				} elseif ($view == 4 AND is_admin($admin)) {
 
 					OpenTable();
-
 					echo "<div align=\"center\"><span class=\"option\" style=\"color:$textcolor2;\"><b>$title</b></span></div><br>\n"
-
 					."<span class=\"content\">$content</span>"
-
 					."<br><br><div align=\"center\"><span class=\"content\">[ "._MVIEWADMIN." - $remain - <a href=\"".$admin_file.".php?op=editmsg&amp;mid=$mid\">"._EDIT."</a> ]</span></div>";
-
 					CloseTable();
 
 					echo "<br>";
@@ -1088,17 +1069,12 @@ function message_box() {
 				} elseif ($view == 3 AND is_user($user) || is_admin($admin)) {
 
 					OpenTable();
-
 					echo "<div align=\"center\"><span class=\"option\" color=\"$textcolor2\"><b>$title</b></span></div><br>\n"
-
 					."<span class=\"content\">$content</span>";
 
 					if (is_admin($admin)) {
-
 						echo "<br><br><div align=\"center\"><span class=\"content\">[ "._MVIEWUSERS." - $remain - <a href=\"".$admin_file.".php?op=editmsg&amp;mid=$mid\">"._EDIT."</a> ]</span></div>";
-
 					}
-
 					CloseTable();
 
 					echo "<br>";
@@ -1106,17 +1082,12 @@ function message_box() {
 				} elseif ($view == 2 AND !is_user($user) || is_admin($admin)) {
 
 					OpenTable();
-
 					echo "<div align=\"center\"><span class=\"option\" style=\"color:$textcolor2;\"><b>$title</b></span></div><br>\n"
-
 					."<span class=\"content\">$content</span>";
 
 					if (is_admin($admin)) {
-
 						echo "<br><br><div align=\"center\"><span class=\"content\">[ "._MVIEWANON." - $remain - <a href=\"".$admin_file.".php?op=editmsg&amp;mid=$mid\">"._EDIT."</a> ]</span></div>";
-
 					}
-
 					CloseTable();
 
 					echo "<br>";
@@ -1126,15 +1097,11 @@ function message_box() {
 					OpenTable();
 
 					echo "<div align=\"center\"><span class=\"option\" style=\"color=:$textcolor2;\"><b>$title</b></span></div><br>\n"
-
 					."<span class=\"content\">$content</span>";
 
 					if (is_admin($admin)) {
-
 						echo "<br><br><div align=\"center\"><span class=\"content\">[ "._MVIEWALL." - $remain - <a href=\"".$admin_file.".php?op=editmsg&amp;mid=$mid\">"._EDIT."</a> ]</span></div>";
-
 					}
-
 					CloseTable();
 
 					echo "<br>";
@@ -1148,7 +1115,6 @@ function message_box() {
 					if ($mdate < $past) {
 
 						$db->sql_query("UPDATE ".$prefix."_message SET active='0' WHERE mid='$mid'");
-
 					}
 				}
 			}
@@ -1191,11 +1157,8 @@ function online() {
     $row = $db->sql_fetchrow($result);
 
     if ($row) {
-
       $db->sql_query("UPDATE ".$prefix."_session SET uname='".addslashes($uname)."', time='$ctime', host_addr='$ip', guest='$guest' WHERE uname='".addslashes($uname)."'");
-
     } else {
-
       $db->sql_query("INSERT INTO ".$prefix."_session (uname, time, host_addr, guest) VALUES ('".addslashes($uname)."', '$ctime', '$ip', '$guest')");
     }
   }
@@ -1209,29 +1172,20 @@ function blockfileinc($title, $blockfile, $side=0) {
 	$file = file_exists("blocks/".$blockfile."");
 
 	if (!$file) {
-
 		$content = _BLOCKPROBLEM;
-
 	} else {
-
 		include("blocks/".$blockfile."");
 	}
 
 	if (empty($content)) {
-
 		$content = _BLOCKPROBLEM2;
 	}
 
 	if ($side == 1) {
-
 		themecenterbox($blockfiletitle, $content);
-
 	} elseif ($side == 2) {
-
 		themecenterbox($blockfiletitle, $content);
-
 	} else {
-
 		themesidebox($blockfiletitle, $content);
 	}
 }
@@ -1251,7 +1205,6 @@ function selectlanguage() {
 		while($func=$langdir->read()) {
 
 			if(str_starts_with($func, "lang-")) {
-
 				$menulist .= "$func ";
 			}
 		}
@@ -1281,7 +1234,6 @@ function selectlanguage() {
 		$title = _SELECTLANGUAGE;
 
 		$content = "<div align=\"center\"><span class=\"content\">"._SELECTGUILANG."<br><br></span>";
-
 		$content .= "<form action=\"index.php\" method=\"get\"><select name=\"newlanguage\" onChange=\"top.location.href=this.options[this.selectedIndex].value\">";
 
 		$handle=opendir('language');
@@ -1291,7 +1243,6 @@ function selectlanguage() {
 		while ($file = readdir($handle)) {
 
 			if (preg_match("/^lang\-(.+)\.php/", $file, $matches)) {
-
 				$langFound = $matches[1];
 				$languageslist .= "$langFound ";
 			}
@@ -1314,7 +1265,6 @@ function selectlanguage() {
 				$content .= ">".ucfirst($languageslist[$i])."</option>\n";
 			}
 		}
-
 		$content .= "</select></form></div>";
 
 		themesidebox($title, $content);
@@ -1382,13 +1332,10 @@ function cookiedecode($user) {
     static $pass;
 
     if(!is_array($user)) {
-
         $user = base64_decode($user);
         $user = addslashes($user);
         $cookie = explode(":", $user);
-
     } else {
-
         $cookie = $user;
     }
 
@@ -1420,7 +1367,6 @@ function getusrinfo($user) {
     if (isset($userrow) AND is_array($userrow)) {
 
         if ($userrow['username'] == $user[1] && $userrow['user_password'] == $user[2]) {
-
             return $userrow;
         }
     }
@@ -1535,7 +1481,6 @@ function delQuotes($string){
 			$tmp="";
 
 			$attrib=-1;
-
 		}
 
 		break;
@@ -2344,11 +2289,8 @@ function paid() {
 	if (is_user($user)) {
 
 		if (!empty($subscription_url)) {
-
 			$renew = ""._SUBRENEW." $subscription_url";
-
 		} else {
-
 			$renew = "";
 		}
 
