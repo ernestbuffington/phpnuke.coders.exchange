@@ -33,7 +33,17 @@ function head() {
 	$ThemeSel = get_theme();
 	include_secure("themes/$ThemeSel/theme.php");
 
-	if (file_exists(NUKE_THEMES_DIR.$ThemeSel.'/includes/mimetype.php')):  
+  /**
+   * Doctype/Mime Type auto selector - This checks each theme as it is switched and will load a mimetype.php from the themes includes folder.
+   * This allows for many different doctypes to be used on the Fly by whichever theme is selected.
+   * This is great for porting Legacy themes or even just to show the versatility of PHP-Nuke.
+   * If a mimetype.php file is not detected it uses the default doctype of XHTML 1.0 Transitional
+   *
+   * @author Ernest Allen Bufffington
+   * @version 1.0
+   * @license GPL-3.0
+   */
+  	if (file_exists(NUKE_THEMES_DIR.$ThemeSel.'/includes/mimetype.php')):  
     include(NUKE_THEMES_DIR.$ThemeSel.'/includes/mimetype.php');
 	echo "<!-- HEADER START ================================================================================================================================================================================================= -->\n";
     echo '<head>'."\n";
