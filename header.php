@@ -33,9 +33,10 @@ function head() {
 	$ThemeSel = get_theme();
 	include_secure("themes/$ThemeSel/theme.php");
 
-    echo "<!-- Loading Auto MimeType v1.0.0 from header.php -->\n";
 	if (file_exists(NUKE_THEMES_DIR.$ThemeSel.'/includes/mimetype.php')):  
     include(NUKE_THEMES_DIR.$ThemeSel.'/includes/mimetype.php');
+	echo "<!-- HEADER START ================================================================================================================================================================================================= -->\n";
+    echo '<head>'."\n";
 	else:  # OLD SCHOOL DEFAULT MIMETYPE START
 	
 	echo '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">'."\n";
