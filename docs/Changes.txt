@@ -47,7 +47,9 @@ Jan 2023: Version 8.3.2
 - Added Bootstrap v3.4.1 (https://getbootstrap.com/)
 - Added Bootstrap Icons v1.9.1 (https://getbootstrap.com/)
 - Added Font Awesome (free) v6.2.0 (https://fontawesome.com/)
--
+- Added jQuery JavaScript Library v3.6.4 (https://jquery.com/)
+- Added jQuery Migrate Library v1.4.1 (https://jquery.com/)
+- Added jQuery Migrate Library v3.4.0 (https://jquery.com/)
 
 August 2007: Version 8.1
 ========================
