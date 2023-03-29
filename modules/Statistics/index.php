@@ -18,9 +18,7 @@
 /************************************************************************/
 
 if (!defined('MODULE_FILE')) {
-
 	die ("You can't access this file directly...");
-
 }
 
 require_once("mainfile.php");
@@ -32,26 +30,16 @@ get_lang($module_name);
 $pagetitle = "- "._STATS."";
 
 if (isset($year)) {
-
 	$year = intval($year);
-
 }
 
 $ThemeSel = get_theme();
 
-
-
 $now = date("d-m-Y");
-
 $dot = explode ("-",$now);
-
 $nowdate = $dot[0];
-
 $nowmonth = $dot[1];
-
 $nowyear = $dot[2];
-
-
 
 function Stats_Main() {
 
@@ -64,9 +52,7 @@ function Stats_Main() {
 	while ($row = $db->sql_fetchrow($result)) {
 
 		$type = stripslashes(check_html($row['type'], "nohtml"));
-
 		$var = stripslashes(check_html($row['var'], "nohtml"));
-
 		$count = intval($row['count']);
 
 		if(($type == "total") && ($var == "hits")) {
@@ -78,51 +64,42 @@ function Stats_Main() {
 			if($var == "FireFox") {
 
 				$firefox[] = $count;
-
 				$firefox[] = substr(100 * $count / $total, 0, 5);
 
 			} elseif($var == "Netscape") {
 
 				$netscape[] = $count;
-
 				$netscape[] = substr(100 * $count / $total, 0, 5);
 
 			} elseif($var == "MSIE") {
 
 				$msie[] = $count;
-
 				$msie[] =  substr(100 * $count / $total, 0, 5);
 
 			} elseif($var == "Konqueror") {
 
 				$konqueror[] = $count;
-
 				$konqueror[] =  substr(100 * $count / $total, 0, 5);
 
 			} elseif($var == "Opera") {
 
 				$opera[] = $count;
-
 				$opera[] =  substr(100 * $count / $total, 0, 5);
 
 			} elseif($var == "Lynx") {
 
 				$lynx[] = $count;
-
 				$lynx[] =  substr(100 * $count / $total, 0, 5);
 
 			} elseif($var == "Bot") {
 
 				$bot[] = $count;
-
 				$bot[] =  substr(100 * $count / $total, 0, 5);
 
 			} elseif(($type == "browser") && ($var == "Other")) {
 
 				$b_other[] = $count;
-
 				$b_other[] =  substr(100 * $count / $total, 0, 5);
-
 			}
 
 		} elseif($type == "os") {
@@ -130,79 +107,64 @@ function Stats_Main() {
 			if($var == "Windows") {
 
 				$windows[] = $count;
-
 				$windows[] =  substr(100 * $count / $total, 0, 5);
 
 			} elseif($var == "Mac") {
 
 				$mac[] = $count;
-
 				$mac[] =  substr(100 * $count / $total, 0, 5);
 
 			} elseif($var == "Linux") {
 
 				$linux[] = $count;
-
 				$linux[] =  substr(100 * $count / $total, 0, 5);
 
 			} elseif($var == "FreeBSD") {
 
 				$freebsd[] = $count;
-
 				$freebsd[] =  substr(100 * $count / $total, 0, 5);
 
 			} elseif($var == "SunOS") {
 
 				$sunos[] = $count;
-
 				$sunos[] =  substr(100 * $count / $total, 0, 5);
 
 			} elseif($var == "IRIX") {
 
 				$irix[] = $count;
-
 				$irix[] =  substr(100 * $count / $total, 0, 5);
 
 			} elseif($var == "BeOS") {
 
 				$beos[] = $count;
-
 				$beos[] =  substr(100 * $count / $total, 0, 5);
 
 			} elseif($var == "OS/2") {
 
 				$os2[] = $count;
-
 				$os2[] =  substr(100 * $count / $total, 0, 5);
 
 			} elseif($var == "AIX") {
 
 				$aix[] = $count;
-
 				$aix[] =  substr(100 * $count / $total, 0, 5);
 
 			} elseif(($type == "os") && ($var == "Other")) {
 
 				$os_other[] = $count;
-
 				$os_other[] =  substr(100 * $count / $total, 0, 5);
-
 			}
-
 		}
 
 	}
 
-	title("$sitename "._STATS."");
+	//title("$sitename "._STATS."");
 
 	OpenTable();
 
 	OpenTable();
-
 	echo "<center><font class=\"option\"><b>$sitename "._STATS."</b></font><br><br>"._WERECEIVED." <b>$total</b> "._PAGESVIEWS." $startdate<br><br>"
-
 	."[ <a href=\"modules.php?name=$module_name&op=Stats\">"._VIEWDETAILED."</a> ]</center>";
-
 	CloseTable();
 
 	echo "<br><br>";
@@ -216,128 +178,78 @@ function Stats_Main() {
 	OpenTable2();
 
 	echo "<table cellspacing=\"0\" cellpadding=\"2\" border=\"0\" align=\"center\"><tr><td colspan=\"2\">\n";
-
 	echo "<center><font color=\"$textcolor2\"><b>"._BROWSERS."</b></font></center><br></td></tr>\n";
-
 	echo "<tr><td><img src=\"modules/$module_name/images/explorer.gif\" border=\"0\" alt=\"\">&nbsp;MSIE: </td><td><img src=\"themes/$ThemeSel/images/leftbar.gif\" height=\"$l_size[1]\" width=\"$l_size[0]\" Alt=\"Internet Explorer\"><img src=\"themes/$ThemeSel/images/mainbar.gif\" Alt=\"Internet Explorer\" height=\"$m_size[1]\" width=", $msie[1] * 2, "><img src=\"themes/$ThemeSel/images/rightbar.gif\" height=\"$r_size[1]\" width=\"$r_size[0]\" Alt=\"Internet Explorer\"> $msie[1] % ($msie[0])</td></tr>\n";
-
 	echo "<tr><td><img src=\"modules/$module_name/images/firefox.gif\" border=\"0\" alt=\"\">&nbsp;FireFox: </td><td><img src=\"themes/$ThemeSel/images/leftbar.gif\" height=\"$l_size[1]\" width=\"$l_size[0]\" Alt=\"FireFox\"><img src=\"themes/$ThemeSel/images/mainbar.gif\" Alt=\"FireFox\" height=\"$m_size[1]\" width=", $firefox[1] * 2, "><img src=\"themes/$ThemeSel/images/rightbar.gif\" height=\"$r_size[1]\" width=\"$r_size[0]\" Alt=\"FireFox\"> $firefox[1] % ($firefox[0])</td></tr>\n";
-
 	echo "<tr><td><img src=\"modules/$module_name/images/netscape.gif\" border=\"0\" alt=\"\">&nbsp;Netscape: </td><td><img src=\"themes/$ThemeSel/images/leftbar.gif\" height=\"$l_size[1]\" width=\"$l_size[0]\" Alt=\"Netscape\"><img src=\"themes/$ThemeSel/images/mainbar.gif\" Alt=\"Netscape\" height=\"$m_size[1]\" width=", $netscape[1] * 2, "><img src=\"themes/$ThemeSel/images/rightbar.gif\" height=\"$r_size[1]\" width=\"$r_size[0]\" Alt=\"Netscape\"> $netscape[1] % ($netscape[0])</td></tr>\n";
-
 	echo "<tr><td><img src=\"modules/$module_name/images/opera.gif\" border=\"0\" alt=\"\">&nbsp;Opera: </td><td><img src=\"themes/$ThemeSel/images/leftbar.gif\" height=\"$l_size[1]\" width=\"$l_size[0]\" Alt=\"Opera\"><img src=\"themes/$ThemeSel/images/mainbar.gif\" Alt=\"Opera\" height=\"$m_size[1]\" width=", $opera[1] * 2, "><img src=\"themes/$ThemeSel/images/rightbar.gif\" height=\"$r_size[1]\" width=\"$r_size[0]\" Alt=\"Opera\"> $opera[1] % ($opera[0])</td></tr>\n";
-
 	echo "<tr><td><img src=\"modules/$module_name/images/konqueror.gif\" border=\"0\" alt=\"\">&nbsp;Konqueror: </td><td><img src=\"themes/$ThemeSel/images/leftbar.gif\" height=\"$l_size[1]\" width=\"$l_size[0]\" Alt=\"Konqueror\"><img src=\"themes/$ThemeSel/images/mainbar.gif\" Alt=\"Konqueror (KDE)\" height=\"$m_size[1]\" width=", $konqueror[1] * 2, "><img src=\"themes/$ThemeSel/images/rightbar.gif\" height=\"$r_size[1]\" width=\"$r_size[0]\" Alt=\"Konqueror\"> $konqueror[1] % ($konqueror[0])</td></tr>\n";
-
 	echo "<tr><td><img src=\"modules/$module_name/images/lynx.gif\" border=\"0\" alt=\"\">&nbsp;Lynx: </td><td><img src=\"themes/$ThemeSel/images/leftbar.gif\" height=\"$l_size[1]\" width=\"$l_size[0]\" Alt=\"Lynx\"><img src=\"themes/$ThemeSel/images/mainbar.gif\" Alt=\"Lynx\" height=\"$m_size[1]\" width=", $lynx[1] * 2, "><img src=\"themes/$ThemeSel/images/rightbar.gif\" height=\"$r_size[1]\" width=\"$r_size[0]\" Alt=\"Lynx\"> $lynx[1] % ($lynx[0])</td></tr>\n";
-
 	echo "<tr><td><img src=\"modules/$module_name/images/altavista.gif\" border=\"0\" alt=\"\">&nbsp;"._SEARCHENGINES.": </td><td><img src=\"themes/$ThemeSel/images/leftbar.gif\" height=\"$l_size[1]\" width=\"$l_size[0]\" Alt=\"Robots - Spiders - Buscadores\"><img src=\"themes/$ThemeSel/images/mainbar.gif\" Alt=\"Robots - Spiders - Buscadores\" height=\"$m_size[1]\" width=", $bot[1] * 2, "><img src=\"themes/$ThemeSel/images/rightbar.gif\" height=\"$r_size[1]\" width=\"$r_size[0]\" Alt=\""._BOTS."\"> $bot[1] % ($bot[0])</td></tr>\n";
-
 	echo "<tr><td><img src=\"modules/$module_name/images/question.gif\" border=\"0\" alt=\"\">&nbsp;"._UNKNOWN.": </td><td><img src=\"themes/$ThemeSel/images/leftbar.gif\" height=\"$l_size[1]\" width=\"$l_size[0]\" Alt=\"Otros - Desconocidos\"><img src=\"themes/$ThemeSel/images/mainbar.gif\" Alt=\"Otros - Desconocidos\" height=\"$m_size[1]\" width=", $b_other[1] * 2, "><img src=\"themes/$ThemeSel/images/rightbar.gif\" height=\"$r_size[1]\" width=\"$r_size[0]\" Alt=\""._OTHER."\"> $b_other[1] % ($b_other[0])\n";
-
 	echo "</td></tr></table>";
-
 	CloseTable2();
 
 	echo "<br><br>\n";
 
 	OpenTable2();
-
 	echo "<table cellspacing=\"0\" cellpadding=\"2\" border=\"0\" align=\"center\"><tr><td colspan=\"2\">\n";
-
 	echo "<center><font color=\"$textcolor2\"><b>"._OPERATINGSYS."</b></font></center><br></td></tr>\n";
-
 	echo "<tr><td><img src=\"modules/$module_name/images/windows.gif\" border=\"0\" alt=\"\">&nbsp;Windows:</td><td><img src=\"themes/$ThemeSel/images/leftbar.gif\" height=\"$l_size[1]\" width=\"$l_size[0]\" Alt=\"Windows\"><img src=\"themes/$ThemeSel/images/mainbar.gif\" Alt=\"Windows\" height=\"$m_size[1]\" width=", $windows[1] * 2, "><img src=\"themes/$ThemeSel/images/rightbar.gif\" height=\"$r_size[1]\" width=\"$r_size[0]\" Alt=\"Windows\"> $windows[1] % ($windows[0])</td></tr>\n";
-
 	echo "<tr><td><img src=\"modules/$module_name/images/linux.gif\" border=\"0\" alt=\"\">&nbsp;Linux:</td><td><img src=\"themes/$ThemeSel/images/leftbar.gif\" height=\"$l_size[1]\" width=\"$l_size[0]\" Alt=\"Linux\"><img src=\"themes/$ThemeSel/images/mainbar.gif\" Alt=\"Linux\" height=\"$m_size[1]\" width=", $linux[1] * 2, "><img src=\"themes/$ThemeSel/images/rightbar.gif\" height=\"$r_size[1]\" width=\"$r_size[0]\" Alt=\"Linux\"> $linux[1] % ($linux[0])</td></tr>\n";
-
 	echo "<tr><td><img src=\"modules/$module_name/images/mac.gif\" border=\"0\" alt=\"\">&nbsp;Mac/PPC:</td><td><img src=\"themes/$ThemeSel/images/leftbar.gif\" height=\"$l_size[1]\" width=\"$l_size[0]\" Alt=\"Mac/PPC\"><img src=\"themes/$ThemeSel/images/mainbar.gif\" Alt=\"Mac - PPC\" height=\"$m_size[1]\" width=", $mac[1] * 2, "><img src=\"themes/$ThemeSel/images/rightbar.gif\" height=\"$r_size[1]\" width=\"$r_size[0]\" Alt=\"Mac/PPC\"> $mac[1] % ($mac[0])</td></tr>\n";
-
 	echo "<tr><td><img src=\"modules/$module_name/images/bsd.gif\" border=\"0\" alt=\"\">&nbsp;FreeBSD:</td><td><img src=\"themes/$ThemeSel/images/leftbar.gif\" height=\"$l_size[1]\" width=\"$l_size[0]\" Alt=\"FreeBSD\"><img src=\"themes/$ThemeSel/images/mainbar.gif\" Alt=\"FreeBSD\" height=\"$m_size[1]\" width=", $freebsd[1] * 2, "><img src=\"themes/$ThemeSel/images/rightbar.gif\" height=\"$r_size[1]\" width=\"$r_size[0]\" Alt=\"FreeBSD\"> $freebsd[1] % ($freebsd[0])</td></tr>\n";
-
 	echo "<tr><td><img src=\"modules/$module_name/images/sun.gif\" border=\"0\" alt=\"\">&nbsp;SunOS:</td><td><img src=\"themes/$ThemeSel/images/leftbar.gif\" height=\"$l_size[1]\" width=\"$l_size[0]\" Alt=\"SunOS\"><img src=\"themes/$ThemeSel/images/mainbar.gif\" Alt=\"SunOS\" height=\"$m_size[1]\" width=", $sunos[1] * 2, "><img src=\"themes/$ThemeSel/images/rightbar.gif\" height=\"$r_size[1]\" width=\"$r_size[0]\" Alt=\"SunOS\"> $sunos[1] % ($sunos[0])</td></tr>\n";
-
 	echo "<tr><td><img src=\"modules/$module_name/images/irix.gif\" border=\"0\" alt=\"\">&nbsp;IRIX:</td><td><img src=\"themes/$ThemeSel/images/leftbar.gif\" height=\"$l_size[1]\" width=\"$l_size[0]\" Alt=\"SGI Irix\"><img src=\"themes/$ThemeSel/images/mainbar.gif\" Alt=\"SGI Irix\" height=\"$m_size[1]\" width=", $irix[1] * 2, "><img src=\"themes/$ThemeSel/images/rightbar.gif\" height=\"$r_size[1]\" width=\"$r_size[0]\" Alt=\"SGI Irix\"> $irix[1] % ($irix[0])</td></tr>\n";
-
 	echo "<tr><td><img src=\"modules/$module_name/images/be.gif\" border=\"0\" alt=\"\">&nbsp;BeOS:</td><td><img src=\"themes/$ThemeSel/images/leftbar.gif\" height=\"$l_size[1]\" width=\"$l_size[0]\" Alt=\"BeOS\"><img src=\"themes/$ThemeSel/images/mainbar.gif\" Alt=\"BeOS\" height=\"$m_size[1]\" width=", $beos[1] * 2, "><img src=\"themes/$ThemeSel/images/rightbar.gif\" height=\"$r_size[1]\" width=\"$r_size[0]\" Alt=\"BeOS\"> $beos[1] % ($beos[0])</td></tr>\n";
-
 	echo "<tr><td><img src=\"modules/$module_name/images/os2.gif\" border=\"0\" alt=\"\">&nbsp;OS/2:</td><td><img src=\"themes/$ThemeSel/images/leftbar.gif\" height=\"$l_size[1]\" width=\"$l_size[0]\" Alt=\"OS/2\"><img src=\"themes/$ThemeSel/images/mainbar.gif\" Alt=\"OS/2\" height=\"$m_size[1]\" width=", $os2[1] * 2, "><img src=\"themes/$ThemeSel/images/rightbar.gif\" height=\"$r_size[1]\" width=\"$r_size[0]\" Alt=\"OS/2\"> $os2[1] % ($os2[0])</td></tr>\n";
-
 	echo "<tr><td><img src=\"modules/$module_name/images/aix.gif\" border=\"0\" alt=\"\">&nbsp;AIX:</td><td><img src=\"themes/$ThemeSel/images/leftbar.gif\" height=\"$l_size[1]\" width=\"$l_size[0]\" Alt=\"AIX\"><img src=\"themes/$ThemeSel/images/mainbar.gif\" Alt=\"AIX\" height=\"$m_size[1]\" width=", $aix[1] * 2, "><img src=\"themes/$ThemeSel/images/rightbar.gif\" height=\"$r_size[1]\" width=\"$r_size[0]\" Alt=\"AIX\"> $aix[1] % ($aix[0])</td></tr>\n";
-
 	echo "<tr><td><img src=\"modules/$module_name/images/question.gif\" border=\"0\" alt=\"\">&nbsp;"._UNKNOWN.":</td><td><img src=\"themes/$ThemeSel/images/leftbar.gif\" height=\"$l_size[1]\" width=\"$l_size[0]\" Alt=\"Otros - Desconocidos\"><img src=\"themes/$ThemeSel/images/mainbar.gif\" ALt=\"Otros - Desconocidos\" height=\"$m_size[1]\" width=", $os_other[1] * 2, "><img src=\"themes/$ThemeSel/images/rightbar.gif\" height=\"$r_size[1]\" width=\"$r_size[0]\" Alt=\""._OTHER."\"> $os_other[1] % ($os_other[0])\n";
-
 	echo "</td></tr></table>\n";
 
 	CloseTable2();
 
 	echo "<br><br>\n";
 
-
-
 	$unum = $db->sql_numrows($db->sql_query("select user_id from ".$user_prefix."_users"));
-
 	$anum = $db->sql_numrows($db->sql_query("select * from ".$prefix."_authors"));
-
 	$snum = $db->sql_numrows($db->sql_query("select sid from ".$prefix."_stories"));
-
 	$cnum = $db->sql_numrows($db->sql_query("select tid from ".$prefix."_comments"));
-
 	$subnum = $db->sql_numrows($db->sql_query("select * from ".$prefix."_queue"));
 
 	if (is_active("Topics")) {
-
 		$tnum = $db->sql_numrows($db->sql_query("select * from ".$prefix."_topics"));
-
 	}
 
 	if (is_active("Web_Links")) {
-
 		$links = $db->sql_numrows($db->sql_query("select * from ".$prefix."_links_links"));
-
 		$cat = $db->sql_numrows($db->sql_query("select * from ".$prefix."_links_categories"));
-
 	}
 
 	OpenTable2();
 
 	echo "<table cellspacing=\"0\" cellpadding=\"2\" border=\"0\" align=\"center\"><tr><td colspan=\"2\">\n";
-
 	echo "<center><font color=\"$textcolor2\"><b>"._MISCSTATS."</b></font></center><br></td></tr>\n";
-
 	echo "<tr><td><img src=\"modules/$module_name/images/users.gif\" border=\"0\" alt=\"\">&nbsp;"._REGUSERS."</td><td><b>$unum</b></td></tr>\n";
-
 	echo "<tr><td><img src=\"modules/$module_name/images/authors.gif\" border=\"0\" alt=\"\">&nbsp;"._ACTIVEAUTHORS."</td><td><b>$anum</b></td></tr>\n";
-
 	echo "<tr><td><img src=\"modules/$module_name/images/news.gif\" border=\"0\" alt=\"\">&nbsp;"._STORIESPUBLISHED."</td><td><b>$snum</b></td></tr>\n";
-
 	if (is_active("Topics")) {
-
 		echo "<tr><td><img src=\"modules/$module_name/images/topics.gif\" border=\"0\" alt=\"\">&nbsp;"._SACTIVETOPICS."</td><td><b>$tnum</b></td></tr>\n";
-
 	}
 
 	echo "<tr><td><img src=\"modules/$module_name/images/comments.gif\" border=\"0\" alt=\"\">&nbsp;"._COMMENTSPOSTED."</td><td><b>$cnum</b></td></tr>\n";
 
 	if (is_active("Web_Links")) {
-
 		echo "<tr><td><img src=\"modules/$module_name/images/topics.gif\" border=\"0\" alt=\"\">&nbsp;"._LINKSINLINKS."</td><td><b>$links</b></td></tr>\n";
-
 		echo "<tr><td><img src=\"modules/$module_name/images/sections.gif\" border=\"0\" alt=\"\">&nbsp;"._LINKSCAT."</td><td><b>$cat</b></td></tr>\n";
-
 	}
 
 	echo "</table>\n";
-
 	CloseTable2();
 
 	CloseTable();
-
 	include("footer.php");
-
 }
-
-
 
 function Stats($total) {
 
@@ -349,7 +261,7 @@ function Stats($total) {
 
 	include ("header.php");
 
-	title("$sitename "._STATS."");
+	//title("$sitename "._STATS."");
 
 	$total++;
 
@@ -362,9 +274,7 @@ function Stats($total) {
 	$row2 = $db->sql_fetchrow($db->sql_query("SELECT year, month, hits from ".$prefix."_stats_month order by hits DESC limit 0,1"));
 
 	$year = intval($row2['year']);
-
 	$month = intval($row2['month']);
-
 	$hits = intval($row2['hits']);
 
 	if ($month == 1) {$month = _JANUARY;} elseif ($month == 2) {$month = _FEBRUARY;} elseif ($month == 3) {$month = _MARCH;} elseif ($month == 4) {$month = _APRIL;} elseif ($month == 5) {$month = _MAY;} elseif ($month == 6) {$month = _JUNE;} elseif ($month == 7) {$month = _JULY;} elseif ($month == 8) {$month = _AUGUST;} elseif ($month == 9) {$month = _SEPTEMBER;} elseif ($month == 10) {$month = _OCTOBER;} elseif ($month == 11) {$month = _NOVEMBER;} elseif ($month == 12) {$month = _DECEMBER;}
@@ -372,13 +282,9 @@ function Stats($total) {
 	echo ""._MOSTMONTH.": $month $year ($hits "._HITS.")<br>";
 
 	$row3 = $db->sql_fetchrow($db->sql_query("SELECT year, month, date, hits from ".$prefix."_stats_date order by hits DESC limit 0,1"));
-
 	$year = intval($row3['year']);
-
 	$month = intval($row3['month']);
-
 	$date = intval($row3['date']);
-
 	$hits = intval($row3['hits']);
 
 	if ($month == 1) {$month = _JANUARY;} elseif ($month == 2) {$month = _FEBRUARY;} elseif ($month == 3) {$month = _MARCH;} elseif ($month == 4) {$month = _APRIL;} elseif ($month == 5) {$month = _MAY;} elseif ($month == 6) {$month = _JUNE;} elseif ($month == 7) {$month = _JULY;} elseif ($month == 8) {$month = _AUGUST;} elseif ($month == 9) {$month = _SEPTEMBER;} elseif ($month == 10) {$month = _OCTOBER;} elseif ($month == 11) {$month = _NOVEMBER;} elseif ($month == 12) {$month = _DECEMBER;}
@@ -386,34 +292,22 @@ function Stats($total) {
 	echo ""._MOSTDAY.": $date $month $year ($hits "._HITS.")<br>";
 
 	$row4 = $db->sql_fetchrow($db->sql_query("SELECT year, month, date, hour, hits from ".$prefix."_stats_hour order by hits DESC limit 0,1"));
-
 	$year = intval($row4['year']);
-
 	$month = intval($row4['month']);
-
 	$date = intval($row4['date']);
-
 	$hour = intval($row4['hour']);
-
 	$hits = intval($row4['hits']);
 
 	if ($month == 1) {$month = _JANUARY;} elseif ($month == 2) {$month = _FEBRUARY;} elseif ($month == 3) {$month = _MARCH;} elseif ($month == 4) {$month = _APRIL;} elseif ($month == 5) {$month = _MAY;} elseif ($month == 6) {$month = _JUNE;} elseif ($month == 7) {$month = _JULY;} elseif ($month == 8) {$month = _AUGUST;} elseif ($month == 9) {$month = _SEPTEMBER;} elseif ($month == 10) {$month = _OCTOBER;} elseif ($month == 11) {$month = _NOVEMBER;} elseif ($month == 12) {$month = _DECEMBER;}
 
 	if ($hour < 10) {
-
 		$hour = "0$hour:00 - 0$hour:59";
-
 	} else {
-
 		$hour = "$hour:00 - $hour:59";
-
 	}
 
 	echo ""._MOSTHOUR.": $hour "._ON." $month $date, $year ($hits "._HITS.")<br><br>"
-
 	."[ <a href=\"modules.php?name=$module_name\">"._RETURNBASICSTATS."</a> ]</center>";
-
-
 
 	CloseTable();
 
@@ -553,7 +447,7 @@ function showYearStats($nowyear){
 
 	echo "<center><b>"._YEARLYSTATS."</b></center><br>";
 
-	echo "<table align=\"center\" bgcolor=\"#000000\" cellspacing=\"1\" cellpadding=\"3\" border=\"0\">";
+	echo "<table align=\"center\" cellspacing=\"1\" cellpadding=\"3\" border=\"0\">";
 
 	echo "<tr><td width=\"25%\" bgcolor=\"$bgcolor2\">"._YEAR."</td><td bgcolor=\"$bgcolor2\">"._SPAGESVIEWS."</td></tr>";
 
@@ -613,7 +507,7 @@ function showMonthStats($nowyear,$nowmonth){
 
 	echo "<center><b>"._MONTLYSTATS." $nowyear</b></center><br>";
 
-	echo "<table align=\"center\" bgcolor=\"#000000\" cellspacing=\"1\" cellpadding=\"3\" border=\"0\">";
+	echo "<table align=\"center\" cellspacing=\"1\" cellpadding=\"3\" border=\"0\">";
 
 	echo "<tr><td width=\"25%\" bgcolor=\"$bgcolor2\">"._UMONTH."</td><td bgcolor=\"$bgcolor2\">"._SPAGESVIEWS."</td></tr>";
 
@@ -685,7 +579,7 @@ function showDailyStats($year,$month,$nowdate){
 
 	echo ", $year</b></center><br>";
 
-	echo "<table align=\"center\" bgcolor=\"#000000\" cellspacing=\"1\" cellpadding=\"3\" border=\"0\">";
+	echo "<table align=\"center\" cellspacing=\"1\" cellpadding=\"3\" border=\"0\">";
 
 	echo "<tr><td width=\"25%\" bgcolor=\"$bgcolor2\">"._DATE."</td><td bgcolor=\"$bgcolor2\">"._SPAGESVIEWS."</td></tr>";
 
@@ -771,7 +665,7 @@ function showHourlyStats($year,$month,$date){
 
 	echo getmonth($month)." ".$date.", " .$year."</b></center><br>";
 
-	echo "<table align=\"center\" bgcolor=\"#000000\" cellspacing=\"1\" cellpadding=\"3\" border=\"0\">";
+	echo "<table align=\"center\" cellspacing=\"1\" cellpadding=\"3\" border=\"0\">";
 
 	echo "<tr><td width=\"25%\" bgcolor=\"$bgcolor2\">"._HOUR."</td><td bgcolor=\"$bgcolor2\" width=\"70%\">"._SPAGESVIEWS."</td></tr>";
 
