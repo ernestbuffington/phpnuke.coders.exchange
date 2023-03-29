@@ -28,7 +28,7 @@ function head() {
 		     $user, $hr, $theme, $cookie, $bgcolor1, 
 		 $bgcolor2, $bgcolor3, $bgcolor4, $textcolor1, 
 	   $textcolor2, $forumpage, $adminpage, $userpage, 
-		$pagetitle;
+		$pagetitle, $cache, $ThemeSel;
 
 	$ThemeSel = get_theme();
 	include_secure("themes/$ThemeSel/theme.php");
@@ -40,7 +40,7 @@ function head() {
 	
 	echo '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">'."\n";
 	echo '<html xmlns="http://www.w3.org/1999/xhtml">'."\n";
-    echo "<!-- START <head> -->\n";
+	echo "<!-- HEADER START ================================================================================================================================================================================================= -->\n";
     echo '<head>'."\n";
     endif;	# OLD SCHOOL DEFAULT MIMETYPE END
 
@@ -55,15 +55,13 @@ function head() {
 	
 	echo "\n<title>$sitename $pagetitle</title>\n\n";
 
-    // for nuke 8.3.2 theme compatibility
-	if (file_exists(NUKE_THEMES_DIR.$ThemeSel.'/nuke832.php')) {
-      require_once(NUKE_THEMES_DIR.$ThemeSel.'/nuke832.php');
+    include(NUKE_INCLUDE_DIR.'javascript.php');
+
+    // for nuke 8.3.x theme compatibility
+	if (file_exists(NUKE_THEMES_DIR.$ThemeSel.'/nuke83x.php')) {
+      include(NUKE_THEMES_DIR.$ThemeSel.'/nuke83x.php');
 	}
 
-    require_once(NUKE_INCLUDE_DIR.'javascript.php');
-
-    global $cache;
-	
 	echo "\n<!-- Loadiing favicon from header.php -->\n\n";
     if (!($favicon = $cache->load('favicon', 'config'))): 
         if (file_exists(NUKE_BASE_DIR.'favicon.ico')) 
@@ -122,12 +120,19 @@ function head() {
     endif;
 	
 	echo "</head>\n";
-
+	echo "<!-- Finished Loading The Header from header.php -->\n";
+	echo "<!-- HEADER END =================================================================================================================================================================================================== -->\n";
+    if (file_exists(NUKE_THEMES_DIR.$ThemeSel.'/nuke83x.php')) {
+	echo "<!-- WARNING PHP-NUKE IS IN THEME COMPATIBILITY MODE -->\n";	
+	echo "<!-- Loading Primary Body Tag from themes/$ThemeSel/theme.php -->\n\n";	
+	} else {	
+    echo "<!-- Loading Primary Body Tag from header.php -->\n";
+	echo "<body>\n\n\n\n";
+	}
 
 }
-online();
-head();
 
+head();
 
 if (!defined('ADMIN_FILE')):
 	include_once(NUKE_INCLUDE_DIR.'counter.php');
@@ -136,5 +141,7 @@ if (!defined('ADMIN_FILE')):
 		blocks('Center');
     endif;
 endif;
+
+online();
 
 ?>
