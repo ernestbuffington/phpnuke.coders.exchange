@@ -24,7 +24,7 @@
     * @version Nightly Build Updates
     * @license GPL and MIT
     */
-	echo "\n<!-- Loadiing includes/ruffle-core/ruffle.js from header.php -->\n";
+	echo "<!-- Loadiing includes/ruffle-core/ruffle.js from header.php -->\n";
 	echo '<script src="includes/ruffle-core/ruffle.js"></script>'."\n";
 	
 	echo '
@@ -53,3 +53,4 @@
     "splashScreen": false,
     };    
     </script>'; 
+   echo "\n<!-- Loading themes/".$ThemeSel."/includes/ruffle_core from header.php END -->\n";
