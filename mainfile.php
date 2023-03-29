@@ -1742,35 +1742,23 @@ function get_author($aid) {
 }
 
 function formatAidHeader($aid) {
-
   $AidHeader = get_author($aid);
-
   echo $AidHeader;
-
 }
 
 if(!defined('FORUM_ADMIN')) {
-
   $ThemeSel = get_theme();
-
   include_secure("themes/$ThemeSel/theme.php");
 }
 
 if(!function_exists("themepreview")) {
-
 	function themepreview($title, $hometext, $bodytext="", $notes="") {
-
 		echo "<b>$title</b><br><br>$hometext";
-
 		if (!empty($bodytext)) {
-
 			echo "<br><br>$bodytext";
 		}
-
 		if (!empty($notes)) {
-
 			echo "<br><br><b>"._NOTE."</b> <i>$notes</i>";
-
 		}
     }
 }
