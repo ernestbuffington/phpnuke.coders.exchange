@@ -157,7 +157,7 @@ define('ALTER_TABLES', true); // un-comment to reset your nuke site to its defau
 define('SETUP_URL_CHECK', 'https://www.phpnuke.coders.exchange');
 define('BASE_DIR', __DIR__ . '/');
 define('SETUP_GRAPHICS_DIR', BASE_DIR . 'graphics/');
-define('SETUP_INCLUDE_DIR', BASE_DIR . 'includes/');
+define('SETUP_INCLUDE_DIR', BASE_DIR . 'includes/mods/phpbb2/');
 define('SETUP_LANGUAGE_DIR', BASE_DIR . 'language/');
 define('SETUP_SQL_DIR', BASE_DIR . 'sql/');
 define('SETUP_STEPS_DIR', BASE_DIR . 'steps/');
