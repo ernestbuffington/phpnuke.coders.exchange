@@ -58,11 +58,6 @@ function head() {
 
     include(NUKE_INCLUDE_DIR.'javascript.php');
 
-    // for nuke 8.3.x theme compatibility
-	if (file_exists(NUKE_THEMES_DIR.$ThemeSel.'/nuke83x.php')) {
-      include(NUKE_THEMES_DIR.$ThemeSel.'/nuke83x.php');
-	}
-
 	echo "\n<!-- Loadiing favicon from header.php -->\n\n";
     if (!($favicon = $cache->load('favicon', 'config'))): 
         if (file_exists(NUKE_BASE_DIR.'favicon.ico')) 
@@ -119,11 +114,20 @@ function head() {
         
 		endif;
     endif;
+
+    // for nuke 8.3.x theme compatibility
+	if (file_exists(NUKE_THEMES_DIR.$ThemeSel.'/nuke83x.php')) {
+      include(NUKE_THEMES_DIR.$ThemeSel.'/nuke83x.php');
+	}
 	
 	echo "</head>\n";
 	echo "<!-- Finished Loading The Header from header.php -->\n";
 	echo "<!-- HEADER END =================================================================================================================================================================================================== -->\n";
-    if (file_exists(NUKE_THEMES_DIR.$ThemeSel.'/nuke83x.php')) {
+
+	if (file_exists(NUKE_THEMES_DIR.$ThemeSel.'/nuke83x.php')) {
+
+	echo "\n<!-- Loadiing function themeheader() from themes/og_green/theme.php -->\n\n";
+       themeheader();
 	
 	echo "<!-- WARNING PHP-NUKE IS IN THEME COMPATIBILITY MODE -->\n";	
 	echo "<!-- Loading Primary Body Tag from themes/$ThemeSel/theme.php -->\n\n";	
