@@ -76,7 +76,7 @@ function head() {
 	
 	echo "\n<title>$sitename $pagetitle</title>\n";
 
-    echo "\n<!-- Loadiing includes/javascript.php from header.php -->\n";  
+    echo "\n<!-- Loading includes/javascript.php from header.php -->\n";  
 	include_once(NUKE_INCLUDE_DIR.'javascript.php');
 	  
    /**
@@ -88,13 +88,13 @@ function head() {
     * @license GPL-3.0
     */
     if (file_exists(NUKE_THEMES_DIR.$ThemeSel.'/includes/javascript.php')): 
-	  echo "\n<!-- Loadiing themes/".$ThemeSel."/includes/javascript.php from header.php -->\n\n";
+	  echo "\n<!-- Loading themes/".$ThemeSel."/includes/javascript.php from header.php -->\n\n";
       include_once(NUKE_THEMES_DIR.$ThemeSel.'/includes/javascript.php');
 	endif;
 	
-    include(NUKE_INCLUDE_DIR.'javascript.php');
+    include_once(NUKE_INCLUDE_DIR.'javascript.php');
 
-	echo "\n<!-- Loadiing favicon from header.php -->\n\n";
+	echo "\n\n<!-- Loading favicon from header.php START -->\n";
     if (!($favicon = $cache->load('favicon', 'config'))): 
         if (file_exists(NUKE_BASE_DIR.'favicon.ico')) 
 		$favicon = "favicon.ico";
@@ -113,28 +113,29 @@ function head() {
         if ($favicon != 'none') 
         echo "<link rel=\"shortcut icon\" href=\"$favicon\" type=\"image/x-icon\" />\n";
     endif;
+	echo "<!-- Loading favicon from header.php END -->\n\n";
 	
 	echo "<link rel=\"alternate\" type=\"application/rss+xml\" title=\"RSS\" href=\"backend.php\">\n";
-	echo "<link rel=\"StyleSheet\" href=\"themes/$ThemeSel/style/style.css\" type=\"text/css\">\n\n\n";
+	echo "<link rel=\"StyleSheet\" href=\"themes/$ThemeSel/style/style.css\" type=\"text/css\">\n\n";
 
     if (!($custom_head = $cache->load('custom_head', 'config'))): 
     
 	    $custom_head = array();
 
 	    if (file_exists(NUKE_INCLUDE_DIR.'custom_files/custom_head.php')): 
-	       echo "\n<!-- Loadiing custom_head.php from header.php -->\n\n";
+	       echo "\n<!-- Loading custom_head.php from header.php -->\n\n";
            $custom_head[] = 'custom_head';
 		endif;
 
  		if (file_exists(NUKE_INCLUDE_DIR.'custom_files/custom_header.php')): 
-	       echo "\n<!-- Loadiing custom_header.php from header.php -->\n\n";
+	       echo "\n<!-- Loading custom_header.php from header.php -->\n\n";
            $custom_head[] = 'custom_header';
 		endif;
 
         if (!empty($custom_head)): 
           
 		    foreach ($custom_head as $file):
-	            echo "\n<!-- Loadiing includes/".$file.".php from header.php -->\n\n";
+	            echo "\n<!-- Loading includes/".$file.".php from header.php -->\n\n";
                 include_once(NUKE_INCLUDE_DIR.'custom_files/'.$file.'.php');
             endforeach;
         
@@ -153,7 +154,8 @@ function head() {
 
     // for nuke 8.3.x theme compatibility
 	if (file_exists(NUKE_THEMES_DIR.$ThemeSel.'/nuke83x.php')) {
-      include(NUKE_THEMES_DIR.$ThemeSel.'/nuke83x.php');
+      echo "<!-- Loading Theme Name: $ThemeSel START -->\n";
+	  include(NUKE_THEMES_DIR.$ThemeSel.'/nuke83x.php');
 	}
 	
 	echo "</head>\n";
@@ -161,20 +163,14 @@ function head() {
 	echo "<!-- HEADER END =================================================================================================================================================================================================== -->\n";
 
 	if (file_exists(NUKE_THEMES_DIR.$ThemeSel.'/nuke83x.php')) {
-
-	echo "\n<!-- Loadiing function themeheader() from themes/og_green/theme.php -->\n\n";
-       themeheader();
-	
+	echo "\n<!-- Loading function themeheader() from themes/og_green/theme.php -->\n\n";
+    themeheader();
 	echo "<!-- WARNING PHP-NUKE IS IN THEME COMPATIBILITY MODE -->\n";	
 	echo "<!-- Loading Primary Body Tag from themes/$ThemeSel/theme.php -->\n\n";	
-	
 	} else {	
-    
 	echo "<!-- Loading Primary Body Tag from header.php -->\n";
 	echo "<body>\n\n\n\n";
-	
 	}
-
 }
 
 head();
