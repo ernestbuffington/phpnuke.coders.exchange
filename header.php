@@ -66,6 +66,19 @@ function head() {
 	
 	echo "\n<title>$sitename $pagetitle</title>\n\n";
 
+   /**
+    * Include current Theme Javascript Functions
+    * for Theme Copyright and Bootstrap loading!
+    *
+    * @author Ernest Allen Bufffington
+    * @version 1.0
+    * @license GPL-3.0
+    */
+    if (file_exists(NUKE_THEMES_DIR.$ThemeSel.'/includes/javascript.php')): 
+	  echo "\n<!-- Loadiing themes/".$ThemeSel."/includes/javascript.php from header.php -->\n\n";
+      include_once(NUKE_THEMES_DIR.$ThemeSel.'/includes/javascript.php');
+	endif;
+	
     include(NUKE_INCLUDE_DIR.'javascript.php');
 
 	echo "\n<!-- Loadiing favicon from header.php -->\n\n";
