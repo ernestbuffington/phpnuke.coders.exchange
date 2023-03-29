@@ -163,10 +163,10 @@ function head() {
 	echo "<!-- HEADER END =================================================================================================================================================================================================== -->\n";
 
 	if (file_exists(NUKE_THEMES_DIR.$ThemeSel.'/nuke83x.php')) {
-	echo "\n<!-- Loading function themeheader() from themes/og_green/theme.php -->\n\n";
-    themeheader();
+	echo "\n<!-- Loading function themeheader() from themes/og_green/theme.php -->\n";
 	echo "<!-- WARNING PHP-NUKE IS IN THEME COMPATIBILITY MODE -->\n";	
-	echo "<!-- Loading Primary Body Tag from themes/$ThemeSel/theme.php -->\n\n";	
+	echo "<!-- Loading Primary Body Tag from themeheader() in themes/$ThemeSel/theme.php -->\n\n";	
+    themeheader();
 	} else {	
 	echo "<!-- Loading Primary Body Tag from header.php -->\n";
 	echo "<body>\n\n\n\n";
