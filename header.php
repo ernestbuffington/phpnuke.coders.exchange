@@ -123,11 +123,15 @@ function head() {
 	echo "<!-- Finished Loading The Header from header.php -->\n";
 	echo "<!-- HEADER END =================================================================================================================================================================================================== -->\n";
     if (file_exists(NUKE_THEMES_DIR.$ThemeSel.'/nuke83x.php')) {
+	
 	echo "<!-- WARNING PHP-NUKE IS IN THEME COMPATIBILITY MODE -->\n";	
 	echo "<!-- Loading Primary Body Tag from themes/$ThemeSel/theme.php -->\n\n";	
+	
 	} else {	
-    echo "<!-- Loading Primary Body Tag from header.php -->\n";
+    
+	echo "<!-- Loading Primary Body Tag from header.php -->\n";
 	echo "<body>\n\n\n\n";
+	
 	}
 
 }
