@@ -49,7 +49,16 @@ Jan 2023: Version 8.3.2
 - Added Font Awesome (free) v6.2.0 (https://fontawesome.com/)
 - Added jQuery JavaScript Library v3.6.4 (https://jquery.com/)
 - Added jQuery Migrate Library v1.4.1 (https://jquery.com/)
-- Added jQuery Migrate Library v3.4.0 (https://jquery.com/)
+- Added jQuery Migrate Library v3.4.0 (https://jquery.com/) Development Migrate
+- Added Devicon v2.15.1 (CDN)
+- Added jquery.pause.js (CDN)
+- Added jquery.marquee.min.js v1.3.1 (CDN)
+- Added HTML5 Shiv 3.7.3
+- Added jquery v3.6.4
+- Added jquery-ui v1.13.2
+- Added jquery.easing v1.4.1
+- Added jquery.fn.extend.js v1.1 (nuke_jq) 
+= Added jquery.core.js v1.1 (nuke_jq)
 
 August 2007: Version 8.1
 ========================

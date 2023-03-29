@@ -95,7 +95,7 @@ div.caption { background:transparent; filter:progid:DXImageTransform.Microsoft.g
 <!-- End Quantcast tag -->
 <?php
 
-    include("includes/javascript.php");
+    require_once(NUKE_INCLUDE_DIR.'javascript.php');
 
     global $cache;
 	

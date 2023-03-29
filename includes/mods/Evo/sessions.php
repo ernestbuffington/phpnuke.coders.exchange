@@ -27,10 +27,6 @@
       PHP Patched                              v8.2.3       03/18/2023            
  ************************************************************************/
 
-if(!defined('NUKE_EVO')) {
-   die('You can\'t access this file directly...');
-}
-
 function phpBB_whoisonline($force=FALSE)
 {
     global $db, $board_config, $debugger;
