@@ -2159,6 +2159,7 @@ class Browser
         }
     }
 }
- 
-//$phpnuke_browser = new Browser();
+global $phpnuke_browser, $titanium_browser;
+$titanium_browser = new Browser(); 
+$phpnuke_browser = $titanium_browser;
 ?>    

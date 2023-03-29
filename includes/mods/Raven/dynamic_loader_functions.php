@@ -94,7 +94,7 @@ function addJSToBody($content, $type='file')
 	return;
 }
 
-function writeHEAD() 
+function dynamic_loader() 
 {
     global $headPHPCSS, $headCSS, $headJS;
     

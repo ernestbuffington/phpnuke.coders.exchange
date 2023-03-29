@@ -41,18 +41,17 @@ function head() {
 		$pagetitle, $cache, $ThemeSel;
 
 	$ThemeSel = get_theme();
-	include_secure("themes/$ThemeSel/theme.php");
 
-  /**
-   * Doctype/Mime Type auto selector - This checks each theme as it is switched and will load a mimetype.php from the themes includes folder.
-   * This allows for many different doctypes to be used on the Fly by whichever theme is selected.
-   * This is great for porting Legacy themes or even just to show the versatility of PHP-Nuke.
-   * If a mimetype.php file is not detected it uses the default doctype of XHTML 1.0 Transitional
-   *
-   * @author Ernest Allen Bufffington
-   * @version 1.0
-   * @license GPL-3.0
-   */
+   /**
+    * Doctype/Mime Type auto selector - This checks each theme as it is switched and will load a mimetype.php from the themes includes folder.
+    * This allows for many different doctypes to be used on the Fly by whichever theme is selected.
+    * This is great for porting Legacy themes or even just to show the versatility of PHP-Nuke.
+    * If a mimetype.php file is not detected it uses the default doctype of XHTML 1.0 Transitional
+    *
+    * @author Ernest Allen Bufffington
+    * @version 1.0
+    * @license GPL-3.0
+    */
   	if (file_exists(NUKE_THEMES_DIR.$ThemeSel.'/includes/mimetype.php')):  
     include(NUKE_THEMES_DIR.$ThemeSel.'/includes/mimetype.php');
 	echo "<!-- HEADER START ================================================================================================================================================================================================= -->\n";
@@ -91,10 +90,28 @@ function head() {
 	  echo "\n<!-- Loading themes/".$ThemeSel."/includes/javascript.php from header.php -->\n\n";
       include_once(NUKE_THEMES_DIR.$ThemeSel.'/includes/javascript.php');
 	endif;
+   
+   /**
+    * Ruffle Flash player support written in Rust
+    * Used to display flash file that reside in Legacy themes.
+    * Used to play Flash games. (SWF) Shockwave fileplayer.
+    * No browsr extension needed, we fix that for you on the fly!
+    *
+    * @since 31 December 2020 
+    *
+    * @author(s) Community Based
+    * @version Nightly Build Updates
+    * @license GPL and MIT
+    */
+    if (file_exists(NUKE_THEMES_DIR.$ThemeSel.'/includes/ruffle_core.php')): 
+	  echo "\n\n<!-- Loading themes/".$ThemeSel."/includes/ruffle_core from header.php START -->\n";
+      include_once(NUKE_THEMES_DIR.$ThemeSel.'/includes/ruffle_core.php');
+	endif;
 	
-    include_once(NUKE_INCLUDE_DIR.'javascript.php');
+    echo "\n<!-- Loading javascript.php from header.php -->\n";
+	include_once(NUKE_INCLUDE_DIR.'javascript.php');
 
-	echo "\n\n<!-- Loading favicon from header.php START -->\n";
+	echo "\n<!-- Loading favicon from header.php START -->\n";
     if (!($favicon = $cache->load('favicon', 'config'))): 
         if (file_exists(NUKE_BASE_DIR.'favicon.ico')) 
 		$favicon = "favicon.ico";
@@ -152,7 +169,18 @@ function head() {
 		endif;
     endif;
 
-    // for nuke 8.3.x theme compatibility
+	echo "\n<!-- Loadiing themes/".$ThemeSel."/theme.php from header.php -->\n";
+    include_once(NUKE_THEMES_DIR.$ThemeSel.'/theme.php');
+	    
+   /*
+    * functions added to support dynamic and ordered loading of CSS, PHPCSS, and JS in <head> and before </body>
+    * Code origin Raven Nuke CMS (http://www.ravenphpscripts.com)
+    * addons by Ernest Buffington aka TheGhost https://theghost.86it.us
+	* @date 03/29/2023 6:18 PM
+    */	
+	dynamic_loader();
+    
+	// for nuke 8.3.x theme compatibility
 	if (file_exists(NUKE_THEMES_DIR.$ThemeSel.'/nuke83x.php')) {
       echo "<!-- Loading Theme Name: $ThemeSel START -->\n";
 	  include(NUKE_THEMES_DIR.$ThemeSel.'/nuke83x.php');
