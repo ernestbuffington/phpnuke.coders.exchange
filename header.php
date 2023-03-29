@@ -105,13 +105,14 @@ function head() {
     * @license GPL and MIT
     */
     if (file_exists(NUKE_THEMES_DIR.$ThemeSel.'/includes/ruffle_core.php')): 
-	  echo "\n<!-- Loading themes/".$ThemeSel."/includes/ruffle_core from header.php -->\n\n";
+	  echo "\n\n<!-- Loading themes/".$ThemeSel."/includes/ruffle_core from header.php START -->\n";
       include_once(NUKE_THEMES_DIR.$ThemeSel.'/includes/ruffle_core.php');
 	endif;
 	
-    include_once(NUKE_INCLUDE_DIR.'javascript.php');
+    echo "\n<!-- Loading javascript.php from header.php -->\n";
+	include_once(NUKE_INCLUDE_DIR.'javascript.php');
 
-	echo "\n\n<!-- Loading favicon from header.php START -->\n";
+	echo "\n<!-- Loading favicon from header.php START -->\n";
     if (!($favicon = $cache->load('favicon', 'config'))): 
         if (file_exists(NUKE_BASE_DIR.'favicon.ico')) 
 		$favicon = "favicon.ico";
@@ -168,8 +169,16 @@ function head() {
         
 		endif;
     endif;
-
-    // for nuke 8.3.x theme compatibility
+    
+   /*
+    * functions added to support dynamic and ordered loading of CSS, PHPCSS, and JS in <head> and before </body>
+    * Code origin Raven Nuke CMS (http://www.ravenphpscripts.com)
+    * addons by Ernest Buffington aka TheGhost https://theghost.86it.us
+	* @date 03/29/2023 6:18 PM
+    */	
+	dynamic_loader();
+    
+	// for nuke 8.3.x theme compatibility
 	if (file_exists(NUKE_THEMES_DIR.$ThemeSel.'/nuke83x.php')) {
       echo "<!-- Loading Theme Name: $ThemeSel START -->\n";
 	  include(NUKE_THEMES_DIR.$ThemeSel.'/nuke83x.php');
