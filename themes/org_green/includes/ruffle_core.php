@@ -12,18 +12,18 @@
 /* the Free Software Foundation; either version 2 of the License.       */
 /************************************************************************/
 
-/**
-   * Ruffle Flash player support written in Rust
-   * Used to display flash file that reside in Legacy themes.
-   * Used to play Flash games. (SWF) Shockwave fileplayer.
-   * No browsr extension needed, we fix that for you on the fly!
-   *
-   * @since 31 December 2020 
-   *
-   * @author(s) Community Based
-   * @version Nightly Build Updates
-   * @license GPL and MIT
-   */
+  /**
+    * Ruffle Flash player support written in Rust
+    * Used to display flash file that reside in Legacy themes.
+    * Used to play Flash games. (SWF) Shockwave fileplayer.
+    * No browsr extension needed, we fix that for you on the fly!
+    *
+    * @since 31 December 2020 
+    *
+    * @author(s) Community Based
+    * @version Nightly Build Updates
+    * @license GPL and MIT
+    */
 	echo "\n<!-- Loadiing includes/ruffle-core/ruffle.js from header.php -->\n";
 	echo '<script src="includes/ruffle-core/ruffle.js"></script>'."\n";
 	

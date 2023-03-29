@@ -91,6 +91,23 @@ function head() {
 	  echo "\n<!-- Loading themes/".$ThemeSel."/includes/javascript.php from header.php -->\n\n";
       include_once(NUKE_THEMES_DIR.$ThemeSel.'/includes/javascript.php');
 	endif;
+   
+   /**
+    * Ruffle Flash player support written in Rust
+    * Used to display flash file that reside in Legacy themes.
+    * Used to play Flash games. (SWF) Shockwave fileplayer.
+    * No browsr extension needed, we fix that for you on the fly!
+    *
+    * @since 31 December 2020 
+    *
+    * @author(s) Community Based
+    * @version Nightly Build Updates
+    * @license GPL and MIT
+    */
+    if (file_exists(NUKE_THEMES_DIR.$ThemeSel.'/includes/ruffle_core.php')): 
+	  echo "\n<!-- Loading themes/".$ThemeSel."/includes/ruffle_core from header.php -->\n\n";
+      include_once(NUKE_THEMES_DIR.$ThemeSel.'/includes/ruffle_core.php');
+	endif;
 	
     include_once(NUKE_INCLUDE_DIR.'javascript.php');
 
