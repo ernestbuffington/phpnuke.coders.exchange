@@ -46,7 +46,7 @@ Jan 2023: Version 8.3.2
 - Added Bootstrap v5.2.0 (https://getbootstrap.com/)
 - Added Bootstrap v3.4.1 (https://getbootstrap.com/)
 - Added Bootstrap Icons v1.9.1 (https://getbootstrap.com/)
-- Added Font Awesome (free) v6.2.0
+- Added Font Awesome (free) v6.2.0 (https://fontawesome.com/)
 -
 
 August 2007: Version 8.1
