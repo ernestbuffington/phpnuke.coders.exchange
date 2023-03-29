@@ -158,8 +158,7 @@ div.caption { background:transparent; filter:progid:DXImageTransform.Microsoft.g
 	
 	echo "</head>\n";
 
-	echo "\n<!-- Loadiing function themeheader() from header.php -->\n\n";
-	themeheader();
+
 }
 
 online();
