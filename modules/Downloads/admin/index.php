@@ -1734,6 +1734,10 @@ if ($row2['radminsuper'] == 1 || $auth_user == 1) {
 
 		$result = null;
         $url = null;
+		
+		if(!isset($ttitle)) {
+		  $ttitle = '';
+		}
         
 		global $bgcolor2, $prefix, $db, $admin_file;
 
