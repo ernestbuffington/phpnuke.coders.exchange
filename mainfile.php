@@ -147,9 +147,6 @@ foreach($_REQUEST as $key=>$value)
     }    
 }
 
-if(!isset($_COOKIE['admin'])) { $_COOKIE['admin'] = ''; }
-if(!isset($_COOKIE['user'])) { $_COOKIE['user'] = ''; }
-
 // This block of code makes sure $admin and $user are COOKIES
 if((isset($admin) && $admin != $_COOKIE['admin']) OR (isset($user) && $user != $_COOKIE['user'])) {
 	die("Illegal Operation");
