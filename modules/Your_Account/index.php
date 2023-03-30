@@ -174,11 +174,11 @@ function confirmNewUser($username, $user_email, $user_password, $user_password2,
 		title("$sitename: "._USERREGLOGIN."");
 
 		OpenTable();
-		echo "<center><b>"._USERFINALSTEP."</b><br><br>$username, "._USERCHECKDATA."</center><br><br>"
+		echo "<div align=\"center\"><strong>"._USERFINALSTEP."</strong><br><br>$username, "._USERCHECKDATA."</div><br><br>"
 		."<table align='center' border='0'>"
-		."<tr><td><b>"._UUSERNAME.":</b> $username<br></td></tr>"
-		."<tr><td><b>"._EMAIL.":</b> $user_email</td></tr></table><br><br>"
-		."<center><b>"._NOTE."</b> "._YOUWILLRECEIVE."";
+		."<tr><td><strong>"._UUSERNAME.":</strong> $username<br></td></tr>"
+		."<tr><td><strong>"._EMAIL.":</strong> $user_email</td></tr></table><br><br>"
+		."<center><strong>"._NOTE."</strong> "._YOUWILLRECEIVE."";
 
 		echo "<form action=\"modules.php?name=$module_name\" method=\"post\">"
 		."<input type=\"hidden\" name=\"random_num\" value=\"$random_num\">"
@@ -187,13 +187,13 @@ function confirmNewUser($username, $user_email, $user_password, $user_password2,
 		."<input type=\"hidden\" name=\"user_email\" value=\"$user_email\">"
 		."<input type=\"hidden\" name=\"user_password\" value=\"$user_password\">"
 		."<input type=\"hidden\" name=\"op\" value=\"finish\"><br><br>"
-		."<input type=\"submit\" value=\""._FINISH."\"> &nbsp;&nbsp;"._GOBACK."</form></center>";
+		."<input type=\"submit\" value=\""._FINISH."\"> &nbsp;&nbsp;"._GOBACK."</form></div>";
 		CloseTable();
 
 	} else {
 
 		OpenTable();
-		echo "<div align=\"center\"><font class=\"title\"><b>Registration Error!</b></font><br><br>";
+		echo "<div align=\"center\"><span class=\"title\"><strong>Registration Error!</strong></span><br><br>";
 		echo "<span class=\"content\">$stop<br>"._GOBACK."</span></div>";
 		CloseTable();
 
@@ -529,7 +529,7 @@ function userinfo($username, $bypass=0, $hid=0, $url=0) {
 		$userinfo['nuke_user_sig'] = nl2br($userinfo['nuke_user_sig']);
 
 		if ($userinfo['nuke_user_sig']) { 
-		   echo "<br><b>"._SIGNATURE.":</b><br>".$userinfo['nuke_user_sig']."<br>\n"; 
+		   echo "<br><strong>"._SIGNATURE.":</strong><br>".$userinfo['nuke_user_sig']."<br>\n"; 
 		}
 
 		if ($userinfo['bio']) { 
@@ -631,7 +631,7 @@ function userinfo($username, $bypass=0, $hid=0, $url=0) {
 
 				if ($subnum != 0) {
 
-					echo "<div align=\"center\"><b>"._ADMSUB."</b></div><br>";
+					echo "<div align=\"center\"><strong>"._ADMSUB."</strong></div><br>";
 
 					$row = $db->sql_fetchrow($db->sql_query("SELECT * FROM ".$prefix."_subscriptions WHERE userid='".intval($userinfo['user_id'])."'"));
 					$diff = $row['subscription_expire']-time();
@@ -686,7 +686,7 @@ function userinfo($username, $bypass=0, $hid=0, $url=0) {
 
 			OpenTable2();
 			if ($userinfo['last_ip'] != 0) {
-				echo "<div align=\"center\"><span class=\"title\">"._ADMINFUNCTIONS."</span><br><br>"._LASTIP." <b>".$userinfo['last_ip']."</b><br><br>";
+				echo "<div align=\"center\"><span class=\"title\">"._ADMINFUNCTIONS."</span><br><br>"._LASTIP." <strong>".$userinfo['last_ip']."</strong><br><br>";
 				echo "[ <a href='".$admin_file.".php?op=ipban&ip=".$userinfo['last_ip']."'>"._BANTHIS."</a> | <a href=\"".$admin_file.".php?op=modifyUser&chng_uid=".$userinfo['username']."\">"._EDITUSER."</a> ]</div>";
 			} else {
 				echo "<div align=\"center\">[ <a href=\"".$admin_file.".php?op=modifyUser&chng_uid=".$userinfo['username']."\">"._EDITUSER."</a> ]</div>";
@@ -756,7 +756,7 @@ function userinfo($username, $bypass=0, $hid=0, $url=0) {
 			echo "<div align=\"center\"><br><br>"._USERKARMA." <img src=\"images/karma/".$userinfo['karma'].".gif\" border=\"0\" alt=\"$karma\" title=\"$karma\"> ($karma)<br>($karma_help)</div><br><br>";
 
 			OpenTable2();
-			echo "<div align=\"center\"><strong>"._CHANGEKARMA." <i>".$userinfo['username']."</i></b><br><br>";
+			echo "<div align=\"center\"><strong>"._CHANGEKARMA." <i>".$userinfo['username']."</i></strong><br><br>";
 			echo "$change_karma</div>";
 			CloseTable2();
 
@@ -794,7 +794,7 @@ function userinfo($username, $bypass=0, $hid=0, $url=0) {
 		echo "<br>";
 
 		OpenTable();
-		echo "<div align=\"center\"><b>"._MYHEADLINES."</b><br><br>"
+		echo "<div align=\"center\"><strong>"._MYHEADLINES."</strong><br><br>"
 		.""._SELECTASITE."<br><br>"
 		."<form action=\"modules.php?name=$module_name\" method=\"post\">"
 		."<input type=\"hidden\" name=\"op\" value=\"userinfo\">"
@@ -1040,7 +1040,7 @@ function main($user) {
 		if ($stop) {
 
 			OpenTable();
-			echo "<div align=\"center\"><span class=\"title\"><b>"._LOGININCOR."</b></span></div>\n";
+			echo "<div align=\"center\"><span class=\"title\"><strong>"._LOGININCOR."</strong></span></div>\n";
 			CloseTable();
 
 			echo "<br>\n";
@@ -1048,7 +1048,7 @@ function main($user) {
 		} else {
 
 			OpenTable();
-			echo "<div align=\"center\"><span class=\"title\"><b>"._USERREGLOGIN."</b></span></div>\n";
+			echo "<div align=\"center\"><span class=\"title\"><strong>"._USERREGLOGIN."</strong></span></div>\n";
 			CloseTable();
 
 			echo "<br>\n";
@@ -1111,7 +1111,7 @@ function new_user() {
 		include("header.php");
 
 		OpenTable();
-		echo "<div align=\"center\"><span class=\"title\"><b>"._USERREGLOGIN."</b></span></div>\n";
+		echo "<div align=\"center\"><span class=\"title\"><strong>"._USERREGLOGIN."</strong></span></div>\n";
 		CloseTable();
 
 		echo "<br>\n";
@@ -1123,7 +1123,7 @@ function new_user() {
 		."<tr><td>"._NICKNAME.":</td><td><input type=\"text\" name=\"username\" size=\"30\" maxlength=\"25\"></td></tr>\n"
 		."<tr><td>"._EMAIL.":</td><td><input type=\"text\" name=\"user_email\" size=\"30\" maxlength=\"255\"></td></tr>\n"
 		."<tr><td>"._PASSWORD.":</td><td><input type=\"password\" name=\"user_password\" size=\"11\" maxlength=\"40\"></td></tr>\n"
-		."<tr><td>"._RETYPEPASSWORD.":</td><td><input type=\"password\" name=\"user_password2\" size=\"11\" maxlength=\"40\"><br><font class=\"tiny\">("._BLANKFORAUTO.")</font></td></tr>\n";
+		."<tr><td>"._RETYPEPASSWORD.":</td><td><input type=\"password\" name=\"user_password2\" size=\"11\" maxlength=\"40\"><br><span class=\"tiny\">("._BLANKFORAUTO.")</span></td></tr>\n";
 
 		if (extension_loaded("gd") AND ($gfx_chk == 3 OR $gfx_chk == 4 OR $gfx_chk == 6 OR $gfx_chk == 7)) {
 
@@ -1510,7 +1510,7 @@ function edituser() {
 		include("header.php");
 
 		OpenTable();
-		echo "<div align=\"center\"><span class=\"title\"><b>"._PERSONALINFO."</b></span></div>";
+		echo "<div align=\"center\"><span class=\"title\"><strong>"._PERSONALINFO."</strong></span></div>";
 		CloseTable();
 
 		echo "<br>";
@@ -1535,29 +1535,29 @@ function edituser() {
 
 		echo "<table class=forumline cellpadding=\"3\" border=\"0\" width='100%'>"
 		."<form name=\"Register\" action=\"modules.php?name=$module_name\" method=\"post\">"
-		."<tr><td bgcolor='$bgcolor2'><b>"._USRNICKNAME."</b>:</td><td bgcolor='$bgcolor3'><strong>".$userinfo['username']."</strong></td></tr>"
-		."<tr><td bgcolor='$bgcolor2'><b>"._UREALNAME."</b>:<br>"._OPTIONAL."</td><td bgcolor='$bgcolor3'>"
+		."<tr><td bgcolor='$bgcolor2'><strong>"._USRNICKNAME."</strong>:</td><td bgcolor='$bgcolor3'><strong>".$userinfo['username']."</strong></td></tr>"
+		."<tr><td bgcolor='$bgcolor2'><strong>"._UREALNAME."</strong>:<br>"._OPTIONAL."</td><td bgcolor='$bgcolor3'>"
 		."<input type=\"text\" name=\"realname\" value=\"".$userinfo['name']."\" size=\"50\" maxlength=\"60\"></td></tr>"
-		."<tr><td bgcolor='$bgcolor2'><b>"._UREALEMAIL.":</b><br>"._REQUIRED."</td>"
+		."<tr><td bgcolor='$bgcolor2'><strong>"._UREALEMAIL.":</strong><br>"._REQUIRED."</td>"
 		."<td bgcolor='$bgcolor3'><input type=\"text\" name=\"user_email\" value=\"".$userinfo['user_email']."\" size=\"50\" maxlength=\"255\"><br>"._EMAILNOTPUBLIC."</td></tr>"
-		."<tr><td bgcolor='$bgcolor2'><b>"._UFAKEMAIL.":</b><br>"._OPTIONAL."</td>"
+		."<tr><td bgcolor='$bgcolor2'><strong>"._UFAKEMAIL.":</strong><br>"._OPTIONAL."</td>"
 		."<td bgcolor='$bgcolor3'><input type=\"text\" name=\"femail\" value=\"".$userinfo['femail']."\" size=\"50\" maxlength=\"255\"><br>"._EMAILPUBLIC."</td></tr>"
-		."<tr><td bgcolor='$bgcolor2'><b>"._YOURHOMEPAGE.":</b><br>"._OPTIONAL."</td>"
+		."<tr><td bgcolor='$bgcolor2'><strong>"._YOURHOMEPAGE.":</strong><br>"._OPTIONAL."</td>"
 		."<td bgcolor='$bgcolor3'><input type=\"text\" name=\"user_website\" value=\"".$userinfo['user_website']."\" size=\"50\" maxlength=\"255\"></td></tr>";
 
-		echo "<tr><td bgcolor='$bgcolor2'><b>"._YICQ.":</b><br>"._OPTIONAL."</td>"
+		echo "<tr><td bgcolor='$bgcolor2'><strong>"._YICQ.":</strong><br>"._OPTIONAL."</td>"
 		."<td bgcolor='$bgcolor3'><input type=\"text\" name=\"user_icq\" value=\"".$userinfo['user_icq']."\" size=\"30\" maxlength=\"100\"></td></tr>"
-		."<tr><td bgcolor='$bgcolor2'><b>"._YAIM.":</b><br>"._OPTIONAL."</td>"
+		."<tr><td bgcolor='$bgcolor2'><strong>"._YAIM.":</strong><br>"._OPTIONAL."</td>"
 		."<td bgcolor='$bgcolor3'><input type=\"text\" name=\"user_aim\" value=\"".$userinfo['user_aim']."\" size=\"30\" maxlength=\"100\"></td></tr>"
-		."<tr><td bgcolor='$bgcolor2'><b>"._YYIM.":</b><br>"._OPTIONAL."</td>"
+		."<tr><td bgcolor='$bgcolor2'><strong>"._YYIM.":</strong><br>"._OPTIONAL."</td>"
 		."<td bgcolor='$bgcolor3'><input type=\"text\" name=\"user_yim\" value=\"".$userinfo['user_yim']."\" size=\"30\" maxlength=\"100\"></td></tr>"
-		."<tr><td bgcolor='$bgcolor2'><b>"._YMSNM.":</b><br>"._OPTIONAL."</td>"
+		."<tr><td bgcolor='$bgcolor2'><strong>"._YMSNM.":</strong><br>"._OPTIONAL."</td>"
 		."<td bgcolor='$bgcolor3'><input type=\"text\" name=\"user_msnm\" value=\"".$userinfo['user_msnm']."\" size=\"30\" maxlength=\"100\"></td></tr>"
-		."<tr><td bgcolor='$bgcolor2'><b>"._YLOCATION.":</b><br>"._OPTIONAL."</td>"
+		."<tr><td bgcolor='$bgcolor2'><strong>"._YLOCATION.":</strong><br>"._OPTIONAL."</td>"
 		."<td bgcolor='$bgcolor3'><input type=\"text\" name=\"user_from\" value=\"".$userinfo['user_from']."\" size=\"30\" maxlength=\"100\"></td></tr>"
-		."<tr><td bgcolor='$bgcolor2'><b>"._YOCCUPATION.":</b><br>"._OPTIONAL."</td>"
+		."<tr><td bgcolor='$bgcolor2'><strong>"._YOCCUPATION.":</strong><br>"._OPTIONAL."</td>"
 		."<td bgcolor='$bgcolor3'><input type=\"text\" name=\"user_occ\" value=\"".$userinfo['user_occ']."\" size=\"30\" maxlength=\"100\"></td></tr>"
-		."<tr><td bgcolor='$bgcolor2'><b>"._YINTERESTS.":</b><br>"._OPTIONAL."</td>"
+		."<tr><td bgcolor='$bgcolor2'><strong>"._YINTERESTS.":</strong><br>"._OPTIONAL."</td>"
 		."<td bgcolor='$bgcolor3'><input type=\"text\" name=\"user_interests\" value=\"".$userinfo['user_interests']."\" size=\"30\" maxlength=\"100\"></td></tr>";
 
 		echo "<tr><td bgcolor='$bgcolor2'><strong>"._RECEIVENEWSLETTER."</strong></td><td bgcolor='$bgcolor3'>";
@@ -1699,7 +1699,7 @@ function edituser() {
 		echo "</select>";
 
 		echo "</td></tr>";
-		echo "<tr><td bgcolor='$bgcolor2'><strong>"._FORUMSDATE.":</strong><br>"._FORUMSDATEMSG."</b></td><td bgcolor='$bgcolor3'>";
+		echo "<tr><td bgcolor='$bgcolor2'><strong>"._FORUMSDATE.":</strong><br>"._FORUMSDATEMSG."</strong></td><td bgcolor='$bgcolor3'>";
 		echo "<input size='15' maxlength='14' type=\"text\" name=\"nuke_user_dateformat\" value=\"".$userinfo['nuke_user_dateformat']."\">";
 		echo "</td></tr>";
 
@@ -1832,8 +1832,8 @@ function edituser() {
 		} else {
 
 			echo "<tr><td bgcolor='$bgcolor2'><strong>Upload Avatar from your machine:</strong></td>"
-			."<td bgcolor='$bgcolor3'><b>Currently Disabled</b></td></tr>"
-			."<tr><td bgcolor='$bgcolor2'><b>Upload Avatar from a URL:</b><br><span class=gensmall>Enter the URL of the location containing the Avatar image and click on the submit button below, the Avatar image will be copied to this site.</span></td>"
+			."<td bgcolor='$bgcolor3'><strong>Currently Disabled</strong></td></tr>"
+			."<tr><td bgcolor='$bgcolor2'><strong>Upload Avatar from a URL:</strong><br><span class=gensmall>Enter the URL of the location containing the Avatar image and click on the submit button below, the Avatar image will be copied to this site.</span></td>"
 			."<td bgcolor='$bgcolor3'><strong>Currently Disabled</strong></td></tr>";
 
 		}
@@ -1841,7 +1841,7 @@ function edituser() {
 		if ($board_config['allow_avatar_remote']) {
 
 			echo "<form action=\"modules.php?name=Your_Account&op=avatarlinksave\" method=\"post\">"
-			."<tr><td bgcolor='$bgcolor2'><strong>Link to off-site Avatar:</b><br><span class=gensmall>Enter the URL of the location containing the Avatar image you wish to link to and click on the submit button below.</span></td>"
+			."<tr><td bgcolor='$bgcolor2'><strong>Link to off-site Avatar:</strong><br><span class=gensmall>Enter the URL of the location containing the Avatar image you wish to link to and click on the submit button below.</span></td>"
 			."<td bgcolor='$bgcolor3'><input class=post style=\"width: 200px\" size=40 name=avatar></td></tr>";
 
 		} else {
@@ -2198,7 +2198,7 @@ function chgtheme() {
 		OpenTable();
 		echo "<div align=\"center\">"
 		."<form action=\"modules.php?name=$module_name\" method=\"post\">"
-		."<b>"._SELECTTHEME."</b><br>"
+		."<strong>"._SELECTTHEME."</strong><br>"
 		."<select name=\"theme\">";
 
 		$handle = opendir('themes');
@@ -2374,99 +2374,69 @@ function editcomm() {
 		echo "<br>";
 
 		OpenTable();
-
 		nav();
-
 		CloseTable();
 
 		echo "<br>";
 
 		OpenTable();
-
 		echo "<table cellpadding=\"8\" border=\"0\"><tr><td>"
-
 		."<form action=\"modules.php?name=$module_name\" method=\"post\">"
-
-		."<b>"._DISPLAYMODE."</b>"
-
+		."<strong>"._DISPLAYMODE."</strong>"
 		."<select name=\"umode\">";
-
     ?>
-
     <option value="nocomments" <?php if ($userinfo['umode'] == 'nocomments') { echo "selected"; } ?>><?php echo _NOCOMMENTS ?>
-
     <option value="nested" <?php if ($userinfo['umode'] == 'nested') { echo "selected"; } ?>><?php echo _NESTED ?>
-
     <option value="flat" <?php if ($userinfo['umode'] == 'flat') { echo "selected"; } ?>><?php echo _FLAT ?>
-
     <option value="thread" <?php if (!isset($userinfo['umode']) || (empty($userinfo['umode'])) || $userinfo['umode']=='thread') { echo "selected"; } ?>><?php echo _THREAD ?>
-
     </select>
 
     <br><br>
 
-    <b><?php echo _SORTORDER ?></b>
+    <strong><?php echo _SORTORDER ?></strong>
 
     <select name="uorder">
-
     <option value="0" <?php if (!$userinfo['uorder']) { echo "selected"; } ?>><?php echo _OLDEST ?>
-
     <option value="1" <?php if ($userinfo['uorder']==1) { echo "selected"; } ?>><?php echo _NEWEST ?>
-
     <option value="2" <?php if ($userinfo['uorder']==2) { echo "selected"; } ?>><?php echo _HIGHEST ?>
-
     </select>
 
     <br><br>
 
-    <b><?php echo _THRESHOLD ?></b>
-
+    <strong><?php echo _THRESHOLD ?></strong>
     <?php echo _COMMENTSWILLIGNORED ?><br>
 
     <select name="thold">
-
     <option value="-1" <?php if ($userinfo['thold']==-1) { echo "selected"; } ?>>-1: <?php echo _UNCUT ?>
-
     <option value="0" <?php if ($userinfo['thold']==0) { echo "selected"; } ?>>0: <?php echo _EVERYTHING ?>
-
     <option value="1" <?php if ($userinfo['thold']==1) { echo "selected"; } ?>>1: <?php echo _FILTERMOSTANON ?>
-
     <option value="2" <?php if ($userinfo['thold']==2) { echo "selected"; } ?>>2: <?php echo _USCORE ?> +2
-
     <option value="3" <?php if ($userinfo['thold']==3) { echo "selected"; } ?>>3: <?php echo _USCORE ?> +3
-
     <option value="4" <?php if ($userinfo['thold']==4) { echo "selected"; } ?>>4: <?php echo _USCORE ?> +4
-
     <option value="5" <?php if ($userinfo['thold']==5) { echo "selected"; } ?>>5: <?php echo _USCORE ?> +5
-
     </select><br>
 
     <i><?php echo _SCORENOTE ?></i>
 
     <br><br>
 
-    <INPUT type="checkbox" name="noscore" <?php if ($userinfo['noscore']==1) { echo "checked"; } ?>><b> <?php echo _NOSCORES ?></b> <?php echo _HIDDESCORES ?>
+    <INPUT type="checkbox" name="noscore" <?php if ($userinfo['noscore']==1) { echo "checked"; } ?>><strong> <?php echo _NOSCORES ?></strong> <?php echo _HIDDESCORES ?>
 
     <br><br>
 
-    <b><?php echo _MAXCOMMENT ?></b> <?php echo _TRUNCATES ?><br>
+    <strong><?php echo _MAXCOMMENT ?></strong> <?php echo _TRUNCATES ?><br>
 
     <input type="text" name="commentmax" value="<?php echo "".intval($userinfo['commentmax'])."" ?>" size=11 maxlength=11> <?php echo _BYTESNOTE ?>
 
     <br><br>
 
     <input type="hidden" name="username" value="<?php echo"".$userinfo['username'].""; ?>">
-
     <input type="hidden" name="user_id" value="<?php echo"".intval($userinfo['user_id']).""; ?>">
-
     <input type="hidden" name="op" value="savecomm">
-
     <input type="submit" value="<?php echo _SAVECHANGES ?>">
-
     </form></td></tr></table>
 
     <?php
-
     CloseTable();
 
     echo "<br><br>";
@@ -2476,12 +2446,8 @@ function editcomm() {
 	} else {
 
 		main($user);
-
 	}
-
 }
-
-
 
 function savecomm($user_id, $username, $umode, $uorder, $thold, $noscore, $commentmax) {
 
@@ -2511,21 +2477,28 @@ function savecomm($user_id, $username, $umode, $uorder, $thold, $noscore, $comme
 
 		getusrinfo($user);
 
-		docookie($userinfo['user_id'],$userinfo['username'],$userinfo['user_password'],$userinfo['storynum'],$userinfo['umode'],$userinfo['uorder'],$userinfo['thold'],$userinfo['noscore'],$userinfo['ublockon'],$userinfo['theme'],$userinfo['commentmax']);
+		docookie($userinfo['user_id'],
+		        $userinfo['username'],
+		   $userinfo['user_password'],
+		        $userinfo['storynum'],
+				   $userinfo['umode'],
+				  $userinfo['uorder'],
+				   $userinfo['thold'],
+				 $userinfo['noscore'],
+				$userinfo['ublockon'],
+				   $userinfo['theme'],
+			  $userinfo['commentmax']);
 
 		Header("Location: modules.php?name=$module_name");
-
 	}
-
 }
-
-
 
 function avatarlist($avatarcategory) {
 
 	$patterns = [];
- $replacements = [];
- global $user, $userinfo, $cookie, $module_name;
+    $replacements = [];
+   
+    global $user, $userinfo, $cookie, $module_name;
 
 	cookiedecode($user);
 
@@ -2542,22 +2515,17 @@ function avatarlist($avatarcategory) {
 	title("".$avatarcategory." Avatar Gallery");
 
 	Opentable();
-
 	nav();
-
 	CloseTable();
 
 	echo "<br>";
 
 	Opentable();
-
-	echo "<center><font class=\"title\"><b>"._AVAILABLEAVATARS." on category ".$avatarcatname."</b></font><br><br>";
-
-	echo "<b>To Select Your Avatar Click On It</b><br><br></center>";
-
+	echo "<div align=\"center\"><span class=\"title\"><strong>"._AVAILABLEAVATARS." on category ".$avatarcatname."</strong></span><br><br>";
+	echo "<strong>To Select Your Avatar Click On It</strong><br><br></div>";
 	Opentable2();
 
-	echo "<center>";
+	echo "<div align=\"center\">";
 
 	$d = dir("modules/Forums/images/avatars/$avatarcategory");
 
@@ -2570,27 +2538,16 @@ function avatarlist($avatarcategory) {
 			if( $entry != '.' && $entry != '..' ) {
 
 				$patterns[0] = "/\.gif/";
-
 				$patterns[1] = "/\.png/";
-
 				$patterns[2] = "/\.jpg/";
-
 				$patterns[3] = "/\.jpeg/";
-
 				$patterns[4] = "/-/";
-
 				$patterns[5] = "/_/";
-
 				$replacements[5] = "";
-
 				$replacements[4] = "&nbsp;";
-
 				$replacements[3] = "";
-
 				$replacements[2] = "";
-
 				$replacements[1] = "";
-
 				$replacements[0] = "";
 
 				ksort($patterns);
@@ -2601,33 +2558,24 @@ function avatarlist($avatarcategory) {
 
 				$a=1;
 
-				echo "<a href=\"modules.php?name=$module_name&op=avatarsave&category=$avatarcategory&avatar=$entry\"><img src=\"modules/Forums/images/avatars/$avatarcategory/$entry\" border=\"0\" alt=\"$entryname\" title=\"$entryname\" hspace=\"10\" vspace=\"10\"></a>";
-
+				echo "<a href=\"modules.php?name=$module_name&op=avatarsave&category=$avatarcategory&avatar=$entry\"><img 
+				src=\"modules/Forums/images/avatars/$avatarcategory/$entry\" border=\"0\" alt=\"$entryname\" title=\"$entryname\" hspace=\"10\" vspace=\"10\"></a>";
 			}
 
 			if ($temcount == 10) {
 
 				echo "<br>";
-
 				$temcount -= 10;
-
 			}
-
 			$temcount ++;
-
 		}
-
 	}
-
-	echo "</center>";
-
+	echo "</div>";
 	CloseTable2();
 
-	echo "<center><br>"
-
+	echo "<div align=\"center\"><br>"
 	.""._GOBACK.""
-
-	."<br></center>";
+	."<br></div>";
 
 	$d->close();
 
@@ -2639,8 +2587,6 @@ function avatarlist($avatarcategory) {
 
 }
 
-
-
 function avatarsave($avatar, $category) { 
 
    global $user_prefix, $db, $module_name, $user, $cookie, $prefix; 
@@ -2650,13 +2596,9 @@ function avatarsave($avatar, $category) {
    $result = $db->sql_query($sql); 
 
    if ($row = $db->sql_fetchrow($result)) 
-
    { 
-
       $allow_avatar_local = $row['config_value']; 
-
    } 
-
    else { $allow_avatar_local = 0; } 
 
    if (is_user($user) AND $allow_avatar_local) { 
@@ -2670,42 +2612,35 @@ function avatarsave($avatar, $category) {
 		title("Avatar Selection Successful!");
 
 		OpenTable();
-
 		nav();
-
 		CloseTable();
 
 		OpenTable();
-
 		$category = stripslashes(check_html($category,"nohtml")); 
 
 		if(preg_match('/(\.gif$|\.png$|\.jpg|\.jpeg)$/is', $avatar) AND file_exists("modules/Forums/images/avatars/$category/$avatar")) 
-
 		{ 
 
 		$newavatar=$category."/".$avatar;
 
 		$db->sql_query("UPDATE ".$user_prefix."_users SET user_avatar='$newavatar', nuke_user_avatar_type='3' WHERE user_id = '".intval($cookie[0])."'");
 
-		echo "<center><font class=\"content\">Avatar for ".$cookie[1]." Saved!</center></font><br><br>";
+		echo "<div align=\"center\"><span class=\"content\">Avatar for ".$cookie[1]." Saved!</div></span><br><br>";
 
-		if (preg_match('#(http)#m', $newavatar)) { echo "<center>Your New Avatar:<br><br><IMG alt=\"\" src=\"$newavatar\"><br><br> [ <a href=\"modules.php?name=$module_name&amp;op=edituser\">Back to Profile</a> | <a href=\"modules.php?name=$module_name\">Done</a> ]<br><br></center>"; } elseif ($newavatar) { echo "<center>Your New Avatar:<br><br><IMG alt=\"\" src=\"modules/Forums/images/avatars/$newavatar\"><br><br>[ <a href=\"modules.php?name=$module_name&amp;op=edituser\">Back to Profile</a> | <a href=\"modules.php?name=$module_name\">Done</a> ]<br><br></center>"; }
-
+		if (preg_match('#(http)#m', $newavatar)) { 
+		   echo "<div align=\"center\">Your New Avatar:<br><br><img alt=\"\" src=\"$newavatar\"><br><br> [ <a href=\"modules.php?name=$module_name&amp;op=edituser\">Back to Profile</a> | <a 
+		   href=\"modules.php?name=$module_name\">Done</a> ]<br><br></div>"; 
+		} elseif ($newavatar) { 
+		   echo "<div align=\"center\">Your New Avatar:<br><br><img alt=\"\" src=\"modules/Forums/images/avatars/$newavatar\"><br><br>[ <a 
+		   href=\"modules.php?name=$module_name&amp;op=edituser\">Back to Profile</a> | <a href=\"modules.php?name=$module_name\">Done</a> ]<br><br></div>"; }
 		} else { 
-
-		   echo "<center><b>Error:</b> Wrong avatar format! Avatars can only be gif, jpg, or png format.<br />"._GOBACK."</center>"; 
-
+		   echo "<div align=\"center\"><strong>Error:</strong> Wrong avatar format! Avatars can only be gif, jpg, or png format.<br />"._GOBACK."</div>"; 
 		} 
-
 		CloseTable();
 
 		include("footer.php");
-
 	}
-
 }
-
-
 
 function avatarlinksave($avatar) {
 
@@ -2716,13 +2651,9 @@ function avatarlinksave($avatar) {
 	$result = $db->sql_query($sql); 
 
 	if ($row = $db->sql_fetchrow($result)) 
-
 	{ 
-
 	  $allow_avatar_remote = $row['config_value']; 
-
 	} 
-
 	else { $allow_avatar_remote = 0; } 
 
 	if (is_user($user) AND $allow_avatar_remote) { 
@@ -2736,13 +2667,10 @@ function avatarlinksave($avatar) {
 		title("Avatar Selection Successful!");
 
 		OpenTable();
-
 		nav();
-
 		CloseTable();
 
 		OpenTable();
-
 		if( !preg_match("#^http:\/\/#i", $avatar) ){ 
 
 		$avatar = "http://" . $avatar;} 
@@ -2751,25 +2679,24 @@ function avatarlinksave($avatar) {
 
 		$db->sql_query("UPDATE ".$user_prefix."_users SET user_avatar='$avatar', nuke_user_avatar_type='2' WHERE user_id = '".intval($cookie[0])."'");
 
-		echo "<center><font class=\"content\">Avatar for ".$cookie[1]." Saved!</center></font><br><br>";
+		echo "<div align=\"center\"><span class=\"content\">Avatar for ".$cookie[1]." Saved!</span></div><br><br>";
 
-		if (preg_match('#(http)#m', $avatar)) { echo "<center>Your New Avatar:<br><br><IMG alt=\"\" src=\"$avatar\"><br><br>[ <a href=\"modules.php?name=$module_name&amp;op=edituser\">Back to Profile</a> | <a href=\"modules.php?name=$module_name\">Done</a> ]<br><br></center>"; } elseif ($avatar) { echo "<center>Your New Avatar:<br><br><IMG alt=\"\" src=\"modules/Forums/images/avatars/$avatar\"><br><br>[ <a href=\"modules.php?name=$module_name&amp;op=edituser\">Back to Profile</a> | <a href=\"modules.php?name=$module_name\">Done</a> ]<br><br></center>"; }
-
+		if (preg_match('#(http)#m', $avatar)) { 
+		   echo "<div align=\"center\">Your New Avatar:<br><br><img alt=\"\" src=\"$avatar\"><br><br>[ <a href=\"modules.php?name=$module_name&amp;op=edituser\">Back to Profile</a> | <a 
+		   href=\"modules.php?name=$module_name\">Done</a> ]<br><br></div>"; 
+		} elseif ($avatar) { 
+		   echo "<div align=\"center\">Your New Avatar:<br><br><img alt=\"\" src=\"modules/Forums/images/avatars/$avatar\"><br><br>[ <a 
+		   href=\"modules.php?name=$module_name&amp;op=edituser\">Back to Profile</a> | <a href=\"modules.php?name=$module_name\">Done</a> ]<br><br></div>"; 
+		}
+		
 		} else { 
-
-		  echo "<center><b>Error:</b> Wrong avatar format! Avatars can only be gif, jpg, or png format.<br />"._GOBACK."</center>"; 
-
+		  echo "<div align=\"center\"><strong>Error:</strong> Wrong avatar format! Avatars can only be gif, jpg, or png format.<br />"._GOBACK."</div>"; 
 		} 
-
 		CloseTable();
 
 		include("footer.php");
-
 	}
-
 }
-
-
 
 function broadcast($the_message, $who) {
 
@@ -2782,14 +2709,14 @@ function broadcast($the_message, $who) {
 	$row = $db->sql_fetchrow($db->sql_query("SELECT karma FROM ".$user_prefix."_users WHERE user_id = '".intval($cookie[0])."'"));
 
 	if (($row['karma'] == 2) OR ($row['karma'] == 3)) {
-
 		Header("Location: modules.php?name=".$module_name);
-
 		die();
-
 	}
 
-	if ((is_user($user)) AND (strtolower($who) == strtolower($cookie[1])) AND (strtolower($userinfo['username']) == strtolower($cookie[1])) AND ($userinfo['user_password'] == $cookie[2])) {
+	if ((is_user($user)) 
+	    AND (strtolower($who) == strtolower($cookie[1])) 
+		AND (strtolower($userinfo['username']) == strtolower($cookie[1])) 
+		AND ($userinfo['user_password'] == $cookie[2])) {
 
 		$who = $cookie[1];
 
@@ -2802,7 +2729,6 @@ function broadcast($the_message, $who) {
 			title(""._BROADCAST."");
 
 			OpenTable();
-
 			$numrows = $db->sql_numrows($db->sql_query("SELECT * FROM ".$prefix."_public_messages WHERE who='$who'"));
 
 			if (!empty($the_message) AND $numrows == 0) {
@@ -2815,39 +2741,30 @@ function broadcast($the_message, $who) {
 
 				update_points(20);
 
-				echo "<center>"._BROADCASTSENT."<br><br>[ <a href=\"modules.php?name=$module_name\">"._RETURNPAGE."</a> ]</center>";
+				echo "<div align=\"center\">"._BROADCASTSENT."<br><br>[ <a href=\"modules.php?name=$module_name\">"._RETURNPAGE."</a> ]</div>";
 
 			} else {
 
-				echo "<center>"._BROADCASTNOTSENT."<br><br>[ <a href=\"modules.php?name=$module_name\">"._RETURNPAGE."</a> ]</center>";
-
+				echo "<div align=\"center\">"._BROADCASTNOTSENT."<br><br>[ <a href=\"modules.php?name=$module_name\">"._RETURNPAGE."</a> ]</div>";
 			}
-
 			CloseTable();
 
 			include("footer.php");
 
 		} else {
-
 			echo "I don't like you...";
-
 		}
-
 	}
-
 }
-
-
 
 function my_headlines($hid, $url=0) {
 
 	$title = null;
- global $prefix, $db, $user;
+    
+	global $prefix, $db, $user;
 
 	if (!is_user($user) || empty($url)) {
-
 		die();
-
 	}
 
 	$hid = intval($hid);
@@ -2865,17 +2782,13 @@ function my_headlines($hid, $url=0) {
 	$fp = fsockopen($rdf['host'], 80, $errno, $errstr, 15);
 
 	if (!$fp) {
-
-		$content = "<font class=\"content\">Problema!</font>";
-
+		$content = "<span class=\"content\">Problema!</span>";
 		return;
-
 	}
 
 	if ($fp) {
 
 		fputs($fp, "GET " . $rdf['path'] . "?" . $rdf['query'] . " HTTP/1.0\r\n");
-
 		fputs($fp, "HOST: " . $rdf['host'] . "\r\n\r\n");
 
 		$string	= "";
@@ -2883,33 +2796,26 @@ function my_headlines($hid, $url=0) {
 		while(!feof($fp)) {
 
 			$pagetext = fgets($fp,300);
-
 			$string .= chop($pagetext);
-
 		}
 
 		fputs($fp,"Connection: close\r\n\r\n");
-
 		fclose($fp);
 
 		$items = explode("</item>",$string);
 
-		$content = "<font class=\"content\">";
+		$content = "<span class=\"content\">";
 
 		for ($i=0;$i<10;$i++) {
 
 			$link = preg_replace('#.*<link>#m',"",$items[$i]);
-
 			$link = preg_replace('#<\/link>.*#m',"",$link);
-
 			$title2 = preg_replace('#.*<title>#m',"",$items[$i]);
-
 			$title2 = preg_replace('#<\/title>.*#m',"",$title2);
 
 			if (empty($items[$i])) {
 
-				$content = "";
-
+				$content = "</span>";
 				return;
 
 			} else {
@@ -2917,22 +2823,13 @@ function my_headlines($hid, $url=0) {
 				if (strcmp($link,$title)) {
 
 					$cont = 1;
-
-					$content .= "<img src=\"images/arrow.gif\" border=\"0\" hspace=\"5\"><a href=\"$link\" target=\"new\">$title2</a><br>\n";
-
+					$content .= "<img src=\"images/arrow.gif\" border=\"0\" hspace=\"5\"><a href=\"$link\" target=\"new\">$title2</a>></span><br>\n";
 				}
-
 			}
-
 		}
-
 	}
-
 	echo "$content";
-
 }
-
-
 
 function CoolSize($size) {
 
@@ -2949,293 +2846,178 @@ function CoolSize($size) {
 	} else {
 
 		$mysize = $size . " bytes";
-
 	}
-
 	return $mysize;
-
 }
-
-
 
 function change_karma($user_id, $karma) {
 
 	global $admin, $user_prefix, $db, $module_name;
 
 	if (!is_admin($admin)) {
-
 		Header("location: index.php");
-
 		die();
-
 	} else {
 
 		if ($user_id > 1) {
-
 			$karma = intval($karma);
-
 			$db->sql_query("UPDATE ".$user_prefix."_users SET karma='$karma' WHERE user_id='$user_id'");
-
 			$row = $db->sql_fetchrow($db->sql_query("SELECT username FROM ".$user_prefix."_users WHERE user_id='$user_id'"));
-
 			$username = filter($row['username'], "nohtml");
-
 			Header("location: modules.php?name=$module_name&op=userinfo&username=$username");
-
 			die();
-
 		}
-
 	}
-
 }
 
-
-
 if (!isset($hid)) { $hid = ""; }
-
 if (!isset($url)) { $url = ""; }
-
 if (!isset($bypass)) { $bypass = ""; }
-
 if (!isset($op)) { $op = ""; }
-
-
 
 switch($op) {
 
-
-
 	case "change_karma":
-
 	change_karma($user_id, $karma);
-
 	break;
-
-
 
 	case "logout":
-
 	logout();
-
 	break;
-
-
 
 	case "avatarsave":
-
 	avatarsave($avatar, $category);
-
 	break;
-
-
 
 	case "avatarlinksave":
-
 	avatarlinksave($avatar);
-
 	break;
-
-
 
 	case "broadcast":
-
 	broadcast($the_message, $who);
-
 	break;
-
-
 
 	case "lost_pass":
-
 	lost_pass();
-
 	break;
-
-
 
 	case "new user":
-
 	confirmNewUser($username, $user_email, $user_password, $user_password2, $random_num, $gfx_check);
-
 	break;
-
-
 
 	case "finish":
-
 	finishNewUser($username, $user_email, $user_password, $random_num, $gfx_check);
-
 	break;
-
-
 
 	case "mailpasswd":
-
 	mail_password($username, $code);
-
 	break;
-
-
 
 	case "userinfo":
-
 	userinfo($username, $bypass, $hid, $url);
-
 	break;
-
-
 
 	case "login":
-
 	login($username, $user_password, $redirect, $mode, $f, $t, $random_num, $gfx_check);
-
 	break;
-
-
 
 	case "edituser":
-
 	edituser();
-
 	break;
-
-
 
 	case "saveuser":
-
-	saveuser($realname, $user_email, $femail, $user_website, $user_icq, $user_aim, $user_yim, $user_msnm, $user_from, $user_occ, $user_interests, $newsletter, $user_viewemail, $user_allow_viewonline, $user_notify, $nuke_user_notify_pm, $user_popup_pm, $user_attachsig, $user_allowbbcode, $user_allowhtml, $user_allowsmile, $nuke_user_timezone, $nuke_user_dateformat, $nuke_user_sig, $bio, $user_password, $vpass, $username, $user_id);
-
+	saveuser($realname, 
+	       $user_email, 
+		       $femail, 
+		 $user_website, 
+		     $user_icq, 
+			 $user_aim, 
+			 $user_yim, 
+			$user_msnm, 
+			$user_from, 
+			 $user_occ, 
+	   $user_interests, 
+	       $newsletter, 
+	   $user_viewemail, 
+$user_allow_viewonline, 
+          $user_notify, 
+  $nuke_user_notify_pm, 
+        $user_popup_pm, 
+	   $user_attachsig, 
+	 $user_allowbbcode, 
+	   $user_allowhtml, 
+	  $user_allowsmile, 
+   $nuke_user_timezone, 
+ $nuke_user_dateformat, 
+        $nuke_user_sig, 
+		          $bio, 
+		$user_password, 
+		        $vpass, 
+		     $username, 
+			  $user_id);
 	break;
-
-
 
 	case "edithome":
-
 	edithome();
-
 	break;
-
-
 
 	case "chgtheme":
-
 	chgtheme();
-
 	break;
-
-
 
 	case "savehome":
-
 	savehome($user_id, $username, $storynum, $ublockon, $ublock, $broadcast);
-
 	break;
-
-
 
 	case "savetheme":
-
 	savetheme($user_id, $theme);
-
 	break;
-
-
 
 	case "avatarlist":
-
 	avatarlist($avatarcategory);
-
 	break;
-
-
 
 	case "editcomm":
-
 	editcomm();
-
 	break;
-
-
 
 	case "savecomm":
-
 	savecomm($user_id, $username, $umode, $uorder, $thold, $noscore, $commentmax);
-
 	break;
-
-
 
 	case "pass_lost":
-
 	pass_lost();
-
 	break;
-
-
 
 	case "new_user":
-
 	new_user();
-
 	break;
 
-
-
-        case "my_headlines":
-
+    case "my_headlines":
 	  if (is_user($user)) {
-
 		if (!empty($url)) {
-
-                  my_headlines($hid, $url);
-
+          my_headlines($hid, $url);
 		} else { die(); }
-
 	  } else {
-
             Header("Location: modules.php?name=$module_name");
-
           }
-
 	break;
-
-
 
 	case "gfx":
-
 	gfx($random_num);
-
 	break;
-
-
 
 	case "activate":
-
 	activate($username, $check_num);
-
 	break;
-
-
 
 	case "CoolSize":
-
 	CoolSize($size);
-
 	break;
-
-
 
 	default:
-
 	main($user);
-
 	break;
-
-
-
 }
-
-
 
 ?>
