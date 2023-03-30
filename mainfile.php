@@ -171,7 +171,7 @@ if(preg_match('/IIS/', $_SERVER['SERVER_SOFTWARE']) && isset($_SERVER['SCRIPT_NA
     $_SERVER['REQUEST_URI'] = $requesturi;
 endif;
 
-if(PHP_7 && (!ini_get('register_long_arrays') || ini_get('register_long_arrays') == '0' || strtolower(ini_get('register_long_arrays')) == 'off')):
+if(PHP_7):
     $HTTP_POST_VARS =& $_POST;
     $HTTP_GET_VARS =& $_GET;
     $HTTP_SERVER_VARS =& $_SERVER;
