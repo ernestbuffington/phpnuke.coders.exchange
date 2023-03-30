@@ -60,7 +60,8 @@ Jan 2023: Version 8.3.2
 - Added jquery.fn.extend.js v1.1 (nuke_jq) 
 = Added jquery.core.js v1.1 (nuke_jq)
 - Fixed Admin Database Backup System (backup to PC or backup to server)
-
+- Updated nuke_session table (added primary key uname and fields module & url)
+-
 
 August 2007: Version 8.1
 ========================

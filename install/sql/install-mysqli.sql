@@ -970,10 +970,13 @@ CREATE TABLE IF NOT EXISTS `#prefix#_reviews_main` (
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 CREATE TABLE IF NOT EXISTS `#prefix#_session` (
-  `uname` varchar(25) NOT NULL DEFAULT '',
+  `uname` varchar(255) NOT NULL DEFAULT '',
   `time` varchar(14) NOT NULL DEFAULT '',
+  `starttime` varchar(14) NOT NULL DEFAULT '',
   `host_addr` varchar(48) NOT NULL DEFAULT '',
-  `guest` int(1) NOT NULL DEFAULT 0
+  `guest` int(1) NOT NULL DEFAULT 0,
+  `module` varchar(255) NOT NULL DEFAULT '',
+  `url` varchar(255) NOT NULL DEFAULT ''
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 CREATE TABLE IF NOT EXISTS `#prefix#_stats_date` (

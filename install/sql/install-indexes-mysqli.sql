@@ -348,6 +348,7 @@ ALTER TABLE `#prefix#_reviews_comments_moderated`
   ADD KEY `userid` (`userid`);
 
 ALTER TABLE `#prefix#_session`
+  ADD PRIMARY KEY (`uname`),
   ADD KEY `time` (`time`),
   ADD KEY `guest` (`guest`);
 
