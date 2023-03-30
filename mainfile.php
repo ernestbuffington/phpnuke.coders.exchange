@@ -147,8 +147,8 @@ foreach($_REQUEST as $key=>$value)
     }    
 }
 
-$admin = (isset($_COOKIE['admin'])) ? $_COOKIE['admin'] : false;
-$user = (isset($_COOKIE['user'])) ? $_COOKIE['user'] : false;
+if(!isset($_COOKIE['admin'])) { $_COOKIE['admin'] = ''; }
+if(!isset($_COOKIE['user'])) { $_COOKIE['user'] = ''; }
 
 // This block of code makes sure $admin and $user are COOKIES
 if((isset($admin) && $admin != $_COOKIE['admin']) OR (isset($user) && $user != $_COOKIE['user'])) {
@@ -1489,10 +1489,12 @@ function getusrinfo($user) {
 # $nohtml: strip PHP+HTML tags, false=no, true=yes, default=false
 function Fix_Quotes($str, $nohtml=false) 
 {
-    if($nohtml): 
-	  $str = strip_tags($str);
-	endif;
-    
+    if(isset($str)):
+	  if($nohtml): 
+	    $str = strip_tags($str);
+	  endif;
+    endif;
+	
 	return $str;
 }
 
