@@ -1958,7 +1958,7 @@ function rateinfo($lid) {
 }
 
 function addrating($ratinglid, $ratinguser, $rating, $ratinghost_name, $ratingcomments) {
-	$anonwaitdays = null;
+ $anonwaitdays = null;
  $outsidewaitdays = null;
  $lid = null;
  $finalrating = null;
