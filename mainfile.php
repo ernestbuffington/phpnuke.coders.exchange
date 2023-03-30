@@ -113,27 +113,6 @@ function get_microtime()
     return ($usec + $sec);
 }
 
-$do_gzip_compress = false;
-
-if (GZIPSUPPORT && !ini_get('zlib.output_compression') 
-&& isset($_SERVER['HTTP_ACCEPT_ENCODING']) 
-&& preg_match('/gzip/i', (string) $_SERVER['HTTP_ACCEPT_ENCODING'])):
-    
-	if (version_compare($phpver, '7.1.0', '>=')): 
-        ob_end_clean();  // never run this without doing an end clean first (Ernest Allen Buffington)
-		ob_start('ob_gzhandler');
-    else:
-        $do_gzip_compress = true;
-        ob_start();
-        ob_implicit_flush(0);
-        header('Content-Encoding: gzip');
-    endif;
-
-else:
-    ob_start();
-    ob_implicit_flush(0);
-endif;
-
 $sanitize_rules = array("newlang"=>"/[a-z][a-z]/i","redirect"=>"/[a-z0-9]*/i");
 
 foreach($_REQUEST as $key=>$value)
@@ -378,18 +357,44 @@ require_once(INCLUDE_PATH."db/db.php");
 require_once(INCLUDE_PATH."includes/mods/Evo/functions_database.php");
 
 /*
- * Moved back to includes folder (one still exists inside the forums folder)
- * Code origin phpBB
- * @date 03/28/2023 8:23 AM Ernest Allen Buffington
- */
-require_once(INCLUDE_PATH."includes/mods/phpbb2/constants.php");
-
-/*
  * Get user ip and try to detect bots
  * Code origin Nuke Evolution / Xtreme v2.0.9e
  * @date 03/28/2023 8:23 AM Ernest Allen Buffington
  */
 require_once(NUKE_CLASSES_DIR.'class.identify.php');
+
+if(ini_get('output_buffering') && !isset($agent['bot'])):
+  ob_end_clean();
+  header('Content-Encoding: none');
+endif;
+
+$do_gzip_compress = false;
+
+if (GZIPSUPPORT && !ini_get('zlib.output_compression') 
+&& isset($_SERVER['HTTP_ACCEPT_ENCODING']) 
+&& preg_match('/gzip/i', (string) $_SERVER['HTTP_ACCEPT_ENCODING'])):
+    
+	if (version_compare($phpver, '7.1.0', '>=')): 
+        ob_end_clean();  // never run this without doing an end clean first (Ernest Allen Buffington)
+		ob_start('ob_gzhandler');
+    else:
+        $do_gzip_compress = true;
+        ob_start();
+        ob_implicit_flush(0);
+        header('Content-Encoding: gzip');
+    endif;
+
+else:
+    ob_start();
+    ob_implicit_flush(0);
+endif;
+
+/*
+ * Moved back to includes folder (one still exists inside the forums folder)
+ * Code origin phpBB
+ * @date 03/28/2023 8:23 AM Ernest Allen Buffington
+ */
+require_once(INCLUDE_PATH."includes/mods/phpbb2/constants.php");
 
 /*
  * Added for Zend Zf1 future
@@ -415,7 +420,6 @@ require_once(NUKE_CLASSES_DIR.'class.debugger.php');
 /* FOLLOWING TWO LINES ARE DEPRECATED BUT ARE HERE FOR OLD MODULES COMPATIBILITY */
 /* PLEASE START USING THE NEW SQL ABSTRACTION LAYER. SEE MODULES DOC FOR DETAILS */
 require_once(INCLUDE_PATH."includes/sql_layer.php");
-
 $dbi = sql_connect($dbhost, $dbuname, $dbpass, $dbname);
 
 require_once(INCLUDE_PATH."includes/ipban.php");
@@ -1824,25 +1828,28 @@ function adminblock() {
 		$num = $db->sql_numrows($db->sql_query("SELECT * FROM ".$prefix."_queue"));
 		$content = "<span style=\"white-space: nowrap;\" class=\"content\">";
 
-		$content .= "<a href=\"".$admin_file.".php?op=submissions\">"._SUBMISSIONS.": $num</a>";
+		$content .= "<a href=\"".$admin_file.".php?op=submissions\">"._SUBMISSIONS.": $num</a></br>";
+		
 		$num = $db->sql_numrows($db->sql_query("SELECT * FROM ".$prefix."_reviews_add"));
-
-		$content .= "<a href=\"".$admin_file.".php?op=reviews\">"._WREVIEWS.": $num</a>";
+		$content .= "<a href=\"".$admin_file.".php?op=reviews\">"._WREVIEWS.": $num</a></br>";
 
 		$num = $db->sql_numrows($db->sql_query("SELECT * FROM ".$prefix."_links_newlink"));
 		$brokenl = $db->sql_numrows($db->sql_query("SELECT * FROM ".$prefix."_links_modrequest WHERE brokenlink='1'"));
-		$modreql = $db->sql_numrows($db->sql_query("SELECT * FROM ".$prefix."_links_modrequest WHERE brokenlink='0'"));
-		$content .= "<a href=\"".$admin_file.".php?op=Links\">"._WLINKS.": $num</a>";
-		$content .= "<a href=\"".$admin_file.".php?op=LinksListModRequests\">"._MODREQLINKS.": $modreql</a>";
 
-		$content .= "<a href=\"".$admin_file.".php?op=LinksListBrokenLinks\">"._BROKENLINKS.": $brokenl</a>";
+		$modreql = $db->sql_numrows($db->sql_query("SELECT * FROM ".$prefix."_links_modrequest WHERE brokenlink='0'"));
+
+		$content .= "<a href=\"".$admin_file.".php?op=Links\">"._WLINKS.": $num</a></br>";
+
+		$content .= "<a href=\"".$admin_file.".php?op=LinksListModRequests\">"._MODREQLINKS.": $modreql</a></br>";
+
+		$content .= "<a href=\"".$admin_file.".php?op=LinksListBrokenLinks\">"._BROKENLINKS.": $brokenl</a></br>";
 		$num = $db->sql_numrows($db->sql_query("SELECT * FROM ".$prefix."_downloads_newdownload"));
 
 		$brokend = $db->sql_numrows($db->sql_query("SELECT * FROM ".$prefix."_downloads_modrequest WHERE brokendownload='1'"));
 		$modreqd = $db->sql_numrows($db->sql_query("SELECT * FROM ".$prefix."_downloads_modrequest WHERE brokendownload='0'"));
-		$content .= "<a href=\"".$admin_file.".php?op=downloads\">"._UDOWNLOADS.": $num</a>";
-		$content .= "<a href=\"".$admin_file.".php?op=DownloadsListModRequests\">"._MODREQDOWN.": $modreqd</a>";
-		$content .= "<a href=\"".$admin_file.".php?op=DownloadsListBrokenDownloads\">"._BROKENDOWN.": $brokend</a></span>";
+		$content .= "<a href=\"".$admin_file.".php?op=downloads\">"._UDOWNLOADS.": $num</a></br>";
+		$content .= "<a href=\"".$admin_file.".php?op=DownloadsListModRequests\">"._MODREQDOWN.": $modreqd</a></br>";
+		$content .= "<a href=\"".$admin_file.".php?op=DownloadsListBrokenDownloads\">"._BROKENDOWN.": $brokend</a></br></span>";
 
 		themesidebox($title, $content);
 	}
