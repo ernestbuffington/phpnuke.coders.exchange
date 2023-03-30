@@ -2290,7 +2290,6 @@ function viewdownloaddetails($lid) {
     global $prefix, $db, $admin, $bgcolor1, $bgcolor2, $bgcolor3, $bgcolor4, $module_name, $anonymous;
 
     include("header.php");
-
     include("modules/$module_name/d_config.php");
 
     menu(1);
@@ -2336,11 +2335,8 @@ function viewdownloaddetails($lid) {
 	    if ($ratinguserDB=='outside') {
 
 		$outsidevotes++;
-
         $outsidevoteval += $ratingDB;
-
 	    }
-
 	} else {
 	    $outsidevotes = 0;
 	}
@@ -2352,27 +2348,21 @@ function viewdownloaddetails($lid) {
 	if ($ratinguserDB!=$anonymous && $ratinguserDB!="outside") {
 
 	    if ($ratingDB > $topreg) $topreg = $ratingDB;
-
 	    if ($ratingDB < $bottomreg) $bottomreg = $ratingDB;
-
 	    for ($rcounter=1; $rcounter<11; $rcounter++) if ($ratingDB==$rcounter) $rvv[$rcounter]++;
 	}
 
 	if ($ratinguserDB==$anonymous) {
 
 	    if ($ratingDB > $topanon) $topanon = $ratingDB;
-
 	    if ($ratingDB < $bottomanon) $bottomanon = $ratingDB;
-
 	    for ($rcounter=1; $rcounter<11; $rcounter++) if ($ratingDB==$rcounter) $avv[$rcounter]++;
 	}
 
 	if ($ratinguserDB=="outside") {
 
 	    if ($ratingDB > $topoutside) $topoutside = $ratingDB;
-
 	    if ($ratingDB < $bottomoutside) $bottomoutside = $ratingDB;
-
 	    for ($rcounter=1; $rcounter<11; $rcounter++) if ($ratingDB==$rcounter) $ovv[$rcounter]++;
 	}
 
@@ -2388,66 +2378,48 @@ function viewdownloaddetails($lid) {
 
 	/* Figure Outside Only Vote */
 	$finalrating = $outsidevoteval / $outsidevotes;
-
 	$finalrating = number_format($finalrating, $detailvotedecimal);
-
 	$avgOU = $outsidevoteval / $totalvotesDB;
-
 	$avgOU = number_format($avgOU, $detailvotedecimal);
 
     } else if ($outsidevotes == 0 && $regvotes == 0) {
 
  	/* Figure Anon Only Vote */
 	$finalrating = $anonvoteval / $anonvotes;
-
 	$finalrating = number_format($finalrating, $detailvotedecimal);
-
 	$avgAU = $anonvoteval / $totalvotesDB;
-
 	$avgAU = number_format($avgAU, $detailvotedecimal);
 
     } else if ($outsidevotes == 0 && $anonvotes == 0) {
 
 	/* Figure Reg Only Vote */
 	$finalrating = $regvoteval / $regvotes;
-
 	$finalrating = number_format($finalrating, $detailvotedecimal);
-
 	$avgRU = $regvoteval / $totalvotesDB;
-
 	$avgRU = number_format($avgRU, $detailvotedecimal);
 
     } else if ($regvotes == 0 && $useoutsidevoting == 1 && $outsidevotes != 0 && $anonvotes != 0 ) {
 
  	/* Figure Reg and Anon Mix */
  	$avgAU = $anonvoteval / $anonvotes;
-
 	$avgOU = $outsidevoteval / $outsidevotes;
 
 	if ($anonweight > $outsideweight ) {
 
 	    /* Anon is 'standard weight' */
 	    $newimpact = $anonweight / $outsideweight;
-
 	    $impactAU = $anonvotes;
-
 	    $impactOU = $outsidevotes / $newimpact;
-
 	    $finalrating = ((($avgOU * $impactOU) + ($avgAU * $impactAU)) / ($impactAU + $impactOU));
-
 	    $finalrating = number_format($finalrating, $detailvotedecimal);
 
 	} else {
 
 	    /* Outside is 'standard weight' */
 	    $newimpact = $outsideweight / $anonweight;
-
 	    $impactOU = $outsidevotes;
-
 	    $impactAU = $anonvotes / $newimpact;
-
 	    $finalrating = ((($avgOU * $impactOU) + ($avgAU * $impactAU)) / ($impactAU + $impactOU));
-
 	    $finalrating = number_format($finalrating, $detailvotedecimal);
 	}
 
@@ -2455,13 +2427,10 @@ function viewdownloaddetails($lid) {
 
      	/* REG User vs. Anonymous vs. Outside User Weight Calutions */
      	$impact = $anonweight;
-
      	$outsideimpact = $outsideweight;
 
      	if ($regvotes == 0) {
-
 	    $avgRU = 0;
-
 	} else {
 	    $avgRU = $regvoteval / $regvotes;
 	}
@@ -2479,13 +2448,9 @@ function viewdownloaddetails($lid) {
 	}
 
 	$impactRU = $regvotes;
-
 	$impactAU = $anonvotes / $impact;
-
 	$impactOU = $outsidevotes / $outsideimpact;
-
 	$finalrating = (($avgRU * $impactRU) + ($avgAU * $impactAU) + ($avgOU * $impactOU)) / ($impactRU + $impactAU + $impactOU);
-
 	$finalrating = number_format($finalrating, $detailvotedecimal);
     }
 
@@ -2508,15 +2473,10 @@ function viewdownloaddetails($lid) {
     }
 
     if ($topanon == 0) $topanon = "";
-
     if ($bottomanon == 11) $bottomanon = "";
-
     if ($topreg == 0) $topreg = "";
-
     if ($bottomreg == 11) $bottomreg = "";
-
     if ($topoutside == 0) $topoutside = "";
-
     if ($bottomoutside == 11) $bottomoutside = "";
 
     $totalchartheight = 70;
@@ -2534,53 +2494,37 @@ function viewdownloaddetails($lid) {
     $ovvchartheight	= array(0,0,0,0,0,0,0,0,0,0,0);
 
     $avvmultiplier = 0;
-
     $rvvmultiplier = 0;
-
     $ovvmultiplier = 0;
 
     for ($rcounter=1; $rcounter<11; $rcounter++) {
 
     	if ($anonvotes != 0) $avvper[$rcounter] = $avv[$rcounter] / $anonvotes;
-
     	if ($regvotes != 0) $rvvper[$rcounter] = $rvv[$rcounter] / $regvotes;
-
     	if ($outsidevotes != 0) $ovvper[$rcounter] = $ovv[$rcounter] / $outsidevotes;
 
     	$avvpercent[$rcounter] = number_format($avvper[$rcounter] * 100, 1);
-
     	$rvvpercent[$rcounter] = number_format($rvvper[$rcounter] * 100, 1);
-
     	$ovvpercent[$rcounter] = number_format($ovvper[$rcounter] * 100, 1);
 
     	if ($avv[$rcounter] > $avvmultiplier) $avvmultiplier = $avv[$rcounter];
-
     	if ($rvv[$rcounter] > $rvvmultiplier) $rvvmultiplier = $rvv[$rcounter];
-
     	if ($ovv[$rcounter] > $ovvmultiplier) $ovvmultiplier = $ovv[$rcounter];
-
     }
 
     if ($avvmultiplier != 0) $avvmultiplier = 10 / $avvmultiplier;
-
     if ($rvvmultiplier != 0) $rvvmultiplier = 10 / $rvvmultiplier;
-
     if ($ovvmultiplier != 0) $ovvmultiplier = 10 / $ovvmultiplier;
 
     for ($rcounter=1; $rcounter<11; $rcounter++) {
 
         $avvchartheight[$rcounter] = ($avv[$rcounter] * $avvmultiplier) * $chartunits;
-
     	$rvvchartheight[$rcounter] = ($rvv[$rcounter] * $rvvmultiplier) * $chartunits;
-
     	$ovvchartheight[$rcounter] = ($ovv[$rcounter] * $ovvmultiplier) * $chartunits;
 
         if ($avvchartheight[$rcounter]==0) $avvchartheight[$rcounter]=1;
-
     	if ($rvvchartheight[$rcounter]==0) $rvvchartheight[$rcounter]=1;
-
     	if ($ovvchartheight[$rcounter]==0) $ovvchartheight[$rcounter]=1;
-
     }
 
     $ttitle = htmlentities($ttitle);
@@ -2594,24 +2538,20 @@ function viewdownloaddetails($lid) {
     list($title, $auth_name, $email, $description, $filesize, $version, $homepage) = $db->sql_fetchrow($res);
 
     $ttitle = filter($title, "nohtml");
-
     $displaytitle = $ttitle;
-
 	$auth_name = filter($auth_name, "nohtml");
-
 	$email = filter($email, "nohtml");
-
     $description = filter($description);
-
     $homepage = filter($homepage, "nohtml");
 
     echo "<br>";
 
     OpenTable();
+    echo "<div align=\"center\"><span class=\"option\"><strong>"._DOWNLOADPROFILE.": $displaytitle</strong></span></div><br><br>";
 
-    echo "<center><font class=\"option\"><b>"._DOWNLOADPROFILE.": $displaytitle</b></font><br><br>";
-
-    downloadinfomenu($lid); 
+    echo '<div align="center">';
+	downloadinfomenu($lid);
+	echo '</div>'; 
 
     echo "<br><br>"._DOWNLOADRATINGDET."<br>"
     .""._TOTALVOTES." $totalvotesDB<br>"
@@ -2630,14 +2570,14 @@ function viewdownloaddetails($lid) {
 	}
     }
 
-    echo "<br><b>"._AUTHOR.":</b> $auth_name<br>"
+    echo "<br><div align=\"center\"><b>"._AUTHOR.":</b> $auth_name<br>"
 	."<b>"._VERSION.":</b> $version <b>"._FILESIZE.":</b> ".CoolSize($filesize)."</font><br><br>"
 	."[ <b><a href=\"modules.php?name=$module_name&amp;d_op=getit&amp;lid=$lid\">"._DOWNLOADNOW."</a></b> ";
 
     if ((empty($homepage)) OR ($homepage == "http://")) {
 	echo "]<br><br>";
     } else {
-	echo "| <a href=\"$homepage\" target=\"new\">"._HOMEPAGE."</a> ]<br><br>";
+	echo "| <a href=\"$homepage\" target=\"new\">"._HOMEPAGE."</a> ]</div><br><br>";
     }
 
     echo "<table align=\"center\" border=\"0\" cellspacing=\"0\" cellpadding=\"2\" width=\"455\">"
@@ -2651,7 +2591,7 @@ function viewdownloaddetails($lid) {
 	."<td rowspan=\"5\" width=\"200\">";
 
     if ($regvotes==0) {
-	echo "<center><font class=\"content\">"._NOREGUSERSVOTES."</font></center>";
+	echo "<div align=\"center\"><font class=\"content\">"._NOREGUSERSVOTES."</font></div>";
     } else {
        	echo "<table border=\"1\" width=\"200\">"
    	    ."<tr>"
@@ -2670,7 +2610,8 @@ function viewdownloaddetails($lid) {
 	    ."<td bgcolor=\"$bgcolor1\" valign=\"bottom\"><img border=\"0\" alt=\"$rvv[10] "._LVOTES." ($rvvpercent[10]% "._LTOTALVOTES.")\" src=\"images/blackpixel.gif\" width=\"15\" height=\"$rvvchartheight[10]\"></td>"
 	    ."</tr>"
 	    ."<tr><td colspan=\"10\" bgcolor=\"$bgcolor2\">"
-	    ."<table cellspacing=\"0\" cellpadding=\"0\" border=\"0\" width=\"200\"><tr>"
+	    
+		."<table cellspacing=\"0\" cellpadding=\"0\" border=\"0\" width=\"200\"><tr>"
 	    ."<td width=\"10%\" valign=\"bottom\" align=\"center\"><font class=\"content\">1</font></td>"
 	    ."<td width=\"10%\" valign=\"bottom\" align=\"center\"><font class=\"content\">2</font></td>"
 	    ."<td width=\"10%\" valign=\"bottom\" align=\"center\"><font class=\"content\">3</font></td>"
@@ -2697,7 +2638,7 @@ function viewdownloaddetails($lid) {
 	."<td rowspan=\"5\" width=\"200\">";
 
     if ($anonvotes==0) {
-	echo "<center><font class=\"content\">"._NOUNREGUSERSVOTES."</font></center>";
+	echo "<div align=\"center\"><font class=\"content\">"._NOUNREGUSERSVOTES."</font></div>";
     } else {
         echo "<table border=\"1\" width=\"200\">"
    	    ."<tr>"
@@ -2716,7 +2657,8 @@ function viewdownloaddetails($lid) {
 	    ."<td bgcolor=\"$bgcolor1\" valign=\"bottom\"><img border=\"0\" alt=\"$avv[10] "._LVOTES." ($avvpercent[10]% "._LTOTALVOTES.")\" src=\"images/blackpixel.gif\" width=\"15\" height=\"$avvchartheight[10]\"></td>"
 	    ."</tr>"
 	    ."<tr><td colspan=\"10\" bgcolor=\"$bgcolor2\">"
-	    ."<table cellspacing=\"0\" cellpadding=\"0\" border=\"0\" width=\"200\"><tr>"
+	    
+		."<table cellspacing=\"0\" cellpadding=\"0\" border=\"0\" width=\"200\"><tr>"
 	    ."<td width=\"10%\" valign=\"bottom\" align=\"center\"><font class=\"content\">1</font></td>"
 	    ."<td width=\"10%\" valign=\"bottom\" align=\"center\"><font class=\"content\">2</font></td>"
 	    ."<td width=\"10%\" valign=\"bottom\" align=\"center\"><font class=\"content\">3</font></td>"
@@ -2747,7 +2689,7 @@ function viewdownloaddetails($lid) {
 
     	if ($outsidevotes==0) {
 
-	    echo "<center><font class=\"content\">"._NOOUTSIDEVOTES."</font></center>";
+	    echo "<div align=\"center\"><font class=\"content\">"._NOOUTSIDEVOTES."</font></div>";
 
 	} else {
 
@@ -2768,7 +2710,8 @@ function viewdownloaddetails($lid) {
 	  	."<td bgcolor=\"$bgcolor1\" valign=\"bottom\"><img border=\"0\" alt=\"$ovv[10] "._LVOTES." ($ovvpercent[10]% "._LTOTALVOTES.")\" src=\"images/blackpixel.gif\" width=\"15\" height=\"$ovvchartheight[10]\"></td>"
 	  	."</tr>"
 	  	."<tr><td colspan=\"10\" bgcolor=\"$bgcolor2\">"
-	  	."<table cellspacing=\"0\" cellpadding=\"0\" border=\"0\" width=\"200\"><tr>"
+	  	
+		."<table cellspacing=\"0\" cellpadding=\"0\" border=\"0\" width=\"200\"><tr>"
 	  	."<td width=\"10%\" valign=\"bottom\" align=\"center\"><font class=\"content\">1</font></td>"
 	  	."<td width=\"10%\" valign=\"bottom\" align=\"center\"><font class=\"content\">2</font></td>"
 	  	."<td width=\"10%\" valign=\"bottom\" align=\"center\"><font class=\"content\">3</font></td>"
@@ -2789,11 +2732,11 @@ function viewdownloaddetails($lid) {
 	    ."<tr><td bgcolor=\"$bgcolor2\"><font class=\"content\">"._LOWRATING.": $bottomoutside</font></td></tr>"
 	    ."<tr><td bgcolor=\"$bgcolor1\"><font class=\"content\">&nbsp;</font></td></tr>";
 	}
-    echo "</table><br><br><center>";
+    echo "</table><br><br>";
 
-    downloadfooter($lid);
-
-    echo "</center>";
+    echo '<div align="center">';
+	downloadfooter($lid);
+    echo '</div>';
 
     CloseTable();
 
@@ -3391,7 +3334,6 @@ function completevotefooter($lid, $ratinguser) {
     $ttitle = filter($row['title'], "nohtml");
 
     $result = $db->sql_query("SELECT url FROM ".$prefix."_downloads_downloads WHERE lid='$lid'");
-
     list($url)=$db->sql_fetchrow($result);
 
     echo "<font class=\"content\">"._THANKSTOTAKETIME." $sitename. "._DLETSDECIDE."</font><br><br><br>";
