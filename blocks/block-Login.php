@@ -25,6 +25,8 @@ $maxran = 1000000;
 
 $random_num = mt_rand(0, $maxran);
 
+if(!isset($content)) { $content = ''; }
+
 $content .= "<div id='login'>";
 
 $content .= "<form onsubmit=\"this.submit.disabled='true'\" action=\"modules.php?name=Your_Account\" method=\"post\">";
@@ -48,7 +50,7 @@ if (extension_loaded('gd') AND ($gfx_chk == 2 OR $gfx_chk == 4 OR $gfx_chk == 5 
 } else {
 
     $content .= "<input type=\"hidden\" name=\"random_num\" value=\"$random_num\">";
-
+    if(!iseet($code)) { $code = ''; }
     $content .= "<input type=\"hidden\" name=\"gfx_check\" value=\"$code\">";
 
 }
