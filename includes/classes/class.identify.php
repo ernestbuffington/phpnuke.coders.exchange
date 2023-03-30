@@ -249,7 +249,7 @@ class identify {
             return false;
         }
 
-        $data = ['ua' => $ua, 'os' => $os, 'engine' => empty($engine) ? $ua : $engine, 'ext' => $extra, 'version' => $version];
+        $data = ['ua'        => $ua, 'os'        => $os, 'engine'    => empty($engine) ? $ua : $engine, 'ext'       => $extra, 'version'   => $version];
     }
 
     function detect_bot($where = false) {
