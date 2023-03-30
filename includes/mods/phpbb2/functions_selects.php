@@ -85,7 +85,7 @@ function style_select($name="default_Theme")
 {
     if(!isset($extra))
 	$extra = '';
-	
+	include($_SERVER['DOCUMENT_ROOT']."/mainfile.php"); // had to add this as get_theme would not work!
 	$themes = get_themes('active');
     $select = "<select class=\"form-control\" name=\"" . $name . "\" id=\"" . $name . "\" $extra>";
     foreach($themes as $theme) {

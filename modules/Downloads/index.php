@@ -1,62 +1,38 @@
 <?php
 
-
-
 /************************************************************************/
-
 /* PHP-NUKE: Web Portal System                                          */
-
 /* ===========================                                          */
-
 /*                                                                      */
-
 /* Copyright (c) 2023 by Francisco Burzi                                */
-
 /* https://phpnuke.coders.exchange                                      */
-
 /*                                                                      */
-
 /* Based on Journey Links Hack                                          */
-
 /* Copyright (c) 2000 by James Knickelbein                              */
-
 /* Journey Milwaukee (http://www.journeymilwaukee.com)                  */
-
 /*                                                                      */
-
 /* This program is free software. You can redistribute it and/or modify */
-
 /* it under the terms of the GNU General Public License as published by */
-
 /* the Free Software Foundation; either version 2 of the License.       */
-
 /************************************************************************/
 
-
+/* Applied rules:
+ * AddDefaultValueForUndefinedVariableRector (https://github.com/vimeo/psalm/blob/29b70442b11e3e66113935a2ee22e165a70c74a4/docs/fixing_code.md#possiblyundefinedvariable)
+ * EregToPregMatchRector (http://php.net/reference.pcre.pattern.posix https://stackoverflow.com/a/17033826/1348344 https://docstore.mik.ua/orelly/webprog/pcook/ch13_02.htm)
+ */
 
 if (!defined('MODULE_FILE')) {
-
     die ("You can't access this file directly...");
-
 }
-
-
 
 if (isset($min)) {
-
     $min = intval($min);
-
 }
-
-
 
 if (isset($show)) {
 
     $show = intval($show);
-
 }
-
-
 
 require_once("mainfile.php");
 
@@ -70,10 +46,7 @@ include_secure("modules/$module_name/d_config.php");
 
 define('INDEX_FILE', true);
 
-
-
 // ALTERED BY PALADIN - 170102 - Start
-
 function getparent($parentid,$title) {
 
     global $prefix, $db;
@@ -81,9 +54,7 @@ function getparent($parentid,$title) {
     $parentid = intval($parentid);
 
     $sql = "SELECT cid, title, parentid FROM ".$prefix."_downloads_categories WHERE cid='$parentid'";
-
     $result = $db->sql_query($sql);
-
     $row = $db->sql_fetchrow($result);
 
   	$cid = intval($row[cid]);
@@ -99,14 +70,9 @@ function getparent($parentid,$title) {
     if ($pparentid!=0) {
 
 		$title=getparent($pparentid,$ptitle);
-
     }
-
-    return $title;
-
+   return $title;
 }
-
-
 
 function getparentlink($parentid,$title) {
 
@@ -115,13 +81,10 @@ function getparentlink($parentid,$title) {
     $parentid = intval($parentid);
 
     $sql = "SELECT cid, title, parentid FROM ".$prefix."_downloads_categories WHERE cid='$parentid'";
-
     $result = $db->sql_query($sql);
 
     $row = $db->sql_fetchrow($result);
-
     $cid = intval($row['cid']);
-
   	$ptitle = filter($row['title'], "nohtml");
 
   	$pparentid = intval($row['parentid']);
@@ -131,17 +94,11 @@ function getparentlink($parentid,$title) {
     if ($pparentid!=0) {
 
     	$title=getparentlink($pparentid,$ptitle);
-
     }
-
     return $title;
-
 }
 
 // ALTERED BY PALADIN - 170102 - End
-
-
-
 function menu($maindownload) {
 
     global $prefix, $user_adddownload, $module_name, $query;
@@ -183,65 +140,44 @@ function menu($maindownload) {
     }
 
     echo "<a href=\"modules.php?name=$module_name&amp;d_op=NewDownloads\">"._NEW."</a>"
-
 	." | <a href=\"modules.php?name=$module_name&amp;d_op=MostPopular\">"._POPULAR."</a>"
-
 	." | <a href=\"modules.php?name=$module_name&amp;d_op=TopRated\">"._TOPRATED."</a> ]"
-
 	."</font></center>";
 
     CloseTable();
-
 }
-
-
 
 function SearchForm() {
 
     global $module_name;
 
     echo "<form action=\"modules.php?name=$module_name\" method=\"post\">"
-
 	."<table border=\"0\" cellspacing=\"0\" cellpadding=\"0\" align=\"center\">"
-
 	."<tr><td><font class=\"content\"><input type=\"hidden\" name=\"d_op\" value=\"search\"><input type=\"text\" size=\"25\" name=\"query\"> <input type=\"submit\" value=\""._SEARCH."\"></td></tr>"
-
 	."</table>"
-
 	."</form>";
-
 }
-
-
 
 function downloadinfomenu($lid) {
 
     global $module_name, $user;
 
     echo "<br><font class=\"content\">[ "
-
 	."<a href=\"modules.php?name=$module_name&amp;d_op=viewdownloadcomments&amp;lid=$lid\">"._DOWNLOADCOMMENTS."</a>"
-
 	." | <a href=\"modules.php?name=$module_name&amp;d_op=viewdownloaddetails&amp;lid=$lid\">"._ADDITIONALDET."</a>"
-
 	." | <a href=\"modules.php?name=$module_name&amp;d_op=viewdownloadeditorial&amp;lid=$lid\">"._EDITORREVIEW."</a>"
-
 	." | <a href=\"modules.php?name=$module_name&amp;d_op=modifydownloadrequest&amp;lid=$lid\">"._MODIFY."</a>";
 
     if (is_user($user)) {
-
 	echo " | <a href=\"modules.php?name=$module_name&amp;d_op=brokendownload&amp;lid=$lid\">"._REPORTBROKEN."</a>";
-
     }
 
     echo " ]</font>";
-
 }
-
-
 
 function index() {
 
+    $dum = null;
     global $prefix, $db, $show_links_num, $module_name;
 
     include("header.php");
@@ -255,7 +191,6 @@ function index() {
     OpenTable();
 
     echo "<center><font class=\"title\"><b>"._DOWNLOADSMAINCAT."</b></font></center><br>";
-
     echo "<table border=\"0\" cellspacing=\"10\" cellpadding=\"0\" align=\"center\"><tr>";
 
     $sql = "SELECT cid, title, cdescription FROM ".$prefix."_downloads_categories WHERE parentid='0' ORDER BY title";
@@ -267,7 +202,6 @@ function index() {
     while ($row = $db->sql_fetchrow($result)) {
 
 	$cid = intval($row['cid']);
-
 	$title = filter($row['title'], "nohtml");
 
 	$cdescription = filter($row['cdescription']);
@@ -275,7 +209,6 @@ function index() {
 	if ($show_links_num == 1) {
 
 	    $cnumrows = $db->sql_numrows($db->sql_query("SELECT * FROM ".$prefix."_downloads_downloads WHERE cid='$cid'"));
-
 	    $cnumm = "($cnumrows)";
 
 	} else {
@@ -313,9 +246,7 @@ function index() {
 		$stitle = filter($row2['title'], "nohtml");
 
    	    if ($space>0) {
-
 			echo ",&nbsp;";
-
 	    }
 
         if ($show_links_num == 1) {
@@ -329,7 +260,6 @@ function index() {
 			$cnumrows2 = "";
 
 	    }
-
 	    echo "<font class=\"content\"><a href=\"modules.php?name=$module_name&amp;d_op=viewdownload&amp;cid=$cid\">$stitle</a>$cnum</font>";
 
 	    $space++;
@@ -339,9 +269,7 @@ function index() {
 	if ($count<1) {
 
 	    echo "</td><td>&nbsp;&nbsp;&nbsp;&nbsp;</td>";
-
 	    $dum = 1;
-
 	}
 
 	$count++;
@@ -351,7 +279,6 @@ function index() {
 	    echo "</td></tr><tr>";
 
 	    $count = 0;
-
 	    $dum = 0;
 
 	}
@@ -369,7 +296,6 @@ function index() {
     }
 
     $numrows = $db->sql_numrows($db->sql_query("SELECT * FROM ".$prefix."_downloads_downloads"));
-
     $catnum = $db->sql_numrows($db->sql_query("SELECT * FROM ".$prefix."_downloads_categories"));
 
     echo "<center><font class=\"content\">"._THEREARE." <b>$numrows</b> "._DOWNLOADS." "._AND." <b>$catnum</b> "._CATEGORIES." "._INDB."</font></center>";
@@ -377,10 +303,7 @@ function index() {
     CloseTable();
 
     include("footer.php");
-
 }
-
-
 
 function AddDownload() {
 
@@ -401,23 +324,16 @@ function AddDownload() {
     if (is_user($user) || $downloads_anonadddownloadlock != 1) {
 
     	$message = "<b>"._INSTRUCTIONS.":</b><br>"
-
 	    	."<strong><big>&middot;</big></strong> "._DSUBMITONCE."<br>"
-
 	    	."<strong><big>&middot;</big></strong> "._DPOSTPENDING."<br>"
-
 	    	."<strong><big>&middot;</big></strong> "._USERANDIP."<br>";
 
 	    info_box("caution", $message);
 
 	    echo "<br><br><table width=\"100%\" border=\"0\" cellspacing=\"3\">"
-
     		."<tr><td nowrap><form method=\"post\" action=\"modules.php?name=$module_name&amp;d_op=Add\">"
-
     	    ."<b>"._DOWNLOADNAME.":</b></td><td><input type=\"text\" name=\"title\" size=\"40\" maxlength=\"100\"></td></tr>"
-
     	    ."<tr><td nowrap><b>"._FILEURL.":</b></td><td><input type=\"text\" name=\"url\" size=\"40\" maxlength=\"100\" value=\"http://\"></td></tr>"
-
     		."<tr><td nowrap><b>"._CATEGORY.":</b></td><td><select name=\"cat\">";
 
     	$sql = "SELECT cid, title, parentid FROM ".$prefix."_downloads_categories ORDER BY parentid,title";
@@ -427,9 +343,7 @@ function AddDownload() {
     	while ($row = $db->sql_fetchrow($result)) {
 
 			$cid2 = intval($row['cid']);
-
 			$ctitle2 = filter($row['title'], "nohtml");
-
 			$parentid2 = intval($row['parentid']);
 
     	    if ($parentid2!=0) $ctitle2=getparent($parentid2,$ctitle2);
@@ -439,61 +353,39 @@ function AddDownload() {
     	}
 
     	echo "</select></td></tr>"
-
     	    ."<tr><td nowrap><b>"._DESCRIPTION.":</b></td><td><textarea name=\"description\" cols=\"60\" rows=\"10\"></textarea></td></tr>"
-
     	    ."<tr><td nowrap><b>"._AUTHORNAME.":</b></td><td><input type=\"text\" name=\"auth_name\" size=\"30\" maxlength=\"60\"></td></tr>"
-
     	    ."<tr><td nowrap><b>"._AUTHOREMAIL.":</b></td><td><input type=\"text\" name=\"email\" size=\"30\" maxlength=\"60\"></td></tr>"
-
 	    	."<tr><td nowrap><b>"._FILESIZE.":</b></td><td><input type=\"text\" name=\"filesize\" size=\"12\" maxlength=\"11\"> ("._INBYTES.")</td></tr>"
-
 	    	."<tr><td nowrap><b>"._VERSION.":</b></td><td><input type=\"text\" name=\"version\" size=\"11\" maxlength=\"10\"></td></tr>"
-
     	    ."<tr><td nowrap><b>"._HOMEPAGE.":</b></td><td><input type=\"text\" name=\"homepage\" size=\"40\" maxlength=\"200\" value=\"http://\"></td></tr>"
-
 	    	."<tr><td>&nbsp;</td><td><input type=\"hidden\" name=\"d_op\" value=\"Add\">"
-
     	    ."<input type=\"submit\" value=\""._ADDTHISFILE."\"> "._GOBACK.""
-
     	    ."</form></td></tr></table>";
 
     } else {
 
     	echo "<center>"._DOWNLOADSNOTUSER1."<br>"
-
 	    	.""._DOWNLOADSNOTUSER2."<br><br>"
-
     	    .""._DOWNLOADSNOTUSER3."<br>"
-
     	    .""._DOWNLOADSNOTUSER4."<br>"
-
     	    .""._DOWNLOADSNOTUSER5."<br>"
-
     	    .""._DOWNLOADSNOTUSER6."<br>"
-
     	    .""._DOWNLOADSNOTUSER7."<br><br>"
-
     	    .""._DOWNLOADSNOTUSER8."";
-
     }
-
     CloseTable();
 
     include("footer.php");
-
 }
-
-
 
 function Add($title, $url, $auth_name, $cat, $description, $email, $filesize, $version, $homepage) {
 
+    $submitter = null;
     global $prefix, $db, $user;
 
     $sql = "SELECT url FROM ".$prefix."_downloads_downloads WHERE url='$url'";
-
     $result = $db->sql_query($sql);
-
     $numrows = $db->sql_numrows($result);
 
     if ($numrows>0) {
@@ -588,7 +480,7 @@ function Add($title, $url, $auth_name, $cat, $description, $email, $filesize, $v
 
 	echo "<center><b>"._DOWNLOADNODESC."</b><br><br>"
 
-	    .""._GOBACK."";
+    .""._GOBACK."";
 
 	CloseTable();
 
@@ -605,11 +497,8 @@ function Add($title, $url, $auth_name, $cat, $description, $email, $filesize, $v
     }
 
     $title = filter($title, "nohtml", 1);
-
     $url = filter($url, "nohtml", 1);
-
     $description = filter($description, "", 1);
-
     $auth_name = filter($auth_name, "nohtml", 1);
 
     if (!empty($email)) { 
@@ -618,12 +507,9 @@ function Add($title, $url, $auth_name, $cat, $description, $email, $filesize, $v
 
     }
 
-    $filesize = ereg_replace("\.","",$filesize);
-
-    $filesize = ereg_replace("\,","",$filesize);
-
+    $filesize = preg_replace('#\.#m',"",$filesize);
+    $filesize = preg_replace('#,#m',"",$filesize);
     $cat[0] = intval($cat[0]);
-
     $cat[1] = intval($cat[1]);
 
     $num_new = $db->sql_numrows($db->sql_query("SELECT * FROM ".$prefix."_downloads_newdownload WHERE title='$title' OR url='$url' OR description='$description'"));
@@ -653,12 +539,8 @@ function Add($title, $url, $auth_name, $cat, $description, $email, $filesize, $v
     CloseTable();
 
     include("footer.php");
-
     }
-
 }
-
-
 
 function NewDownloads($newdownloadshowdays) {
 
@@ -717,13 +599,10 @@ function NewDownloads($newdownloadshowdays) {
     }
 
     echo "<center><b>"._TOTALNEWDOWNLOADS.":</b> "._LASTWEEK." - $allweekdownloads \ "._LAST30DAYS." - $allmonthdownloads<br>"
-
 	.""._SHOW.": <a href=\"modules.php?name=$module_name&amp;d_op=NewDownloads&amp;newdownloadshowdays=7\">"._1WEEK."</a> - <a href=\"modules.php?name=$module_name&amp;d_op=NewDownloads&amp;newdownloadshowdays=14\">"._2WEEKS."</a> - <a href=\"modules.php?name=$module_name&amp;d_op=NewDownloads&amp;newdownloadshowdays=30\">"._30DAYS."</a>"
-
 	."</center><br>";
 
     /* List Last VARIABLE Days of Downloads */
-
     if (intval($newdownloadshowdays) <= 0) { $newdownloadshowdays = 7; }
 
     echo "<br><center><b>"._DTOTALFORLAST." $newdownloadshowdays "._DAYS.":</b><br><br>";
@@ -761,13 +640,11 @@ function NewDownloads($newdownloadshowdays) {
     CloseTable();
 
     include("footer.php");
-
 }
-
-
 
 function NewDownloadsDate($selectdate) {
 
+    $mainvotedecimal = null;
     global $prefix, $db, $module_name, $admin, $user, $admin_file, $datetime, $transfertitle, $locale;
 
     $dateDB = (date("d-M-Y", $selectdate));
@@ -787,7 +664,6 @@ function NewDownloadsDate($selectdate) {
     $totaldownloads = $db->sql_numrows($db->sql_query("SELECT * FROM ".$prefix."_downloads_downloads WHERE date LIKE '%$newdownloadDB%'"));
 
     echo "<font class=\"option\"><b>$dateView - $totaldownloads "._NEWDOWNLOADS."</b></font>"
-
 	."<table width=\"100%\" cellspacing=\"0\" cellpadding=\"10\" border=\"0\"><tr><td><font class=\"content\">";
 
     $sql = "SELECT lid, cid, title, description, date, hits, downloadratingsummary, totalvotes, totalcomments, filesize, version, homepage FROM ".$prefix."_downloads_downloads WHERE date LIKE '%$newdownloadDB%' ORDER BY title ASC";
@@ -846,7 +722,7 @@ function NewDownloadsDate($selectdate) {
 
 	/* INSERT code for *editor review* here */
 
-	ereg ("([0-9]{4})-([0-9]{1,2})-([0-9]{1,2}) ([0-9]{1,2}):([0-9]{1,2}):([0-9]{1,2})", $time, $datetime);
+	preg_match ('#([0-9]{4})\-([0-9]{1,2})\-([0-9]{1,2}) ([0-9]{1,2}):([0-9]{1,2}):([0-9]{1,2})#m', $time, $datetime);
 
 	$datetime = strftime(""._LINKSDATESTRING."", mktime($datetime[4],$datetime[5],$datetime[6],$datetime[2],$datetime[3],$datetime[1]));
 
@@ -859,7 +735,6 @@ function NewDownloadsDate($selectdate) {
         $transfertitle = str_replace (" ", "_", $title);
 
         /* voting & comments stats */
-
         if ($totalvotes == 1) {
 
 	    $votestring = _VOTE;
@@ -887,17 +762,13 @@ function NewDownloadsDate($selectdate) {
 	}
 
 	echo "<a href=\"modules.php?name=$module_name&amp;d_op=ratedownload&amp;lid=$lid\">"._RATERESOURCE."</a>";
-
         if (is_user($user)) {
-
 	    echo " | <a href=\"modules.php?name=$module_name&amp;d_op=brokendownload&amp;lid=$lid\">"._REPORTBROKEN."</a>";
 
 	}
 
 	echo " | <a href=\"modules.php?name=$module_name&amp;d_op=viewdownloaddetails&amp;lid=$lid\">"._DETAILS."</a>";
-
         if ($totalcomments != 0) {
-
 	    echo " | <a href=\"modules.php?name=$module_name&amp;d_op=viewdownloadcomments&amp;lid=$lid\">"._SCOMMENTS." ($totalcomments)</a>";
 
 	}
@@ -917,23 +788,22 @@ function NewDownloadsDate($selectdate) {
 	$ctitle = getparent($cid,$ctitle);
 
 	echo ""._CATEGORY.": $ctitle";
-
 	echo "<br><br>";
 
     }
 
     echo "</font></td></tr></table>";
-
     CloseTable();
 
     include("footer.php");
-
 }
-
-
 
 function TopRated($ratenum, $ratetype) {
 
+    $topdownloadspercentrigger = null;
+    $topdownloads = null;
+    $downloadvotemin = null;
+    $mainvotedecimal = null;
     global $prefix, $db, $admin, $module_name, $user, $admin_file, $datetime, $transfertitle, $locale;
 
     include("header.php");
@@ -989,20 +859,13 @@ function TopRated($ratenum, $ratetype) {
     }
 
     echo "</td></tr>"
-
 	."<tr><td><center>"._NOTE." $downloadvotemin "._TVOTESREQ."<br>"
-
 	.""._SHOWTOP.":  [ <a href=\"modules.php?name=$module_name&amp;d_op=TopRated&amp;ratenum=10&amp;ratetype=num\">10</a> - "
-
 	."<a href=\"modules.php?name=$module_name&amp;d_op=TopRated&amp;ratenum=25&amp;ratetype=num\">25</a> - "
-
-    	."<a href=\"modules.php?name=$module_name&amp;d_op=TopRated&amp;ratenum=50&amp;ratetype=num\">50</a> | "
-
-    	."<a href=\"modules.php?name=$module_name&amp;d_op=TopRated&amp;ratenum=1&amp;ratetype=percent\">1%</a> - "
-
-    	."<a href=\"modules.php?name=$module_name&amp;d_op=TopRated&amp;ratenum=5&amp;ratetype=percent\">5%</a> - "
-
-    	."<a href=\"modules.php?name=$module_name&amp;d_op=TopRated&amp;ratenum=10&amp;ratetype=percent\">10%</a> ]</center><br><br></td></tr>";
+   	."<a href=\"modules.php?name=$module_name&amp;d_op=TopRated&amp;ratenum=50&amp;ratetype=num\">50</a> | "
+   	."<a href=\"modules.php?name=$module_name&amp;d_op=TopRated&amp;ratenum=1&amp;ratetype=percent\">1%</a> - "
+   	."<a href=\"modules.php?name=$module_name&amp;d_op=TopRated&amp;ratenum=5&amp;ratetype=percent\">5%</a> - "
+   	."<a href=\"modules.php?name=$module_name&amp;d_op=TopRated&amp;ratenum=10&amp;ratetype=percent\">10%</a> ]</center><br><br></td></tr>";
 
     $sql = "SELECT lid, cid, title, description, date, hits, downloadratingsummary, totalvotes, totalcomments, filesize, version, homepage FROM ".$prefix."_downloads_downloads WHERE downloadratingsummary != '0' AND totalvotes >= '$downloadvotemin' ORDER BY downloadratingsummary DESC LIMIT 0,$topdownloads";
 
@@ -1062,7 +925,7 @@ function TopRated($ratenum, $ratetype) {
 
 	setlocale (LC_TIME, $locale);
 
-	ereg ("([0-9]{4})-([0-9]{1,2})-([0-9]{1,2}) ([0-9]{1,2}):([0-9]{1,2}):([0-9]{1,2})", $time, $datetime);
+	preg_match ('#([0-9]{4})\-([0-9]{1,2})\-([0-9]{1,2}) ([0-9]{1,2}):([0-9]{1,2}):([0-9]{1,2})#m', $time, $datetime);
 
 	$datetime = strftime(""._LINKSDATESTRING."", mktime($datetime[4],$datetime[5],$datetime[6],$datetime[2],$datetime[3],$datetime[1]));
 
@@ -1150,6 +1013,9 @@ function TopRated($ratenum, $ratetype) {
 
 function MostPopular($ratenum, $ratetype) {
 
+    $mostpopdownloadspercentrigger = null;
+    $mostpopdownloads = null;
+    $mainvotedecimal = null;
     global $prefix, $db, $admin, $module_name, $user, $admin_file, $datetime, $transfertitle, $locale;
 
     include("header.php");
@@ -1203,15 +1069,10 @@ function MostPopular($ratenum, $ratetype) {
     }
 
     echo "<tr><td><center>"._SHOWTOP.": [ <a href=\"modules.php?name=$module_name&amp;d_op=MostPopular&amp;ratenum=10&amp;ratetype=num\">10</a> - "
-
 	."<a href=\"modules.php?name=$module_name&amp;d_op=MostPopular&amp;ratenum=25&amp;ratetype=num\">25</a> - "
-
     	."<a href=\"modules.php?name=$module_name&amp;d_op=MostPopular&amp;ratenum=50&amp;ratetype=num\">50</a> | "
-
     	."<a href=\"modules.php?name=$module_name&amp;d_op=MostPopular&amp;ratenum=1&amp;ratetype=percent\">1%</a> - "
-
     	."<a href=\"modules.php?name=$module_name&amp;d_op=MostPopular&amp;ratenum=5&amp;ratetype=percent\">5%</a> - "
-
     	."<a href=\"modules.php?name=$module_name&amp;d_op=MostPopular&amp;ratenum=10&amp;ratetype=percent\">10%</a> ]</center><br><br></td></tr>";
 
     $result = $db->sql_query("SELECT lid, cid, title, description, date, hits, downloadratingsummary, totalvotes, totalcomments, filesize, version, homepage FROM ".$prefix."_downloads_downloads order by hits DESC limit 0,$mostpopdownloads ");
@@ -1262,7 +1123,7 @@ function MostPopular($ratenum, $ratetype) {
 
 	setlocale (LC_TIME, $locale);
 
-	ereg ("([0-9]{4})-([0-9]{1,2})-([0-9]{1,2}) ([0-9]{1,2}):([0-9]{1,2}):([0-9]{1,2})", $time, $datetime);
+	preg_match ('#([0-9]{4})\-([0-9]{1,2})\-([0-9]{1,2}) ([0-9]{1,2}):([0-9]{1,2}):([0-9]{1,2})#m', $time, $datetime);
 
 	$datetime = strftime(""._LINKSDATESTRING."", mktime($datetime[4],$datetime[5],$datetime[6],$datetime[2],$datetime[3],$datetime[1]));
 
@@ -1564,7 +1425,7 @@ function viewdownload($cid, $min, $orderby, $show) {
 
 	setlocale (LC_TIME, $locale);
 
-	ereg ("([0-9]{4})-([0-9]{1,2})-([0-9]{1,2}) ([0-9]{1,2}):([0-9]{1,2}):([0-9]{1,2})", $time, $datetime);
+	preg_match ('#([0-9]{4})\-([0-9]{1,2})\-([0-9]{1,2}) ([0-9]{1,2}):([0-9]{1,2}):([0-9]{1,2})#m', $time, $datetime);
 
 	$datetime = strftime(""._LINKSDATESTRING."", mktime($datetime[4],$datetime[5],$datetime[6],$datetime[2],$datetime[3],$datetime[1]));
 
@@ -1720,6 +1581,11 @@ function viewdownload($cid, $min, $orderby, $show) {
 
 function viewsdownload($sid, $min, $orderby, $show) {
 
+    $perpage = null;
+    $cid = null;
+    $cdescription = null;
+    $dum = null;
+    $mainvotedecimal = null;
     global $prefix, $db, $admin, $module_name, $user, $admin_file, $datetime, $transfertitle, $locale;
 
     include("modules/$module_name/d_config.php");
@@ -1932,7 +1798,7 @@ function viewsdownload($sid, $min, $orderby, $show) {
 
 	setlocale (LC_TIME, $locale);
 
-	ereg ("([0-9]{4})-([0-9]{1,2})-([0-9]{1,2}) ([0-9]{1,2}):([0-9]{1,2}):([0-9]{1,2})", $time, $datetime);
+	preg_match ('#([0-9]{4})\-([0-9]{1,2})\-([0-9]{1,2}) ([0-9]{1,2}):([0-9]{1,2}):([0-9]{1,2})#m', $time, $datetime);
 
 	$datetime = strftime(""._LINKSDATESTRING."", mktime($datetime[4],$datetime[5],$datetime[6],$datetime[2],$datetime[3],$datetime[1]));
 
@@ -2094,7 +1960,7 @@ function newdownloadgraphic($datetime, $time) {
 
     setlocale (LC_TIME, $locale);
 
-    ereg ("([0-9]{4})-([0-9]{1,2})-([0-9]{1,2}) ([0-9]{1,2}):([0-9]{1,2}):([0-9]{1,2})", $time, $datetime);
+    preg_match ('#([0-9]{4})\-([0-9]{1,2})\-([0-9]{1,2}) ([0-9]{1,2}):([0-9]{1,2}):([0-9]{1,2})#m', $time, $datetime);
 
     $datetime = strftime(""._LINKSDATESTRING."", mktime($datetime[4],$datetime[5],$datetime[6],$datetime[2],$datetime[3],$datetime[1]));
 
@@ -2154,7 +2020,7 @@ function categorynewdownloadgraphic($cat) {
 
     setlocale (LC_TIME, $locale);
 
-    ereg ("([0-9]{4})-([0-9]{1,2})-([0-9]{1,2}) ([0-9]{1,2}):([0-9]{1,2}):([0-9]{1,2})", $time, $datetime);
+    preg_match ('#([0-9]{4})\-([0-9]{1,2})\-([0-9]{1,2}) ([0-9]{1,2}):([0-9]{1,2}):([0-9]{1,2})#m', $time, $datetime);
 
     $datetime = strftime(""._LINKSDATESTRING."", mktime($datetime[4],$datetime[5],$datetime[6],$datetime[2],$datetime[3],$datetime[1]));
 
@@ -2202,6 +2068,7 @@ function categorynewdownloadgraphic($cat) {
 
 function popgraphic($hits) {
 
+    $popular = null;
     global $module_name;
 
     include("modules/$module_name/d_config.php");
@@ -2250,7 +2117,8 @@ function convertorderbyin($orderby) {
 
 function convertorderbytrans($orderby) {
 
-	if ($orderby != "hits ASC" AND $orderby != "hits DESC" AND $orderby != "title ASC" AND $orderby != "title DESC" AND $orderby != "date ASC" AND $orderby != "date DESC" AND $orderby != "downloadratingsummary ASC" AND $orderby != "downloadratingsummary DESC") {
+	$orderbyTrans = null;
+ if ($orderby != "hits ASC" AND $orderby != "hits DESC" AND $orderby != "title ASC" AND $orderby != "title DESC" AND $orderby != "date ASC" AND $orderby != "date DESC" AND $orderby != "downloadratingsummary ASC" AND $orderby != "downloadratingsummary DESC") {
 
 	    Header("Location: index.php");
 
@@ -2334,6 +2202,9 @@ function getit($lid) {
 
 function search($query, $min, $orderby, $show) {
 
+    $downloadsresults = null;
+    $mainvotedecimal = null;
+    $perpage = null;
     global $prefix, $db, $admin, $bgcolor2, $module_name, $admin_file, $datetime, $transfertitle, $locale;
 
     include("modules/$module_name/d_config.php");
@@ -2426,7 +2297,7 @@ function search($query, $min, $orderby, $show) {
 
     	        if ($parentid3>0) $title3 = getparent($parentid3,$title3);
 
-    	        $title3 = ereg_replace($query, "<b>$query</b>", $title3);
+    	        $title3 = preg_replace('#' . preg_quote($query, '#') . '#m', "<b>$query</b>", $title3);
 
     	        echo "<strong><big>&middot;</big></strong>&nbsp;<a href=\"modules.php?name=$module_name&amp;d_op=viewdownload&amp;cid=$cid\">$title3</a> ($numrows)<br>";
 
@@ -2472,7 +2343,7 @@ function search($query, $min, $orderby, $show) {
 
 			$transfertitle = str_replace (" ", "_", $title);
 
-			$title = ereg_replace($query1, "<b>$query1</b>", $title);
+			$title = preg_replace('#' . preg_quote($query1, '#') . '#m', "<b>$query1</b>", $title);
 
     		global $prefix, $db, $admin;
 
@@ -2496,13 +2367,13 @@ function search($query, $min, $orderby, $show) {
 
 		echo "<br>";	    
 
-		$description = ereg_replace($the_query, "<b>$the_query</b>", $description);
+		$description = preg_replace('#' . preg_quote($the_query, '#') . '#m', "<b>$the_query</b>", $description);
 
 		echo "<b>"._DESCRIPTION.":</b> $description<br>";
 
 		setlocale (LC_TIME, $locale);
 
-		ereg ("([0-9]{4})-([0-9]{1,2})-([0-9]{1,2}) ([0-9]{1,2}):([0-9]{1,2}):([0-9]{1,2})", $time, $datetime);
+		preg_match ('#([0-9]{4})\-([0-9]{1,2})\-([0-9]{1,2}) ([0-9]{1,2}):([0-9]{1,2}):([0-9]{1,2})#m', $time, $datetime);
 
 		$datetime = strftime(""._LINKSDATESTRING."", mktime($datetime[4],$datetime[5],$datetime[6],$datetime[2],$datetime[3],$datetime[1]));
 
@@ -2686,6 +2557,7 @@ function search($query, $min, $orderby, $show) {
 
 function viewdownloadeditorial($lid) {
 
+    $editorialtime = [];
     global $prefix, $db, $admin, $module_name;
 
     include("header.php");
@@ -2706,7 +2578,7 @@ function viewdownloadeditorial($lid) {
 
     $ttitle = htmlentities($ttitle);
 
-    $transfertitle = ereg_replace ("_", " ", $ttitle);
+    $transfertitle = preg_replace ('#_#m', " ", $ttitle);
 
     $displaytitle = stripslashes($transfertitle);
 
@@ -2726,7 +2598,7 @@ function viewdownloadeditorial($lid) {
 
             $editorialtext = filter($editorialtext);
 
-    	    ereg ("([0-9]{4})-([0-9]{1,2})-([0-9]{1,2}) ([0-9]{1,2}):([0-9]{1,2}):([0-9]{1,2})", $editorialtimestamp, $editorialtime);
+    	    preg_match ('#([0-9]{4})\-([0-9]{1,2})\-([0-9]{1,2}) ([0-9]{1,2}):([0-9]{1,2}):([0-9]{1,2})#m', $editorialtimestamp, $editorialtime);
 
 	    $editorialtime = strftime("%F",mktime($editorialtime[4],$editorialtime[5],$editorialtime[6],$editorialtime[2],$editorialtime[3],$editorialtime[1]));
 
@@ -2800,6 +2672,8 @@ function detecteditorial($lid, $img) {
 
 function viewdownloadcomments($lid) {
 
+    $ratingtime = [];
+    $nukeurl = null;
     global $prefix, $db, $admin, $bgcolor2, $module_name, $admin_file;
 
     include("header.php");
@@ -2822,7 +2696,7 @@ function viewdownloadcomments($lid) {
 
     $ttitle = htmlentities($ttitle);
 
-    $transfertitle = ereg_replace ("_", " ", $ttitle);
+    $transfertitle = preg_replace ('#_#m', " ", $ttitle);
 
     $displaytitle = stripslashes($transfertitle);
 
@@ -2844,7 +2718,7 @@ function viewdownloadcomments($lid) {
 
     	$ratingcomments = filter($ratingcomments);
 
-    	ereg ("([0-9]{4})-([0-9]{1,2})-([0-9]{1,2}) ([0-9]{1,2}):([0-9]{1,2}):([0-9]{1,2})", $ratingtimestamp, $ratingtime);
+    	preg_match ('#([0-9]{4})\-([0-9]{1,2})\-([0-9]{1,2}) ([0-9]{1,2}):([0-9]{1,2}):([0-9]{1,2})#m', $ratingtimestamp, $ratingtime);
 
 	$ratingtime = strftime("%F",mktime($ratingtime[4],$ratingtime[5],$ratingtime[6],$ratingtime[2],$ratingtime[3],$ratingtime[1]));
 
@@ -2940,6 +2814,11 @@ function viewdownloadcomments($lid) {
 
 function viewdownloaddetails($lid) {
 
+    $useoutsidevoting = null;
+    $detailvotedecimal = null;
+    $anonweight = null;
+    $outsideweight = null;
+    $ttitle = null;
     global $prefix, $db, $admin, $bgcolor1, $bgcolor2, $bgcolor3, $bgcolor4, $module_name, $anonymous;
 
     include("header.php");
@@ -3300,7 +3179,7 @@ function viewdownloaddetails($lid) {
 
     $ttitle = htmlentities($ttitle);
 
-    $transfertitle = ereg_replace ("_", " ", $ttitle);
+    $transfertitle = preg_replace ('#_#m', " ", $ttitle);
 
     $displaytitle = stripslashes($transfertitle);
 
@@ -3348,9 +3227,9 @@ function viewdownloaddetails($lid) {
 
 	} else {
 
-	    $email = ereg_replace("@"," <i>at</i> ",$email);
+	    $email = preg_replace('#@#m'," <i>at</i> ",$email);
 
-	    $email = ereg_replace("\."," <i>dot</i> ",$email);
+	    $email = preg_replace('#\.#m'," <i>dot</i> ",$email);
 
 	    $auth_name = "$auth_name ($email)";
 
@@ -3982,6 +3861,11 @@ function brokendownload($lid) {
 
 function brokendownloadS($lid, $modifysubmitter) {
 
+    $auth_name = null;
+    $email = null;
+    $filesize = null;
+    $version = null;
+    $homepage = null;
     global $prefix, $db, $user, $anonymous, $cookie, $module_name, $user;
 
     if (is_user($user)) {
@@ -4028,6 +3912,8 @@ function brokendownloadS($lid, $modifysubmitter) {
 
 function modifydownloadrequest($lid) {
 
+    $anonymous = null;
+    $blockunregmodify = null;
     global $prefix, $db, $user, $module_name;
 
     include("header.php");
@@ -4164,6 +4050,8 @@ function modifydownloadrequest($lid) {
 
 function modifydownloadrequestS($lid, $cat, $title, $url, $description, $modifysubmitter, $auth_name, $email, $filesize, $version, $homepage) {
 
+    $anonymous = null;
+    $blockunregmodify = null;
     global $prefix, $db, $user, $module_name;
 
     include("modules/$module_name/d_config.php");
@@ -4272,6 +4160,11 @@ function rateinfo($lid) {
 
 function addrating($ratinglid, $ratinguser, $rating, $ratinghost_name, $ratingcomments) {
 
+    $anonymous = null;
+    $anonwaitdays = null;
+    $outsidewaitdays = null;
+    $finalrating = null;
+    $truecomments = null;
     global $prefix, $db, $cookie, $user, $module_name;
 
     $passtest = "yes";
@@ -4532,7 +4425,7 @@ function completevotefooter($lid, $ratinguser) {
 
         list($title)=$db->sql_fetchrow($result);
 
-        $ttitle = ereg_replace (" ", "_", $title);
+        $ttitle = preg_replace ('# #m', "_", $title);
 
     }
 
@@ -4572,6 +4465,8 @@ function completevote($error) {
 
 function ratedownload($lid, $user) {
 
+    $db = null;
+    $anonymous = null;
     global $prefix, $cookie, $datetime, $module_name, $user_prefix;
 
     include("header.php");

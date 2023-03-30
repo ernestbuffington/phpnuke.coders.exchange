@@ -1,38 +1,25 @@
 <?php
 
-
-
 /************************************************************************/
-
 /* PHP-NUKE: Web Portal System                                          */
-
 /* ===========================                                          */
-
 /*                                                                      */
-
 /* Copyright (c) 2023 by Francisco Burzi                                */
-
 /* https://phpnuke.coders.exchange                                      */
-
 /*                                                                      */
-
 /* This program is free software. You can redistribute it and/or modify */
-
 /* it under the terms of the GNU General Public License as published by */
-
 /* the Free Software Foundation; either version 2 of the License.       */
-
 /************************************************************************/
 
-
-
+/* Applied rules:
+ * AddDefaultValueForUndefinedVariableRector (https://github.com/vimeo/psalm/blob/29b70442b11e3e66113935a2ee22e165a70c74a4/docs/fixing_code.md#possiblyundefinedvariable)
+ * EregToPregMatchRector (http://php.net/reference.pcre.pattern.posix https://stackoverflow.com/a/17033826/1348344 https://docstore.mik.ua/orelly/webprog/pcook/ch13_02.htm)
+ */
+ 
 if (!defined('ADMIN_FILE')) {
-
 	die ("Access Denied");
-
 }
-
-
 
 global $prefix, $db, $admin_file;
 
@@ -49,27 +36,15 @@ $auth_user = 0;
 for ($i=0; $i < sizeof($admins); $i++) {
 
 	if ($row2['name'] == "$admins[$i]" AND !empty($row['admins'])) {
-
 		$auth_user = 1;
-
 	}
-
 }
-
-
 
 if ($row2['radminsuper'] == 1 || $auth_user == 1) {
 
-
-
 	/*********************************************************/
-
 	/* Downloads Modified Web Downloads                      */
-
 	/*********************************************************/
-
-
-
 	function check_download($lid) {
 
 		global $prefix, $db, $admin_file;
@@ -111,12 +86,10 @@ if ($row2['radminsuper'] == 1 || $auth_user == 1) {
 		$homepage = filter($row['homepage'], "nohtml");
 
 		if ($submitter == "") {
-
 			$submitter = _NONE;
-
 		}
 
-		$homepage = ereg_replace("http://","",$homepage);
+		$homepage = preg_replace('#http:\/\/#m',"",$homepage);
 
 		$homepage2 = urlencode($homepage);
 
@@ -125,35 +98,21 @@ if ($row2['radminsuper'] == 1 || $auth_user == 1) {
 		echo "<table width='100%' border='0' align='center'><tr><td>";
 
 		echo "<form action=\"".$admin_file.".php\" method=\"post\">"
-
 			."<b>" . _DOWNLOADID . ":</td><td>$lid</b></td></tr>"
-
 			."<tr><td>" . _SUBMITTER . ":</td><td><b>$submitter</b></td></tr>"
-
 			."<tr><td>" . _DOWNLOADNAME . ":</td><td><input type=\"text\" name=\"title\" value=\"$title\" size=\"50\" maxlength=\"100\"></td></tr>"
-
 			."<tr><td>" . _FILEURL . ":</td><td><input type=\"text\" name=\"url\" value=\"$url\" size=\"50\" maxlength=\"100\">&nbsp;[ <a href=\"index.php?url=$url2\" target=\"_blank\">" . _CHECK . "</a> ]</td></tr>"
-
 			."<tr><td>" . _DESCRIPTION . ":</td><td><textarea name=\"description\" cols=\"70\" rows=\"15\">$description</textarea></td></tr>"
-
 			."<tr><td>" . _AUTHORNAME . ":</td><td><input type=\"text\" name=\"name\" size=\"20\" maxlength=\"100\" value=\"$name\"></td></tr>"
-
 			."<tr><td>" . _AUTHOREMAIL . ":</td><td><input type=\"text\" name=\"email\" size=\"20\" maxlength=\"100\" value=\"$email\"></td></tr>"
-
 			."<tr><td>" . _FILESIZE . ":</td><td><input type=\"text\" name=\"filesize\" size=\"12\" maxlength=\"11\" value=\"$filesize\"></td></tr>"
-
 			."<tr><td>" . _VERSION . ":</td><td><input type=\"text\" name=\"version\" size=\"11\" maxlength=\"10\" value=\"$version\"></td></tr>"
-
 			."<tr><td>" . _HOMEPAGE . ":</td><td><input type=\"text\" name=\"homepage\" size=\"30\" maxlength=\"200\" value=\"http://$homepage\"> [ <a href=\"index.php?url=http://$homepage2\">" . _VISIT . "</a> ]</td></tr>";
 
 		echo "<input type=\"hidden\" name=\"new\" value=\"1\">";
-
 		echo "<input type=\"hidden\" name=\"hits\" value=\"0\">";
-
 		echo "<input type=\"hidden\" name=\"lid\" value=\"$lid\">";
-
 		echo "<input type=\"hidden\" name=\"submitter\" value=\"$submitter\">";
-
 		echo "<tr><td>" . _CATEGORY . ":</td><td><select name=\"cat\">";
 
 		$result5 = $db->sql_query("SELECT cid, title, parentid from " . $prefix . "_downloads_categories order by title");
@@ -167,20 +126,14 @@ if ($row2['radminsuper'] == 1 || $auth_user == 1) {
 			$parentid2 = $row5['parentid'];
 
 			if ($cid2==$cid) {
-
 				$sel = "selected";
-
 			} else {
-
 				$sel = "";
-
 			}
 
 			if ($parentid2!=0) $ctitle2=getparent($parentid2,$ctitle2);
-
 				echo "<option value=\"$cid2\" $sel>$ctitle2</option>";
-
-		}
+		    }
 
 			echo "<input type=\"hidden\" name=\"submitter\" value=\"$submitter\">";
 
@@ -189,10 +142,7 @@ if ($row2['radminsuper'] == 1 || $auth_user == 1) {
 		CloseTable();
 
 		include("footer.php");
-
 	}
-
-
 
 	function getparent($parentid,$title) {
 
@@ -213,16 +163,10 @@ if ($row2['radminsuper'] == 1 || $auth_user == 1) {
 		elseif (!empty($ptitle)) $title=$ptitle."/".$title;
 
 		if ($pparentid!=0) {
-
 			$title=getparent($pparentid,$title);
-
 		}
-
 		return $title;
-
 	}
-
-
 
 	function downloads() {
 
@@ -237,13 +181,9 @@ if ($row2['radminsuper'] == 1 || $auth_user == 1) {
 		$ThemeSel = get_theme();
 
 		if (file_exists("themes/$ThemeSel/images/down-logo.gif")) {
-
 			echo "<center><a href=\"modules.php?name=Downloads\"><img src=\"themes/$ThemeSel/images/down-logo.gif\" border=\"0\" alt=\"\"></a><br><br>";
-
 		} else {
-
 			echo "<center><a href=\"modules.php?name=Downloads\"><img src=\"modules/Downloads/images/down-logo.gif\" border=\"0\" alt=\"\"></a><br><br>";
-
 		}
 
 		$result = $db->sql_query("SELECT * from " . $prefix . "_downloads_downloads");
@@ -251,15 +191,11 @@ if ($row2['radminsuper'] == 1 || $auth_user == 1) {
 		$numrows = $db->sql_numrows($result);
 
 		echo "<font class=\"content\">" . _THEREARE . " <b>$numrows</b> " . _DOWNLOADSINDB . "</font></center>";
-
 		CloseTable();
 
 		echo "<br>";
 
-
-
 		/* Temporarily 'homeless' downloads functions (to be revised in ".$admin_file.".php breakup) */
-
 		$result2 = $db->sql_query("SELECT * from " . $prefix . "_downloads_modrequest where brokendownload='1'");
 
 		$totalbrokendownloads = $db->sql_numrows($result2);
@@ -268,10 +204,7 @@ if ($row2['radminsuper'] == 1 || $auth_user == 1) {
 
 		$totalmodrequests = $db->sql_numrows($result3);
 
-
-
 		/* List Downloads waiting for validation */
-
 		$result4 = $db->sql_query("SELECT lid, title from " . $prefix . "_downloads_newdownload order by lid");
 
 		$numrows = $db->sql_numrows($result4);
@@ -299,79 +232,48 @@ if ($row2['radminsuper'] == 1 || $auth_user == 1) {
 			}
 
 			echo "</select>&nbsp;&nbsp;&nbsp;"
-
 				."<input type=\"hidden\" name=\"op\" value=\"check_download\">"
-
 				."<input type=\"submit\" value=" . _CHECK . "></form></center><br>";
 
 			CloseTable();
 
 			echo "<br>";
-
 		}
 
-
-
 		/* Add a New Main Category */
-
-
-
 		OpenTable();
-
 		echo "<center><font class=\"content\">[ <a href=\"".$admin_file.".php?op=DownloadsCleanVotes\">" . _CLEANDOWNLOADSDB . "</a> | "
-
 		."<a href=\"".$admin_file.".php?op=DownloadsListBrokenDownloads\">" . _BROKENDOWNLOADSREP . " ($totalbrokendownloads)</a> | "
-
 		."<a href=\"".$admin_file.".php?op=DownloadsListModRequests\">" . _DOWNLOADMODREQUEST . " ($totalmodrequests)</a> | "
-
 		."<a href=\"".$admin_file.".php?op=DownloadsDownloadCheck\">" . _VALIDATEDOWNLOADS . "</a> ]</font></center>";
-
 		CloseTable();
 
 		echo "<br>";
 
 		OpenTable();
-
 		echo "<form method=\"post\" action=\"".$admin_file.".php\">"
-
 		."<font class=\"content\"><b>" . _ADDMAINCATEGORY . "</b><br><br>"
-
 		."<table widht=\"100%\" bordr=\"0\">"
-
 		."<tr><td>" . _NAME . ":</td><td><input type=\"text\" name=\"title\" size=\"30\" maxlength=\"100\"></td></tr>"
-
 		."<tr><td>" . _DESCRIPTION . ":</td><td><textarea name=\"cdescription\" cols=\"70\" rows=\"15\"></textarea></td></tr>"
-
 		."<tr><td>&nbsp;</td><td><input type=\"hidden\" name=\"op\" value=\"DownloadsAddCat\">"
-
 		."<input type=\"submit\" value=\"" . _ADD . "\">"
-
 		."</td></tr></table>"
-
 		."</form>";
-
 		CloseTable();
 
 		echo "<br>";
-
-
 
 		// Add a New Sub-Category
-
 		$result6 = $db->sql_query("SELECT * from " . $prefix . "_downloads_categories");
-
 		$numrows = $db->sql_numrows($result6);
 
 		if ($numrows>0) {
 
 			OpenTable();
-
 			echo "<form method=\"post\" action=\"".$admin_file.".php\">"
-
 			."<font class=\"content\"><b>" . _ADDSUBCATEGORY . "</b></font><br><br>"
-
 			."<table widht=\"100%\" bordr=\"0\">"
-
 			."<tr><td>" . _NAME . ":</td><td><input type=\"text\" name=\"title\" size=\"30\" maxlength=\"100\">&nbsp;" . _IN . "&nbsp;";
 
 			$result7 = $db->sql_query("SELECT cid, title, parentid from " . $prefix . "_downloads_categories order by parentid,title");
@@ -389,19 +291,13 @@ if ($row2['radminsuper'] == 1 || $auth_user == 1) {
 				if ($parentid2!=0) $ctitle2=getparent($parentid2,$ctitle2);
 
 				echo "<option value=\"$cid2\">$ctitle2</option>";
-
 			}
 
 			echo "</select></td></tr>"
-
 			."<tr><td>" . _DESCRIPTION . ":</td><td><textarea name=\"cdescription\" cols=\"70\" rows=\"15\"></textarea></td></tr>"
-
 			."<tr><td>&nbsp;</td><td><input type=\"hidden\" name=\"op\" value=\"DownloadsAddSubCat\">"
-
 			."<input type=\"submit\" value=\"" . _ADD . "\"></td></tr></table>"
-
 			."</form>";
-
 			CloseTable();
 
 			echo "<br>";
@@ -410,26 +306,17 @@ if ($row2['radminsuper'] == 1 || $auth_user == 1) {
 
 		}
 
-
-
 		// Add a New Download to Database
-
 		$result8 = $db->sql_query("SELECT cid, title from " . $prefix . "_downloads_categories");
-
 		$numrows = $db->sql_numrows($result8);
 
 		if ($numrows>0) {
 
 			OpenTable();
-
 			echo "<form method=\"post\" action=\"".$admin_file.".php\">"
-
 			."<font class=\"content\"><b>" . _ADDNEWDOWNLOAD . "</b><br><br>"
-
 			."<table widht=\"100%\" bordr=\"0\">"
-
 			."<tr><td>" . _DOWNLOADNAME . ":</td><td><input type=\"text\" name=\"title\" size=\"50\" maxlength=\"100\"></td></tr>"
-
 			."<tr><td>" . _FILEURL . ":</td><td><input type=\"text\" name=\"url\" size=\"50\" maxlength=\"100\" value=\"http://\"></td></tr>";
 
 			$result9 = $db->sql_query("SELECT cid, title, parentid from " . $prefix . "_downloads_categories order by title");
@@ -451,31 +338,18 @@ if ($row2['radminsuper'] == 1 || $auth_user == 1) {
 			}
 
 			echo "</select></td></tr>"
-
-			."<tr><td>".ereg_replace(":", ":<br>",""._DESCRIPTION255."")."</td><td><textarea name=\"description\" cols=\"70\" rows=\"15\"></textarea></td></tr>"
-
+			."<tr><td>".preg_replace('#:#m', ":<br>",""._DESCRIPTION255."")."</td><td><textarea name=\"description\" cols=\"70\" rows=\"15\"></textarea></td></tr>"
 			."<tr><td>" . _AUTHORNAME . ":</td><td><input type=\"text\" name=\"name\" size=\"30\" maxlength=\"60\"></td></tr>"
-
 			."<tr><td>" . _AUTHOREMAIL . ":</td><td><input type=\"text\" name=\"email\" size=\"30\" maxlength=\"60\"></td></tr>"
-
 			."<tr><td>" . _FILESIZE . ":</td><td><input type=\"text\" name=\"filesize\" size=\"12\" maxlength=\"11\"> (" . _INBYTES . ")</td></tr>"
-
 			."<tr><td>" . _VERSION . ":</td><td><input type=\"text\" name=\"version\" size=\"11\" maxlength=\"10\"></td></tr>"
-
 			."<tr><td>" . _HOMEPAGE . ":</td><td><input type=\"text\" name=\"homepage\" size=\"30\" maxlength=\"200\" value=\"http://\"></td></tr>"
-
 			."<tr><td>&nbsp;</td><td><input type=\"hidden\" name=\"hits\" value=\"0\">"
-
 			."<input type=\"hidden\" name=\"op\" value=\"DownloadsAddDownload\">"
-
 			."<input type=\"hidden\" name=\"new\" value=\"0\">"
-
 			."<input type=\"hidden\" name=\"lid\" value=\"0\">"
-
 			."<input type=\"submit\" value=\"" . _ADDURL . "\"></td></tr></table>"
-
 			."</form>";
-
 			CloseTable();
 
 			echo "<br>";
@@ -484,10 +358,7 @@ if ($row2['radminsuper'] == 1 || $auth_user == 1) {
 
 		}
 
-
-
 		// Modify Category
-
 		$result10 = $db->sql_query("SELECT * from " . $prefix . "_downloads_categories");
 
 		$numrows = $db->sql_numrows($result10);
@@ -495,9 +366,7 @@ if ($row2['radminsuper'] == 1 || $auth_user == 1) {
 		if ($numrows>0) {
 
 			OpenTable();
-
 			echo "<form method=\"post\" action=\"".$admin_file.".php\">"
-
 			."<font class=\"content\"><b>" . _MODCATEGORY . "</b></font><br><br>";
 
 			$result11 = $db->sql_query("SELECT cid, title, parentid from " . $prefix . "_downloads_categories order by title");
@@ -513,19 +382,13 @@ if ($row2['radminsuper'] == 1 || $auth_user == 1) {
 				$parentid2 = intval($row11['parentid']);
 
 				if ($parentid2!=0) $ctitle2=getparent($parentid2,$ctitle2);
-
 				echo "<option value=\"$cid2\">$ctitle2</option>";
-
 			}
 
 			echo "</select>"
-
 			."<input type=\"hidden\" name=\"op\" value=\"DownloadsModCat\">"
-
 			."&nbsp;<input type=\"submit\" value=\"" . _MODIFY . "\">"
-
 			."</form>";
-
 			CloseTable();
 
 			echo "<br>";
@@ -534,30 +397,19 @@ if ($row2['radminsuper'] == 1 || $auth_user == 1) {
 
 		}
 
-
-
 		// Modify Downloads
-
 		$result12 = $db->sql_query("SELECT * from " . $prefix . "_downloads_downloads");
-
 		$numrows = $db->sql_numrows($result12);
 
 		if ($numrows>0) {
 
 			OpenTable();
-
 			echo "<form method=\"post\" action=\"".$admin_file.".php\">"
-
 			."<font class=\"content\"><b>" . _MODDOWNLOAD . "</b><br><br>"
-
 			."" . _DOWNLOADID . ": <input type=\"text\" name=\"lid\" size=\"12\" maxlength=\"11\">&nbsp;&nbsp;"
-
 			."<input type=\"hidden\" name=\"op\" value=\"DownloadsModDownload\">"
-
 			."<input type=\"submit\" value=\"" . _MODIFY . "\">"
-
 			."</form>";
-
 			CloseTable();
 
 			echo "<br>";
@@ -566,10 +418,7 @@ if ($row2['radminsuper'] == 1 || $auth_user == 1) {
 
 		}
 
-
-
 		// Transfer Categories
-
 		$result13 = $db->sql_query("SELECT * from " . $prefix . "_downloads_downloads");
 
 		$numrows = $db->sql_numrows($result13);
@@ -577,15 +426,10 @@ if ($row2['radminsuper'] == 1 || $auth_user == 1) {
 		if ($numrows>0) {
 
 			OpenTable();
-
 			echo "<form method=\"post\" action=\"".$admin_file.".php\">"
-
 			."<font class=\"option\"><b>" . _EZTRANSFERDOWNLOADS . "</b></font><br><br>"
-
 			."<table widht=\"100%\" bordr=\"0\">"
-
 			."<tr><td>" . _CATEGORY . ":</td><td>"
-
 			."<select name=\"cidfrom\">";
 
 			$result14 = $db->sql_query("SELECT cid, title, parentid from " . $prefix . "_downloads_categories order by parentid,title");
@@ -603,7 +447,6 @@ if ($row2['radminsuper'] == 1 || $auth_user == 1) {
 				echo "<option value=\"$cid2\">$ctitle2</option>";
 
 			}
-
 			echo "</select></td></tr>"
 
 			."</tr><td>" . _IN . " " . _CATEGORY . ":</td><td>";
@@ -623,17 +466,12 @@ if ($row2['radminsuper'] == 1 || $auth_user == 1) {
 				if ($parentid2!=0) $ctitle2=getparent($parentid2,$ctitle2);
 
 				echo "<option value=\"$cid2\">$ctitle2</option>";
-
 			}
 
 			echo "</select></td></tr>"
-
 			."<tr><td>&nbsp;</td><td><input type=\"hidden\" name=\"op\" value=\"DownloadsTransfer\">"
-
 			."<input type=\"submit\" value=\"" . _EZTRANSFER . "\"></td></tr></table>"
-
 			."</form>";
-
 			CloseTable();
 
 			echo "<br>";
@@ -641,14 +479,8 @@ if ($row2['radminsuper'] == 1 || $auth_user == 1) {
 		} else {
 
 		}
-
-
-
 		include ("footer.php");
-
 	}
-
-
 
 	function DownloadsTransfer($cidfrom, $cidto) {
 
@@ -659,13 +491,16 @@ if ($row2['radminsuper'] == 1 || $auth_user == 1) {
 		$db->sql_query("update " . $prefix . "_downloads_downloads set cid='$cidto' where cid='$cidfrom'");
 
 		Header("Location: ".$admin_file.".php?op=downloads");
-
 	}
-
-
 
 	function DownloadsModDownload($lid) {
 
+	    $editorialtitle = null;
+        $editorialtext = null;
+        $editorialtime = [];
+        $ratingtime = [];
+        $rating2 = null;
+        
 		global $prefix, $db, $sitename, $admin_file, $bgcolor1, $bgcolor2;
 
 		include ("header.php");
@@ -679,15 +514,12 @@ if ($row2['radminsuper'] == 1 || $auth_user == 1) {
 		$result = $db->sql_query("SELECT cid, sid, title, url, description, name, email, hits, filesize, version, homepage from " . $prefix . "_downloads_downloads where lid='$lid'");
 
 		OpenTable();
-
 		echo "<center><font class=\"title\"><b>" . _WEBDOWNLOADSADMIN . "</b></font></center>";
-
 		CloseTable();
 
 		echo "<br>";
 
 		OpenTable();
-
 		echo "<center><font class=\"content\"><b>" . _MODDOWNLOAD . "</b></font></center><br><br>";
 
 		while($row = $db->sql_fetchrow($result)) {
@@ -719,31 +551,20 @@ if ($row2['radminsuper'] == 1 || $auth_user == 1) {
 			$homepage2 = urlencode($homepage);
 
 			echo "<form action=".$admin_file.".php method=post>"
-
 			."" . _DOWNLOADID . ": <b>$lid</b><br>"
-
 			."" . _PAGETITLE . ": <input type=\"text\" name=\"title\" value=\"$title\" size=\"50\" maxlength=\"100\"><br>"
-
 			."" . _PAGEURL . ": <input type=\"text\" name=\"url\" value=\"$url\" size=\"50\" maxlength=\"100\">&nbsp;[ <a href=\"index.php?url=$url2\" target=\"_blank\">" . _CHECK . "</a> ]<br>"
-
 			."" . _DESCRIPTION . ":<br><textarea name=\"description\" cols=\"70\" rows=\"15\">$description</textarea><br>"
-
 			."" . _AUTHORNAME . ": <input type=\"text\" name=\"name\" size=\"50\" maxlength=\"100\" value=\"$name\"><br>"
-
 			."" . _AUTHOREMAIL . ": <input type=\"text\" name=\"email\" size=\"50\" maxlength=\"100\" value=\"$email\"><br>"
-
 			."" . _FILESIZE . ": <input type=\"text\" name=\"filesize\" size=\"12\" maxlength=\"11\" value=\"$filesize\"><br>"
-
 			."" . _VERSION . ": <input type=\"text\" name=\"version\" size=\"11\" maxlength=\"10\" value=\"$version\"><br>"
-
 			."" . _HOMEPAGE . ": <input type=\"text\" name=\"homepage\" size=\"50\" maxlength=\"200\" value=\"$homepage\">&nbsp;[ <a href=\"index.php?url=$homepage2\" target=\"_blank\">" . _VISIT . "</a> ]<br>"
-
 			."" . _HITS . ": <input type=\"text\" name=\"hits\" value=\"$hits\" size=\"12\" maxlength=\"11\"><br>";
 
 			$result2 = $db->sql_query("SELECT cid, title, parentid from " . $prefix . "_downloads_categories order by title");
 
 			echo "<input type=\"hidden\" name=\"lid\" value=\"$lid\">"
-
 			."" . _CATEGORY . ": <select name=\"cat\">";
 
 			while($row2 = $db->sql_fetchrow($result2)) {
@@ -765,17 +586,10 @@ if ($row2['radminsuper'] == 1 || $auth_user == 1) {
 				}
 
 				if ($parentid2!=0) $ctitle2=getparent($parentid2,$ctitle2);
-
 				echo "<option value=\"$cid2\" $sel>$ctitle2</option>";
-
 			}
-
-
-
 			echo "</select>"
-
 			."<input type=\"hidden\" name=\"op\" value=\"DownloadsModDownloadS\">"
-
 			."<input type=\"submit\" value=\"" . _MODIFY . "\"> [ <a href=\"".$admin_file.".php?op=DownloadsDelDownload&amp;lid=$lid\">" . _DELETE . "</a> ]</form><br>";
 
 			CloseTable();
@@ -783,7 +597,6 @@ if ($row2['radminsuper'] == 1 || $auth_user == 1) {
 			echo "<br>";
 
 			/* Modify or Add Editorial */
-
 			$lid = intval($lid);
 
 			$resulted2 = $db->sql_query("SELECT adminid, editorialtimestamp, editorialtext, editorialtitle from " . $prefix . "_downloads_editorials where downloadid='$lid'");
@@ -791,21 +604,14 @@ if ($row2['radminsuper'] == 1 || $auth_user == 1) {
 			$recordexist = $db->sql_numrows($resulted2);
 
 			OpenTable();
-
 			/* if returns 'bad query' status 0 (add editorial) */
-
 			if ($recordexist == 0) {
 
 				echo "<center><font class=\"content\"><b>" . _ADDEDITORIAL . "</b></font></center><br><br>"
-
 				."<form action=\"".$admin_file.".php\" method=\"post\">"
-
 				."<input type=\"hidden\" name=\"downloadid\" value=\"$lid\">"
-
 				."" . _EDITORIALTITLE . ":<br><input type=\"text\" name=\"editorialtitle\" value=\"$editorialtitle\" size=\"50\" maxlength=\"100\"><br>"
-
 				."" . _EDITORIALTEXT . ":<br><textarea name=\"editorialtext\" cols=\"70\" rows=\"15\">$editorialtext</textarea><br>"
-
 				."</select><input type=\"hidden\" name=\"op\" value=\"DownloadsAddEditorial\"><input type=\"submit\" value=\"Add\">";
 
 			} else {
@@ -822,7 +628,7 @@ if ($row2['radminsuper'] == 1 || $auth_user == 1) {
 
 					$editorialtitle = filter($row3['editorialtitle'], "nohtml");
 
-					ereg ("([0-9]{4})-([0-9]{1,2})-([0-9]{1,2}) ([0-9]{1,2}):([0-9]{1,2}):([0-9]{1,2})", $editorialtimestamp, $editorialtime);
+					preg_match ('#([0-9]{4})\-([0-9]{1,2})\-([0-9]{1,2}) ([0-9]{1,2}):([0-9]{1,2}):([0-9]{1,2})#m', $editorialtimestamp, $editorialtime);
 
 					$editorialtime = strftime("%F",mktime($editorialtime[4],$editorialtime[5],$editorialtime[6],$editorialtime[2],$editorialtime[3],$editorialtime[1]));
 
@@ -833,23 +639,14 @@ if ($row2['radminsuper'] == 1 || $auth_user == 1) {
 					$formatted_date = date("F j, Y", $timestamp);
 
 					echo "<center><font class=\"content\"><b>Modify Editorial</b></font></center><br><br>"
-
 					."<form action=\"".$admin_file.".php\" method=\"post\">"
-
 					."" . _AUTHOR . ": $adminid<br>"
-
 					."" . _DATEWRITTEN . ": $formatted_date<br><br>"
-
 					."<input type=\"hidden\" name=\"downloadid\" value=\"$lid\">"
-
 					."" . _EDITORIALTITLE . ":<br><input type=\"text\" name=\"editorialtitle\" value=\"$editorialtitle\" size=\"50\" maxlength=\"100\"><br>"
-
 					."" . _EDITORIALTEXT . ":<br><textarea name=\"editorialtext\" cols=\"70\" rows=\"15\">$editorialtext</textarea><br>"
-
 					."</select><input type=\"hidden\" name=\"op\" value=\"DownloadsModEditorial\"><input type=\"submit\" value=\"" . _MODIFY . "\"> [ <a href=\"".$admin_file.".php?op=DownloadsDelEditorial&amp;downloadid=$lid\">" . _DELETE . "</a> ]";
-
 				}
-
 			}
 
 			CloseTable();
@@ -857,17 +654,12 @@ if ($row2['radminsuper'] == 1 || $auth_user == 1) {
 			echo "<br>";
 
 			OpenTable();
-
 			/* Show Comments */
-
 			$result4 = $db->sql_query("SELECT ratingdbid, ratinguser, ratingcomments, ratingtimestamp FROM " . $prefix . "_downloads_votedata WHERE ratinglid='$lid' AND ratingcomments != '' ORDER BY ratingtimestamp DESC");
-
 			$totalcomments = $db->sql_numrows($result4);
 
 			echo "<table valign=top width=100%>";
-
 			echo "<tr><td colspan=7><b>Download Comments (total comments: $totalcomments)</b><br><br></td></tr>";
-
 			echo "<tr><td width=20 colspan=1><b>User  </b></td><td colspan=5><b>Comment  </b></td><td><b><center>Delete</center></b></td><br></tr>";
 
 			if ($totalcomments == 0) echo "<tr><td colspan=7><center><font color=cccccc>No Comments<br></font></center></td></tr>";
@@ -886,7 +678,7 @@ if ($row2['radminsuper'] == 1 || $auth_user == 1) {
 
 				$ratingtimestamp = $row4['ratingtimestamp'];
 
-				ereg ("([0-9]{4})-([0-9]{1,2})-([0-9]{1,2}) ([0-9]{1,2}):([0-9]{1,2}):([0-9]{1,2})", $ratingtimestamp, $ratingtime);
+				preg_match ('#([0-9]{4})\-([0-9]{1,2})\-([0-9]{1,2}) ([0-9]{1,2}):([0-9]{1,2}):([0-9]{1,2})#m', $ratingtimestamp, $ratingtime);
 
 				$ratingtime = strftime("%F",mktime($ratingtime[4],$ratingtime[5],$ratingtime[6],$ratingtime[2],$ratingtime[3],$ratingtime[1]));
 
@@ -903,19 +695,13 @@ if ($row2['radminsuper'] == 1 || $auth_user == 1) {
 				if ($colorswitch==$bgcolor1) $colorswitch=$bgcolor2;
 
 				else $colorswitch=$bgcolor1;
-
 			}
-
-
-
 			// Show Registered Users Votes
-
 			$result5 = $db->sql_query("SELECT ratingdbid, ratinguser, rating, ratinghostname, ratingtimestamp FROM " . $prefix . "_downloads_votedata WHERE ratinglid='$lid' AND ratinguser != 'outside' AND ratinguser != '$anonymous' ORDER BY ratingtimestamp DESC");
 
 			$totalvotes = $db->sql_numrows($result5);
 
 			echo "<tr><td colspan=7><br><br><b>Registered User Votes (total votes: $totalvotes)</b><br><br></td></tr>";
-
 			echo "<tr><td><b>User  </b></td><td><b>IP Address  </b></td><td><b>Rating  </b></td><td><b>User AVG Rating  </b></td><td><b>Total Ratings  </b></td><td><b>Date  </b></td></font></b><td><b><center>Delete</center></b></td><br></tr>";
 
 			if ($totalvotes == 0) echo "<tr><td colspan=7><center><font color=cccccc>No Registered User Votes<br></font></center></td></tr>";
@@ -936,7 +722,7 @@ if ($row2['radminsuper'] == 1 || $auth_user == 1) {
 
 				$ratingtimestamp = $row5['ratingtimestamp'];
 
-				ereg ("([0-9]{4})-([0-9]{1,2})-([0-9]{1,2}) ([0-9]{1,2}):([0-9]{1,2}):([0-9]{1,2})", $ratingtimestamp, $ratingtime);
+				preg_match ('#([0-9]{4})\-([0-9]{1,2})\-([0-9]{1,2}) ([0-9]{1,2}):([0-9]{1,2}):([0-9]{1,2})#m', $ratingtimestamp, $ratingtime);
 
 				$ratingtime = strftime("%F",mktime($ratingtime[4],$ratingtime[5],$ratingtime[6],$ratingtime[2],$ratingtime[3],$ratingtime[1]));
 
@@ -946,10 +732,7 @@ if ($row2['radminsuper'] == 1 || $auth_user == 1) {
 
 				$formatted_date = date("F j, Y", $timestamp);
 
-
-
 				//Individual user information
-
 				$result6 = $db->sql_query("SELECT rating FROM " . $prefix . "_downloads_votedata WHERE ratinguser = '$ratinguser'");
 
 				$usertotalcomments = $db->sql_numrows($result6);
@@ -971,13 +754,9 @@ if ($row2['radminsuper'] == 1 || $auth_user == 1) {
 				if ($colorswitch==$bgcolor1) $colorswitch=$bgcolor2;
 
 				else $colorswitch=$bgcolor1;
-
 			}
 
-
-
 			// Show Unregistered Users Votes
-
 			$lid = intval($lid);
 
 			$result7 = $db->sql_query("SELECT ratingdbid, rating, ratinghostname, ratingtimestamp FROM " . $prefix . "_downloads_votedata WHERE ratinglid='$lid' AND ratinguser = '$anonymous' ORDER BY ratingtimestamp DESC");
@@ -1004,7 +783,7 @@ if ($row2['radminsuper'] == 1 || $auth_user == 1) {
 
 				$ratingtimestamp = $row7['ratingtimestamp'];
 
-				ereg ("([0-9]{4})-([0-9]{1,2})-([0-9]{1,2}) ([0-9]{1,2}):([0-9]{1,2}):([0-9]{1,2})", $ratingtimestamp, $ratingtime);
+				preg_match ('#([0-9]{4})\-([0-9]{1,2})\-([0-9]{1,2}) ([0-9]{1,2}):([0-9]{1,2}):([0-9]{1,2})#m', $ratingtimestamp, $ratingtime);
 
 				$ratingtime = strftime("%F",mktime($ratingtime[4],$ratingtime[5],$ratingtime[6],$ratingtime[2],$ratingtime[3],$ratingtime[1]));
 
@@ -1021,19 +800,14 @@ if ($row2['radminsuper'] == 1 || $auth_user == 1) {
 				if ($colorswitch==$bgcolor1) $colorswitch=$bgcolor2;
 
 				else $colorswitch=$bgcolor1;
-
 			}
 
-
-
 			// Show Outside Users Votes
-
 			$result8 = $db->sql_query("SELECT ratingdbid, rating, ratinghostname, ratingtimestamp FROM " . $prefix . "_downloads_votedata WHERE ratinglid='$lid' AND ratinguser = 'outside' ORDER BY ratingtimestamp DESC");
 
 			$totalvotes = $db->sql_numrows($result8);
 
 			echo "<tr><td colspan=7><b><br><br>Outside User Votes (total votes: $totalvotes)</b><br><br></td></tr>";
-
 			echo "<tr><td colspan=2><b>IP Address  </b></td><td colspan=3><b>Rating  </b></td><td><b>Date  </b></td></font></b><td><b><center>Delete</center></b></td><br></tr>";
 
 			if ($totalvotes == 0) echo "<tr><td colspan=7><center><font color=cccccc>No Votes from Outside $sitename<br></font></center></td></tr>";
@@ -1052,7 +826,7 @@ if ($row2['radminsuper'] == 1 || $auth_user == 1) {
 
 				$ratingtimestamp = $row8['ratingtimestamp'];
 
-				ereg ("([0-9]{4})-([0-9]{1,2})-([0-9]{1,2}) ([0-9]{1,2}):([0-9]{1,2}):([0-9]{1,2})", $ratingtimestamp, $ratingtime);
+				preg_match ('#([0-9]{4})\-([0-9]{1,2})\-([0-9]{1,2}) ([0-9]{1,2}):([0-9]{1,2}):([0-9]{1,2})#m', $ratingtimestamp, $ratingtime);
 
 				$ratingtime = strftime("%F",mktime($ratingtime[4],$ratingtime[5],$ratingtime[6],$ratingtime[2],$ratingtime[3],$ratingtime[1]));
 
@@ -1067,30 +841,19 @@ if ($row2['radminsuper'] == 1 || $auth_user == 1) {
 				$x++;
 
 				if ($colorswitch==$bgcolor1) $colorswitch=$bgcolor2;
-
 				else $colorswitch=$bgcolor1;
-
 			}
 
-
-
 			echo "<tr><td colspan=6><br></td></tr>";
-
 			echo "</table>";
-
 		}
-
 		echo "</form>";
-
 		CloseTable();
 
 		echo "<br>";
 
 		include ("footer.php");
-
 	}
-
-
 
 	function DownloadsDelComment($lid, $rid) {
 
@@ -1105,15 +868,13 @@ if ($row2['radminsuper'] == 1 || $auth_user == 1) {
 		$db->sql_query("UPDATE " . $prefix . "_downloads_downloads SET totalcomments = (totalcomments - 1) WHERE lid='$lid'");
 
 		Header("Location: ".$admin_file.".php?op=DownloadsModDownload&lid=$lid");
-
-
-
 	}
-
-
 
 	function DownloadsDelVote($lid, $rid) {
 
+		$finalrating = null;
+        $truecomments = null;
+        
 		global $prefix, $db, $admin_file;
 
 		$lid = intval($lid);
@@ -1131,10 +892,7 @@ if ($row2['radminsuper'] == 1 || $auth_user == 1) {
 		$db->sql_query("UPDATE " . $prefix . "_downloads_downloads SET downloadratingsummary='$finalrating',totalvotes='$totalvotesDB',totalcomments='$truecomments' WHERE lid='$lid'");
 
 		Header("Location: ".$admin_file.".php?op=DownloadsModDownload&lid=$lid");
-
 	}
-
-
 
 	function DownloadsListBrokenDownloads() {
 
@@ -1145,25 +903,19 @@ if ($row2['radminsuper'] == 1 || $auth_user == 1) {
 		GraphicAdmin();
 
 		OpenTable();
-
 		echo "<center><font class=\"title\"><b>" . _WEBDOWNLOADSADMIN . "</b></font></center>";
-
 		CloseTable();
 
 		echo "<br>";
 
 		OpenTable();
-
 		$result = $db->sql_query("SELECT requestid, lid, modifysubmitter from " . $prefix . "_downloads_modrequest where brokendownload='1' order by requestid");
 
 		$totalbrokendownloads = $db->sql_numrows($result);
 
 		echo "<center><font class=\"content\"><b>" . _DUSERREPBROKEN . " ($totalbrokendownloads)</b></font></center><br><br><center>"
-
 		."" . _DIGNOREINFO . "<br>"
-
 		."" . _DDELETEINFO . "</center><br><br><br>"
-
 		."<table align=\"center\" width=\"450\">";
 
 		if ($totalbrokendownloads==0) {
@@ -1175,19 +927,12 @@ if ($row2['radminsuper'] == 1 || $auth_user == 1) {
 			$colorswitch = $bgcolor2;
 
 			echo "<tr>"
-
 			."<td><b>" . _DOWNLOAD . "</b></td>"
-
 			."<td><b>" . _SUBMITTER . "</b></td>"
-
 			."<td><b>" . _DOWNLOADOWNER . "</b></td>"
-
 			."<td><b>" . _IGNORE . "</b></td>"
-
 			."<td><b>" . _DELETE . "</b></td>"
-
 			."<td><b>" . _EDIT . "</b></td>"
-
 			."</tr>";
 
 			while($row = $db->sql_fetchrow($result)) {
@@ -1223,72 +968,45 @@ if ($row2['radminsuper'] == 1 || $auth_user == 1) {
 				$url = urlencode($url);
 
 				echo "<tr>"
-
 				."<td bgcolor=\"$colorswitch\"><a href=\"index.php?url=$url\">$title</a>"
-
 				."</td>";
 
 				if (empty($email)) {
-
 					echo "<td bgcolor=\"$colorswitch\">$modifysubmitter";
-
 				} else {
-
 					echo "<td bgcolor=\"$colorswitch\"><a href=\"mailto:$email\">$modifysubmitter</a>";
-
 				}
 
 				echo "</td>";
 
 				if (empty($owneremail)) {
-
 					echo "<td bgcolor=\"$colorswitch\">$owner";
-
 				} else {
-
 					echo "<td bgcolor=\"$colorswitch\"><a href=\"mailto:$owneremail\">$owner</a>";
-
 				}
 
 				echo "</td>"
-
 				."<td bgcolor=\"$colorswitch\"><center><a href=\"".$admin_file.".php?op=DownloadsIgnoreBrokenDownloads&amp;lid=$lid\">X</a></center>"
-
 				."</td>"
-
 				."<td bgcolor=\"$colorswitch\"><center><a href=\"".$admin_file.".php?op=DownloadsDelBrokenDownloads&amp;lid=$lid\">X</a></center>"
-
 				."</td>"
-
 				."<td bgcolor=\"$colorswitch\"><center><a href=\"".$admin_file.".php?op=DownloadsModDownload&amp;lid=$lid\">X</a></center>"
-
 				."</td>"
-
 				."</tr>";
 
 				if ($colorswitch == $bgcolor2) {
-
 					$colorswitch = $bgcolor1;
-
 				} else {
-
 					$colorswitch = $bgcolor2;
-
 				}
-
 			}
-
 		}
-
 		echo "</table>";
 
 		CloseTable();
 
 		include ("footer.php");
-
 	}
-
-
 
 	function DownloadsDelBrokenDownloads($lid) {
 
@@ -1301,10 +1019,7 @@ if ($row2['radminsuper'] == 1 || $auth_user == 1) {
 		$db->sql_query("delete from " . $prefix . "_downloads_downloads where lid='$lid'");
 
 		Header("Location: ".$admin_file.".php?op=DownloadsListBrokenDownloads");
-
 	}
-
-
 
 	function DownloadsIgnoreBrokenDownloads($lid) {
 
@@ -1315,13 +1030,12 @@ if ($row2['radminsuper'] == 1 || $auth_user == 1) {
 		$db->sql_query("delete from " . $prefix . "_downloads_modrequest where lid='$lid' and brokendownload='1'");
 
 		Header("Location: ".$admin_file.".php?op=DownloadsListBrokenDownloads");
-
 	}
-
-
 
 	function DownloadsListModRequests() {
 
+		$lid = null;
+        
 		global $bgcolor2, $prefix, $db, $user_prefix, $admin_file;
 
 		$lid = intval($lid);
@@ -1345,7 +1059,6 @@ if ($row2['radminsuper'] == 1 || $auth_user == 1) {
 		$totalmodrequests = $db->sql_numrows($result);
 
 		echo "<center><font class=\"content\"><b>" . _DUSERMODREQUEST . " ($totalmodrequests)</b></font></center><br><br><br>";
-
 		echo "<table width=\"95%\"><tr><td>";
 
 		while($row = $db->sql_fetchrow($result)) {
@@ -1366,7 +1079,7 @@ if ($row2['radminsuper'] == 1 || $auth_user == 1) {
 
 			$description = filter($row['description']);
 
-			$xdescription = eregi_replace("<a href=\"http://", "<a href=\"index.php?url=http://", $description);
+			$xdescription = preg_replace('#<a href="http:\/\/#mi', "<a href=\"index.php?url=http://", $description);
 
 			$modifysubmitter = $row['modifysubmitter'];
 
@@ -1396,7 +1109,7 @@ if ($row2['radminsuper'] == 1 || $auth_user == 1) {
 
 			$origdescription = filter($row2['description']);
 
-			$xorigdescription = eregi_replace("<a href=\"http://", "<a href=\"index.php?url=http://", $origdescription);
+			$xorigdescription = preg_replace('#<a href="http:\/\/#mi', "<a href=\"index.php?url=http://", $origdescription);
 
 			$origname = $row2['name'];
 
@@ -1437,125 +1150,71 @@ if ($row2['radminsuper'] == 1 || $auth_user == 1) {
 			$owneremail = filter($row8['user_email'], "nohtml");
 
 			if (empty($owner)) {
-
 				$owner="administration";
-
 			}
 
 			if (empty($origsidtitle)) {
-
 				$origsidtitle= "-----";
-
 			}
 
 			if (empty($sidtitle)) {
-
 				$sidtitle= "-----";
-
 			}
 
 			echo "<table border=\"1\" bordercolor=\"black\" cellpadding=\"5\" cellspacing=\"0\" align=\"center\" width=\"450\">"
-
 			."<tr>"
-
 			."<td>"
-
 			."<table width=\"100%\" bgcolor=\"$bgcolor2\">"
-
 			."<tr>"
-
 			."<td valign=\"top\" width=\"45%\"><b>" . _ORIGINAL . "</b></td>"
-
 			."<td rowspan=\"10\" valign=\"top\" align=\"left\"><font class=\"tiny\"><br>" . _DESCRIPTION . ":<br>$xorigdescription</font></td>"
-
 			."</tr>"
-
 			."<tr><td valign=\"top\" width=\"45%\"><font class=\"tiny\">" . _TITLE . ": $origtitle</td></tr>"
-
 			."<tr><td valign=\"top\" width=\"45%\"><font class=\"tiny\">" . _URL . ": <a href=\"index.php?url=$origurl\">$origurl</a></td></tr>"
-
 			."<tr><td valign=\"top\" width=\"45%\"><font class=\"tiny\">" . _CATEGORY . ": $origcidtitle</td></tr>"
-
 			."<tr><td valign=\"top\" width=\"45%\"><font class=\"tiny\">" . _SUBCATEGORY . ": $origsidtitle</td></tr>"
-
 			."<tr><td valign=\"top\" width=\"45%\"><font class=\"tiny\">" . _AUTHORNAME . ": $origname</td></tr>"
-
 			."<tr><td valign=\"top\" width=\"45%\"><font class=\"tiny\">" . _AUTHOREMAIL . ": $origemail</td></tr>"
-
 			."<tr><td valign=\"top\" width=\"45%\"><font class=\"tiny\">" . _FILESIZE . ": $origfilesize</td></tr>"
-
 			."<tr><td valign=\"top\" width=\"45%\"><font class=\"tiny\">" . _VERSION . ": $origversion</td></tr>"
-
 			."<tr><td valign=\"top\" width=\"45%\"><font class=\"tiny\">" . _HOMEPAGE . ": <a href=\"index.php?url=$orighomepage\" target=\"new\">$orighomepage</a></td></tr>"
-
 			."</table>"
-
 			."</td>"
-
 			."</tr>"
-
 			."<tr>"
-
 			."<td>"
-
 			."<table width=\"100%\">"
-
 			."<tr>"
-
 			."<td valign=\"top\" width=\"45%\"><b>" . _PROPOSED . "</b></td>"
-
 			."<td rowspan=\"10\" valign=\"top\" align=\"left\"><font class=\"tiny\"><br>" . _DESCRIPTION . ":<br>$xdescription</font></td>"
-
 			."</tr>"
-
 			."<tr><td valign=\"top\" width=\"45%\"><font class=\"tiny\">" . _TITLE . ": $title</td></tr>"
-
 			."<tr><td valign=\"top\" width=\"45%\"><font class=\"tiny\">" . _URL . ": <a href=\"index.php?url=$url\">$url</a></td></tr>"
-
 			."<tr><td valign=\"top\" width=\"45%\"><font class=\"tiny\">" . _CATEGORY . ": $cidtitle</td></tr>"
-
 			."<tr><td valign=\"top\" width=\"45%\"><font class=\"tiny\">" . _SUBCATEGORY . ": $sidtitle</td></tr>"
-
 			."<tr><td valign=\"top\" width=\"45%\"><font class=\"tiny\">" . _AUTHORNAME . ": $name</td></tr>"
-
 			."<tr><td valign=\"top\" width=\"45%\"><font class=\"tiny\">" . _AUTHOREMAIL . ": $email</td></tr>"
-
 			."<tr><td valign=\"top\" width=\"45%\"><font class=\"tiny\">" . _FILESIZE . ": $filesize</td></tr>"
-
 			."<tr><td valign=\"top\" width=\"45%\"><font class=\"tiny\">" . _VERSION . ": $version</td></tr>"
-
 			."<tr><td valign=\"top\" width=\"45%\"><font class=\"tiny\">" . _HOMEPAGE . ": <a href=\"index.php?url=$homepage\" target=\"new\">$homepage</a></td></tr>"
-
 			."</table>"
-
 			."</td>"
-
 			."</tr>"
-
 			."</table>"
 
 			."<table align=\"center\" width=\"450\">"
-
 			."<tr>";
 
 			if (empty($modifysubmitteremail)) {
-
 				echo "<td align=\"left\"><font class=\"tiny\">" . _SUBMITTER . ":  $modifysubmitter</font></td>";
-
 			} else {
-
 				echo "<td align=\"left\"><font class=\"tiny\">" . _SUBMITTER . ":  <a href=\"mailto:$modifysubmitteremail\">$modifysubmitter</a></font></td>";
-
 			}
 
 			if (empty($owneremail)) {
-
 				echo "<td align=\"center\"><font class=\"tiny\">" . _OWNER . ":  $owner</font></td>";
-
 			} else {
-
 				echo "<td align=\"center\"><font class=\"tiny\">" . _OWNER . ": <a href=\"mailto:$owneremail\">$owner</a></font></td>";
-
 			}
 
 			echo "<td align=\"right\"><font class=\"tiny\">( <a href=\"".$admin_file.".php?op=DownloadsChangeModRequests&amp;requestid=$requestid\">" . _ACCEPT . "</a> / <a href=\"".$admin_file.".php?op=DownloadsChangeIgnoreRequests&amp;requestid=$requestid\">" . _IGNORE . "</a> )</font></td></tr></table><br><br>";
@@ -1565,9 +1224,7 @@ if ($row2['radminsuper'] == 1 || $auth_user == 1) {
 		if ($totalmodrequests == 0) {
 
 			echo "<center>" . _NOMODREQUESTS . "<br><br>"
-
 			."" . _GOBACK . "<br><br></center>";
-
 		}
 
 		echo "</td></tr></table>";
@@ -1575,10 +1232,7 @@ if ($row2['radminsuper'] == 1 || $auth_user == 1) {
 		CloseTable();
 
 		include ("footer.php");
-
 	}
-
-
 
 	function DownloadsChangeModRequests($requestid) {
 
@@ -1619,12 +1273,8 @@ if ($row2['radminsuper'] == 1 || $auth_user == 1) {
 			$db->sql_query("delete from " . $prefix . "_downloads_modrequest where requestid='$requestid'");
 
 		}
-
 		Header("Location: ".$admin_file.".php?op=DownloadsListModRequests");
-
 	}
-
-
 
 	function DownloadsChangeIgnoreRequests($requestid) {
 
@@ -1635,13 +1285,14 @@ if ($row2['radminsuper'] == 1 || $auth_user == 1) {
 		$db->sql_query("delete from " . $prefix . "_downloads_modrequest where requestid='$requestid'");
 
 		Header("Location: ".$admin_file.".php?op=DownloadsListModRequests");
-
 	}
-
-
 
 	function DownloadsCleanVotes() {
 
+		$lid = null;
+        $finalrating = null;
+        $truecomments = null;
+        
 		global $prefix, $db, $admin_file;
 
 		$lid = intval($lid);
@@ -1661,12 +1312,8 @@ if ($row2['radminsuper'] == 1 || $auth_user == 1) {
 			$db->sql_query("UPDATE " . $prefix . "_downloads_downloads SET downloadratingsummary='$finalrating',totalvotes='$totalvotesDB',totalcomments='$truecomments' WHERE lid='$lid'");
 
 		}
-
 		Header("Location: ".$admin_file.".php?op=downloads");
-
 	}
-
-
 
 	function DownloadsModDownloadS($lid, $title, $url, $description, $name, $email, $hits, $cat, $filesize, $version, $homepage) {
 
@@ -1675,9 +1322,7 @@ if ($row2['radminsuper'] == 1 || $auth_user == 1) {
 		$cat = explode("-", $cat);
 
 		if (empty($cat[1])) {
-
 			$cat[1] = 0;
-
 		}
 
 		$title = filter($title, "nohtml", 1);
@@ -1701,16 +1346,10 @@ if ($row2['radminsuper'] == 1 || $auth_user == 1) {
 		$numrows = $db->sql_numrows($result);
 
 		if ($numrows>0) {
-
-		$db->sql_query("delete from " . $prefix . "_downloads_modrequest where lid='$lid'");
-
+		   $db->sql_query("delete from " . $prefix . "_downloads_modrequest where lid='$lid'");
 		}
-
 		Header("Location: ".$admin_file.".php?op=downloads");
-
 	}
-
-
 
 	function DownloadsDelDownload($lid) {
 
@@ -1731,12 +1370,8 @@ if ($row2['radminsuper'] == 1 || $auth_user == 1) {
 		$db->sql_query("delete from " . $prefix . "_downloads_modrequest where lid='$lid'");
 
 		}
-
 		Header("Location: ".$admin_file.".php?op=downloads");
-
 	}
-
-
 
 	function DownloadsModCat($cat) {
 
@@ -1763,7 +1398,6 @@ if ($row2['radminsuper'] == 1 || $auth_user == 1) {
 		}
 
 		OpenTable();
-
 		echo "<center><font class=\"content\"><b>" . _MODCATEGORY . "</b></font></center><br><br>";
 
 		if ($cat[1]==0) {
@@ -1775,29 +1409,17 @@ if ($row2['radminsuper'] == 1 || $auth_user == 1) {
 			$cdescription = filter($row['cdescription']);
 
 			echo "<form action=\"".$admin_file.".php\" method=\"get\">"
-
 			."" . _NAME . ": <input type=\"text\" name=\"title\" value=\"$title\" size=\"51\" maxlength=\"50\"><br>"
-
 			."" . _DESCRIPTION . ":<br><textarea name=\"cdescription\" cols=\"70\" rows=\"15\">$cdescription</textarea><br>"
-
 			."<input type=\"hidden\" name=\"sub\" value=\"0\">"
-
 			."<input type=\"hidden\" name=\"cid\" value=\"$cat[0]\">"
-
 			."<input type=\"hidden\" name=\"op\" value=\"DownloadsModCatS\">"
-
 			."<table border=\"0\"><tr><td>"
-
 			."<input type=\"submit\" value=\"" . _SAVECHANGES . "\"></form></td><td>"
-
 			."<form action=\"".$admin_file.".php\" method=\"get\">"
-
 			."<input type=\"hidden\" name=\"sub\" value=\"0\">"
-
 			."<input type=\"hidden\" name=\"cid\" value=\"$cat[0]\">"
-
 			."<input type=\"hidden\" name=\"op\" value=\"DownloadsDelCat\">"
-
 			."<input type=\"submit\" value=\"" . _DELETE . "\"></form></td></tr></table>";
 
 		} else {
@@ -1811,44 +1433,25 @@ if ($row2['radminsuper'] == 1 || $auth_user == 1) {
 			$stitle = filter($row3['title'], "nohtml");
 
 			echo "<form action=\"".$admin_file.".php\" method=\"get\">"
-
 			."" . _CATEGORY . ": $ctitle<br>"
-
 			."" . _SUBCATEGORY . ": <input type=\"text\" name=\"title\" value=\"$stitle\" size=\"51\" maxlength=\"50\"><br>"
-
 			."<input type=\"hidden\" name=\"sub\" value=\"1\">"
-
 			."<input type=\"hidden\" name=\"cid\" value=\"$cat[0]\">"
-
 			."<input type=\"hidden\" name=\"sid\" value=\"$cat[1]\">"
-
 			."<input type=\"hidden\" name=\"op\" value=\"DownloadsModCatS\">"
-
 			."<table border=\"0\"><tr><td>"
-
 			."<input type=\"submit\" value=\"" . _SAVECHANGES . "\"></form></td><td>"
-
 			."<form action=\"".$admin_file.".php\" method=\"get\">"
-
 			."<input type=\"hidden\" name=\"sub\" value=\"1\">"
-
 			."<input type=\"hidden\" name=\"cid\" value=\"$cat[0]\">"
-
 			."<input type=\"hidden\" name=\"sid\" value=\"$cat[1]\">"
-
 			."<input type=\"hidden\" name=\"op\" value=\"DownloadsDelCat\">"
-
 			."<input type=\"submit\" value=\"" . _DELETE . "\"></form></td></tr></table>";
-
 		}
-
 		CloseTable();
 
 		include("footer.php");
-
 	}
-
-
 
 	function DownloadsModCatS($cid, $sid, $sub, $title, $cdescription) {
 
@@ -1859,23 +1462,17 @@ if ($row2['radminsuper'] == 1 || $auth_user == 1) {
 		$sid = intval($sid);
 
 		if ($sub==0) {
-
 			$db->sql_query("update " . $prefix . "_downloads_categories set title='$title', cdescription='$cdescription' where cid='$cid'");
-
 		} else {
-
 			$db->sql_query("update " . $prefix . "_downloads_subcategories set title='$title' where sid='$sid'");
-
 		}
-
 		Header("Location: ".$admin_file.".php?op=downloads");
-
 	}
-
-
 
 	function DownloadsDelCat($cid, $sid, $sub, $ok=0) {
 
+		$nblink = null;
+        
 		global $prefix, $db, $admin_file;
 
 		$cid = intval($cid);
@@ -1885,7 +1482,6 @@ if ($row2['radminsuper'] == 1 || $auth_user == 1) {
 			if ($sub>0) {
 
 				$db->sql_query("delete from " . $prefix . "_downloads_categories where cid='$cid'");
-
 				$db->sql_query("delete from " . $prefix . "_downloads_downloads where cid='$cid'");
 
 			} else {
@@ -1893,29 +1489,23 @@ if ($row2['radminsuper'] == 1 || $auth_user == 1) {
 				$db->sql_query("delete from " . $prefix . "_downloads_downloads where cid='$cid'");
 
 				// suppression des liens de catégories filles
-
 				$result2 = $db->sql_query("SELECT cid from " . $prefix . "_downloads_categories where parentid='$cid'");
 
 				while ($row2 = $db->sql_fetchrow($result2)) {
 
 					$cid2 = intval($row2['cid']);
-
 					$db->sql_query("delete from " . $prefix . "_downloads_downloads where cid='$cid2'");
 
 				}
 
 				$db->sql_query("delete from " . $prefix . "_downloads_categories where parentid='$cid'");
-
 				$db->sql_query("delete from " . $prefix . "_downloads_categories where cid='$cid'");
-
 			}
-
 			Header("Location: ".$admin_file.".php?op=downloads");
 
 		} else {
 
 			$result = $db->sql_query("SELECT * from " . $prefix . "_downloads_categories where parentid='$cid'");
-
 			$nbsubcat = $db->sql_numrows($result);
 
 			$result3 = $db->sql_query("SELECT cid from " . $prefix . "_downloads_categories where parentid='$cid'");
@@ -1923,9 +1513,7 @@ if ($row2['radminsuper'] == 1 || $auth_user == 1) {
 			while ($row3 = $db->sql_fetchrow($result3)) {
 
 				$cid2 = intval($row3['cid']);
-
 				$result4 = $db->sql_query("SELECT * from " . $prefix . "_downloads_downloads where cid='$cid2'");
-
 				$nblink = $db->sql_numrows($result4);
 
 			}
@@ -1935,40 +1523,26 @@ if ($row2['radminsuper'] == 1 || $auth_user == 1) {
 			GraphicAdmin();
 
 			OpenTable();
-
 			echo "<br><center><font class=\"option\">";
-
 			echo "<b>" . _EZTHEREIS . " $nbsubcat " . _EZSUBCAT . " " . _EZATTACHEDTOCAT . "</b><br>";
-
 			echo "<b>" . _EZTHEREIS . " $nblink " . _downloads . " " . _EZATTACHEDTOCAT . "</b><br>";
-
 			echo "<b>" . _DELEZDOWNLOADSCATWARNING . "</b><br><br>";
-
 		}
 
 		echo "[ <a href=\"".$admin_file.".php?op=DownloadsDelCat&amp;cid=$cid&amp;sid=$sid&amp;sub=$sub&amp;ok=1\">" . _YES . "</a> | <a href=\"".$admin_file.".php?op=Links\">" . _NO . "</a> ]<br><br>";
-
 		CloseTable();
 
 		include("footer.php");
-
 	}
-
-
 
 	function DownloadsDelNew($lid) {
 
 		global $prefix, $db, $admin_file;
 
 		$lid = intval($lid);
-
 		$db->sql_query("delete from " . $prefix . "_downloads_newdownload where lid='$lid'");
-
 		Header("Location: ".$admin_file.".php?op=downloads");
-
 	}
-
-
 
 	function DownloadsAddCat($title, $cdescription) {
 
@@ -1985,13 +1559,9 @@ if ($row2['radminsuper'] == 1 || $auth_user == 1) {
 			GraphicAdmin();
 
 			OpenTable();
-
 			echo "<br><center><font class=\"content\">"
-
 			."<b>" . _ERRORTHECATEGORY . " $title " . _ALREADYEXIST . "</b><br><br>"
-
 			."" . _GOBACK . "<br><br>";
-
 			CloseTable();
 
 			include("footer.php");
@@ -2005,12 +1575,8 @@ if ($row2['radminsuper'] == 1 || $auth_user == 1) {
 			$db->sql_query("insert into " . $prefix . "_downloads_categories values (NULL, '$title', '$cdescription', '0')");
 
 			Header("Location: ".$admin_file.".php?op=downloads");
-
 		}
-
 	}
-
-
 
 	function DownloadsAddSubCat($cid, $title, $cdescription) {
 
@@ -2029,13 +1595,9 @@ if ($row2['radminsuper'] == 1 || $auth_user == 1) {
 			GraphicAdmin();
 
 			OpenTable();
-
 			echo "<br><center>";
-
 			echo "<font class=\"content\">"
-
 			."<b>" . _ERRORTHESUBCATEGORY . " $title " . _ALREADYEXIST . "</b><br><br>"
-
 			."" . _GOBACK . "<br><br>";
 
 			include("footer.php");
@@ -2049,15 +1611,13 @@ if ($row2['radminsuper'] == 1 || $auth_user == 1) {
 			$db->sql_query("insert into " . $prefix . "_downloads_categories values (NULL, '$title', '$cdescription', '$cid')");
 
 			Header("Location: ".$admin_file.".php?op=downloads");
-
 		}
-
 	}
-
-
 
 	function DownloadsAddEditorial($downloadid, $editorialtitle, $editorialtext) {
 
+		$adminid = null;
+        
 		global $aid, $prefix, $db, $admin_file;
 
 		$editorialtitle = filter($editorialtitle, "nohtml", 1);
@@ -2071,24 +1631,15 @@ if ($row2['radminsuper'] == 1 || $auth_user == 1) {
 		GraphicAdmin();
 
 		OpenTable();
-
 		echo "<center><br>"
-
 		."<font class=option>"
-
 		."" . _EDITORIALADDED . "<br><br>"
-
 		."[ <a href=\"".$admin_file.".php?op=downloads\">" . _WEBDOWNLOADSADMIN . "</a> ]<br><br>";
-
 		echo "$downloadid  $adminid, $editorialtitle, $editorialtext";
-
 		CloseTable();
 
 		include("footer.php");
-
 	}
-
-
 
 	function DownloadsModEditorial($downloadid, $editorialtitle, $editorialtext) {
 
@@ -2105,22 +1656,14 @@ if ($row2['radminsuper'] == 1 || $auth_user == 1) {
 		GraphicAdmin();
 
 		OpenTable();
-
 		echo "<br><center>"
-
 		."<font class=\"content\">"
-
 		."" . _EDITORIALMODIFIED . "<br><br>"
-
 		."[ <a href=\"".$admin_file.".php?op=downloads\">" . _WEBDOWNLOADSADMIN . "</a> ]<br><br>";
-
 		CloseTable();
 
 		include("footer.php");
-
 	}
-
-
 
 	function DownloadsDelEditorial($downloadid) {
 
@@ -2135,25 +1678,19 @@ if ($row2['radminsuper'] == 1 || $auth_user == 1) {
 		GraphicAdmin();
 
 		OpenTable();
-
 		echo "<br><center>"
-
 		."<font class=\"content\">"
-
 		."" . _EDITORIALREMOVED . "<br><br>"
-
 		."[ <a href=\"".$admin_file.".php?op=downloads\">" . _WEBDOWNLOADSADMIN . "</a> ]<br><br>";
-
 		CloseTable();
 
 		include("footer.php");
-
 	}
-
-
 
 	function DownloadsDownloadCheck() {
 
+		$cid = null;
+        
 		global $prefix, $db, $admin_file;
 
 		$cid = intval($cid);
@@ -2163,21 +1700,15 @@ if ($row2['radminsuper'] == 1 || $auth_user == 1) {
 		GraphicAdmin();
 
 		OpenTable();
-
 		echo "<center><font class=\"title\"><b>" . _WEBDOWNLOADSADMIN . "</b></font></center>";
-
 		CloseTable();
 
 		echo "<br>";
 
 		OpenTable();
-
 		echo "<center><font class=\"content\"><b>" . _DOWNLOADVALIDATION . "</b></font></center><br>"
-
 		."<table width=\"100%\" align=\"center\"><tr><td colspan=\"2\" align=\"center\">"
-
 		."<a href=\"".$admin_file.".php?op=DownloadsValidate&amp;cid=0&amp;sid=0\">" . _CHECKALLDOWNLOADS . "</a><br><br></td></tr>"
-
 		."<tr><td valign=\"top\"><center><b>" . _CHECKCATEGORIES . "</b><br>" . _INCLUDESUBCATEGORIES . "<br><br><font class=\"tiny\">";
 
 		$result = $db->sql_query("SELECT cid, title from " . $prefix . "_downloads_categories order by title");
@@ -2191,21 +1722,19 @@ if ($row2['radminsuper'] == 1 || $auth_user == 1) {
 			$transfertitle = str_replace (" ", "_", $title);
 
 			echo "<a href=\"".$admin_file.".php?op=DownloadsValidate&amp;cid=$cid&amp;sid=0&amp;ttitle=$transfertitle\">$title</a><br>";
-
 		}
 
 		echo "</font></center></td></tr></table>";
-
 		CloseTable();
 
 		include ("footer.php");
-
 	}
-
-
 
 	function DownloadsValidate($cid, $sid, $ttitle) {
 
+		$result = null;
+        $url = null;
+        
 		global $bgcolor2, $prefix, $db, $admin_file;
 
 		include ("header.php");
@@ -2213,21 +1742,15 @@ if ($row2['radminsuper'] == 1 || $auth_user == 1) {
 		GraphicAdmin();
 
 		OpenTable();
-
 		echo "<center><font class=\"title\"><b>" . _WEBDOWNLOADSADMIN . "</b></font></center>";
-
 		CloseTable();
 
 		echo "<br>";
 
 		OpenTable();
-
 		$transfertitle = str_replace ("_", "", $ttitle);
-
 		/* Check ALL Downloads */
-
 		$cid = intval($cid);
-
 		$sid = intval($sid);
 
 		echo "<table width=100% border=0>";
@@ -2235,27 +1758,21 @@ if ($row2['radminsuper'] == 1 || $auth_user == 1) {
 		if ($cid==0 && $sid==0) {
 
 			echo "<tr><td colspan=\"3\"><center><b>" . _CHECKALLDOWNLOADS . "</b><br>" . _BEPATIENT . "</center><br><br></td></tr>";
-
 			$result = $db->sql_query("SELECT lid, title, url from " . $prefix . "_downloads_downloads order by title");
-
 		}
 
 		/* Check Categories & Subcategories */
-
 		if ($cid!=0 && $sid==0) {
 
 			echo "<tr><td colspan=\"3\"><center><b>" . _VALIDATINGCAT . ": $transfertitle</b><br>" . _BEPATIENT . "</center><br><br></td></tr>";
-
 			$result = $db->sql_query("SELECT lid, title, url from " . $prefix . "_downloads_downloads where cid='$cid' order by title");
 
 		}
 
 		/* Check Only Subcategory */
-
 		if ($cid==0 && $sid!=0) {
 
 			echo "<tr><td colspan=\"3\"><center><b>" . _VALIDATINGSUBCAT . ": $transfertitle</b><br>" . _BEPATIENT . "</center><br><br></td></tr>";
-
 			$result = $db->sql_query("SELECT lid, title, url from " . $prefix . "_downloads_downloads where sid='$sid' order by title");
 
 		}
@@ -2275,45 +1792,31 @@ if ($row2['radminsuper'] == 1 || $auth_user == 1) {
 			if (!$fp){
 
 				echo "<tr><td align=\"center\"><b>&nbsp;&nbsp;" . _FAILED . "&nbsp;&nbsp;</b></td>"
-
 				."<td>&nbsp;&nbsp;<a href=\"$url\" target=\"new\">$title</a>&nbsp;&nbsp;</td>"
-
 				."<td align=\"center\"><font class=\"content\">&nbsp;&nbsp;[ <a href=\"".$admin_file.".php?op=DownloadsModDownload&amp;lid=$lid\">" . _EDIT . "</a> | <a href=\"".$admin_file.".php?op=DownloadsDelDownload&amp;lid=$lid\">" . _DELETE . "</a> ]&nbsp;&nbsp;</font>"
-
 				."</td></tr>";
-
 			}
 
 			if ($fp){
 
 				echo "<tr><td align=\"center\">&nbsp;&nbsp;" . _OK . "&nbsp;&nbsp;</td>"
-
 				."<td>&nbsp;&nbsp;<a href=\"$url\" target=\"new\">$title</a>&nbsp;&nbsp;</td>"
-
 				."<td align=\"center\"><font class=\"content\">&nbsp;&nbsp;" . _NONE . "&nbsp;&nbsp;</font>"
-
 				."</td></tr>";
-
 			}
-
 		}
-
 		echo "</table>";
 
 		CloseTable();
 
 		include ("footer.php");
-
 	}
-
-
 
 	function DownloadsAddDownload($new, $lid, $title, $url, $cat, $description, $name, $email, $submitter, $filesize, $version, $homepage, $hits) {
 
 		global $prefix, $db, $admin_file;
 
 		$result = $db->sql_query("SELECT url from " . $prefix . "_downloads_downloads where url='$url'");
-
 		$numrows = $db->sql_numrows($result);
 
 		if ($numrows>0) {
@@ -2323,23 +1826,16 @@ if ($row2['radminsuper'] == 1 || $auth_user == 1) {
 			GraphicAdmin();
 
 			OpenTable();
-
 			echo "<center><font class=\"title\"><b>" . _WEBDOWNLOADSADMIN . "</b></font></center>";
-
 			CloseTable();
 
 			echo "<br>";
 
 			OpenTable();
-
 			echo "<br><center>"
-
 			."<font class=\"content\">"
-
 			."<b>" . _ERRORURLEXIST . "</b><br><br>"
-
 			."" . _GOBACK . "<br><br>";
-
 			CloseTable();
 
 			include("footer.php");
@@ -2355,23 +1851,16 @@ if ($row2['radminsuper'] == 1 || $auth_user == 1) {
 				GraphicAdmin();
 
 				OpenTable();
-
 				echo "<center><font class=\"title\"><b>" . _WEBDOWNLOADSADMIN . "</b></font></center>";
-
 				CloseTable();
 
 				echo "<br>";
 
 				OpenTable();
-
 				echo "<br><center>"
-
 				."<font class=\"content\">"
-
 				."<b>" . _ERRORNOTITLE . "</b><br><br>"
-
 				."" . _GOBACK . "<br><br>";
-
 				CloseTable();
 
 				include("footer.php");
@@ -2379,7 +1868,6 @@ if ($row2['radminsuper'] == 1 || $auth_user == 1) {
 			}
 
 			/* Check if URL exist */
-
 			if (empty($url)) {
 
 				include("header.php");
@@ -2387,31 +1875,22 @@ if ($row2['radminsuper'] == 1 || $auth_user == 1) {
 				GraphicAdmin();
 
 				OpenTable();
-
 				echo "<center><font class=\"title\"><b>" . _WEBDOWNLOADSADMIN . "</b></font></center>";
-
 				CloseTable();
 
 				echo "<br>";
 
 				OpenTable();
-
 				echo "<br><center>"
-
 				."<font class=\"content\">"
-
 				."<b>" . _ERRORNOURL . "</b><br><br>"
-
 				."" . _GOBACK . "<br><br>";
-
 				CloseTable();
 
 				include("footer.php");
-
 			}
 
 			// Check if Description exist
-
 			if (empty($description)) {
 
 				include("header.php");
@@ -2419,35 +1898,25 @@ if ($row2['radminsuper'] == 1 || $auth_user == 1) {
 				GraphicAdmin();
 
 				OpenTable();
-
 				echo "<center><font class=\"title\"><b>" . _WEBDOWNLOADSADMIN . "</b></font></center>";
-
 				CloseTable();
 
 				echo "<br>";
 
 				OpenTable();
-
 				echo "<br><center>"
-
 				."<font class=\"content\">"
-
 				."<b>" . _ERRORNODESCRIPTION . "</b><br><br>"
-
 				."" . _GOBACK . "<br><br>";
-
 				CloseTable();
 
 				include("footer.php");
-
 			}
 
 			$cat = explode("-", $cat);
 
 			if (empty($cat[1])) {
-
 				$cat[1] = 0;
-
 			}
 
 			$title = filter($title, "nohtml", 1);
@@ -2469,254 +1938,129 @@ if ($row2['radminsuper'] == 1 || $auth_user == 1) {
 			GraphicAdmin();
 
 			OpenTable();
-
 			echo "<br><center>";
-
 			echo "<font class=\"content\">";
-
 			echo "" . _NEWDOWNLOADADDED . "<br><br>";
-
 			echo "[ <a href=\"".$admin_file.".php?op=downloads\">" . _WEBDOWNLOADSADMIN . "</a> ]</center><br><br>";
-
 			CloseTable();
 
 			if ($new==1) {
-
 				$db->sql_query("delete from " . $prefix . "_downloads_newdownload where lid='$lid'");
-
 			}
-
 			include("footer.php");
-
 		}
-
 	}
-
-
 
 	switch ($op) {
 
-
-
 		case "downloads":
-
 		downloads();
-
 		break;
-
-
 
 		case "DownloadsDelNew":
-
 		DownloadsDelNew($lid);
-
 		break;
-
-
 
 		case "DownloadsAddCat":
-
 		DownloadsAddCat($title, $cdescription);
-
 		break;
-
-
 
 		case "DownloadsAddSubCat":
-
 		DownloadsAddSubCat($cid, $title, $cdescription);
-
 		break;
-
-
 
 		case "DownloadsAddDownload":
-
 		DownloadsAddDownload($new, $lid, $title, $url, $cat, $description, $name, $email, $submitter, $filesize, $version, $homepage, $hits);
-
 		break;
-
-
 
 		case "DownloadsAddEditorial":
-
 		DownloadsAddEditorial($downloadid, $editorialtitle, $editorialtext);
-
 		break;
-
-
 
 		case "DownloadsModEditorial":
-
 		DownloadsModEditorial($downloadid, $editorialtitle, $editorialtext);
-
 		break;
-
-
 
 		case "DownloadsDownloadCheck":
-
 		DownloadsDownloadCheck();
-
 		break;
-
-
 
 		case "DownloadsValidate":
-
 		DownloadsValidate($cid, $sid, $ttitle);
-
 		break;
-
-
 
 		case "DownloadsDelEditorial":
-
 		DownloadsDelEditorial($downloadid);
-
 		break;
-
-
 
 		case "DownloadsCleanVotes":
-
 		DownloadsCleanVotes();
-
 		break;
-
-
 
 		case "DownloadsListBrokenDownloads":
-
 		DownloadsListBrokenDownloads();
-
 		break;
-
-
 
 		case "DownloadsDelBrokenDownloads":
-
 		DownloadsDelBrokenDownloads($lid);
-
 		break;
-
-
 
 		case "DownloadsIgnoreBrokenDownloads":
-
 		DownloadsIgnoreBrokenDownloads($lid);
-
 		break;
-
-
 
 		case "DownloadsListModRequests":
-
 		DownloadsListModRequests();
-
 		break;
-
-
 
 		case "DownloadsChangeModRequests":
-
 		DownloadsChangeModRequests($requestid);
-
 		break;
-
-
 
 		case "DownloadsChangeIgnoreRequests":
-
 		DownloadsChangeIgnoreRequests($requestid);
-
 		break;
-
-
 
 		case "DownloadsDelCat":
-
 		DownloadsDelCat($cid, $sid, $sub, $ok);
-
 		break;
-
-
 
 		case "DownloadsModCat":
-
 		DownloadsModCat($cat);
-
 		break;
-
-
 
 		case "DownloadsModCatS":
-
 		DownloadsModCatS($cid, $sid, $sub, $title, $cdescription);
-
 		break;
-
-
 
 		case "DownloadsModDownload":
-
 		DownloadsModDownload($lid);
-
 		break;
-
-
 
 		case "DownloadsModDownloadS":
-
 		DownloadsModDownloadS($lid, $title, $url, $description, $name, $email, $hits, $cat, $filesize, $version, $homepage);
-
 		break;
-
-
 
 		case "DownloadsDelDownload":
-
 		DownloadsDelDownload($lid);
-
 		break;
-
-
 
 		case "DownloadsDelVote":
-
 		DownloadsDelVote($lid, $rid);
-
 		break;
-
-
 
 		case "DownloadsDelComment":
-
 		DownloadsDelComment($lid, $rid);
-
 		break;
-
-
 
 		case "DownloadsTransfer":
-
 		DownloadsTransfer($cidfrom,$cidto);
-
 		break;
-
-
 
 		case "check_download":
-
 		check_download($lid);
-
 		break;
-
-
-
 	}
-
-
 
 } else {
 
@@ -2725,15 +2069,10 @@ if ($row2['radminsuper'] == 1 || $auth_user == 1) {
 	GraphicAdmin();
 
 	OpenTable();
-
 	echo "<center><b>"._ERROR."</b><br><br>You do not have administration permission for module \"$module_name\"</center>";
-
 	CloseTable();
 
 	include("footer.php");
-
 }
-
-
 
 ?>

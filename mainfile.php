@@ -32,6 +32,8 @@ if(!defined('END_TRANSACTION')) {
 // Get php version
 $phpver = phpversion();
 
+define('PHP_7', version_compare($phpver, '7.0.0', '>='));
+
 define('GZIPSUPPORT', extension_loaded('zlib'));
 define('GDSUPPORT', extension_loaded('gd'));
 define('CAN_MOD_INI', !stristr(ini_get('disable_functions'), 'ini_set'));
@@ -111,27 +113,6 @@ function get_microtime()
     return ($usec + $sec);
 }
 
-$do_gzip_compress = false;
-
-if (GZIPSUPPORT && !ini_get('zlib.output_compression') 
-&& isset($_SERVER['HTTP_ACCEPT_ENCODING']) 
-&& preg_match('/gzip/i', (string) $_SERVER['HTTP_ACCEPT_ENCODING'])):
-    
-	if (version_compare($phpver, '7.1.0', '>=')): 
-        ob_end_clean();  // never run this without doing an end clean first (Ernest Allen Buffington)
-		ob_start('ob_gzhandler');
-    else:
-        $do_gzip_compress = true;
-        ob_start();
-        ob_implicit_flush(0);
-        header('Content-Encoding: gzip');
-    endif;
-
-else:
-    ob_start();
-    ob_implicit_flush(0);
-endif;
-
 $sanitize_rules = array("newlang"=>"/[a-z][a-z]/i","redirect"=>"/[a-z0-9]*/i");
 
 foreach($_REQUEST as $key=>$value)
@@ -149,6 +130,43 @@ foreach($_REQUEST as $key=>$value)
 if((isset($admin) && $admin != $_COOKIE['admin']) OR (isset($user) && $user != $_COOKIE['user'])) {
 	die("Illegal Operation");
 }
+
+if((isset($_POST['name']) && !empty($_POST['name'])) && (isset($_GET['name']) && !empty($_GET['name']))): 
+  $name = (isset($_GET['name']) && !stristr($_GET['name'],'..') && !stristr($_GET['name'],'://')) ? addslashes(trim($_GET['name'])) : false;
+else: 
+  $name = (isset($_REQUEST['name']) && !stristr($_REQUEST['name'],'..') && !stristr($_REQUEST['name'],'://')) ? addslashes(trim($_REQUEST['name'])) : false;
+endif;
+
+$start_mem = function_exists('memory_get_usage') ? memory_get_usage() : 0;
+
+if(preg_match('/IIS/', $_SERVER['SERVER_SOFTWARE']) && isset($_SERVER['SCRIPT_NAME'])):
+    $requesturi = $_SERVER['SCRIPT_NAME'];
+    if (isset($_SERVER['QUERY_STRING'])):
+      $requesturi .= '?'.$_SERVER['QUERY_STRING'];
+	endif;
+    $_SERVER['REQUEST_URI'] = $requesturi;
+endif;
+
+if(PHP_7):
+    $HTTP_POST_VARS =& $_POST;
+    $HTTP_GET_VARS =& $_GET;
+    $HTTP_SERVER_VARS =& $_SERVER;
+    $HTTP_COOKIE_VARS =& $_COOKIE;
+    $HTTP_ENV_VARS =& $_ENV;
+    $HTTP_POST_FILES =& $_FILES;
+    if(isset($_SESSION)): 
+	  $HTTP_SESSION_VARS =& $_SESSION;
+	endif;
+endif;
+
+if(isset($_COOKIE['DONATION'])):
+  setcookie('DONATION', null, time()-3600);
+  $type = preg_match('/IIS|Microsoft|WebSTAR|Xitami/', $_SERVER['SERVER_SOFTWARE']) ? 'Refresh: 0; URL=' : 'Location: ';
+  $url = str_replace('&amp;', "&", $url);
+  header($type . 'modules.php?name=Donations&op=thankyou');
+endif;
+
+use function PHP81_BC\strftime;
 
 if(!function_exists('stripos')) {
 
@@ -172,11 +190,8 @@ function stripos_clone($haystack, $needle, $offset=0) {
   $return = stripos($haystack, (string) $needle, $offset=0);
 
   if ($return === false) {
-
     return false;
-
     } else {
-
     return true;
     }
   }
@@ -200,6 +215,57 @@ if(isset($user) && $user == $_COOKIE['user'])
 $htmltags = "<div align=\"center\"><img src=\"images/logo.gif\"><br><br><b>";
 $htmltags .= "The html tags you attempted to use is forbidden!</b><br><br>";
 $htmltags .= "[ <a href=\"javascript:history.go(-1)\"><b>Go Back</b></a> ]</div>";
+
+# Absolute Path Mod - 01/01/2012 by Ernest Allen Buffington START (added for old theme compatibility)
+$rel_path=[];
+$rel_path['file']   = str_replace('\\', "/", realpath(__DIR__));
+$server_ary         = pathinfo(realpath(basename((string) $_SERVER['PHP_SELF'])));
+$rel_path['server'] = str_replace('\\', "/", $server_ary['dirname']);
+$rel_path['uri']    = realpath(basename(substr((string) $_SERVER['REQUEST_URI'], 0, strpos((string) $_SERVER['REQUEST_URI'], '?'))));
+$script_abs_path    = pathinfo(realpath($_SERVER['SCRIPT_FILENAME']));
+$rel_path['script'] = str_replace('\\', "/",$script_abs_path['dirname']);
+
+if(($rel_path['file'] === $rel_path['script']) && (strlen((string) $_SERVER['DOCUMENT_ROOT']) < strlen($script_abs_path['dirname']))): 
+
+    $href_path = '/'.str_replace($_SERVER['DOCUMENT_ROOT'], '', $rel_path['script']);
+
+    if (substr($href_path, 0, 2) == '//'): 
+    $href_path = substr($href_path, 1);
+	endif;
+
+elseif(strlen($rel_path['file']) == (strlen((string) $_SERVER['DOCUMENT_ROOT']) - 1)): 
+
+    $href_path = '';
+
+elseif(strlen($rel_path['script']) > strlen((string) $_SERVER['DOCUMENT_ROOT']) && (strlen((string) $_SERVER['DOCUMENT_ROOT']) > strlen($rel_path['file']))): 
+
+    $href_path = '';
+
+elseif(strlen($rel_path['file']) > strlen((string) $_SERVER['DOCUMENT_ROOT'])):
+
+	$href_path = '/'.str_replace($_SERVER['DOCUMENT_ROOT'], '', $rel_path['file']);
+
+	if(substr($href_path, 0, 2) == '//'): 
+        $href_path = substr($href_path, 1);
+	endif;
+
+else: 
+
+    $href_path = 'https://'.$_SERVER['SERVER_NAME'];
+	$href_path_http = 'http://'.$_SERVER['SERVER_NAME'];
+
+endif;
+
+unset ($rel_path);
+unset ($server_ary);
+unset ($script_abs_path);
+
+# HTTP & HTTPS
+define('HTTPS', $href_path . '/');
+define('HTTP', $href_path_http . '/');
+
+define('EXAMPLE_USE_DIR', $href_path . '/example/');
+# Absolute Path Mod - 01/01/2012 by Ernest Allen Buffington END (added for old theme compatibility)
 
 # add 3rd party backward version comapatibility defines
 # Inspired by phoenix-cms at website-portals.net
@@ -291,6 +357,39 @@ require_once(INCLUDE_PATH."db/db.php");
 require_once(INCLUDE_PATH."includes/mods/Evo/functions_database.php");
 
 /*
+ * Get user ip and try to detect bots
+ * Code origin Nuke Evolution / Xtreme v2.0.9e
+ * @date 03/28/2023 8:23 AM Ernest Allen Buffington
+ */
+require_once(NUKE_CLASSES_DIR.'class.identify.php');
+
+if(ini_get('output_buffering') && !isset($agent['bot'])):
+  ob_end_clean();
+  header('Content-Encoding: none');
+endif;
+
+$do_gzip_compress = false;
+
+if (GZIPSUPPORT && !ini_get('zlib.output_compression') 
+&& isset($_SERVER['HTTP_ACCEPT_ENCODING']) 
+&& preg_match('/gzip/i', (string) $_SERVER['HTTP_ACCEPT_ENCODING'])):
+    
+	if (version_compare($phpver, '7.1.0', '>=')): 
+        ob_end_clean();  // never run this without doing an end clean first (Ernest Allen Buffington)
+		ob_start('ob_gzhandler');
+    else:
+        $do_gzip_compress = true;
+        ob_start();
+        ob_implicit_flush(0);
+        header('Content-Encoding: gzip');
+    endif;
+
+else:
+    ob_start();
+    ob_implicit_flush(0);
+endif;
+
+/*
  * Moved back to includes folder (one still exists inside the forums folder)
  * Code origin phpBB
  * @date 03/28/2023 8:23 AM Ernest Allen Buffington
@@ -321,7 +420,6 @@ require_once(NUKE_CLASSES_DIR.'class.debugger.php');
 /* FOLLOWING TWO LINES ARE DEPRECATED BUT ARE HERE FOR OLD MODULES COMPATIBILITY */
 /* PLEASE START USING THE NEW SQL ABSTRACTION LAYER. SEE MODULES DOC FOR DETAILS */
 require_once(INCLUDE_PATH."includes/sql_layer.php");
-
 $dbi = sql_connect($dbhost, $dbuname, $dbpass, $dbname);
 
 require_once(INCLUDE_PATH."includes/ipban.php");
@@ -491,13 +589,9 @@ $pagetitle = "";
 error_reporting(E_ALL^E_NOTICE);
 
 if ($display_errors == 1) {
-
   ini_set('display_errors', 1);
-
 } else {
-
   ini_set('display_errors', 0);
-
 }
 
 if (!defined('FORUM_ADMIN')) {
@@ -680,11 +774,8 @@ $postString = "";
 foreach ($_POST as $postkey => $postvalue) {
 
     if ($postString > "") {
-
      $postString .= "&".$postkey."=".$postvalue;
-
     } else {
-
      $postString .= $postkey."=".$postvalue;
     }
 }
@@ -796,11 +887,8 @@ function update_points($id) {
 function title($text) {
 
 	OpenTable();
-
 	echo "<div align=\"center\"><span class=\"title\"><strong>$text</strong></span></div>";
-
 	CloseTable();
-
 	echo "<br>";
 }
 
@@ -1056,17 +1144,12 @@ function message_box() {
 				if ($view == 5 AND paid()) {
 
 					OpenTable();
-
 					echo "<div align=\"center\"><span class=\"option\" style=\"color:$textcolor2;\"><b>$title</b></span></div><br>\n"
-
 					."<span class=\"content\">$content</span>";
 
 					if (is_admin($admin)) {
-
 						echo "<br><br><div align=\"center\"><span class=\"content\">[ "._MVIEWSUBUSERS." - $remain - <a href=\"".$admin_file.".php?op=editmsg&amp;mid=$mid\">"._EDIT."</a> ]</span></div>";
-
 					}
-
 					CloseTable();
 
 					echo "<br>";
@@ -1074,13 +1157,9 @@ function message_box() {
 				} elseif ($view == 4 AND is_admin($admin)) {
 
 					OpenTable();
-
 					echo "<div align=\"center\"><span class=\"option\" style=\"color:$textcolor2;\"><b>$title</b></span></div><br>\n"
-
 					."<span class=\"content\">$content</span>"
-
 					."<br><br><div align=\"center\"><span class=\"content\">[ "._MVIEWADMIN." - $remain - <a href=\"".$admin_file.".php?op=editmsg&amp;mid=$mid\">"._EDIT."</a> ]</span></div>";
-
 					CloseTable();
 
 					echo "<br>";
@@ -1088,17 +1167,12 @@ function message_box() {
 				} elseif ($view == 3 AND is_user($user) || is_admin($admin)) {
 
 					OpenTable();
-
 					echo "<div align=\"center\"><span class=\"option\" color=\"$textcolor2\"><b>$title</b></span></div><br>\n"
-
 					."<span class=\"content\">$content</span>";
 
 					if (is_admin($admin)) {
-
 						echo "<br><br><div align=\"center\"><span class=\"content\">[ "._MVIEWUSERS." - $remain - <a href=\"".$admin_file.".php?op=editmsg&amp;mid=$mid\">"._EDIT."</a> ]</span></div>";
-
 					}
-
 					CloseTable();
 
 					echo "<br>";
@@ -1106,17 +1180,12 @@ function message_box() {
 				} elseif ($view == 2 AND !is_user($user) || is_admin($admin)) {
 
 					OpenTable();
-
 					echo "<div align=\"center\"><span class=\"option\" style=\"color:$textcolor2;\"><b>$title</b></span></div><br>\n"
-
 					."<span class=\"content\">$content</span>";
 
 					if (is_admin($admin)) {
-
 						echo "<br><br><div align=\"center\"><span class=\"content\">[ "._MVIEWANON." - $remain - <a href=\"".$admin_file.".php?op=editmsg&amp;mid=$mid\">"._EDIT."</a> ]</span></div>";
-
 					}
-
 					CloseTable();
 
 					echo "<br>";
@@ -1126,15 +1195,11 @@ function message_box() {
 					OpenTable();
 
 					echo "<div align=\"center\"><span class=\"option\" style=\"color=:$textcolor2;\"><b>$title</b></span></div><br>\n"
-
 					."<span class=\"content\">$content</span>";
 
 					if (is_admin($admin)) {
-
 						echo "<br><br><div align=\"center\"><span class=\"content\">[ "._MVIEWALL." - $remain - <a href=\"".$admin_file.".php?op=editmsg&amp;mid=$mid\">"._EDIT."</a> ]</span></div>";
-
 					}
-
 					CloseTable();
 
 					echo "<br>";
@@ -1148,7 +1213,6 @@ function message_box() {
 					if ($mdate < $past) {
 
 						$db->sql_query("UPDATE ".$prefix."_message SET active='0' WHERE mid='$mid'");
-
 					}
 				}
 			}
@@ -1191,11 +1255,8 @@ function online() {
     $row = $db->sql_fetchrow($result);
 
     if ($row) {
-
       $db->sql_query("UPDATE ".$prefix."_session SET uname='".addslashes($uname)."', time='$ctime', host_addr='$ip', guest='$guest' WHERE uname='".addslashes($uname)."'");
-
     } else {
-
       $db->sql_query("INSERT INTO ".$prefix."_session (uname, time, host_addr, guest) VALUES ('".addslashes($uname)."', '$ctime', '$ip', '$guest')");
     }
   }
@@ -1209,29 +1270,20 @@ function blockfileinc($title, $blockfile, $side=0) {
 	$file = file_exists("blocks/".$blockfile."");
 
 	if (!$file) {
-
 		$content = _BLOCKPROBLEM;
-
 	} else {
-
 		include("blocks/".$blockfile."");
 	}
 
 	if (empty($content)) {
-
 		$content = _BLOCKPROBLEM2;
 	}
 
 	if ($side == 1) {
-
 		themecenterbox($blockfiletitle, $content);
-
 	} elseif ($side == 2) {
-
 		themecenterbox($blockfiletitle, $content);
-
 	} else {
-
 		themesidebox($blockfiletitle, $content);
 	}
 }
@@ -1251,7 +1303,6 @@ function selectlanguage() {
 		while($func=$langdir->read()) {
 
 			if(str_starts_with($func, "lang-")) {
-
 				$menulist .= "$func ";
 			}
 		}
@@ -1281,7 +1332,6 @@ function selectlanguage() {
 		$title = _SELECTLANGUAGE;
 
 		$content = "<div align=\"center\"><span class=\"content\">"._SELECTGUILANG."<br><br></span>";
-
 		$content .= "<form action=\"index.php\" method=\"get\"><select name=\"newlanguage\" onChange=\"top.location.href=this.options[this.selectedIndex].value\">";
 
 		$handle=opendir('language');
@@ -1291,7 +1341,6 @@ function selectlanguage() {
 		while ($file = readdir($handle)) {
 
 			if (preg_match("/^lang\-(.+)\.php/", $file, $matches)) {
-
 				$langFound = $matches[1];
 				$languageslist .= "$langFound ";
 			}
@@ -1314,7 +1363,6 @@ function selectlanguage() {
 				$content .= ">".ucfirst($languageslist[$i])."</option>\n";
 			}
 		}
-
 		$content .= "</select></form></div>";
 
 		themesidebox($title, $content);
@@ -1382,13 +1430,10 @@ function cookiedecode($user) {
     static $pass;
 
     if(!is_array($user)) {
-
         $user = base64_decode($user);
         $user = addslashes($user);
         $cookie = explode(":", $user);
-
     } else {
-
         $cookie = $user;
     }
 
@@ -1420,7 +1465,6 @@ function getusrinfo($user) {
     if (isset($userrow) AND is_array($userrow)) {
 
         if ($userrow['username'] == $user[1] && $userrow['user_password'] == $user[2]) {
-
             return $userrow;
         }
     }
@@ -1446,10 +1490,12 @@ function getusrinfo($user) {
 # $nohtml: strip PHP+HTML tags, false=no, true=yes, default=false
 function Fix_Quotes($str, $nohtml=false) 
 {
-    if($nohtml): 
-	  $str = strip_tags($str);
-	endif;
-    
+    if(isset($str)):
+	  if($nohtml): 
+	    $str = strip_tags($str);
+	  endif;
+    endif;
+	
 	return $str;
 }
 
@@ -1535,7 +1581,6 @@ function delQuotes($string){
 			$tmp="";
 
 			$attrib=-1;
-
 		}
 
 		break;
@@ -1783,25 +1828,28 @@ function adminblock() {
 		$num = $db->sql_numrows($db->sql_query("SELECT * FROM ".$prefix."_queue"));
 		$content = "<span style=\"white-space: nowrap;\" class=\"content\">";
 
-		$content .= "<a href=\"".$admin_file.".php?op=submissions\">"._SUBMISSIONS.": $num</a>";
+		$content .= "<a href=\"".$admin_file.".php?op=submissions\">"._SUBMISSIONS.": $num</a></br>";
+		
 		$num = $db->sql_numrows($db->sql_query("SELECT * FROM ".$prefix."_reviews_add"));
-
-		$content .= "<a href=\"".$admin_file.".php?op=reviews\">"._WREVIEWS.": $num</a>";
+		$content .= "<a href=\"".$admin_file.".php?op=reviews\">"._WREVIEWS.": $num</a></br>";
 
 		$num = $db->sql_numrows($db->sql_query("SELECT * FROM ".$prefix."_links_newlink"));
 		$brokenl = $db->sql_numrows($db->sql_query("SELECT * FROM ".$prefix."_links_modrequest WHERE brokenlink='1'"));
-		$modreql = $db->sql_numrows($db->sql_query("SELECT * FROM ".$prefix."_links_modrequest WHERE brokenlink='0'"));
-		$content .= "<a href=\"".$admin_file.".php?op=Links\">"._WLINKS.": $num</a>";
-		$content .= "<a href=\"".$admin_file.".php?op=LinksListModRequests\">"._MODREQLINKS.": $modreql</a>";
 
-		$content .= "<a href=\"".$admin_file.".php?op=LinksListBrokenLinks\">"._BROKENLINKS.": $brokenl</a>";
+		$modreql = $db->sql_numrows($db->sql_query("SELECT * FROM ".$prefix."_links_modrequest WHERE brokenlink='0'"));
+
+		$content .= "<a href=\"".$admin_file.".php?op=Links\">"._WLINKS.": $num</a></br>";
+
+		$content .= "<a href=\"".$admin_file.".php?op=LinksListModRequests\">"._MODREQLINKS.": $modreql</a></br>";
+
+		$content .= "<a href=\"".$admin_file.".php?op=LinksListBrokenLinks\">"._BROKENLINKS.": $brokenl</a></br>";
 		$num = $db->sql_numrows($db->sql_query("SELECT * FROM ".$prefix."_downloads_newdownload"));
 
 		$brokend = $db->sql_numrows($db->sql_query("SELECT * FROM ".$prefix."_downloads_modrequest WHERE brokendownload='1'"));
 		$modreqd = $db->sql_numrows($db->sql_query("SELECT * FROM ".$prefix."_downloads_modrequest WHERE brokendownload='0'"));
-		$content .= "<a href=\"".$admin_file.".php?op=downloads\">"._UDOWNLOADS.": $num</a>";
-		$content .= "<a href=\"".$admin_file.".php?op=DownloadsListModRequests\">"._MODREQDOWN.": $modreqd</a>";
-		$content .= "<a href=\"".$admin_file.".php?op=DownloadsListBrokenDownloads\">"._BROKENDOWN.": $brokend</a></span>";
+		$content .= "<a href=\"".$admin_file.".php?op=downloads\">"._UDOWNLOADS.": $num</a></br>";
+		$content .= "<a href=\"".$admin_file.".php?op=DownloadsListModRequests\">"._MODREQDOWN.": $modreqd</a></br>";
+		$content .= "<a href=\"".$admin_file.".php?op=DownloadsListBrokenDownloads\">"._BROKENDOWN.": $brokend</a></br></span>";
 
 		themesidebox($title, $content);
 	}
@@ -2344,11 +2392,8 @@ function paid() {
 	if (is_user($user)) {
 
 		if (!empty($subscription_url)) {
-
 			$renew = ""._SUBRENEW." $subscription_url";
-
 		} else {
-
 			$renew = "";
 		}
 
@@ -2617,19 +2662,13 @@ function info_box($graphic, $message) {
 	if (file_exists("images/system/".$graphic.".gif") AND !empty($message)) {
 
 		Opentable();
-
 		$graphic = filter($graphic, "nohtml");
-
 		$message = filter($message, "");
 
 		echo "<table align=\"center\" border=\"0\" width=\"80%\" cellpadding=\"10\"><tr>"
-
 			."<td valign=\"top\"><img src=\"images/system/".$graphic.".gif\" border=\"0\" alt=\"\" title=\"\" width=\"34\" height=\"34\"></td>"
-
 			."<td valign=\"top\">$message</td>"
-
 			."</tr></table>";
-
 		CloseTable();
 
 	} else {
@@ -2643,59 +2682,38 @@ if (isset($gfx)){
 switch($gfx) {
 
 	case "gfx":
-
 	$datekey = date("F j");
-
 	$rcode = hexdec(md5($_SERVER['HTTP_USER_AGENT'] . $sitekey . $random_num . $datekey));
-
 	$code = substr($rcode, 2, 6);
 
 	$ThemeSel = get_theme();
 
 	if (file_exists("themes/".$ThemeSel."/images/code_bg.jpg")) {
-
 		$image = ImageCreateFromJPEG("themes/".$ThemeSel."/images/code_bg.jpg");
-
 	} else {
-
 		$image = ImageCreateFromJPEG("images/code_bg.jpg");
-
 	}
 
 	$text_color = ImageColorAllocate($image, 80, 80, 80);
 
 	Header("Content-type: image/jpeg");
-
 	ImageString ($image, 5, 12, 2, $code, $text_color);
-
 	ImageJPEG($image, '', 75);
-
 	ImageDestroy($image);
-
 	die();
-
 	break;
 
-
-
 	case "gfx_little":
-
 	$datekey = date("F j");
-
 	$rcode = hexdec(md5($_SERVER['HTTP_USER_AGENT'] . $sitekey . $random_num . $datekey));
-
 	$code = substr($rcode, 2, 3);
 
 	$ThemeSel = get_theme();
 
 	if (file_exists("themes/".$ThemeSel."/images/code_bg_little.jpg")) {
-
 		$image = ImageCreateFromJPEG("themes/".$ThemeSel."/images/code_bg_little.jpg");
-
 	} else {
-
 		$image = ImageCreateFromJPEG("images/code_bg_little.jpg");
-
 	}
 
 	$text_color = ImageColorAllocate($image, 80, 80, 80);
@@ -2704,10 +2722,7 @@ switch($gfx) {
 	ImageString ($image, 5, 12, 2, $code, $text_color);
 	ImageJPEG($image, '', 75);
 	ImageDestroy($image);
-
 	die();
-
 	break;
    }
 }
-
