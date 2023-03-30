@@ -13,7 +13,6 @@
 /************************************************************************/
 
 if (stristr(htmlentities($_SERVER['PHP_SELF']), "meta.php")) {
-
     Header("Location: ../index.php");
     die();
 }
@@ -23,7 +22,7 @@ global $commercial_license, $sitename, $slogan;
 ##################################################
 # Include for Meta Tags generation               #
 ##################################################
-
+if(!isset($metastring)) { $metastring = ''; }
 $metastring .= "<meta http-equiv=\"expires\" content=\"0\">\n";
 $metastring .= '<!--[if IE]>'."\n";
 $metastring .= '<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />'."\n";
