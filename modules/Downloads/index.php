@@ -84,10 +84,10 @@ function getparentlink($parentid,$title) {
     $result = $db->sql_query($sql);
 
     $row = $db->sql_fetchrow($result);
-    $cid = intval($row['cid']);
-  	$ptitle = filter($row['title'], "nohtml");
+    $cid = intval($row['cid'] ?? 1);
+  	$ptitle = filter($row['title'] ?? '', "nohtml");
 
-  	$pparentid = intval($row['parentid']);
+  	$pparentid = intval($row['parentid'] ?? 0);
 
     if (!empty($ptitle)) 
 	$title="<a href=modules.php?name=$module_name&amp;d_op=viewdownload&amp;cid=$cid>$ptitle</a>/".$title;
@@ -1139,7 +1139,7 @@ function viewdownload($cid, $min, $orderby, $show) {
         .""._POPULARITY." (<a href=\"modules.php?name=$module_name&amp;d_op=viewdownload&amp;cid=$cid&amp;orderby=hitsA\">A</a>\<a href=\"modules.php?name=$module_name&amp;d_op=viewdownload&amp;cid=$cid&amp;orderby=hitsD\">D</a>)"
 	."<br><b>"._RESSORTED.": $orderbyTrans</b></font></center><br><br>";
     
-	if(!isset($perpage)) { $perpage = 1; }
+	if(!isset($perpage)) { $perpage = 10; }
 	
     $result=$db->sql_query("SELECT lid, 
 	                             title, 
@@ -1167,6 +1167,8 @@ function viewdownload($cid, $min, $orderby, $show) {
     $hits = intval($hits);
     $totalvotes = intval($totalvotes);
     $totalcomments = intval($totalcomments);
+	if(!isset($downloadratingsummary)) { $downloadratingsummary = '0.0000'; }
+	if(!isset($mainvotedecimal)) { $mainvotedecimal = 0; }
 	$downloadratingsummary = number_format($downloadratingsummary, $mainvotedecimal);
 	$title = filter($title, "nohtml");
 	$description = filter($description);
@@ -3200,7 +3202,7 @@ function addrating($ratinglid, $ratinguser, $rating, $ratinghost_name, $ratingco
     $outsidewaitdays = null;
     $finalrating = null;
     $truecomments = null;
-
+	
     global $prefix, $db, $cookie, $user, $module_name;
 
     $passtest = "yes";
@@ -3254,7 +3256,7 @@ function addrating($ratinglid, $ratinguser, $rating, $ratinghost_name, $ratingco
     	    if ($ratinguserDB==$ratinguser) {
     		$error = "postervote";
     	        completevote($error);
-		$passtest = "no";
+		    $passtest = "no";
     	    }
    	}
 
@@ -3273,11 +3275,9 @@ function addrating($ratinglid, $ratinguser, $rating, $ratinghost_name, $ratingco
 
                 completevote($error);
 
-		$passtest = "no";
-
+		        $passtest = "no";
 	    }
-
-        }
+      }
     }
 
     /* Check if ANONYMOUS user is trying to vote more than once per day. */
@@ -3315,9 +3315,7 @@ function addrating($ratinglid, $ratinguser, $rating, $ratinghost_name, $ratingco
     	if ($outsidevotecount >= 1) {
 
     	    $error = "outsideflood";
-
             completevote($error);
-
     	    $passtest = "no";
     	}
     }
@@ -3388,9 +3386,9 @@ function completevotefooter($lid, $ratinguser) {
 
     $lid = intval($lid);
 
-    $row = $db->sql_query("SELECT title FROM ".$prefix."_downloads_downloads WHERE lid='$lid'");
-
-    $ttitle = filter($row[title], "nohtml");
+    $sql = $db->sql_query("SELECT title FROM ".$prefix."_downloads_downloads WHERE lid='$lid'");
+    $row = $db->sql_fetchrow($sql);
+    $ttitle = filter($row['title'], "nohtml");
 
     $result = $db->sql_query("SELECT url FROM ".$prefix."_downloads_downloads WHERE lid='$lid'");
 
