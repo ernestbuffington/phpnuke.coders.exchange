@@ -203,7 +203,7 @@ function themefooter() {
 /************************************************************/
 function themeindex ($aid, $informant, $time, $title, $counter, $topic, $thetext, $notes, $morelink, $topicname, $topicimage, $topictext) {
 
-    global $anonymous, $tipath;
+    global $anonymous, $tipath, $timezone;
 
     $ThemeSel = get_theme();
 
