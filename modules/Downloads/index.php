@@ -2057,9 +2057,9 @@ function search($query, $min, $orderby, $show) {
 
     echo "<br><br><center><font class=\"content\">"
 	.""._TRY2SEARCH." \"$the_query\" "._INOTHERSENGINES."<br>"
-	."<a target=\"_blank\" href=\"http://www.altavista.com/cgi-bin/query?pg=q&amp;sc=on&amp;hl=on&amp;act=2006&amp;par=0&amp;q=$the_query&amp;kl=XX&amp;stype=stext\">Alta Vista</a> - "
-	."<a target=\"_blank\" href=\"http://search.yahoo.com/bin/search?p=$the_query\">Yahoo</a> - "
-	."<a target=\"_blank\" href=\"http://www.google.com/search?q=$the_query\">Google</a>"
+	."<a target=\"_blank\" href=\"https://www.altavista.com/cgi-bin/query?pg=q&amp;sc=on&amp;hl=on&amp;act=2006&amp;par=0&amp;q=$the_query&amp;kl=XX&amp;stype=stext\">Alta Vista</a> - "
+	."<a target=\"_blank\" href=\"https://search.yahoo.com/bin/search?p=$the_query\">Yahoo</a> - "
+	."<a target=\"_blank\" href=\"https://www.google.com/search?q=$the_query\">Google</a>"
 	."</font>";
 
     } else {
@@ -2288,8 +2288,8 @@ function viewdownloaddetails($lid) {
     $ttitle = null;
 
     global $prefix, $db, $admin, $bgcolor1, $bgcolor2, $bgcolor3, $bgcolor4, $module_name, $anonymous;
-
-    include("header.php");
+    
+	include("header.php");
     include("modules/$module_name/d_config.php");
 
     menu(1);
