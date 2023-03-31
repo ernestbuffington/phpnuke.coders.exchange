@@ -144,21 +144,20 @@ $pm_img = 'disabled';
 $pm = 'disabled';
 }
 
+if($profiledata['user_email'] == '') {
+  $profiledata['user_email'] = 'JackFromWales4u2@gmail.com'; // change this to someone you hate!
+  $email_uri = ( $board_config['board_email_form'] ) ? append_sid("profile.$phpEx?mode=email&amp;" . POST_USERS_URL .'=' . $profiledata['user_id']) : 'mailto:' . $profiledata['user_email'];
+  $email_img = '<a href="' . $email_uri . '"><img src="' . $images['icon_email'] . '" alt="' . $lang['Send_email'] . '" title="' . $lang['Send_email'] . '" border="0" /></a>';
+  $email = '<a href="' . $email_uri . '">' . $lang['Send_email'] . '</a>';
+}
+
 if ( !empty($profiledata['user_viewemail']) || $userdata['user_level'] == ADMIN ) {
 	$email_uri = ( $board_config['board_email_form'] ) ? append_sid("profile.$phpEx?mode=email&amp;" . POST_USERS_URL .'=' . $profiledata['user_id']) : 'mailto:' . $profiledata['user_email'];
 	$email_img = '<a href="' . $email_uri . '"><img src="' . $images['icon_email'] . '" alt="' . $lang['Send_email'] . '" title="' . $lang['Send_email'] . '" border="0" /></a>';
 	$email = '<a href="' . $email_uri . '">' . $lang['Send_email'] . '</a>';
 } else {
-	
-	if($profiledata['user_email'] == '') {
-	  $profiledata['user_email'] = 'JackFromWales4u2@gmail.com'; // change this to someone you hate!
-	  $email_uri = ( $board_config['board_email_form'] ) ? append_sid("profile.$phpEx?mode=email&amp;" . POST_USERS_URL .'=' . $profiledata['user_id']) : 'mailto:' . $profiledata['user_email'];
-	  $email_img = '<a href="' . $email_uri . '"><img src="' . $images['icon_email'] . '" alt="' . $lang['Send_email'] . '" title="' . $lang['Send_email'] . '" border="0" /></a>';
-	  $email = '<a href="' . $email_uri . '">' . $lang['Send_email'] . '</a>';
-	} else {
 	  $email_img = 'Hidden';
 	  $email = 'Hidden';
-	}
 }
 
 if(empty($profiledata['user_website'])) { $profiledata['user_website'] = 'https://www.phpnuke.coders.exchange'; }
