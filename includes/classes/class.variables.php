@@ -462,9 +462,9 @@ function deepPurifier($data)
 	if(!isset($config) || empty($config)) 
 	{
         $siteRootDir = dirname($_SERVER['DOCUMENT_ROOT']);
-        defined('EZYANG_BASE_DIR') or define('EZYANG_BASE_DIR', $siteRootDir . '/public_html/vendor/ezyang/htmlpurifier/library/HTMLPurifier/');
-        if(file_exists(EZYANG_BASE_DIR.'Bootstrap.php')):
-            require_once(EZYANG_BASE_DIR.'Bootstrap.php');
+        defined('EZYANG_BASE_DIR') or define('EZYANG_BASE_DIR', $siteRootDir . '/public_html/includes/vendor/ezyang/htmlpurifier/library/');
+        if(file_exists(EZYANG_BASE_DIR.'HTMLPurifier/Bootstrap.php')):
+            require_once(EZYANG_BASE_DIR.'HTMLPurifier/Bootstrap.php');
         endif;
 		
         if(file_exists(EZYANG_BASE_DIR.'HTMLPurifier.autoload.php')):
@@ -477,7 +477,7 @@ function deepPurifier($data)
 		$config = HTMLPurifier_Config::createDefault();
 		$config->set('Core.Encoding', 'UTF-8');
 		$config->set('HTML.Doctype', 'HTML 4.01 Transitional');
-		if(!is_god($admin) || (is_god($admin) && !$html_auth)) 
+		if(!is_admin($admin) || (is_admin($admin) && !$html_auth)) 
 		{
 			$config->set('HTML.Trusted', true);
 			$config->set('HTML.SafeObject', true);
@@ -526,7 +526,7 @@ function deepPurifier($data)
                 }
             }
             # If its a strip lets purify it
-            if (!is_god($admin) || (is_god($admin) && !$html_auth)) {
+            if (!is_admin($admin) || (is_admin($admin) && !$html_auth)) {
  					$data[$k] = $purifier->purify($v);
  				}
             $data[$k] = str_replace('\n', "\n", (string) $data[$k]);
