@@ -1,5 +1,8 @@
 <?php
 
+if(!isset($_REQUEST['module']))
+$_REQUEST['module'] = '';
+
 switch ($_REQUEST['op']) {
 
     case "autotheme":
