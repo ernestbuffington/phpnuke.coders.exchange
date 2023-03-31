@@ -57,11 +57,11 @@ function getparent($parentid,$title) {
     $result = $db->sql_query($sql);
     $row = $db->sql_fetchrow($result);
 
-  	$cid = intval($row[cid]);
+  	$cid = intval($row['cid']);
 
-  	$ptitle = filter($row[title], "nohtml");
+  	$ptitle = filter($row['title'], "nohtml");
 
-  	$pparentid = intval($row[parentid]);
+  	$pparentid = intval($row['parentid']);
 
     if ($ptitle=="$title") 
 	$title=$title; 
@@ -313,7 +313,7 @@ function AddDownload() {
 	    echo "<br><br><table width=\"100%\" border=\"0\" cellspacing=\"3\">"
     		."<tr><td nowrap><form method=\"post\" action=\"modules.php?name=$module_name&amp;d_op=Add\">"
     	    ."<b>"._DOWNLOADNAME.":</b></td><td><input type=\"text\" name=\"title\" size=\"40\" maxlength=\"100\"></td></tr>"
-    	    ."<tr><td nowrap><b>"._FILEURL.":</b></td><td><input type=\"text\" name=\"url\" size=\"40\" maxlength=\"100\" value=\"http://\"></td></tr>"
+    	    ."<tr><td nowrap><b>"._FILEURL.":</b></td><td><input type=\"text\" name=\"url\" size=\"40\" maxlength=\"100\" value=\"https://\"></td></tr>"
     		."<tr><td nowrap><b>"._CATEGORY.":</b></td><td><select name=\"cat\">";
 
     	$sql = "SELECT cid, title, parentid FROM ".$prefix."_downloads_categories ORDER BY parentid,title";
@@ -338,7 +338,7 @@ function AddDownload() {
     	    ."<tr><td nowrap><b>"._AUTHOREMAIL.":</b></td><td><input type=\"text\" name=\"email\" size=\"30\" maxlength=\"60\"></td></tr>"
 	    	."<tr><td nowrap><b>"._FILESIZE.":</b></td><td><input type=\"text\" name=\"filesize\" size=\"12\" maxlength=\"11\"> ("._INBYTES.")</td></tr>"
 	    	."<tr><td nowrap><b>"._VERSION.":</b></td><td><input type=\"text\" name=\"version\" size=\"11\" maxlength=\"10\"></td></tr>"
-    	    ."<tr><td nowrap><b>"._HOMEPAGE.":</b></td><td><input type=\"text\" name=\"homepage\" size=\"40\" maxlength=\"200\" value=\"http://\"></td></tr>"
+    	    ."<tr><td nowrap><b>"._HOMEPAGE.":</b></td><td><input type=\"text\" name=\"homepage\" size=\"40\" maxlength=\"200\" value=\"https://\"></td></tr>"
 	    	."<tr><td>&nbsp;</td><td><input type=\"hidden\" name=\"d_op\" value=\"Add\">"
     	    ."<input type=\"submit\" value=\""._ADDTHISFILE."\"> "._GOBACK.""
     	    ."</form></td></tr></table>";
@@ -2526,7 +2526,8 @@ function viewdownloaddetails($lid) {
     	if ($rvvchartheight[$rcounter]==0) $rvvchartheight[$rcounter]=1;
     	if ($ovvchartheight[$rcounter]==0) $ovvchartheight[$rcounter]=1;
     }
-
+    if(!isset($ttitle)) { $ttitle = ''; }
+	
     $ttitle = htmlentities($ttitle);
 
     $transfertitle = preg_replace ('#_#m', " ", $ttitle);
@@ -2574,7 +2575,7 @@ function viewdownloaddetails($lid) {
 	."<b>"._VERSION.":</b> $version <b>"._FILESIZE.":</b> ".CoolSize($filesize)."</font><br><br>"
 	."[ <b><a href=\"modules.php?name=$module_name&amp;d_op=getit&amp;lid=$lid\">"._DOWNLOADNOW."</a></b> ";
 
-    if ((empty($homepage)) OR ($homepage == "http://")) {
+    if ((empty($homepage)) OR ($homepage == "https://")) {
 	echo "]<br><br>";
     } else {
 	echo "| <a href=\"$homepage\" target=\"new\">"._HOMEPAGE."</a> ]</div><br><br>";
