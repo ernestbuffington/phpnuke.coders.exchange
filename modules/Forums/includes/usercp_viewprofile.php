@@ -87,20 +87,24 @@ else
 	$percentage = 0;
 }
 
+if($profiledata['user_avatar'] == '') { $profiledata['user_avatar'] = 'blank.png'; }
+
 $avatar_img = '';
 if ( $profiledata['nuke_user_avatar_type'] && $profiledata['user_allowavatar'] )
 {
-	switch( $profiledata['nuke_user_avatar_type'] )
-	{
-		case USER_AVATAR_UPLOAD:
-			$avatar_img = ( $board_config['allow_avatar_upload'] ) ? '<img src="' . $board_config['avatar_path'] . '/' . $profiledata['user_avatar'] . '" alt="" border="0" />' : '';
-			break;
-		case USER_AVATAR_REMOTE:
-			$avatar_img = ( $board_config['allow_avatar_remote'] ) ? '<img src="' . $profiledata['user_avatar'] . '" alt="" border="0" />' : '';
-			break;
-		case USER_AVATAR_GALLERY:
-			$avatar_img = ( $board_config['allow_avatar_local'] ) ? '<img src="' . $board_config['avatar_gallery_path'] . '/' . $profiledata['user_avatar'] . '" alt="" border="0" />' : '';
-			break;
+  switch( $profiledata['nuke_user_avatar_type'] )
+  {
+	case USER_AVATAR_UPLOAD:
+    $avatar_img = ( $board_config['allow_avatar_upload'] ) ? '<img style="border-radius: 15px; max-width: 150px; max-height: 150px;" src="'.$board_config['avatar_path'].'/'.$profiledata['user_avatar'].'" alt=""/>' : '';
+	break;
+	
+	case USER_AVATAR_REMOTE:
+	$avatar_img = ( $board_config['allow_avatar_remote'] ) ? '<img style="border-radius: 15px; max-width: 150px; max-height: 150px;" src="'.$profiledata['user_avatar'].'" alt=""/>' : '';
+	break;
+	
+	case USER_AVATAR_GALLERY:
+	$avatar_img = ( $board_config['allow_avatar_local'] ) ? '<img style="border-radius: 15px; max-width: 150px; max-height: 150px;" src="'.$board_config['avatar_gallery_path'].'/'.$profiledata['user_avatar'].'" alt=""/>' : '';
+	break;
 	}
 }
 
@@ -135,49 +139,32 @@ $pm_img = '<a href="' . $temp_url . '"><img src="' . $images['icon_pm'] . '" alt
 $pm = '<a href="' . $temp_url . '">' . $lang['Send_private_message'] . '</a>';
 }
 
-if ( !empty($profiledata['user_viewemail']) || $userdata['user_level'] == ADMIN )
-{
-	$email_uri = ( $board_config['board_email_form'] ) ? append_sid("profile.$phpEx?mode=email&amp;" . POST_USERS_URL .'=' . $profiledata['user_id']) : 'mailto:' . $profiledata['user_email'];
+if($profiledata['user_email'] == ''){
+$pm_img = 'disabled';
+$pm = 'disabled';
+}
 
+if ( !empty($profiledata['user_viewemail']) || $userdata['user_level'] == ADMIN ) {
+	$email_uri = ( $board_config['board_email_form'] ) ? append_sid("profile.$phpEx?mode=email&amp;" . POST_USERS_URL .'=' . $profiledata['user_id']) : 'mailto:' . $profiledata['user_email'];
 	$email_img = '<a href="' . $email_uri . '"><img src="' . $images['icon_email'] . '" alt="' . $lang['Send_email'] . '" title="' . $lang['Send_email'] . '" border="0" /></a>';
 	$email = '<a href="' . $email_uri . '">' . $lang['Send_email'] . '</a>';
+} else {
+	
+	if($profiledata['user_email'] == '') {
+	  $profiledata['user_email'] = 'JackFromWales4u2@gmail.com'; // change this to someone you hate!
+	  $email_uri = ( $board_config['board_email_form'] ) ? append_sid("profile.$phpEx?mode=email&amp;" . POST_USERS_URL .'=' . $profiledata['user_id']) : 'mailto:' . $profiledata['user_email'];
+	  $email_img = '<a href="' . $email_uri . '"><img src="' . $images['icon_email'] . '" alt="' . $lang['Send_email'] . '" title="' . $lang['Send_email'] . '" border="0" /></a>';
+	  $email = '<a href="' . $email_uri . '">' . $lang['Send_email'] . '</a>';
+	} else {
+	  $email_img = 'Hidden';
+	  $email = 'Hidden';
+	}
 }
-else
-{
-	$email_img = '&nbsp;';
-	$email = '&nbsp;';
-}
-if (( $profiledata['user_website'] == "http:///") || ( $profiledata['user_website'] == "http://")){
-    $profiledata['user_website'] =  "";
-}
-if (($profiledata['user_website'] != "" ) && (!str_starts_with((string) $profiledata['user_website'], "http://"))) {
-    $profiledata['user_website'] = "http://".$profiledata['user_website'];
-}
+
+if(empty($profiledata['user_website'])) { $profiledata['user_website'] = 'https://www.phpnuke.coders.exchange'; }
 
 $www_img = ( $profiledata['user_website'] ) ? '<a href="' . $profiledata['user_website'] . '" target="_userwww"><img src="' . $images['icon_www'] . '" alt="' . $lang['Visit_website'] . '" title="' . $lang['Visit_website'] . '" border="0" /></a>' : '&nbsp;';
 $www = ( $profiledata['user_website'] ) ? '<a href="' . $profiledata['user_website'] . '" target="_userwww">' . $profiledata['user_website'] . '</a>' : '&nbsp;';
-
-if ( !empty($profiledata['user_icq']) )
-{
-	$icq_status_img = '<a href="http://wwp.icq.com/' . $profiledata['user_icq'] . '#pager"><img src="http://web.icq.com/whitepages/online?icq=' . $profiledata['user_icq'] . '&img=5" width="18" height="18" border="0" /></a>';
-	$icq_img = '<a href="http://wwp.icq.com/scripts/search.dll?to=' . $profiledata['user_icq'] . '"><img src="' . $images['icon_icq'] . '" alt="' . $lang['ICQ'] . '" title="' . $lang['ICQ'] . '" border="0" /></a>';
-	$icq =  '<a href="http://wwp.icq.com/scripts/search.dll?to=' . $profiledata['user_icq'] . '">' . $lang['ICQ'] . '</a>';
-}
-else
-{
-	$icq_status_img = '&nbsp;';
-	$icq_img = '&nbsp;';
-	$icq = '&nbsp;';
-}
-
-$aim_img = ( $profiledata['user_aim'] ) ? '<a href="aim:goim?screenname=' . $profiledata['user_aim'] . '&amp;message=Hello+Are+you+there?"><img src="' . $images['icon_aim'] . '" alt="' . $lang['AIM'] . '" title="' . $lang['AIM'] . '" border="0" /></a>' : '&nbsp;';
-$aim = ( $profiledata['user_aim'] ) ? '<a href="aim:goim?screenname=' . $profiledata['user_aim'] . '&amp;message=Hello+Are+you+there?">' . $lang['AIM'] . '</a>' : '&nbsp;';
-
-$msn_img = ( $profiledata['user_msnm'] ) ? $profiledata['user_msnm'] : '&nbsp;';
-$msn = $msn_img;
-
-$yim_img = ( $profiledata['user_yim'] ) ? '<a href="http://edit.yahoo.com/config/send_webmesg?.target=' . $profiledata['user_yim'] . '&amp;.src=pg"><img src="' . $images['icon_yim'] . '" alt="' . $lang['YIM'] . '" title="' . $lang['YIM'] . '" border="0" /></a>' : '';
-$yim = ( $profiledata['user_yim'] ) ? '<a href="http://edit.yahoo.com/config/send_webmesg?.target=' . $profiledata['user_yim'] . '&amp;.src=pg">' . $lang['YIM'] . '</a>' : '';
 
 $temp_url = append_sid("search.$phpEx?search_author=" . urlencode((string) $profiledata['username']) . "&amp;showresults=posts");
 $search_img = '<a href="' . $temp_url . '"><img src="' . $images['icon_search'] . '" alt="' . $lang['Search_nuke_user_posts'] . '" title="' . sprintf($lang['Search_nuke_user_posts'], $profiledata['username']) . '" border="0" /></a>';
@@ -198,17 +185,18 @@ else
 	$u_search_author = urlencode(str_replace(array('&amp;', '&#039;', '&quot;', '&lt;', '&gt;'), array('&', "'", '"', '<', '>'), (string) $profiledata['username']));
 }
 
+if($profiledata['nuke_user_regdate'] == '') { $profiledata['nuke_user_regdate'] = 'Jan 01, 2000'; }
+
 $template->assign_vars(array(
 	'USERNAME' => $profiledata['username'],
-        'JOINED' => $profiledata['nuke_user_regdate'],
+    'JOINED' => $profiledata['nuke_user_regdate'],
 	'POSTER_RANK' => $poster_rank,
 	'RANK_IMAGE' => $rank_image,
 	'POSTS_PER_DAY' => $posts_per_day,
 	'POSTS' => $profiledata['nuke_user_posts'],
-        'PERCENTAGE' => $percentage . '%',
-        'POST_DAY_STATS' => sprintf($lang['User_post_day_stats'], $posts_per_day),
-        'POST_PERCENT_STATS' => sprintf($lang['User_post_pct_stats'], $percentage),
-
+    'PERCENTAGE' => $percentage . '%',
+    'POST_DAY_STATS' => sprintf($lang['User_post_day_stats'], $posts_per_day),
+    'POST_PERCENT_STATS' => sprintf($lang['User_post_pct_stats'], $percentage),
 	'SEARCH_IMG' => $search_img,
 	'SEARCH' => $search,
 	'PM_IMG' => $pm_img,
@@ -217,28 +205,34 @@ $template->assign_vars(array(
 	'EMAIL' => $email,
 	'WWW_IMG' => $www_img,
 	'WWW' => $www,
-	'ICQ_STATUS_IMG' => $icq_status_img,
-	'ICQ_IMG' => $icq_img, 
-	'ICQ' => $icq, 
-	'AIM_IMG' => $aim_img,
-	'AIM' => $aim,
-	'MSN_IMG' => $msn_img,
-	'MSN' => $msn,
-	'YIM_IMG' => $yim_img,
-	'YIM' => $yim,
 
+	// deprecated START
+	'ICQ_STATUS_IMG' => '',
+	'ICQ_IMG' => 'deprecated', 
+	'ICQ' => 'deprecated',
+	 
+	'AIM_IMG' => 'deprecated',
+	'AIM' => 'deprecated',
+
+	'MSN_IMG' => 'deprecated',
+	'MSN' => 'deprecated',
+
+	'YIM_IMG' => 'deprecated',
+	'YIM' => 'deprecated',
+    // deprecated END
+	
 	'LOCATION' => ( $profiledata['user_from'] ) ? $profiledata['user_from'] : '&nbsp;',
 	'OCCUPATION' => ( $profiledata['user_occ'] ) ? $profiledata['user_occ'] : '&nbsp;',
 	'INTERESTS' => ( $profiledata['user_interests'] ) ? $profiledata['user_interests'] : '&nbsp;',
 	'AVATAR_IMG' => $avatar_img,
 
-        'L_VIEWING_PROFILE' => sprintf($lang['Viewing_user_profile'], $profiledata['username']),
-        'L_ABOUT_USER' => sprintf($lang['About_user'], $profiledata['username']),
-        'L_AVATAR' => $lang['Avatar'],
-        'L_POSTER_RANK' => $lang['Poster_rank'],
-        'L_JOINED' => $lang['Joined'],
-        'L_TOTAL_POSTS' => $lang['Total_posts'],
-        'L_SEARCH_USER_POSTS' => sprintf($lang['Search_nuke_user_posts'], $profiledata['username']),
+    'L_VIEWING_PROFILE' => sprintf($lang['Viewing_user_profile'], $profiledata['username']),
+    'L_ABOUT_USER' => sprintf($lang['About_user'], $profiledata['username']),
+    'L_AVATAR' => $lang['Avatar'],
+    'L_POSTER_RANK' => $lang['Poster_rank'],
+    'L_JOINED' => $lang['Joined'],
+    'L_TOTAL_POSTS' => $lang['Total_posts'],
+    'L_SEARCH_USER_POSTS' => sprintf($lang['Search_nuke_user_posts'], $profiledata['username']),
 	'L_CONTACT' => $lang['Contact'],
 	'L_EMAIL_ADDRESS' => $lang['Email_address'],
 	'L_EMAIL' => $lang['Email'],
