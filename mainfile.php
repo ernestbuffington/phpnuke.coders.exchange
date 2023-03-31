@@ -1694,6 +1694,8 @@ function filter_text($Message, $strip="") {
 
 function filter($what, $strip="", $save="", $type="") {
 
+	if(!isset($what)) { $what = ''; }
+	
 	if ($strip == "nohtml") {
 
 		$what = check_html($what, $strip);
