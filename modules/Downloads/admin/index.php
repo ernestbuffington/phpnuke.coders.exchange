@@ -1292,7 +1292,11 @@ if ($row2['radminsuper'] == 1 || $auth_user == 1) {
 		$lid = null;
         $finalrating = null;
         $truecomments = null;
-        
+
+        if(!isset($finalrating)) { $finalrating = 0; }
+		if(!isset($truecomments)) { $truecomments = 0; }
+
+		
 		global $prefix, $db, $admin_file;
 
 		$lid = intval($lid);
@@ -1300,16 +1304,13 @@ if ($row2['radminsuper'] == 1 || $auth_user == 1) {
 		$result = $db->sql_query("SELECT distinct ratinglid FROM " . $prefix . "_downloads_votedata");
 
 		while ($row = $db->sql_fetchrow($result)) {
-
 			$lid = intval($row['ratinglid']);
-
 			$voteresult = $db->sql_query("SELECT rating, ratinguser, ratingcomments FROM " . $prefix . "_downloads_votedata WHERE ratinglid='$lid'");
-
 			$totalvotesDB = $db->sql_numrows($voteresult);
 
 			include ("voteinclude.php");
 
-			$db->sql_query("UPDATE " . $prefix . "_downloads_downloads SET downloadratingsummary='$finalrating',totalvotes='$totalvotesDB',totalcomments='$truecomments' WHERE lid='$lid'");
+			$db->sql_query("UPDATE " . $prefix . "_downloads_downloads SET downloadratingsummary='$finalrating', totalvotes='$totalvotesDB', totalcomments='$truecomments' WHERE lid='$lid'");
 
 		}
 		Header("Location: ".$admin_file.".php?op=downloads");
