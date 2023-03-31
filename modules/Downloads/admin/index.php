@@ -58,25 +58,16 @@ if ($row2['radminsuper'] == 1 || $auth_user == 1) {
 		$row = $db->sql_fetchrow($db->sql_query("SELECT lid, cid, sid, title, url, description, name, email, submitter, filesize, version, homepage from " . $prefix . "_downloads_newdownload WHERE lid='$lid'"));
 
 		OpenTable();
-
 		echo "<center><font class=\"content\"><b>" . _DOWNLOADSWAITINGVAL . "</b></font></center><br><br>";
 
 		$lid = intval($row['lid']);
-
 		$cid = intval($row['cid']);
-
 		$sid = intval($row['sid']);
-
 		$title = filter($row['title'], "nohtml");
-
 		$url = filter($row['url'], "nohtml");
-
 		$description = filter($row['description']);
-
 		$name = filter($row['name'], "nohtml");
-
 		$email = filter($row['email'], "nohtml");
-
 		$submitter = filter($row['submitter'], "nohtml");
 
 		$filesize = filter($row['filesize'], "nohtml");
@@ -107,7 +98,7 @@ if ($row2['radminsuper'] == 1 || $auth_user == 1) {
 			."<tr><td>" . _AUTHOREMAIL . ":</td><td><input type=\"text\" name=\"email\" size=\"20\" maxlength=\"100\" value=\"$email\"></td></tr>"
 			."<tr><td>" . _FILESIZE . ":</td><td><input type=\"text\" name=\"filesize\" size=\"12\" maxlength=\"11\" value=\"$filesize\"></td></tr>"
 			."<tr><td>" . _VERSION . ":</td><td><input type=\"text\" name=\"version\" size=\"11\" maxlength=\"10\" value=\"$version\"></td></tr>"
-			."<tr><td>" . _HOMEPAGE . ":</td><td><input type=\"text\" name=\"homepage\" size=\"30\" maxlength=\"200\" value=\"http://$homepage\"> [ <a href=\"index.php?url=http://$homepage2\">" . _VISIT . "</a> ]</td></tr>";
+			."<tr><td>" . _HOMEPAGE . ":</td><td><input type=\"text\" name=\"homepage\" size=\"30\" maxlength=\"200\" value=\"https://$homepage\"> [ <a href=\"index.php?url=https://$homepage2\">" . _VISIT . "</a> ]</td></tr>";
 
 		echo "<input type=\"hidden\" name=\"new\" value=\"1\">";
 		echo "<input type=\"hidden\" name=\"hits\" value=\"0\">";
@@ -170,9 +161,12 @@ if ($row2['radminsuper'] == 1 || $auth_user == 1) {
 
 	function downloads() {
 
-		global $prefix, $db, $admin_file;
+		global $user, $prefix, $db, $admin_file;
 
 		include ("header.php");
+
+        $servername = $_SERVER['SERVER_NAME'];
+		$server_upload_name = $_SERVER['SERVER_NAME'].'/uploads/';
 
 		GraphicAdmin();
 
@@ -214,21 +208,15 @@ if ($row2['radminsuper'] == 1 || $auth_user == 1) {
 			OpenTable();
 
 			echo "<center><font class=\"content\"><b>" . _DOWNLOADSWAITINGVAL . "</b></font><br><br>";
-
 			echo "<form action=\"".$admin_file.".php\" method=\"post\">"
-
 				."<select name=\"lid\">"
-
 				."" . _DOWNLOADNAME . ": ";
 
 			while($row4 = $db->sql_fetchrow($result4)) {
 
 				$lid = intval($row4['lid']);
-
 				$title = filter($row4['title'], "nohtml");
-
 				echo "<option name=\"lid\" value=\"$lid\">$title</option>";
-
 			}
 
 			echo "</select>&nbsp;&nbsp;&nbsp;"
@@ -310,6 +298,13 @@ if ($row2['radminsuper'] == 1 || $auth_user == 1) {
 		$result8 = $db->sql_query("SELECT cid, title from " . $prefix . "_downloads_categories");
 		$numrows = $db->sql_numrows($result8);
 
+		if(is_user($user)) {
+	    $user2 = base64_decode($user);
+	    $user2 = addslashes($user2);
+	    $cookie = explode(":", $user2);
+	    cookiedecode($user);
+	    $authors_name = $cookie[1];
+        }
 		if ($numrows>0) {
 
 			OpenTable();
@@ -317,7 +312,7 @@ if ($row2['radminsuper'] == 1 || $auth_user == 1) {
 			."<font class=\"content\"><b>" . _ADDNEWDOWNLOAD . "</b><br><br>"
 			."<table widht=\"100%\" bordr=\"0\">"
 			."<tr><td>" . _DOWNLOADNAME . ":</td><td><input type=\"text\" name=\"title\" size=\"50\" maxlength=\"100\"></td></tr>"
-			."<tr><td>" . _FILEURL . ":</td><td><input type=\"text\" name=\"url\" size=\"50\" maxlength=\"100\" value=\"http://\"></td></tr>";
+			."<tr><td>" . _FILEURL . ":</td><td><input type=\"text\" name=\"url\" size=\"50\" maxlength=\"100\" value=\"https://$server_upload_name\"></td></tr>";
 
 			$result9 = $db->sql_query("SELECT cid, title, parentid from " . $prefix . "_downloads_categories order by title");
 
@@ -336,14 +331,13 @@ if ($row2['radminsuper'] == 1 || $auth_user == 1) {
 				echo "<option value=\"$cid2\">$ctitle2</option>";
 
 			}
-
 			echo "</select></td></tr>"
 			."<tr><td>".preg_replace('#:#m', ":<br>",""._DESCRIPTION255."")."</td><td><textarea name=\"description\" cols=\"70\" rows=\"15\"></textarea></td></tr>"
-			."<tr><td>" . _AUTHORNAME . ":</td><td><input type=\"text\" name=\"name\" size=\"30\" maxlength=\"60\"></td></tr>"
+			."<tr><td>" . _AUTHORNAME . ":</td><td><input type=\"text\" name=\"name\" size=\"30\" maxlength=\"60\" value=\"$authors_name\"></td></tr>"
 			."<tr><td>" . _AUTHOREMAIL . ":</td><td><input type=\"text\" name=\"email\" size=\"30\" maxlength=\"60\"></td></tr>"
 			."<tr><td>" . _FILESIZE . ":</td><td><input type=\"text\" name=\"filesize\" size=\"12\" maxlength=\"11\"> (" . _INBYTES . ")</td></tr>"
 			."<tr><td>" . _VERSION . ":</td><td><input type=\"text\" name=\"version\" size=\"11\" maxlength=\"10\"></td></tr>"
-			."<tr><td>" . _HOMEPAGE . ":</td><td><input type=\"text\" name=\"homepage\" size=\"30\" maxlength=\"200\" value=\"http://\"></td></tr>"
+			."<tr><td>" . _HOMEPAGE . ":</td><td><input type=\"text\" name=\"homepage\" size=\"30\" maxlength=\"200\" value=\"https://$servername\"></td></tr>"
 			."<tr><td>&nbsp;</td><td><input type=\"hidden\" name=\"hits\" value=\"0\">"
 			."<input type=\"hidden\" name=\"op\" value=\"DownloadsAddDownload\">"
 			."<input type=\"hidden\" name=\"new\" value=\"0\">"
@@ -1819,7 +1813,18 @@ if ($row2['radminsuper'] == 1 || $auth_user == 1) {
 
 	function DownloadsAddDownload($new, $lid, $title, $url, $cat, $description, $name, $email, $submitter, $filesize, $version, $homepage, $hits) {
 
-		global $prefix, $db, $admin_file;
+		global $user, $cookie, $prefix, $db, $admin_file;
+
+        if(!is_array($user)) {
+
+          $cookie = cookiedecode($user);
+          $username = trim($cookie[1]);
+
+        } else {
+
+          $username = trim($user[1]);
+
+        }
 
 		$result = $db->sql_query("SELECT url from " . $prefix . "_downloads_downloads where url='$url'");
 		$numrows = $db->sql_numrows($result);
@@ -1925,16 +1930,29 @@ if ($row2['radminsuper'] == 1 || $auth_user == 1) {
 			}
 
 			$title = filter($title, "nohtml", 1);
-
 			$url = filter($url, "nohtml", 1);
-
 			$description = filter($description, "", 1);
-
 			$name = filter($name, "nohtml");
-
 			$email = filter($email, "nohtml");
-
-			$db->sql_query("insert into " . $prefix . "_downloads_downloads values (NULL, '$cat[0]', '$cat[1]', '$title', '$url', '$description', now(), '$name', '$email', '$hits','$submitter',0,0,0, '$filesize', '$version', '$homepage')");
+            $submitter = $username;
+			
+			$db->sql_query("INSERT INTO " . $prefix . "_downloads_downloads values (NULL, 
+			                                                                   '$cat[0]', 
+																			   '$cat[1]', 
+																			    '$title', 
+																			      '$url', 
+																		  '$description', 
+																		           now(), 
+																				 '$name', 
+																				'$email', 
+																				 '$hits',
+																		    '$submitter',
+																			           0,
+																					   0,
+																					   0, 
+																			 '$filesize', 
+																			  '$version', 
+																			 '$homepage')");
 
 			global $nukeurl, $sitename;
 
