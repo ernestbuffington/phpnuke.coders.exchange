@@ -17,4 +17,5 @@ return array(
     'csstidy' => $vendorDir . '/cerdic/css-tidy/class.csstidy.php',
     'csstidy_optimise' => $vendorDir . '/cerdic/css-tidy/class.csstidy_optimise.php',
     'csstidy_print' => $vendorDir . '/cerdic/css-tidy/class.csstidy_print.php',
+    '©' => $vendorDir . '/symfony/cache/Traits/ValueWrapper.php',
 );

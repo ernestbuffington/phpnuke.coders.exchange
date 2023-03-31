@@ -7,6 +7,17 @@
         "phpmailer/phpmailer": "^6.7",
         "symfony/mailer": "^5.4",
         "cerdic/css-tidy": "^2.0",
-        "league/oauth2-google": "^4.0"
+        "league/oauth2-google": "^4.0",
+        "laminas/laminas-httphandlerrunner": "^2.5",
+        "symfony/dependency-injection": "^6.2",
+        "symfony/http-kernel": "^6.2",
+        "symfony/config": "^6.2",
+        "symfony/expression-language": "^6.2",
+        "symfony/finder": "^6.2",
+        "symfony/yaml": "^6.2",
+        "symfony/browser-kit": "^6.2",
+        "symfony/console": "^6.2",
+        "symfony/process": "^6.2",
+        "symfony/lock": "^6.2"
     }
 }
