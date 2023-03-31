@@ -50,7 +50,7 @@ if (extension_loaded('gd') AND ($gfx_chk == 2 OR $gfx_chk == 4 OR $gfx_chk == 5 
 } else {
 
     $content .= "<input type=\"hidden\" name=\"random_num\" value=\"$random_num\">";
-    if(!iseet($code)) { $code = ''; }
+    if(!isset($code)) { $code = ''; }
     $content .= "<input type=\"hidden\" name=\"gfx_check\" value=\"$code\">";
 
 }
