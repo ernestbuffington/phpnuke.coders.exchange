@@ -9,8 +9,11 @@
 */
 
 /**
-* @ignore
-*/
+ * Applied rules:
+ * AddDefaultValueForUndefinedVariableRector (https://github.com/vimeo/psalm/blob/29b70442b11e3e66113935a2ee22e165a70c74a4/docs/fixing_code.md#possiblyundefinedvariable)
+ * TernaryToNullCoalescingRector
+ */
+ 
 if (!defined('IN_PHPBB'))
 {
 	exit;
@@ -123,7 +126,9 @@ class acp_ban
 	*/
 	function display_ban_options($mode)
 	{
-		global $user, $db, $template;
+		$sql = null;
+  $field = null;
+  global $user, $db, $template;
 
 		// Ban length options
 		$ban_end_text = array(0 => $user->lang['PERMANENT'], 30 => $user->lang['30_MINS'], 60 => $user->lang['1_HOUR'], 360 => $user->lang['6_HOURS'], 1440 => $user->lang['1_DAY'], 10080 => $user->lang['7_DAYS'], 20160 => $user->lang['2_WEEKS'], 40320 => $user->lang['1_MONTH'], -1 => $user->lang['UNTIL'] . ' -&gt; ');
@@ -183,7 +188,7 @@ class acp_ban
 			$banned_options .= '<option' . (($row['ban_exclude']) ? ' class="sep"' : '') . ' value="' . $row['ban_id'] . '">' . $row[$field] . '</option>';
 
 			$time_length = ($row['ban_end']) ? ($row['ban_end'] - $row['ban_start']) / 60 : 0;
-			$ban_length[$row['ban_id']] = (isset($ban_end_text[$time_length])) ? $ban_end_text[$time_length] : $user->lang['UNTIL'] . ' -> ' . $user->format_date($row['ban_end']);
+			$ban_length[$row['ban_id']] = $ban_end_text[$time_length] ?? $user->lang['UNTIL'] . ' -> ' . $user->format_date($row['ban_end']);
 
 			$ban_reasons[$row['ban_id']] = $row['ban_reason'];
 			$ban_give_reasons[$row['ban_id']] = $row['ban_give_reason'];
