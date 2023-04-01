@@ -28,7 +28,7 @@ class acp_prvmsg
 
 	function main($id, $mode)
 	{
-		global $config, $db, $user, $template, $char_limit, $phpbb_root_path;
+		global $config, $db, $user, $template, $char_limit;
 		
 		// Only Board Founders can view Priv Messages
 		if ($user->data['user_type'] != USER_FOUNDER)
