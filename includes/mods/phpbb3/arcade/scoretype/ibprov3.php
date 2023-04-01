@@ -18,6 +18,8 @@ if (!defined('IN_PHPBB'))
 	exit;
 }
 
+$phpbb_root_path = PHPBB3_ROOT_DIR;
+
 if ($do == 'verifyscore')
 {
 	// Start session management here so that we can set update session page to false
@@ -26,7 +28,7 @@ if ($do == 'verifyscore')
 	$auth->acl($user->data);
 	$user->setup();
 
-	include($phpbb_root_path . 'includes/arcade/arcade_common.' . $phpEx);
+	include(PHPBB3_INCLUDE_DIR . 'arcade/arcade_common.' . $phpEx);
 	// Initialize arcade auth
 	$auth_arcade->acl($user->data);
 	// Initialize arcade class
@@ -66,7 +68,7 @@ else if ($do == 'savescore' || $do == 'newscore')
 	$auth->acl($user->data);
 	$user->setup();
 
-	include($phpbb_root_path . 'includes/arcade/arcade_common.' . $phpEx);
+	include(PHPBB3_INCLUDE_DIR . 'arcade/arcade_common.' . $phpEx);
 	// Initialize arcade auth
 	$auth_arcade->acl($user->data);
 	// Initialize arcade class
@@ -122,7 +124,7 @@ else if ($do == 'savescore' || $do == 'newscore')
 	}
 
 	$game_data = $arcade->prepare_score($game_sid, $game_scorevar, IBPROV3_GAME);
-	require($phpbb_root_path . 'includes/arcade/arcade_score.'.$phpEx);
+	require(PHPBB3_INCLUDE_DIR . 'arcade/arcade_score.'.$phpEx);
 	exit;
 }
 
