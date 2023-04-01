@@ -26,7 +26,9 @@ class acp_update
 	function main($id, $mode)
 	{
 		global $config, $db, $user, $auth, $template, $cache;
-		global $phpbb_root_path, $phpbb_admin_path, $phpEx;
+		global $phpEx;
+
+        $phpbb_root_path = PHPBB3_ROOT_DIR;
 
 		$user->add_lang('install');
 
