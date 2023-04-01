@@ -96,7 +96,7 @@ class acp_icons
 			}
 			unset($imglist);
 
-			if ($dir = @opendir(PHPBB3_ROOT_DIR . $img_path))
+			if ($dir = opendir(PHPBB3_ROOT_DIR . $img_path))
 			{
 				while (($file = readdir($dir)) !== false)
 				{
@@ -473,7 +473,7 @@ class acp_icons
 				{
 					$order = 0;
 
-					if (!($pak_ary = @file(PHPBB3_ROOT_DIR . $img_path . '/' . $pak)))
+					if (!($pak_ary = file(PHPBB3_ROOT_DIR . $img_path . '/' . $pak)))
 					{
 						trigger_error($user->lang['PAK_FILE_NOT_READABLE'] . adm_back_link($this->u_action), E_USER_WARNING);
 					}
