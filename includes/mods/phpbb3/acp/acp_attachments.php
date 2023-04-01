@@ -9,8 +9,11 @@
 */
 
 /**
-* @ignore
-*/
+ * Applied rules:
+ * AddDefaultValueForUndefinedVariableRector (https://github.com/vimeo/psalm/blob/29b70442b11e3e66113935a2ee22e165a70c74a4/docs/fixing_code.md#possiblyundefinedvariable)
+ * TernaryToNullCoalescingRector
+ */
+ 
 if (!defined('IN_PHPBB'))
 {
 	exit;
@@ -26,7 +29,10 @@ class acp_attachments
 
 	function main($id, $mode)
 	{
-		global $db, $user, $auth, $template, $cache;
+		$add_extension_group = null;
+  $ext_group_row = [];
+  $forum_ids = null;
+  global $db, $user, $auth, $template, $cache;
 		global $config, $phpEx;
 
         $phpbb_admin_path = PHPBB3_ADMIN_DIR;
@@ -263,7 +269,7 @@ class acp_attachments
 					{
 						$template->assign_block_vars('options', array(
 							'S_LEGEND'		=> true,
-							'LEGEND'		=> (isset($user->lang[$vars])) ? $user->lang[$vars] : $vars)
+							'LEGEND'		=> $user->lang[$vars] ?? $vars)
 						);
 
 						continue;
@@ -274,11 +280,11 @@ class acp_attachments
 					$l_explain = '';
 					if ($vars['explain'] && isset($vars['lang_explain']))
 					{
-						$l_explain = (isset($user->lang[$vars['lang_explain']])) ? $user->lang[$vars['lang_explain']] : $vars['lang_explain'];
+						$l_explain = $user->lang[$vars['lang_explain']] ?? $vars['lang_explain'];
 					}
 					else if ($vars['explain'])
 					{
-						$l_explain = (isset($user->lang[$vars['lang'] . '_EXPLAIN'])) ? $user->lang[$vars['lang'] . '_EXPLAIN'] : '';
+						$l_explain = $user->lang[$vars['lang'] . '_EXPLAIN'] ?? '';
 						}
 					
 					$content = build_cfg_template($type, $config_key, $this->new_config, $config_key, $vars);
@@ -407,7 +413,7 @@ class acp_attachments
 
 				$template->assign_vars(array(
 					'S_EXTENSIONS'			=> true,
-					'ADD_EXTENSION'			=> (isset($add_extension)) ? $add_extension : '',
+					'ADD_EXTENSION'			=> $add_extension ?? '',
 					'GROUP_SELECT_OPTIONS'	=> (isset($_POST['add_extension_check'])) ? $this->group_select('add_group_select', $add_extension_group, 'extension_group') : $this->group_select('add_group_select', false, 'extension_group'))
 				);
 
