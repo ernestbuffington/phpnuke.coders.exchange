@@ -28,9 +28,9 @@ class acp_favorites
 	function main($id, $mode)
 	{
 		global $db, $user, $auth, $template;
-		global $config, $phpbb_root_path, $phpbb_admin_path, $phpEx;
+		global $config, $phpEx;
 
-		include($phpbb_root_path . 'includes/functions_favorites.' . $phpEx);
+		include(PHPBB3_INCLUDE_DIR . 'functions_favorites.' . $phpEx);
 		$favfunct = new favorite_functions();
 
 
