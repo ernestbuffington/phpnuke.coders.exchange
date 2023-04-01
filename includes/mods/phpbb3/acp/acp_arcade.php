@@ -27,9 +27,9 @@ class acp_arcade
 	function main($id, $mode)
 	{
 		global $db, $user, $auth, $auth_arcade, $template, $cache, $prefix_phpbb3, $arcade;
-		global $config, $phpbb_admin_path, $phpbb_root_path, $phpEx;
+		global $config, $phpEx;
 
-		include($phpbb_root_path . 'includes/arcade/arcade_common.' . $phpEx);
+		include(PHPBB3_INCLUDE_DIR . 'arcade/arcade_common.' . $phpEx);
 		// Initialize arcade auth
 		$auth_arcade->acl($user->data);
 		// Initialize arcade class
@@ -65,7 +65,7 @@ class acp_arcade
 	function manage_settings($mode)
 	{
 		global $db, $user, $auth, $auth_arcade, $template, $cache, $prefix_phpbb3, $arcade;
-		global $config, $phpbb_admin_path, $phpbb_root_path, $phpEx;
+		global $config, $phpEx;
 
 		$form_key = 'acp_arcade';
 		add_form_key($form_key);
@@ -360,7 +360,7 @@ class acp_arcade
 	function manage_version_check()
 	{
 		global $db, $user, $auth, $auth_arcade, $template, $cache, $prefix_phpbb3, $arcade;
-		global $config, $phpbb_admin_path, $phpbb_root_path, $phpEx;
+		global $config, $phpEx;
 
 		$user->add_lang('install');
 		$this->page_title = 'ACP_VERSION_CHECK';
@@ -381,7 +381,7 @@ class acp_arcade
 		$latest_version = trim($info[0]);
 
 		$announcement_url = trim($info[1]);
-		$update_link = append_sid($phpbb_root_path . 'install/index.' . $phpEx);
+		$update_link = append_sid(PHPBB3_INCLUDE_DIR . 'install/index.' . $phpEx);
 
 		$up_to_date = (version_compare(str_replace('rc', 'RC', strtolower($current_version)), str_replace('rc', 'RC', strtolower($latest_version)), '<')) ? false : true;
 
