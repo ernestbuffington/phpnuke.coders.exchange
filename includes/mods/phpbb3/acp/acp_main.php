@@ -26,8 +26,11 @@ class acp_main
 	function main($id, $mode)
 	{
 		global $config, $db, $user, $auth, $template;
-		global $phpbb_root_path, $phpbb_admin_path, $phpEx;
-
+		global $phpEx;
+        
+		$phpbb_admin_path = PHPBB3_ADMIN_DIR;
+		$phpbb_root_path = PHPBB3_ROOT_DIR;
+		
 		// Show restore permissions notice
 		if ($user->data['user_perm_from'] && $auth->acl_get('a_switchperm'))
 		{
@@ -169,7 +172,7 @@ class acp_main
 
 						if (!function_exists('update_last_username'))
 						{
-							include($phpbb_root_path . "includes/functions_user.$phpEx");
+							include(PHPBB3_INCLUDE_DIR . "functions_user.$phpEx");
 						}
 						update_last_username();
 
@@ -362,13 +365,13 @@ class acp_main
 
 		$avatar_dir_size = 0;
 
-		if ($avatar_dir = @opendir($phpbb_root_path . $config['avatar_path']))
+		if ($avatar_dir = opendir(PHPBB3_ROOT_DIR . $config['avatar_path']))
 		{
 			while (($file = readdir($avatar_dir)) !== false)
 			{
 				if ($file[0] != '.' && $file != 'CVS' && strpos($file, 'index.') === false)
 				{
-					$avatar_dir_size += filesize($phpbb_root_path . $config['avatar_path'] . '/' . $file);
+					$avatar_dir_size += filesize(PHPBB3_ROOT_DIR . $config['avatar_path'] . '/' . $file);
 				}
 			}
 			closedir($avatar_dir);
@@ -497,15 +500,15 @@ class acp_main
 		}
 
 		// Warn if install is still present
-		if (file_exists($phpbb_root_path . 'install'))
+		if (file_exists(PHPBB3_ROOT_DIR . 'install'))
 		{
 			$template->assign_var('S_REMOVE_INSTALL', true);
 		}
 
-		if (!defined('PHPBB_DISABLE_CONFIG_CHECK') && file_exists($phpbb_root_path . 'config.' . $phpEx) && is_writable($phpbb_root_path . 'config.' . $phpEx))
+		if (!defined('PHPBB_DISABLE_CONFIG_CHECK') && file_exists(PHPBB3_ROOT_DIR . 'config.' . $phpEx) && is_writable(PHPBB3_ROOT_DIR . 'config.' . $phpEx))
 		{
 			// World-Writable? (000x)
-			$template->assign_var('S_WRITABLE_CONFIG', (bool) (@fileperms($phpbb_root_path . 'config.' . $phpEx) & 0x0002));
+			$template->assign_var('S_WRITABLE_CONFIG', (bool) (fileperms(PHPBB3_ROOT_DIR . 'config.' . $phpEx) & 0x0002));
 		}
 
 		$this->tpl_name = 'acp_main';
