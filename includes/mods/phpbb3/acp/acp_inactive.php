@@ -32,9 +32,11 @@ class acp_inactive
 	function main($id, $mode)
 	{
 		global $config, $db, $user, $auth, $template;
-		global $phpbb_root_path, $phpbb_admin_path, $phpEx, $prefix_phpbb3;
+		global $phpEx, $prefix_phpbb3;
 
-		include($phpbb_root_path . 'includes/functions_user.' . $phpEx);
+        $phpbb_admin_path = PHPBB3_ADMIN_DIR;
+
+		include(PHPBB3_INCLUDE_DIR . 'functions_user.' . $phpEx);
 
 		$user->add_lang('memberlist');
 
@@ -98,7 +100,7 @@ class acp_inactive
 
 						if ($config['require_activation'] == USER_ACTIVATION_ADMIN && !empty($inactive_users))
 						{
-							include_once($phpbb_root_path . 'includes/functions_messenger.' . $phpEx);
+							include_once(PHPBB3_INCLUDE_DIR . 'functions_messenger.' . $phpEx);
 
 							$messenger = new messenger();
 
@@ -167,7 +169,7 @@ class acp_inactive
 					if ($row = $db->sql_fetchrow($result))
 					{
 						// Send the messages
-						include_once($phpbb_root_path . 'includes/functions_messenger.' . $phpEx);
+						include_once(PHPBB3_INCLUDE_DIR . 'functions_messenger.' . $phpEx);
 
 						$messenger = new messenger();
 						$usernames = array();
