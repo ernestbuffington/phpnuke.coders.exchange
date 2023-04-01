@@ -28,9 +28,9 @@ class acp_arcade_games
 	function main($id, $mode)
 	{
 		global $db, $user, $auth, $auth_arcade, $template, $cache, $prefix_phpbb3, $arcade;
-		global $config, $phpbb_admin_path, $phpbb_root_path, $phpEx, $file_functions;
-
-		include($phpbb_root_path . 'includes/arcade/arcade_common.' . $phpEx);
+		global $config, $phpEx, $file_functions;
+        
+		include(PHPBB3_INCLUDE_DIR . 'arcade/arcade_common.' . $phpEx);
 		// Initialize arcade auth
 		$auth_arcade->acl($user->data);
 		// Initialize arcade class
@@ -66,7 +66,7 @@ class acp_arcade_games
 	function add_games()
 	{
 		global $db, $user, $auth, $auth_arcade, $template, $cache, $prefix_phpbb3, $arcade;
-		global $config, $phpbb_admin_path, $phpbb_root_path, $phpEx, $mode, $file_functions;
+		global $config, $phpEx, $mode, $file_functions;
 
 		$form_key = 'acp_arcade_games';
 		add_form_key($form_key);
@@ -135,7 +135,7 @@ class acp_arcade_games
 		{
 			trigger_error($user->lang['NO_CAT'] . adm_back_link($this->u_action . '&amp;parent_id=' . $this->parent_id));
 		}
-		$dir = $phpbb_root_path . $arcade->config['game_path'];
+		$dir = PHPBB3_ROOT_DIR . $arcade->config['game_path'];
 
 		if (!is_dir($dir))
 		{
@@ -216,7 +216,9 @@ class acp_arcade_games
 	function edit_games()
 	{
 		global $db, $user, $auth, $auth_arcade, $template, $cache, $prefix_phpbb3, $arcade;
-		global $config, $phpbb_admin_path, $phpbb_root_path, $phpEx, $mode;
+		global $config, $phpEx, $mode;
+
+		$phpbb_admin_path = PHPBB3_ADMIN_DIR;
 
 		$form_key = 'acp_arcade_games';
 		add_form_key($form_key);
@@ -493,7 +495,7 @@ class acp_arcade_games
 	function unpack_games()
 	{
 		global $db, $user, $auth, $auth_arcade, $template, $cache, $prefix_phpbb3, $arcade;
-		global $config, $phpbb_admin_path, $phpbb_root_path, $phpEx, $mode, $file_functions;
+		global $config, $phpEx, $mode, $file_functions;
 
 		$form_key = 'acp_arcade_games';
 		add_form_key($form_key);
@@ -523,7 +525,7 @@ class acp_arcade_games
 		$methods = $arcade->compress_methods();
 		if ($update)
 		{
-			include($phpbb_root_path . 'includes/functions_compress.' . $phpEx);
+			include(PHPBB3_INCLUDE_DIR . 'functions_compress.' . $phpEx);
 			// Get game to add and makes sures its not blank
 			if (!$upload_file)
 			{
@@ -542,17 +544,17 @@ class acp_arcade_games
 				$use_method = strrchr($game, '.');
 				if ($use_method == '.zip')
 				{
-					$compress = new compress_zip('r', $phpbb_root_path . $arcade->config['unpack_game_path'] . $game);
+					$compress = new compress_zip('r', PHPBB3_ROOT_DIR . $arcade->config['unpack_game_path'] . $game);
 				}
 				else
 				{
-					$compress = new compress_tar('r', $phpbb_root_path . $arcade->config['unpack_game_path'] . $game);
+					$compress = new compress_tar('r', PHPBB3_ROOT_DIR . $arcade->config['unpack_game_path'] . $game);
 				}
 
 				// First we extract the compressed file to a temporary
 				// directory in the store folder
 				$tmp_path = 'store/' . md5(unique_id()) . '/';
-				$compress->extract($phpbb_root_path . $tmp_path);
+				$compress->extract(PHPBB3_ROOT_DIR . $tmp_path);
 				$compress->close();
 				
 				// As far as I know all ibpro games start with "game_" if this is not the case
@@ -566,17 +568,17 @@ class acp_arcade_games
 				}
 				
 				// Check to make sure a valid config file is present
-				$game_config = $phpbb_root_path . $tmp_path . $game_name . '.' . $phpEx;
+				$game_config = PHPBB3_ROOT_DIR . $tmp_path . $game_name . '.' . $phpEx;
 				if (!file_exists($game_config))
 				{
 					$bad_game[] = $game;
 					unset($game_array[$key]);
-					$file_functions->delete_dir($phpbb_root_path . $tmp_path);
+					$file_functions->delete_dir(PHPBB3_ROOT_DIR . $tmp_path);
 					continue;
 				}
 				
 				// We do not need the compressed file any more so lets get rid of it
-				@unlink($phpbb_root_path . $arcade->config['unpack_game_path'] . $game);
+				unlink(PHPBB3_ROOT_DIR . $arcade->config['unpack_game_path'] . $game);
 
 				// This is an ibpro game, lets try to automagically convert it to the arcade
 				if ($is_ibpro)
@@ -586,14 +588,14 @@ class acp_arcade_games
 					$game_type = IBPRO_GAME;
 
 					// If the gamedata folder exists move it to the correct location
-					if (file_exists($phpbb_root_path . $tmp_path . 'gamedata'))
+					if (file_exists(PHPBB3_ROOT_DIR . $tmp_path . 'gamedata'))
 					{
-						if (file_exists($phpbb_root_path . $tmp_path . 'gamedata/' . $game_name . '/v32game.txt') || (file_exists($phpbb_root_path . $tmp_path . 'gamedata/' . $game_name . '/v3game.txt')))
+						if (file_exists(PHPBB3_ROOT_DIR . $tmp_path . 'gamedata/' . $game_name . '/v32game.txt') || (file_exists(PHPBB3_ROOT_DIR . $tmp_path . 'gamedata/' . $game_name . '/v3game.txt')))
 						{
 							// We have found a v3x game
 							$game_type = IBPROV3_GAME;
 						}
-						else if (file_exists($phpbb_root_path . $tmp_path . 'gamedata/' . $game_name . '/'. $game_name . '.txt'))
+						else if (file_exists(PHPBB3_ROOT_DIR . $tmp_path . 'gamedata/' . $game_name . '/'. $game_name . '.txt'))
 						{
 							// We have found an arcadelib game
 							$game_type = IBPRO_ARCADELIB_GAME;
@@ -602,8 +604,8 @@ class acp_arcade_games
 						$game_files[] = 'arcade/gamedata/' . $game_name . '/';
 
 						//Copy and delete
-						$file_functions->copy_dir($phpbb_root_path . $tmp_path . 'gamedata', $phpbb_root_path . 'arcade/gamedata');
-						$file_functions->delete_dir($phpbb_root_path . $tmp_path . 'gamedata');
+						$file_functions->copy_dir(PHPBB3_ROOT_DIR . $tmp_path . 'gamedata', PHPBB3_ROOT_DIR . 'arcade/gamedata');
+						$file_functions->delete_dir(PHPBB3_ROOT_DIR . $tmp_path . 'gamedata');
 					}
 
 					// We have to read the ibpro config file contents and replace the $config variable 
@@ -616,7 +618,7 @@ class acp_arcade_games
 					// Close the file
 					fclose($fp);
 					// Since we now have a nice config file lets include it
-					@include($game_config);
+					include($game_config);
 					// We don't need you any more
 					$file_functions->delete_file($game_config);
 
@@ -645,8 +647,8 @@ class acp_arcade_games
 					$arcade->create_install_folder($install_file, $ibp_config['gname'], true);
 
 					// Copy the rest of the files over and remove all temporary files
-					$file_functions->copy_dir($phpbb_root_path . $tmp_path, $phpbb_root_path . $arcade->config['game_path'] . $game_name);
-					$file_functions->delete_dir($phpbb_root_path . $tmp_path);
+					$file_functions->copy_dir(PHPBB3_ROOT_DIR . $tmp_path, PHPBB3_ROOT_DIR . $arcade->config['game_path'] . $game_name);
+					$file_functions->delete_dir(PHPBB3_ROOT_DIR . $tmp_path);
 
 					switch ($game_type)
 					{
@@ -666,15 +668,15 @@ class acp_arcade_games
 				else
 				{					
 					// If the gamedata folder exists move it to the correct location
-					if (file_exists($phpbb_root_path . $tmp_path . 'gamedata'))
+					if (file_exists(PHPBB3_ROOT_DIR . $tmp_path . 'gamedata'))
 					{
 						//Copy and delete
-						$file_functions->copy_dir($phpbb_root_path . $tmp_path . 'gamedata', $phpbb_root_path . 'arcade/gamedata');
-						$file_functions->delete_dir($phpbb_root_path . $tmp_path . 'gamedata');
+						$file_functions->copy_dir(PHPBB3_ROOT_DIR . $tmp_path . 'gamedata', PHPBB3_ROOT_DIR . 'arcade/gamedata');
+						$file_functions->delete_dir(PHPBB3_ROOT_DIR . $tmp_path . 'gamedata');
 					}
 					
-					$file_functions->copy_dir($phpbb_root_path . $tmp_path, $phpbb_root_path . $arcade->config['game_path'] . $game_name);
-					$file_functions->delete_dir($phpbb_root_path . $tmp_path);
+					$file_functions->copy_dir(PHPBB3_ROOT_DIR . $tmp_path, PHPBB3_ROOT_DIR . $arcade->config['game_path'] . $game_name);
+					$file_functions->delete_dir(PHPBB3_ROOT_DIR . $tmp_path);
 
 					add_log('admin', 'LOG_ARCADE_UNPACK_GAME', $game);
 				}
@@ -714,7 +716,7 @@ class acp_arcade_games
 
 		// Default Unpack Games ACP page
 		$template->assign_var('S_UNPACK_ARCADE_GAMES', true);
-		$dir = $phpbb_root_path . $arcade->config['unpack_game_path'];
+		$dir = PHPBB3_ROOT_DIR . $arcade->config['unpack_game_path'];
 
 		if (!is_dir($dir))
 		{
@@ -767,7 +769,7 @@ class acp_arcade_games
 		}
 
 
-		$can_upload = (file_exists($phpbb_root_path . $arcade->config['unpack_game_path']) && @is_writable($phpbb_root_path . $arcade->config['unpack_game_path']) && (@ini_get('file_uploads') || strtolower(@ini_get('file_uploads')) == 'on')) ? true : false;
+		$can_upload = (file_exists(PHPBB3_ROOT_DIR . $arcade->config['unpack_game_path']) && is_writable(PHPBB3_ROOT_DIR . $arcade->config['unpack_game_path']) && (ini_get('file_uploads') || strtolower(ini_get('file_uploads')) == 'on')) ? true : false;
 		$template->assign_vars(array(
 				'L_TITLE'			=> $user->lang['ARCADE_UNPACK_GAME'],
 				'L_TITLE_EXPLAIN'	=> $user->lang['ARCADE_UNPACK_GAME_EXPLAIN'],
@@ -782,8 +784,10 @@ class acp_arcade_games
 	function edit_scores()
 	{
 		global $db, $user, $auth, $auth_arcade, $template, $cache, $prefix_phpbb3, $arcade;
-		global $config, $phpbb_admin_path, $phpbb_root_path, $phpEx, $mode;
+		global $config, $phpEx, $mode;
 
+        $phpbb_root_path = PHPBB3_ROOT_DIR;
+		
 		$form_key = 'acp_arcade_games';
 		add_form_key($form_key);
 
@@ -816,7 +820,7 @@ class acp_arcade_games
 			$arcade->update_score($score_data, $user_id, $game_id);
 
 			// Get Username from User ID
-			include($phpbb_root_path . 'includes/functions_user.' . $phpEx);
+			include(PHPBB3_INCLUDE_DIR . 'functions_user.' . $phpEx);
 			$user_id_ary[] = $user_id;
 			$usernames = array();
 			user_get_id_name($user_id_ary, $usernames);
@@ -923,7 +927,7 @@ class acp_arcade_games
 					$arcade->reset('user_scores', $user_id);
 
 					// Get Username from User ID
-					include($phpbb_root_path . 'includes/functions_user.' . $phpEx);
+					include(PHPBB3_INCLUDE_DIR . 'functions_user.' . $phpEx);
 					$user_id_ary[] = $user_id;
 					$usernames = array();
 					user_get_id_name($user_id_ary, $usernames);
@@ -957,7 +961,7 @@ class acp_arcade_games
 					$arcade->reset('user', $user_id);
 
 					// Get Username from User ID
-					include($phpbb_root_path . 'includes/functions_user.' . $phpEx);
+					include(PHPBB3_INCLUDE_DIR . 'functions_user.' . $phpEx);
 					$user_id_ary[] = $user_id;
 					$usernames = array();
 					user_get_id_name($user_id_ary, $usernames);
@@ -1032,7 +1036,7 @@ class acp_arcade_games
 					$arcade->delete_score($game_data, $user_id);
 
 					// Get Username from User ID
-					include($phpbb_root_path . 'includes/functions_user.' . $phpEx);
+					include(PHPBB3_INCLUDE_DIR . 'functions_user.' . $phpEx);
 					$user_id_ary[] = $user_id;
 					$usernames = array();
 					user_get_id_name($user_id_ary, $usernames);
@@ -1339,7 +1343,7 @@ class acp_arcade_games
 	function game_files($value, $key = '')
 	{
 		$name = 'config[' . $key . ']';
-		$game_files = (@unserialize($this->new_game_data['game_files'])) ? implode(', ', unserialize($this->new_game_data['game_files'])) : $this->new_game_data['game_files'];
+		$game_files = (unserialize($this->new_game_data['game_files'])) ? implode(', ', unserialize($this->new_game_data['game_files'])) : $this->new_game_data['game_files'];
 
 		return '<textarea id="' . $key . '" name="' . $name . '" rows="5" cols="25">' . $game_files  . '</textarea>';
 
@@ -1414,13 +1418,13 @@ class acp_arcade_games
 	*/
 	function upload_game(&$error)
 	{
-		global $phpbb_root_path, $config, $db, $user, $phpEx, $arcade;
+		global $config, $db, $user, $phpEx, $arcade;
 
 		$error = array();
 
 		// Init upload class
 		$user->add_lang('posting');
-		include_once($phpbb_root_path . 'includes/functions_upload.' . $phpEx);
+		include_once(PHPBB3_INCLUDE_DIR . 'functions_upload.' . $phpEx);
 		$upload = new fileupload();
 
 		$upload->set_allowed_extensions($arcade->compress_methods(true));
