@@ -17,8 +17,10 @@ if (!defined('IN_PHPBB'))
 }
 
 /**
-* @package acp
-*/
+ * Applied rules:
+ * AddDefaultValueForUndefinedVariableRector (https://github.com/vimeo/psalm/blob/29b70442b11e3e66113935a2ee22e165a70c74a4/docs/fixing_code.md#possiblyundefinedvariable)
+ */
+
 class acp_forums
 {
 	var $u_action;
@@ -891,7 +893,8 @@ class acp_forums
 	*/
 	function update_forum_data(&$forum_data)
 	{
-		global $db, $user, $cache;
+		$forum_ids = [];
+  global $db, $user, $cache;
 
 		$errors = array();
 
@@ -1391,7 +1394,8 @@ class acp_forums
 	*/
 	function delete_forum($forum_id, $action_posts = 'delete', $action_subforums = 'delete', $posts_to_id = 0, $subforums_to_id = 0)
 	{
-		global $db, $user, $cache;
+		$diff = null;
+  global $db, $user, $cache;
 
 		$forum_data = $this->get_forum_info($forum_id);
 
