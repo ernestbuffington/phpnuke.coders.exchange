@@ -27,7 +27,7 @@ class acp_ads
 	function main($id, $mode)
 	{
 		global $db, $user, $auth, $template;
-		global $cache, $config, $phpbb_root_path, $phpbb_admin_path, $phpEx;
+		global $cache, $config, $phpEx;
 
 		$user->add_lang('mods/ads');
 		$this->tpl_name = 'acp_ads';
