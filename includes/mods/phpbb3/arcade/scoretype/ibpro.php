@@ -16,6 +16,8 @@ if (!defined('IN_PHPBB'))
 	exit;
 }
 
+$phpbb_root_path = PHPBB3_ROOT_DIR;
+
 // Start session management here so that we can set update session page to false
 // This is done so that the view online from phpbb3 will show the correct location
 $user->session_begin(false);
@@ -26,7 +28,7 @@ $game_scorevar = (isset($_POST['gname'])) ? request_var('gname', '') : false;
 $score = (isset($_POST['gscore'])) ? request_var('gscore', 0.000) : false;
 $game_sid = (isset($_POST['game_sid'])) ? request_var('game_sid', '') : false;
 
-include($phpbb_root_path . 'includes/arcade/arcade_common.' . $phpEx);
+include(PHPBB3_INCLUDE_DIR . 'arcade/arcade_common.' . $phpEx);
 // Initialize arcade auth
 $auth_arcade->acl($user->data);
 // Initialize arcade class
@@ -47,7 +49,7 @@ if (!$game_sid)
 if ($game_scorevar)
 {
 	$game_data = $arcade->prepare_score($game_sid, $game_scorevar, IBPRO_GAME);
-	require($phpbb_root_path . 'includes/arcade/arcade_score.'.$phpEx);
+	require(PHPBB3_INCLUDE_DIR . 'arcade/arcade_score.'.$phpEx);
 	exit;
 }
 
