@@ -232,7 +232,7 @@ function PreviewStory($name, $address, $subject, $story, $storyext, $topic, $ala
 
 	$f_storyext = filter($storyext);
 
-	$subject = filter($subject, "nohtml", 0, preview);
+	$subject = filter($subject, "nohtml", 0, 'preview');
 
 	$story2 = "$f_story<br><br>$f_storyext";
 
