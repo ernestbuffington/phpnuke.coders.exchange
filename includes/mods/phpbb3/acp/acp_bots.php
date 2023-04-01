@@ -28,7 +28,7 @@ class acp_bots
 	function main($id, $mode)
 	{
 		$log = null;
-  global $config, $db, $user, $auth, $template, $cache;
+        global $config, $db, $user, $auth, $template, $cache;
 		global $phpEx, $prefix_phpbb3;
 
 		$action = request_var('action', '');
