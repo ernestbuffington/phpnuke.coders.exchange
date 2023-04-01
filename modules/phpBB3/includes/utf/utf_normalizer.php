@@ -10,10 +10,7 @@
 
 /**
 */
-if (!defined('IN_PHPBB'))
-{
-	exit;
-}
+
 
 /**
 * Some Unicode characters encoded in UTF-8
