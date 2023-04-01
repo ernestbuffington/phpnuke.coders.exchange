@@ -27,11 +27,11 @@ class acp_jabber
 	function main($id, $mode)
 	{
 		global $db, $user, $auth, $template;
-		global $config, $phpbb_root_path, $phpbb_admin_path, $phpEx;
+		global $config, $phpEx;
 
 		$user->add_lang('acp/board');
 
-		include_once($phpbb_root_path . 'includes/functions_jabber.' . $phpEx);
+		include_once(PHPBB3_INCLUDE_DIR . 'functions_jabber.' . $phpEx);
 
 		$action	= request_var('action', '');
 		$submit = (isset($_POST['submit'])) ? true : false;
@@ -122,7 +122,7 @@ class acp_jabber
 			'JAB_PACKAGE_SIZE'		=> $jab_package_size,
 			'JAB_USE_SSL'			=> $jab_use_ssl,
 			'S_CAN_USE_SSL'			=> jabber::can_use_ssl(),
-			'S_GTALK_NOTE'			=> (!@function_exists('dns_get_record')) ? true : false,
+			'S_GTALK_NOTE'			=> (!function_exists('dns_get_record')) ? true : false,
 		));
 	}
 }
