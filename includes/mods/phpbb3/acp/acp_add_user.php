@@ -15,6 +15,13 @@
 * New User Registration
 * @package acp
 */
+
+/* Applied rules:
+ * PregReplaceEModifierRector (https://wiki.php.net/rfc/remove_preg_replace_eval_modifier https://stackoverflow.com/q/19245205/1348344)
+ * RandomFunctionRector
+ * ClosureToArrowFunctionRector (https://wiki.php.net/rfc/arrow_functions_v2)
+ */
+ 
 class acp_add_user
 {
 	var $u_action;
@@ -84,7 +91,7 @@ class acp_add_user
 		);
 		
 		// lets create a wacky new password for our user...
-		$new_password = str_split(base64_encode(md5(time() . $data['new_username'])), $config['min_pass_chars'] + rand(3, 5));
+		$new_password = str_split(base64_encode(md5(time() . $data['new_username'])), $config['min_pass_chars'] + random_int(3, 5));
 		$data['new_password'] = $new_password[0];
 		
 		// Check and initialize some variables if needed
@@ -108,7 +115,7 @@ class acp_add_user
 			));
 			
 			// Replace "error" strings with their real, localised form
-			$error = preg_replace('#^([A-Z_]+)$#e', "(!empty(\$user->lang['\\1'])) ? \$user->lang['\\1'] : '\\1'", $error);
+			$error = preg_replace_callback('#^([A-Z_]+)$#', fn($matches) => !empty($user->lang[$matches[1]]) ? $user->lang[$matches[1]] : $matches[1], $error);
 
 			// validate custom profile fields
 			$cp->submit_cp_field('register', $user->get_iso_lang_id(), $cp_data, $error);
