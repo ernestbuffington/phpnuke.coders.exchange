@@ -32,7 +32,10 @@ class acp_users
 	function main($id, $mode)
 	{
 		global $config, $db, $user, $auth, $template, $cache;
-		global $phpbb_root_path, $phpbb_admin_path, $phpEx, $prefix_phpbb3, $file_uploads;
+		global $phpEx, $prefix_phpbb3, $file_uploads;
+        
+		$phpbb_admin_path = PHPBB3_ADMIN_DIR;
+        $phpbb_root_path = PHPBB3_ROOT_DIR;
 
 		$user->add_lang(array('posting', 'ucp', 'acp/users'));
 		$this->tpl_name = 'acp_users';
@@ -51,7 +54,7 @@ class acp_users
 		// Whois (special case)
 		if ($action == 'whois')
 		{
-			include($phpbb_root_path . 'includes/functions_user.' . $phpEx);
+			include(PHPBB3_INCLUDE_DIR . 'functions_user.' . $phpEx);
 
 			$this->page_title = 'WHOIS';
 			$this->tpl_name = 'simple_body';
@@ -162,7 +165,7 @@ class acp_users
 		{
 			case 'overview':
 
-				include($phpbb_root_path . 'includes/functions_user.' . $phpEx);
+				include(PHPBB3_INCLUDE_DIR . 'functions_user.' . $phpEx);
 
 				$user->add_lang('acp/ban');
 
@@ -303,7 +306,7 @@ class acp_users
 
 							if ($config['email_enable'])
 							{
-								include_once($phpbb_root_path . 'includes/functions_messenger.' . $phpEx);
+								include_once(PHPBB3_INCLUDE_DIR . 'functions_messenger.' . $phpEx);
 
 								$server_url = generate_board_url();
 
@@ -1045,8 +1048,8 @@ class acp_users
 
 			case 'profile':
 
-				include($phpbb_root_path . 'includes/functions_user.' . $phpEx);
-				include($phpbb_root_path . 'includes/functions_profile_fields.' . $phpEx);
+				include(PHPBB3_INCLUDE_DIR . 'functions_user.' . $phpEx);
+				include(PHPBB3_INCLUDE_DIR . 'functions_profile_fields.' . $phpEx);
 
 				$cp = new custom_profile();
 
@@ -1270,7 +1273,7 @@ class acp_users
 
 			case 'prefs':
 
-				include($phpbb_root_path . 'includes/functions_user.' . $phpEx);
+				include(PHPBB3_INCLUDE_DIR . 'functions_user.' . $phpEx);
 
 				$data = array(
 					'dateformat'		=> utf8_normalize_nfc(request_var('dateformat', $user_row['user_dateformat'], true)),
@@ -1481,10 +1484,10 @@ class acp_users
 
 			case 'avatar':
 
-				include($phpbb_root_path . 'includes/functions_display.' . $phpEx);
-				include($phpbb_root_path . 'includes/functions_user.' . $phpEx);
+				include(PHPBB3_INCLUDE_DIR . 'functions_display.' . $phpEx);
+				include(PHPBB3_INCLUDE_DIR . 'functions_user.' . $phpEx);
 
-				$can_upload = (file_exists($phpbb_root_path . $config['avatar_path']) && @is_writable($phpbb_root_path . $config['avatar_path']) && $file_uploads) ? true : false;
+				$can_upload = (file_exists(PHPBB3_ROOT_DIR . $config['avatar_path']) && @is_writable(PHPBB3_ROOT_DIR . $config['avatar_path']) && $file_uploads) ? true : false;
 
 				if ($submit)
 				{
@@ -1555,7 +1558,7 @@ class acp_users
 				$result = $db->sql_query($sql);
 
 				$s_flag_options = '<option id="" value=""' . ((!$user_row['user_flag']) ? ' selected="selected"' : '') . '>' . $user->lang['NO_FLAG'] . '</option>';
-				$flag_image = $phpbb_root_path . 'images/spacer.gif';
+				$flag_image = PHPBB3_ROOT_DIR . 'images/spacer.gif';
 
 				while ($row = $db->sql_fetchrow($result))
 				{
@@ -1564,13 +1567,13 @@ class acp_users
 
 					if ($selected)
 					{
-						$flag_image = $phpbb_root_path . $config['flags_path'] . '/' . $row['flag_image'];
+						$flag_image = PHPBB3_ROOT_DIR . $config['flags_path'] . '/' . $row['flag_image'];
 					}
 				}
 				$db->sql_freeresult($result);
 
 				$template->assign_vars(array(
-					'FLAGS_PATH'	=> $phpbb_root_path . $config['flags_path'],
+					'FLAGS_PATH'	=> PHPBB3_ROOT_DIR . $config['flags_path'],
 					'FLAG_IMAGE'	=> $flag_image,
 
 					'S_FLAG'			=> true,
@@ -1622,8 +1625,8 @@ class acp_users
 
 			case 'sig':
 
-				include_once($phpbb_root_path . 'includes/functions_posting.' . $phpEx);
-				include_once($phpbb_root_path . 'includes/functions_display.' . $phpEx);
+				include_once(PHPBB3_INCLUDE_DIR . 'functions_posting.' . $phpEx);
+				include_once(PHPBB3_INCLUDE_DIR . 'functions_display.' . $phpEx);
 
 				$enable_bbcode	= ($config['allow_sig_bbcode']) ? ((request_var('disable_bbcode', !$user->optionget('bbcode'))) ? false : true) : false;
 				$enable_smilies	= ($config['allow_sig_smilies']) ? ((request_var('disable_smilies', !$user->optionget('smilies'))) ? false : true) : false;
@@ -1634,7 +1637,7 @@ class acp_users
 
 				if ($submit || $preview)
 				{
-					include_once($phpbb_root_path . 'includes/message_parser.' . $phpEx);
+					include_once(PHPBB3_INCLUDE_DIR . 'message_parser.' . $phpEx);
 
 					$message_parser = new parse_message($signature);
 
@@ -1865,7 +1868,7 @@ class acp_users
 
 			case 'groups':
 
-				include($phpbb_root_path . 'includes/functions_user.' . $phpEx);
+				include(PHPBB3_INCLUDE_DIR . 'functions_user.' . $phpEx);
 
 				$user->add_lang(array('groups', 'acp/groups'));
 				$group_id = request_var('g', 0);
@@ -2047,7 +2050,7 @@ class acp_users
 
 			case 'perm':
 
-				include_once($phpbb_root_path . 'includes/acp/auth.' . $phpEx);
+				include_once(PHPBB3_INCLUDE_DIR . 'acp/auth.' . $phpEx);
 
 				$auth_admin = new auth_admin();
 
