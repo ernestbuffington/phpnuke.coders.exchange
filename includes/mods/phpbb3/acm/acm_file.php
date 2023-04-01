@@ -35,8 +35,7 @@ class acm
 	*/
 	function acm()
 	{
-		global $phpbb_root_path;
-		$this->cache_dir = $phpbb_root_path . 'cache/';
+		$this->cache_dir = NUKE_CACHE_DIR . 'phpbb3/';
 	}
 
 	/**
@@ -47,7 +46,7 @@ class acm
 		global $phpEx;
 		if (file_exists($this->cache_dir . 'data_global.' . $phpEx))
 		{
-			@include($this->cache_dir . 'data_global.' . $phpEx);
+			include($this->cache_dir . 'data_global.' . $phpEx);
 		}
 		else
 		{
@@ -86,17 +85,16 @@ class acm
 
 		global $phpEx;
 
-		if ($fp = @fopen($this->cache_dir . 'data_global.' . $phpEx, 'wb'))
+		if ($fp = fopen($this->cache_dir . 'data_global.' . $phpEx, 'wb'))
 		{
-			@flock($fp, LOCK_EX);
+			flock($fp, LOCK_EX);
 			fwrite($fp, "<?php\n\$this->vars = " . var_export($this->vars, true) . ";\n\n\$this->var_expires = " . var_export($this->var_expires, true) . "\n?>");
-			@flock($fp, LOCK_UN);
+			flock($fp, LOCK_UN);
 			fclose($fp);
 
 			if (!function_exists('phpbb_chmod'))
 			{
-				global $phpbb_root_path;
-				include($phpbb_root_path . 'includes/functions.' . $phpEx);
+				include(PHPBB3_INCLUDE_DIR . 'functions.' . $phpEx);
 			}
 
 			phpbb_chmod($this->cache_dir . 'data_global.' . $phpEx, CHMOD_WRITE);
@@ -104,7 +102,7 @@ class acm
 		else
 		{
 			// Now, this occurred how often? ... phew, just tell the user then...
-			if (!@is_writable($this->cache_dir))
+			if (!is_writable($this->cache_dir))
 			{
 				trigger_error($this->cache_dir . ' is NOT writable.', E_USER_ERROR);
 			}
@@ -122,7 +120,7 @@ class acm
 	{
 		global $phpEx;
 
-		$dir = @opendir($this->cache_dir);
+		$dir = opendir($this->cache_dir);
 
 		if (!$dir)
 		{
@@ -137,7 +135,7 @@ class acm
 			}
 
 			$expired = true;
-			@include($this->cache_dir . $entry);
+			include($this->cache_dir . $entry);
 			if ($expired)
 			{
 				$this->remove_file($this->cache_dir . $entry);
@@ -178,7 +176,7 @@ class acm
 				return false;
 			}
 
-			@include($this->cache_dir . "data{$var_name}.$phpEx");
+			include($this->cache_dir . "data{$var_name}.$phpEx");
 			return (isset($data)) ? $data : false;
 		}
 		else
@@ -196,17 +194,16 @@ class acm
 		{
 			global $phpEx;
 
-			if ($fp = @fopen($this->cache_dir . "data{$var_name}.$phpEx", 'wb'))
+			if ($fp = fopen($this->cache_dir . "data{$var_name}.$phpEx", 'wb'))
 			{
-				@flock($fp, LOCK_EX);
+				flock($fp, LOCK_EX);
 				fwrite($fp, "<?php\n\$expired = (time() > " . (time() + $ttl) . ") ? true : false;\nif (\$expired) { return; }\n\n\$data =  " . (sizeof($var) ? "unserialize(" . var_export(serialize($var), true) . ");" : 'array();') . "\n\n?>");
-				@flock($fp, LOCK_UN);
+				flock($fp, LOCK_UN);
 				fclose($fp);
 
 				if (!function_exists('phpbb_chmod'))
 				{
-					global $phpbb_root_path;
-					include($phpbb_root_path . 'includes/functions.' . $phpEx);
+					include(PHPBB3_INCLUDE_DIR . 'functions.' . $phpEx);
 				}
 
 				phpbb_chmod($this->cache_dir . "data{$var_name}.$phpEx", CHMOD_WRITE);
@@ -226,7 +223,7 @@ class acm
 	function purge()
 	{
 		// Purge all phpbb cache files
-		$dir = @opendir($this->cache_dir);
+		$dir = opendir($this->cache_dir);
 
 		if (!$dir)
 		{
@@ -271,7 +268,7 @@ class acm
 				$table = array($table);
 			}
 
-			$dir = @opendir($this->cache_dir);
+			$dir = opendir($this->cache_dir);
 
 			if (!$dir)
 			{
@@ -286,7 +283,7 @@ class acm
 				}
 
 				// The following method is more failproof than simply assuming the query is on line 3 (which it should be)
-				$check_line = @file_get_contents($this->cache_dir . $entry);
+				$check_line = file_get_contents($this->cache_dir . $entry);
 
 				if (empty($check_line))
 				{
@@ -379,7 +376,7 @@ class acm
 			return false;
 		}
 
-		@include($this->cache_dir . 'sql_' . md5($query) . ".$phpEx");
+		include($this->cache_dir . 'sql_' . md5($query) . ".$phpEx");
 
 		if (!isset($expired))
 		{
@@ -407,9 +404,9 @@ class acm
 		$query = preg_replace('/[\n\r\s\t]+/', ' ', $query);
 		$filename = $this->cache_dir . 'sql_' . md5($query) . '.' . $phpEx;
 
-		if ($fp = @fopen($filename, 'wb'))
+		if ($fp = fopen($filename, 'wb'))
 		{
-			@flock($fp, LOCK_EX);
+			flock($fp, LOCK_EX);
 
 			$query_id = sizeof($this->sql_rowset);
 			$this->sql_rowset[$query_id] = array();
@@ -425,13 +422,12 @@ class acm
 			$file .= "\n\$expired = (time() > " . (time() + $ttl) . ") ? true : false;\nif (\$expired) { return; }\n";
 
 			fwrite($fp, $file . "\n\$this->sql_rowset[\$query_id] = " . (sizeof($this->sql_rowset[$query_id]) ? "unserialize(" . var_export(serialize($this->sql_rowset[$query_id]), true) . ");" : 'array();') . "\n\n?>");
-			@flock($fp, LOCK_UN);
+			flock($fp, LOCK_UN);
 			fclose($fp);
 
 			if (!function_exists('phpbb_chmod'))
 			{
-				global $phpbb_root_path;
-				include($phpbb_root_path . 'includes/functions.' . $phpEx);
+				include(PHPBB3_INCLUDE_DIR . 'functions.' . $phpEx);
 			}
 
 			phpbb_chmod($filename, CHMOD_WRITE);
@@ -509,13 +505,13 @@ class acm
 	*/
 	function remove_file($filename, $check = false)
 	{
-		if ($check && !@is_writable($this->cache_dir))
+		if ($check && !is_writable($this->cache_dir))
 		{
 			// E_USER_ERROR - not using language entry - intended.
 			trigger_error('Unable to remove files within ' . $this->cache_dir . '. Please check directory permissions.', E_USER_ERROR);
 		}
 
-		return @unlink($filename);
+		return unlink($filename);
 	}
 }
 
