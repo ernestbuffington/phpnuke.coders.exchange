@@ -26,9 +26,9 @@ class acp_arcade_utilities
 	function main($id, $mode)
 	{
 		global $db, $user, $auth, $auth_arcade, $template, $cache, $prefix_phpbb3, $arcade;
-		global $config, $phpbb_admin_path, $phpbb_root_path, $phpEx, $file_functions;
+		global $config, $phpEx, $file_functions;
 
-		include($phpbb_root_path . 'includes/arcade/arcade_common.' . $phpEx);
+		include(PHPBB3_INCLUDE_DIR . 'arcade/arcade_common.' . $phpEx);
 		// Initialize arcade auth
 		$auth_arcade->acl($user->data);
 		// Initialize arcade class
@@ -85,7 +85,7 @@ class acp_arcade_utilities
 	function create_install()
 	{
 		global $db, $user, $auth, $auth_arcade, $template, $cache, $prefix_phpbb3, $arcade;
-		global $config, $phpbb_admin_path, $phpbb_root_path, $phpEx, $file_functions;
+		global $config, $phpEx, $file_functions;
 
 		$form_key = 'acp_arcade_utilities';
 		add_form_key($form_key);
@@ -251,7 +251,7 @@ class acp_arcade_utilities
 	function convert_install()
 	{
 		global $db, $user, $auth, $auth_arcade, $template, $cache, $prefix_phpbb3, $arcade;
-		global $config, $phpbb_admin_path, $phpbb_root_path, $phpEx;
+		global $config, $phpEx;
 
 		$form_key = 'acp_arcade_utilities';
 		add_form_key($form_key);
@@ -363,7 +363,7 @@ class acp_arcade_utilities
 	function downloads()
 	{
 		global $db, $user, $auth, $auth_arcade, $template, $cache, $prefix_phpbb3, $arcade;
-		global $config, $phpbb_admin_path, $phpbb_root_path, $phpEx;
+		global $config, $phpEx;
 
 		$download_url = utf8_normalize_nfc(request_var('dl_url', ''));
 		$start		= request_var('start', 0);
@@ -502,8 +502,11 @@ class acp_arcade_utilities
 	function download_stats()
 	{
 		global $db, $user, $auth, $auth_arcade, $template, $cache, $prefix_phpbb3, $arcade;
-		global $config, $phpbb_admin_path, $phpbb_root_path, $phpEx;
-
+		global $config, $phpEx;
+        
+		$phpbb_admin_path = PHPBB3_ADMIN_DIR;
+		$phpbb_root_path = PHPBB3_ROOT_DIR;
+		
 		$action		= request_var('action', '');
 		$start		= request_var('start', 0);
 
@@ -681,8 +684,11 @@ class acp_arcade_utilities
 	function reports()
 	{
 		global $db, $user, $auth, $auth_arcade, $template, $cache, $prefix_phpbb3, $arcade;
-		global $config, $phpbb_admin_path, $phpbb_root_path, $phpEx, $mode;
-
+		global $config, $phpEx, $mode;
+        
+		$phpbb_admin_path = PHPBB3_ADMIN_DIR;
+        $phpbb_root_path = PHPBB3_ROOT_DIR;
+		
 		$start		= request_var('start', 0);
 		$action		= request_var('action', '');
 		$ip 		= request_var('ip', 'ip');
@@ -710,7 +716,7 @@ class acp_arcade_utilities
 				$domain = gethostbyaddr($report_ip);
 				$ipwhois = '';
 
-				include($phpbb_root_path . 'includes/functions_user.' . $phpEx);
+				include(PHPBB3_INCLUDE_DIR . 'functions_user.' . $phpEx);
 
 				if ($ipwhois = user_ipwhois($report_ip))
 				{
@@ -851,7 +857,9 @@ class acp_arcade_utilities
 	function errors()
 	{
 		global $db, $user, $auth, $auth_arcade, $template, $cache, $prefix_phpbb3, $arcade;
-		global $config, $phpbb_admin_path, $phpbb_root_path, $phpEx, $mode;
+		global $config, $phpEx, $mode;
+		
+		$phpbb_admin_path = PHPBB3_ADMIN_DIR;
 
 		$start		= request_var('start', 0);
 		$action		= request_var('action', '');
@@ -880,7 +888,7 @@ class acp_arcade_utilities
 				$domain = gethostbyaddr($error_ip);
 				$ipwhois = '';
 
-				include($phpbb_root_path . 'includes/functions_user.' . $phpEx);
+				include(PHPBB3_INCLUDE_DIR . 'functions_user.' . $phpEx);
 
 				if ($ipwhois = user_ipwhois($error_ip))
 				{
@@ -1025,8 +1033,10 @@ class acp_arcade_utilities
 	function user_guide()
 	{
 		global $db, $user, $auth, $auth_arcade, $template, $cache, $prefix_phpbb3, $arcade;
-		global $config, $phpbb_admin_path, $phpbb_root_path, $phpEx, $mode;
+		global $config, $phpEx, $mode;
 
+        $phpbb_admin_path = PHPBB3_ADMIN_DIR;
+		
 		$template->assign_vars(array(
 			'S_IN_ARCADE_USERGUIDE'		=> true,
 			'L_BACK_TO_TOP'				=> $user->lang['BACK_TO_TOP'],
