@@ -9,8 +9,11 @@
 */
 
 /**
-* @ignore
-*/
+ * Applied rules:
+ * AddDefaultValueForUndefinedVariableRector (https://github.com/vimeo/psalm/blob/29b70442b11e3e66113935a2ee22e165a70c74a4/docs/fixing_code.md#possiblyundefinedvariable)
+ * TernaryToNullCoalescingRector
+ */
+ 
 if (!defined('IN_PHPBB'))
 {
 	exit;
@@ -25,7 +28,8 @@ class acp_reasons
 
 	function main($id, $mode)
 	{
-		global $db, $user, $auth, $template, $cache;
+		$log = null;
+  global $db, $user, $auth, $template, $cache;
 		global $config, $phpEx;
 
 		$user->add_lang(array('mcp', 'acp/posting'));
@@ -356,7 +360,7 @@ class acp_reasons
 			$template->assign_block_vars('reasons', array(
 				'REASON_TITLE'			=> $row['reason_title'],
 				'REASON_DESCRIPTION'	=> $row['reason_description'],
-				'REASON_COUNT'			=> (isset($reason_count[$row['reason_id']])) ? $reason_count[$row['reason_id']] : 0,
+				'REASON_COUNT'			=> $reason_count[$row['reason_id']] ?? 0,
 
 				'S_TRANSLATED'		=> $translated,
 				'S_OTHER_REASON'	=> $other_reason,
