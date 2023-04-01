@@ -9,6 +9,11 @@
 *
 */
 
+/*
+ * Applied rules:
+ * AddDefaultValueForUndefinedVariableRector (https://github.com/vimeo/psalm/blob/29b70442b11e3e66113935a2ee22e165a70c74a4/docs/fixing_code.md#possiblyundefinedvariable)
+ */
+
 class acp_user_reminder
 {
 	var $u_action;
@@ -446,7 +451,8 @@ class acp_user_reminder
 
 	function dropdown_action($action, $mark, $case)
 	{
-		global $user, $auth, $db, $phpEx, $config;
+		$username_ary = [];
+  global $user, $auth, $db, $phpEx, $config;
 
         $phpbb_root_path = PHPBB3_INCLUDE_DIR;
 		
@@ -933,7 +939,8 @@ class acp_user_reminder
 	
 	function build_choice($choice_option)
 	{
-		global $template, $user;
+		$sql_choice = null;
+  global $template, $user;
 
 		$choice_key	= request_var('ck', 'i');
 		$limit_choice = array('i' => $user->lang['ALL'], 'j' => $user->lang['REMINDED'], 'l' => $user->lang['NOT_REMINDED']);
