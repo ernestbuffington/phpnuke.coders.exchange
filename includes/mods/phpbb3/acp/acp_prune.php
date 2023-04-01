@@ -9,8 +9,10 @@
 */
 
 /**
-* @ignore
-*/
+ * Applied rules:
+ * AddDefaultValueForUndefinedVariableRector (https://github.com/vimeo/psalm/blob/29b70442b11e3e66113935a2ee22e165a70c74a4/docs/fixing_code.md#possiblyundefinedvariable)
+ */
+ 
 if (!defined('IN_PHPBB'))
 {
 	exit;
@@ -51,7 +53,8 @@ class acp_prune
 	*/
 	function prune_forums($id, $mode)
 	{
-		global $db, $user, $auth, $template, $cache;
+		$p_result = [];
+  global $db, $user, $auth, $template, $cache;
 		global $config, $phpEx;
 
 		$all_forums = request_var('all_forums', 0);
@@ -228,7 +231,8 @@ class acp_prune
 	*/
 	function prune_users($id, $mode)
 	{
-		global $db, $user, $auth, $template, $cache;
+		$l_log = null;
+  global $db, $user, $auth, $template, $cache;
 		global $config, $phpEx;
         
 		$phpbb_admin_path = PHPBB3_ADMIN_DIR;
