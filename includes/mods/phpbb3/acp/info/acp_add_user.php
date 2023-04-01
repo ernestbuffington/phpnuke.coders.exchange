@@ -35,10 +35,10 @@ class acp_add_user_info
 
 	function install()
 	{
-		global $phpbb_root_path, $phpEx, $db, $user;
+		global $phpEx, $db, $user;
 		
 		// Setup $auth_admin class so we can add permission options
-		include($phpbb_root_path . 'includes/acp/auth.' . $phpEx);
+		include(PHPBB3_INCLUDE_DIR . 'acp/auth.' . $phpEx);
 		$auth_admin = new auth_admin();
 		
 		// Add permission for manage cvsdb
