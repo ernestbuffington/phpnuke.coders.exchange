@@ -8,16 +8,20 @@
 */
 
 /**
-* @ignore
-*/
+ * Applied rules:
+ * RandomFunctionRector
+ */
+ 
 if (!defined('IN_PHPBB'))
 {
 	exit;
 }
 
 /**
-* @package acp
-*/
+ * Applied rules:
+ * RandomFunctionRector
+ */
+ 
 class acp_captcha
 {
 	var $u_action;
@@ -55,7 +59,7 @@ class acp_captcha
 				include(PHPBB3_INCLUDE_DIR . 'captcha/captcha_non_gd.' . $phpEx);
 			}
 			$captcha = new captcha();
-			$captcha->execute(gen_rand_string(mt_rand(5, 8)), time());
+			$captcha->execute(gen_rand_string(random_int(5, 8)), time());
 			exit;
 		}
 
