@@ -107,7 +107,7 @@ if (
         isset($_POST['cancelavatar']) ||
         $mode == 'register' )
 {
-		include($_SERVER['DOCUMENT_ROOT']."/includes/mods/phpbb2/functions_validate.php");
+        include("modules/Forums/includes/functions_validate.php");
         include("modules/Forums/includes/bbcode.php");
         include("modules/Forums/includes/functions_post.php");
 
@@ -877,9 +877,7 @@ if( isset($_POST['avatargallery']) && !$error )
 }
 else
 {
-        //include("modules/Forums/includes/functions_selects.php");
-		include($_SERVER['DOCUMENT_ROOT']."/includes/mods/phpbb2/functions_selects.php");
-
+        include("modules/Forums/includes/functions_selects.php");
 
         if ( !isset($coppa) )
         {
@@ -1019,7 +1017,7 @@ else
 		}
 
 		unset($code);
-
+		
 		$confirm_image = (extension_loaded('zlib')) ? '<img src="' . append_sid("profile.$phpEx?mode=confirm&amp;id=$confirm_id") . '" alt="" title="" />' : '<img src="' . append_sid("profile.$phpEx?mode=confirm&amp;id=$confirm_id&amp;c=1") . '" alt="" title="" /><img src="' . append_sid("profile.$phpEx?mode=confirm&amp;id=$confirm_id&amp;c=2") . '" alt="" title="" /><img src="' . append_sid("profile.$phpEx?mode=confirm&amp;id=$confirm_id&amp;c=3") . '" alt="" title="" /><img src="' . append_sid("profile.$phpEx?mode=confirm&amp;id=$confirm_id&amp;c=4") . '" alt="" title="" /><img src="' . append_sid("profile.$phpEx?mode=confirm&amp;id=$confirm_id&amp;c=5") . '" alt="" title="" /><img src="' . append_sid("profile.$phpEx?mode=confirm&amp;id=$confirm_id&amp;c=6") . '" alt="" title="" />';
 		$s_hidden_fields .= '<input type="hidden" name="confirm_id" value="' . $confirm_id . '" />';
 

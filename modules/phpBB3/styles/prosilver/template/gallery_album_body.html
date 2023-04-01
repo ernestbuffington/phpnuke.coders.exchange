@@ -1,0 +1,153 @@
+<!-- INCLUDE overall_header.html -->
+<!-- IF U_MCP --><p>[&nbsp;<a href="{U_MCP}">{L_MCP}</a>&nbsp;]</p><!-- ENDIF -->
+<h2><a href="{U_VIEW_ALBUM}">{ALBUM_NAME}</a></h2>
+
+<!-- IF ALBUM_DESC or MODERATORS or U_MCP -->
+<p>
+	<!-- NOTE: remove the style="display: none" when you want to have the forum description on the forum body -->
+	<!-- IF ALBUM_DESC --><span style="display: none">{ALBUM_DESC}<br /></span><!-- ENDIF -->
+	<!-- IF MODERATORS --><strong>{L_MODERATORS}:</strong> {MODERATORS}<br /><!-- ENDIF -->
+	<!-- IF U_EDIT_ALBUM --><br /><strong><a href="{U_EDIT_ALBUM}">{L_EDIT_ALBUM}</a></strong><!-- ENDIF -->
+	<!-- IF U_CREATE_ALBUM --><br /><strong><a href="{U_CREATE_ALBUM}">{L_CREATE_SUBALBUM}</a></strong><!-- ENDIF -->
+</p>
+<!-- ENDIF -->
+
+<!-- IF .albumrow --><!-- INCLUDE gallery_albumlist_body.html --><!-- ENDIF -->
+<!-- IF S_IS_POSTABLE and (U_UPLOAD_IMAGE or PAGINATION or TOTAL_POSTS or TOTAL_TOPICS) -->
+	<div class="topic-actions" <!-- IF S_HAS_SUBALBUM -->style="margin-top: 2em;"<!-- ENDIF -->>
+
+	<!-- IF U_UPLOAD_IMAGE -->
+		<div class="buttons">
+			<div class="upload-icon"><a href="{U_UPLOAD_IMAGE}" title="{L_UPLOAD_IMAGE}"><span></span>{L_UPLOAD_IMAGE}</a></div>
+		</div>
+	<!-- ENDIF -->
+
+	<!-- IF PAGINATION or TOTAL_IMAGES -->
+		<div class="pagination">
+			{TOTAL_IMAGES} &bull; {PAGE_NUMBER}<!-- IF PAGINATION --> &bull; <span>{PAGINATION}</span><!-- ENDIF -->
+		</div>
+	<!-- ENDIF -->
+
+	</div>
+<!-- ENDIF -->
+
+<!-- IF .picrow -->
+<div class="forumbg">
+	<div class="inner">
+		<span class="corners-top"><span></span></span>
+		<ul class="topiclist">
+			<li class="header">
+				<dl class="icon">
+					<dt>{L_ALBUM} - {ALBUM_NAME}</dt>
+				</dl>
+			</li>
+		</ul>
+		<ul class="topiclist topics">
+			<li class="bg2">
+				<table width="100%" cellpadding="2" cellspacing="10" border="0" class="forumline">
+					<!-- BEGIN picrow -->
+					<tr>
+						<!-- BEGIN piccol -->
+						<td align="center" style="width: {S_COL_WIDTH};" class="bg1"><span class="genmed"><a href="{picrow.piccol.U_IMAGE}"<!-- IF S_GALLERY_HIGHSLIDE_JS --> class="highslide" onclick="return hs.expand(this)"<!-- ELSE --> rel="lytebox" class="image-resize"<!-- ENDIF -->><img src="{picrow.piccol.THUMBNAIL}" alt="{picrow.piccol.DESC}" title="{picrow.piccol.DESC}" /></a><br />{picrow.piccol.APPROVAL}</span></td>
+						<!-- END piccol -->
+						<!-- BEGIN nopiccol --> 
+						<td align="center" style="width: {S_COL_WIDTH};" class="bg1"><span></span></td> 
+						<!-- END nopiccol -->
+					</tr>
+					<tr>
+						<!-- BEGIN pic_detail -->
+						<td class="bg2">
+							<div class="gensmall" style="overflow: hidden;">
+								{L_IMAGE_TITLE}: <a href="{picrow.pic_detail.U_IMAGE_PAGE}" style="font-weight: bold;">{picrow.pic_detail.IMAGE_NAME}</a><br />
+								{L_POSTER}: {picrow.pic_detail.POSTER}<br />
+								{L_POSTED}: {picrow.pic_detail.TIME}<br />
+								{L_VIEWS}: {picrow.pic_detail.VIEW}<br />
+								{picrow.pic_detail.RATING}
+								{picrow.pic_detail.COMMENTS}
+								{picrow.pic_detail.IP}
+								{picrow.pic_detail.EDIT}  {picrow.pic_detail.DELETE}  {picrow.pic_detail.STATUS}  {picrow.pic_detail.MOVE}
+							</div>
+						</td>
+						<!-- END pic_detail -->
+						<!-- BEGIN picnodetail --> 
+						<td class="bg2"><span></span></td> 
+						<!-- END picnodetail -->
+					</tr>
+					<!-- END picrow -->
+				</table>
+			</li>
+		</ul>
+		<span class="corners-bottom"><span></span></span>
+	</div>
+</div>
+<!-- ELSE -->
+	<!-- IF S_IS_POSTABLE -->
+	<div class="panel">
+		<div class="inner"><span class="corners-top"><span></span></span>
+		<strong>{L_NO_IMAGES_LONG}</strong>
+		<span class="corners-bottom"><span></span></span></div>
+	</div>
+	<!-- ENDIF -->
+<!-- ENDIF -->
+
+<!-- IF S_IS_POSTABLE -->
+	<form action="{S_ALBUM_ACTION}" method="post">
+	<fieldset class="display-options">
+		<label>{L_SORT_BY}: 
+			<select name="sort_method">
+				<option {SORT_TIME} value='image_time'>{L_TIME}</option>
+				<option {SORT_IMAGE_TITLE} value='image_name'>{L_IMAGE_TITLE}</option>
+				<option {SORT_USERNAME} value='image_username'>{L_SORT_USERNAME}</option>
+				<option {SORT_VIEW} value='image_view_count'>{L_VIEWS}</option>
+				{SORT_RATING_OPTION}
+				{SORT_COMMENTS_OPTION}
+				{SORT_NEW_COMMENT_OPTION}
+			</select>
+		</label>
+		<label>
+			<select name="sort_order">
+				<option {SORT_ASC} value='ASC'>{L_SORT_ASCENDING}</option>
+				<option {SORT_DESC} value='DESC'>{L_SORT_DESCENDING}</option>
+			</select> <input type="submit" name="sort" value="{L_GO}" class="button2" />
+		</label>
+	</fieldset>
+	</form>
+	<hr />
+	<!-- IF .picrow -->
+	<div class="topic-actions">
+		<!-- IF U_UPLOAD_IMAGE -->
+			<div class="buttons">
+				<div class="upload-icon"><a href="{U_UPLOAD_IMAGE}" title="{L_UPLOAD_IMAGE}"><span></span>{L_UPLOAD_IMAGE}</a></div>
+			</div>
+		<!-- ENDIF -->
+		<div class="pagination">
+			{TOTAL_IMAGES} &bull; {PAGE_NUMBER}<!-- IF PAGINATION --> &bull; <span>{PAGINATION}</span><!-- ENDIF -->
+		</div>
+	</div>
+	<br />
+	<!-- ENDIF -->
+<!-- ENDIF -->
+
+	<p></p><p><a href="{U_RETURN_LINK}" class="left-box {S_CONTENT_FLOW_BEGIN}" accesskey="r">{L_RETURN_TO} {S_RETURN_LINK}</a></p>
+	<form method="post" id="jumpbox" action="{S_JUMPBOX_ACTION}" onsubmit="if(document.jumpbox.album_id.value == -1){return false;}">
+		<fieldset class="jumpbox">
+			<label for="album_id" accesskey="album_id">{L_JUMP_TO}:</label>
+			<select name="album_id" id="album_id" onchange="if(this.options[this.selectedIndex].value != -1){ document.forms['jumpbox'].submit() }">
+				{ALBUM_JUMPBOX}
+			</select>
+			<input type="submit" value="{L_GO}" class="button2" />
+		</fieldset>
+	</form>
+
+<!-- IF S_DISPLAY_ONLINE_LIST -->
+	<h3><a href="{U_VIEWONLINE}">{L_WHO_IS_ONLINE}</a></h3>
+	<p><!-- IF CHEAT_LOGGED_IN_USER_LIST -->{CHEAT_LOGGED_IN_USER_LIST}<!-- ELSE -->{LOGGED_IN_USER_LIST}<!-- ENDIF --></p>
+<!-- ENDIF -->
+<!-- IF S_IS_POSTABLE -->
+	<h3>{L_ALBUM_PERMISSIONS}</h3>
+	<p><!-- BEGIN rules -->{rules.RULE}<br /><!-- END rules --></p>
+<!-- ENDIF -->
+
+<!-- Please keep this little notice visible -->
+<div class="copyright">Powered by <!-- port started by tsr: http://phpbbgallery.ph.funpic.de --><a href="http://www.flying-bits.org/">nickvergessen</a></div>
+<!-- INCLUDE overall_footer.html -->

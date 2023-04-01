@@ -8,5 +8,6 @@ lincludes/log/*
 lincludes/cache/*
 pspbrwse.jbf
 *.pspimage
+uploads
 
 

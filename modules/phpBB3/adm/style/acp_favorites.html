@@ -1,0 +1,124 @@
+<!-- INCLUDE overall_header.html -->
+
+<a name="maincontent"></a>
+
+<h1>{L_TITLE}</h1>
+
+<p>{L_TITLE_EXPLAIN}</p>
+
+<!-- IF S_ERROR -->
+	<div class="errorbox">
+		<h3>{L_WARNING}</h3>
+		<p>{ERROR_MSG}</p>
+	</div>
+<!-- ENDIF -->
+
+<!-- IF S_SETTINGS -->
+
+	<form id="acp_favorites" method="post" action="{U_ACTION}">
+		<!-- BEGIN options -->
+			<!-- IF options.S_LEGEND -->
+				<!-- IF not options.S_FIRST_ROW -->
+					</fieldset>
+				<!-- ENDIF -->
+				<fieldset>
+					<legend>{options.LEGEND}</legend>
+			<!-- ELSE -->
+
+				<dl>
+					<dt><label for="{options.KEY}">{options.TITLE}:</label><!-- IF options.S_EXPLAIN --><br /><span>{options.TITLE_EXPLAIN}</span><!-- ENDIF --></dt>
+					<dd>{options.CONTENT}</dd>
+				</dl>
+
+			<!-- ENDIF -->
+		<!-- END options -->
+
+		<!-- IF S_AUTH -->
+			<!-- BEGIN auth_tpl -->
+				{auth_tpl.TPL}
+			<!-- END auth_tpl -->
+		<!-- ENDIF -->
+
+		<p class="submit-buttons">
+			<input class="button1" type="submit" id="submit" name="submit" value="{L_SUBMIT}" />&nbsp;
+			<input class="button2" type="reset" id="reset" name="reset" value="{L_RESET}" />
+		</p>
+		{S_FORM_TOKEN}
+	</fieldset>
+	</form>
+
+<!-- ELSE -->
+
+	<!-- IF S_CAT_OPTIONS -->
+
+	<form id="categories_rename" method="post" action="{U_ACTION}">
+		<fieldset>
+			<legend>{L_CATEGORY_OPTIONS_LEGEND}</legend>
+			<dl>
+				<dt><label>{L_FAVORITES_CATEGORY_ID}:</label><br /></dt>
+			<dd><input type="hidden" name="cat_id" value="{CATEGORY_ID}" /><strong>{CATEGORY_ID}</strong></dd>
+			</dl>
+			<dl>
+				<dt><label for="cat_title">{L_FAVORITES_CATEGORY_NAME}:</label></dt>
+				<dd><input class="text medium" type="text" id="cat_name" name="cat_name" value="{CATEGORY_NAME}" /></dd>
+			</dl>
+			
+			<input class="button1" type="submit" name="save" value="{L_SAVE}" />
+		</fieldset>
+	</form>
+
+	<!-- ELSE -->
+
+		<table cellspacing="1">
+		<thead>
+		<tr>
+			<th>{L_FAVORITES_CATEGORY_ID}</th>
+			<th>{L_FAVORITES_CATEGORY_NAME}</th>
+			<th colspan="2">{L_FAVORITES_CATEGORY_OPTIONS}</th>
+		</tr>
+		</thead>
+		<tbody>
+		<!-- BEGIN categories -->
+			<!-- IF categories.S_ROW_COUNT is even --><tr class="row1"><!-- ELSE --><tr class="row2"><!-- ENDIF -->
+
+			<td>{categories.CATEGORY_ID}</td>
+			<td>{categories.CATEGORY_NAME}</td>
+			<td style="text-align: center;"><a href="{categories.U_ACTIVATE_DEACTIVATE}">{categories.L_ACTIVATE_DEACTIVATE}</a></td>
+
+			<td style="width: 80px; text-align: right; white-space: nowrap;">
+				<!-- IF categories.S_FIRST_ROW && not categories.S_LAST_ROW -->
+					{ICON_MOVE_UP_DISABLED}
+					<a href="{categories.U_MOVE_DOWN}">{ICON_MOVE_DOWN}</a>
+				<!-- ELSEIF not categories.S_FIRST_ROW && not categories.S_LAST_ROW-->
+					<a href="{categories.U_MOVE_UP}">{ICON_MOVE_UP}</a> 
+					<a href="{categories.U_MOVE_DOWN}">{ICON_MOVE_DOWN}</a> 
+				<!-- ELSEIF categories.S_LAST_ROW && not categories.S_FIRST_ROW -->
+					<a href="{categories.U_MOVE_UP}">{ICON_MOVE_UP}</a>
+					{ICON_MOVE_DOWN_DISABLED}	
+				<!-- ENDIF -->
+				<a href="{categories.U_EDIT}">{ICON_EDIT}</a> 
+				<a href="{categories.U_DELETE}">{ICON_DELETE}</a> 
+			</td>
+
+		</tr>
+		<!-- END categories -->
+		</tbody>
+		</table>
+
+		<form id="categories_edit" method="post" action="{U_ACTION}">
+		
+		<fieldset class="quick">
+			<input class="text small" type="text" name="new_category_name" />
+			<input class="button1" type="submit" name="submit" value="{L_CREATE_NEW_CATEGORY}" />
+			<input type="hidden" name="create" value="1" />
+			{S_FORM_TOKEN}
+		</fieldset>
+		</form>
+
+	<!-- ENDIF -->
+
+<!-- ENDIF -->
+
+
+
+<!-- INCLUDE overall_footer.html -->

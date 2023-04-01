@@ -1,0 +1,49 @@
+<!-- INCLUDE simple_header.html -->
+
+<!--
+/**
+ * posting_who_posted.html
+ * 
+ * @author eviL3 <evil@phpbbmodders.net>
+ * @copyright (c) 2007, 2008 evil3
+ * @license http://opensource.org/licenses/gpl-license.php GNU Public License
+ * 
+ */
+-->
+
+<table width="100%" cellspacing="1" cellpadding="4" border="0">
+<tr>
+	<td>
+		<table class="tablebg" width="95%" cellspacing="1" cellpadding="4" border="0">
+		<tr>
+			<th>{L_WHOPOSTED_TITLE}</th>
+		</tr>
+		<tr>
+			<td class="row1">{L_WHOPOSTED_EXP}</td>
+		</tr>
+		<tr>
+			<td class="row1" align="center" valign="middle">
+				<table class="tablebg" width="95%" cellspacing="1" cellpadding="4" border="0">
+					<tr>
+						<td class="cat"><h4>{L_USERNAME}</h4></td>
+						<td class="cat" align="right" width="10"><h4>{L_POSTS}&nbsp;</h4></td>
+					</tr>
+					<!-- BEGIN who_posted_row -->
+					<tr>
+						<td class="row1">{who_posted_row.USERNAME}</td>
+						<td class="row2" align="right">{who_posted_row.POSTS}</td>
+					</tr>
+					<!-- END who_posted_row -->
+				</table>
+				<br />
+				<a class="nav" href="{U_CLOSE}" onclick="opener.location=(this.href); self.close();">{L_WHOPOSTED_SHOW}</a> {L_WHOPOSTED_OR} <a class="nav" href="#" onclick="window.close(); return false;">{L_CLOSE_WINDOW}</a>
+			</td>
+		</tr>
+		</table>
+	</td>
+</tr>
+</table>
+
+<div class="copyright" style="text-align:center; margin-top: 10px;"><a href="http://phpbbmodders.net/goto/who_posted_phpbb3">Who Posted?</a> &copy; 2007, 2008 eviL&lt;3</div>
+
+<!-- INCLUDE simple_footer.html -->

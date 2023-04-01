@@ -1,0 +1,54 @@
+<!-- INCLUDE overall_header.html -->
+
+<form method="post" name="charsearch" action="{S_MODE_ACTION}">
+<table width="100%" cellspacing="1">
+	<tr>
+		<td align="{S_CONTENT_FLOW_BEGIN}"><span class="genmed">{L_USERNAME_BEGINS_WITH}: </span><select name="first_char" onchange="this.form.submit();">{S_CHAR_OPTIONS}</select>&nbsp;<input type="submit" name="char" value="{L_DISPLAY}" class="btnlite" /></td>
+	</tr>
+</table>
+</form>
+
+<form method="post" action="{S_MODE_ACTION}">
+<table class="tablebg" width="100%" cellspacing="1">
+    <tr>
+            <th nowrap="nowrap">#</th>
+            <th width="25%"><a href="{U_SORT_USERNAME}">{L_BAN_USERNAME}</a></th>
+           	<th width="15%"><a href="{U_SORT_BAN_START}">{L_BAN_START_DATE}</a></th>
+            <th width="15%"><a href="{U_SORT_BAN_END}">{L_BAN_END_DATE}</a></th>
+            <th width="25%">{L_BAN_REASON}</th>
+            <th width="20%">{L_BAN_LENGTH}</th>
+    </tr>
+      <!-- BEGIN banlist_row -->
+       <!-- IF banlist_row.S_ROW_COUNT is even --><tr class="row2"><!-- ELSE --><tr class="row1"><!-- ENDIF -->
+                <td class="gen" align="center">&nbsp;{banlist_row.ROW_NUMBER}&nbsp;</td>
+        		<td class="gen" align="{S_CONTENT_FLOW_BEGIN}">{banlist_row.USERNAME_FULL}<br /><!-- IF banlist_row.USER_WARNINGS_COUNT -->{banlist_row.USER_WARNINGS_COUNT}&nbsp;<!-- ENDIF --><!-- IF banlist_row.USER_NOTES_COUNT -->{L_USER_NOTES_COUNT}&nbsp;<a href="{banlist_row.U_NOTES}" title="{L_VIEW_NOTES}">{banlist_row.USER_NOTES_COUNT}</a><!-- ENDIF --></td>
+        		<td class="gen" align="center">&nbsp;{banlist_row.BAN_START}&nbsp;</td>
+        		<td class="gen">&nbsp;{banlist_row.BAN_END}&nbsp;</td>
+    	        <td class="gen">&nbsp;{banlist_row.BAN_REASON}&nbsp;</td>
+    	        <td class="gen">&nbsp;{banlist_row.BAN_TIME_DURATION}&nbsp;</td>
+        </tr>
+		<!-- BEGINELSE -->
+	<tr>
+		<td class="row1" colspan="6" align="center">
+			<span class="gen">{L_NO_MEMBERS}</span>
+		</td>
+	</tr>
+       <!-- END banlist_row -->
+<tr>
+	<td class="cat" colspan="<!-- IF S_IN_SEARCH_POPUP -->9<!-- ELSE -->8<!-- ENDIF -->" align="center"><!-- IF S_IN_SEARCH_POPUP and not S_SELECT_SINGLE --><input class="btnlite" type="submit" value="{L_SELECT_MARKED}" /><!-- ELSE --><span class="gensmall">{L_SELECT_SORT_METHOD}:</span>&nbsp;<select name="sk">{S_MODE_SELECT}</select>&nbsp; <span class="gensmall">{L_ORDER}</span>&nbsp;<select name="sd">{S_ORDER_SELECT}</select>&nbsp; <input type="submit" name="submit" value="{L_SUBMIT}" class="btnlite" /><!-- ENDIF --></td>
+</tr>
+</table>
+
+
+<table width="100%" cellspacing="0" cellpadding="0">
+<tr>
+	<td class="pagination">{PAGE_NUMBER} [ {TOTAL_USERS} ]</td>
+	<td align="{S_CONTENT_FLOW_END}"><span class="pagination"><!-- INCLUDE pagination.html --></span></td>
+</tr>
+</table>
+</form>
+<br clear="all" />
+	
+<div align="{S_CONTENT_FLOW_END}"><!-- INCLUDE jumpbox.html --></div>
+<!-- INCLUDE overall_footer.html -->
+

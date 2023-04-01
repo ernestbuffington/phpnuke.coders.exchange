@@ -1,0 +1,93 @@
+<!-- INCLUDE overall_header.html -->
+
+<a name="maincontent"></a>
+
+<!-- IF S_EDIT -->
+
+	<a href="{U_BACK}" style="float: {S_CONTENT_FLOW_END};">&laquo; {L_BACK}</a>
+
+	<script type="text/javascript">
+	// <![CDATA[
+		/**
+		* Change country flags
+		*/
+		function update_flag(newflag)
+		{
+			document.getElementById('flag_image').src = (newflag) ? "{FLAGS_PATH}/" + encodeURI(newflag) : "./images/spacer.gif";
+		}
+	// ]]>
+	</script>
+
+	<h1>{L_ACP_MANAGE_FLAGS}</h1>
+	<p>{L_ACP_FLAGS_EXPLAIN}</p>
+
+	<form id="acp_flags" method="post" action="{U_ACTION}">
+	
+	<fieldset>
+		<legend>{L_ACP_FLAGS}</legend>
+	<dl>
+		<dt><label for="flag_country">{L_FLAG_COUNTRY}:</label></dt>
+		<dd><input name="flag_country" type="text" id="flag_country" value="{FLAG_COUNTRY}" maxlength="255" /></dd>
+	</dl>
+	<dl>
+		<dt><label for="flag_code">{L_FLAG_CODE}:</label></dt>
+		<dd><input name="flag_code" type="text" id="flag_code" value="{FLAG_CODE}" maxlength="2" /></dd>
+	</dl>
+	<dl>
+		<dt><label for="flag_image">{L_FLAG_IMAGE}:</label><br />{L_FLAG_IMAGE_EXPLAIN}</dt>
+		<dd><select name="flag_image" id="flag_image" onchange="update_flag(this.options[selectedIndex].value);">{S_FILENAME_LIST}</select></dd>
+		<dd><img src="{FLAG_IMAGE}" id="flag_image" alt="" /></dd>
+	</dl>
+
+	<p class="submit-buttons">
+		<input type="hidden" name="action" value="save" />
+		<input class="button1" type="submit" id="submit" name="submit" value="{L_SUBMIT}" />&nbsp;
+		<input class="button2" type="reset" id="reset" name="reset" value="{L_RESET}" />
+	</p>
+	</fieldset>
+	{S_FORM_TOKEN}
+	</form>
+
+<!-- ELSE -->
+
+	<h1>{L_ACP_MANAGE_FLAGS}</h1>
+	<p>{L_ACP_FLAGS_EXPLAIN}</p>
+
+	<form id="acp_flags" method="post" action="{U_ACTION}">
+
+	<fieldset class="tabulated">
+		<legend>{L_ACP_MANAGE_FLAGS}</legend>
+
+		<table cellspacing="1">
+		<thead>
+		<tr>
+			<th>{L_FLAG_IMAGE}</th>
+			<th>{L_FLAG_COUNTRY}</th>
+			<th>{L_FLAG_CODE}</th>
+			<th>{L_TOTAL_USERS}</th>
+			<th>{L_ACTION}</th>
+		</tr>
+		</thead>
+		<tbody>
+		<!-- BEGIN flags -->
+			<!-- IF flags.S_ROW_COUNT is even --><tr class="row1"><!-- ELSE --><tr class="row2"><!-- ENDIF -->
+			<td style="text-align: center;"><!-- IF flags.S_FLAG_IMAGE --><img src="{flags.FLAG_IMAGE}" alt="{flags.FLAG_COUNTRY} ({flags.FLAG_CODE})" title="{flags.FLAG_COUNTRY} ({flags.FLAG_CODE})" /><!-- ELSE -->&nbsp; - &nbsp;<!-- ENDIF --></td>
+			<td style="text-align: center;">{flags.FLAG_COUNTRY}</td>
+			<td style="text-align: center;">{flags.FLAG_CODE}</td>
+			<td style="text-align: center;">{flags.FLAG_USERS}</td>
+			<td style="text-align: center;"><a href="{flags.U_EDIT}">{ICON_EDIT}</a> <a href="{flags.U_DELETE}">{ICON_DELETE}</a></td>
+		</tr>
+		<!-- END flags -->
+		</tbody>
+		</table>
+
+		<p class="quick">
+			<input class="button2" name="add" type="submit" value="{L_ADD_FLAG}" />
+		</p>
+	</fieldset>
+	{S_FORM_TOKEN}
+	</form>
+
+<!-- ENDIF -->
+
+<!-- INCLUDE overall_footer.html -->

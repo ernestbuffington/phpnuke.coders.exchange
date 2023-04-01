@@ -1,0 +1,11 @@
+<br />
+<h3>{L_ARCADE_ONLINE}</h3>
+<!-- IF .arcade_online_row -->
+<p>
+	<!-- BEGIN arcade_online_row -->
+	{arcade_online_row.GAME}:&nbsp;{arcade_online_row.PLAYER_LIST}<!-- IF not arcade_online_row.S_LAST_ROW --><br /><!-- ENDIF -->
+	<!-- END arcade_online_row -->
+</p>
+<!-- ELSE -->
+<p>{L_ARCADE_OFFLINE}</p>
+<!-- ENDIF -->

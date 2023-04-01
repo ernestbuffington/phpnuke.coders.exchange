@@ -1,0 +1,75 @@
+<!-- INCLUDE ucp_header.html -->
+
+<form id="ucp" method="post" action="{S_UCP_ACTION}">
+
+<h2>{L_TITLE}</h2>
+
+<div class="panel">
+	<div class="inner"><span class="corners-top"><span></span></span>
+
+	<p>{L_TITLE_EXPLAIN}</p>
+
+	<!-- IF .games -->
+		<ul class="linklist">
+			<li class="rightside pagination">
+				<!-- IF TOTAL_GAMES -->{TOTAL_GAMES} {L_ARCADE_GAME_FAVS}<!-- ENDIF -->
+				<!-- IF PAGE_NUMBER --><!-- IF PAGINATION --> &bull; <a href="#" onclick="jumpto(); return false;" title="{L_JUMP_TO_PAGE}">{PAGE_NUMBER}</a> &bull; <span>{PAGINATION}</span><!-- ELSE --> &bull; {PAGE_NUMBER}<!-- ENDIF --><!-- ENDIF -->
+			</li>
+		</ul>
+
+		<ul class="topiclist">
+			<li class="header">
+				<dl>
+					<dt style="width: 40%"><a href="{U_SORT_GAME_NAME}">{L_ARCADE_GAME_NAME}</a></dt>
+					<dd class="extra"><a href="{U_SORT_CATEGORY_NAME}">{L_ARCADE_CATEGORY}</a></dd>
+					<dd class="mark">{L_MARK}</dd>
+				</dl>
+			</li>
+		</ul>
+		<ul class="topiclist cplist">
+
+		<!-- BEGIN games -->
+		<li class="row<!-- IF games.S_ROW_COUNT is odd --> bg1<!-- ELSE --> bg2<!-- ENDIF -->">
+			<dl>
+				<dt style="width: 40%"><a href="{games.U_GAME}" class="topictitle">{games.GAME_NAME}</a></dt>
+				<dd class="extra"><a href="{games.U_CAT}" class="topictitle">{games.CAT_NAME}</a></dd>
+				<dd class="mark"><input type="checkbox" name="games[{games.GAME_ID}]" value="1" /></dd>
+			</dl>
+		</li>
+		<!-- END games -->
+		</ul>
+
+		<fieldset class="display-options">
+			<!-- IF NEXT_PAGE --><a href="{NEXT_PAGE}" class="right-box {S_CONTENT_FLOW_END}">{L_NEXT}</a><!-- ENDIF -->
+			<!-- IF PREVIOUS_PAGE --><a href="{PREVIOUS_PAGE}" class="left-box {S_CONTENT_FLOW_BEGIN}">{L_PREVIOUS}</a><!-- ENDIF -->
+			<label for="sk">{L_SORT_BY}: <select name="sk" id="sk">{S_SORT_OPTIONS}</select></label>
+			<label><select name="sd" id="sd">{S_ORDER_SELECT}</select></label>
+			<input class="button2" type="submit" name="sort" value="{L_SORT}" />
+			{S_FORM_TOKEN}
+		</fieldset>
+
+		<hr />
+
+		<ul class="linklist">
+			<li class="rightside pagination">
+				<!-- IF TOTAL_GAMES -->{TOTAL_GAMES} {L_ARCADE_GAME_FAVS}<!-- ENDIF -->
+				<!-- IF PAGE_NUMBER --><!-- IF PAGINATION --> &bull; <a href="#" onclick="jumpto(); return false;" title="{L_JUMP_TO_PAGE}">{PAGE_NUMBER}</a> &bull; <span>{PAGINATION}</span><!-- ELSE --> &bull; {PAGE_NUMBER}<!-- ENDIF --><!-- ENDIF -->
+			</li>
+		</ul>
+	<!-- ELSE -->
+		<p><strong>{L_ARCADE_NO_GAME_FAVS}</strong></p>
+	<!-- ENDIF -->
+
+	<span class="corners-bottom"><span></span></span></div>
+</div>
+
+<!-- IF S_GAME_ROWS -->
+	<fieldset class="display-actions">
+		<input class="button2" type="submit" name="delete" value="{L_DELETE_MARKED}" />
+		<div><a href="#" onclick="marklist('ucp', 'games', true); return false;">{L_MARK_ALL}</a> &bull; <a href="#" onclick="marklist('ucp', 'games', false); return false;">{L_UNMARK_ALL}</a></div>
+		{S_FORM_TOKEN}
+	</fieldset>
+<!-- ENDIF -->
+</form>
+
+<!-- INCLUDE ucp_footer.html -->

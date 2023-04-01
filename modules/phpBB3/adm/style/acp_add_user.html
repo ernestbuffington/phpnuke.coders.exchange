@@ -1,0 +1,97 @@
+<!-- INCLUDE overall_header.html -->
+<!-- IF S_VERSION_KEYWORD -->
+<!--
+/** 
+*
+* @author Highway of Life : http://phpbbacademy.com
+*
+* @package acp
+* @version $Id: acp_add_user.html 31M 2007-08-05 01:11:35Z (local) $
+* @copyright (c) 2007 Star Trek Guide Group 
+* @license http://opensource.org/licenses/gpl-license.php GNU Public License 
+*
+*/
+//-->
+<!-- ENDIF -->
+
+	<h1>{L_ADD_USER}</h1>
+	<p>{L_ADD_USER_EXPLAIN}</p>
+
+	<form id="register" method="post" action="{U_ACTION}">
+	
+<!-- IF ERROR -->
+	<div class="errorbox"><h3>{L_WARNING}</h3>
+		<p>{ERROR}</p>
+		</div>
+<!-- ENDIF -->
+
+<fieldset>
+	<legend>{L_REGISTRATION}</legend>
+	<dl>
+		<span>{L_REG_COND}</span>
+	</dl>
+<!-- IF .profile_fields -->
+	<dl>
+		<dt><label>{L_ITEMS_REQUIRED}</label></dt>
+	</dl>
+<!-- ENDIF -->
+	<dl>
+		<dt><label for="username">{L_USERNAME}:</label>
+			<br /><span>{L_USERNAME_EXPLAIN}</span></dt>
+		<dd><input class="medium" type="text" id="username" name="username" size="25" maxlength="40" value="{NEW_USERNAME}" /></dd>
+	</dl>
+	<dl>
+		<dt><label for="email">{L_EMAIL_ADDRESS}:</label></dt>
+		<dd><input class="medium" type="text" name="email" id="email" size="25" maxlength="255" value="{EMAIL}" /></dd>
+	</dl>
+	<dl>
+		<dt><label for="email_confirm">{L_CONFIRM_EMAIL}:</label></dt>
+		<dd><input class="medium" type="text" name="email_confirm" id="email_confirm" size="25" maxlength="255" value="{EMAIL_CONFIRM}" /></dd>
+	</dl>
+
+	<dl>
+		<dt><label for="lang">{L_LANGUAGE}:</label></dt>
+		<dd><select name="lang" id="lang">{S_LANG_OPTIONS}</select></dd>
+	</dl>
+	<dl>
+		<dt><label for="tz">{L_TIMEZONE}:</label></dt>
+		<dd><select name="tz" id="tz">{S_TZ_OPTIONS}</select></dd>
+	</dl>
+	<!-- IF S_BIRTHDAYS_ENABLED -->
+	<dl>
+		<dt><label for="birthday">{L_BIRTHDAY}:</label><br />
+		<span>{L_BIRTHDAY_EXPLAIN}</span></dt>
+		<dd>{L_DAY}: <select id="birthday" name="bday_day">{S_BIRTHDAY_DAY_OPTIONS}</select> {L_MONTH}: <select name="bday_month">{S_BIRTHDAY_MONTH_OPTIONS}</select> {L_YEAR}: <select name="bday_year">{S_BIRTHDAY_YEAR_OPTIONS}</select></dd>
+	</dl>
+	<!-- ENDIF -->
+	<!-- IF S_ADMIN_ACTIVATE -->
+	<dl>
+		<dt><label for="admin_activate">{L_ADMIN_ACTIVATE}:</label></dt>
+		<dd><input id="admin_activate" class="radio" type="checkbox" value="1"{U_ADMIN_ACTIVATE} name="activate" /></dd>
+	</dl>
+	<!-- ENDIF -->
+</fieldset>
+
+	<!-- IF .profile_fields -->
+		<fieldset>
+			<legend>{L_USER_CUSTOM_PROFILE_FIELDS}</legend>
+		<!-- BEGIN profile_fields -->
+		<dl> 
+			<dt><label>{profile_fields.LANG_NAME}:</label><!-- IF profile_fields.S_REQUIRED --><strong>*</strong><!-- ENDIF -->
+			<!-- IF profile_fields.LANG_EXPLAIN --><br /><span>{profile_fields.LANG_EXPLAIN}</span><!-- ENDIF --></dt>
+			<dd>{profile_fields.FIELD}</dd>
+			<!-- IF profile_fields.ERROR -->
+				<dd><span class="small" style="color: red;">{profile_fields.ERROR}</span></dd>
+			<!-- ENDIF -->
+		</dl>
+		<!-- END profile_fields -->
+		</fieldset>
+	<!-- ENDIF -->
+
+	<fieldset class="quick">
+		<input class="button1" type="submit" name="submit" value="{L_SUBMIT}" />&nbsp;&nbsp;<input class="button1" type="reset" value="{L_RESET}" name="reset" />
+	</fieldset>
+
+</form>
+
+<!-- INCLUDE overall_footer.html -->

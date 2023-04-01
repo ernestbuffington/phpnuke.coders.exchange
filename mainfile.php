@@ -290,6 +290,7 @@ define('NUKE_RSS_DIR', NUKE_INCLUDE_DIR . 'rss/');
 define('NUKE_DB_DIR', NUKE_BASE_DIR . 'db/');
 define('NUKE_ADMIN_MODULE_DIR', NUKE_ADMIN_DIR . 'modules/');
 define('NUKE_FORUMS_DIR', (defined("IN_ADMIN") ? './../' : 'modules/Forums/'));
+define('NUKE_FORUMS_UTF_DIR', (defined("IN_ADMIN") ? './../includes/utf/' : 'modules/Forums/includes/utf/'));
 define('NUKE_CACHE_DIR', NUKE_INCLUDE_DIR . 'cache/');
 define('NUKE_CACHE_DELETE_DIR', NUKE_INCLUDE_DIR . 'cache');
 define('NUKE_CLASSES_DIR', NUKE_INCLUDE_DIR . 'classes/');

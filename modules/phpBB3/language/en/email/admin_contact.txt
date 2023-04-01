@@ -1,0 +1,10 @@
+Subject: {SUBJECT}
+
+Hello {ADM_USERNAME},
+
+"{USERNAME} / {USER_EMAIL}" has just entered a message into the contact form at "{SITENAME}":
+
+{MESSAGE}
+
+
+{EMAIL_SIG}

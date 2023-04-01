@@ -1,0 +1,88 @@
+<!-- INCLUDE overall_header.html -->
+<h2 class="solo">{PAGE_TITLE}:&nbsp;{CURRENT_CAT_NAME}</h2>
+
+<!-- IF MESSAGE -->
+<div class="panel">
+	<div class="inner" align="center"><span class="corners-top"><span></span></span>
+		<strong style="font-size: 0.95em;">
+		{MESSAGE}
+		</strong>
+	<span class="corners-bottom"><span></span></span></div>
+</div>		
+<!-- ENDIF -->
+
+
+<div class="panel">
+	<div class="inner"><span class="corners-top"><span></span></span>
+
+	<ul class="linklist">
+		<li>
+		<strong style="font-size: 0.95em;">
+		{L_FAVORITES_CAT_PICK}:&nbsp;
+		<!-- BEGIN categories -->
+		<!-- IF categories.ID != CURRENT_CAT --><a href="{S_UCP_ACTION}&amp;catid={categories.ID}">{categories.NAME}</a><!-- ELSE -->{categories.NAME}<!-- ENDIF --><!-- IF not categories.S_LAST_ROW -->&nbsp;|&nbsp;<!-- ENDIF -->
+		<!-- END categories -->
+		</strong>
+		</li>
+	</ul>
+
+	<span class="corners-bottom"><span></span></span></div>
+</div>		
+
+<div class="forumbg">
+	<div class="inner"><span class="corners-top"><span></span></span>
+
+	<table class="table1" cellspacing="1">
+	<thead>
+	<tr>
+		<th align="left" width="50%">{L_FAVORITES_LIST_TEXT}</th>
+		<th align="left" width="50%">{L_FAVORITES_LIST_URL}</th>
+		<!-- IF S_BUTTON_COL--><th align="left" width="60px">{L_FAVORITES_LIST_OPTIONS}</th><!-- ENDIF -->
+	</tr>
+	</thead>
+	<tbody>
+
+<!-- BEGIN fav_list -->
+
+	<tr class="<!-- IF fav_list.S_ROW_COUNT is even -->bg1<!-- ELSE -->bg2<!-- ENDIF -->">
+			<td>
+			<!-- IF S_BUTTON_BEFORE -->
+            <form id="item_{fav_list.S_ROW_COUNT}" method="post" action="{S_UCP_ACTION}&amp;catid={CURRENT_CAT}"  style="margin: 0 ; padding: 0; display: inline;">
+            <button type="submit" name="add_item" value="add" style="border: 0; background-color: transparent"><img alt="{L_FAVORITES_ADD_ALT}" title="{L_FAVORITES_ADD_TITLE}" src="{IMG_ADD_BUTTON}" /></button>
+            <input type="hidden" name="text" value="{fav_list.TEXT}" /><input type="hidden" name="url" value="{fav_list.URL}" /><span style="display:none"></form></span>
+            <form id="item_{fav_list.S_ROW_COUNT}" method="post" action="{S_UCP_ACTION}&amp;catid={CURRENT_CAT}" style="margin: 0 ; padding: 0; display: inline;">
+            <button type="submit"  name="view_users" value="view" style="border: 0; background-color: transparent"><img alt="{L_FAVORITES_VIEW_ALT}" title="{L_FAVORITES_VIEW_TITLE}" src="{IMG_SEARCH_BUTTON}"></button>
+            <input type="hidden" name="text" value="{fav_list.TEXT}" />
+            </form>
+            <!-- ENDIF -->
+			&nbsp;{fav_list.TEXT}
+			<!-- IF S_BUTTON_AFTER -->&nbsp;
+            <form id="item_{fav_list.S_ROW_COUNT}" method="post" action="{S_UCP_ACTION}&amp;catid={CURRENT_CAT}"  style="margin: 0 ; padding: 0; display: inline;">
+            <button type="submit" name="add_item" value="add" style="border: 0; background-color: transparent"><img alt="{L_FAVORITES_ADD_ALT}" title="{L_FAVORITES_ADD_TITLE}" src="{IMG_ADD_BUTTON}" /></button> 
+            <input type="hidden" name="text" value="{fav_list.TEXT}" /><input type="hidden" name="url" value="{fav_list.URL}" /><span style="display:none"></form></span>
+            <form id="item_{fav_list.S_ROW_COUNT}" method="post" action="{S_UCP_ACTION}&amp;catid={CURRENT_CAT}"  style="margin: 0 ; padding: 0; display: inline;">
+            <button type="submit"  name="view_users" value="view" style="border: 0; background-color: transparent"><img alt="{L_FAVORITES_VIEW_ALT}" title="{L_FAVORITES_VIEW_TITLE}" src="{IMG_SEARCH_BUTTON}"></button>
+            <input type="hidden" name="text" value="{fav_list.TEXT}" />
+            </form>
+            <!-- ENDIF -->
+			</td>
+			<td><!-- IF fav_list.URL --><a href="{fav_list.URL}">{fav_list.URL}</a><!-- ENDIF --></td>
+			<!-- IF S_BUTTON_COL--><td style="width: 60px; text-align: right; white-space: nowrap;">
+            <form id="item_{fav_list.S_ROW_COUNT}" method="post" action="{S_UCP_ACTION}&amp;catid={CURRENT_CAT}"  style="margin: 0 ; padding: 0; display: inline;">
+            <button type="submit" name="add_item" value="add" style="border: 0; background-color: transparent"><img alt="{L_FAVORITES_ADD_ALT}" title="{L_FAVORITES_ADD_TITLE}" src="{IMG_ADD_BUTTON}" /></button> 
+            <input type="hidden" name="text" value="{fav_list.TEXT}" /><input type="hidden" name="url" value="{fav_list.URL}" /><span style="display:none"></form></span>
+            <form id="item_{fav_list.S_ROW_COUNT}" method="post" action="{S_UCP_ACTION}&amp;catid={CURRENT_CAT}"  style="margin: 0 ; padding: 0; display: inline;">
+            <button type="submit"  name="view_users" value="view" style="border: 0; background-color: transparent"><img alt="{L_FAVORITES_VIEW_ALT}" title="{L_FAVORITES_VIEW_TITLE}" src="{IMG_SEARCH_BUTTON}"></button>
+            <input type="hidden" name="text" value="{fav_list.TEXT}" />
+            </form></td><!-- ENDIF -->
+	</tr>
+<!-- END fav_list -->
+	</tbody>
+	</table>
+	
+	<span class="corners-bottom"><span></span></span></div>
+</div>
+
+<!-- INCLUDE jumpbox.html -->
+
+<!-- INCLUDE overall_footer.html -->

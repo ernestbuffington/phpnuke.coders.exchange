@@ -40,10 +40,13 @@ include($phpbb_root_path.'common.'.$phpEx);
 global $admin, $prefix, $db, $cookie, $nukeuser, $user;
 
 $admin = base64_decode($admin);
+
 $admin = explode(":", $admin);
+
 $aid = "$admin[0]";
 
 $row = $db->sql_fetchrow($db->sql_query("SELECT title, admins FROM ".$prefix."_modules WHERE title='Forums'"));
+
 $row2 = $db->sql_fetchrow($db->sql_query("SELECT name, pwd, radminsuper FROM ".$prefix."_authors WHERE aid='$aid'"));
 
 $admins = explode(",", $row['admins']);
@@ -51,7 +54,9 @@ $admins = explode(",", $row['admins']);
 $auth_user = 0;
 
 for ($i=0; $i < sizeof($admins); $i++) {
+
     if ($row2['name'] == "$admins[$i]" AND $row['admins'] != "") {
+
         $auth_user = 1;	
     }
 }
@@ -61,11 +66,15 @@ $user = addslashes(base64_decode($user));
 $cookie = explode(":", $user);
 
 $sql3 = "SELECT user_id, user_password, user_level FROM " . USERS_TABLE . "
+
         WHERE username='$cookie[1]'";
+
 $result3 = $db->sql_query($sql3);
 
 if(!$result3) {
+
     message_die(GENERAL_ERROR, 'Could not query user account', '', __LINE__, __FILE__, $sql);
+
 }
 
 $row3 = $db->sql_fetchrow($result3);
@@ -79,10 +88,13 @@ if ((is_admin($admin)) AND ($admin[1] == $row2['pwd'] && !empty($row2['pwd'])) A
 } else {
 
     unset($user);
+
     unset($cookie);
 
     message_die(GENERAL_MESSAGE, "You are not authorised to administer this board");
+
 }
+
 //
 // Start session management
 //

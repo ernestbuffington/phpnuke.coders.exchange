@@ -103,7 +103,7 @@ if ( isset($_GET['mode']) || isset($_POST['mode']) )
         {
                 if ( !$userdata['session_logged_in'] && $mode == 'editprofile' )
                 {
-                        $header_location = ( preg_match("/Microsoft|WebSTAR|Xitami/", (string) $_SERVER["SERVER_SOFTWARE"]) ) ? "Refresh: 0; URL=" : "Location: ";
+                        $header_location = ( @preg_match("/Microsoft|WebSTAR|Xitami/", (string) $_SERVER["SERVER_SOFTWARE"]) ) ? "Refresh: 0; URL=" : "Location: ";
                         header($header_location . append_sid("login.$phpEx?redirect=profile.$phpEx&mode=editprofile", true));
                         exit;
                 }

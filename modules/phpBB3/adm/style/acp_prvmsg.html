@@ -1,0 +1,190 @@
+<!-- INCLUDE overall_header.html -->
+
+<script language="Javascript" type="text/javascript">
+<!--
+// show / hide
+function ShowHide(id1, id2) {
+	  if (id1 != '') expMenu(id1);
+	  if (id2 != '') expMenu(id2);
+}
+function expMenu(id) {
+	var itm = null;
+	if (document.getElementById) {
+		itm = document.getElementById(id);
+	} else if (document.all){
+		itm = document.all[id];
+	} else if (document.layers){
+		itm = document.layers[id];
+	}
+	if (!itm) {
+		// do nothing
+	}
+	else if (itm.style) {
+		if (itm.style.display == "none") { itm.style.display = ""; }
+	else { itm.style.display = "none"; }
+	}
+	else { itm.visibility = "show"; }
+}
+//-->
+</script>
+
+<style type="text/css">
+<!--
+.xlink { cursor:pointer; cursor:hand }
+
+/* BB Code styles
+----------------------------------------*/
+/* Quote block */
+blockquote {
+	background-color: #EBEADD;
+	border: 1px solid #DBDBCE;
+	font-size: 0.95em;
+	margin: 0.5em 1px 0 25px;
+	overflow: hidden;
+	padding: 5px;
+}
+
+blockquote blockquote {
+	/* Nested quotes */
+	background-color: #EFEED9;
+	font-size: 1em;
+	margin: 0.5em 1px 0 15px;	
+}
+
+blockquote blockquote blockquote {
+	/* Nested quotes */
+	background-color: #EBEADD;
+}
+
+blockquote cite {
+	/* Username/source of quoter */
+	font-style: normal;
+	font-weight: bold;
+	margin-left: 20px;
+	display: block;
+	font-size: 0.9em;
+}
+
+blockquote cite cite { font-size: 1em; }
+
+/* Code block */
+dl.codebox {
+	padding: 3px;
+	background-color: #FFFFFF;
+	border: 1px solid #C9D2D8;
+	font-size: 1em;
+}
+
+dl.codebox dt {
+	text-transform: uppercase;
+	border-bottom: 1px solid #CCCCCC;
+	margin-bottom: 3px;
+	font-size: 0.8em;
+	font-weight: bold;
+	display: block;
+}
+
+blockquote dl.codebox { margin-left: 0; }
+
+dl.codebox code {
+	/* Also see tweaks.css */
+	overflow: auto;
+	display: block;
+	height: auto;
+	max-height: 200px;
+	white-space: normal;
+	padding-top: 20px;
+	font: 0.9em Monaco, "Andale Mono","Courier New", Courier, mono;
+	line-height: 1.3em;
+	color: #2E8B57;
+	margin: 2px 0;
+}
+
+.syntaxbg		{ color: #FFFFFF; }
+.syntaxcomment	{ color: #FF8000; }
+.syntaxdefault	{ color: #0000BB; }
+.syntaxhtml		{ color: #000000; }
+.syntaxkeyword	{ color: #007700; }
+.syntaxstring	{ color: #DD0000; }
+
+/* Content container styles
+----------------------------------------*/
+.content {
+	min-height: 3em;
+	/*overflow: hidden;*/
+	line-height: 1.4em;
+	font-family: Verdana, Helvetica, Arial, sans-serif;
+	font-size: 0.9em;
+	color: #333333;
+}
+
+.content li {
+	list-style-type: inherit;
+	font-size: 1em;
+}
+
+.content ul, .content ol {
+	margin-bottom: 1em;
+	margin-left: 3em;
+}
+//-->
+</style>
+
+<a name="maincontent"></a>
+
+<h2>{L_PM_READ}</h2>
+<p>{L_PM_READ_EXPLAIN}</p>
+
+<span style="float:left;">
+	<div class="pagination">&nbsp;{TOTAL_PM}</div>
+</span>
+<!-- IF PAGINATION -->
+<span style="float:right;">
+	<div class="pagination"><a href="#" onclick="jumpto(); return false;" title="{L_JUMP_TO_PAGE}">{S_ON_PAGE}</a> &bull; <span>{PAGINATION}</span></div>
+</span>
+<!-- ENDIF -->
+<br clear="all" />
+
+<table class="tablebg" width="100%" cellspacing="1">
+<tr>
+	<th nowrap="nowrap">#</th>
+	<th nowrap="nowrap" width="100%">{L_PM_SUBJECT}</th>
+	<th nowrap="nowrap">{L_FROM}</th>
+	<th nowrap="nowrap">{L_TO}</th>
+	<th nowrap="nowrap">{L_BCC}</th>
+	<th nowrap="nowrap">{L_AUTHOR_IP}</th>
+	<th nowrap="nowrap">{L_DATE}</th>
+</tr>
+<!-- BEGIN pm_list -->
+<!-- IF pm_list.S_ROW_COUNT is even --><tr class="row1 genmed" height="25"><!-- ELSE --><tr class="row2 genmed" height="25"><!-- ENDIF -->
+	<td align="right">&nbsp;<strong>{pm_list.ROW_NUMBER}</strong>&nbsp;</td>
+	<td nowrap="nowrap" class="xlink" onclick="ShowHide('{pm_list.ROW_NUMBER}_open','{pm_list.ROW_NUMBER}_closed')">&nbsp;{pm_list.PM_SUBJECT}&nbsp;</td>
+	<td nowrap="nowrap">&nbsp;{pm_list.FROM}&nbsp;</td>
+	<td nowrap="nowrap">&nbsp;{pm_list.TO}&nbsp;</td>
+	<td nowrap="nowrap">&nbsp;{pm_list.BCC}&nbsp;</td>
+	<td nowrap="nowrap">&nbsp;{pm_list.AUTHOR_IP}&nbsp;</td>
+	<td nowrap="nowrap">&nbsp;{pm_list.DATE}&nbsp;</td>
+</tr>
+<!-- IF pm_list.S_ROW_COUNT is even --><tr class="row1 genmed" height="25" id="{pm_list.ROW_NUMBER}_open" style="display: none;"><!-- ELSE --><tr class="row2 genmed" height="25" id="{pm_list.ROW_NUMBER}_open" style="display: none;"><!-- ENDIF -->
+	<td colspan="7" class="content">{pm_list.PM_TEXT}</td>
+</tr>
+<!-- END pm_list -->
+</table>
+
+<span style="float:left;">
+	<div class="pagination">&nbsp;{TOTAL_PM}</div>
+</span>
+<!-- IF PAGINATION -->
+<span style="float:right;">
+	<div class="pagination"><a href="#" onclick="jumpto(); return false;" title="{L_JUMP_TO_PAGE}">{S_ON_PAGE}</a> &bull; <span>{PAGINATION}</span></div>
+</span>
+<!-- ENDIF -->
+<br clear="all" />
+
+
+<div id="page-footer">
+simple pm read mod by <a href="http://www.phpbbturkiye.net" title="phpBB Türkiye" target="_blank">phpBB Türkiye</a>
+</div>
+
+
+<!-- INCLUDE overall_footer.html -->

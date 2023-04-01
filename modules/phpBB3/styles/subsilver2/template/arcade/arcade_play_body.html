@@ -1,0 +1,279 @@
+<!-- IF S_PLAY_FULL -->
+<!-- INCLUDE overall_header.html -->
+<div id="game_container" style="float: left; width: 75%; text-align: center;">
+	<script type="text/javascript" src="includes/arcade/swfobject.js"></script>
+	<div id="{GAME_SCOREVAR}">
+		<h1>{L_ARCADE_FLASH_VERSION}</h1>
+		<p><a href="http://www.adobe.com/go/getflashplayer"><img src="http://www.adobe.com/images/shared/download_buttons/get_flash_player.gif" alt="Get Adobe Flash player" /></a></p>
+	</div>
+	<script type="text/javascript">		
+		var x = document.getElementById('game_container');
+		var width = {GAME_WIDTH};
+		var height = {GAME_HEIGHT};
+		if ({GAME_WIDTH} > x.offsetWidth)
+		{
+			var	resize = x.offsetWidth / {GAME_WIDTH} - .05
+			width = resize * {GAME_WIDTH}; 
+			height = resize * {GAME_HEIGHT};
+		}	
+		
+		var flashvars = {
+		<!-- IF S_IS_IBPROV3 -->
+			ibpro_gameid: "{GAME_GID_ENCODED}"
+		<!-- ELSE -->
+			game_sid: "{GAME_SID}",
+			g: "{GAME_ID}"
+		<!-- ENDIF -->
+		};
+
+		var params = {
+			menu: "false",
+			quality: "high"
+		};
+
+		swfobject.embedSWF("{GAME_SWF}", "{GAME_SCOREVAR}", width, height, "{FLASH_VERSION}", false, flashvars, params);
+
+		<!-- IF S_RESOLUTION_SELECT -->
+		function swfobject_resize(size) 
+		{
+			var container = document.getElementById('game_container');
+			var flash = document.getElementById('{GAME_SCOREVAR}');
+			if (size == 'reduce')
+			{
+				document.getElementById('{GAME_SCOREVAR}').width = .75 * flash.offsetWidth; 
+				document.getElementById('{GAME_SCOREVAR}').height = .75 * flash.offsetHeight; 	
+			}
+			else if (size == 'increase')
+			{
+				if (container.offsetWidth > (1.25 * flash.offsetWidth))
+				{
+					document.getElementById('{GAME_SCOREVAR}').width = 1.25 * flash.offsetWidth; 
+					document.getElementById('{GAME_SCOREVAR}').height = 1.25 * flash.offsetHeight; 	
+				}
+			}
+			else
+			{
+				size = container.offsetWidth / {GAME_WIDTH} - .05;
+				document.getElementById('{GAME_SCOREVAR}').width = size * {GAME_WIDTH}; 
+				document.getElementById('{GAME_SCOREVAR}').height = size * {GAME_HEIGHT}; 
+			}
+		}
+		<!-- ENDIF -->
+	</script>
+</div>
+
+<div style="float: left; width: 25%; botto">
+<!-- IF S_USE_HIGHSCORES -->
+	<table class="tablebg" width="100%" cellspacing="1">
+		<tr>
+			<td class="cat"><h4>{L_ARCADE_GAME_CHAMPION}</h4></td>
+		</tr>
+		<!-- IF .scorerow -->
+		<tr class="row1">
+			<td align="center" valign="middle" style="padding: 1em;">
+					<!-- IF FIRST_AVATAR --><div style="float: right;">{FIRST_AVATAR}</div><!-- ELSE --><div style="float: right;"><img src="{T_THEME_PATH}/images/no_avatar.gif" alt="" /></div><!-- ENDIF -->
+					<b>{GAME_NAME} {L_ARCADE_GAME_CHAMPION}</b><br />
+					{BEST_USER_NAME}<br /><br />
+					<b>{L_ARCADE_HIGHSCORE}</b><br />
+					{BEST_SCORE}
+			</td>
+		</tr>
+		<tr class="row1">
+			<td align="center" valign="middle">
+					<b>{L_ARCADE_CHAMPION_PLAYED}</b><br />
+					{BEST_PLAYED}<br /><br />
+					<b>{L_ARCADE_CHAMPION_SPENT}</b><br />
+					{BEST_TIME}<br /><br />
+					{BEST_DATE_EXPLAIN}
+			</td>
+		</tr>
+		<!-- ELSE -->
+		<tr>
+			<td class="row1" align="center">{L_ARCADE_NO_HIGHSCORE}</td>
+		</tr>
+		<!-- ENDIF -->
+	</table>
+	<br />
+<!-- ENDIF -->
+<!-- IF S_DISPLAY_DESC -->
+	<br />
+	<table class="tablebg" width="100%" cellspacing="1">
+		<tr>
+			<td class="cat"><h4>{L_ARCADE_GAME_DESC}</h4></td>
+		</tr>
+		<tr>
+			<td class="row1" align="center">{GAME_DESC}</td>
+		</tr>
+	</table>
+<!-- ENDIF -->
+	<br />
+	<table class="tablebg" width="100%" cellspacing="1">
+		<tr>
+			<td class="cat"><h4>{L_ARCADE_GAME_OPTIONS}</h4></td>
+		</tr>
+		<tr>
+			<td class="row1" align="center">
+				<!-- IF S_RESOLUTION_SELECT -->				
+				<span class="gensmall"><b>{L_ARCADE_RESOLUTION}</b><br />
+					<a href="#" onclick="swfobject_resize('reduce')">{L_ARCADE_RESOLUTION_REDUCE}</a>&nbsp;&nbsp;<a href="#" onclick="swfobject_resize('auto')">{L_ARCADE_RESOLUTION_AUTO}</a>&nbsp;&nbsp;<a href="#" onclick="swfobject_resize('increase')">{L_ARCADE_RESOLUTION_INCREASE}</a>
+				</span>
+				<br /><br />
+				<!-- ENDIF -->
+				<!-- IF S_USER_LOGGED_IN and not S_IS_BOT -->
+					<!-- IF S_SHOW_POINTS -->{L_ARCADE_BALANCE}: {USER_POINTS}<br />{L_ARCADE_COST}: {GAME_COST}<br /><!-- IF S_USE_JACKPOT -->{L_ARCADE_JACKPOT}<!-- ELSE -->{L_ARCADE_REWARD}<!-- ENDIF -->: {GAME_REWARD}<br /><!-- ENDIF -->
+				<!-- ENDIF -->
+				<!-- IF GAME_FAV_IMG -->{GAME_FAV_IMG}<br /><!-- ENDIF --><!-- IF S_GAME_DOWNLOAD --><a href="{U_GAME_DOWNLOAD}">{L_ARCADE_DOWNLOAD_GAME}</a><br /><!-- ENDIF --><!-- IF S_CAN_REPORT --><a href="{U_GAME_REPORT}">{L_ARCADE_REPORT_GAME}</a><br /><!-- ENDIF -->{GAME_FILESIZE}
+			</td>
+		</tr>
+	</table>
+
+<!-- IF S_USE_HIGHSCORES and .scorerow -->
+	<br />
+	<!-- IF BEST_COMMENT -->
+	<table class="tablebg" width="100%" style="table-layout: fixed;" cellspacing="1">
+		<tr>
+			<td class="cat"><h4>{L_ARCADE_GAME_CHAMPION_COMMENT}</h4></td>
+		</tr>
+		<tr>
+			<td class="row1" align="center"><div style="overflow: auto; min-height: 3em; height:auto !important; height:3em;">{BEST_COMMENT}</div></td>
+		</tr>
+	</table>
+	<br />
+	<!-- ENDIF -->
+	<table class="tablebg" width="100%" cellspacing="1">
+		<tr>
+			<td class="cat" colspan="3"><h4>{L_ARCADE_TOP_SCORES}</h4></td>
+		</tr>
+		<!-- BEGIN scorerow -->
+		<tr class="<!-- IF scorerow.S_ROW_COUNT is even -->row1<!-- ELSE -->row2<!-- ENDIF -->">
+			<td style="text-align: center; width: 15%;<!-- IF scorerow.USER_ID == S_USER_ID --> font-weight:bold;<!-- ENDIF -->">{scorerow.POS}</td>
+			<td style="text-align: center; width: 70%;<!-- IF scorerow.USER_ID == S_USER_ID --> font-weight:bold;<!-- ENDIF -->">{scorerow.USERNAME}</td>
+			<td style="text-align: center; width: 15%;<!-- IF scorerow.USER_ID == S_USER_ID --> font-weight:bold;<!-- ENDIF -->">{scorerow.SCORE}</td>
+		</tr>
+		<!-- END scorerow -->
+	</table>
+<!-- ENDIF -->
+</div>
+
+<div style="clear:both;">&nbsp;</div>
+
+<br />
+<!-- INCLUDE arcade/arcade_breadcrumbs.html -->
+<br />
+<!-- INCLUDE arcade/arcade_online_body.html -->
+<!-- INCLUDE arcade/arcade_version_body.html -->
+<!-- INCLUDE overall_footer.html -->
+<!-- ELSEIF S_PLAY_POPUP -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" dir="{S_CONTENT_DIRECTION}" lang="{S_USER_LANG}" xml:lang="{S_USER_LANG}">
+<head>
+
+<meta http-equiv="content-type" content="text/html; charset={S_CONTENT_ENCODING}" />
+<meta http-equiv="content-language" content="{S_USER_LANG}" />
+<meta http-equiv="content-style-type" content="text/css" />
+<meta http-equiv="imagetoolbar" content="no" />
+<meta name="resource-type" content="document" />
+<meta name="distribution" content="global" />
+<meta name="copyright" content="2002-2006 phpBB Group" />
+<meta name="keywords" content="" />
+<meta name="description" content="" />
+{META}
+<script type="text/javascript" src="includes/arcade/swfobject.js"></script>
+<style type="text/css">
+
+	/* hide from ie on mac \*/
+	html {
+		height: 100%;
+		overflow: hidden;
+	}
+
+	#flashcontent {
+		height: 100%;
+	}
+	/* end hide */
+
+	body {
+		height: 100%;
+		margin: 0;
+		padding: 0;
+		background-color: #ffffff;
+	}
+
+</style>
+<script type="text/javascript">
+function GetWidth()
+{
+	var x = 0;
+	if (self.innerWidth)
+	{
+			x = self.innerWidth;
+	}
+	else if (document.documentElement && document.documentElement.clientHeight)
+	{
+			x = document.documentElement.clientWidth;
+	}
+	else if (document.body)
+	{
+			x = document.body.clientWidth;
+	}
+	return x;
+}
+
+function GetHeight()
+{
+	var y = 0;
+	if (self.innerHeight)
+	{
+			y = self.innerHeight;
+	}
+	else if (document.documentElement && document.documentElement.clientHeight)
+	{
+			y = document.documentElement.clientHeight;
+	}
+	else if (document.body)
+	{
+			y = document.body.clientHeight;
+	}
+	return y;
+}
+
+function FitScreen()
+{
+	if (GetWidth() != {GAME_WIDTH} || GetHeight() != {GAME_HEIGHT})
+	{
+		var w = 0
+		var h = 0;
+		w = {GAME_WIDTH} - GetWidth() ;
+		h = {GAME_HEIGHT} - GetHeight() ;
+		window.self.resizeBy(w,h);
+		window.self.moveTo((screen.width / 2) - ({GAME_WIDTH} / 2), (screen.height / 2) - ({GAME_HEIGHT} / 2));
+	}
+	return false;
+}
+</script>
+<title><!-- IF S_USE_HIGHSCORES -->{POPUP_TITLE}<!-- ELSE -->{GAME_NAME}<!-- ENDIF --></title>
+</head>
+<body onload='FitScreen();'>
+	<div id="{GAME_SCOREVAR}">
+		<h1>{L_ARCADE_FLASH_VERSION}</h1>
+		<p><a href="http://www.adobe.com/go/getflashplayer"><img src="http://www.adobe.com/images/shared/download_buttons/get_flash_player.gif" alt="Get Adobe Flash player" /></a></p>
+	</div>
+	<script type="text/javascript">
+		var flashvars = {
+		<!-- IF S_IS_IBPROV3 -->
+			ibpro_gameid: "{GAME_GID_ENCODED}"
+		<!-- ELSE -->
+			game_sid: "{GAME_SID}"
+		<!-- ENDIF -->
+		};
+
+		var params = {
+			menu: "false",
+			quality: "high"
+		};
+
+		swfobject.embedSWF("{GAME_SWF}", "{GAME_SCOREVAR}", "100%", "100%", "{FLASH_VERSION}", false, flashvars, params);
+	</script>
+</body>
+</html>
+<!-- ENDIF -->

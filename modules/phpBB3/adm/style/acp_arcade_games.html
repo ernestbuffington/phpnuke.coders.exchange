@@ -1,0 +1,372 @@
+<!-- INCLUDE overall_header.html -->
+
+<a name="maincontent"></a>
+<h1>{L_TITLE}</h1>
+
+<p>{L_TITLE_EXPLAIN}</p>
+
+<!-- IF S_ARCADE_GAMES -->
+	<!-- IF S_ERROR -->
+	<div class="errorbox">
+		<h3>{L_WARNING}</h3>
+		<p>{ERROR_MSG}</p>
+	</div>
+	<!-- ENDIF -->
+
+	<!-- IF S_TOTAL_GAMES -->
+	<form id="acp_arcade_games" method="post" action="{U_ACTION}">
+	<fieldset>
+	<dl>
+		<dt><label>{L_ARCADE_SELECT_GAME}:</label><br /><span>{L_ARCADE_SELECT_GAME_EXPLAIN}</span></dt>
+		<dd>
+			<select id="games" name="games[]" multiple="multiple" size="{S_TOTAL_GAMES}">
+				{S_GAME_OPTIONS}
+			</select>
+		</dd>
+	</dl>
+	</fieldset>
+
+	<fieldset>
+	<dt><label>{L_ARCADE_SELECT_CATEGORY}:</label><br /><span>{L_ARCADE_SELECT_CATEGORY_EXPLAIN}</span></dt>
+	<dd>
+	<select id="cat_id" name="cat_id">
+		{S_CAT_LIST}
+	</select>
+	</dd>
+	</fieldset>
+
+	<fieldset class="submit-buttons">
+		<input class="button1" type="submit" id="submit" name="update" value="{L_SUBMIT}" />&nbsp;
+		<input class="button2" type="reset" id="reset" name="reset" value="{L_RESET}" />
+	</fieldset>
+	{S_FORM_TOKEN}
+	</form>
+	<!-- ENDIF -->
+<!-- ELSEIF S_UNPACK_ARCADE_GAMES -->
+	<!-- IF S_TOTAL_GAMES || S_CAN_UPLOAD -->
+		<form id="acp_arcade_games" method="post" action="{U_ACTION}"{S_FORM_ENCTYPE}>
+		<!-- IF S_TOTAL_GAMES -->
+			<fieldset>
+			<dl>
+				<dt><label>{L_ARCADE_SELECT_GAME}:</label><br /><span>{L_ARCADE_SELECT_UNPACK_GAME_EXPLAIN}</span></dt>
+				<dd>
+					<select id="games" name="games[]" multiple="multiple" size="{S_TOTAL_GAMES}">
+						{S_GAME_OPTIONS}
+					</select>
+				</dd>
+			</dl>
+			</fieldset>
+
+			<fieldset class="submit-buttons">
+				<input class="button1" type="submit" id="submit" name="update" value="{L_SUBMIT}" />&nbsp;
+				<input class="button2" type="reset" id="reset" name="reset" value="{L_RESET}" />
+			</fieldset>
+		<!-- ENDIF -->
+
+		<!-- IF S_CAN_UPLOAD -->
+		<fieldset>
+		<dl>
+			<dt><label for="fileupload">{L_ARCADE_UPLOAD_GAME}:</label><br /><span>{L_ARCADE_UPLOAD_GAME_EXPLAIN}</span></dt>
+			<dd>
+				<input type="file" name="fileupload" id="fileupload" maxlength="{FILESIZE}" value="" class="inputbox autowidth" />
+				<input type="submit" name="add_file" value="{L_ARCADE_UPLOAD}" class="button2" onclick="upload = true;" />
+			</dd>
+		</dl>
+		</fieldset>
+		<!-- ENDIF -->
+		{S_FORM_TOKEN}
+		</form>
+	<!-- ELSE -->
+		<div class="successbox">
+			<h3>{L_INFORMATION}</h3>
+			<p>{L_NO_UNPACK_GAMES}</p>
+		</div>
+	<!-- ENDIF -->
+<!-- ELSEIF S_DEFAULT_EDIT_GAME -->
+	<!-- IF S_ERROR -->
+		<div class="errorbox">
+			<h3>{L_WARNING}</h3>
+			<p>{ERROR_MSG}</p>
+		</div>
+	<!-- ENDIF -->
+	<form id="acp_arcade_games" method="post" action="{U_ACTION}">
+	<fieldset>
+		<legend>{L_ACP_ARCADE_EDIT_DELETE_GAMES}</legend>
+		<dl>
+			<dt><label for="g">{L_ARCADE_SELECT_GAME}:</label><br /><span>{L_ACP_ARCADE_EDIT_GAMES_LIST}</span></dt>
+			<dd>
+				<select name="g">
+				<!-- BEGIN quick_jump -->
+					<option class="post" value="{quick_jump.GAME_ID}">{quick_jump.GAME_NAME}</option>
+				<!-- END quick_jump -->
+				</select>
+			</dd>
+		</dl>
+
+		<p class="quick">
+			<input class="button1" type="submit" id="submit" name="edit" value="{L_EDIT}" />&nbsp;&nbsp;
+			<input class="button1" type="submit" id="submit" name="delete" value="{L_DELETE}" />
+		</p>
+	</fieldset>
+	{S_FORM_TOKEN}
+	</form>
+<!-- ELSEIF S_EDIT_GAME -->
+<!-- IF S_ERROR -->
+	<div class="errorbox">
+		<h3>{L_WARNING}</h3>
+		<p>{ERROR_MSG}</p>
+	</div>
+<!-- ENDIF -->
+<form id="acp_arcade_games" method="post" action="{U_ACTION}">
+<!-- BEGIN options -->
+	<!-- IF options.S_LEGEND -->
+		<!-- IF not options.S_FIRST_ROW -->
+			</fieldset>
+		<!-- ENDIF -->
+		<fieldset>
+			<legend>{options.LEGEND}</legend>
+	<!-- ELSE -->
+
+		<dl>
+			<dt><label for="{options.KEY}">{options.TITLE}:</label><!-- IF options.S_EXPLAIN --><br /><span>{options.TITLE_EXPLAIN}</span><!-- ENDIF --></dt>
+			<dd>{options.CONTENT}</dd>
+		</dl>
+
+	<!-- ENDIF -->
+<!-- END options -->
+</fieldset>
+
+<fieldset class="submit-buttons">
+	<input type="hidden" name="old_cat_id" value="{OLD_CAT_ID}" />
+	<input type="hidden" name="old_game_scoretype" value="{OLD_GAME_SCORETYPE}" />
+	<input class="button1" type="submit" id="submit" name="update" value="{L_SUBMIT}" />&nbsp;
+	<input class="button2" type="reset" id="reset" name="reset" value="{L_RESET}" />
+</fieldset>
+{S_FORM_TOKEN}
+</form>
+<!-- ELSEIF S_SCORES -->
+	<script type="text/javascript">
+	<!--
+
+		/**
+		* Popup search progress bar
+		*/
+		function popup_progress_bar()
+		{
+			var close_waitscreen = 0;
+			window.open('{UA_PROGRESS_BAR}', '_sync', 'height=240, resizable=yes, scrollbars=no, width=400');
+		}
+
+	//-->
+	</script>
+
+	<!-- IF S_RESYNCED -->
+		<script type="text/javascript">
+		<!--
+			var close_waitscreen = 1;
+		//-->
+		</script>
+
+		<div class="successbox">
+			<h3>{L_NOTIFY}</h3>
+			<p>{GAME_RESYNCED}</p>
+		</div>
+	<!-- ENDIF -->
+
+		<!-- IF .games -->
+		<div class="pagination">
+		<!-- IF PAGINATION -->
+			<a href="javascript:jumpto();" title="{L_JUMP_TO_PAGE}">{S_ON_PAGE}</a> &bull; <span>{PAGINATION}</span>
+		<!-- ELSE -->
+			{S_ON_PAGE}
+		<!-- ENDIF -->
+		</div>
+
+		<table cellspacing="1">
+			<col class="row1" /><col class="row1" /><col class="row1" /><col class="row1" /><col class="row2" />
+		<thead>
+			<th colspan="2">{L_ARCADE_GAME_NAME}</th>
+			<th>{L_ARCADE_GAME_DESC}</th>
+			<th>{L_ARCADE_PLAYS}</th>
+			<th>{L_OPTIONS}</th>
+		</thead>
+		<tbody>
+		<!-- BEGIN games -->
+			<tr>
+				<td>
+					<!-- IF games.GAME_IMAGE --><div align="center">{games.GAME_IMAGE}</div><!-- ENDIF -->
+				</td>
+				<td>
+					<strong><a href="{games.U_GAME_PLAY}" onclick="window.open(this.href); return false;">{games.GAME_NAME}</a></strong>
+				</td>
+				<td>
+					{games.GAME_DESC}
+				</td>
+				<td>
+					{games.GAME_PLAYS}
+				</td>
+				<td style="vertical-align: top; width: 100px; text-align: center; white-space: nowrap;">
+					<a href="{games.U_EDIT}">{ICON_EDIT}</a>
+					<a href="{games.U_SYNC}" onclick="popup_progress_bar();">{ICON_SYNC}</a>
+				</td>
+			</tr>
+		<!-- END games -->
+		</tbody>
+		</table>
+		<!-- ENDIF -->
+
+		<!-- IF .quick_jump -->
+		<form id="acp_arcade_games" method="post" action="{U_ACTION}">
+		<fieldset>
+			<legend>{L_TITLE}</legend>
+			<dl>
+				<dt><label for="g">{L_ARCADE_SELECT_GAME}:</label></dt>
+				<dd>
+					<select name="g">
+					<!-- BEGIN quick_jump -->
+						<option class="post" value="{quick_jump.GAME_ID}">{quick_jump.GAME_NAME}</option>
+					<!-- END quick_jump -->
+					</select>&nbsp;&nbsp;<input class="button1" type="submit" id="submit" name="submit" value="{L_SUBMIT}" />
+				</dd>
+			</dl>
+			{S_HIDDEN_FIELDS}
+
+		</fieldset>
+		</form>
+		<!-- ENDIF -->
+
+		<!-- IF .user_jump -->
+		<form id="acp_arcade_users" method="post" action="{U_ACTION}">
+		<fieldset>
+			<legend>{L_ACP_ARCADE_RESET_USER}</legend>
+			<dl>
+				<dt><label for="u">{L_ARCADE_SELECT_USER}:</label><br /><span>{L_ACP_ARCADE_RESET_USER_EXPLAIN}</span></dt>
+				<dd>
+					<select name="u">
+					<!-- BEGIN user_jump -->
+						<option class="post" value="{user_jump.USER_ID}">{user_jump.USERNAME}</option>
+					<!-- END user_jump -->
+					</select>&nbsp;&nbsp;<input class="button1" type="submit" id="submit" name="reset_user_scores" value="{L_USER_RESET_SCORES}" />&nbsp;&nbsp;<input class="button1" type="submit" id="submit" name="reset_user_all" value="{L_USER_RESET_ALL}" />
+				</dd>
+			</dl>
+		</fieldset>
+		</form>
+		<!-- ENDIF -->
+
+		<form id="acp_arcade_reset" method="post" action="{U_ACTION}">
+		<fieldset>
+			<legend>{L_ACP_ARCADE_RESET_SCORES}</legend>
+			<dl>
+				<dt><label for="reset_scores">{L_ARCADE_RESET_SCORES_ALL}:</label><br /><span>{L_ARCADE_RESET_SCORES_ALL_EXPLAIN}</span></dt>
+				<dd>
+					<input class="button1" type="submit" id="submit" name="reset_scores" value="{L_RUN}" />
+				</dd>
+			</dl>
+			<dl>
+				<dt><label for="reset_arcade">{L_ARCADE_RESET_ARCADE}:</label><br /><span>{L_ARCADE_RESET_ARCADE_EXPLAIN}</span></dt>
+				<dd>
+					<input class="button1" type="submit" id="submit" name="reset_arcade" value="{L_RUN}" />
+				</dd>
+			</dl>
+		</fieldset>
+		<!-- IF S_SHOW_POINTS -->
+		<fieldset>
+			<legend>{L_ARCADE_RESET_POINTS}</legend>
+			<dl>
+				<dt><label for="reset_jackpot">{L_ARCADE_RESET_JACKPOT}:</label><br /><span>{L_ARCADE_RESET_JACKPOT_EXPLAIN}</span></dt>
+				<dd>
+					<input class="button1" type="submit" id="submit" name="reset_jackpot" value="{L_RUN}" />
+				</dd>
+			</dl>
+			<dl>
+				<dt><label for="reset_points">{L_ARCADE_RESET_POINTS}:</label><br /><span>{L_ARCADE_RESET_POINTS_EXPLAIN}</span></dt>
+				<dd>
+					<input class="button1" type="submit" id="submit" name="reset_points" value="{L_RUN}" />
+				</dd>
+			</dl>
+		</fieldset>
+		<!-- ENDIF -->
+		</form>
+
+<!-- ELSEIF S_GAME_SCORES -->
+
+		<p><strong>{GAME_TITLE}</strong></p>
+
+		<div class="pagination">
+		<!-- IF PAGINATION -->
+			<a href="javascript:jumpto();" title="{L_JUMP_TO_PAGE}">{S_ON_PAGE}</a> &bull; <span>{PAGINATION}</span>
+		<!-- ELSE -->
+			{S_ON_PAGE}
+		<!-- ENDIF -->
+		</div>
+
+		<table cellspacing="1">
+			<col class="row1" /><col class="row1" /><col class="row1" /><col class="row1" /><col class="row1" /><col class="row2" />
+		<thead>
+			<th>{L_ARCADE_RANK}</th>
+			<th>{L_USERNAME}</th>
+			<th>{L_ARCADE_SCORE}</th>
+			<th>{L_ARCADE_COMMENT}</th>
+			<th>{L_ARCADE_DATE}</th>
+			<th>&nbsp;</th>
+		</thead>
+		<tbody>
+		<!-- BEGIN scorerow -->
+		<tr>
+			<td align="center"><span class="genmed">{scorerow.POS}</span></td>
+			<td align="center"><span class="genmed">{scorerow.USERNAME}</span></td>
+			<td align="center"><span class="genmed">{scorerow.SCORE}</span></td>
+			<td align="center"><span class="genmed">{scorerow.COMMENT}</span></td>
+			<td align="center"><span class="genmed">{scorerow.DATE}</span></td>
+			<td style="vertical-align: top; width: 100px; text-align: center; white-space: nowrap;">
+				<a href="{scorerow.U_EDIT}">{ICON_EDIT}</a>
+				<a href="{scorerow.U_DELETE}">{ICON_DELETE}</a>
+			</td>
+		</tr>
+		<!-- END scorerow -->
+		</tbody>
+	</table>
+<!-- ELSEIF S_EDIT_SCORES -->
+	<form id="acp_arcade_games" method="post" action="{U_EDIT_ACTION}">
+		<fieldset>
+			<legend>{GAME_NAME}</legend>
+		<dl>
+			<dt><label for="username">{L_USERNAME}:</label></dt>
+			<dd>{SCORE_USERNAME}</dd>
+		</dl>
+		<dl>
+			<dt><label for="score_date">{L_ARCADE_DATE}:</label></dt>
+			<dd><input type="text" id="score_date" name="score_date" value="{DATE_RAW}" />&nbsp;{DATE}<br /><input type="checkbox" class="radio" name="date_now" />&nbsp;{L_ARCADE_EDIT_SCORE_DATE_NOW}</dd>
+		</dl>
+		<dl>
+			<dt><label for="total_plays">{L_ARCADE_CHAMPION_PLAYED}:</label></dt>
+			<dd>{TOTAL_PLAYS}</dd>
+		</dl>
+		<dl>
+			<dt><label for="total_time">{L_ARCADE_STATS_TOTAL}:</label></dt>
+			<dd>{TOTAL_TIME}</dd>
+		</dl>
+		<dl>
+			<dt><label for="avg_time">{L_ARCADE_STATS_AVG}:</label></dt>
+			<dd>{AVG_TIME}</dd>
+		</dl>
+		<dl>
+			<dt><label for="score">{L_ARCADE_SCORE}:</label></dt>
+			<dd><input type="text" id="score" name="score" value="{SCORE}" /></dd>
+		</dl>
+		<dl>
+			<dt><label for="comment">{L_ARCADE_COMMENT}:</label><br /><span>{L_ARCADE_COMMENT_EXPLAIN}</span></dt>
+			<dd><textarea id="comment" name="comment" rows="10" cols="70">{COMMENT}</textarea></dd>
+		</dl>
+		</fieldset>
+
+	<fieldset class="submit-buttons">
+		<legend>{L_SUBMIT}</legend>
+		<input class="button1" type="submit" id="submit" name="update" value="{L_SUBMIT}" />&nbsp;
+		<input class="button2" type="reset" id="reset" name="reset" value="{L_RESET}" />
+	</fieldset>
+
+	{S_FORM_TOKEN}
+	</form>
+<!-- ENDIF -->
+<!-- INCLUDE overall_footer.html -->

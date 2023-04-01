@@ -1,0 +1,106 @@
+<!-- INCLUDE overall_header.html -->
+<!-- $Id$ -->
+<a name="maincontent"></a>
+
+<h1>{L_WWH_TITLE}</h1>
+<p>{WWH_MOD_VERSION}</p>
+
+<form method="post" action="{U_ACTION}">
+	<fieldset>
+		<legend>{L_WWH_DISP_SET}</legend>
+		<dl>
+			<dt><label for="wwh_disp_bots">{L_WWH_DISP_BOTS}:</label>
+				<br /><span>{L_WWH_DISP_BOTS_EXP}</span>
+			</dt>
+			<dd>
+				<input type="radio" class="radio" name="wwh_disp_bots" value="1" <!-- IF WWH_DISP_BOTS -->checked="checked"<!-- ENDIF -->/> {L_YES} &nbsp; 
+				<input type="radio" class="radio" name="wwh_disp_bots" value="0" <!-- IF not WWH_DISP_BOTS -->checked="checked"<!-- ENDIF --> /> {L_NO}
+			</dd>
+		</dl>
+		<dl>
+			<dt><label for="wwh_disp_guests">{L_WWH_DISP_GUESTS}:</label>
+				<br /><span>{L_WWH_DISP_GUESTS_EXP}</span>
+			</dt>
+			<dd>
+				<input type="radio" class="radio" name="wwh_disp_guests" value="1" <!-- IF WWH_DISP_GUESTS -->checked="checked"<!-- ENDIF -->/> {L_YES} &nbsp; 
+				<input type="radio" class="radio" name="wwh_disp_guests" value="0" <!-- IF not WWH_DISP_GUESTS -->checked="checked"<!-- ENDIF --> /> {L_NO}
+			</dd>
+		</dl>
+		<dl>
+			<dt><label for="wwh_disp_time">{L_WWH_DISP_TIME}:</label>
+				<br /><span>{L_WWH_DISP_TIME_EXP}</span>
+			</dt>
+			<dd>
+				<input type="radio" class="radio" name="wwh_disp_time" value="1" <!-- IF WWH_DISP_TIME == 1 -->checked="checked"<!-- ENDIF -->/> {L_YES} &nbsp; 
+				<input type="radio" class="radio" name="wwh_disp_time" value="0" <!-- IF WWH_DISP_TIME == 0 -->checked="checked"<!-- ENDIF --> /> {L_NO}
+				<input type="radio" class="radio" name="wwh_disp_time" value="2" <!-- IF WWH_DISP_TIME == 2 -->checked="checked"<!-- ENDIF --> /> {L_WWH_DISP_HOVER}
+			</dd>
+		</dl>
+	</fieldset>
+	<fieldset>
+		<legend>{L_WWH_DISP_SET}</legend>
+		<dl>
+			<dt><label for="wwh_version">{L_WWH_VERSION}:</label>
+				<br /><span>{L_WWH_VERSION_EXP}</span>
+			</dt>
+			<dd>
+				<select name="wwh_version">
+					<option value="1" <!-- IF WWH_VERSION -->selected="selected"<!-- ENDIF -->>{L_WWH_VERSION1}</option>
+					<option value="0" <!-- IF not WWH_VERSION -->selected="selected"<!-- ENDIF -->>{L_WWH_VERSION2}</option>
+				</select>
+			</dd>
+		</dl>
+		<dl>
+			<dt><label for="wwh_del_time">{L_WWH_VERSION2}:</label>
+				<br /><span>{L_WWH_VERSION2_EXP}</span>
+			</dt>
+			<dd>
+				<!-- IF WWH_VERSION --><span>{L_WWH_VERSION2_EXP2}</span><br /><!-- ENDIF -->
+				<input type="text" name="wwh_del_time" size="6" <!-- IF WWH_VERSION -->disabled="disabled"<!-- ENDIF --> value="{WWH_DEL_TIME}" /> {L_WWH_VERSION2_EXP3}
+			</dd>
+		</dl>
+		<dl>
+			<dt><label for="wwh_sort_by">{L_WWH_SORT_BY}:</label>
+				<br /><span>{L_WWH_SORT_BY_EXP}</span>
+			</dt>
+			<dd>
+				<select name="wwh_sort_by">
+					<option value="0" <!-- IF WWH_SORT_BY == 0 -->selected="selected"<!-- ENDIF -->>{L_WWH_SORT_BY_0}</option>
+					<option value="1" <!-- IF WWH_SORT_BY == 1 -->selected="selected"<!-- ENDIF -->>{L_WWH_SORT_BY_1}</option>
+					<option value="2" <!-- IF WWH_SORT_BY == 2 -->selected="selected"<!-- ENDIF -->>{L_WWH_SORT_BY_2}</option>
+					<option value="3" <!-- IF WWH_SORT_BY == 3 -->selected="selected"<!-- ENDIF -->>{L_WWH_SORT_BY_3}</option>
+					<option value="4" <!-- IF WWH_SORT_BY == 4 -->selected="selected"<!-- ENDIF -->>{L_WWH_SORT_BY_4}</option>
+					<option value="5" <!-- IF WWH_SORT_BY == 5 -->selected="selected"<!-- ENDIF -->>{L_WWH_SORT_BY_5}</option>
+				</select>
+			</dd>
+		</dl>
+		<dl>
+			<dt><label for="wwh_record">{L_WWH_RECORD}:</label>
+				<br /><span>{L_WWH_RECORD_EXP}</span>
+			</dt>
+			<dd>
+				<input type="radio" class="radio" name="wwh_record" value="1" <!-- IF WWH_RECORD -->checked="checked"<!-- ENDIF -->/> {L_YES} &nbsp; 
+				<input type="radio" class="radio" name="wwh_record" value="0" <!-- IF not WWH_RECORD -->checked="checked"<!-- ENDIF --> /> {L_NO}
+			</dd>
+		</dl>
+	</fieldset>
+	<fieldset>
+		<legend>{L_WWH_RESET}</legend>
+		<dl>
+			<dt><label for="wwh_reset">{L_WWH_RESET_1}:</label>
+				<br /><span>{L_WWH_RESET_EXP}</span>
+			</dt>
+			<dd>
+				<input type="radio" class="radio" name="wwh_reset" value="1" onclick="alert('{L_WWH_RESET_TRUE}');" /> {L_YES} &nbsp; 
+				<input type="radio" class="radio" name="wwh_reset" value="0" checked="checked" /> {L_NO}
+			</dd>
+		</dl>
+	</fieldset>
+
+	<p class="submit-buttons">
+		<input class="button1" type="submit" id="submit" name="submit" value="{L_SUBMIT}" />&nbsp;
+		<input class="button2" type="reset" id="reset" name="reset" value="{L_RESET}" />
+	</p>
+{S_FORM_TOKEN}
+</form>
+<!-- INCLUDE overall_footer.html -->

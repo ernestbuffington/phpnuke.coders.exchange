@@ -1,0 +1,276 @@
+<script language="javascript" type="text/javascript">
+<!--
+function arcade_popup(mypage,myname,w,h)
+{
+	lp = (screen.width) ? (screen.width-w)/2 : 0;
+	tp = (screen.height) ? (screen.height-h)/2 : 0;
+	settings = 'height='+h+',width='+w+',top='+tp+',left='+lp+',scrollbars=no,resizable=yes';
+	window.open(mypage,myname,settings);
+
+	return false;
+}
+//-->
+</script>
+
+<!-- IF S_FOUND_RESULTS -->
+<table width="100%" cellspacing="2" cellpadding="2" border="0" align="center">
+  <tr>
+	<td><span class="titles">{SEARCH_MATCHES}</span><br /></td>
+</tr>
+ <tr>
+	<td><span class="genmed">{L_SEARCHED_FOR}: <b>{SEARCH_TERM}</b></span></td>
+</tr>
+</table>
+<!-- ENDIF  -->
+
+<!-- IF S_CAT_RULES -->
+	<div class="forumrules">
+		<!-- IF U_CAT_RULES -->
+			<h3 style="color:red">{L_CAT_RULES}</h3><br />
+			<a href="{U_CAT_RULES}"><b>{L_CAT_RULES_LINK_CLICK}</b></a>
+		<!-- ELSE -->
+			<h3 style="color:red">{L_CAT_RULES}</h3><br />
+			{CAT_RULES}
+		<!-- ENDIF -->
+	</div>
+
+	<br clear="all" />
+<!-- ENDIF -->
+
+<!-- IF CAT_NAME -->
+<div id="pageheader">
+	<h2><a class="titles" href="{U_VIEW_CAT}">{CAT_NAME}</a></h2>
+</div>
+<br clear="all" /><br />
+<!-- ENDIF -->
+<div id="pagecontent">
+<!-- IF S_HAS_SUBCAT -->
+<table class="tablebg" cellspacing="1" width="100%">
+<tr>
+	<th colspan="2">&nbsp;{L_ARCADE_CATEGORY}&nbsp;</th>
+	<th width="50">&nbsp;{L_ARCADE_GAMES}&nbsp;</th>
+	<th width="50">&nbsp;{L_ARCADE_PLAYS}&nbsp;</th>
+	<th>&nbsp;{L_ARCADE_LAST_PLAY_TITLE}&nbsp;</th>
+</tr>
+<!-- ENDIF -->
+
+<!-- BEGIN catrow -->
+	<!-- IF catrow.S_IS_CAT -->
+		<tr>
+			<td class="cat" colspan="2"><h4><a href="{catrow.U_VIEWCAT}">{catrow.CAT_NAME}</a></h4></td>
+			<td class="catdiv" colspan="3">&nbsp;</td>
+		</tr>
+	<!-- ELSEIF catrow.S_IS_LINK -->
+		<tr>
+			<td class="row1" width="50" align="center">{catrow.CAT_FOLDER_IMG}</td>
+			<td class="row1">
+				<!-- IF catrow.CAT_IMAGE -->
+					<div style="float: left; margin-right: 5px;">{catrow.CAT_IMAGE}</div><div style="float: left;">
+				<!-- ENDIF -->
+				<a class="forumlink" href="{catrow.U_VIEWCAT}">{catrow.CAT_NAME}</a>
+				<p class="forumdesc">{catrow.CAT_DESC}</p>
+				<!-- IF catrow.CAT_IMAGE --></div><!-- ENDIF -->
+			</td>
+			<!-- IF catrow.CLICKS -->
+				<td class="row2" colspan="3" align="center"><span class="genmed">{L_REDIRECTS}: {catrow.CLICKS}</span></td>
+			<!-- ELSE -->
+				<td class="row2" colspan="3" align="center">&nbsp;</td>
+			<!-- ENDIF -->
+		</tr>
+	<!-- ELSE -->
+		<!-- IF catrow.S_NO_CAT -->
+			<tr>
+				<td class="cat" colspan="2"><h4>{L_ARCADE_CATEGORY}</h4></td>
+				<td class="catdiv" colspan="3">&nbsp;</td>
+			</tr>
+		<!-- ENDIF -->
+		<tr>
+			<td class="row1" width="50" align="center">{catrow.CAT_FOLDER_IMG}</td>
+			<td class="row1" width="100%">
+				<!-- IF catrow.CAT_DISPLAY != 1 && catrow.CAT_IMAGE--><div style="float: left; margin-right: 5px;"><a class="forumlink" href="{catrow.U_VIEWCAT}">{catrow.CAT_IMAGE}</a></div><div style="float: left;"><!-- ENDIF -->
+				<!-- IF catrow.CAT_DISPLAY != 2 --><a class="forumlink" href="{catrow.U_VIEWCAT}">{catrow.CAT_NAME}</a><!-- ENDIF -->
+				<p class="forumdesc">{catrow.CAT_DESC}</p>
+				<!-- IF catrow.SUBCATS and catrow.S_LIST_SUBCATS -->
+					<p class="forumdesc"><strong>{catrow.L_SUBCAT_STR}</strong> {catrow.SUBCATS}</p>
+				<!-- ENDIF -->
+				<!-- IF catrow.CAT_IMAGE --></div><!-- ENDIF -->
+			</td>
+			<td class="row2" align="center"><p class="topicdetails">{catrow.GAMES}</p></td>
+			<td class="row2" align="center"><p class="topicdetails">{catrow.PLAYS}</p></td>
+			<td class="row2" align="center" nowrap="nowrap">
+				<!-- IF catrow.LAST_PLAY_TIME -->
+					<p class="topicdetails">{catrow.LAST_PLAY_TIME}</p>
+					<p class="topicdetails">{catrow.LAST_PLAY}</p>
+				<!-- ELSE -->
+					<p class="topicdetails">{L_ARCADE_NO_PLAYS}</p>
+				<!-- ENDIF -->
+			</td>
+		</tr>
+	<!-- ENDIF -->
+<!-- END catrow -->
+<!-- IF S_HAS_SUBCAT -->
+</table>
+<br />
+<!-- ENDIF -->
+
+<!-- IF S_NO_LIST_ACCESS -->
+	<table class="tablebg" width="100%" cellspacing="1">
+	<tr>
+		<td class="row1" height="30" align="center" valign="middle"><span class="gen">{L_NO_PERMISSION_ARCADE_VIEW}</span></td>
+	</tr>
+	</table>
+
+	<br clear="all" />
+<!-- ENDIF -->
+<!-- IF TOTAL_GAMES -->
+<table width="100%" cellspacing="1">
+	<tr>
+		<td class="nav" valign="middle" nowrap="nowrap">&nbsp;{PAGE_NUMBER}<br /></td>
+		<td class="gensmall" nowrap="nowrap">&nbsp;[ {TOTAL_GAMES} ]&nbsp;</td>
+		<td class="gensmall" width="100%" align="right" nowrap="nowrap"><!-- INCLUDE pagination.html --></td>
+	</tr>
+</table>
+<!-- ENDIF -->
+<!-- IF .games -->
+<!--
+/**
+* Original purecsstooltip by Carsten Engel
+*/
+-->
+<style type="text/css">	
+	a.tooltip{		
+		font-weight: bold; 
+		text-decoration: underline;
+	}
+
+	a:hover.tooltip{ 
+		padding: 0; 
+		
+	} 
+
+	.tooltip:hover span span{
+		display: block;
+	}
+
+	.tooltip span{	
+		position: absolute;	
+		text-decoration: none;	
+	}
+
+	.tooltip span span{
+		display: none;	
+		position: absolute;
+		font-weight: normal;
+		border: 1px solid black;
+		padding: 10px;		
+		color: black;
+		text-decoration: none;
+		width: 250px;
+		z-index: 100;
+		top: 20px;	
+		left: -30px;	
+	}
+</style>
+
+<!--[if lte IE 6]>
+	<style type="text/css">
+
+		.tooltip:hover span{
+			left: auto;
+		}
+	   
+		.tooltip span{           
+			left: -9999px;   
+		}		   
+	</style>
+<![endif]-->
+<table width="100%" cellspacing="1" class="tablebg" align="center">
+	<col class="row1" /><col class="row1" /><col class="row1" /><col class="row1" /><col class="row1" />
+	<thead>
+		<tr>
+			<th>{L_ARCADE_GAME_INFO}</th>
+			<th>{L_ARCADE_LINKS}</th>
+			<th>{L_ARCADE_HIGHSCORE}</th>
+			<th>{L_ARCADE_PERSONAL_BEST}</th>
+		</tr>
+	</thead>
+	<tbody>
+	<!-- BEGIN games -->
+		<tr id="g{games.GAME_ID}">
+			<td align="left" valign="middle" width="30%">
+				<!-- IF games.S_GAME_PLAY --><a href="{games.U_GAME_PLAY}"<!-- ELSE --><span<!-- ENDIF --> class="genmed tooltip">{games.GAME_NAME}<span><span class="row1">{games.GAME_DESC}</span></span></<!-- IF games.S_GAME_PLAY -->a<!-- ELSE -->span<!-- ENDIF -->>
+				<!-- IF games.GAME_IMAGE --><div style="float: left;  padding: 0.5em 0.5em; text-align: center;"><!-- IF games.S_GAME_PLAY --><a href="{games.U_GAME_PLAY}"><!-- ENDIF --><img src="{games.GAME_IMAGE}" width="50" height="50" title="{games.GAME_NAME} ({games.GAME_FILESIZE})" alt="{games.GAME_NAME} ({games.GAME_FILESIZE})" /><!-- IF games.S_GAME_PLAY --></a><!-- ENDIF --><br />{games.GAME_FAV_IMG}<!-- IF S_IN_SEARCH or S_IN_FAV --><br /><a href="{games.U_CAT}">{games.CAT_NAME}</a><!-- ENDIF --></div><!-- ENDIF -->
+				<p class="genmed" style="padding: 0.5em 0.5em;">
+				<!-- IF games.S_USE_HIGHSCORES -->{games.GAME_RATING_IMG}<br /><!-- ENDIF -->
+				<!-- IF games.GAME_PLAYS -->{games.GAME_PLAYS}<br /><!-- ENDIF -->
+				<!-- IF games.S_CAN_DOWNLOAD and games.GAME_DOWNLOAD -->{games.GAME_DOWNLOAD}<br /><!-- ENDIF -->
+				<!-- IF games.S_SHOW_POINTS -->{L_ARCADE_COST}: {games.GAME_COST}<br /><!-- IF games.S_USE_JACKPOT -->{L_ARCADE_JACKPOT}<!-- ELSE -->{L_ARCADE_REWARD}<!-- ENDIF -->: {games.GAME_REWARD}<br /><!-- ENDIF -->
+				</p>
+			</td>
+
+			<!-- IF games.S_GAME_PLAY or games.S_GAME_PLAY_POPUP or games.S_GAME_DOWNLOAD -->
+			<td align="left" valign="middle" width="20%">
+				<div class="genmed" style="margin-left:2em;">
+				<ul>
+					<!-- IF games.S_GAME_PLAY_POPUP --><li><a href="javascript:void(0)" onclick="arcade_popup('{games.U_GAME_PLAY_POPUP}', '_g{games.GAME_ID}', '{games.GAME_WIDTH}', '{games.GAME_HEIGHT}'); return false;">{L_ARCADE_POPUP_LINK}</a></li><!-- ENDIF -->
+					<!-- IF games.S_USE_HIGHSCORES --><li><a href="{games.U_GAME_HIGHSCORES}">{L_ARCADE_HIGHSCORES}</a></li><!-- ENDIF -->
+					<!-- IF games.S_CAN_DOWNLOAD --><li><a href="{games.U_GAME_DOWNLOAD}">{L_ARCADE_DOWNLOAD_GAME}</a></li><!-- ENDIF -->
+					<!-- IF games.S_CAN_REPORT --><li><a href="{games.U_GAME_REPORT}">{L_ARCADE_REPORT_GAME}</a></li><!-- ENDIF -->
+				</ul>
+				</div>
+			</td>
+			<!-- ELSE -->
+				<td align="center" valign="middle" width="20%"><span class="genmed"><!-- IF games.S_USE_HIGHSCORES --><a href="{games.U_GAME_HIGHSCORES}">{L_ARCADE_HIGHSCORES}</a><!-- ENDIF --></span></td>
+			<!-- ENDIF -->
+
+			<td align="center" valign="middle" width="25%">
+				<span class="genmed">
+				<!-- IF games.S_GAME_HIGHSCORE -->
+					<b>{games.GAME_HIGHSCORE}</b></span><span class='gensmall'>&nbsp;&nbsp;{games.GAME_HIGHUSER}<br />{games.GAME_HIGHDATE}
+				<!-- ELSE -->
+					<!-- IF games.S_USE_HIGHSCORES -->{L_ARCADE_NO_HIGHSCORE}<!-- ELSE -->{L_ARCADE_NOSCORE_GAME}<!-- ENDIF -->
+				<!-- ENDIF -->
+				</span>
+			</td>
+
+			<td align="center" valign="middle" width="25%">
+				<span class="genmed">
+				<!-- IF games.S_GAME_SCORE -->
+					<b>{games.PERSONAL_HIGHSCORE}</b><!-- IF games.GAME_IMAGE_FIRST -->&nbsp;&nbsp;<img src="{games.GAME_IMAGE_FIRST}" alt="{L_ARCADE_FIRST}" style="vertical-align: middle;" /><!-- ENDIF --></span><span class='gensmall'><br />{games.PERSONAL_HIGHDATE}
+				<!-- ELSE -->
+					<!-- IF games.S_USE_HIGHSCORES --><a href="{games.U_GAME_PLAY}">{L_ARCADE_CLICK_PLAY}</a><!-- ELSE -->{L_ARCADE_NOSCORE_GAME}<!-- ENDIF -->
+				<!-- ENDIF -->
+				</span>
+			</td>
+		</tr>
+	<!-- END games -->
+		<tr align="center">
+			<td class="cat" colspan="5">
+				<form method="post" action="{S_ARCADE_ACTION}"><span class="gensmall">{L_SORT_BY}</span> {S_SELECT_SORT_KEY} {S_SELECT_SORT_DIR}&nbsp;<input class="btnlite" type="submit" name="sort" value="{L_GO}" /></form>
+			</td>
+		</tr>
+	</tbody>
+</table>
+<!-- ELSE -->
+	<!-- IF S_IN_GAMES -->
+		<table width="100%" cellspacing="1" class="tablebg" align="center">
+			<thead>
+				<tr>
+					<td class="row1" height="30" align="center" valign="middle"><span class="gen">{L_NO_ARCADE_GAMES}</span></td>
+				</tr>
+			</tbody>
+		</table>
+		<br />
+	<!-- ENDIF -->
+<!-- ENDIF -->
+<!-- IF TOTAL_GAMES -->
+<table width="100%" cellspacing="1">
+	<tr>
+		<td class="nav" valign="middle" nowrap="nowrap">&nbsp;{PAGE_NUMBER}<br /></td>
+		<td class="gensmall" nowrap="nowrap">&nbsp;[ {TOTAL_GAMES} ]&nbsp;</td>
+		<td class="gensmall" width="100%" align="right" nowrap="nowrap"><!-- INCLUDE pagination.html --></td>
+	</tr>
+</table>
+<!-- ENDIF -->
+</div>
+<!-- INCLUDE arcade/arcade_jumpbox.html -->
