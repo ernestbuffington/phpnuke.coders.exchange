@@ -9,8 +9,10 @@
 */
 
 /**
-* @ignore
-*/
+ * Applied rules:
+ * AddDefaultValueForUndefinedVariableRector (https://github.com/vimeo/psalm/blob/29b70442b11e3e66113935a2ee22e165a70c74a4/docs/fixing_code.md#possiblyundefinedvariable)
+ */
+
 if (!defined('IN_PHPBB'))
 {
 	exit;
@@ -1202,7 +1204,8 @@ class acp_arcade_manage
 	*/
 	function update_cat_data(&$cat_data)
 	{
-		global $db, $user, $cache, $arcade;
+		$cat_ids = [];
+  global $db, $user, $cache, $arcade;
 
 		$errors = array();
 
@@ -1508,7 +1511,8 @@ class acp_arcade_manage
 	*/
 	function move_cat($from_id, $to_id)
 	{
-		global $db, $arcade;
+		$user = null;
+  global $db, $arcade;
 
 		$to_data = $moved_ids = $errors = array();
 		// Check if we want to move to a parent with link type
@@ -1625,7 +1629,9 @@ class acp_arcade_manage
 	*/
 	function delete_cat($cat_id, $action_games = 'delete', $action_subcats = 'delete', $games_to_id = 0, $subcats_to_id = 0)
 	{
-		global $db, $user, $cache, $arcade;
+		$diff = null;
+  $posts_to_name = null;
+  global $db, $user, $cache, $arcade;
 
 		$cat_data = $arcade->get_cat_info($cat_id);
 
