@@ -40,18 +40,18 @@ class dbal_mysqli extends dbal
 		$port = (!$port) ? NULL : $port;
 
 		// Persistant connections not supported by the mysqli extension?
-		$this->db_connect_id = @mysqli_connect($this->server, $this->user, $sqlpassword, $this->dbname, $port);
+		$this->db_connect_id = mysqli_connect($this->server, $this->user, $sqlpassword, $this->dbname, $port);
 
 		if ($this->db_connect_id && $this->dbname != '')
 		{
-			@mysqli_query($this->db_connect_id, "SET NAMES 'utf8'");
+			mysqli_query($this->db_connect_id, "SET NAMES 'utf8'");
 
 			// enforce strict mode on databases that support it
 			if (version_compare($this->sql_server_info(true), '5.0.2', '>='))
 			{
-				$result = @mysqli_query($this->db_connect_id, 'SELECT @@session.sql_mode AS sql_mode');
-				$row = @mysqli_fetch_assoc($result);
-				@mysqli_free_result($result);
+				$result = mysqli_query($this->db_connect_id, 'SELECT @@session.sql_mode AS sql_mode');
+				$row = mysqli_fetch_assoc($result);
+				mysqli_free_result($result);
 
 				$modes = array_map('trim', explode(',', $row['sql_mode']));
 
@@ -70,7 +70,7 @@ class dbal_mysqli extends dbal
 				}
 
 				$mode = implode(',', $modes);
-				@mysqli_query($this->db_connect_id, "SET SESSION sql_mode='{$mode}'");
+				mysqli_query($this->db_connect_id, "SET SESSION sql_mode='{$mode}'");
 			}
 			return $this->db_connect_id;
 		}
@@ -89,9 +89,9 @@ class dbal_mysqli extends dbal
 
 		if (empty($cache) || ($this->sql_server_version = $cache->get('mysqli_version')) === false)
 		{
-			$result = @mysqli_query($this->db_connect_id, 'SELECT VERSION() AS version');
-			$row = @mysqli_fetch_assoc($result);
-			@mysqli_free_result($result);
+			$result = mysqli_query($this->db_connect_id, 'SELECT VERSION() AS version');
+			$row = mysqli_fetch_assoc($result);
+			mysqli_free_result($result);
 
 			$this->sql_server_version = $row['version'];
 
@@ -113,18 +113,18 @@ class dbal_mysqli extends dbal
 		switch ($status)
 		{
 			case 'begin':
-				return @mysqli_autocommit($this->db_connect_id, false);
+				return mysqli_autocommit($this->db_connect_id, false);
 			break;
 
 			case 'commit':
-				$result = @mysqli_commit($this->db_connect_id);
-				@mysqli_autocommit($this->db_connect_id, true);
+				$result = mysqli_commit($this->db_connect_id);
+				mysqli_autocommit($this->db_connect_id, true);
 				return $result;
 			break;
 
 			case 'rollback':
-				$result = @mysqli_rollback($this->db_connect_id);
-				@mysqli_autocommit($this->db_connect_id, true);
+				$result = mysqli_rollback($this->db_connect_id);
+				mysqli_autocommit($this->db_connect_id, true);
 				return $result;
 			break;
 		}
@@ -158,7 +158,7 @@ class dbal_mysqli extends dbal
 
 			if ($this->query_result === false)
 			{
-				if (($this->query_result = @mysqli_query($this->db_connect_id, $query)) === false)
+				if (($this->query_result = mysqli_query($this->db_connect_id, $query)) === false)
 				{
 					$this->sql_error($query);
 				}
@@ -210,7 +210,7 @@ class dbal_mysqli extends dbal
 	*/
 	function sql_affectedrows()
 	{
-		return ($this->db_connect_id) ? @mysqli_affected_rows($this->db_connect_id) : false;
+		return ($this->db_connect_id) ? mysqli_affected_rows($this->db_connect_id) : false;
 	}
 
 	/**
@@ -230,7 +230,7 @@ class dbal_mysqli extends dbal
 			return $cache->sql_fetchrow($query_id);
 		}
 
-		return ($query_id !== false) ? @mysqli_fetch_assoc($query_id) : false;
+		return ($query_id !== false) ? mysqli_fetch_assoc($query_id) : false;
 	}
 
 	/**
@@ -251,7 +251,7 @@ class dbal_mysqli extends dbal
 			return $cache->sql_rowseek($rownum, $query_id);
 		}
 
-		return ($query_id !== false) ? @mysqli_data_seek($query_id, $rownum) : false;
+		return ($query_id !== false) ? mysqli_data_seek($query_id, $rownum) : false;
 	}
 
 	/**
@@ -259,7 +259,7 @@ class dbal_mysqli extends dbal
 	*/
 	function sql_nextid()
 	{
-		return ($this->db_connect_id) ? @mysqli_insert_id($this->db_connect_id) : false;
+		return ($this->db_connect_id) ? mysqli_insert_id($this->db_connect_id) : false;
 	}
 
 	/**
@@ -279,7 +279,7 @@ class dbal_mysqli extends dbal
 			return $cache->sql_freeresult($query_id);
 		}
 
-		return @mysqli_free_result($query_id);
+		return mysqli_free_result($query_id);
 	}
 
 	/**
@@ -287,7 +287,7 @@ class dbal_mysqli extends dbal
 	*/
 	function sql_escape($msg)
 	{
-		return @mysqli_real_escape_string($this->db_connect_id, $msg);
+		return mysqli_real_escape_string($this->db_connect_id, $msg);
 	}
 
 	/**
@@ -324,14 +324,14 @@ class dbal_mysqli extends dbal
 		if (!$this->db_connect_id)
 		{
 			return array(
-				'message'	=> @mysqli_connect_error(),
-				'code'		=> @mysqli_connect_errno()
+				'message'	=> mysqli_connect_error(),
+				'code'		=> mysqli_connect_errno()
 			);
 		}
 
 		return array(
-			'message'	=> @mysqli_error($this->db_connect_id),
-			'code'		=> @mysqli_errno($this->db_connect_id)
+			'message'	=> mysqli_error($this->db_connect_id),
+			'code'		=> mysqli_errno($this->db_connect_id)
 		);
 	}
 
@@ -341,7 +341,7 @@ class dbal_mysqli extends dbal
 	*/
 	function _sql_close()
 	{
-		return @mysqli_close($this->db_connect_id);
+		return mysqli_close($this->db_connect_id);
 	}
 
 	/**
@@ -387,17 +387,17 @@ class dbal_mysqli extends dbal
 					// begin profiling
 					if ($test_prof)
 					{
-						@mysqli_query($this->db_connect_id, 'SET profiling = 1;');
+						mysqli_query($this->db_connect_id, 'SET profiling = 1;');
 					}
 
-					if ($result = @mysqli_query($this->db_connect_id, "EXPLAIN $explain_query"))
+					if ($result = mysqli_query($this->db_connect_id, "EXPLAIN $explain_query"))
 					{
-						while ($row = @mysqli_fetch_assoc($result))
+						while ($row = mysqli_fetch_assoc($result))
 						{
 							$html_table = $this->sql_report('add_select_row', $query, $html_table, $row);
 						}
 					}
-					@mysqli_free_result($result);
+					mysqli_free_result($result);
 
 					if ($html_table)
 					{
@@ -409,10 +409,10 @@ class dbal_mysqli extends dbal
 						$html_table = false;
 
 						// get the last profile
-						if ($result = @mysqli_query($this->db_connect_id, 'SHOW PROFILE ALL;'))
+						if ($result = mysqli_query($this->db_connect_id, 'SHOW PROFILE ALL;'))
 						{
 							$this->html_hold .= '<br />';
-							while ($row = @mysqli_fetch_assoc($result))
+							while ($row = mysqli_fetch_assoc($result))
 							{
 								// make <unknown> HTML safe
 								if (!empty($row['Source_function']))
@@ -431,14 +431,14 @@ class dbal_mysqli extends dbal
 								$html_table = $this->sql_report('add_select_row', $query, $html_table, $row);
 							}
 						}
-						@mysqli_free_result($result);
+						mysqli_free_result($result);
 
 						if ($html_table)
 						{
 							$this->html_hold .= '</table>';
 						}
 
-						@mysqli_query($this->db_connect_id, 'SET profiling = 0;');
+						mysqli_query($this->db_connect_id, 'SET profiling = 0;');
 					}
 				}
 
@@ -448,12 +448,12 @@ class dbal_mysqli extends dbal
 				$endtime = explode(' ', microtime());
 				$endtime = $endtime[0] + $endtime[1];
 
-				$result = @mysqli_query($this->db_connect_id, $query);
-				while ($void = @mysqli_fetch_assoc($result))
+				$result = mysqli_query($this->db_connect_id, $query);
+				while ($void = mysqli_fetch_assoc($result))
 				{
 					// Take the time spent on parsing rows into account
 				}
-				@mysqli_free_result($result);
+				mysqli_free_result($result);
 
 				$splittime = explode(' ', microtime());
 				$splittime = $splittime[0] + $splittime[1];
