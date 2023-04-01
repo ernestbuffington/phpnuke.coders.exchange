@@ -9,8 +9,11 @@
 */
 
 /**
-* @ignore
-*/
+ * Applied rules:
+ * AddDefaultValueForUndefinedVariableRector (https://github.com/vimeo/psalm/blob/29b70442b11e3e66113935a2ee22e165a70c74a4/docs/fixing_code.md#possiblyundefinedvariable)
+ * TernaryToNullCoalescingRector
+ */
+
 if (!defined('IN_PHPBB'))
 {
 	exit;
@@ -37,7 +40,8 @@ class acp_modules
 
 	function main($id, $mode)
 	{
-		global $db, $user, $auth, $template, $module;
+		$module_row = [];
+  global $db, $user, $auth, $template, $module;
 		global $config, $phpEx;
 
 		// Set a global define for modules we might include (the author is able to prevent execution of code by checking this constant)
@@ -194,7 +198,7 @@ class acp_modules
 						$module_data = array(
 							'module_basename'	=> $module_basename,
 							'module_enabled'	=> 0,
-							'module_display'	=> (isset($fileinfo['modes'][$module_mode]['display'])) ? $fileinfo['modes'][$module_mode]['display'] : 1,
+							'module_display'	=> $fileinfo['modes'][$module_mode]['display'] ?? 1,
 							'parent_id'			=> $this->parent_id,
 							'module_class'		=> $this->module_class,
 							'module_langname'	=> $fileinfo['modes'][$module_mode]['title'],
@@ -619,7 +623,7 @@ class acp_modules
 			}
 			else if ($row['left_id'] > $right + 1)
 			{
-				$padding = (isset($padding_store[$row['parent_id']])) ? $padding_store[$row['parent_id']] : '';
+				$padding = $padding_store[$row['parent_id']] ?? '';
 			}
 
 			$right = $row['right_id'];
