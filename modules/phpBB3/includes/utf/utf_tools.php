@@ -10,9 +10,8 @@
 
 /**
 */
-if (!defined('IN_PHPBB'))
-{
-	exit;
+if (realpath(__FILE__) == realpath($_SERVER['SCRIPT_FILENAME'])) {
+    exit('Access Denied');
 }
 
 // Enforce ASCII only string handling
