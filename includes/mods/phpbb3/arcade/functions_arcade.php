@@ -9,8 +9,10 @@
 */
 
 /**
-* @ignore
-*/
+ * Applied rules:
+ * TernaryToNullCoalescingRector
+ */
+ 
 if (!defined('IN_PHPBB'))
 {
 	exit;
@@ -265,7 +267,7 @@ function display_arcade($root_data = '')
 			$l_play_click_count		=> $play_click_count,
 			'CAT_FOLDER_IMG'		=> $user->img($folder_image, $folder_alt),
 			'CAT_FOLDER_IMG_SRC'	=> $user->img($folder_image, $folder_alt, false, '', 'src'),
-			'CAT_FOLDER_IMG_ALT'	=> isset($user->lang[$folder_alt]) ? $user->lang[$folder_alt] : '',
+			'CAT_FOLDER_IMG_ALT'	=> $user->lang[$folder_alt] ?? '',
 			'CAT_IMAGE'				=> ($row['cat_image']) ? $arcade->get_img($phpbb_root_path . $arcade->config['cat_image_path'] . $row['cat_image'], $row['cat_name']) : '',
 			'CAT_IMAGE_SRC'			=> ($row['cat_image']) ? $phpbb_root_path . $arcade->config['cat_image_path'] . $row['cat_image'] : '',
 			'CAT_DISPLAY'			=> $row['cat_display'],
@@ -471,8 +473,8 @@ function display_arcade_header($show_welcome_box = true, $show_adv_search = true
 					'ARCADE_LEADERS_RANK'			=> $rank,
 					'ARCADE_LEADERS_ACTUAL_RANK'	=> $actual_rank,
 					'ARCADE_LEADERS' 				=> $user_link,
-					'ARCADE_LEADERS_IMAGE'			=> (isset($arcade_leaders_img[$rank])) ? $arcade_leaders_img[$rank] : '',
-					'ARCADE_LEADERS_IMAGE_ALT'		=> (isset($arcade_leaders_img_alt[$rank])) ? $arcade_leaders_img_alt[$rank] : '',
+					'ARCADE_LEADERS_IMAGE'			=> $arcade_leaders_img[$rank] ?? '',
+					'ARCADE_LEADERS_IMAGE_ALT'		=> $arcade_leaders_img_alt[$rank] ?? '',
 					'VICTORIES'						=> $arcade->leaders[$i]['total_wins']
 				));
 			}
@@ -918,7 +920,7 @@ function make_arcade_jumpbox($action, $cat_id = false, $select_all = false, $acl
 		{
 			// Ok, if the $padding_store for this parent is empty there is something wrong. For now we will skip over it.
 			// @todo digging deep to find out "how" this can happen.
-			$padding = (isset($padding_store[$row['parent_id']])) ? $padding_store[$row['parent_id']] : $padding;
+			$padding = $padding_store[$row['parent_id']] ?? $padding;
 		}
 
 		$right = $row['right_id'];
