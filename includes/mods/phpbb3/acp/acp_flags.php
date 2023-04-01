@@ -26,7 +26,9 @@ class acp_flags
 	function main($id, $mode)
 	{
 		global $db, $user, $template, $cache;
-		global $config, $phpbb_root_path, $phpbb_admin_path;
+		global $config;
+
+        $phpbb_admin_path = PHPBB3_ADMIN_DIR;
 
 		$user->add_lang('mods/flags');
 
@@ -157,7 +159,7 @@ class acp_flags
 				}
 				$db->sql_freeresult($result);
 
-				$imglist = filelist($phpbb_root_path . $config['flags_path'], '');
+				$imglist = filelist(PHPBB3_ROOT_DIR . $config['flags_path'], '');
 				$edit_img = $filename_list = '';
 
 				foreach ($imglist as $path => $img_ary)
@@ -196,13 +198,13 @@ class acp_flags
 				$template->assign_vars(array(
 					'S_EDIT'			=> true,
 					'U_BACK'			=> $this->u_action,
-					'FLAGS_PATH'		=> $phpbb_root_path . $config['flags_path'],
+					'FLAGS_PATH'		=> PHPBB3_ROOT_DIR . $config['flags_path'],
 					'U_ACTION'			=> $this->u_action . '&amp;id=' . $flag_id,
 
 					'FLAG_COUNTRY'		=> (isset($flags['flag_country'])) ? $flags['flag_country'] : '',
 					'FLAG_CODE'			=> (isset($flags['flag_code'])) ? $flags['flag_code'] : '',
 					'S_FILENAME_LIST'	=> $filename_list,
-					'FLAG_IMAGE'		=> ($edit_img) ? $phpbb_root_path . $config['flags_path'] . '/' . $edit_img : $phpbb_admin_path . 'images/spacer.gif',
+					'FLAG_IMAGE'		=> ($edit_img) ? PHPBB3_ROOT_DIR . $config['flags_path'] . '/' . $edit_img : $phpbb_admin_path . 'images/spacer.gif',
 				));
 
 				return;
@@ -239,7 +241,7 @@ class acp_flags
 			$template->assign_block_vars('flags', array(
 				'S_FLAG_IMAGE'	=> ($row['flag_image']) ? true : false,
 
-				'FLAG_IMAGE'	=> $phpbb_root_path . $config['flags_path'] . '/' . $row['flag_image'],
+				'FLAG_IMAGE'	=> PHPBB3_ROOT_DIR . $config['flags_path'] . '/' . $row['flag_image'],
 				'FLAG_COUNTRY'	=> $row['flag_country'],
 				'FLAG_CODE'		=> $row['flag_code'],
 				'FLAG_USERS'	=> (isset($flag_count[$row['flag_code']])) ? $flag_count[$row['flag_code']] : 0,
