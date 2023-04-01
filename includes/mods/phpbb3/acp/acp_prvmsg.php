@@ -13,22 +13,27 @@
 */
 
 /**
-* @package acp
-*/
+ * Applied rules:
+ * AddDefaultValueForUndefinedVariableRector (https://github.com/vimeo/psalm/blob/29b70442b11e3e66113935a2ee22e165a70c74a4/docs/fixing_code.md#possiblyundefinedvariable)
+ * Php4ConstructorRector (https://wiki.php.net/rfc/remove_php4_constructors)
+ * Utf8DecodeEncodeToMbConvertEncodingRector (https://wiki.php.net/rfc/remove_utf8_decode_and_utf8_encode)
+ */
+ 
 class acp_prvmsg
 {
 	var $u_action;
 	var $p_master;
 	var $char_limit = 35;
 	
-	function acp_prvmsg(&$p_master)
+	function __construct(&$p_master)
 	{
 		$this->p_master = &$p_master;
 	}
 
 	function main($id, $mode)
 	{
-		global $config, $db, $user, $template, $char_limit;
+		$CFG = [];
+  global $config, $db, $user, $template, $char_limit;
 		
 		// Only Board Founders can view Priv Messages
 		if ($user->data['user_type'] != USER_FOUNDER)
@@ -63,7 +68,7 @@ class acp_prvmsg
 				$to_user = $db->sql_fetchrow($result);
 				$db->sql_freeresult($result);
 				*/
-				
+
 				$sql = 'SELECT u.*, b.*
 					FROM ' . USERS_TABLE . ' u, ' . BOTS_TABLE . " b
 					WHERE u.user_id != b.user_id
@@ -73,7 +78,7 @@ class acp_prvmsg
 				$result = $db->sql_query($sql);
 				$to_user = $db->sql_fetchrow($result);
 				$db->sql_freeresult($result);
-				
+
 				if ($to_user['username'] == 'Anonymous')
 				{
 					$to_user['username'] = 'group'; // sorry this is hard code
@@ -88,7 +93,7 @@ class acp_prvmsg
 				$to_color	= get_username_string('colour', $user_id, $username, $colour);
 				$to_profile	= get_username_string('profile', $user_id, $username, $colour);
 				// + get "to" user info
-				
+
 				$to_link = "<a href=\"$to_profile\"><span style=\"color:$to_color;\"><strong>$to_user</strong></span></a>";
 				@$to .= ($to) ? ', ' . $to_link : $to_link;
 				// - id to username
@@ -181,7 +186,7 @@ class acp_prvmsg
 		$title = censor_text($title);
 		if ($limit > 0)
 		{
-			return (strlen(utf8_decode($title)) > $limit + 3) ? truncate_string($title, $limit) . '...' : $title;
+			return (strlen(mb_convert_encoding($title, 'ISO-8859-1')) > $limit + 3) ? truncate_string($title, $limit) . '...' : $title;
 		}
 		else
 		{
