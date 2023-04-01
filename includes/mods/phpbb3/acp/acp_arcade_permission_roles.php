@@ -26,10 +26,10 @@ class acp_arcade_permission_roles
 	function main($id, $mode)
 	{
 		global $db, $user, $auth, $auth_arcade, $template, $prefix_phpbb3, $auth_arcade, $cache;
-		global $config, $phpbb_root_path, $phpbb_admin_path, $phpEx;
+		global $config, $phpEx;
 
-		include_once($phpbb_root_path . 'includes/functions_user.' . $phpEx);
-		include($phpbb_root_path . 'includes/arcade/arcade_common.' . $phpEx);
+		include_once(PHPBB3_INCLUDE_DIR . 'functions_user.' . $phpEx);
+		include(PHPBB3_INCLUDE_DIR . 'arcade/arcade_common.' . $phpEx);
 		// Initialize arcade auth
 		$auth_arcade->acl($user->data);
 		$auth_admin = new auth_arcade_admin();
