@@ -9,8 +9,13 @@
 */
 
 /**
-* @ignore
-*/
+ * Applied rules:
+ * AddDefaultValueForUndefinedVariableRector (https://github.com/vimeo/psalm/blob/29b70442b11e3e66113935a2ee22e165a70c74a4/docs/fixing_code.md#possiblyundefinedvariable)
+ * TernaryToNullCoalescingRector
+ * StringifyStrNeedlesRector (https://wiki.php.net/rfc/deprecations_php_7_3#string_search_functions_with_integer_needle)
+ * StrStartsWithRector (https://wiki.php.net/rfc/add_str_starts_with_and_ends_with_functions)
+ */
+ 
 if (!defined('IN_PHPBB'))
 {
 	exit;
@@ -428,7 +433,7 @@ parse_css_file = {PARSE_CSS_FILE}
 									$image_height = $image_width = 0;
 								}
 
-								if (strpos($image_name, 'img_') === 0 && $image_filename)
+								if (str_starts_with($image_name, 'img_') && $image_filename)
 								{
 									$image_name = substr($image_name, 4);
 									if (in_array($image_name, $imageset_definitions))
@@ -474,7 +479,7 @@ parse_css_file = {PARSE_CSS_FILE}
 											$image_height = $image_width = 0;
 										}
 
-										if (strpos($image_name, 'img_') === 0 && $image_filename)
+										if (str_starts_with($image_name, 'img_') && $image_filename)
 										{
 											$image_name = substr($image_name, 4);
 											if (in_array($image_name, $imageset_definitions))
@@ -684,7 +689,8 @@ parse_css_file = {PARSE_CSS_FILE}
 	*/
 	function edit_template($template_id)
 	{
-		global $phpEx, $config, $db, $cache, $user, $template, $safe_mode;
+		$super = [];
+  global $phpEx, $config, $db, $cache, $user, $template, $safe_mode;
 		
 		$phpbb_root_path = PHPBB3_ROOT_DIR;
 
@@ -1284,7 +1290,16 @@ parse_css_file = {PARSE_CSS_FILE}
 	*/
 	function edit_imageset($imageset_id)
 	{
-		global $db, $user, $cache, $template;
+		$imageset_path = null;
+  $sql_extra = null;
+  $imgnamelang = null;
+  $image_width = null;
+  $image_height = null;
+  $image_lang = null;
+  $image_filename = null;
+  $imageset_name = null;
+  $valid_name = null;
+  global $db, $user, $cache, $template;
 		
         $phpbb_root_path = PHPBB3_ROOT_DIR;
 
@@ -1515,7 +1530,7 @@ parse_css_file = {PARSE_CSS_FILE}
 			foreach ($img_ary as $img)
 			{
 				$imgtext = preg_replace('/^([^\/]+\/)/', '', $img);
-				$selected = (!empty($imgname) && strpos($image_filename, $imgtext) !== false);
+				$selected = (!empty($imgname) && strpos($image_filename, (string) $imgtext) !== false);
 				if ($selected)
 				{
 					$image_found = true;
@@ -1555,7 +1570,9 @@ parse_css_file = {PARSE_CSS_FILE}
 	*/
 	function remove($mode, $style_id)
 	{
-		global $db, $template, $user, $cache, $config;
+		$sql_select = null;
+  $sql_from = null;
+  global $db, $template, $user, $cache, $config;
 
         $phpbb_root_path = PHPBB3_ROOT_DIR;
 
@@ -1705,7 +1722,11 @@ parse_css_file = {PARSE_CSS_FILE}
 	*/
 	function export($mode, $style_id)
 	{
-		global $db, $template, $user, $cache, $phpEx, $config;
+		$sql_select = null;
+  $sql_from = null;
+  $sql_where = null;
+  $l_prefix = null;
+  global $db, $template, $user, $cache, $phpEx, $config;
 		
         $phpbb_root_path = PHPBB3_ROOT_DIR;
 
@@ -2141,7 +2162,12 @@ parse_css_file = {PARSE_CSS_FILE}
 	*/
 	function details($mode, $style_id)
 	{
-		global $template, $db, $config, $user, $safe_mode, $cache;
+		$sql_from = null;
+  $super = [];
+  $template_options = null;
+  $theme_options = null;
+  $imageset_options = null;
+  global $template, $db, $config, $user, $safe_mode, $cache;
 		
         $phpbb_root_path = PHPBB3_ROOT_DIR;
 
@@ -2435,10 +2461,10 @@ parse_css_file = {PARSE_CSS_FILE}
 			'S_TEMPLATE'			=> ($mode == 'template') ? true : false,
 			'S_THEME'				=> ($mode == 'theme') ? true : false,
 			'S_IMAGESET'			=> ($mode == 'imageset') ? true : false,
-			'S_STORE_DB'			=> (isset($style_row[$mode . '_storedb'])) ? $style_row[$mode . '_storedb'] : 0,
-			'S_STORE_DB_DISABLED'	=> (isset($style_row[$mode . '_inherits_id'])) ? $style_row[$mode . '_inherits_id'] : 0,
-			'S_STYLE_ACTIVE'		=> (isset($style_row['style_active'])) ? $style_row['style_active'] : 0,
-			'S_STYLE_DEFAULT'		=> (isset($style_row['style_default'])) ? $style_row['style_default'] : 0,
+			'S_STORE_DB'			=> $style_row[$mode . '_storedb'] ?? 0,
+			'S_STORE_DB_DISABLED'	=> $style_row[$mode . '_inherits_id'] ?? 0,
+			'S_STYLE_ACTIVE'		=> $style_row['style_active'] ?? 0,
+			'S_STYLE_DEFAULT'		=> $style_row['style_default'] ?? 0,
 			'S_SUPERTEMPLATE'		=> (isset($style_row[$mode . '_inherits_id']) && $style_row[$mode . '_inherits_id']) ? $super['template_name'] : 0,
 
 			'S_TEMPLATE_OPTIONS'	=> ($mode == 'style') ? $template_options : '',
@@ -2567,7 +2593,7 @@ parse_css_file = {PARSE_CSS_FILE}
 			foreach ($file_ary as $file)
 			{
 				// Skip index.
-				if (strpos($file, 'index.') === 0)
+				if (str_starts_with($file, 'index.'))
 				{
 					continue;
 				}
@@ -2625,7 +2651,7 @@ parse_css_file = {PARSE_CSS_FILE}
 				continue;
 			}
 
-			if (is_file($phpbb_root_path . 'cache/' . $file) && (strpos($file, $cache_prefix) === 0))
+			if (is_file($phpbb_root_path . 'cache/' . $file) && (str_starts_with($file, $cache_prefix)))
 			{
 				$file_ary[] = str_replace('.', '/', preg_replace('#^' . preg_quote($cache_prefix, '#') . '_(.*?)\.html\.' . $phpEx . '$#i', '\1', $file));
 			}
@@ -2680,7 +2706,13 @@ parse_css_file = {PARSE_CSS_FILE}
 	*/
 	function install($mode)
 	{
-		global $phpEx, $config, $db, $cache, $user, $template;
+		$template_root_path = null;
+  $template_path = null;
+  $theme_root_path = null;
+  $theme_path = null;
+  $imageset_root_path = null;
+  $imageset_path = null;
+  global $phpEx, $config, $db, $cache, $user, $template;
 
         $phpbb_root_path = PHPBB3_ROOT_DIR;
 
@@ -2732,9 +2764,9 @@ parse_css_file = {PARSE_CSS_FILE}
 						'style_copyright'	=> $installcfg['copyright']
 					);
 
-					$reqd_template = (isset($installcfg['required_template'])) ? $installcfg['required_template'] : false;
-					$reqd_theme = (isset($installcfg['required_theme'])) ? $installcfg['required_theme'] : false;
-					$reqd_imageset = (isset($installcfg['required_imageset'])) ? $installcfg['required_imageset'] : false;
+					$reqd_template = $installcfg['required_template'] ?? false;
+					$reqd_theme = $installcfg['required_theme'] ?? false;
+					$reqd_imageset = $installcfg['required_imageset'] ?? false;
 
 					// Check to see if each element is already installed, if it is grab the id
 					foreach ($element_ary as $element => $table)
@@ -2829,12 +2861,12 @@ parse_css_file = {PARSE_CSS_FILE}
 			'S_LOCATION'		=> (isset($installcfg['inherit_from']) && $installcfg['inherit_from']) ? false : true,
 			'S_STYLE'			=> ($mode == 'style') ? true : false,
 			'S_TEMPLATE'		=> ($mode == 'template') ? true : false,
-			'S_SUPERTEMPLATE'	=> (isset($installcfg['inherit_from'])) ? $installcfg['inherit_from'] : '',
+			'S_SUPERTEMPLATE'	=> $installcfg['inherit_from'] ?? '',
 			'S_THEME'			=> ($mode == 'theme') ? true : false,
 
-			'S_STORE_DB'			=> (isset($style_row[$mode . '_storedb'])) ? $style_row[$mode . '_storedb'] : 0,
-			'S_STYLE_ACTIVE'		=> (isset($style_row['style_active'])) ? $style_row['style_active'] : 0,
-			'S_STYLE_DEFAULT'		=> (isset($style_row['style_default'])) ? $style_row['style_default'] : 0,
+			'S_STORE_DB'			=> $style_row[$mode . '_storedb'] ?? 0,
+			'S_STYLE_ACTIVE'		=> $style_row['style_active'] ?? 0,
+			'S_STYLE_DEFAULT'		=> $style_row['style_default'] ?? 0,
 
 			'U_ACTION'			=> $this->u_action . "&amp;action=install&amp;path=" . urlencode($install_path),
 			'U_BACK'			=> $this->u_action,
@@ -2859,7 +2891,12 @@ parse_css_file = {PARSE_CSS_FILE}
 	*/
 	function add($mode)
 	{
-		global $phpEx, $config, $db, $cache, $user, $template;
+		$sql_select = null;
+  $sql_from = null;
+  $template_options = null;
+  $theme_options = null;
+  $imageset_options = null;
+  global $phpEx, $config, $db, $cache, $user, $template;
 
         $phpbb_root_path = PHPBB3_ROOT_DIR;
 
@@ -2920,9 +2957,9 @@ parse_css_file = {PARSE_CSS_FILE}
 
 			if (!sizeof($error))
 			{
-				$style_row['template_id']	= (isset($row['template_id'])) ? $row['template_id'] : $style_row['template_id'];
-				$style_row['theme_id']		= (isset($row['theme_id'])) ? $row['theme_id'] : $style_row['theme_id'];
-				$style_row['imageset_id']	= (isset($row['imageset_id'])) ? $row['imageset_id'] : $style_row['imageset_id'];
+				$style_row['template_id']	= $row['template_id'] ?? $style_row['template_id'];
+				$style_row['theme_id']		= $row['theme_id'] ?? $style_row['theme_id'];
+				$style_row['imageset_id']	= $row['imageset_id'] ?? $style_row['imageset_id'];
 			}
 		}
 
@@ -2987,9 +3024,9 @@ parse_css_file = {PARSE_CSS_FILE}
 			'S_THEME'			=> ($mode == 'theme') ? true : false,
 			'S_BASIS'			=> ($basis) ? true : false,
 
-			'S_STORE_DB'			=> (isset($style_row['storedb'])) ? $style_row['storedb'] : 0,
-			'S_STYLE_ACTIVE'		=> (isset($style_row['style_active'])) ? $style_row['style_active'] : 0,
-			'S_STYLE_DEFAULT'		=> (isset($style_row['style_default'])) ? $style_row['style_default'] : 0,
+			'S_STORE_DB'			=> $style_row['storedb'] ?? 0,
+			'S_STYLE_ACTIVE'		=> $style_row['style_active'] ?? 0,
+			'S_STYLE_DEFAULT'		=> $style_row['style_default'] ?? 0,
 			'S_TEMPLATE_OPTIONS'	=> ($mode == 'style') ? $template_options : '',
 			'S_THEME_OPTIONS'		=> ($mode == 'style') ? $theme_options : '',
 			'S_IMAGESET_OPTIONS'	=> ($mode == 'style') ? $imageset_options : '',
@@ -3030,7 +3067,8 @@ parse_css_file = {PARSE_CSS_FILE}
 	*/
 	function test_installed($element, &$error, $root_path, $reqd_name, &$id, &$name, &$copyright)
 	{
-		global $db, $user;
+		$sql_from = null;
+  global $db, $user;
 
 		switch ($element)
 		{
@@ -3180,7 +3218,8 @@ parse_css_file = {PARSE_CSS_FILE}
 	*/
 	function install_element($mode, &$error, $action, $root_path, &$id, $name, $path, $copyright, $store_db = 0)
 	{
-		global $db, $user;
+		$sql_from = null;
+  global $db, $user;
 
         $phpbb_root_path = PHPBB3_ROOT_DIR;
 
@@ -3369,7 +3408,7 @@ parse_css_file = {PARSE_CSS_FILE}
 					$image_height = $image_width = 0;
 				}
 
-				if (strpos($key, 'img_') === 0 && $image_filename)
+				if (str_starts_with($key, 'img_') && $image_filename)
 				{
 					$key = substr($key, 4);
 					if (in_array($key, $imageset_definitions))
@@ -3417,7 +3456,7 @@ parse_css_file = {PARSE_CSS_FILE}
 							$image_height = $image_width = 0;
 						}
 
-						if (strpos($image_name, 'img_') === 0 && $image_filename)
+						if (str_starts_with($image_name, 'img_') && $image_filename)
 						{
 							$image_name = substr($image_name, 4);
 							if (in_array($image_name, $imageset_definitions))
@@ -3459,7 +3498,8 @@ parse_css_file = {PARSE_CSS_FILE}
 	*/
 	function check_inheritance($mode, $id)
 	{
-		global $db;
+		$sql_from = null;
+  global $db;
 
 		$l_type = strtoupper($mode);
 
@@ -3515,7 +3555,8 @@ parse_css_file = {PARSE_CSS_FILE}
 	*/
 	function get_super($mode, $id)
 	{
-		global $db;
+		$sql_from = null;
+  global $db;
 
 		$l_type = strtoupper($mode);
 
