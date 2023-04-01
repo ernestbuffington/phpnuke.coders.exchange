@@ -32,10 +32,12 @@ class acp_language
 	function main($id, $mode)
 	{
 		global $config, $db, $user, $auth, $template, $cache;
-		global $phpbb_root_path, $phpbb_admin_path, $phpEx, $prefix_phpbb3;
+		global $phpEx, $prefix_phpbb3;
 		global $safe_mode, $file_uploads;
-
-		include_once($phpbb_root_path . 'includes/functions_user.' . $phpEx);
+        
+		$phpbb_root_path = PHPBB3_ROOT_DIR;
+		
+		include_once(PHPBB3_INCLUDE_DIR . 'functions_user.' . $phpEx);
 
 		$this->default_variables();
 
@@ -78,7 +80,7 @@ class acp_language
 			$action = 'upload_file';
 			$method = request_var('method', '');
 
-			include_once($phpbb_root_path . 'includes/functions_transfer.' . $phpEx);
+			include_once(PHPBB3_INCLUDE_DIR . 'functions_transfer.' . $phpEx);
 
 			switch ($method)
 			{
@@ -103,7 +105,7 @@ class acp_language
 		{
 			case 'upload_file':
 
-				include_once($phpbb_root_path . 'includes/functions_transfer.' . $phpEx);
+				include_once(PHPBB3_INCLUDE_DIR . 'functions_transfer.' . $phpEx);
 
 				$method = request_var('method', '');
 
@@ -219,7 +221,7 @@ class acp_language
 				{
 					case 'email':
 						// Get email templates
-						$email_files = filelist($phpbb_root_path . 'language/' . $row['lang_iso'], 'email', 'txt');
+						$email_files = filelist(PHPBB3_ROOT_DIR . 'language/' . $row['lang_iso'], 'email', 'txt');
 						$email_files = $email_files['email/'];
 
 						if (!in_array($this->language_file, $email_files))
@@ -230,7 +232,7 @@ class acp_language
 
 					case 'acp':
 						// Get acp files
-						$acp_files = filelist($phpbb_root_path . 'language/' . $row['lang_iso'], 'acp', $phpEx);
+						$acp_files = filelist(PHPBB3_ROOT_DIR . 'language/' . $row['lang_iso'], 'acp', $phpEx);
 						$acp_files = $acp_files['acp/'];
 
 						if (!in_array($this->language_file, $acp_files))
@@ -241,7 +243,7 @@ class acp_language
 
 					case 'mods':
 						// Get mod files
-						$mods_files = filelist($phpbb_root_path . 'language/' . $row['lang_iso'], 'mods', $phpEx);
+						$mods_files = filelist(PHPBB3_ROOT_DIR . 'language/' . $row['lang_iso'], 'mods', $phpEx);
 						$mods_files = (isset($mods_files['mods/'])) ? $mods_files['mods/'] : array();
 
 						if (!in_array($this->language_file, $mods_files))
@@ -269,22 +271,22 @@ class acp_language
 				
 					foreach ($mkdir_ary as $dir)
 					{
-						$dir = $phpbb_root_path . 'store/' . $dir;
+						$dir = PHPBB3_ROOT_DIR . 'store/' . $dir;
 			
 						if (!is_dir($dir))
 						{
-							if (!@mkdir($dir, 0777))
+							if (!mkdir($dir, 0777))
 							{
 								trigger_error("Could not create directory $dir", E_USER_ERROR);
 							}
-							@chmod($dir, 0777);
+							chmod($dir, 0777);
 						}
 					}
 				}
 
 				// Get target filename for storage folder
 				$filename = $this->get_filename($row['lang_iso'], $this->language_directory, $this->language_file, true, true);
-				$fp = @fopen($phpbb_root_path . $filename, 'wb');
+				$fp = fopen(PHPBB3_ROOT_DIR . $filename, 'wb');
 
 				if (!$fp)
 				{
@@ -354,7 +356,7 @@ class acp_language
 					header('Content-Type: application/octetstream; name="' . $this->language_file . '"');
 					header('Content-disposition: attachment; filename=' . $this->language_file);
 
-					$fp = @fopen($phpbb_root_path . $filename, 'rb');
+					$fp = fopen(PHPBB3_ROOT_DIR . $filename, 'rb');
 					while ($buffer = fread($fp, 1024))
 					{
 						echo $buffer;
@@ -382,7 +384,7 @@ class acp_language
 					$old_file = '/' . $this->get_filename($row['lang_iso'], $dir, $file, false, true);
 					$lang_path = 'language/' . $row['lang_iso'] . '/' . (($dir) ? $dir . '/' : '');
 
-					include_once($phpbb_root_path . 'includes/functions_transfer.' . $phpEx);
+					include_once(PHPBB3_INCLUDE_DIR . 'functions_transfer.' . $phpEx);
 					$method = request_var('method', '');
 
 					if ($method != 'ftp' && $method != 'ftp_fsock')
@@ -412,9 +414,9 @@ class acp_language
 					$transfer->close_session();
 
 					// Remove from storage folder
-					if (file_exists($phpbb_root_path . 'store/' . $lang_path . $file))
+					if (file_exists(PHPBB3_ROOT_DIR . 'store/' . $lang_path . $file))
 					{
-						@unlink($phpbb_root_path . 'store/' . $lang_path . $file);
+						unlink(PHPBB3_ROOT_DIR . 'store/' . $lang_path . $file);
 					}
 
 					add_log('admin', 'LOG_LANGUAGE_FILE_REPLACED', $file);
@@ -447,15 +449,15 @@ class acp_language
 				$missing_vars = $missing_files = array();
 
 				// Get email templates
-				$email_files = filelist($phpbb_root_path . 'language/' . $config['default_lang'], 'email', 'txt');
+				$email_files = filelist(PHPBB3_ROOT_DIR . 'language/' . $config['default_lang'], 'email', 'txt');
 				$email_files = $email_files['email/'];
 
 				// Get acp files
-				$acp_files = filelist($phpbb_root_path . 'language/' . $config['default_lang'], 'acp', $phpEx);
+				$acp_files = filelist(PHPBB3_ROOT_DIR . 'language/' . $config['default_lang'], 'acp', $phpEx);
 				$acp_files = $acp_files['acp/'];
 
 				// Get mod files
-				$mods_files = filelist($phpbb_root_path . 'language/' . $config['default_lang'], 'mods', $phpEx);
+				$mods_files = filelist(PHPBB3_ROOT_DIR . 'language/' . $config['default_lang'], 'mods', $phpEx);
 				$mods_files = (isset($mods_files['mods/'])) ? $mods_files['mods/'] : array();
 
 				// Check if our current filename matches the files
@@ -493,13 +495,13 @@ class acp_language
 				{
 					$store_filename = $this->get_filename($lang_iso, $this->language_directory, $this->language_file, true, true);
 
-					if (file_exists($phpbb_root_path . $store_filename))
+					if (file_exists(PHPBB3_ROOT_DIR . $store_filename))
 					{
-						@unlink($phpbb_root_path . $store_filename);
+						unlink(PHPBB3_ROOT_DIR . $store_filename);
 					}
 				}
 
-				include_once($phpbb_root_path . 'includes/functions_transfer.' . $phpEx);
+				include_once(PHPBB3_INCLUDE_DIR . 'functions_transfer.' . $phpEx);
 
 				$methods = transfer::methods();
 
@@ -529,7 +531,7 @@ class acp_language
 
 					foreach ($this->main_files as $file)
 					{
-						if (file_exists($phpbb_root_path . $this->get_filename($lang_iso, '', $file)))
+						if (file_exists(PHPBB3_ROOT_DIR . $this->get_filename($lang_iso, '', $file)))
 						{
 							$missing_vars[$file] = $this->compare_language_files($config['default_lang'], $lang_iso, '', $file);
 							
@@ -547,7 +549,7 @@ class acp_language
 					// Now go through acp/mods directories
 					foreach ($acp_files as $file)
 					{
-						if (file_exists($phpbb_root_path . $this->get_filename($lang_iso, 'acp', $file)))
+						if (file_exists(PHPBB3_ROOT_DIR . $this->get_filename($lang_iso, 'acp', $file)))
 						{
 							$missing_vars['acp/' . $file] = $this->compare_language_files($config['default_lang'], $lang_iso, 'acp', $file);
 							
@@ -566,7 +568,7 @@ class acp_language
 					{
 						foreach ($mods_files as $file)
 						{
-							if (file_exists($phpbb_root_path . $this->get_filename($lang_iso, 'mods', $file)))
+							if (file_exists(PHPBB3_ROOT_DIR . $this->get_filename($lang_iso, 'mods', $file)))
 							{
 								$missing_vars['mods/' . $file] = $this->compare_language_files($config['default_lang'], $lang_iso, 'mods', $file);
 								
@@ -585,7 +587,7 @@ class acp_language
 					// More missing files... for example email templates?
 					foreach ($email_files as $file)
 					{
-						if (!file_exists($phpbb_root_path . $this->get_filename($lang_iso, 'email', $file)))
+						if (!file_exists(PHPBB3_ROOT_DIR . $this->get_filename($lang_iso, 'email', $file)))
 						{
 							$missing_files[] = $this->get_filename($lang_iso, 'email', $file);
 						}
@@ -633,7 +635,7 @@ class acp_language
 						continue;
 					}
 
-					$prefix = (file_exists($phpbb_root_path . $this->get_filename($lang_iso, '', $file, true, true))) ? '* ' : '';
+					$prefix = (file_exists(PHPBB3_ROOT_DIR . $this->get_filename($lang_iso, '', $file, true, true))) ? '* ' : '';
 
 					$selected = (!$this->language_directory && $this->language_file == $file) ? ' selected="selected"' : '';
 					$s_lang_options .= '<option value="|' . $file . '"' . $selected . '>' . $prefix . $file . '</option>';
@@ -648,7 +650,7 @@ class acp_language
 						continue;
 					}
 
-					$prefix = (file_exists($phpbb_root_path . $this->get_filename($lang_iso, '', $file, true, true))) ? '* ' : '';
+					$prefix = (file_exists(PHPBB3_ROOT_DIR . $this->get_filename($lang_iso, '', $file, true, true))) ? '* ' : '';
 
 					$selected = (!$this->language_directory && $this->language_file == $file) ? ' selected="selected"' : '';
 					$s_lang_options .= '<option value="|' . $file . '"' . $selected . '>' . $prefix . $file . '</option>';
@@ -668,7 +670,7 @@ class acp_language
 
 					foreach (${$check . '_files'} as $file)
 					{
-						$prefix = (file_exists($phpbb_root_path . $this->get_filename($lang_iso, $check, $file, true, true))) ? '* ' : '';
+						$prefix = (file_exists(PHPBB3_ROOT_DIR . $this->get_filename($lang_iso, $check, $file, true, true))) ? '* ' : '';
 
 						$selected = ($this->language_directory == $check && $this->language_file == $file) ? ' selected="selected"' : '';
 						$s_lang_options .= '<option value="' . $check . '|' . $file . '"' . $selected . '>' . $prefix . $file . '</option>';
@@ -681,10 +683,10 @@ class acp_language
 				$is_email_file = ($this->language_directory == 'email') ? true : false;
 				$is_help_file = (strpos($this->language_file, 'help_') === 0) ? true : false;
 
-				$file_from_store = (file_exists($phpbb_root_path . $this->get_filename($lang_iso, $this->language_directory, $this->language_file, true, true))) ? true : false;
+				$file_from_store = (file_exists(PHPBB3_ROOT_DIR . $this->get_filename($lang_iso, $this->language_directory, $this->language_file, true, true))) ? true : false;
 				$no_store_filename = $this->get_filename($lang_iso, $this->language_directory, $this->language_file);
 
-				if (!$file_from_store && !file_exists($phpbb_root_path . $no_store_filename))
+				if (!$file_from_store && !file_exists(PHPBB3_ROOT_DIR . $no_store_filename))
 				{
 					$print_message = sprintf($user->lang['MISSING_LANGUAGE_FILE'], $no_store_filename);
 				}
@@ -692,12 +694,12 @@ class acp_language
 				{
 					if ($is_email_file)
 					{
-						$lang = file_get_contents($phpbb_root_path . $this->get_filename($lang_iso, $this->language_directory, $this->language_file, $file_from_store));
+						$lang = file_get_contents(PHPBB3_ROOT_DIR . $this->get_filename($lang_iso, $this->language_directory, $this->language_file, $file_from_store));
 					}
 					else
 					{
 						$help = array();
-						include($phpbb_root_path . $this->get_filename($lang_iso, $this->language_directory, $this->language_file, $file_from_store));
+						include(PHPBB3_ROOT_DIR . $this->get_filename($lang_iso, $this->language_directory, $this->language_file, $file_from_store));
 
 						if ($is_help_file)
 						{
@@ -849,7 +851,7 @@ class acp_language
 				$result = $db->sql_query($sql);
 				while ($imageset_row = $db->sql_fetchrow($result))
 				{
-					if (@file_exists("{$phpbb_root_path}styles/{$imageset_row['imageset_path']}/imageset/{$lang_pack['iso']}/imageset.cfg"))
+					if (file_exists("{$phpbb_root_path}styles/{$imageset_row['imageset_path']}/imageset/{$lang_pack['iso']}/imageset.cfg"))
 					{
 						$cfg_data_imageset_data = parse_cfg_file("{$phpbb_root_path}styles/{$imageset_row['imageset_path']}/imageset/{$lang_pack['iso']}/imageset.cfg");
 						foreach ($cfg_data_imageset_data as $image_name => $value)
@@ -960,7 +962,7 @@ class acp_language
 				$available_methods = array('.tar.gz' => 'zlib', '.tar.bz2' => 'bz2', '.zip' => 'zlib');
 				foreach ($available_methods as $type => $module)
 				{
-					if (!@extension_loaded($module))
+					if (!extension_loaded($module))
 					{
 						continue;
 					}
@@ -994,39 +996,39 @@ class acp_language
 					$use_method = '.tar';
 				}
 
-				include_once($phpbb_root_path . 'includes/functions_compress.' . $phpEx);
+				include_once(PHPBB3_INCLUDE_DIR . 'functions_compress.' . $phpEx);
 
 				if ($use_method == '.zip')
 				{
-					$compress = new compress_zip('w', $phpbb_root_path . 'store/lang_' . $row['lang_iso'] . $use_method);
+					$compress = new compress_zip('w', PHPBB3_ROOT_DIR . 'store/lang_' . $row['lang_iso'] . $use_method);
 				}
 				else
 				{
-					$compress = new compress_tar('w', $phpbb_root_path . 'store/lang_' . $row['lang_iso'] . $use_method, $use_method);
+					$compress = new compress_tar('w', PHPBB3_ROOT_DIR . 'store/lang_' . $row['lang_iso'] . $use_method, $use_method);
 				}
 
 				// Get email templates
-				$email_templates = filelist($phpbb_root_path . 'language/' . $row['lang_iso'], 'email', 'txt');
+				$email_templates = filelist(PHPBB3_ROOT_DIR . 'language/' . $row['lang_iso'], 'email', 'txt');
 				$email_templates = $email_templates['email/'];
 
 				// Get acp files
-				$acp_files = filelist($phpbb_root_path . 'language/' . $row['lang_iso'], 'acp', $phpEx);
+				$acp_files = filelist(PHPBB3_ROOT_DIR . 'language/' . $row['lang_iso'], 'acp', $phpEx);
 				$acp_files = $acp_files['acp/'];
 
 				// Get mod files
-				$mod_files = filelist($phpbb_root_path . 'language/' . $row['lang_iso'], 'mods', $phpEx);
+				$mod_files = filelist(PHPBB3_ROOT_DIR . 'language/' . $row['lang_iso'], 'mods', $phpEx);
 				$mod_files = (isset($mod_files['mods/'])) ? $mod_files['mods/'] : array();
 
 				// Add main files
 				$this->add_to_archive($compress, $this->main_files, $row['lang_iso']);
 
 				// Add search files if they exist...
-				if (file_exists($phpbb_root_path . 'language/' . $row['lang_iso'] . '/search_ignore_words.' . $phpEx))
+				if (file_exists(PHPBB3_ROOT_DIR . 'language/' . $row['lang_iso'] . '/search_ignore_words.' . $phpEx))
 				{
 					$this->add_to_archive($compress, array("search_ignore_words.$phpEx"), $row['lang_iso']);
 				}
 
-				if (file_exists($phpbb_root_path . 'language/' . $row['lang_iso'] . '/search_synonyms.' . $phpEx))
+				if (file_exists(PHPBB3_ROOT_DIR . 'language/' . $row['lang_iso'] . '/search_synonyms.' . $phpEx))
 				{
 					$this->add_to_archive($compress, array("search_synonyms.$phpEx"), $row['lang_iso']);
 				}
@@ -1055,7 +1057,7 @@ class acp_language
 				$compress->close();
 
 				$compress->download('lang_' . $row['lang_iso']);
-				@unlink($phpbb_root_path . 'store/lang_' . $row['lang_iso'] . $use_method);
+				unlink(PHPBB3_ROOT_DIR . 'store/lang_' . $row['lang_iso'] . $use_method);
 
 				exit;
 
@@ -1101,7 +1103,7 @@ class acp_language
 		$db->sql_freeresult($result);
 
 		$new_ary = $iso = array();
-		$dp = @opendir("{$phpbb_root_path}language");
+		$dp = opendir("{$phpbb_root_path}language");
 
 		if ($dp)
 		{
@@ -1207,7 +1209,7 @@ $lang = array_merge($lang, array(
 	*/
 	function get_filename($lang_iso, $directory, $filename, $check_store = false, $only_return_filename = false)
 	{
-		global $phpbb_root_path, $safe_mode;
+		global $safe_mode;
 		
 		$check_filename = "language/$lang_iso/" . (($directory) ? $directory . '/' : '') . $filename;
 
@@ -1215,7 +1217,7 @@ $lang = array_merge($lang, array(
 		{
 			$check_store_filename = ($safe_mode) ? "store/langfile_{$lang_iso}" . (($directory) ? '_' . $directory : '') . "_{$filename}" : "store/language/$lang_iso/" . (($directory) ? $directory . '/' : '') . $filename;
 
-			if (!$only_return_filename && file_exists($phpbb_root_path . $check_store_filename))
+			if (!$only_return_filename && file_exists(PHPBB3_ROOT_DIR . $check_store_filename))
 			{
 				return $check_store_filename;
 			}
@@ -1233,7 +1235,7 @@ $lang = array_merge($lang, array(
 	*/
 	function add_to_archive(&$compress, $filelist, $lang_iso, $directory = '')
 	{
-		global $phpbb_root_path;
+		$phpbb_root_path = PHPBB3_ROOT_DIR;
 
 		foreach ($filelist as $file)
 		{
@@ -1359,8 +1361,10 @@ $lang = array_merge($lang, array(
 	*/
 	function compare_language_files($source_lang, $dest_lang, $directory, $file)
 	{
-		global $phpbb_root_path, $phpEx;
-
+		global $phpEx;
+        
+		$phpbb_root_path = PHPBB3_ROOT_DIR;
+		
 		$return_ary = array();
 
 		$lang = array();
@@ -1374,7 +1378,7 @@ $lang = array_merge($lang, array(
 			return array();
 		}
 
-		include($phpbb_root_path . $this->get_filename($dest_lang, $directory, $file, true));
+		include(PHPBB3_ROOT_DIR . $this->get_filename($dest_lang, $directory, $file, true));
 
 		$lang_entry_dst = $lang;
 
