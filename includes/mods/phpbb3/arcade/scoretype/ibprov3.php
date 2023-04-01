@@ -9,8 +9,10 @@
 */
 
 /**
-* @ignore
-*/
+ * Applied rules:
+ * RandomFunctionRector
+ */
+
 if (!defined('IN_PHPBB'))
 {
 	exit;
@@ -30,8 +32,8 @@ if ($do == 'verifyscore')
 	// Initialize arcade class
 	$arcade = new arcade();
 
-	$randchar1 = rand(1, 200);
-	$randchar2 = rand(1, 200);
+	$randchar1 = random_int(1, 200);
+	$randchar2 = random_int(1, 200);
 
 	if (isset($_COOKIE[$arcade->cookie_sid]))
 	{
