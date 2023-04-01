@@ -26,10 +26,10 @@ class acp_permission_roles
 	function main($id, $mode)
 	{
 		global $db, $user, $auth, $template, $cache;
-		global $config, $phpbb_root_path, $phpbb_admin_path, $phpEx;
+		global $config, $phpEx;
 
-		include_once($phpbb_root_path . 'includes/functions_user.' . $phpEx);
-		include_once($phpbb_root_path . 'includes/acp/auth.' . $phpEx);
+		include_once(PHPBB3_INCLUDE_DIR . 'functions_user.' . $phpEx);
+		include_once(PHPBB3_INCLUDE_DIR . 'acp/auth.' . $phpEx);
 
 		$auth_admin = new auth_admin();
 
