@@ -9,8 +9,10 @@
 */
 
 /**
-* @ignore
-*/
+ * Applied rules:
+ * TernaryToNullCoalescingRector
+ */
+ 
 if (!defined('IN_PHPBB'))
 {
 	exit;
@@ -282,7 +284,7 @@ class acp_ads
 						{
 							$template->assign_block_vars('groups', array(
 								'GROUP_ID'		=> $row['group_id'],
-								'GROUP_NAME'	=> (isset($user->lang['G_' . $row['group_name']])) ? $user->lang['G_' . $row['group_name']] : $row['group_name'],
+								'GROUP_NAME'	=> $user->lang['G_' . $row['group_name']] ?? $row['group_name'],
 
 								'S_SELECTED'	=> (in_array($row['group_id'], (($action == 'edit' && !$submit) ? $ad_data['groups'] : $ad_groups))) ? true : false,
 							));
@@ -303,7 +305,7 @@ class acp_ads
 							}
 							else if ($row['left_id'] > $right + 1)
 							{
-								$padding = (isset($padding_store[$row['parent_id']])) ? $padding_store[$row['parent_id']] : $padding;
+								$padding = $padding_store[$row['parent_id']] ?? $padding;
 							}
 							$right = $row['right_id'];
 
@@ -327,7 +329,7 @@ class acp_ads
 						{
 							$template->assign_block_vars('positions', array(
 								'POSITION_ID'	=> $row['position_id'],
-								'POSITION_NAME'	=> (isset($user->lang[$row['lang_key']])) ? $user->lang[$row['lang_key']] : $row['lang_key'],
+								'POSITION_NAME'	=> $user->lang[$row['lang_key']] ?? $row['lang_key'],
 
 								'S_SELECTED'	=> (in_array($row['position_id'], (($action == 'edit' && !$submit) ? $ad_data['positions'] : $ad_positions))) ? true : false,
 							));
@@ -423,7 +425,7 @@ class acp_ads
 					{
 						$template->assign_block_vars('positions', array(
 							'POSTITION_ID'		=> $row['position_id'],
-							'POSITION_NAME'		=> (isset($user->lang[$row['lang_key']])) ? $user->lang[$row['lang_key']] : $row['lang_key'],
+							'POSITION_NAME'		=> $user->lang[$row['lang_key']] ?? $row['lang_key'],
 							'POSITION_CODE'		=> '{ADS_' . $row['position_id'] . '}',
 
 							'U_EDIT'			=> $this->u_action . '&amp;action=edit&amp;p=' . $row['position_id'],
@@ -464,7 +466,7 @@ class acp_ads
 						{
 							$template->assign_block_vars('options', array(
 								'S_LEGEND'		=> true,
-								'LEGEND'		=> (isset($user->lang[$vars])) ? $user->lang[$vars] : $vars)
+								'LEGEND'		=> $user->lang[$vars] ?? $vars)
 							);
 
 							continue;
@@ -475,16 +477,16 @@ class acp_ads
 						$l_explain = '';
 						if ($vars['explain'] && isset($vars['lang_explain']))
 						{
-							$l_explain = (isset($user->lang[$vars['lang_explain']])) ? $user->lang[$vars['lang_explain']] : $vars['lang_explain'];
+							$l_explain = $user->lang[$vars['lang_explain']] ?? $vars['lang_explain'];
 						}
 						else if ($vars['explain'])
 						{
-							$l_explain = (isset($user->lang[$vars['lang'] . '_EXPLAIN'])) ? $user->lang[$vars['lang'] . '_EXPLAIN'] : '';
+							$l_explain = $user->lang[$vars['lang'] . '_EXPLAIN'] ?? '';
 						}
 
 						$template->assign_block_vars('options', array(
 							'KEY'			=> $config_key,
-							'TITLE'			=> (isset($user->lang[$vars['lang']])) ? $user->lang[$vars['lang']] : $vars['lang'],
+							'TITLE'			=> $user->lang[$vars['lang']] ?? $vars['lang'],
 							'S_EXPLAIN'		=> $vars['explain'],
 							'TITLE_EXPLAIN'	=> $l_explain,
 							'CONTENT'		=> build_cfg_template($type, $config_key, $this->new_config, $config_key, $vars),
