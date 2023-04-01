@@ -34,7 +34,7 @@ class acp_search
 		$user->add_lang('acp/search');
 
 		// For some this may be of help...
-		@ini_set('memory_limit', '128M');
+		ini_set('memory_limit', '128M');
 
 		switch ($mode)
 		{
@@ -51,7 +51,9 @@ class acp_search
 	function settings($id, $mode)
 	{
 		global $db, $user, $auth, $template, $cache;
-		global $config, $phpbb_root_path, $phpbb_admin_path, $phpEx;
+		global $config, $phpEx;
+		
+		$phpbb_admin_path = PHPBB3_ADMIN_DIR;
 
 		$submit = (isset($_POST['submit'])) ? true : false;
 
@@ -228,7 +230,9 @@ class acp_search
 	function index($id, $mode)
 	{
 		global $db, $user, $auth, $template, $cache;
-		global $config, $phpbb_root_path, $phpbb_admin_path, $phpEx;
+		global $config, $phpEx;
+
+		$phpbb_admin_path = PHPBB3_ADMIN_DIR;
 
 		if (isset($_REQUEST['action']) && is_array($_REQUEST['action']))
 		{
@@ -546,11 +550,11 @@ class acp_search
 
 	function get_search_types()
 	{
-		global $phpbb_root_path, $phpEx;
+		global $phpEx;
 
 		$search_types = array();
 
-		$dp = @opendir($phpbb_root_path . 'includes/search');
+		$dp = opendir(PHPBB3_INCLUDE_DIR . 'search');
 
 		if ($dp)
 		{
@@ -601,15 +605,17 @@ class acp_search
 	*/
 	function init_search($type, &$search, &$error)
 	{
-		global $phpbb_root_path, $phpEx, $user;
-
-		if (!preg_match('#^\w+$#', $type) || !file_exists("{$phpbb_root_path}includes/search/$type.$phpEx"))
+		global $phpEx, $user;
+        
+		$phpbb_root_path = PHPBB3_INCLUDE_DIR;
+		
+		if (!preg_match('#^\w+$#', $type) || !file_exists("{$phpbb_root_path}search/$type.$phpEx"))
 		{
 			$error = $user->lang['NO_SUCH_SEARCH_MODULE'];
 			return $error;
 		}
 
-		include_once("{$phpbb_root_path}includes/search/$type.$phpEx");
+		include_once("{$phpbb_root_path}search/$type.$phpEx");
 
 		if (!class_exists($type))
 		{
