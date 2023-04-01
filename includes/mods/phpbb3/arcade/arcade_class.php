@@ -9,8 +9,13 @@
 */
 
 /**
-* @ignore
-*/
+ * Applied rules:
+ * AddDefaultValueForUndefinedVariableRector (https://github.com/vimeo/psalm/blob/29b70442b11e3e66113935a2ee22e165a70c74a4/docs/fixing_code.md#possiblyundefinedvariable)
+ * Php4ConstructorRector (https://wiki.php.net/rfc/remove_php4_constructors)
+ * EregToPregMatchRector (http://php.net/reference.pcre.pattern.posix https://stackoverflow.com/a/17033826/1348344 https://docstore.mik.ua/orelly/webprog/pcook/ch13_02.htm)
+ * RandomFunctionRector
+ */
+
 if (!defined('IN_PHPBB'))
 {
 	exit;
@@ -44,7 +49,7 @@ class arcade
 	/**
 	* Constructor used to setup arcade
 	*/
-	function arcade($in_arcade = true)
+	function __construct($in_arcade = true)
 	{
 		global $config, $arcade_cache, $template, $phpbb_root_path, $phpEx;
 
@@ -730,7 +735,7 @@ class arcade
 		$game_id = false;
 		if (sizeof($row))
 		{
-			$game_id = $row[mt_rand(0, sizeof($row) - 1)]['game_id'];
+			$game_id = $row[random_int(0, sizeof($row) - 1)]['game_id'];
 		}
 
 		return $game_id;
@@ -1093,7 +1098,7 @@ class arcade
 	*/
 	function validate_time($value)
 	{
-		list($hour, $min) = split(':', $value);
+		list($hour, $min) = preg_split('#:#m', $value);
 		$hour = (int) $hour;
 		$min = (int) $min;
 
@@ -1320,7 +1325,8 @@ class arcade
 	*/
 	function get_total($type = '', $id = 0)
 	{
-		global $db, $user;
+		$sql = null;
+  global $db, $user;
 
 		$type = strtolower($type);
 		$sql_where = '';
@@ -1576,7 +1582,8 @@ class arcade
 	*/
 	function set_fav_image($game_data, $game_id, $cat_id)
 	{
-		global $user, $phpbb_root_path, $phpEx, $start, $term;
+		$locate = null;
+  global $user, $phpbb_root_path, $phpEx, $start, $term;
 
 		if (!$user->data['is_registered'] || $user->data['is_bot'])
 		{
@@ -1824,7 +1831,8 @@ class arcade
 	*/
 	function send_pm($subject, $message, $score_data)
 	{
-		global $user, $phpbb_root_path, $phpEx;
+		$address_list = [];
+  global $user, $phpbb_root_path, $phpEx;
 
 		if (!$user->data['is_registered'])
 		{
@@ -2008,8 +2016,8 @@ class arcade
 
 		$game_sid = md5(uniqid($user->ip));
 
-		$randomgid1 = rand(1, 200);
-		$randomgid2 = rand(1, 200);
+		$randomgid1 = random_int(1, 200);
+		$randomgid2 = random_int(1, 200);
 		$gidencoded = $game_id * $randomgid1 ^ $randomgid2;
 
 		$sql_ary = array(
@@ -2121,7 +2129,8 @@ class arcade
 	*/
 	function obtain_downloaded_games($type, $limit)
 	{
-		global $db, $arcade;
+		$order = null;
+  global $db, $arcade;
 
 		$type = strtolower($type);
 		switch ($type)
@@ -2157,7 +2166,8 @@ class arcade
 	*/
 	function obtain_popular_games($type, $limit)
 	{
-		global $db, $arcade;
+		$order = null;
+  global $db, $arcade;
 
 		$type = strtolower($type);
 		switch ($type)
