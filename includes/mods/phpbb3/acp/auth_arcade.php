@@ -9,8 +9,16 @@
 */
 
 /**
-* @ignore
-*/
+ * Applied rules:
+ * Php4ConstructorRector (https://wiki.php.net/rfc/remove_php4_constructors)
+ * TernaryToNullCoalescingRector
+ * CreateFunctionToAnonymousFunctionRector (https://stackoverflow.com/q/48161526/1348344 http://php.net/manual/en/migration72.deprecated.php#migration72.deprecated.create_function-function)
+ * WhileEachToForeachRector (https://wiki.php.net/rfc/deprecations_php_7_2#each)
+ * ArrayKeyFirstLastRector (https://tomasvotruba.com/blog/2018/08/16/whats-new-in-php-73-in-30-seconds-in-diffs/#2-first-and-last-array-key)
+ * ClosureToArrowFunctionRector (https://wiki.php.net/rfc/arrow_functions_v2)
+ * ArraySpreadInsteadOfArrayMergeRector (https://wiki.php.net/rfc/spread_operator_for_array)
+ */
+ 
 if (!defined('IN_PHPBB'))
 {
 	exit;
@@ -25,7 +33,7 @@ class auth_arcade_admin extends auth_arcade
 	/**
 	* Init auth settings
 	*/
-	function auth_arcade_admin()
+	function __construct()
 	{
 		global $db, $cache;
 
@@ -182,7 +190,7 @@ class auth_arcade_admin extends auth_arcade
 		}
 
 		// Defining the user-function here to save some memory
-		$return_acl_fill = create_function('$value', 'return ' . $acl_fill . ';');
+		$return_acl_fill = fn($value) => $acl_fill;
 
 		// Actually fill the gaps
 		if (sizeof($hold_ary))
@@ -270,7 +278,7 @@ class auth_arcade_admin extends auth_arcade
 		$tpl_category = 'category';
 		$tpl_mask = 'mask';
 
-		$l_acl_type = (isset($user->lang['ACL_TYPE_' . (($local) ? 'LOCAL' : 'GLOBAL') . '_' . strtoupper($permission_type)])) ? $user->lang['ACL_TYPE_' . (($local) ? 'LOCAL' : 'GLOBAL') . '_' . strtoupper($permission_type)] : 'ACL_TYPE_' . (($local) ? 'LOCAL' : 'GLOBAL') . '_' . strtoupper($permission_type);
+		$l_acl_type = $user->lang['ACL_TYPE_' . (($local) ? 'LOCAL' : 'GLOBAL') . '_' . strtoupper($permission_type)] ?? 'ACL_TYPE_' . (($local) ? 'LOCAL' : 'GLOBAL') . '_' . strtoupper($permission_type);
 
 		// Allow trace for viewing permissions and in user mode
 		$show_trace = ($mode == 'view' && $user_mode == 'user') ? true : false;
@@ -303,7 +311,7 @@ class auth_arcade_admin extends auth_arcade
 		$cat_ids = array();
 		foreach ($hold_ary as $ug_id => $row)
 		{
-			$cat_ids = array_merge($cat_ids, array_keys($row));
+			$cat_ids = [...$cat_ids, ...array_keys($row)];
 		}
 		$cat_ids = array_unique($cat_ids);
 
@@ -457,59 +465,49 @@ class auth_arcade_admin extends auth_arcade
 					'S_GROUP_MODE'	=> ($user_mode == 'group') ? true : false)
 				);
 
-				@reset($content_array);
-				while (list($ug_id, $ug_array) = each($content_array))
-				{
-					// Build role dropdown options
-					$current_role_id = (isset($cur_roles[$ug_id][$cat_id])) ? $cur_roles[$ug_id][$cat_id] : 0;
-
-					$s_role_options = '';
-
-					@reset($roles);
-					while (list($role_id, $role_row) = each($roles))
-					{
-						$role_description = (!empty($user->lang[$role_row['role_description']])) ? $user->lang[$role_row['role_description']] : nl2br($role_row['role_description']);
-						$role_name = (!empty($user->lang[$role_row['role_name']])) ? $user->lang[$role_row['role_name']] : $role_row['role_name'];
-
-						$title = ($role_description) ? ' title="' . $role_description . '"' : '';
-						$s_role_options .= '<option value="' . $role_id . '"' . (($role_id == $current_role_id) ? ' selected="selected"' : '') . $title . '>' . $role_name . '</option>';
-					}
-
-					if ($s_role_options)
-					{
-						$s_role_options = '<option value="0"' . ((!$current_role_id) ? ' selected="selected"' : '') . ' title="' . htmlspecialchars($user->lang['NO_ROLE_ASSIGNED_EXPLAIN']) . '">' . $user->lang['NO_ROLE_ASSIGNED'] . '</option>' . $s_role_options;
-					}
-
-					if (!$current_role_id && $mode != 'view')
-					{
-						$s_custom_permissions = false;
-
-						foreach ($ug_array as $key => $value)
-						{
-							if ($value['S_NEVER'] || $value['S_YES'])
-							{
-								$s_custom_permissions = true;
-								break;
-							}
-						}
-					}
-					else
-					{
-						$s_custom_permissions = false;
-					}
-
-					$template->assign_block_vars($tpl_pmask . '.' . $tpl_fmask, array(
-						'NAME'				=> $ug_names_ary[$ug_id],
-						'S_ROLE_OPTIONS'	=> $s_role_options,
-						'UG_ID'				=> $ug_id,
-						'S_CUSTOM'			=> $s_custom_permissions,
-						'FORUM_ID'			=> $cat_id)
-					);
-
-					$this->assign_cat_array($ug_array, $tpl_pmask . '.' . $tpl_fmask . '.' . $tpl_category, $tpl_mask, $ug_id, $cat_id, $show_trace, ($mode == 'view'));
-
-					unset($content_array[$ug_id]);
-				}
+				reset($content_array);
+				foreach ($content_array as $ug_id => $ug_array) {
+        // Build role dropdown options
+        $current_role_id = $cur_roles[$ug_id][$cat_id] ?? 0;
+        $s_role_options = '';
+        reset($roles);
+        foreach ($roles as $role_id => $role_row) {
+            $role_description = (!empty($user->lang[$role_row['role_description']])) ? $user->lang[$role_row['role_description']] : nl2br($role_row['role_description']);
+            $role_name = (!empty($user->lang[$role_row['role_name']])) ? $user->lang[$role_row['role_name']] : $role_row['role_name'];
+            $title = ($role_description) ? ' title="' . $role_description . '"' : '';
+            $s_role_options .= '<option value="' . $role_id . '"' . (($role_id == $current_role_id) ? ' selected="selected"' : '') . $title . '>' . $role_name . '</option>';
+        }
+        if ($s_role_options)
+   					{
+   						$s_role_options = '<option value="0"' . ((!$current_role_id) ? ' selected="selected"' : '') . ' title="' . htmlspecialchars($user->lang['NO_ROLE_ASSIGNED_EXPLAIN']) . '">' . $user->lang['NO_ROLE_ASSIGNED'] . '</option>' . $s_role_options;
+   					}
+        if (!$current_role_id && $mode != 'view')
+   					{
+   						$s_custom_permissions = false;
+   
+   						foreach ($ug_array as $key => $value)
+   						{
+   							if ($value['S_NEVER'] || $value['S_YES'])
+   							{
+   								$s_custom_permissions = true;
+   								break;
+   							}
+   						}
+   					}
+   					else
+   					{
+   						$s_custom_permissions = false;
+   					}
+        $template->assign_block_vars($tpl_pmask . '.' . $tpl_fmask, array(
+   						'NAME'				=> $ug_names_ary[$ug_id],
+   						'S_ROLE_OPTIONS'	=> $s_role_options,
+   						'UG_ID'				=> $ug_id,
+   						'S_CUSTOM'			=> $s_custom_permissions,
+   						'FORUM_ID'			=> $cat_id)
+   					);
+        $this->assign_cat_array($ug_array, $tpl_pmask . '.' . $tpl_fmask . '.' . $tpl_category, $tpl_mask, $ug_id, $cat_id, $show_trace, ($mode == 'view'));
+        unset($content_array[$ug_id]);
+    }
 
 				unset($hold_ary[$cat_id]);
 			}
@@ -543,58 +541,49 @@ class auth_arcade_admin extends auth_arcade
 					'S_GROUP_MODE'	=> ($user_mode == 'group') ? true : false)
 				);
 
-				@reset($content_array);
-				while (list($cat_id, $cat_array) = each($content_array))
-				{
-					// Build role dropdown options
-					$current_role_id = (isset($cur_roles[$ug_id][$cat_id])) ? $cur_roles[$ug_id][$cat_id] : 0;
-
-					$s_role_options = '';
-
-					@reset($roles);
-					while (list($role_id, $role_row) = each($roles))
-					{
-						$role_description = (!empty($user->lang[$role_row['role_description']])) ? $user->lang[$role_row['role_description']] : nl2br($role_row['role_description']);
-						$role_name = (!empty($user->lang[$role_row['role_name']])) ? $user->lang[$role_row['role_name']] : $role_row['role_name'];
-
-						$title = ($role_description) ? ' title="' . $role_description . '"' : '';
-						$s_role_options .= '<option value="' . $role_id . '"' . (($role_id == $current_role_id) ? ' selected="selected"' : '') . $title . '>' . $role_name . '</option>';
-					}
-
-					if ($s_role_options)
-					{
-						$s_role_options = '<option value="0"' . ((!$current_role_id) ? ' selected="selected"' : '') . ' title="' . htmlspecialchars($user->lang['NO_ROLE_ASSIGNED_EXPLAIN']) . '">' . $user->lang['NO_ROLE_ASSIGNED'] . '</option>' . $s_role_options;
-					}
-
-					if (!$current_role_id && $mode != 'view')
-					{
-						$s_custom_permissions = false;
-
-						foreach ($cat_array as $key => $value)
-						{
-							if ($value['S_NEVER'] || $value['S_YES'])
-							{
-								$s_custom_permissions = true;
-								break;
-							}
-						}
-					}
-					else
-					{
-						$s_custom_permissions = false;
-					}
-
-					$template->assign_block_vars($tpl_pmask . '.' . $tpl_fmask, array(
-						'NAME'				=> ($cat_id == 0) ? $cat_names_ary[0] : $cat_names_ary[$cat_id]['cat_name'],
-						'PADDING'			=> ($cat_id == 0) ? '' : $cat_names_ary[$cat_id]['padding'],
-						'S_ROLE_OPTIONS'	=> $s_role_options,
-						'S_CUSTOM'			=> $s_custom_permissions,
-						'UG_ID'				=> $ug_id,
-						'FORUM_ID'			=> $cat_id)
-					);
-
-					$this->assign_cat_array($cat_array, $tpl_pmask . '.' . $tpl_fmask . '.' . $tpl_category, $tpl_mask, $ug_id, $cat_id, $show_trace, ($mode == 'view'));
-				}
+				reset($content_array);
+				foreach ($content_array as $cat_id => $cat_array) {
+        // Build role dropdown options
+        $current_role_id = $cur_roles[$ug_id][$cat_id] ?? 0;
+        $s_role_options = '';
+        reset($roles);
+        foreach ($roles as $role_id => $role_row) {
+            $role_description = (!empty($user->lang[$role_row['role_description']])) ? $user->lang[$role_row['role_description']] : nl2br($role_row['role_description']);
+            $role_name = (!empty($user->lang[$role_row['role_name']])) ? $user->lang[$role_row['role_name']] : $role_row['role_name'];
+            $title = ($role_description) ? ' title="' . $role_description . '"' : '';
+            $s_role_options .= '<option value="' . $role_id . '"' . (($role_id == $current_role_id) ? ' selected="selected"' : '') . $title . '>' . $role_name . '</option>';
+        }
+        if ($s_role_options)
+   					{
+   						$s_role_options = '<option value="0"' . ((!$current_role_id) ? ' selected="selected"' : '') . ' title="' . htmlspecialchars($user->lang['NO_ROLE_ASSIGNED_EXPLAIN']) . '">' . $user->lang['NO_ROLE_ASSIGNED'] . '</option>' . $s_role_options;
+   					}
+        if (!$current_role_id && $mode != 'view')
+   					{
+   						$s_custom_permissions = false;
+   
+   						foreach ($cat_array as $key => $value)
+   						{
+   							if ($value['S_NEVER'] || $value['S_YES'])
+   							{
+   								$s_custom_permissions = true;
+   								break;
+   							}
+   						}
+   					}
+   					else
+   					{
+   						$s_custom_permissions = false;
+   					}
+        $template->assign_block_vars($tpl_pmask . '.' . $tpl_fmask, array(
+   						'NAME'				=> ($cat_id == 0) ? $cat_names_ary[0] : $cat_names_ary[$cat_id]['cat_name'],
+   						'PADDING'			=> ($cat_id == 0) ? '' : $cat_names_ary[$cat_id]['padding'],
+   						'S_ROLE_OPTIONS'	=> $s_role_options,
+   						'S_CUSTOM'			=> $s_custom_permissions,
+   						'UG_ID'				=> $ug_id,
+   						'FORUM_ID'			=> $cat_id)
+   					);
+        $this->assign_cat_array($cat_array, $tpl_pmask . '.' . $tpl_fmask . '.' . $tpl_category, $tpl_mask, $ug_id, $cat_id, $show_trace, ($mode == 'view'));
+    }
 
 				unset($hold_ary[$ug_id], $ug_names_ary[$ug_id]);
 			}
@@ -797,10 +786,7 @@ class auth_arcade_admin extends auth_arcade
 		// Instead of updating, inserting, removing we just remove all current settings and re-set everything...
 		$table = ($ug_type == 'user') ? ACL_ARCADE_USERS_TABLE : ACL_ARCADE_GROUPS_TABLE;
 		$id_field = $ug_type . '_id';
-
-		// Get any flags as required
-		reset($auth);
-		$flag = key($auth);
+		$flag = array_key_first($auth);
 		$flag = substr($flag, 0, strpos($flag, '_') + 1);
 
 		// This ID (the any-flag) is set if one or more permissions are true...
@@ -911,10 +897,7 @@ class auth_arcade_admin extends auth_arcade
 	function acl_set_role($role_id, $auth)
 	{
 		global $db;
-
-		// Get any-flag as required
-		reset($auth);
-		$flag = key($auth);
+		$flag = array_key_first($auth);
 		$flag = substr($flag, 0, strpos($flag, '_') + 1);
 
 		// Remove any-flag from auth ary
@@ -1083,72 +1066,69 @@ class auth_arcade_admin extends auth_arcade
 	{
 		global $template, $user, $phpbb_admin_path, $phpEx;
 
-		@reset($category_array);
-		while (list($cat, $cat_array) = each($category_array))
-		{
-			$template->assign_block_vars($tpl_cat, array(
-				'S_YES'		=> ($cat_array['S_YES'] && !$cat_array['S_NEVER'] && !$cat_array['S_NO']) ? true : false,
-				'S_NEVER'	=> ($cat_array['S_NEVER'] && !$cat_array['S_YES'] && !$cat_array['S_NO']) ? true : false,
-				'S_NO'		=> ($cat_array['S_NO'] && !$cat_array['S_NEVER'] && !$cat_array['S_YES']) ? true : false,
-
-				'CAT_NAME'	=> $user->lang['permission_cat'][$cat])
-			);
-
-			/*	Sort permissions by name (more naturaly and user friendly than sorting by a primary key)
-			*	Commented out due to it's memory consumption and time needed
-			*
-			$key_array = array_intersect(array_keys($user->lang), array_map(create_function('$a', 'return "acl_" . $a;'), array_keys($cat_array['permissions'])));
-			$values_array = $cat_array['permissions'];
-
-			$cat_array['permissions'] = array();
-
-			foreach ($key_array as $key)
-			{
-				$key = str_replace('acl_', '', $key);
-				$cat_array['permissions'][$key] = $values_array[$key];
-			}
-			unset($key_array, $values_array);
-*/
-			@reset($cat_array['permissions']);
-			while (list($permission, $allowed) = each($cat_array['permissions']))
-			{
-				if ($s_view)
-				{
-					$template->assign_block_vars($tpl_cat . '.' . $tpl_mask, array(
-						'S_YES'		=> ($allowed == ACL_YES) ? true : false,
-						'S_NEVER'	=> ($allowed == ACL_NEVER) ? true : false,
-
-						'UG_ID'			=> $ug_id,
-						'FORUM_ID'		=> $cat_id,
-						'FIELD_NAME'	=> $permission,
-						'S_FIELD_NAME'	=> 'setting[' . $ug_id . '][' . $cat_id . '][' . $permission . ']',
-
-						'U_TRACE'		=> ($show_trace) ? append_sid("{$phpbb_admin_path}index.$phpEx", "i=arcade_permissions&amp;mode=trace&amp;u=$ug_id&amp;c=$cat_id&amp;auth=$permission") : '',
-						'UA_TRACE'		=> ($show_trace) ? append_sid("{$phpbb_admin_path}index.$phpEx", "i=arcade_permissions&mode=trace&u=$ug_id&c=$cat_id&auth=$permission", false) : '',
-
-						'PERMISSION'	=> $user->lang['acl_' . $permission]['lang'])
-					);
-				}
-				else
-				{
-					$template->assign_block_vars($tpl_cat . '.' . $tpl_mask, array(
-						'S_YES'		=> ($allowed == ACL_YES) ? true : false,
-						'S_NEVER'	=> ($allowed == ACL_NEVER) ? true : false,
-						'S_NO'		=> ($allowed == ACL_NO) ? true : false,
-
-						'UG_ID'			=> $ug_id,
-						'FORUM_ID'		=> $cat_id,
-						'FIELD_NAME'	=> $permission,
-						'S_FIELD_NAME'	=> 'setting[' . $ug_id . '][' . $cat_id . '][' . $permission . ']',
-
-						'U_TRACE'		=> ($show_trace) ? append_sid("{$phpbb_admin_path}index.$phpEx", "i=arcade_permissions&amp;mode=trace&amp;u=$ug_id&amp;c=$cat_id&amp;auth=$permission") : '',
-						'UA_TRACE'		=> ($show_trace) ? append_sid("{$phpbb_admin_path}index.$phpEx", "i=arcade_permissions&mode=trace&u=$ug_id&c=$cat_id&auth=$permission", false) : '',
-
-						'PERMISSION'	=> $user->lang['acl_' . $permission]['lang'])
-					);
-				}
-			}
-		}
+		reset($category_array);
+		foreach ($category_array as $cat => $cat_array) {
+      $template->assign_block_vars($tpl_cat, array(
+   				'S_YES'		=> ($cat_array['S_YES'] && !$cat_array['S_NEVER'] && !$cat_array['S_NO']) ? true : false,
+   				'S_NEVER'	=> ($cat_array['S_NEVER'] && !$cat_array['S_YES'] && !$cat_array['S_NO']) ? true : false,
+   				'S_NO'		=> ($cat_array['S_NO'] && !$cat_array['S_NEVER'] && !$cat_array['S_YES']) ? true : false,
+   
+   				'CAT_NAME'	=> $user->lang['permission_cat'][$cat])
+   			);
+      /*	Sort permissions by name (more naturaly and user friendly than sorting by a primary key)
+      			*	Commented out due to it's memory consumption and time needed
+      			*
+      			$key_array = array_intersect(array_keys($user->lang), array_map(create_function('$a', 'return "acl_" . $a;'), array_keys($cat_array['permissions'])));
+      			$values_array = $cat_array['permissions'];
+      
+      			$cat_array['permissions'] = array();
+      
+      			foreach ($key_array as $key)
+      			{
+      				$key = str_replace('acl_', '', $key);
+      				$cat_array['permissions'][$key] = $values_array[$key];
+      			}
+      			unset($key_array, $values_array);
+      */
+      reset($cat_array['permissions']);
+      foreach ($cat_array['permissions'] as $permission => $allowed) {
+          if ($s_view)
+      				{
+      					$template->assign_block_vars($tpl_cat . '.' . $tpl_mask, array(
+      						'S_YES'		=> ($allowed == ACL_YES) ? true : false,
+      						'S_NEVER'	=> ($allowed == ACL_NEVER) ? true : false,
+      
+      						'UG_ID'			=> $ug_id,
+      						'FORUM_ID'		=> $cat_id,
+      						'FIELD_NAME'	=> $permission,
+      						'S_FIELD_NAME'	=> 'setting[' . $ug_id . '][' . $cat_id . '][' . $permission . ']',
+      
+      						'U_TRACE'		=> ($show_trace) ? append_sid("{$phpbb_admin_path}index.$phpEx", "i=arcade_permissions&amp;mode=trace&amp;u=$ug_id&amp;c=$cat_id&amp;auth=$permission") : '',
+      						'UA_TRACE'		=> ($show_trace) ? append_sid("{$phpbb_admin_path}index.$phpEx", "i=arcade_permissions&mode=trace&u=$ug_id&c=$cat_id&auth=$permission", false) : '',
+      
+      						'PERMISSION'	=> $user->lang['acl_' . $permission]['lang'])
+      					);
+      				}
+      				else
+      				{
+      					$template->assign_block_vars($tpl_cat . '.' . $tpl_mask, array(
+      						'S_YES'		=> ($allowed == ACL_YES) ? true : false,
+      						'S_NEVER'	=> ($allowed == ACL_NEVER) ? true : false,
+      						'S_NO'		=> ($allowed == ACL_NO) ? true : false,
+      
+      						'UG_ID'			=> $ug_id,
+      						'FORUM_ID'		=> $cat_id,
+      						'FIELD_NAME'	=> $permission,
+      						'S_FIELD_NAME'	=> 'setting[' . $ug_id . '][' . $cat_id . '][' . $permission . ']',
+      
+      						'U_TRACE'		=> ($show_trace) ? append_sid("{$phpbb_admin_path}index.$phpEx", "i=arcade_permissions&amp;mode=trace&amp;u=$ug_id&amp;c=$cat_id&amp;auth=$permission") : '',
+      						'UA_TRACE'		=> ($show_trace) ? append_sid("{$phpbb_admin_path}index.$phpEx", "i=arcade_permissions&mode=trace&u=$ug_id&c=$cat_id&auth=$permission", false) : '',
+      
+      						'PERMISSION'	=> $user->lang['acl_' . $permission]['lang'])
+      					);
+      				}
+      }
+  }
 	}
 
 	/**
@@ -1169,47 +1149,40 @@ class auth_arcade_admin extends auth_arcade
 			$permissions = $permission_row[$cat_id];
 			ksort($permissions);
 
-			@reset($permissions);
-			while (list($permission, $auth_setting) = each($permissions))
-			{
-				if (!isset($user->lang['acl_' . $permission]))
-				{
-					$user->lang['acl_' . $permission] = array(
-						'cat'	=> 'misc',
-						'lang'	=> '{ acl_' . $permission . ' }'
-					);
-				}
-
-				$cat = $user->lang['acl_' . $permission]['cat'];
-
-				// Build our categories array
-				if (!isset($categories[$cat]))
-				{
-					$categories[$cat] = $user->lang['permission_cat'][$cat];
-				}
-
-				// Build our content array
-				if (!isset($content_array[$cat_id]))
-				{
-					$content_array[$cat_id] = array();
-				}
-
-				if (!isset($content_array[$cat_id][$cat]))
-				{
-					$content_array[$cat_id][$cat] = array(
-						'S_YES'			=> false,
-						'S_NEVER'		=> false,
-						'S_NO'			=> false,
-						'permissions'	=> array(),
-					);
-				}
-
-				$content_array[$cat_id][$cat]['S_YES'] |= ($auth_setting == ACL_YES) ? true : false;
-				$content_array[$cat_id][$cat]['S_NEVER'] |= ($auth_setting == ACL_NEVER) ? true : false;
-				$content_array[$cat_id][$cat]['S_NO'] |= ($auth_setting == ACL_NO) ? true : false;
-
-				$content_array[$cat_id][$cat]['permissions'][$permission] = $auth_setting;
-			}
+			reset($permissions);
+			foreach ($permissions as $permission => $auth_setting) {
+       if (!isset($user->lang['acl_' . $permission]))
+   				{
+   					$user->lang['acl_' . $permission] = array(
+   						'cat'	=> 'misc',
+   						'lang'	=> '{ acl_' . $permission . ' }'
+   					);
+   				}
+       $cat = $user->lang['acl_' . $permission]['cat'];
+       // Build our categories array
+       if (!isset($categories[$cat]))
+   				{
+   					$categories[$cat] = $user->lang['permission_cat'][$cat];
+   				}
+       // Build our content array
+       if (!isset($content_array[$cat_id]))
+   				{
+   					$content_array[$cat_id] = array();
+   				}
+       if (!isset($content_array[$cat_id][$cat]))
+   				{
+   					$content_array[$cat_id][$cat] = array(
+   						'S_YES'			=> false,
+   						'S_NEVER'		=> false,
+   						'S_NO'			=> false,
+   						'permissions'	=> array(),
+   					);
+   				}
+       $content_array[$cat_id][$cat]['S_YES'] |= ($auth_setting == ACL_YES) ? true : false;
+       $content_array[$cat_id][$cat]['S_NEVER'] |= ($auth_setting == ACL_NEVER) ? true : false;
+       $content_array[$cat_id][$cat]['S_NO'] |= ($auth_setting == ACL_NO) ? true : false;
+       $content_array[$cat_id][$cat]['permissions'][$permission] = $auth_setting;
+   }
 		}
 	}
 
