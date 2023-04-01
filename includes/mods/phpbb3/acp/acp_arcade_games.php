@@ -1451,4 +1451,5 @@ class acp_arcade_games
 		return $file->realname;
 	}
 }
+
 ?>
