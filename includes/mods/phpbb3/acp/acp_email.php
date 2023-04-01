@@ -26,7 +26,10 @@ class acp_email
 	function main($id, $mode)
 	{
 		global $config, $db, $user, $auth, $template, $cache;
-		global $phpbb_root_path, $phpbb_admin_path, $phpEx, $prefix_phpbb3;
+		global $phpEx, $prefix_phpbb3;
+        
+		$phpbb_admin_path = PHPBB3_ADMIN_DIR;
+        $phpbb_root_path = PHPBB3_ROOT_DIR;
 
 		$user->add_lang('acp/email');
 		$this->tpl_name = 'acp_email';
@@ -148,8 +151,8 @@ class acp_email
 				$db->sql_freeresult($result);
 
 				// Send the messages
-				include_once($phpbb_root_path . 'includes/functions_messenger.' . $phpEx);
-				include_once($phpbb_root_path . 'includes/functions_user.' . $phpEx);
+				include_once(PHPBB3_INCLUDE_DIR . 'functions_messenger.' . $phpEx);
+				include_once(PHPBB3_INCLUDE_DIR . 'functions_user.' . $phpEx);
 				$messenger = new messenger($use_queue);
 
 				$errored = false;
