@@ -22,11 +22,13 @@ class acp_add_user
 	function main($id, $mode)
 	{
 		global $config, $db, $user, $auth, $template;
-		global $phpbb_root_path, $phpbb_admin_path, $phpEx;
+		global $phpEx;
+		
+		$phpbb_admin_path = PHPBB3_ADMIN_DIR;
 
-		include($phpbb_root_path . 'includes/functions_profile_fields.' . $phpEx);
-		include($phpbb_root_path . 'includes/functions_user.' . $phpEx);
-		include($phpbb_root_path . 'includes/acp/info/acp_add_user.' . $phpEx);
+		include(PHPBB3_INCLUDE_DIR . 'functions_profile_fields.' . $phpEx);
+		include(PHPBB3_INCLUDE_DIR . 'functions_user.' . $phpEx);
+		include(PHPBB3_INCLUDE_DIR . 'acp/info/acp_add_user.' . $phpEx);
 		
 		$submit 		= (isset($_POST['submit'])) ? true : false;
 		$admin_activate = (isset($_POST['activate'])) ? (($config['require_activation'] == USER_ACTIVATION_ADMIN) ? true : false) : false;
@@ -204,7 +206,7 @@ class acp_add_user
 
 				if ($config['email_enable'])
 				{
-					include_once($phpbb_root_path . 'includes/functions_messenger.' . $phpEx);
+					include_once(PHPBB3_INCLUDE_DIR . 'functions_messenger.' . $phpEx);
 
 					$messenger = new messenger(false);
 
