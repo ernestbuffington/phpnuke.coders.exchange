@@ -14,10 +14,10 @@ class acp_gallery
 	var $u_action;
 	function main($id, $mode)
 	{
-		global $user, $phpbb_root_path, $phpEx, $template;
+		global $user, $phpEx, $template;
 		$gallery_root_path = GALLERY_ROOT_PATH;
-		include($phpbb_root_path . GALLERY_ROOT_PATH . 'includes/constants.' . $phpEx);
-		include($phpbb_root_path . GALLERY_ROOT_PATH . 'includes/acp_functions.' . $phpEx);
+		include(PHPBB3_ROOT_DIR . GALLERY_ROOT_PATH . 'includes/constants.' . $phpEx);
+		include(PHPBB3_ROOT_DIR . GALLERY_ROOT_PATH . 'includes/acp_functions.' . $phpEx);
 
 		$user->add_lang('mods/gallery_acp');
 		$user->add_lang('mods/gallery');
@@ -107,7 +107,7 @@ class acp_gallery
 
 	function import()
 	{
-		global $phpbb_admin_path, $phpbb_root_path, $gallery_root_path, $phpEx;
+		global $gallery_root_path, $phpEx;
 		global $db, $template, $user, $config;
 
 		$images = request_var('images', array(''), true);
@@ -115,7 +115,7 @@ class acp_gallery
 		$images = ($images_string) ? explode('&quot;', utf8_decode($images_string)) : $images;
 		$submit = (isset($_POST['submit'])) ? true : ((empty($images)) ? false : true);
 
-		$directory = $phpbb_root_path . GALLERY_ROOT_PATH . 'import/';
+		$directory = PHPBB3_ROOT_DIR . GALLERY_ROOT_PATH . 'import/';
 
 		if(!$submit)
 		{
@@ -251,14 +251,14 @@ class acp_gallery
 				$image_filename = md5(uniqid(rand())) . $image_filetype;
 
 
-				copy($image_path, $phpbb_root_path . GALLERY_UPLOAD_PATH . $image_filename);
-				@chmod($phpbb_root_path . GALLERY_UPLOAD_PATH . $image_filename, 0777);
+				copy($image_path, PHPBB3_ROOT_DIR . GALLERY_UPLOAD_PATH . $image_filename);
+				chmod(PHPBB3_ROOT_DIR . GALLERY_UPLOAD_PATH . $image_filename, 0777);
 
 				/*//we need to unsupport non-gd-installations!
 				if (!$album_config['gd_version'])
 				{
-					copy($thumbtmp, $phpbb_root_path . GALLERY_UPLOAD_PATH . $image_thumbnail);
-					@chmod($phpbb_root_path . GALLERY_CACHE_PATH . $image_thumbnail, 0777);
+					copy($thumbtmp, PHPBB3_ROOT_DIR . GALLERY_UPLOAD_PATH . $image_thumbnail);
+					chmod(PHPBB3_ROOT_DIR . GALLERY_CACHE_PATH . $image_thumbnail, 0777);
 				}*/
 
 
@@ -279,7 +279,7 @@ class acp_gallery
 							$read_function = 'imagecreatefromgif';
 							break;
 					}
-					$src = $read_function($phpbb_root_path . GALLERY_UPLOAD_PATH  . $image_filename);
+					$src = $read_function(PHPBB3_ROOT_DIR . GALLERY_UPLOAD_PATH  . $image_filename);
 
 					if (!$src)
 					{
@@ -302,19 +302,19 @@ class acp_gallery
 
 						if ($album_config['thumbnail_info_line'])
 						{// Create image details credits to Dr.Death
-							$thumbnail = ($album_config['gd_version'] == 1) ? @imagecreate($thumbnail_width, $thumbnail_height + 16) : @imagecreatetruecolor($thumbnail_width, $thumbnail_height + 16); 
+							$thumbnail = ($album_config['gd_version'] == 1) ? imagecreate($thumbnail_width, $thumbnail_height + 16) : imagecreatetruecolor($thumbnail_width, $thumbnail_height + 16); 
 						}
 						else
 						{
-							$thumbnail = ($album_config['gd_version'] == 1) ? @imagecreate($thumbnail_width, $thumbnail_height) : @imagecreatetruecolor($thumbnail_width, $thumbnail_height);
+							$thumbnail = ($album_config['gd_version'] == 1) ? imagecreate($thumbnail_width, $thumbnail_height) : imagecreatetruecolor($thumbnail_width, $thumbnail_height);
 						}
 						$resize_function = ($album_config['gd_version'] == 1) ? 'imagecopyresized' : 'imagecopyresampled';
-						@$resize_function($thumbnail, $src, 0, 0, 0, 0, $thumbnail_width, $thumbnail_height, $image_width, $image_height);
+						$resize_function($thumbnail, $src, 0, 0, 0, 0, $thumbnail_width, $thumbnail_height, $image_width, $image_height);
 
 						if ($album_config['thumbnail_info_line'])
 						{// Create image details credits to Dr.Death
 							$dimension_font = 1;
-							$dimension_filesize = filesize($phpbb_root_path . GALLERY_UPLOAD_PATH . $image_filename);
+							$dimension_filesize = filesize(PHPBB3_ROOT_DIR . GALLERY_UPLOAD_PATH . $image_filename);
 							$dimension_string = $image_width . "x" . $image_height . "(" . intval($dimension_filesize/1024) . "KiB)";
 							$dimension_colour = ImageColorAllocate($thumbnail,255,255,255);
 							$dimension_height = imagefontheight($dimension_font);
@@ -337,18 +337,18 @@ class acp_gallery
 						switch ($image_filetype)
 						{
 							case '.jpg':
-								@imagejpeg($thumbnail, $phpbb_root_path . GALLERY_CACHE_PATH . $image_thumbnail, $album_config['thumbnail_quality']);
+								imagejpeg($thumbnail, PHPBB3_ROOT_DIR . GALLERY_CACHE_PATH . $image_thumbnail, $album_config['thumbnail_quality']);
 							break;
 
 							case '.png':
-								@imagepng($thumbnail, $phpbb_root_path . GALLERY_CACHE_PATH . $image_thumbnail);
+								imagepng($thumbnail, PHPBB3_ROOT_DIR . GALLERY_CACHE_PATH . $image_thumbnail);
 							break;
 
 							case '.gif':
-								@imagegif($thumbnail, $phpbb_root_path . GALLERY_CACHE_PATH . $image_thumbnail);
+								imagegif($thumbnail, PHPBB3_ROOT_DIR . GALLERY_CACHE_PATH . $image_thumbnail);
 							break;
 						}
-						@chmod($phpbb_root_path . GALLERY_CACHE_PATH . $image_thumbnail, 0777);
+						chmod(PHPBB3_ROOT_DIR . GALLERY_CACHE_PATH . $image_thumbnail, 0777);
 					} // End IF $gd_errored
 				} // End Thumbnail Cache
 				else if ($album_config['gd_version'] > 0)
@@ -357,7 +357,7 @@ class acp_gallery
 				}
 
 				// The source image is imported and thumbnailed, delete it
-				@unlink($image_path);
+				unlink($image_path);
 
 				$no_time = time();
 				$time = request_var('time', 0);
@@ -421,7 +421,7 @@ class acp_gallery
 
 	function overview()
 	{
-		global $template, $user, $db, $phpbb_root_path, $config, $auth;
+		global $template, $user, $db, $config, $auth;
 
 		$action = request_var('action', '');
 		$id = request_var('i', '');
@@ -524,17 +524,17 @@ class acp_gallery
 							trigger_error($user->lang['NO_AUTH_OPERATION'] . adm_back_link($this->u_action), E_USER_WARNING);
 						}
 
-						$cache_dir = @opendir($phpbb_root_path . GALLERY_CACHE_PATH);
+						$cache_dir = opendir(PHPBB3_ROOT_DIR . GALLERY_CACHE_PATH);
 
-						while( $cache_file = @readdir($cache_dir) )
+						while( $cache_file = readdir($cache_dir) )
 						{
 							if( preg_match('/(\.gif$|\.png$|\.jpg|\.jpeg)$/is', $cache_file) )
 							{
-								@unlink($phpbb_root_path . GALLERY_CACHE_PATH . $cache_file);
+								unlink(PHPBB3_ROOT_DIR . GALLERY_CACHE_PATH . $cache_file);
 							}
 						}
 
-						@closedir($cache_dir);
+						closedir($cache_dir);
 					break;
 				}
 			}
@@ -571,13 +571,13 @@ class acp_gallery
 		$cache_dir_size = $gupload_dir_size = $user->lang['SORRY_NO_STATISTIC'];
 		/*
 		$cache_dir_size = $gupload_dir_size = 0;
-		if ($gupload_dir = @opendir($phpbb_root_path . GALLERY_UPLOAD_PATH))
+		if ($gupload_dir = opendir(PHPBB3_ROOT_DIR . GALLERY_UPLOAD_PATH))
 		{
 			while (($file = readdir($gupload_dir)) !== false)
 			{
 				if ($file[0] != '.' && $file != 'CVS' && strpos($file, 'index.') === false)
 				{
-					$gupload_dir_size += filesize($phpbb_root_path . GALLERY_UPLOAD_PATH . $file);
+					$gupload_dir_size += filesize(PHPBB3_ROOT_DIR . GALLERY_UPLOAD_PATH . $file);
 				}
 			}
 			closedir($gupload_dir);
@@ -588,13 +588,13 @@ class acp_gallery
 		{
 			$gupload_dir_size = $user->lang['NOT_AVAILABLE'];
 		}
-		if ($cache_dir = @opendir($phpbb_root_path . GALLERY_CACHE_PATH))
+		if ($cache_dir = opendir(PHPBB3_ROOT_DIR . GALLERY_CACHE_PATH))
 		{
 			while (($file = readdir($cache_dir)) !== false)
 			{
 				if ($file[0] != '.' && $file != 'CVS' && strpos($file, 'index.') === false)
 				{
-					$cache_dir_size += filesize($phpbb_root_path . GALLERY_CACHE_PATH . $file);
+					$cache_dir_size += filesize(PHPBB3_ROOT_DIR . GALLERY_CACHE_PATH . $file);
 				}
 			}
 			closedir($cache_dir);
@@ -724,7 +724,7 @@ class acp_gallery
 	function manage_albums()
 	{
 		global $db, $user, $auth, $template, $cache;
-		global $config, $phpbb_admin_path, $phpbb_root_path, $phpEx;
+		global $config, $phpEx;
 
 		$template->assign_vars(array(
 			'S_MANAGE_ALBUMS'				=> true,
@@ -794,8 +794,11 @@ class acp_gallery
 	function create_album()
 	{
 		global $db, $user, $auth, $template, $cache;
-		global $config, $phpbb_admin_path, $phpbb_root_path, $phpEx;
-		include_once($phpbb_root_path . 'includes/message_parser.' . $phpEx);
+		global $config, $phpEx;
+		
+		$phpbb_admin_path = PHPBB3_ADMIN_DIR;
+		
+		include_once(PHPBB3_INCLUDE_DIR . 'message_parser.' . $phpEx);
 		$submit = (isset($_POST['submit'])) ? true : false;
 		if(!$submit)
 		{
@@ -938,8 +941,11 @@ class acp_gallery
 	function edit_album()
 	{
 		global $db, $user, $auth, $template, $cache;
-		global $config, $phpbb_admin_path, $phpbb_root_path, $phpEx;
-		include_once($phpbb_root_path . 'includes/message_parser.' . $phpEx);
+		global $config, $phpEx;
+		
+		$phpbb_admin_path = PHPBB3_ADMIN_DIR;
+		
+		include_once(PHPBB3_INCLUDE_DIR . 'message_parser.' . $phpEx);
 
 		if (!$album_id = request_var('album_id', 0))
 		{
@@ -1266,8 +1272,8 @@ class acp_gallery
 						// Delete all physical pic & cached thumbnail files
 						for ($i = 0; $i < count($picrow); $i++)
 						{
-							@unlink($phpbb_root_path . GALLERY_CACHE_PATH . $picrow[$i]['image_thumbnail']);
-							@unlink($phpbb_root_path . GALLERY_UPLOAD_PATH . $picrow[$i]['image_filename']);
+							unlink(PHPBB3_ROOT_DIR . GALLERY_CACHE_PATH . $picrow[$i]['image_thumbnail']);
+							unlink(PHPBB3_ROOT_DIR . GALLERY_UPLOAD_PATH . $picrow[$i]['image_filename']);
 						}
 
 						$pic_id_sql = '(' . implode(',', $pic_id_row) . ')';
@@ -1756,7 +1762,7 @@ class acp_gallery
 
 	function cleanup()
 	{
-		global $db, $template, $user, $cache, $auth, $phpbb_root_path;
+		global $db, $template, $user, $cache, $auth;
 
 		$delete = (isset($_POST['delete'])) ? true : false;
 		$submit = (isset($_POST['submit'])) ? true : false;
@@ -1818,7 +1824,7 @@ class acp_gallery
 			{
 				foreach ($missing_entries as $missing_image)
 				{
-					@unlink($phpbb_root_path . GALLERY_UPLOAD_PATH . utf8_decode($missing_image));
+					unlink(PHPBB3_ROOT_DIR . GALLERY_UPLOAD_PATH . utf8_decode($missing_image));
 				}
 				$message .= $user->lang['CLEAN_ENTRIES_DONE'];
 			}
@@ -1831,8 +1837,8 @@ class acp_gallery
 				while ($row = $db->sql_fetchrow($result))
 				{
 					//delete the files themselves
-					@unlink($phpbb_root_path . GALLERY_CACHE_PATH . $row['image_thumbnail']);
-					@unlink($phpbb_root_path . GALLERY_UPLOAD_PATH . $row['image_filename']);
+					unlink(PHPBB3_ROOT_DIR . GALLERY_CACHE_PATH . $row['image_thumbnail']);
+					unlink(PHPBB3_ROOT_DIR . GALLERY_UPLOAD_PATH . $row['image_filename']);
 					$deleted_images[] = $row['image_id'];
 				}
 				// we have all image_ids in $deleted_images which are deleted
@@ -1873,11 +1879,11 @@ class acp_gallery
 				$sql = 'SELECT image_id, image_thumbnail, image_filename
 					FROM ' . GALLERY_IMAGES_TABLE . '
 					WHERE ' . $db->sql_in_set('image_album_id', $deleted_albums);
-				@$result = $db->sql_query($sql);
+				$result = $db->sql_query($sql);
 				while ($row = $db->sql_fetchrow($result))
 				{
-					@unlink($phpbb_root_path . GALLERY_CACHE_PATH . $row['image_thumbnail']);
-					@unlink($phpbb_root_path . GALLERY_UPLOAD_PATH . $row['image_filename']);
+					unlink(PHPBB3_ROOT_DIR . GALLERY_CACHE_PATH . $row['image_thumbnail']);
+					unlink(PHPBB3_ROOT_DIR . GALLERY_UPLOAD_PATH . $row['image_filename']);
 					$deleted_images[] = $row['image_id'];
 				}
 				if ($deleted_images)
@@ -1968,7 +1974,7 @@ class acp_gallery
 			$result = $db->sql_query($sql);
 			while ($row = $db->sql_fetchrow($result))
 			{
-				if (!file_exists($phpbb_root_path . GALLERY_UPLOAD_PATH . $row['image_filename']))
+				if (!file_exists(PHPBB3_ROOT_DIR . GALLERY_UPLOAD_PATH . $row['image_filename']))
 				{
 					$source_missing[] = $row['image_id'];
 				}
@@ -1984,7 +1990,7 @@ class acp_gallery
 		}
 		if ($check_mode == 'entry')
 		{
-			$directory = $phpbb_root_path . GALLERY_UPLOAD_PATH;
+			$directory = PHPBB3_ROOT_DIR . GALLERY_UPLOAD_PATH;
 			$handle = opendir($directory);
 			while ($file = readdir($handle))
 			{
