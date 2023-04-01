@@ -9,8 +9,10 @@
 */
 
 /**
-* @ignore
-*/
+ * Applied rules:
+ * TernaryToNullCoalescingRector
+ */
+ 
 if (!defined('IN_PHPBB'))
 {
 	exit;
@@ -201,7 +203,7 @@ class acp_ranks
 					'RANKS_PATH'		=> PHPBB3_ROOT_DIR . $config['ranks_path'],
 					'U_ACTION'			=> $this->u_action . '&amp;id=' . $rank_id,
 
-					'RANK_TITLE'		=> (isset($ranks['rank_title'])) ? $ranks['rank_title'] : '',
+					'RANK_TITLE'		=> $ranks['rank_title'] ?? '',
 					'S_FILENAME_LIST'	=> $filename_list,
 					'RANK_IMAGE'		=> ($edit_img) ? PHPBB3_ROOT_DIR . $config['ranks_path'] . '/' . $edit_img : $phpbb_admin_path . 'images/spacer.gif',
 					'S_SPECIAL_RANK'	=> (!isset($ranks['rank_special']) || $ranks['rank_special']) ? true : false,
