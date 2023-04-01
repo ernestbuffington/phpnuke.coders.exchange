@@ -25,10 +25,10 @@ class acp_prune
 
 	function main($id, $mode)
 	{
-		global $user, $phpEx, $phpbb_admin_path, $phpbb_root_path;
+		global $user, $phpEx;
 
 		$user->add_lang('acp/prune');
-		include_once($phpbb_root_path . 'includes/functions_user.' . $phpEx);
+		include_once(PHPBB3_INCLUDE_DIR . 'functions_user.' . $phpEx);
 
 		switch ($mode)
 		{
@@ -52,7 +52,7 @@ class acp_prune
 	function prune_forums($id, $mode)
 	{
 		global $db, $user, $auth, $template, $cache;
-		global $config, $phpbb_root_path, $phpbb_admin_path, $phpEx;
+		global $config, $phpEx;
 
 		$all_forums = request_var('all_forums', 0);
 		$forum_id = request_var('f', array(0));
@@ -229,7 +229,10 @@ class acp_prune
 	function prune_users($id, $mode)
 	{
 		global $db, $user, $auth, $template, $cache;
-		global $config, $phpbb_root_path, $phpbb_admin_path, $phpEx;
+		global $config, $phpEx;
+        
+		$phpbb_admin_path = PHPBB3_ADMIN_DIR;
+        $phpbb_root_path = PHPBB3_ROOT_DIR;
 
 		$user->add_lang('memberlist');
 
@@ -300,7 +303,7 @@ class acp_prune
 				{
 					$template->assign_block_vars('users', array(
 						'USERNAME'			=> $usernames[$user_id],
-						'U_PROFILE'			=> append_sid($phpbb_root_path . 'memberlist.' . $phpEx, 'mode=viewprofile&amp;u=' . $user_id),
+						'U_PROFILE'			=> append_sid(PHPBB3_ROOT_DIR . 'memberlist.' . $phpEx, 'mode=viewprofile&amp;u=' . $user_id),
 						'U_USER_ADMIN'		=> ($auth->acl_get('a_user')) ? append_sid("{$phpbb_admin_path}index.$phpEx", 'i=users&amp;mode=overview&amp;u=' . $user_id, true, $user->session_id) : '',
 					));
 				}
