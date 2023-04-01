@@ -9,8 +9,11 @@
 */
 
 /**
-* @ignore
-*/
+ * Applied rules:
+ * AddDefaultValueForUndefinedVariableRector (https://github.com/vimeo/psalm/blob/29b70442b11e3e66113935a2ee22e165a70c74a4/docs/fixing_code.md#possiblyundefinedvariable)
+ * TernaryToNullCoalescingRector
+ */
+ 
 if (!defined('IN_PHPBB'))
 {
 	exit;
@@ -229,7 +232,8 @@ class acp_search
 
 	function index($id, $mode)
 	{
-		global $db, $user, $auth, $template, $cache;
+		$forums = [];
+  global $db, $user, $auth, $template, $cache;
 		global $config, $phpEx;
 
 		$phpbb_admin_path = PHPBB3_ADMIN_DIR;
@@ -291,7 +295,7 @@ class acp_search
 
 			$this->max_post_id = $this->get_max_post_id();
 
-			$post_counter = (isset($this->state[2])) ? $this->state[2] : 0;
+			$post_counter = $this->state[2] ?? 0;
 			$this->state[2] = &$post_counter;
 			$this->save_state();
 
@@ -488,8 +492,8 @@ class acp_search
 				$template->assign_block_vars('backend.data', array(
 					'STATISTIC_1'	=> $statistic['statistic_1'],
 					'VALUE_1'		=> $statistic['value_1'],
-					'STATISTIC_2'	=> (isset($statistic['statistic_2'])) ? $statistic['statistic_2'] : '',
-					'VALUE_2'		=> (isset($statistic['value_2'])) ? $statistic['value_2'] : '')
+					'STATISTIC_2'	=> $statistic['statistic_2'] ?? '',
+					'VALUE_2'		=> $statistic['value_2'] ?? '')
 				);
 			}
 		}
