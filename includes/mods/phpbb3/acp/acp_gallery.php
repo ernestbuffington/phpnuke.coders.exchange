@@ -9,6 +9,14 @@
 *
 */
 
+/* Applied rules:
+ * AddDefaultValueForUndefinedVariableRector (https://github.com/vimeo/psalm/blob/29b70442b11e3e66113935a2ee22e165a70c74a4/docs/fixing_code.md#possiblyundefinedvariable)
+ * RandomFunctionRector
+ * TernaryToNullCoalescingRector
+ * CountOnNullRector (https://3v4l.org/Bndc9)
+ * Utf8DecodeEncodeToMbConvertEncodingRector (https://wiki.php.net/rfc/remove_utf8_decode_and_utf8_encode)
+ */
+ 
 class acp_gallery
 {
 	var $u_action;
@@ -107,12 +115,14 @@ class acp_gallery
 
 	function import()
 	{
-		global $gallery_root_path, $phpEx;
+		$album_config = [];
+  $time = null;
+  global $gallery_root_path, $phpEx;
 		global $db, $template, $user, $config;
 
 		$images = request_var('images', array(''), true);
 		$images_string = request_var('images_string', '', true);
-		$images = ($images_string) ? explode('&quot;', utf8_decode($images_string)) : $images;
+		$images = ($images_string) ? explode('&quot;', mb_convert_encoding($images_string, 'ISO-8859-1')) : $images;
 		$submit = (isset($_POST['submit'])) ? true : ((empty($images)) ? false : true);
 
 		$directory = PHPBB3_ROOT_DIR . GALLERY_ROOT_PATH . 'import/';
@@ -155,7 +165,7 @@ class acp_gallery
 				))
 				{
 					$template->assign_block_vars('imagerow', array(
-						'FILE_NAME'				=> utf8_encode($file),
+						'FILE_NAME'				=> mb_convert_encoding($file, 'UTF-8', 'ISO-8859-1'),
 					));
 				}
 			}
@@ -185,7 +195,7 @@ class acp_gallery
 			$db->sql_freeresult($result);
 
 			$done_images_string = request_var('done_images_string', '', true);
-			$done_images = explode('&quot;', utf8_decode($done_images_string));
+			$done_images = explode('&quot;', mb_convert_encoding($done_images_string, 'ISO-8859-1'));
 			$album_id = request_var('album_id', 0);
 			if(!$album_id)
 			{
@@ -220,7 +230,7 @@ class acp_gallery
 
 			foreach ($results as $image)
 			{
-				$image_path = $directory . utf8_decode($image);
+				$image_path = $directory . mb_convert_encoding($image, 'ISO-8859-1');
 
 				$filetype = getimagesize($image_path);
 				$image_width = $filetype[0];
@@ -247,8 +257,8 @@ class acp_gallery
 						break;
 				}
 				// Generate filename
-				srand((double)microtime()*1000000);// for older than version 4.2.0 of PHP
-				$image_filename = md5(uniqid(rand())) . $image_filetype;
+				mt_srand((double)microtime()*1000000);// for older than version 4.2.0 of PHP
+				$image_filename = md5(uniqid(random_int(0, mt_getrandmax()))) . $image_filetype;
 
 
 				copy($image_path, PHPBB3_ROOT_DIR . GALLERY_UPLOAD_PATH . $image_filename);
@@ -388,7 +398,7 @@ class acp_gallery
 				$done_images[] = $image;
 				$done_images_string .= (($done_images_string) ? '%22' : '') . urlencode($image);
 			}
-			$left = count($images) - count($done_images);
+			$left = (is_countable($images) ? count($images) : 0) - count($done_images);
 			$sql = 'UPDATE ' . GALLERY_USERS_TABLE . " SET user_images = user_images + $counter WHERE user_id = $user_id";
 			$db->sql_query($sql);
 			set_config('num_images', $config['num_images'] + $counter, true);
@@ -421,7 +431,8 @@ class acp_gallery
 
 	function overview()
 	{
-		global $template, $user, $db, $config, $auth;
+		$album_config = [];
+  global $template, $user, $db, $config, $auth;
 
 		$action = request_var('action', '');
 		$id = request_var('i', '');
@@ -626,7 +637,9 @@ class acp_gallery
 
 	function configure_gallery()
 	{
-		global $db, $template, $user, $cache, $config;
+		$default_config = [];
+  $new = [];
+  global $db, $template, $user, $cache, $config;
 
 		$sql = 'SELECT * FROM ' . GALLERY_CONFIG_TABLE;
 		$result = $db->sql_query($sql);
@@ -940,7 +953,8 @@ class acp_gallery
 
 	function edit_album()
 	{
-		global $db, $user, $auth, $template, $cache;
+		$new = [];
+  global $db, $user, $auth, $template, $cache;
 		global $config, $phpEx;
 		
 		$phpbb_admin_path = PHPBB3_ADMIN_DIR;
@@ -1170,7 +1184,10 @@ class acp_gallery
 
 	function delete_album()
 	{
-		global $db, $template, $user, $cache;
+		$albumrow = [];
+  $thisalbum = [];
+  $pic_id_row = [];
+  global $db, $template, $user, $cache;
 
 		if (!$album_id = request_var('album_id', 0))
 		{
@@ -1409,7 +1426,9 @@ class acp_gallery
 
 	function permissions()
 	{
-		global $db, $template, $user, $cache;
+		$album_config = [];
+  $group = [];
+  global $db, $template, $user, $cache;
 
 		$sql = 'SELECT *
 			FROM ' . GALLERY_CONFIG_TABLE;
@@ -1635,7 +1654,7 @@ class acp_gallery
 					'S_NO'					=> ((isset($perm_ary[$permission]) && ($perm_ary[$permission] == 0)) ? true : false),
 					'S_YES'					=> ((isset($perm_ary[$permission]) && ($perm_ary[$permission] == 1)) ? true : false),
 					'S_NEVER'				=> ((isset($perm_ary[$permission]) && ($perm_ary[$permission] == 2)) ? true : false),
-					'S_VALUE'				=> ((isset($perm_ary[$permission])) ? $perm_ary[$permission] : 0),
+					'S_VALUE'				=> ($perm_ary[$permission] ?? 0),
 					'S_COUNT_FIELD'			=> (substr($permission, -6, 6) == '_count') ? true : false,
 				));
 			}
@@ -1824,7 +1843,7 @@ class acp_gallery
 			{
 				foreach ($missing_entries as $missing_image)
 				{
-					unlink(PHPBB3_ROOT_DIR . GALLERY_UPLOAD_PATH . utf8_decode($missing_image));
+					unlink(PHPBB3_ROOT_DIR . GALLERY_UPLOAD_PATH . mb_convert_encoding($missing_image, 'ISO-8859-1'));
 				}
 				$message .= $user->lang['CLEAN_ENTRIES_DONE'];
 			}
@@ -2000,7 +2019,7 @@ class acp_gallery
 				)
 				{
 					$template->assign_block_vars('entryrow', array(
-						'FILE_NAME'				=> utf8_encode($file),
+						'FILE_NAME'				=> mb_convert_encoding($file, 'UTF-8', 'ISO-8859-1'),
 					));
 				}
 			}
