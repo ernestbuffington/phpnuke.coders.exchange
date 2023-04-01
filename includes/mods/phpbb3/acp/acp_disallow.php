@@ -26,9 +26,9 @@ class acp_disallow
 	function main($id, $mode)
 	{
 		global $db, $user, $auth, $template, $cache;
-		global $config, $phpbb_root_path, $phpbb_admin_path, $phpEx;
+		global $config, $phpEx;
 
-		include($phpbb_root_path . 'includes/functions_user.' . $phpEx);
+		include(PHPBB3_INCLUDE_DIR . 'functions_user.' . $phpEx);
 
 		$user->add_lang('acp/posting');
 
