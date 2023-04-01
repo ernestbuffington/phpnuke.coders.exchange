@@ -18,11 +18,11 @@ class acp_announcements_centre
 	function main($id, $mode)
 	{
 		global $config, $db, $user, $auth, $template, $cache;
-		global $phpbb_root_path, $phpbb_admin_path, $phpEx, $prefix_phpbb3;
+		global $phpEx, $prefix_phpbb3;
 
-		include_once($phpbb_root_path . 'includes/functions_posting.' . $phpEx);
-		include_once($phpbb_root_path . 'includes/functions_display.' . $phpEx);
-		include_once($phpbb_root_path . 'includes/functions_announcements.' . $phpEx);
+		include_once(PHPBB3_INCLUDE_DIR . 'functions_posting.' . $phpEx);
+		include_once(PHPBB3_INCLUDE_DIR . 'functions_display.' . $phpEx);
+		include_once(PHPBB3_INCLUDE_DIR . 'functions_announcements.' . $phpEx);
 
 		$user->add_lang(array('posting', 'acp/announcement_centre'));
 		$this->tpl_name = 'acp_announcement_centre';
@@ -103,7 +103,7 @@ class acp_announcements_centre
 				
 				if ($preview)
 				{
-				include_once($phpbb_root_path . 'includes/message_parser.' . $phpEx);
+				include_once(PHPBB3_INCLUDE_DIR . 'message_parser.' . $phpEx);
 
 					$message_parser = new parse_message($annoucement_row['announcement_draft']);
 
