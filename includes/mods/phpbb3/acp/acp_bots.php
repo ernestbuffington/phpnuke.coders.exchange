@@ -17,15 +17,18 @@ if (!defined('IN_PHPBB'))
 }
 
 /**
-* @package acp
-*/
+ * Applied rules:
+ * AddDefaultValueForUndefinedVariableRector (https://github.com/vimeo/psalm/blob/29b70442b11e3e66113935a2ee22e165a70c74a4/docs/fixing_code.md#possiblyundefinedvariable)
+ */
+ 
 class acp_bots
 {
 	var $u_action;
 
 	function main($id, $mode)
 	{
-		global $config, $db, $user, $auth, $template, $cache;
+		$log = null;
+  global $config, $db, $user, $auth, $template, $cache;
 		global $phpEx, $prefix_phpbb3;
 
 		$action = request_var('action', '');
