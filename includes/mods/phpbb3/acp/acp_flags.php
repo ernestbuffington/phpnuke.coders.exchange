@@ -9,8 +9,10 @@
 */
 
 /**
-* @ignore
-*/
+ * Applied rules:
+ * TernaryToNullCoalescingRector
+ */
+
 if (!defined('IN_PHPBB'))
 {
 	exit;
@@ -201,8 +203,8 @@ class acp_flags
 					'FLAGS_PATH'		=> PHPBB3_ROOT_DIR . $config['flags_path'],
 					'U_ACTION'			=> $this->u_action . '&amp;id=' . $flag_id,
 
-					'FLAG_COUNTRY'		=> (isset($flags['flag_country'])) ? $flags['flag_country'] : '',
-					'FLAG_CODE'			=> (isset($flags['flag_code'])) ? $flags['flag_code'] : '',
+					'FLAG_COUNTRY'		=> $flags['flag_country'] ?? '',
+					'FLAG_CODE'			=> $flags['flag_code'] ?? '',
 					'S_FILENAME_LIST'	=> $filename_list,
 					'FLAG_IMAGE'		=> ($edit_img) ? PHPBB3_ROOT_DIR . $config['flags_path'] . '/' . $edit_img : $phpbb_admin_path . 'images/spacer.gif',
 				));
@@ -244,7 +246,7 @@ class acp_flags
 				'FLAG_IMAGE'	=> PHPBB3_ROOT_DIR . $config['flags_path'] . '/' . $row['flag_image'],
 				'FLAG_COUNTRY'	=> $row['flag_country'],
 				'FLAG_CODE'		=> $row['flag_code'],
-				'FLAG_USERS'	=> (isset($flag_count[$row['flag_code']])) ? $flag_count[$row['flag_code']] : 0,
+				'FLAG_USERS'	=> $flag_count[$row['flag_code']] ?? 0,
 
 				'U_EDIT'	=> $this->u_action . '&amp;action=edit&amp;id=' . $row['flag_id'],
 				'U_DELETE'	=> $this->u_action . '&amp;action=delete&amp;id=' . $row['flag_id'],
