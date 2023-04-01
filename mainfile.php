@@ -305,6 +305,8 @@ if(defined('FORUM_ADMIN')) {
     define('INCLUDE_PATH', NUKE_BASE_DIR);
 }
 
+$phpEx = "php"; 
+
 # If a class hasn't been loaded yet find the required file on the server and load
 # it in using the special autoloader detection built into PHP5+
 if(!function_exists('classAutoloader')): 
