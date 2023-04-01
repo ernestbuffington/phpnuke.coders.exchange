@@ -9,8 +9,14 @@
 */
 
 /**
-* @ignore
-*/
+ * Applied rules:
+ * MysqlAssignToMysqliRector (https://www.phpclasses.org/blog/package/9199/post/3-Smoothly-Migrate-your-PHP-Code-using-the-Old-MySQL-extension-to-MySQLi.html)
+ * AddDefaultValueForUndefinedVariableRector (https://github.com/vimeo/psalm/blob/29b70442b11e3e66113935a2ee22e165a70c74a4/docs/fixing_code.md#possiblyundefinedvariable)
+ * Php4ConstructorRector (https://wiki.php.net/rfc/remove_php4_constructors)
+ * StringifyStrNeedlesRector (https://wiki.php.net/rfc/deprecations_php_7_3#string_search_functions_with_integer_needle)
+ * StrStartsWithRector (https://wiki.php.net/rfc/add_str_starts_with_and_ends_with_functions)
+ */
+ 
 if (!defined('IN_PHPBB'))
 {
 	exit;
@@ -25,7 +31,15 @@ class acp_database
 
 	function main($id, $mode)
 	{
-		global $cache, $db, $user, $auth, $template, $prefix_phpbb3;
+		$extractor = null;
+  $mimetype = null;
+  $fgetd = null;
+  $read = null;
+  $seek = null;
+  $eof = null;
+  $close = null;
+  $fp = null;
+  global $cache, $db, $user, $auth, $template, $prefix_phpbb3;
 		global $config, $phpEx;
 		
 		$user->add_lang('acp/database');
@@ -174,7 +188,7 @@ class acp_database
 						asort($tables);
 						foreach ($tables as $table_name)
 						{
-							if (strlen($prefix_phpbb3) === 0 || stripos($table_name, $prefix_phpbb3) === 0)
+							if (strlen($prefix_phpbb3) === 0 || stripos($table_name, (string) $prefix_phpbb3) === 0)
 							{
 								$template->assign_block_vars('tables', array(
 									'TABLE'	=> $table_name
@@ -332,7 +346,7 @@ class acp_database
 									while (($sql = $fgetd($fp, $delim, $read, $seek, $eof)) !== false)
 									{
 										$query = trim($sql);
-										if (substr($query, 0, 8) === 'SET TERM')
+										if (str_starts_with($query, 'SET TERM'))
 										{
 											$delim = $query[9] . "\n";
 											continue;
@@ -346,7 +360,7 @@ class acp_database
 									while (($sql = $fgetd($fp, $delim, $read, $seek, $eof)) !== false)
 									{
 										$query = trim($sql);
-										if (substr($query, 0, 13) == 'CREATE DOMAIN')
+										if (str_starts_with($query, 'CREATE DOMAIN'))
 										{
 											list(, , $domain) = explode(' ', $query);
 											$sql = "SELECT domain_name
@@ -363,7 +377,7 @@ class acp_database
 										{
 											$db->sql_query($query);
 										}
-										if (substr($query, 0, 4) == 'COPY')
+										if (str_starts_with($query, 'COPY'))
 										{
 											while (($sub = $fgetd($fp, "\n", $read, $seek, $eof)) !== '\.')
 											{
@@ -466,9 +480,12 @@ class base_extractor
 	var $format;
 	var $run_comp = false;
 
-	function base_extractor($download = false, $store = false, $format, $filename, $time)
+	function __construct($download = false, $store = false, $format, $filename, $time)
 	{
-		$this->download = $download;
+		$ext = null;
+  $mimetype = null;
+  $open = null;
+  $this->download = $download;
 		$this->store = $store;
 		$this->time = $time;
 		$this->format = $format;
@@ -651,7 +668,8 @@ class mysql_extractor extends base_extractor
 
 	function write_data_mysqli($table_name)
 	{
-		global $db;
+		$query = null;
+  global $db;
 		$sql = "SELECT *
 			FROM $table_name";
 		$result = mysqli_query($db->db_connect_id, $sql, MYSQLI_USE_RESULT);
@@ -730,7 +748,8 @@ class mysql_extractor extends base_extractor
 
 	function write_data_mysql($table_name)
 	{
-		global $db;
+		$query = null;
+  global $db;
 		$sql = "SELECT *
 			FROM $table_name";
 		$result = mysql_unbuffered_query($sql, $db->db_connect_id);
@@ -743,7 +762,7 @@ class mysql_extractor extends base_extractor
 			$field = array();
 			for ($i = 0; $i < $fields_cnt; $i++)
 			{
-				$field[] = mysql_fetch_field($result, $i);
+				$field[] = mysqli_fetch_field_direct($result, $i);
 			}
 			$field_set = array();
 			
@@ -897,11 +916,11 @@ class mysql_extractor extends base_extractor
 			{
 				$line .= 'PRIMARY KEY (' . implode(', ', $columns) . ')';
 			}
-			else if (strpos($key, 'UNIQUE') === 0)
+			else if (str_starts_with($key, 'UNIQUE'))
 			{
 				$line .= 'UNIQUE ' . substr($key, 7) . ' (' . implode(', ', $columns) . ')';
 			}
-			else if (strpos($key, 'FULLTEXT') === 0)
+			else if (str_starts_with($key, 'FULLTEXT'))
 			{
 				$line .= 'FULLTEXT ' . substr($key, 9) . ' (' . implode(', ', $columns) . ')';
 			}
@@ -987,7 +1006,8 @@ class sqlite_extractor extends base_extractor
 
 	function write_data($table_name)
 	{
-		global $db;
+		$col_types = [];
+  global $db;
 		static $proper;
 
 		if (is_null($proper))
@@ -1077,7 +1097,8 @@ class postgres_extractor extends base_extractor
 
 	function write_table($table_name)
 	{
-		global $db;
+		$primary_key_name = null;
+  global $db;
 		static $domains_created = array();
 
 		$sql = "SELECT a.domain_name, a.data_type, a.character_maximum_length, a.domain_default
@@ -1275,7 +1296,9 @@ class postgres_extractor extends base_extractor
 
 	function write_data($table_name)
 	{
-		global $db;
+		$ary_type = [];
+  $ary_name = [];
+  global $db;
 		// Grab all of the data from current table.
 		$sql = "SELECT *
 			FROM $table_name";
@@ -1299,7 +1322,7 @@ class postgres_extractor extends base_extractor
 			if ($row = $db->sql_fetchrow($result2))
 			{
 				// Determine if we must reset the sequences
-				if (strpos($row['rowdefault'], "nextval('") === 0)
+				if (str_starts_with($row['rowdefault'], "nextval('"))
 				{
 					$seq .= "SELECT SETVAL('{$table_name}_seq',(select case when max({$ary_name[$i]})>0 then max({$ary_name[$i]})+1 else 1 end FROM {$table_name}));\n";
 				}
@@ -2243,11 +2266,11 @@ function fgetd(&$fp, $delim, $read, $seek, $eof, $buffer = 8192)
 	
 	while (!$eof($fp))
 	{
-		$pos = strpos($record, $delim);
+		$pos = strpos($record, (string) $delim);
 		if ($pos === false)
 		{
 			$record .= $read($fp, $buffer);
-			if ($eof($fp) && ($pos = strpos($record, $delim)) !== false)
+			if ($eof($fp) && ($pos = strpos($record, (string) $delim)) !== false)
 			{
 				$seek($fp, $pos + $delim_len - strlen($record), SEEK_CUR);
 				return substr($record, 0, $pos);
@@ -2272,7 +2295,7 @@ function fgetd_seekless(&$fp, $delim, $read, $seek, $eof, $buffer = 8192)
 	{
 		while (!$eof($fp))
 		{
-			if (strpos($record, $delim) !== false)
+			if (strpos($record, (string) $delim) !== false)
 			{
 				$array = explode($delim, $record);
 				$record = array_pop($array);
@@ -2283,7 +2306,7 @@ function fgetd_seekless(&$fp, $delim, $read, $seek, $eof, $buffer = 8192)
 				$record .= $read($fp, $buffer);
 			}
 		}
-		if ($eof($fp) && strpos($record, $delim) !== false)
+		if ($eof($fp) && strpos($record, (string) $delim) !== false)
 		{
 			$array = explode($delim, $record);
 			$record = array_pop($array);
