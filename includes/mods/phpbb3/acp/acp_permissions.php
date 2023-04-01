@@ -9,8 +9,14 @@
 */
 
 /**
-* @ignore
-*/
+ * Applied rules:
+ * AddDefaultValueForUndefinedVariableRector (https://github.com/vimeo/psalm/blob/29b70442b11e3e66113935a2ee22e165a70c74a4/docs/fixing_code.md#possiblyundefinedvariable)
+ * TernaryToNullCoalescingRector
+ * ListEachRector (https://wiki.php.net/rfc/deprecations_php_7_2#each)
+ * ArraySpreadInsteadOfArrayMergeRector (https://wiki.php.net/rfc/spread_operator_for_array)
+ * StrStartsWithRector (https://wiki.php.net/rfc/add_str_starts_with_and_ends_with_functions)
+ */
+ 
 if (!defined('IN_PHPBB'))
 {
 	exit;
@@ -221,7 +227,7 @@ class acp_permissions
 
 
 		// Handle actions
-		if (strpos($mode, 'setting_') === 0 && $action)
+		if (str_starts_with($mode, 'setting_') && $action)
 		{
 			switch ($action)
 			{
@@ -478,7 +484,7 @@ class acp_permissions
 			'S_HIDDEN_FIELDS'			=> $s_hidden_fields)
 		);
 
-		if (strpos($mode, 'setting_') === 0)
+		if (str_starts_with($mode, 'setting_'))
 		{
 			$template->assign_vars(array(
 				'S_SETTING_PERMISSIONS'		=> true)
@@ -558,7 +564,7 @@ class acp_permissions
 			}
 
 			$selected = ($setting == $default_option) ? ' selected="selected"' : '';
-			$l_setting = (isset($user->lang['permission_type'][$permission_scope][$setting])) ? $user->lang['permission_type'][$permission_scope][$setting] : $user->lang['permission_type'][$setting];
+			$l_setting = $user->lang['permission_type'][$permission_scope][$setting] ?? $user->lang['permission_type'][$setting];
 			$s_dropdown_options .= '<option value="' . $setting . '"' . $selected . '>' . $l_setting . '</option>';
 		}
 
@@ -570,7 +576,9 @@ class acp_permissions
 	*/
 	function check_existence($mode, &$ids)
 	{
-		global $db, $user;
+		$sql_id = null;
+  $table = null;
+  global $db, $user;
 
 		switch ($mode)
 		{
@@ -632,8 +640,8 @@ class acp_permissions
 		$ug_id = $forum_id = 0;
 
 		// We loop through the auth settings defined in our submit
-		list($ug_id, ) = each($psubmit);
-		list($forum_id, ) = each($psubmit[$ug_id]);
+		$ug_id = key($psubmit);
+		$forum_id = key($psubmit[$ug_id]);
 
 		if (empty($_POST['setting']) || empty($_POST['setting'][$ug_id]) || empty($_POST['setting'][$ug_id][$forum_id]) || !is_array($_POST['setting'][$ug_id][$forum_id]))
 		{
@@ -665,7 +673,7 @@ class acp_permissions
 				}
 
 				// Inherit forums?
-				$forum_id = array_merge($forum_id, array_keys($forum_id_ary));
+				$forum_id = [...$forum_id, ...array_keys($forum_id_ary)];
 			}
 		}
 
@@ -716,8 +724,8 @@ class acp_permissions
 			trigger_error($user->lang['NO_AUTH_OPERATION'] . adm_back_link($this->u_action), E_USER_WARNING);
 		}
 
-		$auth_settings = (isset($_POST['setting'])) ? $_POST['setting'] : array();
-		$auth_roles = (isset($_POST['role'])) ? $_POST['role'] : array();
+		$auth_settings = $_POST['setting'] ?? array();
+		$auth_roles = $_POST['role'] ?? array();
 		$ug_ids = $forum_ids = array();
 
 		// We need to go through the auth settings
@@ -1086,7 +1094,7 @@ class acp_permissions
 		}
 
 		// Take founder status into account, overwriting the default values
-		if ($userdata['user_type'] == USER_FOUNDER && strpos($permission, 'a_') === 0)
+		if ($userdata['user_type'] == USER_FOUNDER && str_starts_with($permission, 'a_'))
 		{
 			$template->assign_block_vars('trace', array(
 				'WHO'			=> $userdata['username'],
