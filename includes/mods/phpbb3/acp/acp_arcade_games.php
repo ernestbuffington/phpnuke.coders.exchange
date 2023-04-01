@@ -9,8 +9,12 @@
 */
 
 /**
-* @ignore
-*/
+ * Applied rules:
+ * AddDefaultValueForUndefinedVariableRector (https://github.com/vimeo/psalm/blob/29b70442b11e3e66113935a2ee22e165a70c74a4/docs/fixing_code.md#possiblyundefinedvariable)
+ * ArraySpreadInsteadOfArrayMergeRector (https://wiki.php.net/rfc/spread_operator_for_array)
+ * StrStartsWithRector (https://wiki.php.net/rfc/add_str_starts_with_and_ends_with_functions)
+ */
+ 
 if (!defined('IN_PHPBB'))
 {
 	exit;
@@ -215,7 +219,8 @@ class acp_arcade_games
 
 	function edit_games()
 	{
-		global $db, $user, $auth, $auth_arcade, $template, $cache, $prefix_phpbb3, $arcade;
+		$update_install_file = null;
+  global $db, $user, $auth, $auth_arcade, $template, $cache, $prefix_phpbb3, $arcade;
 		global $config, $phpEx, $mode;
 
 		$phpbb_admin_path = PHPBB3_ADMIN_DIR;
@@ -561,7 +566,7 @@ class acp_arcade_games
 				// please let me know as this will have to be changed
 				$is_ibpro = false;
 				$game_name = $file_functions->remove_extension($game);
-				if (substr($game_name, 0, 5) == 'game_')
+				if (str_starts_with($game_name, 'game_'))
 				{
 					$is_ibpro = true;
 					$game_name = str_replace('game_', '', $game_name);
@@ -783,7 +788,8 @@ class acp_arcade_games
 
 	function edit_scores()
 	{
-		global $db, $user, $auth, $auth_arcade, $template, $cache, $prefix_phpbb3, $arcade;
+		$user_id_ary = [];
+  global $db, $user, $auth, $auth_arcade, $template, $cache, $prefix_phpbb3, $arcade;
 		global $config, $phpEx, $mode;
 
         $phpbb_root_path = PHPBB3_ROOT_DIR;
@@ -1295,7 +1301,7 @@ class acp_arcade_games
 		}
 
 		// Order and remove the duplicated user ids
-		$user_ids = array_merge(array_unique($user_ids));
+		$user_ids = [...array_unique($user_ids)];
 
 		if (sizeof($user_ids))
 		{
