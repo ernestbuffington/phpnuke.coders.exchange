@@ -81,7 +81,7 @@ class acp_database
 							$schema_data = true;
 						}
 
-						@set_time_limit(1200);
+						set_time_limit(1200);
 
 						$time = time();
 
@@ -191,7 +191,7 @@ class acp_database
 
 						foreach ($available_methods as $type => $module)
 						{
-							if (!@extension_loaded($module))
+							if (!extension_loaded($module))
 							{
 								continue;
 							}
@@ -268,9 +268,9 @@ class acp_database
 								header("Content-Type: $mimetype; name=\"$name\"");
 								header("Content-disposition: attachment; filename=$name");
 
-								@set_time_limit(0);
+								set_time_limit(0);
 
-								$fp = @fopen($file_name, 'rb');
+								$fp = fopen($file_name, 'rb');
 
 								if ($fp !== false)
 								{
@@ -410,7 +410,7 @@ class acp_database
 
 						foreach ($available_methods as $type => $module)
 						{
-							if (!@extension_loaded($module))
+							if (!extension_loaded($module))
 							{
 								continue;
 							}
@@ -418,7 +418,7 @@ class acp_database
 						}
 
 						$dir = PHPBB3_ROOT_DIR . 'store/';
-						$dh = @opendir($dir);
+						$dh = opendir($dir);
 
 						if ($dh)
 						{
@@ -2127,7 +2127,7 @@ class firebird_extractor extends base_extractor
 // get how much space we allow for a chunk of data, very similar to phpMyAdmin's way of doing things ;-) (hey, we only do this for MySQL anyway :P)
 function get_usable_memory()
 {
-	$val = trim(@ini_get('memory_limit'));
+	$val = trim(ini_get('memory_limit'));
 
 	if (preg_match('/(\\d+)([mkg]?)/i', $val, $regs))
 	{
