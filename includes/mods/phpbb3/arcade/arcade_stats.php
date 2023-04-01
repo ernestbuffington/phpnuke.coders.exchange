@@ -9,8 +9,10 @@
 */
 
 /**
-* @ignore
-*/
+ * Applied rules:
+ * TernaryToNullCoalescingRector
+ */
+
 if (!defined('IN_PHPBB'))
 {
 	exit;
@@ -123,8 +125,8 @@ if (($game_id && $user_id) || ($user_id))
 		$row = $db->sql_fetchrow($result);
 		$db->sql_freeresult($result);
 
-		$session_time = (isset($row['session_time'])) ? $row['session_time'] : 0;
-		$session_viewonline = (isset($row['session_viewonline'])) ? $row['session_viewonline'] :	0;
+		$session_time = $row['session_time'] ?? 0;
+		$session_viewonline = $row['session_viewonline'] ?? 0;
 		unset($row);
 
 		$update_time = $config['load_online_time'] * 60;
@@ -365,8 +367,8 @@ else if ($game_id && $game_id > 0)
 		$row = $db->sql_fetchrow($result);
 		$db->sql_freeresult($result);
 
-		$session_time = (isset($row['session_time'])) ? $row['session_time'] : 0;
-		$session_viewonline = (isset($row['session_viewonline'])) ? $row['session_viewonline'] :	0;
+		$session_time = $row['session_time'] ?? 0;
+		$session_viewonline = $row['session_viewonline'] ?? 0;
 		unset($row);
 
 		$update_time = $config['load_online_time'] * 60;
