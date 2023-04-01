@@ -27,7 +27,7 @@ class acp_icons
 	function main($id, $mode)
 	{
 		global $db, $user, $auth, $template, $cache;
-		global $config, $phpbb_root_path, $phpbb_admin_path, $phpEx;
+		global $config, $phpEx;
 
 		$user->add_lang('acp/posting');
 
@@ -69,7 +69,7 @@ class acp_icons
 		// Grab file list of paks and images
 		if ($action == 'edit' || $action == 'add' || $action == 'import')
 		{
-			$imglist = filelist($phpbb_root_path . $img_path, '');
+			$imglist = filelist(PHPBB3_ROOT_DIR . $img_path, '');
 
 			foreach ($imglist as $path => $img_ary)
 			{
@@ -82,7 +82,7 @@ class acp_icons
 
 				foreach ($img_ary as $img)
 				{
-					$img_size = getimagesize($phpbb_root_path . $img_path . '/' . $path . $img);
+					$img_size = getimagesize(PHPBB3_ROOT_DIR . $img_path . '/' . $path . $img);
 
 					if (!$img_size[0] || !$img_size[1] || strlen($img) > 255)
 					{
@@ -96,11 +96,11 @@ class acp_icons
 			}
 			unset($imglist);
 
-			if ($dir = @opendir($phpbb_root_path . $img_path))
+			if ($dir = @opendir(PHPBB3_ROOT_DIR . $img_path))
 			{
 				while (($file = readdir($dir)) !== false)
 				{
-					if (is_file($phpbb_root_path . $img_path . '/' . $file) && preg_match('#\.pak$#i', $file))
+					if (is_file(PHPBB3_ROOT_DIR . $img_path . '/' . $file) && preg_match('#\.pak$#i', $file))
 					{
 						$_paks[] = $file;
 					}
@@ -266,7 +266,7 @@ class acp_icons
 					$template->assign_block_vars('items', array(
 						'IMG'		=> $img,
 						'A_IMG'		=> addslashes($img),
-						'IMG_SRC'	=> $phpbb_root_path . $img_path . '/' . $img,
+						'IMG_SRC'	=> PHPBB3_ROOT_DIR . $img_path . '/' . $img,
 
 						'CODE'		=> ($mode == 'smilies' && isset($img_row['code'])) ? $img_row['code'] : '',
 						'EMOTION'	=> ($mode == 'smilies' && isset($img_row['emotion'])) ? $img_row['emotion'] : '',
@@ -290,9 +290,9 @@ class acp_icons
 						'S_ADD_ORDER_LIST_DISPLAY'		=> $add_order_list . $add_order_lists[1],
 						'S_ADD_ORDER_LIST_UNDISPLAY'	=> $add_order_list . $add_order_lists[0],
 						
-						'IMG_SRC'			=> $phpbb_root_path . $img_path . '/' . $default_row['smiley_url'],
+						'IMG_SRC'			=> PHPBB3_ROOT_DIR . $img_path . '/' . $default_row['smiley_url'],
 						'IMG_PATH'			=> $img_path,
-						'PHPBB_ROOT_PATH'	=> $phpbb_root_path,
+						'PHPBB_ROOT_PATH'	=> PHPBB3_ROOT_DIR,
 
 						'CODE'				=> $default_row['code'],
 						'EMOTION'			=> $default_row['emotion'],
@@ -364,7 +364,7 @@ class acp_icons
 					{
 						if ($image_width[$image] == 0 || $image_height[$image] == 0)
 						{
-							$img_size = getimagesize($phpbb_root_path . $img_path . '/' . $image);
+							$img_size = getimagesize(PHPBB3_ROOT_DIR . $img_path . '/' . $image);
 							$image_width[$image] = $img_size[0];
 							$image_height[$image] = $img_size[1];
 						}
@@ -473,7 +473,7 @@ class acp_icons
 				{
 					$order = 0;
 
-					if (!($pak_ary = @file($phpbb_root_path . $img_path . '/' . $pak)))
+					if (!($pak_ary = @file(PHPBB3_ROOT_DIR . $img_path . '/' . $pak)))
 					{
 						trigger_error($user->lang['PAK_FILE_NOT_READABLE'] . adm_back_link($this->u_action), E_USER_WARNING);
 					}
@@ -848,7 +848,7 @@ class acp_icons
 			$template->assign_block_vars('items', array(
 				'S_SPACER'		=> (!$spacer && !$row['display_on_posting']) ? true : false,
 				'ALT_TEXT'		=> $alt_text,
-				'IMG_SRC'		=> $phpbb_root_path . $img_path . '/' . $row[$fields . '_url'],
+				'IMG_SRC'		=> PHPBB3_ROOT_DIR . $img_path . '/' . $row[$fields . '_url'],
 				'WIDTH'			=> $row[$fields . '_width'],
 				'HEIGHT'		=> $row[$fields . '_height'],
 				'CODE'			=> (isset($row['code'])) ? $row['code'] : '',
