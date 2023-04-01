@@ -29,9 +29,12 @@ class acp_arcade_manage
 	function main($id, $mode)
 	{
 		global $db, $user, $auth, $auth_arcade, $template, $prefix_phpbb3, $cache, $arcade;
-		global $config, $phpbb_admin_path, $phpbb_root_path, $phpEx;
+		global $config, $phpEx;
+		
+		$phpbb_admin_path = PHPBB3_ADMIN_DIR;
+        $phpbb_root_path = PHPBB3_ROOT_DIR;
 
-		include($phpbb_root_path . 'includes/arcade/arcade_common.' . $phpEx);
+		include(PHPBB3_INCLUDE_DIR . 'arcade/arcade_common.' . $phpEx);
 		// Initialize arcade auth
 		$auth_arcade->acl($user->data);
 		// Initialize arcade class
@@ -890,8 +893,8 @@ class acp_arcade_manage
 					'CAT_DATA_LINK'				=> $cat_data['cat_link'],
 					'CAT_IMAGE'					=> $cat_data['cat_image'],
 					'S_FILENAME_OPTIONS'		=> $filename_list,
-					'S_IMAGE_BASEDIR'			=> $phpbb_root_path . $arcade->config['cat_image_path'],
-					'CAT_IMAGE_SRC'				=> ($cat_data['cat_image']) ? $phpbb_root_path . $arcade->config['cat_image_path'] . $cat_data['cat_image'] : $phpbb_root_path . 'images/spacer.gif',
+					'S_IMAGE_BASEDIR'			=> PHPBB3_ROOT_DIR . $arcade->config['cat_image_path'],
+					'CAT_IMAGE_SRC'				=> ($cat_data['cat_image']) ? PHPBB3_ROOT_DIR . $arcade->config['cat_image_path'] . $cat_data['cat_image'] : PHPBB3_ROOT_DIR . 'images/spacer.gif',
 					'ARCADE_LINK'				=> ARCADE_LINK,
 					'ARCADE_CAT'				=> ARCADE_CAT,
 					'ARCADE_CAT_GAMES'			=> ARCADE_CAT_GAMES,
@@ -1060,8 +1063,8 @@ class acp_arcade_manage
 
 				$template->assign_block_vars('cats', array(
 					'FOLDER_IMAGE'		=> $folder_image,
-					'CAT_IMAGE'			=> ($row['cat_image']) ? '<img src="' . $phpbb_root_path . $arcade->config['cat_image_path'] . $row['cat_image'] . '" alt="" />' : '',
-					'CAT_IMAGE_SRC'		=> ($row['cat_image']) ? $phpbb_root_path . $row['cat_image'] : '',
+					'CAT_IMAGE'			=> ($row['cat_image']) ? '<img src="' . PHPBB3_ROOT_DIR . $arcade->config['cat_image_path'] . $row['cat_image'] . '" alt="" />' : '',
+					'CAT_IMAGE_SRC'		=> ($row['cat_image']) ? PHPBB3_ROOT_DIR . $row['cat_image'] : '',
 					'CAT_NAME'			=> $row['cat_name'],
 					'CAT_DESCRIPTION'	=> generate_text_for_display($row['cat_desc'], $row['cat_desc_uid'], $row['cat_desc_bitfield'], $row['cat_desc_options']),
 					'CAT_GAMES'			=> $row['cat_games'],
