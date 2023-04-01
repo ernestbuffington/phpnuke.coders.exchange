@@ -26,9 +26,11 @@ class acp_ban
 	function main($id, $mode)
 	{
 		global $config, $db, $user, $auth, $template, $cache;
-		global $phpbb_root_path, $phpbb_admin_path, $phpEx, $prefix_phpbb3;
+		global $phpEx, $prefix_phpbb3;
+		
+		$phpbb_root_path = PHPBB3_ROOT_DIR;
 
-		include($phpbb_root_path . 'includes/functions_user.' . $phpEx);
+		include(PHPBB3_INCLUDE_DIR . 'functions_user.' . $phpEx);
 
 		$bansubmit	= (isset($_POST['bansubmit'])) ? true : false;
 		$unbansubmit = (isset($_POST['unbansubmit'])) ? true : false;
