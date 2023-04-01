@@ -28,7 +28,7 @@ class acp_board
 	function main($id, $mode)
 	{
 		global $db, $user, $auth, $template;
-		global $config, $phpbb_root_path, $phpbb_admin_path, $phpEx;
+		global $config, $phpEx;
 
 		$user->add_lang(array('acp/board','mods/ban_list'));
 
@@ -174,7 +174,7 @@ class acp_board
 
 			case 'post':
 			//-- mod: Prime Quick Reply -------------------------------------------------//
-				include($phpbb_root_path . 'includes/prime_quick_reply.' . $phpEx);
+				include(PHPBB3_INCLUDE_DIR . 'prime_quick_reply.' . $phpEx);
 				prime_quick_reply_admin();
 //-- end: Prime Quick Reply -------------------------------------------------//
 				$display_vars = array(
@@ -430,7 +430,7 @@ class acp_board
 //-- mod : Contact board administration ------------------------------------------------------------
 //-- add
 			case 'contact_admin':
-				include($phpbb_root_path . 'includes/constants_contact.' . $phpEx);
+				include(PHPBB3_INCLUDE_DIR . 'constants_contact.' . $phpEx);
 				
 				$display_vars = array(
 					'title'	=> 'ACP_CONTACT_ADMIN_SETTINGS',
@@ -522,7 +522,7 @@ class acp_board
 			// Retrieve a list of auth plugins and check their config values
 			$auth_plugins = array();
 
-			$dp = @opendir($phpbb_root_path . 'includes/auth');
+			$dp = @opendir(PHPBB3_INCLUDE_DIR . 'includes/auth');
 
 			if ($dp)
 			{
@@ -542,9 +542,9 @@ class acp_board
 			$old_auth_config = array();
 			foreach ($auth_plugins as $method)
 			{
-				if ($method && file_exists($phpbb_root_path . 'includes/auth/auth_' . $method . '.' . $phpEx))
+				if ($method && file_exists(PHPBB3_INCLUDE_DIR . 'auth/auth_' . $method . '.' . $phpEx))
 				{
-					include_once($phpbb_root_path . 'includes/auth/auth_' . $method . '.' . $phpEx);
+					include_once(PHPBB3_INCLUDE_DIR . 'auth/auth_' . $method . '.' . $phpEx);
 
 					$method = 'acp_' . $method;
 					if (function_exists($method))
@@ -585,7 +585,7 @@ class acp_board
 				$method = basename($cfg_array['auth_method']);
 				if ($method && in_array($method, $auth_plugins))
 				{
-					include_once($phpbb_root_path . 'includes/auth/auth_' . $method . '.' . $phpEx);
+					include_once(PHPBB3_INCLUDE_DIR . 'auth/auth_' . $method . '.' . $phpEx);
 
 					$method = 'init_' . $method;
 					if (function_exists($method))
@@ -683,7 +683,7 @@ class acp_board
 
 			foreach ($auth_plugins as $method)
 			{
-				if ($method && file_exists($phpbb_root_path . 'includes/auth/auth_' . $method . '.' . $phpEx))
+				if ($method && file_exists(PHPBB3_INCLUDE_DIR . 'auth/auth_' . $method . '.' . $phpEx))
 				{
 					$method = 'acp_' . $method;
 					if (function_exists($method))
@@ -708,11 +708,11 @@ class acp_board
 	*/
 	function select_auth_method($selected_method, $key = '')
 	{
-		global $phpbb_root_path, $phpEx;
+		global $phpEx;
 
 		$auth_plugins = array();
 
-		$dp = @opendir($phpbb_root_path . 'includes/auth');
+		$dp = @opendir(PHPBB3_INCLUDE_DIR . 'auth');
 
 		if (!$dp)
 		{
@@ -791,9 +791,9 @@ class acp_board
 	//-- mod: Ban List ----------------------------------------------------------//
 	function select_ban_list_check($value, $key = '')
 	{
-		global $phpEx, $phpbb_root_path;
+		global $phpEx;
 
-		include_once($phpbb_root_path . 'includes/ban_list.' . $phpEx);
+		include_once(PHPBB3_INCLUDE_DIR . 'ban_list.' . $phpEx);
 		$radio_ary = array(ALLOW_BAN_LIST_ALL_USERS => 'ALLOW_BAN_LIST_ALL_USERS', ALLOW_BAN_LIST_MODS_ADMINS => 'ALLOW_BAN_LIST_MODS_ADMINS', ALLOW_BAN_LIST_ADMINS => 'ALLOW_BAN_LIST_ADMINS');
 
 		return h_radio('config[allow_ban_list]', $radio_ary, $value, $key);
