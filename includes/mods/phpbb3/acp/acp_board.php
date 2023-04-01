@@ -18,8 +18,10 @@ if (!defined('IN_PHPBB'))
 }
 
 /**
-* @package acp
-*/
+ * Applied rules:
+ * TernaryToNullCoalescingRector
+ */
+
 class acp_board
 {
 	var $u_action;
@@ -403,7 +405,7 @@ class acp_board
 					)
 				);
 			break;
-            
+
 			/*
  			 * Welcome PM on First Login (WPM)
  			 * By DualFusion
@@ -431,7 +433,7 @@ class acp_board
 //-- add
 			case 'contact_admin':
 				include(PHPBB3_INCLUDE_DIR . 'constants_contact.' . $phpEx);
-				
+
 				$display_vars = array(
 					'title'	=> 'ACP_CONTACT_ADMIN_SETTINGS',
 					'vars'	=> array(
@@ -442,7 +444,7 @@ class acp_board
 						'contact_max_attempts'		=> array('lang' => 'CONTACT_MAX_ATTEMPTS',		'validate' => 'int',			'type' => 'text:3:3', 'explain' => true),
 						'contact_method'			=> array('lang' => 'CONTACT_METHOD',			'validate' => 'int',			'type' => 'custom', 'method' => 'contact_method_select', 'explain' => false),
 						'contact_reasons'			=> array('lang' => 'CONTACT_REASONS',			'validate' => 'string',			'type' => 'textarea:5:40', 'explain' => true),
-						
+
 						'legend2'					=> 'CONTACT_BOT_SETTINGS',
 						'contact_bot_user'			=> array('lang' => 'CONTACT_BOT_USER',			'validate' => 'int',			'type' => 'text:3:3', 'explain' => true),
 						'contact_bot_forum'			=> array('lang' => 'CONTACT_BOT_FORUM',			'validate' => 'int',			'type' => 'custom', 'method' => 'contact_bot_forum_select', 'explain' => true),
@@ -640,7 +642,7 @@ class acp_board
 			{
 				$template->assign_block_vars('options', array(
 					'S_LEGEND'		=> true,
-					'LEGEND'		=> (isset($user->lang[$vars])) ? $user->lang[$vars] : $vars)
+					'LEGEND'		=> $user->lang[$vars] ?? $vars)
 				);
 
 				continue;
@@ -651,11 +653,11 @@ class acp_board
 			$l_explain = '';
 			if ($vars['explain'] && isset($vars['lang_explain']))
 			{
-				$l_explain = (isset($user->lang[$vars['lang_explain']])) ? $user->lang[$vars['lang_explain']] : $vars['lang_explain'];
+				$l_explain = $user->lang[$vars['lang_explain']] ?? $vars['lang_explain'];
 			}
 			else if ($vars['explain'])
 			{
-				$l_explain = (isset($user->lang[$vars['lang'] . '_EXPLAIN'])) ? $user->lang[$vars['lang'] . '_EXPLAIN'] : '';
+				$l_explain = $user->lang[$vars['lang'] . '_EXPLAIN'] ?? '';
 			}
 
 			$content = build_cfg_template($type, $config_key, $this->new_config, $config_key, $vars);
@@ -667,7 +669,7 @@ class acp_board
 
 			$template->assign_block_vars('options', array(
 				'KEY'			=> $config_key,
-				'TITLE'			=> (isset($user->lang[$vars['lang']])) ? $user->lang[$vars['lang']] : $vars['lang'],
+				'TITLE'			=> $user->lang[$vars['lang']] ?? $vars['lang'],
 				'S_EXPLAIN'		=> $vars['explain'],
 				'TITLE_EXPLAIN'	=> $l_explain,
 				'CONTENT'		=> $content,
@@ -787,7 +789,7 @@ class acp_board
 
 		return h_radio('config[referer_validation]', $radio_ary, $value, $key);
 	}
-	
+
 	//-- mod: Ban List ----------------------------------------------------------//
 	function select_ban_list_check($value, $key = '')
 	{
@@ -956,7 +958,7 @@ class acp_board
 		 * Because the preview is for display purposes only.
 		 */
 		global $config, $user;
-		 
+
 		// Switch array keys, with values in welcome pm.
 		$pm_vars = array(
 			'{USERNAME}'		=> $user->data['username'],
@@ -966,7 +968,7 @@ class acp_board
 			'{SITE_NAME}'		=> $config['sitename'],
 			'{SITE_DESC}'		=> $config['site_desc'],
 		);
-		
+
 		$text 			= $config['wpm_message'];
 		$text			= utf8_normalize_nfc($text);
 		$uid			= $bitfield			= $options	= '';	// will be modified by generate_text_for_storage
@@ -975,7 +977,7 @@ class acp_board
 		generate_text_for_storage($text, $uid, $bitfield, $options, $allow_bbcode, $allow_urls, $allow_smilies);
 		$text			= generate_text_for_display($text, $uid, $bitfield, $options);
 		$text			= str_replace(array_keys($pm_vars), array_values($pm_vars), $text);
-		
+
 		return $text;
 	}
 	/* End WPM */
@@ -991,10 +993,10 @@ class acp_board
 			CONTACT_METHOD_POST		=> 'CONTACT_METHOD_POST',
 			CONTACT_METHOD_PM		=> 'CONTACT_METHOD_PM',
 		);
-		
+
 		return h_radio('config[contact_method]', $radio_ary, $value, $key);
 	}
-	
+
 	/**
 	 * Create the selection for the bot forum
 	 */
