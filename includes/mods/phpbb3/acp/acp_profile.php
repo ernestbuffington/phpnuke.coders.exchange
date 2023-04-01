@@ -29,11 +29,11 @@ class acp_profile
 	function main($id, $mode)
 	{
 		global $config, $db, $user, $auth, $template, $cache;
-		global $phpbb_root_path, $phpbb_admin_path, $phpEx, $prefix_phpbb3;
+		global $phpEx, $prefix_phpbb3;
 
-		include($phpbb_root_path . 'includes/functions_posting.' . $phpEx);
-		include($phpbb_root_path . 'includes/functions_user.' . $phpEx);
-		include($phpbb_root_path . 'includes/functions_profile_fields.' . $phpEx);
+		include(PHPBB3_INCLUDE_DIR . 'functions_posting.' . $phpEx);
+		include(PHPBB3_INCLUDE_DIR . 'functions_user.' . $phpEx);
+		include(PHPBB3_INCLUDE_DIR . 'functions_profile_fields.' . $phpEx);
 
 		$user->add_lang(array('ucp', 'acp/profile'));
 		$this->tpl_name = 'acp_profile';
