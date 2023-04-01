@@ -9,8 +9,12 @@
 */
 
 /**
-* @ignore
-*/
+ * Applied rules:
+ * AddDefaultValueForUndefinedVariableRector (https://github.com/vimeo/psalm/blob/29b70442b11e3e66113935a2ee22e165a70c74a4/docs/fixing_code.md#possiblyundefinedvariable)
+ * TernaryToNullCoalescingRector
+ * WrapVariableVariableNameInCurlyBracesRector (https://www.php.net/manual/en/language.variables.variable.php)
+ */
+
 if (!defined('IN_PHPBB'))
 {
 	exit;
@@ -553,7 +557,7 @@ class acp_profile
 
 					if (!$cp->vars[$key] && $action == 'edit')
 					{
-						$cp->vars[$key] = $$key;
+						$cp->vars[$key] = ${$key};
 					}
 					else if ($key == 'l_lang_options' && $field_type == FIELD_BOOL)
 					{
@@ -809,7 +813,7 @@ class acp_profile
 							{
 								$template->assign_block_vars('options.field', array(
 									'L_TITLE'		=> $field_ary['TITLE'],
-									'L_EXPLAIN'		=> (isset($field_ary['EXPLAIN'])) ? $field_ary['EXPLAIN'] : '',
+									'L_EXPLAIN'		=> $field_ary['EXPLAIN'] ?? '',
 									'FIELD'			=> $field_ary['FIELD'])
 								);
 							}
@@ -962,8 +966,8 @@ class acp_profile
 							$lang_options[$lang_id]['fields'][$field] = array(
 								'TITLE'		=> $user->lang['CP_' . strtoupper($field)],
 								'FIELD'		=> '
-											<dd><input class="medium" name="l_' . $field . '[' . $lang_id . '][]" value="' . ((isset($value[$lang_id][0])) ? $value[$lang_id][0] : $var[0]) . '" /> ' . $user->lang['FIRST_OPTION'] . '</dd>
-											<dd><input class="medium" name="l_' . $field . '[' . $lang_id . '][]" value="' . ((isset($value[$lang_id][1])) ? $value[$lang_id][1] : $var[1]) . '" /> ' . $user->lang['SECOND_OPTION'] . '</dd>'
+											<dd><input class="medium" name="l_' . $field . '[' . $lang_id . '][]" value="' . ($value[$lang_id][0] ?? $var[0]) . '" /> ' . $user->lang['FIRST_OPTION'] . '</dd>
+											<dd><input class="medium" name="l_' . $field . '[' . $lang_id . '][]" value="' . ($value[$lang_id][1] ?? $var[1]) . '" /> ' . $user->lang['SECOND_OPTION'] . '</dd>'
 							);
 						break;
 
@@ -987,7 +991,7 @@ class acp_profile
 
 					$lang_options[$lang_id]['fields'][$field] = array(
 						'TITLE'		=> $user->lang['CP_' . strtoupper($field)],
-						'FIELD'		=> ($field_type == 'string') ? '<dd><input class="medium" type="text" name="l_' . $field . '[' . $lang_id . ']" value="' . ((isset($value[$lang_id])) ? $value[$lang_id] : $var) . '" /></dd>' : '<dd><textarea name="l_' . $field . '[' . $lang_id . ']" rows="3" cols="80">' . ((isset($value[$lang_id])) ? $value[$lang_id] : $var) . '</textarea></dd>'
+						'FIELD'		=> ($field_type == 'string') ? '<dd><input class="medium" type="text" name="l_' . $field . '[' . $lang_id . ']" value="' . ($value[$lang_id] ?? $var) . '" /></dd>' : '<dd><textarea name="l_' . $field . '[' . $lang_id . ']" rows="3" cols="80">' . ($value[$lang_id] ?? $var) . '</textarea></dd>'
 					);
 
 					if (isset($user->lang['CP_' . strtoupper($field) . '_EXPLAIN']))
@@ -1006,7 +1010,9 @@ class acp_profile
 	*/
 	function save_profile_field(&$cp, $field_type, $action = 'create')
 	{
-		global $db, $config, $user;
+		$new_field_order = null;
+  $field_ident = null;
+  global $db, $config, $user;
 
 		$field_id = request_var('field_id', 0);
 
@@ -1106,8 +1112,8 @@ class acp_profile
 						'field_id'		=> $field_id,
 						'lang_id'		=> $lang_id,
 						'lang_name'		=> $cp->vars['l_lang_name'][$lang_id],
-						'lang_explain'	=> (isset($cp->vars['l_lang_explain'][$lang_id])) ? $cp->vars['l_lang_explain'][$lang_id] : '',
-						'lang_default_value'	=> (isset($cp->vars['l_lang_default_value'][$lang_id])) ? $cp->vars['l_lang_default_value'][$lang_id] : ''
+						'lang_explain'	=> $cp->vars['l_lang_explain'][$lang_id] ?? '',
+						'lang_default_value'	=> $cp->vars['l_lang_default_value'][$lang_id] ?? ''
 					);
 				}
 			}
@@ -1344,7 +1350,8 @@ class acp_profile
 	*/
 	function add_field_ident($field_ident, $field_type)
 	{
-		global $db;
+		$sql = null;
+  global $db;
 
 		switch ($db->sql_layer)
 		{
