@@ -9,8 +9,10 @@
 */
 
 /**
-* @ignore
-*/
+ * Applied rules:
+ * TernaryToNullCoalescingRector
+ */
+ 
 if (!defined('IN_PHPBB'))
 {
 	exit;
@@ -272,7 +274,7 @@ class acp_icons
 						'EMOTION'	=> ($mode == 'smilies' && isset($img_row['emotion'])) ? $img_row['emotion'] : '',
 
 						'S_ID'				=> (isset($img_row[$fields . '_id'])) ? true : false,
-						'ID'				=> (isset($img_row[$fields . '_id'])) ? $img_row[$fields . '_id'] : 0,
+						'ID'				=> $img_row[$fields . '_id'] ?? 0,
 						'WIDTH'				=> (!empty($img_row[$fields .'_width'])) ? $img_row[$fields .'_width'] : $img_row['width'],
 						'HEIGHT'			=> (!empty($img_row[$fields .'_height'])) ? $img_row[$fields .'_height'] : $img_row['height'],
 						'POSTING_CHECKED'	=> (!empty($img_row['display_on_posting']) || $action == 'add') ? ' checked="checked"' : '',
@@ -851,8 +853,8 @@ class acp_icons
 				'IMG_SRC'		=> PHPBB3_ROOT_DIR . $img_path . '/' . $row[$fields . '_url'],
 				'WIDTH'			=> $row[$fields . '_width'],
 				'HEIGHT'		=> $row[$fields . '_height'],
-				'CODE'			=> (isset($row['code'])) ? $row['code'] : '',
-				'EMOTION'		=> (isset($row['emotion'])) ? $row['emotion'] : '',
+				'CODE'			=> $row['code'] ?? '',
+				'EMOTION'		=> $row['emotion'] ?? '',
 				'U_EDIT'		=> $this->u_action . '&amp;action=edit&amp;id=' . $row[$fields . '_id'],
 				'U_DELETE'		=> $this->u_action . '&amp;action=delete&amp;id=' . $row[$fields . '_id'],
 				'U_MOVE_UP'		=> $this->u_action . '&amp;action=move_up&amp;id=' . $row[$fields . '_id'],
