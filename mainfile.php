@@ -279,6 +279,7 @@ define('NUKE_BLOCKS_DIR', NUKE_BASE_DIR . 'blocks/');
 define('NUKE_CSS_DIR', 'includes/css/');
 define('NUKE_IMAGES_DIR', NUKE_BASE_DIR . 'images/');
 define('NUKE_INCLUDE_DIR', NUKE_BASE_DIR . 'includes/');
+define('PHPBB3_ROOT_DIR', NUKE_BASE_DIR . 'modules/phpBB3/');
 define('PHPBB3_INCLUDE_DIR', NUKE_BASE_DIR . 'includes/mods/phpbb3/');
 define('PHPBB3_ADMIN_DIR', NUKE_BASE_DIR . 'modules/phpBB3/adm/');
 define('NUKE_JQUERY_INCLUDE_DIR', 'includes/js/');
