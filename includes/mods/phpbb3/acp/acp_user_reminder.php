@@ -95,7 +95,9 @@ class acp_user_reminder
 
 	function configuration()
 	{
-		global $template, $user, $auth, $phpbb_root_path, $phpEx, $config;
+		global $template, $user, $auth, $phpEx, $config;
+
+        $phpbb_root_path = PHPBB3_ROOT_DIR;
 
 		$submit 	= (isset($_POST['submit'])) ? true : false;
 
@@ -444,7 +446,9 @@ class acp_user_reminder
 
 	function dropdown_action($action, $mark, $case)
 	{
-		global $user, $auth, $phpbb_root_path, $db, $phpEx, $config;
+		global $user, $auth, $db, $phpEx, $config;
+
+        $phpbb_root_path = PHPBB3_INCLUDE_DIR;
 		
 		if ($case == 'user_reminder_protected_users')
 		{
@@ -501,7 +505,7 @@ class acp_user_reminder
 					
 					if ( !function_exists('user_delete'))
 					{
-						include($phpbb_root_path . 'includes/functions_user.' . $phpEx);
+						include($phpbb_root_path . 'functions_user.' . $phpEx);
 					}
 					if (sizeof($mark))
 					{
@@ -547,7 +551,7 @@ class acp_user_reminder
 	
 								if(!function_exists('send_reminder_emails'))
 								{
-	    							include($phpbb_root_path . 'includes/functions_user_reminder.' . $phpEx);
+	    							include($phpbb_root_path . 'functions_user_reminder.' . $phpEx);
 								}
 	    						send_reminder_emails($user_list_ary, 'user_reminder_delete_notify');
 	
@@ -679,7 +683,7 @@ class acp_user_reminder
 		
 									if(!function_exists('send_reminder_emails'))
 									{
-		    							include($phpbb_root_path . 'includes/functions_user_reminder.' . $phpEx);
+		    							include($phpbb_root_path . 'functions_user_reminder.' . $phpEx);
 									}
 		    						send_reminder_emails($user_list_ary, (string) $case);
 								
@@ -782,7 +786,7 @@ class acp_user_reminder
 					
 					if ( !function_exists('user_delete'))
 					{
-						include($phpbb_root_path . 'includes/functions_user.' . $phpEx);
+						include($phpbb_root_path . 'functions_user.' . $phpEx);
 					}
 					if (sizeof($mark))
 					{
@@ -828,7 +832,7 @@ class acp_user_reminder
 	
 								if(!function_exists('send_reminder_emails'))
 								{
-	    							include($phpbb_root_path . 'includes/functions_user_reminder.' . $phpEx);
+	    							include($phpbb_root_path . 'functions_user_reminder.' . $phpEx);
 								}
 	    						send_reminder_emails($user_list_ary, 'user_reminder_delete_notify');
 	
