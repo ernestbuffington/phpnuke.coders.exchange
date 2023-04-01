@@ -103,10 +103,10 @@ if (version_compare(PHP_VERSION, '6.0.0-dev', '>='))
 }
 else
 {
-	@set_magic_quotes_runtime(0);
+	set_magic_quotes_runtime(0);
 
 	// Be paranoid with passed vars
-	if (@ini_get('register_globals') == '1' || strtolower(@ini_get('register_globals')) == 'on' || !function_exists('ini_get'))
+	if (ini_get('register_globals') == '1' || strtolower(ini_get('register_globals')) == 'on' || !function_exists('ini_get'))
 	{
 		deregister_globals();
 	}
@@ -178,7 +178,7 @@ if (!empty($load_extensions))
 
 	foreach ($load_extensions as $extension)
 	{
-		@dl(trim($extension));
+		dl(trim($extension));
 	}
 }
 
@@ -221,7 +221,7 @@ $phpbb_hook = new phpbb_hook(array('exit_handler', 'phpbb_user_session_handler',
 
 foreach ($cache->obtain_hooks() as $hook)
 {
-	@include($phpbb_root_path . 'includes/hooks/' . $hook . '.' . $phpEx);
+	include($phpbb_root_path . 'includes/hooks/' . $hook . '.' . $phpEx);
 }
 
 ?>
