@@ -9,8 +9,12 @@
 */
 
 /**
-* @ignore
-*/
+ * Applied rules:
+ * AddDefaultValueForUndefinedVariableRector (https://github.com/vimeo/psalm/blob/29b70442b11e3e66113935a2ee22e165a70c74a4/docs/fixing_code.md#possiblyundefinedvariable)
+ * TernaryToNullCoalescingRector
+ * StrStartsWithRector (https://wiki.php.net/rfc/add_str_starts_with_and_ends_with_functions)
+ */
+ 
 if (!defined('IN_PHPBB'))
 {
 	exit;
@@ -31,7 +35,8 @@ class acp_language
 
 	function main($id, $mode)
 	{
-		global $config, $db, $user, $auth, $template, $cache;
+		$test_connection = null;
+  global $config, $db, $user, $auth, $template, $cache;
 		global $phpEx, $prefix_phpbb3;
 		global $safe_mode, $file_uploads;
         
@@ -244,7 +249,7 @@ class acp_language
 					case 'mods':
 						// Get mod files
 						$mods_files = filelist(PHPBB3_ROOT_DIR . 'language/' . $row['lang_iso'], 'mods', $phpEx);
-						$mods_files = (isset($mods_files['mods/'])) ? $mods_files['mods/'] : array();
+						$mods_files = $mods_files['mods/'] ?? array();
 
 						if (!in_array($this->language_file, $mods_files))
 						{
@@ -304,7 +309,7 @@ class acp_language
 					$name = (($this->language_directory) ? $this->language_directory . '_' : '') . $this->language_file;
 					$header = str_replace(array('{FILENAME}', '{LANG_NAME}', '{CHANGED}', '{AUTHOR}'), array($name, $row['lang_english_name'], date('Y-m-d', time()), $row['lang_author']), $this->language_file_header);
 
-					if (strpos($this->language_file, 'help_') === 0)
+					if (str_starts_with($this->language_file, 'help_'))
 					{
 						// Help File
 						$header .= '$help = array(' . "\n";
@@ -458,7 +463,7 @@ class acp_language
 
 				// Get mod files
 				$mods_files = filelist(PHPBB3_ROOT_DIR . 'language/' . $config['default_lang'], 'mods', $phpEx);
-				$mods_files = (isset($mods_files['mods/'])) ? $mods_files['mods/'] : array();
+				$mods_files = $mods_files['mods/'] ?? array();
 
 				// Check if our current filename matches the files
 				switch ($this->language_directory)
@@ -630,7 +635,7 @@ class acp_language
 				$s_lang_options = '<option value="|common.' . $phpEx . '" class="sep">' . $user->lang['LANGUAGE_FILES'] . '</option>';
 				foreach ($this->main_files as $file)
 				{
-					if (strpos($file, 'help_') === 0)
+					if (str_starts_with($file, 'help_'))
 					{
 						continue;
 					}
@@ -645,7 +650,7 @@ class acp_language
 				$s_lang_options .= '<option value="|common.' . $phpEx . '" class="sep">' . $user->lang['HELP_FILES'] . '</option>';
 				foreach ($this->main_files as $file)
 				{
-					if (strpos($file, 'help_') !== 0)
+					if (!str_starts_with($file, 'help_'))
 					{
 						continue;
 					}
@@ -681,7 +686,7 @@ class acp_language
 				$lang = array();
 
 				$is_email_file = ($this->language_directory == 'email') ? true : false;
-				$is_help_file = (strpos($this->language_file, 'help_') === 0) ? true : false;
+				$is_help_file = (str_starts_with($this->language_file, 'help_')) ? true : false;
 
 				$file_from_store = (file_exists(PHPBB3_ROOT_DIR . $this->get_filename($lang_iso, $this->language_directory, $this->language_file, true, true))) ? true : false;
 				$no_store_filename = $this->get_filename($lang_iso, $this->language_directory, $this->language_file);
@@ -874,7 +879,7 @@ class acp_language
 								$image_height = $image_width = 0;
 							}
 
-							if (strpos($image_name, 'img_') === 0 && $image_filename)
+							if (str_starts_with($image_name, 'img_') && $image_filename)
 							{
 								$image_name = substr($image_name, 4);
 								if (in_array($image_name, $valid_localized))
@@ -1017,7 +1022,7 @@ class acp_language
 
 				// Get mod files
 				$mod_files = filelist(PHPBB3_ROOT_DIR . 'language/' . $row['lang_iso'], 'mods', $phpEx);
-				$mod_files = (isset($mod_files['mods/'])) ? $mod_files['mods/'] : array();
+				$mod_files = $mod_files['mods/'] ?? array();
 
 				// Add main files
 				$this->add_to_archive($compress, $this->main_files, $row['lang_iso']);
@@ -1097,7 +1102,7 @@ class acp_language
 				'TAG'				=> $tagstyle,
 				'LOCAL_NAME'		=> $row['lang_local_name'],
 				'ISO'				=> $row['lang_iso'],
-				'USED_BY'			=> (isset($lang_count[$row['lang_iso']])) ? $lang_count[$row['lang_iso']] : 0,
+				'USED_BY'			=> $lang_count[$row['lang_iso']] ?? 0,
 			));
 		}
 		$db->sql_freeresult($result);
