@@ -27,8 +27,11 @@ class acp_forums
 	function main($id, $mode)
 	{
 		global $db, $user, $auth, $template, $cache;
-		global $config, $phpbb_admin_path, $phpbb_root_path, $phpEx;
-
+		global $config, $phpEx;
+        
+		$phpbb_admin_path = PHPBB3_ADMIN_DIR;
+		$phpbb_root_path = PHPBB3_ROOT_DIR;
+		
 		$user->add_lang('acp/forums');
 		$this->tpl_name = 'acp_forums';
 		$this->page_title = 'ACP_MANAGE_FORUMS';
@@ -1629,9 +1632,9 @@ class acp_forums
 	*/
 	function delete_forum_content($forum_id)
 	{
-		global $db, $config, $phpbb_root_path, $phpEx;
+		global $db, $config, $phpEx;
 
-		include_once($phpbb_root_path . 'includes/functions_posting.' . $phpEx);
+		include_once(PHPBB3_INCLUDE_DIR . 'functions_posting.' . $phpEx);
 
 		$db->sql_transaction('begin');
 
