@@ -26,7 +26,7 @@ class acp_php_info
 	function main($id, $mode)
 	{
 		global $db, $user, $auth, $template;
-		global $config, $phpbb_root_path, $phpbb_admin_path, $phpEx;
+		global $config, $phpEx;
 
 		if ($mode != 'info')
 		{
@@ -37,7 +37,7 @@ class acp_php_info
 		$this->page_title = 'ACP_PHP_INFO';
 		
 		ob_start();
-		@phpinfo(INFO_GENERAL | INFO_CONFIGURATION | INFO_MODULES | INFO_VARIABLES);
+		phpinfo(INFO_GENERAL | INFO_CONFIGURATION | INFO_MODULES | INFO_VARIABLES);
 		$phpinfo = ob_get_clean();
 
 		$phpinfo = trim($phpinfo);
