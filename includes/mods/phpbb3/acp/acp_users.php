@@ -9,8 +9,15 @@
 */
 
 /**
-* @ignore
-*/
+ * Applied rules:
+ * PregReplaceEModifierRector (https://wiki.php.net/rfc/remove_preg_replace_eval_modifier https://stackoverflow.com/q/19245205/1348344)
+ * AddDefaultValueForUndefinedVariableRector (https://github.com/vimeo/psalm/blob/29b70442b11e3e66113935a2ee22e165a70c74a4/docs/fixing_code.md#possiblyundefinedvariable)
+ * Php4ConstructorRector (https://wiki.php.net/rfc/remove_php4_constructors)
+ * TernaryToNullCoalescingRector
+ * ClosureToArrowFunctionRector (https://wiki.php.net/rfc/arrow_functions_v2)
+ * ArraySpreadInsteadOfArrayMergeRector (https://wiki.php.net/rfc/spread_operator_for_array)
+ */
+ 
 if (!defined('IN_PHPBB'))
 {
 	exit;
@@ -24,14 +31,15 @@ class acp_users
 	var $u_action;
 	var $p_master;
 
-	function acp_users(&$p_master)
+	function __construct(&$p_master)
 	{
 		$this->p_master = &$p_master;
 	}
 
 	function main($id, $mode)
 	{
-		global $config, $db, $user, $auth, $template, $cache;
+		$message_parser = null;
+  global $config, $db, $user, $auth, $template, $cache;
 		global $phpEx, $prefix_phpbb3, $file_uploads;
         
 		$phpbb_admin_path = PHPBB3_ADMIN_DIR;
@@ -633,7 +641,7 @@ class acp_users
 							}
 
 							$forum_id_ary = array_unique($forum_id_ary);
-							$topic_id_ary = array_unique(array_merge(array_keys($topic_id_ary), $new_topic_id_ary));
+							$topic_id_ary = array_unique([...array_keys($topic_id_ary), ...$new_topic_id_ary]);
 
 							if (sizeof($topic_id_ary))
 							{
@@ -829,7 +837,7 @@ class acp_users
 					}
 
 					// Replace "error" strings with their real, localised form
-					$error = preg_replace('#^([A-Z_]+)$#e', "(!empty(\$user->lang['\\1'])) ? \$user->lang['\\1'] : '\\1'", $error);
+					$error = preg_replace_callback('#^([A-Z_]+)$#', fn($matches) => !empty($user->lang[$matches[1]]) ? $user->lang[$matches[1]] : $matches[1], $error);
 				}
 
 				if ($user_id == $user->data['user_id'])
@@ -873,8 +881,8 @@ class acp_users
 					$row = $db->sql_fetchrow($result);
 					$db->sql_freeresult($result);
 
-					$user_row['session_time'] = (isset($row['session_time'])) ? $row['session_time'] : 0;
-					$user_row['session_viewonline'] = (isset($row['session_viewonline'])) ? $row['session_viewonline'] : 0;
+					$user_row['session_time'] = $row['session_time'] ?? 0;
+					$user_row['session_viewonline'] = $row['session_viewonline'] ?? 0;
 					unset($row);
 				}
 
@@ -1210,7 +1218,7 @@ class acp_users
 					}
 
 					// Replace "error" strings with their real, localised form
-					$error = preg_replace('#^([A-Z_]+)$#e', "(!empty(\$user->lang['\\1'])) ? \$user->lang['\\1'] : '\\1'", $error);
+					$error = preg_replace_callback('#^([A-Z_]+)$#', fn($matches) => !empty($user->lang[$matches[1]]) ? $user->lang[$matches[1]] : $matches[1], $error);
 				}
 
 				$s_birthday_day_options = '<option value="0"' . ((!$data['bday_day']) ? ' selected="selected"' : '') . '>--</option>';
@@ -1377,7 +1385,7 @@ class acp_users
 					}
 
 					// Replace "error" strings with their real, localised form
-					$error = preg_replace('#^([A-Z_]+)$#e', "(!empty(\$user->lang['\\1'])) ? \$user->lang['\\1'] : '\\1'", $error);
+					$error = preg_replace_callback('#^([A-Z_]+)$#', fn($matches) => !empty($user->lang[$matches[1]]) ? $user->lang[$matches[1]] : $matches[1], $error);
 				}
 
 				$dateformat_options = '';
@@ -1503,7 +1511,7 @@ class acp_users
 					}
 
 					// Replace "error" strings with their real, localised form
-					$error = preg_replace('#^([A-Z_]+)$#e', "(!empty(\$user->lang['\\1'])) ? \$user->lang['\\1'] : '\\1'", $error);
+					$error = preg_replace_callback('#^([A-Z_]+)$#', fn($matches) => !empty($user->lang[$matches[1]]) ? $user->lang[$matches[1]] : $matches[1], $error);
 				}
 
 				// Generate users avatar
@@ -1671,7 +1679,7 @@ class acp_users
 					}
 
 					// Replace "error" strings with their real, localised form
-					$error = preg_replace('#^([A-Z_]+)$#e', "(!empty(\$user->lang['\\1'])) ? \$user->lang['\\1'] : '\\1'", $error);
+					$error = preg_replace_callback('#^([A-Z_]+)$#', fn($matches) => !empty($user->lang[$matches[1]]) ? $user->lang[$matches[1]] : $matches[1], $error);
 				}
 
 				$signature_preview = '';
