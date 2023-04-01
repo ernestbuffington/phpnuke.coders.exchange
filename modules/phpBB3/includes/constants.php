@@ -179,10 +179,10 @@ define('REFERER_VALIDATE_HOST', 1);
 define('REFERER_VALIDATE_PATH', 2);
 
 // phpbb_chmod() permissions
-@define('CHMOD_ALL', 7);
-@define('CHMOD_READ', 4);
-@define('CHMOD_WRITE', 2);
-@define('CHMOD_EXECUTE', 1);
+define('CHMOD_ALL', 7);
+define('CHMOD_READ', 4);
+define('CHMOD_WRITE', 2);
+define('CHMOD_EXECUTE', 1);
 
 // Additional constants
 define('VOTE_CONVERTED', 127);
@@ -254,7 +254,7 @@ define('TOPICS_POSTED_TABLE',		$prefix_phpbb3 . 'topics_posted');
 define('TOPICS_TRACK_TABLE',		$prefix_phpbb3 . 'topics_track');
 define('TOPICS_WATCH_TABLE',		$prefix_phpbb3 . 'topics_watch');
 define('USER_GROUP_TABLE',			$prefix_phpbb3 . 'user_group');
-define('USERS_TABLE',				$prefix_phpbb3 . 'users');
+define('USERS_TABLE',				  $user_prefix . 'users');
 define('WARNINGS_TABLE',			$prefix_phpbb3 . 'warnings');
 define('WORDS_TABLE',				$prefix_phpbb3 . 'words');
 define('ZEBRA_TABLE',				$prefix_phpbb3 . 'zebra');
@@ -292,8 +292,8 @@ define('GALLERY_REPORTS_TABLE',			$prefix_phpbb3 . 'gallery_reports');
 define('GALLERY_ROLES_TABLE',			$prefix_phpbb3 . 'gallery_roles');
 define('GALLERY_USERS_TABLE',			$prefix_phpbb3 . 'gallery_users');
 define('GALLERY_WATCH_TABLE',			$prefix_phpbb3 . 'gallery_watch');
-define('WWH_TABLE',					$prefix_phpbb3 . 'wwh');
-define('SHOUTBOX_TABLE', $prefix_phpbb3 . 'shoutbox');
+define('WWH_TABLE',					    $prefix_phpbb3 . 'wwh');
+define('SHOUTBOX_TABLE',                $prefix_phpbb3 . 'shoutbox');
 //-- mod : Genders ------------------------------------------------------------
 //-- add
 define('GENDER_F', 2); // Ladies first ;)
