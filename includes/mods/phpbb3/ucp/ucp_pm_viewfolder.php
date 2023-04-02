@@ -9,8 +9,11 @@
 */
 
 /**
-* @ignore
-*/
+ * Applied rules:
+ * AddDefaultValueForUndefinedVariableRector (https://github.com/vimeo/psalm/blob/29b70442b11e3e66113935a2ee22e165a70c74a4/docs/fixing_code.md#possiblyundefinedvariable)
+ * StringifyStrNeedlesRector (https://wiki.php.net/rfc/deprecations_php_7_3#string_search_functions_with_integer_needle)
+ */
+
 if (!defined('IN_PHPBB'))
 {
 	exit;
@@ -22,8 +25,14 @@ if (!defined('IN_PHPBB'))
 */
 function view_folder($id, $mode, $folder_id, $folder)
 {
+	$mimetype = null;
+    $filetype = null;
+    $string = null;
+    
 	global $user, $template, $auth, $db, $cache;
-	global $phpbb_root_path, $config, $phpEx;
+	global $config, $phpEx;
+	
+	$phpbb_root_path = PHPBB3_ROOT_DIR;
 
 	$submit_export = (isset($_POST['submit_export'])) ? true : false;
 
@@ -280,7 +289,7 @@ function view_folder($id, $mode, $folder_id, $folder)
 			{
 				$row = &$folder_info['rowset'][$message_id];
 
-				include_once($phpbb_root_path . 'includes/functions_posting.' . $phpEx);
+				include_once(PHPBB3_INCLUDE_DIR . 'functions_posting.' . $phpEx);
 
 				$sql = 'SELECT p.message_text, p.bbcode_uid
 					FROM ' . PRIVMSGS_TO_TABLE . ' t, ' . PRIVMSGS_TABLE . ' p, ' . USERS_TABLE . ' u
@@ -375,7 +384,7 @@ function view_folder($id, $mode, $folder_id, $folder)
 						{
 							$cell = str_replace($enclosure, $enclosure . $enclosure, $text);
 
-							if (strpos($cell, $enclosure) !== false || strpos($cell, $delimiter) !== false || strpos($cell, $newline) !== false)
+							if (strpos($cell, (string) $enclosure) !== false || strpos($cell, (string) $delimiter) !== false || strpos($cell, $newline) !== false)
 							{
 								$string .= $enclosure . $text . $enclosure . $delimiter;
 							}
