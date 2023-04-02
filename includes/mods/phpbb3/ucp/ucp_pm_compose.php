@@ -9,8 +9,11 @@
 */
 
 /**
-* @ignore
-*/
+ * Applied rules:
+ * AddDefaultValueForUndefinedVariableRector (https://github.com/vimeo/psalm/blob/29b70442b11e3e66113935a2ee22e165a70c74a4/docs/fixing_code.md#possiblyundefinedvariable)
+ * TernaryToNullCoalescingRector
+ */
+
 if (!defined('IN_PHPBB'))
 {
 	exit;
@@ -22,16 +25,33 @@ if (!defined('IN_PHPBB'))
 */
 function compose_pm($id, $mode, $action)
 {
+	$group_options = null;
+    $message_time = null;
+    $folder_id = null;
+    $post = [];
+    $message_attachment = null;
+    $check_value = null;
+    $enable_bbcode = null;
+    $enable_urls = null;
+    $enable_smilies = null;
+    $enable_sig = null;
+    $subject = null;
+    $bbcode_uid = null;
+    $message_subject = null;
+    $quote_username = null;
+    
 	global $template, $db, $auth, $user;
-	global $phpbb_root_path, $phpEx, $config;
+	global $phpEx, $config;
+	
+	$phpbb_root_path = PHPBB3_ROOT_DIR;
 
 	// Damn php and globals - i know, this is horrible
 	// Needed for handle_message_list_actions()
 	global $refresh, $submit, $preview;
 
-	include($phpbb_root_path . 'includes/functions_posting.' . $phpEx);
-	include($phpbb_root_path . 'includes/functions_display.' . $phpEx);
-	include($phpbb_root_path . 'includes/message_parser.' . $phpEx);
+	include(PHPBB3_INCLUDE_DIR . 'functions_posting.' . $phpEx);
+	include(PHPBB3_INCLUDE_DIR . 'functions_display.' . $phpEx);
+	include(PHPBB3_INCLUDE_DIR . 'message_parser.' . $phpEx);
 
 	if (!$action)
 	{
@@ -47,7 +67,7 @@ function compose_pm($id, $mode, $action)
 	$lastclick		= request_var('lastclick', 0);
 
 	// Do NOT use request_var or specialchars here
-	$address_list	= isset($_REQUEST['address_list']) ? $_REQUEST['address_list'] : array();
+	$address_list	= $_REQUEST['address_list'] ?? array();
 
 	if (!is_array($address_list))
 	{
@@ -281,8 +301,8 @@ function compose_pm($id, $mode, $action)
 		}
 
 		$msg_id			= (int) $post['msg_id'];
-		$folder_id		= (isset($post['folder_id'])) ? $post['folder_id'] : 0;
-		$message_text	= (isset($post['message_text'])) ? $post['message_text'] : '';
+		$folder_id		= $post['folder_id'] ?? 0;
+		$message_text	= $post['message_text'] ?? '';
 
 		if ((!$post['author_id'] || ($post['author_id'] == ANONYMOUS && $action != 'delete')) && $msg_id)
 		{
@@ -298,15 +318,15 @@ function compose_pm($id, $mode, $action)
 		if ($action != 'delete')
 		{
 			$enable_urls = $post['enable_magic_url'];
-			$enable_sig = (isset($post['enable_sig'])) ? $post['enable_sig'] : 0;
+			$enable_sig = $post['enable_sig'] ?? 0;
 
-			$message_attachment = (isset($post['message_attachment'])) ? $post['message_attachment'] : 0;
+			$message_attachment = $post['message_attachment'] ?? 0;
 			$message_subject = $post['message_subject'];
 			$message_time = $post['message_time'];
 			$bbcode_uid = $post['bbcode_uid'];
 
-			$quote_username = (isset($post['quote_username'])) ? $post['quote_username'] : '';
-			$icon_id = (isset($post['icon_id'])) ? $post['icon_id'] : 0;
+			$quote_username = $post['quote_username'] ?? '';
+			$icon_id = $post['icon_id'] ?? 0;
 
 			if (($action == 'reply' || $action == 'quote' || $action == 'quotepost') && !sizeof($address_list) && !$refresh && !$submit && !$preview)
 			{
@@ -982,7 +1002,7 @@ function compose_pm($id, $mode, $action)
 
 	// Build hidden address list
 	$s_hidden_address_field = build_address_field($address_list);
-$bbcode_checked		= (isset($enable_bbcode)) ? !$enable_bbcode : (($config['allow_bbcode'] && $auth->acl_get('u_pm_bbcode')) ? !$user->optionget('bbcode') : 1);
+    $bbcode_checked		= (isset($enable_bbcode)) ? !$enable_bbcode : (($config['allow_bbcode'] && $auth->acl_get('u_pm_bbcode')) ? !$user->optionget('bbcode') : 1);
 	$smilies_checked	= (isset($enable_smilies)) ? !$enable_smilies : (($config['allow_smilies'] && $auth->acl_get('u_pm_smilies')) ? !$user->optionget('smilies') : 1);
 	$urls_checked		= (isset($enable_urls)) ? !$enable_urls : 0;
 	$sig_checked		= $enable_sig;
@@ -1022,7 +1042,7 @@ $bbcode_checked		= (isset($enable_bbcode)) ? !$enable_bbcode : (($config['allow_
 	$s_hidden_fields .= (isset($check_value)) ? '<input type="hidden" name="status_switch" value="' . $check_value . '" />' : '';
 	$s_hidden_fields .= ($draft_id || isset($_REQUEST['draft_loaded'])) ? '<input type="hidden" name="draft_loaded" value="' . ((isset($_REQUEST['draft_loaded'])) ? intval($_REQUEST['draft_loaded']) : $draft_id) . '" />' : '';
 
-	$form_enctype = (@ini_get('file_uploads') == '0' || strtolower(@ini_get('file_uploads')) == 'off' || !$config['allow_pm_attach'] || !$auth->acl_get('u_pm_attach')) ? '' : ' enctype="multipart/form-data"';
+	$form_enctype = (ini_get('file_uploads') == '0' || strtolower(ini_get('file_uploads')) == 'off' || !$config['allow_pm_attach'] || !$auth->acl_get('u_pm_attach')) ? '' : ' enctype="multipart/form-data"';
 
 	// Start assigning vars for main posting page ...
 	$template->assign_vars(array(
@@ -1030,7 +1050,7 @@ $bbcode_checked		= (isset($enable_bbcode)) ? !$enable_bbcode : (($config['allow_
 		'L_ICON'					=> $user->lang['PM_ICON'],
 		'L_MESSAGE_BODY_EXPLAIN'	=> (intval($config['max_post_chars'])) ? sprintf($user->lang['MESSAGE_BODY_EXPLAIN'], intval($config['max_post_chars'])) : '',
 
-		'SUBJECT'				=> (isset($message_subject)) ? $message_subject : '',
+		'SUBJECT'				=> $message_subject ?? '',
 		'MESSAGE'				=> $message_text,
 		'BBCODE_STATUS'			=> ($bbcode_status) ? sprintf($user->lang['BBCODE_IS_ON'], '<a href="' . append_sid("{$phpbb_root_path}faq.$phpEx", 'mode=bbcode') . '">', '</a>') : sprintf($user->lang['BBCODE_IS_OFF'], '<a href="' . append_sid("{$phpbb_root_path}faq.$phpEx", 'mode=bbcode') . '">', '</a>'),
 		'IMG_STATUS'			=> ($img_status) ? $user->lang['IMAGES_ARE_ON'] : $user->lang['IMAGES_ARE_OFF'],
