@@ -9,8 +9,11 @@
 */
 
 /**
-* @ignore
-*/
+ * Applied rules:
+ * Php4ConstructorRector (https://wiki.php.net/rfc/remove_php4_constructors)
+ * StrStartsWithRector (https://wiki.php.net/rfc/add_str_starts_with_and_ends_with_functions)
+ */
+
 if (!defined('IN_PHPBB'))
 {
 	exit;
@@ -29,7 +32,7 @@ class compress
 	*/
 	function add_file($src, $src_rm_prefix = '', $src_add_prefix = '', $skip_files = '')
 	{
-		global $phpbb_root_path;
+		$phpbb_root_path = PHPBB3_ROOT_DIR;
 
 		$skip_files = explode(',', $skip_files);
 
@@ -38,7 +41,7 @@ class compress
 		// Add src prefix
 		$src_path = ($src_add_prefix) ? ($src_add_prefix . ((substr($src_add_prefix, -1) != '/') ? '/' : '') . $src_path) : $src_path;
 		// Remove initial "/" if present
-		$src_path = (substr($src_path, 0, 1) == '/') ? substr($src_path, 1) : $src_path;
+		$src_path = (str_starts_with($src_path, '/')) ? substr($src_path, 1) : $src_path;
 
 		if (is_file($phpbb_root_path . $src))
 		{
@@ -63,7 +66,7 @@ class compress
 				if ($path)
 				{
 					// Same as for src_path
-					$path = (substr($path, 0, 1) == '/') ? substr($path, 1) : $path;
+					$path = (str_starts_with($path, '/')) ? substr($path, 1) : $path;
 					$path = ($path && substr($path, -1) != '/') ? $path . '/' : $path;
 
 					$this->data("$src_path$path", '', true, stat("$phpbb_root_path$src$path"));
@@ -117,7 +120,7 @@ class compress
 
 		foreach ($available_methods as $type => $module)
 		{
-			if (!@extension_loaded($module))
+			if (!extension_loaded($module))
 			{
 				continue;
 			}
@@ -153,9 +156,9 @@ class compress_zip extends compress
 	/**
 	* Constructor
 	*/
-	function compress_zip($mode, $file)
+	function __construct($mode, $file)
 	{
-		return $this->fp = @fopen($file, $mode . 'b');
+		return $this->fp = fopen($file, $mode . 'b');
 	}
 
 	/**
@@ -223,7 +226,7 @@ class compress_zip extends compress
 								$str = (!empty($str)) ? $str . '/' . $folder : $folder;
 								if (!is_dir($str))
 								{
-									if (!@mkdir($str, 0777))
+									if (!mkdir($str, 0777))
 									{
 										trigger_error("Could not create directory $folder");
 									}
@@ -251,7 +254,7 @@ class compress_zip extends compress
 							$str = (!empty($str)) ? $str . '/' . $folder : $folder;
 							if (!is_dir($str))
 							{
-								if (!@mkdir($str, 0777))
+								if (!mkdir($str, 0777))
 								{
 									trigger_error("Could not create directory $folder");
 								}
@@ -439,7 +442,7 @@ class compress_zip extends compress
 	*/
 	function download($filename, $download_name = false)
 	{
-		global $phpbb_root_path;
+		$phpbb_root_path = PHPBB3_ROOT_DIR;
 
 		if ($download_name === false)
 		{
@@ -452,7 +455,7 @@ class compress_zip extends compress
 		header("Content-Type: $mimetype; name=\"$download_name.zip\"");
 		header("Content-disposition: attachment; filename=$download_name.zip");
 
-		$fp = @fopen("{$phpbb_root_path}store/$filename.zip", 'rb');
+		$fp = fopen("{$phpbb_root_path}store/$filename.zip", 'rb');
 		if ($fp)
 		{
 			while ($buffer = fread($fp, 1024))
@@ -482,7 +485,7 @@ class compress_tar extends compress
 	/**
 	* Constructor
 	*/
-	function compress_tar($mode, $file, $type = '')
+	function __construct($mode, $file, $type = '')
 	{
 		$type = (!$type) ? $file : $type;
 		$this->isgz = (strpos($type, '.tar.gz') !== false || strpos($type, '.tgz') !== false) ? true : false;
@@ -499,7 +502,7 @@ class compress_tar extends compress
 	*/
 	function extract($dst)
 	{
-		$fzread = ($this->isbz && function_exists('bzread')) ? 'bzread' : (($this->isgz && @extension_loaded('zlib')) ? 'gzread' : 'fread');
+		$fzread = ($this->isbz && function_exists('bzread')) ? 'bzread' : (($this->isgz && extension_loaded('zlib')) ? 'gzread' : 'fread');
 
 		// Run through the file and grab directory entries
 		while ($buffer = $fzread($this->fp, 512))
@@ -537,7 +540,7 @@ class compress_tar extends compress
 							$str = (!empty($str)) ? $str . '/' . $folder : $folder;
 							if (!is_dir($str))
 							{
-								if (!@mkdir($str, 0777))
+								if (!mkdir($str, 0777))
 								{
 									trigger_error("Could not create directory $folder");
 								}
@@ -564,7 +567,7 @@ class compress_tar extends compress
 						$str = (!empty($str)) ? $str . '/' . $folder : $folder;
 						if (!is_dir($str))
 						{
-							if (!@mkdir($str, 0777))
+							if (!mkdir($str, 0777))
 							{
 								trigger_error("Could not create directory $folder");
 							}
@@ -592,11 +595,11 @@ class compress_tar extends compress
 	*/
 	function close()
 	{
-		$fzclose = ($this->isbz && function_exists('bzclose')) ? 'bzclose' : (($this->isgz && @extension_loaded('zlib')) ? 'gzclose' : 'fclose');
+		$fzclose = ($this->isbz && function_exists('bzclose')) ? 'bzclose' : (($this->isgz && extension_loaded('zlib')) ? 'gzclose' : 'fclose');
 
 		if ($this->wrote)
 		{
-			$fzwrite = ($this->isbz && function_exists('bzwrite')) ? 'bzwrite' : (($this->isgz && @extension_loaded('zlib')) ? 'gzwrite' : 'fwrite');
+			$fzwrite = ($this->isbz && function_exists('bzwrite')) ? 'bzwrite' : (($this->isgz && extension_loaded('zlib')) ? 'gzwrite' : 'fwrite');
 
 			// The end of a tar archive ends in two records of all NULLs (1024 bytes of \0)
 			$fzwrite($this->fp, str_repeat("\0", 1024));
@@ -611,7 +614,7 @@ class compress_tar extends compress
 	function data($name, $data, $is_dir = false, $stat)
 	{
 		$this->wrote = true;
-		$fzwrite = 	($this->isbz && function_exists('bzwrite')) ? 'bzwrite' : (($this->isgz && @extension_loaded('zlib')) ? 'gzwrite' : 'fwrite');
+		$fzwrite = 	($this->isbz && function_exists('bzwrite')) ? 'bzwrite' : (($this->isgz && extension_loaded('zlib')) ? 'gzwrite' : 'fwrite');
 
 		$typeflag = ($is_dir) ? '5' : '';
 
@@ -656,8 +659,8 @@ class compress_tar extends compress
 	*/
 	function open()
 	{
-		$fzopen = ($this->isbz && function_exists('bzopen')) ? 'bzopen' : (($this->isgz && @extension_loaded('zlib')) ? 'gzopen' : 'fopen');
-		$this->fp = @$fzopen($this->file, $this->mode . (($fzopen == 'bzopen') ? '' : 'b') . (($fzopen == 'gzopen') ? '9' : ''));
+		$fzopen = ($this->isbz && function_exists('bzopen')) ? 'bzopen' : (($this->isgz && extension_loaded('zlib')) ? 'gzopen' : 'fopen');
+		$this->fp = $fzopen($this->file, $this->mode . (($fzopen == 'bzopen') ? '' : 'b') . (($fzopen == 'gzopen') ? '9' : ''));
 
 		if (!$this->fp)
 		{
@@ -670,7 +673,7 @@ class compress_tar extends compress
 	*/
 	function download($filename, $download_name = false)
 	{
-		global $phpbb_root_path;
+		$phpbb_root_path = PHPBB3_ROOT_DIR;
 
 		if ($download_name === false)
 		{
@@ -700,7 +703,7 @@ class compress_tar extends compress
 		header("Content-Type: $mimetype; name=\"$download_name$this->type\"");
 		header("Content-disposition: attachment; filename=$download_name$this->type");
 
-		$fp = @fopen("{$phpbb_root_path}store/$filename$this->type", 'rb');
+		$fp = fopen("{$phpbb_root_path}store/$filename$this->type", 'rb');
 		if ($fp)
 		{
 			while ($buffer = fread($fp, 1024))
