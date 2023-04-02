@@ -9,8 +9,11 @@
 */
 
 /**
-* @ignore
-*/
+ * Applied rules:
+ * AddDefaultValueForUndefinedVariableRector (https://github.com/vimeo/psalm/blob/29b70442b11e3e66113935a2ee22e165a70c74a4/docs/fixing_code.md#possiblyundefinedvariable)
+ * Php4ConstructorRector (https://wiki.php.net/rfc/remove_php4_constructors)
+ */
+ 
 if (!defined('IN_PHPBB'))
 {
 	exit;
@@ -26,17 +29,22 @@ class mcp_reports
 	var $p_master;
 	var $u_action;
 
-	function mcp_reports(&$p_master)
+	function __construct(&$p_master)
 	{
 		$this->p_master = &$p_master;
 	}
 
 	function main($id, $mode)
 	{
+		$row_num = [];
+        $topic_info = [];
+        
 		global $auth, $db, $user, $template, $cache;
-		global $config, $phpbb_root_path, $phpEx, $action;
+		global $config, $phpEx, $action;
+		
+		$phpbb_root_path = PHPBB3_ROOT_DIR;
 
-		include_once($phpbb_root_path . 'includes/functions_posting.' . $phpEx);
+		include_once(PHPBB3_INCLUDE_DIR . 'functions_posting.' . $phpEx);
 
 		$forum_id = request_var('f', 0);
 		$start = request_var('start', 0);
@@ -47,7 +55,7 @@ class mcp_reports
 		{
 			case 'close':
 			case 'delete':
-				include_once($phpbb_root_path . 'includes/functions_messenger.' . $phpEx);
+				include_once(PHPBB3_INCLUDE_DIR . 'functions_messenger.' . $phpEx);
 
 				$report_id_list = request_var('report_id_list', array(0));
 
@@ -139,7 +147,7 @@ class mcp_reports
 
 				if ($post_info['bbcode_bitfield'])
 				{
-					include_once($phpbb_root_path . 'includes/bbcode.' . $phpEx);
+					include_once(PHPBB3_INCLUDE_DIR . 'bbcode.' . $phpEx);
 					$bbcode = new bbcode($post_info['bbcode_bitfield']);
 					$bbcode->bbcode_second_pass($message, $post_info['bbcode_uid'], $post_info['bbcode_bitfield']);
 				}
@@ -441,7 +449,9 @@ class mcp_reports
 function close_report($report_id_list, $mode, $action)
 {
 	global $db, $template, $user, $config;
-	global $phpEx, $phpbb_root_path;
+	global $phpEx;
+	
+	$phpbb_root_path = PHPBB3_ROOT_DIR;
 
 	$sql = 'SELECT r.post_id
 		FROM ' . REPORTS_TABLE . ' r
