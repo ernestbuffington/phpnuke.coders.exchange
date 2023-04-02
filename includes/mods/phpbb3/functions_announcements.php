@@ -29,8 +29,8 @@ if (!defined('IN_PHPBB'))
 function group_select_options_selected($group_ids, $exclude_ids = false, $manage_founder = false)
 {
 	global $db, $auth, $user, $template;
-	global $phpbb_root_path, $phpEx, $config;
-
+	global $phpEx, $config;
+	
 	$exclude_sql = ($exclude_ids !== false && sizeof($exclude_ids)) ? 'WHERE ' . $db->sql_in_set('group_id', array_map('intval', $exclude_ids), true) : '';
 	$sql_and = (!$config['coppa_enable']) ? (($exclude_sql) ? ' AND ' : ' WHERE ') . "group_name <> 'REGISTERED_COPPA'" : '';
 	$sql_founder = ($manage_founder !== false) ? (($exclude_sql || $sql_and) ? ' AND ' : ' WHERE ') . 'group_founder_manage = ' . (int) $manage_founder : '';
