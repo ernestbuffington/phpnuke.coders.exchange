@@ -308,7 +308,9 @@ function display_arcade($root_data = '')
 */
 function display_arcade_online()
 {
-	global $arcade, $auth, $config, $db, $user, $phpbb_root_path, $phpEx, $template;
+	global $arcade, $auth, $config, $db, $user, $phpEx, $template;
+	
+	$phpbb_root_path = PHPBB3_ROOT_DIR; 
 
 	$online_time = ($arcade->config['online_time'] > 0) ? $arcade->config['online_time'] * 60 : $config['load_online_time'] * 60;
 	$sql_array = array(
@@ -405,7 +407,9 @@ function display_arcade_online()
 */
 function display_arcade_header($show_welcome_box = true, $show_adv_search = true, $show_links = true)
 {
-	global $arcade, $auth, $auth_arcade, $game_fav_data, $user, $phpbb_root_path, $phpEx, $template;
+	global $arcade, $auth, $auth_arcade, $game_fav_data, $user, $phpEx, $template;
+	
+	$phpbb_root_path = PHPBB3_ROOT_DIR; 
 
 	if ($show_welcome_box)
 	{
@@ -605,7 +609,9 @@ function display_arcade_header($show_welcome_box = true, $show_adv_search = true
 */
 function display_arcade_highscores($user_id, $page = '')
 {
-	global $prefix_phpbb3, $template, $phpbb_root_path, $phpEx, $user;
+	global $prefix_phpbb3, $template, $phpEx, $user;
+
+    $phpbb_root_path = PHPBB3_ROOT_DIR;
 
 	$arcade_cache = new arcade_cache();
 	if ($page == 'viewtopic' || $page == 'memberlist')
@@ -671,7 +677,9 @@ function gen_arcade_auth_level($cat_id, $cat_status)
 
 function generate_arcade_header_links()
 {
-	global $template, $phpbb_root_path, $phpEx, $auth_arcade, $user;
+	global $template, $phpEx, $auth_arcade, $user;
+	
+	$phpbb_root_path = PHPBB3_ROOT_DIR;
 
 	$template->assign_vars(array(
 		'S_SHOW_LINKS'				=> true,
@@ -697,7 +705,7 @@ function generate_cat_rules(&$cat_data)
 		return;
 	}
 
-	global $template, $phpbb_root_path, $phpEx;
+	global $template, $phpEx;
 
 	if ($cat_data['cat_rules'])
 	{
@@ -718,7 +726,9 @@ function generate_cat_rules(&$cat_data)
 function generate_arcade_nav(&$cat_data, $in_game = false)
 {
 	global $db, $user, $template, $auth, $auth_arcade;
-	global $phpEx, $phpbb_root_path;
+	global $phpEx;
+	
+	$phpbb_root_path = PHPBB3_ROOT_DIR;
 
 	if (!$auth_arcade->acl_get('c_list', $cat_data['cat_id']))
 	{
