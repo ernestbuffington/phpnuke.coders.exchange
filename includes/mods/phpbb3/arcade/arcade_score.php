@@ -16,6 +16,8 @@ if (!defined('IN_PHPBB'))
 	exit;
 }
 
+$phpbb_root_path = PHPBB3_ROOT_DIR;
+
 // If you are not logged in the score is never saved...
 // Lets show you a nice message and send you on your way.
 if (!$user->data['is_registered'])
@@ -237,7 +239,7 @@ if ($arcade->config['parse_smilies'])
 {
 	if (!function_exists('generate_smilies'))
 	{
-		include($phpbb_root_path . 'includes/functions_posting.' . $phpEx);
+		include(PHPBB3_INCLUDE_DIR . 'functions_posting.' . $phpEx);
 	}
 
 	$template->assign_vars(array(
