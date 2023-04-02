@@ -13,7 +13,6 @@
 
 // visual confirmation type constant
 define('CONFIRM_CONTACT', 4);
-
 // contact methods
 define('CONTACT_METHOD_EMAIL', 0);
 define('CONTACT_METHOD_POST', 1);
