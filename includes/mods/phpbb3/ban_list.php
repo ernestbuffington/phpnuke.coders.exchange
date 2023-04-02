@@ -17,18 +17,9 @@ if (!defined('IN_PHPBB'))
 }
 
 // define constants
-if (!defined('ALLOW_BAN_LIST_ALL_USERS'))
-{
-	define('ALLOW_BAN_LIST_ALL_USERS', 0);
-}
-if (!defined('ALLOW_BAN_LIST_MODS_ADMINS'))
-{
-	define('ALLOW_BAN_LIST_MODS_ADMINS', 1);
-}
-if (!defined('ALLOW_BAN_LIST_ADMINS'))
-{
-	define('ALLOW_BAN_LIST_ADMINS', 2);
-}
+if (!defined('ALLOW_BAN_LIST_ALL_USERS')) {	define('ALLOW_BAN_LIST_ALL_USERS', 0); }
+if (!defined('ALLOW_BAN_LIST_MODS_ADMINS')) { define('ALLOW_BAN_LIST_MODS_ADMINS', 1); }
+if (!defined('ALLOW_BAN_LIST_ADMINS')) { define('ALLOW_BAN_LIST_ADMINS', 2); }
 
 /**
 * Include only once.
@@ -86,4 +77,5 @@ if (!defined('INCLUDES_BAN_LIST_PHP'))
 		
 	}
 }
+
 ?>
