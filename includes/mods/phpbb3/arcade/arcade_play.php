@@ -16,6 +16,8 @@ if (!defined('IN_PHPBB'))
 	exit;
 }
 
+$phpbb_root_path = PHPBB3_ROOT_DIR;
+
 // Grab the data for game and navlinks
 $sql_array = array(
 	'SELECT'	=> 'g.game_id, g.game_name, g.game_desc, g.game_swf, g.game_width, g.game_height, g.game_scorevar, g.game_scoretype, g.game_type, game_download, g.game_filesize, g.game_cost, g.game_reward, g.game_jackpot, g.game_use_jackpot, c.*',
