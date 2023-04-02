@@ -16,6 +16,8 @@ if (!defined('IN_PHPBB'))
 	exit;
 }
 
+$phpbb_root_path = PHPBB3_ROOT_DIR;
+
 make_arcade_jumpbox(append_sid("{$phpbb_root_path}arcade.$phpEx"), $cat_id);
 
 $sort_key	= request_var('sk', (!empty($user->data['games_sort_order']) && !$arcade->config['override_user_sort']) ? $user->data['games_sort_order'] : $arcade->config['games_sort_order']);
@@ -420,4 +422,5 @@ $template->assign_vars(array(
 );
 
 page_footer();
+
 ?>
