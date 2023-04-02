@@ -9,8 +9,10 @@
 */
 
 /**
-* @ignore
-*/
+ * Applied rules:
+ * AddDefaultValueForUndefinedVariableRector (https://github.com/vimeo/psalm/blob/29b70442b11e3e66113935a2ee22e165a70c74a4/docs/fixing_code.md#possiblyundefinedvariable)
+ */
+
 if (!defined('IN_PHPBB'))
 {
 	exit;
@@ -21,8 +23,12 @@ if (!defined('IN_PHPBB'))
 */
 function mcp_topic_view($id, $mode, $action)
 {
-	global $phpEx, $phpbb_root_path, $config;
+	$to_topic_info = [];
+    
+	global $phpEx, $config;
 	global $template, $db, $user, $auth, $cache;
+	
+	$phpbb_root_path = PHPBB3_ROOT_DIR;
 
 	$url = append_sid("{$phpbb_root_path}mcp.$phpEx?" . extra_url());
 
@@ -78,9 +84,9 @@ function mcp_topic_view($id, $mode, $action)
 	// Approve posts?
 	if ($action == 'approve' && $auth->acl_get('m_approve', $topic_info['forum_id']))
 	{
-		include($phpbb_root_path . 'includes/mcp/mcp_queue.' . $phpEx);
-		include_once($phpbb_root_path . 'includes/functions_posting.' . $phpEx);
-		include_once($phpbb_root_path . 'includes/functions_messenger.' . $phpEx);
+		include(PHPBB3_INCLUDE_DIR . 'mcp/mcp_queue.' . $phpEx);
+		include_once(PHPBB3_INCLUDE_DIR . 'functions_posting.' . $phpEx);
+		include_once(PHPBB3_INCLUDE_DIR . 'functions_messenger.' . $phpEx);
 
 		if (!sizeof($post_id_list))
 		{
@@ -148,7 +154,7 @@ function mcp_topic_view($id, $mode, $action)
 
 	if ($bbcode_bitfield !== '')
 	{
-		include_once($phpbb_root_path . 'includes/bbcode.' . $phpEx);
+		include_once(PHPBB3_INCLUDE_DIR . 'bbcode.' . $phpEx);
 		$bbcode = new bbcode(base64_encode($bbcode_bitfield));
 	}
 
@@ -261,7 +267,7 @@ function mcp_topic_view($id, $mode, $action)
 
 	if ($auth->acl_get('m_split', $topic_info['forum_id']))
 	{
-		include_once($phpbb_root_path . 'includes/functions_posting.' . $phpEx);
+		include_once(PHPBB3_INCLUDE_DIR . 'functions_posting.' . $phpEx);
 		$s_topic_icons = posting_gen_topic_icons('', $icon_id);
 
 		// Has the user selected a topic for merge?
@@ -530,7 +536,9 @@ function split_topic($action, $topic_id, $to_forum_id, $subject)
 */
 function merge_posts($topic_id, $to_topic_id)
 {
-	global $db, $template, $user, $phpEx, $phpbb_root_path, $auth;
+	global $db, $template, $user, $phpEx, $auth;
+	
+	$phpbb_root_path = PHPBB3_ROOT_DIR;
 
 	if (!$to_topic_id)
 	{
