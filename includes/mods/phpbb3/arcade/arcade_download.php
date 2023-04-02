@@ -80,8 +80,8 @@ $arcade->update_download_total($game_id);
 $cache->destroy('_arcade_totals');
 $cache->destroy('sql', ARCADE_GAMES_TABLE);
 
-include($phpbb_root_path . 'includes/functions_compress.' . $phpEx);
-include($phpbb_root_path . 'includes/functions_admin.' . $phpEx);
+include(PHPBB3_INCLUDE_DIR . 'functions_compress.' . $phpEx);
+include(PHPBB3_INCLUDE_DIR . 'functions_admin.' . $phpEx);
 
 $filename = $file_functions->remove_extension($game_info['game_swf']);
 $extra_game_files = ($game_info['game_files'] != '') ? unserialize($game_info['game_files']) : '';
@@ -137,14 +137,14 @@ if (!in_array($use_method, $methods))
 
 if ($use_method == '.zip')
 {
-	$compress = new compress_zip('w', $phpbb_root_path . 'store/' . $filename . $use_method);
+	$compress = new compress_zip('w', PHPBB3_ROOT_DIR . 'store/' . $filename . $use_method);
 }
 else
 {
-	$compress = new compress_tar('w', $phpbb_root_path . 'store/' . $filename . $use_method, $use_method);
+	$compress = new compress_tar('w', PHPBB3_ROOT_DIR . 'store/' . $filename . $use_method, $use_method);
 }
 
-$game_path = $phpbb_root_path . $arcade->config['game_path'] . $filename;
+$game_path = PHPBB3_ROOT_DIR . $arcade->config['game_path'] . $filename;
 $file_functions->append_slash($game_path);
 
 // Main files
@@ -195,7 +195,8 @@ $compress->close();
 // Send file to the browser for download
 $compress->download($filename);
 // Delete file from the store once user downloads it
-@unlink($phpbb_root_path . 'store/' . $filename . $use_method);
+unlink(PHPBB3_ROOT_DIR . 'store/' . $filename . $use_method);
 
 exit;
+
 ?>
