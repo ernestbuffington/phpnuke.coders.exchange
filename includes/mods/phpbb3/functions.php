@@ -3484,10 +3484,11 @@ function obtain_users_online($forum_id = 0)
 function obtain_users_online_string($online_users, $forum_id = 0)
 {
 	$l_t_user_s = null;
- $l_r_user_s = null;
- $l_h_user_s = null;
- $l_g_user_s = null;
- global $config, $db, $user, $auth;
+    $l_r_user_s = null;
+    $l_h_user_s = null;
+    $l_g_user_s = null;
+    
+	global $config, $db, $user, $auth;
 
 	$user_online_link = $online_userlist = '';
 
@@ -3709,7 +3710,7 @@ function page_header($page_title = '', $display_online_list = true, $post_text =
 	// Which timezone?
 	$tz = ($user->data['user_id'] != ANONYMOUS) ? strval(doubleval($user->data['user_timezone'])) : strval(doubleval($config['board_timezone']));
 	
-		// Advertisement Management
+	// Advertisement Management
 	require($phpbb_root_path . 'ads/functions.' . $phpEx);
 	setup_ads();
 	
@@ -3807,88 +3808,92 @@ function page_header($page_title = '', $display_online_list = true, $post_text =
 		'S_USER_NEW_PRIVMSG'			=> $user->data['user_new_privmsg'],
 		'S_USER_UNREAD_PRIVMSG'			=> $user->data['user_unread_privmsg'],
 
-		'SID'				=> $SID,
-		'_SID'				=> $_SID,
-		'SESSION_ID'		=> $user->session_id,
-		'ROOT_PATH'			=> $phpbb_root_path,
+		'SID'				            => $SID,
+		'_SID'				            => $_SID,
+		'SESSION_ID'		            => $user->session_id,
+		'ROOT_PATH'			            => $phpbb_root_path,
 
-		'L_LOGIN_LOGOUT'	=> $l_login_logout,
-		'L_INDEX'			=> $user->lang['FORUM_INDEX'],
-		'U_GALLERY_MOD'			=> append_sid("{$phpbb_root_path}gallery/index.$phpEx"),
-		'L_ONLINE_EXPLAIN'	=> $l_online_time,
+		'L_LOGIN_LOGOUT'	            => $l_login_logout,
+		'L_INDEX'			            => $user->lang['FORUM_INDEX'],
+		'U_GALLERY_MOD'			        => append_sid("{$phpbb_root_path}gallery/index.$phpEx"),
+		'L_ONLINE_EXPLAIN'	            => $l_online_time,
 
-		'U_PRIVATEMSGS'			=> append_sid("{$phpbb_root_path}ucp.$phpEx", 'i=pm&amp;folder=inbox'),
-		'U_RETURN_INBOX'		=> append_sid("{$phpbb_root_path}ucp.$phpEx", 'i=pm&amp;folder=inbox'),
-		'U_POPUP_PM'			=> append_sid("{$phpbb_root_path}ucp.$phpEx", 'i=pm&amp;mode=popup'),
-		'UA_POPUP_PM'			=> addslashes(append_sid("{$phpbb_root_path}ucp.$phpEx", 'i=pm&amp;mode=popup')),
-		'U_MEMBERLIST'			=> append_sid("{$phpbb_root_path}memberlist.$phpEx"),
-		'U_VIEWONLINE'			=> ($auth->acl_gets('u_viewprofile', 'a_user', 'a_useradd', 'a_userdel')) ? append_sid("{$phpbb_root_path}viewonline.$phpEx") : '',
-		'U_LOGIN_LOGOUT'		=> $u_login_logout,
-		'U_INDEX'				=> append_sid("{$phpbb_root_path}index.$phpEx"),
-		'U_SEARCH'				=> append_sid("{$phpbb_root_path}search.$phpEx"),
-		'U_REGISTER'			=> append_sid("{$phpbb_root_path}ucp.$phpEx", 'mode=register'),
-		'U_PROFILE'				=> append_sid("{$phpbb_root_path}ucp.$phpEx"),
-		'U_MODCP'				=> append_sid("{$phpbb_root_path}mcp.$phpEx", false, true, $user->session_id),
-		'U_FAQ'					=> append_sid("{$phpbb_root_path}faq.$phpEx"),
+		'U_PRIVATEMSGS'			        => append_sid("{$phpbb_root_path}ucp.$phpEx", 'i=pm&amp;folder=inbox'),
+		'U_RETURN_INBOX'		        => append_sid("{$phpbb_root_path}ucp.$phpEx", 'i=pm&amp;folder=inbox'),
+		'U_POPUP_PM'			        => append_sid("{$phpbb_root_path}ucp.$phpEx", 'i=pm&amp;mode=popup'),
+		'UA_POPUP_PM'			        => addslashes(append_sid("{$phpbb_root_path}ucp.$phpEx", 'i=pm&amp;mode=popup')),
+		'U_MEMBERLIST'			        => append_sid("{$phpbb_root_path}memberlist.$phpEx"),
+		'U_VIEWONLINE'			        => ($auth->acl_gets('u_viewprofile', 'a_user', 'a_useradd', 'a_userdel')) ? append_sid("{$phpbb_root_path}viewonline.$phpEx") : '',
+		'U_LOGIN_LOGOUT'		        => $u_login_logout,
+		'U_INDEX'				        => append_sid("{$phpbb_root_path}index.$phpEx"),
+		'U_SEARCH'				        => append_sid("{$phpbb_root_path}search.$phpEx"),
+		'U_REGISTER'			        => append_sid("{$phpbb_root_path}ucp.$phpEx", 'mode=register'),
+		'U_PROFILE'				        => append_sid("{$phpbb_root_path}ucp.$phpEx"),
+		'U_MODCP'				        => append_sid("{$phpbb_root_path}mcp.$phpEx", false, true, $user->session_id),
+		'U_FAQ'					        => append_sid("{$phpbb_root_path}faq.$phpEx"),
 		//-- mod : Contact board administration ------------------------------------------------------------
-//-- add
-		'U_CONTACT'				=> append_sid("{$phpbb_root_path}contact.$phpEx"),
-//-- fin mod : Contact board administration --------------------------------------------------------
-		'U_SEARCH_SELF'			=> append_sid("{$phpbb_root_path}search.$phpEx", 'search_id=egosearch'),
-		'U_SEARCH_NEW'			=> append_sid("{$phpbb_root_path}search.$phpEx", 'search_id=newposts'),
-		'U_SEARCH_UNANSWERED'	=> append_sid("{$phpbb_root_path}search.$phpEx", 'search_id=unanswered'),
-		'U_SEARCH_ACTIVE_TOPICS'=> append_sid("{$phpbb_root_path}search.$phpEx", 'search_id=active_topics'),
-		'U_DELETE_COOKIES'		=> append_sid("{$phpbb_root_path}ucp.$phpEx", 'mode=delete_cookies'),
-		'U_TEAM'				=> ($user->data['user_id'] != ANONYMOUS && !$auth->acl_get('u_viewprofile')) ? '' : append_sid("{$phpbb_root_path}memberlist.$phpEx", 'mode=leaders'),
-		'U_RESTORE_PERMISSIONS'	=> ($user->data['user_perm_from'] && $auth->acl_get('a_switchperm')) ? append_sid("{$phpbb_root_path}ucp.$phpEx", 'mode=restore_perm') : '',
-		'U_FFAVORITES'			=> append_sid("{$phpbb_root_path}ucp.$phpEx?i=favorites&amp;mode=view_list"),
+        //-- add
+		'U_CONTACT'				        => append_sid("{$phpbb_root_path}contact.$phpEx"),
+        //-- fin mod : Contact board administration --------------------------------------------------------
+		'U_SEARCH_SELF'			        => append_sid("{$phpbb_root_path}search.$phpEx", 'search_id=egosearch'),
+		'U_SEARCH_NEW'			        => append_sid("{$phpbb_root_path}search.$phpEx", 'search_id=newposts'),
+		'U_SEARCH_UNANSWERED'	        => append_sid("{$phpbb_root_path}search.$phpEx", 'search_id=unanswered'),
+		'U_SEARCH_ACTIVE_TOPICS'        => append_sid("{$phpbb_root_path}search.$phpEx", 'search_id=active_topics'),
+		'U_DELETE_COOKIES'		        => append_sid("{$phpbb_root_path}ucp.$phpEx", 'mode=delete_cookies'),
+		'U_TEAM'				        => ($user->data['user_id'] != ANONYMOUS && !$auth->acl_get('u_viewprofile')) ? '' : append_sid("{$phpbb_root_path}memberlist.$phpEx", 'mode=leaders'),
+		'U_RESTORE_PERMISSIONS'	        => ($user->data['user_perm_from'] && $auth->acl_get('a_switchperm')) ? append_sid("{$phpbb_root_path}ucp.$phpEx", 'mode=restore_perm') : '',
+		'U_FFAVORITES'			        => append_sid("{$phpbb_root_path}ucp.$phpEx?i=favorites&amp;mode=view_list"),
 		//-- mod : AJAX Chat ----------------------------------------------------
-//-- add
-        'U_CHAT'                    => append_sid("{$phpbb_root_path}chat.$phpEx"),
-//-- fin mod : AJAX Chat ------------------------------------------------
-
-		'S_USER_LOGGED_IN'		=> ($user->data['user_id'] != ANONYMOUS) ? true : false,
-		'S_AUTOLOGIN_ENABLED'	=> ($config['allow_autologin']) ? true : false,
-		'S_BOARD_DISABLED'		=> ($config['board_disable']) ? true : false,
-		'S_REGISTERED_USER'		=> (!empty($user->data['is_registered'])) ? true : false,
-		'S_IS_BOT'				=> (!empty($user->data['is_bot'])) ? true : false,
-		'S_USER_PM_POPUP'		=> $user->optionget('popuppm'),
-		'S_USER_LANG'			=> $user_lang,
-		'S_USER_BROWSER'		=> $user->data['session_browser'] ?? $user->lang['UNKNOWN_BROWSER'],
-		'S_USERNAME'			=> $user->data['username'],
-		'S_CONTENT_DIRECTION'	=> $user->lang['DIRECTION'],
-		'S_CONTENT_FLOW_BEGIN'	=> ($user->lang['DIRECTION'] == 'ltr') ? 'left' : 'right',
-		'S_CONTENT_FLOW_END'	=> ($user->lang['DIRECTION'] == 'ltr') ? 'right' : 'left',
-		'S_CONTENT_ENCODING'	=> 'UTF-8',
-		'S_TIMEZONE'			=> ($user->data['user_dst'] || ($user->data['user_id'] == ANONYMOUS && $config['board_dst'])) ? sprintf($user->lang['ALL_TIMES'], $user->lang['tz'][$tz], $user->lang['tz']['dst']) : sprintf($user->lang['ALL_TIMES'], $user->lang['tz'][$tz], ''),
-		'S_DISPLAY_ONLINE_LIST'	=> ($l_online_time) ? 1 : 0,
-		'S_DISPLAY_SEARCH'		=> (!$config['load_search']) ? 0 : (isset($auth) ? ($auth->acl_get('u_search') && $auth->acl_getf_global('f_search')) : 1),
-		'S_DISPLAY_PM'			=> ($config['allow_privmsg'] && !empty($user->data['is_registered']) && ($auth->acl_get('u_readpm') || $auth->acl_get('u_sendpm'))) ? true : false,
-		'S_DISPLAY_MEMBERLIST'	=> (isset($auth)) ? $auth->acl_get('u_viewprofile') : 0,
-		'S_NEW_PM'				=> ($s_privmsg_new) ? 1 : 0,
+        //-- add
+        'U_CHAT'                        => append_sid("{$phpbb_root_path}chat.$phpEx"),
+        //-- fin mod : AJAX Chat ------------------------------------------------
+		'S_USER_LOGGED_IN'		        => ($user->data['user_id'] != ANONYMOUS) ? true : false,
+		'S_AUTOLOGIN_ENABLED'	        => ($config['allow_autologin']) ? true : false,
+		'S_BOARD_DISABLED'		        => ($config['board_disable']) ? true : false,
+		'S_REGISTERED_USER'		        => (!empty($user->data['is_registered'])) ? true : false,
+		'S_IS_BOT'				        => (!empty($user->data['is_bot'])) ? true : false,
+		'S_USER_PM_POPUP'		        => $user->optionget('popuppm'),
+		'S_USER_LANG'			        => $user_lang,
+		'S_USER_BROWSER'		        => $user->data['session_browser'] ?? $user->lang['UNKNOWN_BROWSER'],
+		'S_USERNAME'			        => $user->data['username'],
+		'S_CONTENT_DIRECTION'	        => $user->lang['DIRECTION'],
+		'S_CONTENT_FLOW_BEGIN'	        => ($user->lang['DIRECTION'] == 'ltr') ? 'left' : 'right',
+		'S_CONTENT_FLOW_END'	        => ($user->lang['DIRECTION'] == 'ltr') ? 'right' : 'left',
+		'S_CONTENT_ENCODING'	        => 'UTF-8',
+		'S_TIMEZONE'			        => ($user->data['user_dst'] || ($user->data['user_id'] == ANONYMOUS 
+		                                    && $config['board_dst'])) ? sprintf($user->lang['ALL_TIMES'], $user->lang['tz'][$tz], $user->lang['tz']['dst']) : sprintf($user->lang['ALL_TIMES'], $user->lang['tz'][$tz], ''),
+		
+		'S_DISPLAY_ONLINE_LIST'	        => ($l_online_time) ? 1 : 0,
+		'S_DISPLAY_SEARCH'		        => (!$config['load_search']) ? 0 : (isset($auth) ? ($auth->acl_get('u_search') && $auth->acl_getf_global('f_search')) : 1),
+		'S_DISPLAY_PM'			        => ($config['allow_privmsg'] && !empty($user->data['is_registered']) && ($auth->acl_get('u_readpm') || $auth->acl_get('u_sendpm'))) ? true : false,
+		'S_DISPLAY_MEMBERLIST'	        => (isset($auth)) ? $auth->acl_get('u_viewprofile') : 0,
+		'S_NEW_PM'				        => ($s_privmsg_new) ? 1 : 0,
 		//-- mod : Contact board administration ------------------------------------------------------------
-//-- add
-		'S_CONTACT_ENABLED'		=> ($config['contact_enable']) ? true : false,
-//-- fin mod : Contact board administration --------------------------------------------------------
-
-		'T_THEME_PATH'			=> "{$phpbb_root_path}styles/" . $user->theme['theme_path'] . '/theme',
-		'T_TEMPLATE_PATH'		=> "{$phpbb_root_path}styles/" . $user->theme['template_path'] . '/template',
-		'T_SUPER_TEMPLATE_PATH'	=> (isset($user->theme['template_inherit_path']) && $user->theme['template_inherit_path']) ? "{$phpbb_root_path}styles/" . $user->theme['template_inherit_path'] . '/template' : "{$phpbb_root_path}styles/" . $user->theme['template_path'] . '/template',
-		'T_IMAGESET_PATH'		=> "{$phpbb_root_path}styles/" . $user->theme['imageset_path'] . '/imageset',
-		'T_IMAGESET_LANG_PATH'	=> "{$phpbb_root_path}styles/" . $user->theme['imageset_path'] . '/imageset/' . $user->data['user_lang'],
-		'T_IMAGES_PATH'			=> "{$phpbb_root_path}images/",
-		'T_SMILIES_PATH'		=> "{$phpbb_root_path}{$config['smilies_path']}/",
-		'T_AVATAR_PATH'			=> "{$phpbb_root_path}{$config['avatar_path']}/",
-		'T_AVATAR_GALLERY_PATH'	=> "{$phpbb_root_path}{$config['avatar_gallery_path']}/",
-		'T_ICONS_PATH'			=> "{$phpbb_root_path}{$config['icons_path']}/",
-		'T_RANKS_PATH'			=> "{$phpbb_root_path}{$config['ranks_path']}/",
-		'T_UPLOAD_PATH'			=> "{$phpbb_root_path}{$config['upload_path']}/",
-		'T_STYLESHEET_LINK'		=> (!$user->theme['theme_storedb']) ? "{$phpbb_root_path}styles/" . $user->theme['theme_path'] . '/theme/stylesheet.css' : "{$phpbb_root_path}style.$phpEx?sid=$user->session_id&amp;id=" . $user->theme['style_id'] . '&amp;lang=' . $user->data['user_lang'],
-		'T_STYLESHEET_NAME'		=> $user->theme['theme_name'],
-
-		'SITE_LOGO_IMG'			=> $user->img('site_logo'),
-
-		'A_COOKIE_SETTINGS'		=> addslashes('; path=' . $config['cookie_path'] . ((!$config['cookie_domain'] || $config['cookie_domain'] == 'localhost' || $config['cookie_domain'] == '127.0.0.1') ? '' : '; domain=' . $config['cookie_domain']) . ((!$config['cookie_secure']) ? '' : '; secure')),
+        //-- add
+		'S_CONTACT_ENABLED'		        => ($config['contact_enable']) ? true : false,
+        //-- fin mod : Contact board administration --------------------------------------------------------
+		'T_THEME_PATH'			        => "{$phpbb_root_path}styles/" . $user->theme['theme_path'] . '/theme',
+		'T_TEMPLATE_PATH'		        => "{$phpbb_root_path}styles/" . $user->theme['template_path'] . '/template',
+		
+		'T_SUPER_TEMPLATE_PATH'	        => (isset($user->theme['template_inherit_path']) 
+		&& $user->theme['template_inherit_path']) ? "{$phpbb_root_path}styles/" . $user->theme['template_inherit_path'] . '/template' : "{$phpbb_root_path}styles/" . $user->theme['template_path'] . '/template',
+		
+		'T_IMAGESET_PATH'		        => "{$phpbb_root_path}styles/" . $user->theme['imageset_path'] . '/imageset',
+		'T_IMAGESET_LANG_PATH'	        => "{$phpbb_root_path}styles/" . $user->theme['imageset_path'] . '/imageset/' . $user->data['user_lang'],
+		'T_IMAGES_PATH'			        => "{$phpbb_root_path}images/",
+		'T_SMILIES_PATH'		        => "{$phpbb_root_path}{$config['smilies_path']}/",
+		'T_AVATAR_PATH'			        => "{$phpbb_root_path}{$config['avatar_path']}/",
+		'T_AVATAR_GALLERY_PATH'	        => "{$phpbb_root_path}{$config['avatar_gallery_path']}/",
+		'T_ICONS_PATH'			        => "{$phpbb_root_path}{$config['icons_path']}/",
+		'T_RANKS_PATH'			        => "{$phpbb_root_path}{$config['ranks_path']}/",
+		'T_UPLOAD_PATH'			        => "{$phpbb_root_path}{$config['upload_path']}/",
+		'T_STYLESHEET_LINK'		        => (!$user->theme['theme_storedb']) ? "{$phpbb_root_path}styles/".$user->theme['theme_path'].'/theme/stylesheet.css' : "{$phpbb_root_path}style.$phpEx?sid=$user->session_id&amp;id=".$user->theme['style_id'].'&amp;lang='.$user->data['user_lang'],
+		
+		'T_STYLESHEET_NAME'		        => $user->theme['theme_name'],
+		'SITE_LOGO_IMG'			        => $user->img('site_logo'),
+		
+		'A_COOKIE_SETTINGS'		        => addslashes('; path=' . $config['cookie_path'] . ((!$config['cookie_domain'] 
+		|| $config['cookie_domain'] == 'localhost' || $config['cookie_domain'] == '127.0.0.1') ? '' : '; domain=' . $config['cookie_domain']) . ((!$config['cookie_secure']) ? '' : '; secure')),
 	));
 
 	// application/xhtml+xml not used because of IE
@@ -3907,7 +3912,8 @@ function page_header($page_title = '', $display_online_list = true, $post_text =
 function page_footer($run_cron = true)
 {
 	$debug_output = null;
- global $db, $config, $template, $user, $auth, $cache, $starttime, $phpbb_root_path, $phpEx;
+    
+	global $db, $config, $template, $user, $auth, $cache, $starttime, $phpbb_root_path, $phpEx;
 
 	// Output page creation time
 	if (defined('DEBUG'))
