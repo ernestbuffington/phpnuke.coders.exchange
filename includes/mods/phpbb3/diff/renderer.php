@@ -98,8 +98,8 @@ class diff_renderer
 	function render(&$diff)
 	{
 		$x0 = null;
-  $y0 = null;
-  $xi = $yi = 1;
+        $y0 = null;
+        $xi = $yi = 1;
 		$block = false;
 		$context = array();
 
