@@ -9,8 +9,11 @@
 */
 
 /**
-* @ignore
-*/
+ * Applied rules:
+ * PregReplaceEModifierRector (https://wiki.php.net/rfc/remove_preg_replace_eval_modifier https://stackoverflow.com/q/19245205/1348344)
+ * ClosureToArrowFunctionRector (https://wiki.php.net/rfc/arrow_functions_v2)
+ */
+
 if (!defined('IN_PHPBB'))
 {
 	exit;
@@ -27,7 +30,7 @@ class ucp_arcade
 
 	function main($id, $mode)
 	{
-		global $config, $db, $user, $auth, $auth_arcade, $template, $prefix_phpbb3, $phpbb_root_path, $phpEx;
+		global $config, $db, $user, $auth, $auth_arcade, $template, $prefix_phpbb3, $phpEx;
 
 		switch ($mode)
 		{
@@ -57,9 +60,9 @@ class ucp_arcade
 
 	function manage_settings()
 	{
-		global $config, $db, $user, $auth, $auth_arcade, $template, $prefix_phpbb3, $phpbb_root_path, $phpEx;
-
-		include($phpbb_root_path . 'includes/arcade/arcade_common.' . $phpEx);
+		global $config, $db, $user, $auth, $auth_arcade, $template, $prefix_phpbb3, $phpEx;
+		
+ 		include(PHPBB3_INCLUDE_DIR . 'arcade/arcade_common.' . $phpEx);
 		// Initialize arcade auth
 		$auth_arcade->acl($user->data);
 		// Initialize arcade class
@@ -103,7 +106,7 @@ class ucp_arcade
 			}
 
 			// Replace "error" strings with their real, localised form
-			$error = preg_replace('#^([A-Z_]+)$#e', "(!empty(\$user->lang['\\1'])) ? \$user->lang['\\1'] : '\\1'", $error);
+			$error = preg_replace_callback('#^([A-Z_]+)$#', fn($matches) => !empty($user->lang[$matches[1]]) ? $user->lang[$matches[1]] : $matches[1], $error);
 		}
 		
 		if ($arcade->config['override_user_sort'])
@@ -123,9 +126,11 @@ class ucp_arcade
 
 	function manage_favorites()
 	{
-		global $config, $db, $user, $auth, $auth_arcade, $template, $prefix_phpbb3, $phpbb_root_path, $phpEx;
+		global $config, $db, $user, $auth, $auth_arcade, $template, $prefix_phpbb3, $phpEx;
+		
+        $phpbb_root_path = PHPBB3_ROOT_DIR;
 
-		include($phpbb_root_path . 'includes/arcade/arcade_common.' . $phpEx);
+		include(PHPBB3_INCLUDE_DIR . 'arcade/arcade_common.' . $phpEx);
 		// Initialize arcade auth
 		$auth_arcade->acl($user->data);
 		// Initialize arcade class
