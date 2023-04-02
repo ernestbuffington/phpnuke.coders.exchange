@@ -9,8 +9,13 @@
 */
 
 /**
-* @ignore
-*/
+ * Applied rules:
+ * Php4ConstructorRector (https://wiki.php.net/rfc/remove_php4_constructors)
+ * TernaryToNullCoalescingRector
+ * StringifyStrNeedlesRector (https://wiki.php.net/rfc/deprecations_php_7_3#string_search_functions_with_integer_needle)
+ * StrStartsWithRector (https://wiki.php.net/rfc/add_str_starts_with_and_ends_with_functions)
+ */
+
 if (!defined('IN_PHPBB'))
 {
 	exit;
@@ -33,7 +38,7 @@ class acm
 	/**
 	* Set cache path
 	*/
-	function acm()
+	function __construct()
 	{
 		$this->cache_dir = NUKE_CACHE_DIR . 'phpbb3/';
 	}
@@ -177,7 +182,7 @@ class acm
 			}
 
 			include($this->cache_dir . "data{$var_name}.$phpEx");
-			return (isset($data)) ? $data : false;
+			return $data ?? false;
 		}
 		else
 		{
@@ -232,7 +237,7 @@ class acm
 
 		while (($entry = readdir($dir)) !== false)
 		{
-			if (strpos($entry, 'sql_') !== 0 && strpos($entry, 'data_') !== 0 && strpos($entry, 'ctpl_') !== 0 && strpos($entry, 'tpl_') !== 0)
+			if (!str_starts_with($entry, 'sql_') && !str_starts_with($entry, 'data_') && !str_starts_with($entry, 'ctpl_') && !str_starts_with($entry, 'tpl_'))
 			{
 				continue;
 			}
@@ -277,7 +282,7 @@ class acm
 
 			while (($entry = readdir($dir)) !== false)
 			{
-				if (strpos($entry, 'sql_') !== 0)
+				if (!str_starts_with($entry, 'sql_'))
 				{
 					continue;
 				}
@@ -297,7 +302,7 @@ class acm
 				foreach ($table as $check_table)
 				{
 					// Better catch partial table names than no table names. ;)
-					if (strpos($check_line, $check_table) !== false)
+					if (strpos($check_line, (string) $check_table) !== false)
 					{
 						$found = true;
 						break;
@@ -464,7 +469,7 @@ class acm
 	{
 		if ($this->sql_row_pointer[$query_id] < sizeof($this->sql_rowset[$query_id]))
 		{
-			return (isset($this->sql_rowset[$query_id][$this->sql_row_pointer[$query_id]][$field])) ? $this->sql_rowset[$query_id][$this->sql_row_pointer[$query_id]][$field] : false;
+			return $this->sql_rowset[$query_id][$this->sql_row_pointer[$query_id]][$field] ?? false;
 		}
 
 		return false;
