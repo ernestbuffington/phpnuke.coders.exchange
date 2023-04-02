@@ -27,7 +27,9 @@ class ucp_attachments
 
 	function main($id, $mode)
 	{
-		global $template, $user, $db, $config, $phpEx, $phpbb_root_path;
+		global $template, $user, $db, $config, $phpEx;
+		
+		$phpbb_root_path = PHPBB3_ROOT_DIR;
 
 		$start		= request_var('start', 0);
 		$sort_key	= request_var('sk', 'a');
@@ -70,7 +72,7 @@ class ucp_attachments
 			{
 				if (!function_exists('delete_attachments'))
 				{
-					include_once($phpbb_root_path . 'includes/functions_admin.' . $phpEx);
+					include_once(PHPBB3_INCLUDE_DIR . 'functions_admin.' . $phpEx);
 				}
 
 				delete_attachments('attach', $delete_ids);
