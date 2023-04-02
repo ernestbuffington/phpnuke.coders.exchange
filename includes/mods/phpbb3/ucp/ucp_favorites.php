@@ -10,14 +10,16 @@
 */
 
 /**
-* @ignore
-*/
+ * Applied rules:
+ * TernaryToNullCoalescingRector
+ */
+
 if (!defined('IN_PHPBB'))
 {
 	exit;
 }
 
-include($phpbb_root_path . 'includes/functions_favorites.' . $phpEx);
+include(PHPBB3_INCLUDE_DIR . 'functions_favorites.' . $phpEx);
 
 /**
 * ucp_favorites
@@ -40,7 +42,9 @@ class ucp_favorites
 
 	function main($id, $mode)
 	{
-		global $config, $db, $user, $auth, $template, $phpbb_root_path, $phpEx;
+		global $config, $db, $user, $auth, $template, $phpEx;
+
+        $phpbb_root_path = PHPBB3_ROOT_DIR;
 
 		$favfunct = new favorite_functions;
 		
@@ -119,7 +123,7 @@ class ucp_favorites
 							if (!isset($unique_check[strtoupper($linearray[0])]))
                             {
 								$unique_check[strtoupper($linearray[0])] = true;
-								$favorites_listitems[] = array($linearray[0],(isset($linearray[1]) ? $linearray[1]: ''));
+								$favorites_listitems[] = array($linearray[0],($linearray[1] ?? ''));
 							}
 							else 
 							{
@@ -365,4 +369,5 @@ class ucp_favorites
 		$this->page_title = 'UCP_FAVORITES_' . strtoupper($mode);
 	}
 }
+
 ?>
