@@ -9,8 +9,10 @@
 */
 
 /**
-* @ignore
-*/
+ * Applied rules:
+ * StrStartsWithRector (https://wiki.php.net/rfc/add_str_starts_with_and_ends_with_functions)
+ */
+
 if (!defined('IN_PHPBB'))
 {
 	exit;
@@ -360,7 +362,9 @@ class cache extends acm
 	*/
 	function obtain_cfg_items($theme)
 	{
-		global $config, $phpbb_root_path;
+		global $config;
+		
+		$phpbb_root_path = PHPBB3_ROOT_DIR;
 
 		$parsed_items = array(
 			'theme'		=> array(),
@@ -385,7 +389,7 @@ class cache extends acm
 				continue;
 			}
 
-			if (!isset($parsed_array['filetime']) || (($config['load_tplcompile'] && @filemtime($filename) > $parsed_array['filetime'])))
+			if (!isset($parsed_array['filetime']) || (($config['load_tplcompile'] && filemtime($filename) > $parsed_array['filetime'])))
 			{
 				$reparse = true;
 			}
@@ -394,7 +398,7 @@ class cache extends acm
 			if ($reparse)
 			{
 				$parsed_array = parse_cfg_file($filename);
-				$parsed_array['filetime'] = @filemtime($filename);
+				$parsed_array['filetime'] = filemtime($filename);
 
 				$this->put('_cfg_' . $key . '_' . $theme[$key . '_path'], $parsed_array);
 			}
@@ -435,20 +439,22 @@ class cache extends acm
 	*/
 	function obtain_hooks()
 	{
-		global $phpbb_root_path, $phpEx;
+		global $phpEx;
+		
+		$phpbb_root_path = PHPBB3_ROOT_DIR;
 
 		if (($hook_files = $this->get('_hooks')) === false)
 		{
 			$hook_files = array();
 
 			// Now search for hooks...
-			$dh = @opendir($phpbb_root_path . 'includes/hooks/');
+			$dh = opendir($phpbb_root_path . 'includes/hooks/');
 
 			if ($dh)
 			{
 				while (($file = readdir($dh)) !== false)
 				{
-					if (strpos($file, 'hook_') === 0 && substr($file, -(strlen($phpEx) + 1)) === '.' . $phpEx)
+					if (str_starts_with($file, 'hook_') && substr($file, -(strlen($phpEx) + 1)) === '.' . $phpEx)
 					{
 						$hook_files[] = substr($file, 0, -(strlen($phpEx) + 1));
 					}
