@@ -9,8 +9,12 @@
 */
 
 /**
-* @ignore
-*/
+ * Applied rules:
+ * AddDefaultValueForUndefinedVariableRector (https://github.com/vimeo/psalm/blob/29b70442b11e3e66113935a2ee22e165a70c74a4/docs/fixing_code.md#possiblyundefinedvariable)
+ * Php4ConstructorRector (https://wiki.php.net/rfc/remove_php4_constructors)
+ * TernaryToNullCoalescingRector
+ */
+
 if (!defined('IN_PHPBB'))
 {
 	exit;
@@ -26,17 +30,22 @@ class mcp_queue
 	var $p_master;
 	var $u_action;
 
-	function mcp_queue(&$p_master)
+	function __construct(&$p_master)
 	{
 		$this->p_master = &$p_master;
 	}
 
 	function main($id, $mode)
 	{
+		$row_num = [];
+        $topic_info = [];
+        
 		global $auth, $db, $user, $template, $cache;
-		global $config, $phpbb_root_path, $phpEx, $action;
+		global $config, $phpEx, $action;
+		
+		$phpbb_root_path = PHPBB3_ROOT_DIR;
 
-		include_once($phpbb_root_path . 'includes/functions_posting.' . $phpEx);
+		include_once(PHPBB3_INCLUDE_DIR . 'functions_posting.' . $phpEx);
 
 		$forum_id = request_var('f', 0);
 		$start = request_var('start', 0);
@@ -47,7 +56,7 @@ class mcp_queue
 		{
 			case 'approve':
 			case 'disapprove':
-				include_once($phpbb_root_path . 'includes/functions_messenger.' . $phpEx);
+				include_once(PHPBB3_INCLUDE_DIR . 'functions_messenger.' . $phpEx);
 
 				$post_id_list = request_var('post_id_list', array(0));
 
@@ -130,7 +139,7 @@ class mcp_queue
 
 				if ($post_info['bbcode_bitfield'])
 				{
-					include_once($phpbb_root_path . 'includes/bbcode.' . $phpEx);
+					include_once(PHPBB3_INCLUDE_DIR . 'bbcode.' . $phpEx);
 					$bbcode = new bbcode($post_info['bbcode_bitfield']);
 					$bbcode->bbcode_second_pass($message, $post_info['bbcode_uid'], $post_info['bbcode_bitfield']);
 				}
@@ -213,7 +222,7 @@ class mcp_queue
 					'POST_SUBJECT'			=> $post_info['post_subject'],
 					'POST_DATE'				=> $user->format_date($post_info['post_time']),
 					'POST_IP'				=> $post_info['poster_ip'],
-					'POST_IPADDR'			=> ($auth->acl_get('m_info', $post_info['forum_id']) && request_var('lookup', '')) ? @gethostbyaddr($post_info['poster_ip']) : '',
+					'POST_IPADDR'			=> ($auth->acl_get('m_info', $post_info['forum_id']) && request_var('lookup', '')) ? gethostbyaddr($post_info['poster_ip']) : '',
 					'POST_ID'				=> $post_info['post_id'],
 
 					'U_LOOKUP_IP'			=> ($auth->acl_get('m_info', $post_info['forum_id'])) ? append_sid("{$phpbb_root_path}mcp.$phpEx", 'i=queue&amp;mode=approve_details&amp;f=' . $post_info['forum_id'] . '&amp;p=' . $post_id . '&amp;lookup=' . $post_info['poster_ip']) . '#ip' : '',
@@ -463,7 +472,9 @@ class mcp_queue
 function approve_post($post_id_list, $id, $mode)
 {
 	global $db, $template, $user, $config;
-	global $phpEx, $phpbb_root_path;
+	global $phpEx;
+	
+	$phpbb_root_path = PHPBB3_ROOT_DIR;
 
 	if (!check_ids($post_id_list, POSTS_TABLE, 'post_id', array('m_approve')))
 	{
@@ -789,7 +800,9 @@ function approve_post($post_id_list, $id, $mode)
 function disapprove_post($post_id_list, $id, $mode)
 {
 	global $db, $template, $user, $config;
-	global $phpEx, $phpbb_root_path;
+	global $phpEx;
+	
+	$phpbb_root_path = PHPBB3_ROOT_DIR;
 
 	if (!check_ids($post_id_list, POSTS_TABLE, 'post_id', array('m_approve')))
 	{
@@ -829,7 +842,7 @@ function disapprove_post($post_id_list, $id, $mode)
 		else
 		{
 			// If the reason is defined within the language file, we will use the localized version, else just use the database entry...
-			$disapprove_reason = (strtolower($row['reason_title']) != 'other') ? ((isset($user->lang['report_reasons']['DESCRIPTION'][strtoupper($row['reason_title'])])) ? $user->lang['report_reasons']['DESCRIPTION'][strtoupper($row['reason_title'])] : $row['reason_description']) : '';
+			$disapprove_reason = (strtolower($row['reason_title']) != 'other') ? ($user->lang['report_reasons']['DESCRIPTION'][strtoupper($row['reason_title'])] ?? $row['reason_description']) : '';
 			$disapprove_reason .= ($reason) ? "\n\n" . $reason : '';
 
 			if (isset($user->lang['report_reasons']['DESCRIPTION'][strtoupper($row['reason_title'])]))
@@ -931,7 +944,7 @@ function disapprove_post($post_id_list, $id, $mode)
 		{
 			if (!function_exists('delete_posts'))
 			{
-				include_once($phpbb_root_path . 'includes/functions_admin.' . $phpEx);
+				include_once(PHPBB3_INCLUDE_DIR . 'functions_admin.' . $phpEx);
 			}
 
 			// We do not check for permissions here, because the moderator allowed approval/disapproval should be allowed to delete the disapproved posts
@@ -979,7 +992,7 @@ function disapprove_post($post_id_list, $id, $mode)
 						{
 							// Load up the language pack
 							$lang = array();
-							@include($phpbb_root_path . '/language/' . $post_data['user_lang'] . '/mcp.' . $phpEx);
+							include($phpbb_root_path . '/language/' . $post_data['user_lang'] . '/mcp.' . $phpEx);
 
 							// If we find the reason in this language pack use it
 							if (isset($lang['report_reasons']['DESCRIPTION'][$disapprove_reason_lang]))
@@ -1029,7 +1042,7 @@ function disapprove_post($post_id_list, $id, $mode)
 	}
 	else
 	{
-		include_once($phpbb_root_path . 'includes/functions_display.' . $phpEx);
+		include_once(PHPBB3_INCLUDE_DIR . 'functions_display.' . $phpEx);
 
 		display_reasons($reason_id);
 
