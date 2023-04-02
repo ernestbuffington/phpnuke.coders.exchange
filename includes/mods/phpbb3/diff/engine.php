@@ -9,8 +9,11 @@
 */
 
 /**
-* @ignore
-*/
+ * Applied rules:
+ * AddDefaultValueForUndefinedVariableRector (https://github.com/vimeo/psalm/blob/29b70442b11e3e66113935a2ee22e165a70c74a4/docs/fixing_code.md#possiblyundefinedvariable)
+ * WhileEachToForeachRector (https://wiki.php.net/rfc/deprecations_php_7_2#each)
+ */
+
 if (!defined('IN_PHPBB'))
 {
 	exit;
@@ -51,6 +54,9 @@ class diff_engine
 {
 	function diff(&$from_lines, &$to_lines, $preserve_cr = true)
 	{
+		$xhash = [];
+        $yhash = [];
+        
 		// Remove empty lines...
 		// If preserve_cr is true, we basically only change \r\n and bare \r to \n to get the same carriage returns for both files
 		// If it is false, we try to only use \n once per line and ommit all empty lines to be able to get a proper data diff
@@ -210,7 +216,11 @@ class diff_engine
 	*/
 	function _diag($xoff, $xlim, $yoff, $ylim, $nchunks)
 	{
-		$flip = false;
+		$ymatches = [];
+        $ymids = [];
+        $k = null;
+        $seps = [];
+        $flip = false;
 
 		if ($xlim - $xoff > $ylim - $yoff)
 		{
@@ -264,32 +274,30 @@ class diff_engine
 				$matches = $ymatches[$line];
 
 				reset($matches);
-				while (list(, $y) = each($matches))
-				{
-					if (empty($this->in_seq[$y]))
-					{
-						$k = $this->_lcs_pos($y);
-						$ymids[$k] = $ymids[$k - 1];
-						break;
-					}
-				}
+				foreach ($matches as $y) {
+        if (empty($this->in_seq[$y]))
+   					{
+   						$k = $this->_lcs_pos($y);
+   						$ymids[$k] = $ymids[$k - 1];
+   						break;
+   					}
+        }
 
 				// no reset() here
-				while (list(, $y) = each($matches))
-				{
-					if ($y > $this->seq[$k - 1])
-					{
-						// Optimization: this is a common case: next match is just replacing previous match.
-						$this->in_seq[$this->seq[$k]] = false;
-						$this->seq[$k] = $y;
-						$this->in_seq[$y] = 1;
-					}
-					else if (empty($this->in_seq[$y]))
-					{
-						$k = $this->_lcs_pos($y);
-						$ymids[$k] = $ymids[$k - 1];
-					}
-				}
+				foreach ($matches as $y) {
+        if ($y > $this->seq[$k - 1])
+   					{
+   						// Optimization: this is a common case: next match is just replacing previous match.
+   						$this->in_seq[$this->seq[$k]] = false;
+   						$this->seq[$k] = $y;
+   						$this->in_seq[$y] = 1;
+   					}
+   					else if (empty($this->in_seq[$y]))
+   					{
+   						$k = $this->_lcs_pos($y);
+   						$ymids[$k] = $ymids[$k - 1];
+   					}
+    }
 			}
 		}
 
@@ -353,7 +361,8 @@ class diff_engine
 	*/
 	function _compareseq($xoff, $xlim, $yoff, $ylim)
 	{
-		// Slide down the bottom initial diagonal.
+		$seps = [];
+        // Slide down the bottom initial diagonal.
 		while ($xoff < $xlim && $yoff < $ylim && $this->xv[$xoff] == $this->yv[$yoff])
 		{
 			++$xoff;
