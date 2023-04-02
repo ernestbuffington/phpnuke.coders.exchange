@@ -9,8 +9,10 @@
 */
 
 /**
-* @ignore
-*/
+ * Applied rules:
+ * StrStartsWithRector (https://wiki.php.net/rfc/add_str_starts_with_and_ends_with_functions)
+ */
+
 if (!defined('IN_PHPBB'))
 {
 	exit;
@@ -142,7 +144,7 @@ class auth_arcade
 	{
 		$negate = false;
 
-		if (strpos($opt, '!') === 0)
+		if (str_starts_with($opt, '!'))
 		{
 			$negate = true;
 			$opt = substr($opt, 1);
@@ -189,7 +191,7 @@ class auth_arcade
 		$acl_c = array();
 		$negate = false;
 
-		if (strpos($opt, '!') === 0)
+		if (str_starts_with($opt, '!'))
 		{
 			$negate = true;
 			$opt = substr($opt, 1);
