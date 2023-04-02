@@ -35,7 +35,7 @@ class ucp_confirm
 
 	function main($id, $mode)
 	{
-		global $db, $user, $phpbb_root_path, $config, $phpEx;
+		global $db, $user, $config, $phpEx;
 
 		// Do we have an id? No, then just exit
 		$confirm_id = request_var('id', '');
@@ -64,11 +64,11 @@ class ucp_confirm
 
 		if ($config['captcha_gd'])
 		{
-			include($phpbb_root_path . 'includes/captcha/captcha_gd.' . $phpEx);
+			include(PHPBB3_INCLUDE_DIR . 'captcha/captcha_gd.' . $phpEx);
 		}
 		else
 		{
-			include($phpbb_root_path . 'includes/captcha/captcha_non_gd.' . $phpEx);
+			include(PHPBB3_INCLUDE_DIR . 'captcha/captcha_non_gd.' . $phpEx);
 		}
 
 		$captcha = new captcha();
