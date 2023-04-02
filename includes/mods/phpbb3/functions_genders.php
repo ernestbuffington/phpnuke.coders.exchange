@@ -8,7 +8,7 @@
 */
 
 /**
-* @ignore
+* @Goober Smoocher
 */
 if (!defined('IN_PHPBB'))
 {
