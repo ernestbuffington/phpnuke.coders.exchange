@@ -9,8 +9,14 @@
 */
 
 /**
-* @ignore
-*/
+ * Applied rules:
+ * AddDefaultValueForUndefinedVariableRector (https://github.com/vimeo/psalm/blob/29b70442b11e3e66113935a2ee22e165a70c74a4/docs/fixing_code.md#possiblyundefinedvariable)
+ * Php4ConstructorRector (https://wiki.php.net/rfc/remove_php4_constructors)
+ * TernaryToNullCoalescingRector
+ * WrapVariableVariableNameInCurlyBracesRector (https://www.php.net/manual/en/language.variables.variable.php)
+ * StrStartsWithRector (https://wiki.php.net/rfc/add_str_starts_with_and_ends_with_functions)
+ */
+
 if (!defined('IN_PHPBB'))
 {
 	exit;
@@ -74,7 +80,7 @@ function gen_sort_selects(&$limit_days, &$sort_by_text, &$sort_days, &$sort_key,
 	foreach ($sorts as $name => $sort_ary)
 	{
 		$key = $sort_ary['key'];
-		$selected = $$sort_ary['key'];
+		$selected = ${$sort_ary}['key'];
 
 		// Check if the key is selectable. If not, we reset to the default or first key found.
 		// This ensures the values are always valid. We also set $sort_dir/sort_key/etc. to the
@@ -83,12 +89,12 @@ function gen_sort_selects(&$limit_days, &$sort_by_text, &$sort_days, &$sort_key,
 		{
 			if ($sort_ary['default'] !== false)
 			{
-				$selected = $$key = $sort_ary['default'];
+				$selected = ${$key} = $sort_ary['default'];
 			}
 			else
 			{
-				@reset($sort_ary['options']);
-				$selected = $$key = key($sort_ary['options']);
+				reset($sort_ary['options']);
+				$selected = ${$key} = key($sort_ary['options']);
 			}
 		}
 
@@ -143,7 +149,7 @@ function make_jumpbox($action, $forum_id = false, $select_all = false, $acl_list
 		{
 			// Ok, if the $padding_store for this parent is empty there is something wrong. For now we will skip over it.
 			// @todo digging deep to find out "how" this can happen.
-			$padding = (isset($padding_store[$row['parent_id']])) ? $padding_store[$row['parent_id']] : $padding;
+			$padding = $padding_store[$row['parent_id']] ?? $padding;
 		}
 
 		$right = $row['right_id'];
@@ -415,8 +421,11 @@ function generate_text_for_display($text, $uid, $bitfield, $flags)
 	{
 		if (!class_exists('bbcode'))
 		{
-			global $phpbb_root_path, $phpEx;
-			include($phpbb_root_path . 'includes/bbcode.' . $phpEx);
+			global $phpEx;
+			
+			$phpbb_include_path = PHPBB3_INCLUDE_DIR;
+			
+			include($phpbb_include_path . 'bbcode.' . $phpEx);
 		}
 
 		if (empty($bbcode))
@@ -444,7 +453,9 @@ function generate_text_for_display($text, $uid, $bitfield, $flags)
 */
 function generate_text_for_storage(&$text, &$uid, &$bitfield, &$flags, $allow_bbcode = false, $allow_urls = false, $allow_smilies = false)
 {
-	global $phpbb_root_path, $phpEx;
+	global $phpEx;
+	
+	$phpbb_include_path = PHPBB3_INCLUDE_DIR;
 
 	$uid = $bitfield = '';
 	$flags = (($allow_bbcode) ? OPTION_FLAG_BBCODE : 0) + (($allow_smilies) ? OPTION_FLAG_SMILIES : 0) + (($allow_urls) ? OPTION_FLAG_LINKS : 0);
@@ -456,7 +467,7 @@ function generate_text_for_storage(&$text, &$uid, &$bitfield, &$flags, $allow_bb
 
 	if (!class_exists('parse_message'))
 	{
-		include($phpbb_root_path . 'includes/message_parser.' . $phpEx);
+		include($phpbb_include_path . 'message_parser.' . $phpEx);
 	}
 
 	$message_parser = new parse_message($text);
@@ -482,7 +493,7 @@ function generate_text_for_storage(&$text, &$uid, &$bitfield, &$flags, $allow_bb
 */
 function generate_text_for_edit($text, $uid, $flags)
 {
-	global $phpbb_root_path, $phpEx;
+	global $phpEx;
 
 	decode_message($text, $uid);
 
@@ -501,7 +512,9 @@ function generate_text_for_edit($text, $uid, $flags)
 */
 function make_clickable_callback($type, $whitespace, $url, $relative_url, $class)
 {
-	$orig_url		= $url;
+	$text = null;
+ $tag = null;
+ $orig_url		= $url;
 	$orig_relative	= $relative_url;
 	$append			= '';
 	$url			= htmlspecialchars_decode($url);
@@ -715,13 +728,16 @@ function bbcode_nl2br($text)
 */
 function smiley_text($text, $force_option = false)
 {
-	global $config, $user, $phpbb_root_path;
+	global $config, $user;
+
+	$phpbb_root_path = PHPBB3_ROOT_DIR;
+	$phpbb_include_path = PHPBB3_INCLUDE_DIR;
 	
 	//-- mod: Prime Links -------------------------------------------------------//
 	if (!function_exists('prime_links'))
 	{
 		global $phpEx;
-		include($phpbb_root_path . 'includes/prime_links.' . $phpEx);
+		include($phpbb_include_path . 'prime_links.' . $phpEx);
 	}
 	$text = prime_links($text);
     //-- end: Prime Links -------------------------------------------------------//
@@ -753,7 +769,9 @@ function parse_attachments($forum_id, &$message, &$attachments, &$update_count, 
 	}
 
 	global $template, $cache, $user;
-	global $extensions, $config, $phpbb_root_path, $phpEx;
+	global $extensions, $config, $phpEx;
+
+	$phpbb_root_path = PHPBB3_ROOT_DIR;
 
 	//
 	$compiled_attachments = array();
@@ -900,7 +918,7 @@ function parse_attachments($forum_id, &$message, &$attachments, &$update_count, 
 					{
 						if ($config['img_link_width'] || $config['img_link_height'])
 						{
-							$dimension = @getimagesize($filename);
+							$dimension = getimagesize($filename);
 
 							// If the dimensions could not be determined or the image being 0x0 we display it as a link for safety purposes
 							if ($dimension === false || empty($dimension[0]) || empty($dimension[1]))
@@ -997,7 +1015,7 @@ function parse_attachments($forum_id, &$message, &$attachments, &$update_count, 
 
 				// Macromedia Flash Files
 				case ATTACHMENT_CATEGORY_FLASH:
-					list($width, $height) = @getimagesize($filename);
+					list($width, $height) = getimagesize($filename);
 
 					$l_downloaded_viewed = 'VIEWED_COUNT';
 
@@ -1049,7 +1067,7 @@ function parse_attachments($forum_id, &$message, &$attachments, &$update_count, 
 		$index = ($config['display_order']) ? ($tpl_size-($matches[1][$num] + 1)) : $matches[1][$num];
 
 		$replace['from'][] = $matches[0][$num];
-		$replace['to'][] = (isset($attachments[$index])) ? $attachments[$index] : sprintf($user->lang['MISSING_INLINE_ATTACHMENT'], $matches[2][array_search($index, $matches[1])]);
+		$replace['to'][] = $attachments[$index] ?? sprintf($user->lang['MISSING_INLINE_ATTACHMENT'], $matches[2][array_search($index, $matches[1])]);
 
 		$unset_tpl[] = $index;
 	}
@@ -1106,7 +1124,7 @@ function truncate_string($string, $max_length = 60, $max_store_length = 255, $al
 
 	$strip_reply = false;
 	$stripped = false;
-	if ($allow_reply && strpos($string, 'Re: ') === 0)
+	if ($allow_reply && str_starts_with($string, 'Re: '))
 	{
 		$strip_reply = true;
 		$string = substr($string, 4);
@@ -1185,7 +1203,9 @@ function get_username_string($mode, $user_id, $username, $username_colour = '', 
 		return $_profile_cache[$cache_key][$mode];
 	}
 
-	global $phpbb_root_path, $phpEx, $user, $auth;
+	global $phpEx, $user, $auth;
+	
+	$phpbb_root_path = PHPBB3_ROOT_DIR;
 
 	$username_colour = ($username_colour) ? '#' . $username_colour : '';
 
@@ -1243,7 +1263,7 @@ class bitfield
 {
 	var $data;
 
-	function bitfield($bitfield = '')
+	function __construct($bitfield = '')
 	{
 		$this->data = base64_decode($bitfield);
 	}
