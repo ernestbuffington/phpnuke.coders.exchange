@@ -9,8 +9,13 @@
 */
 
 /**
-* @ignore
-*/
+ * Applied rules:
+ * AddDefaultValueForUndefinedVariableRector (https://github.com/vimeo/psalm/blob/29b70442b11e3e66113935a2ee22e165a70c74a4/docs/fixing_code.md#possiblyundefinedvariable)
+ * TernaryToNullCoalescingRector
+ * StringifyStrNeedlesRector (https://wiki.php.net/rfc/deprecations_php_7_3#string_search_functions_with_integer_needle)
+ * StrStartsWithRector (https://wiki.php.net/rfc/add_str_starts_with_and_ends_with_functions)
+ */
+
 if (!defined('IN_PHPBB'))
 {
 	exit;
@@ -140,7 +145,7 @@ function make_forum_select($select_id = false, $ignore_id = false, $ignore_acl =
 		}
 		else if ($row['left_id'] > $right + 1)
 		{
-			$padding = (isset($padding_store[$row['parent_id']])) ? $padding_store[$row['parent_id']] : '';
+			$padding = $padding_store[$row['parent_id']] ?? '';
 		}
 
 		$right = $row['right_id'];
@@ -280,7 +285,7 @@ function get_forum_list($acl_list = 'f_list', $id_only = true, $postable_only = 
 			{
 				// Ok, if the $padding_store for this parent is empty there is something wrong. For now we will skip over it.
 				// @todo digging deep to find out "how" this can happen.
-				$padding = (isset($padding_store[$row['parent_id']])) ? $padding_store[$row['parent_id']] : $padding;
+				$padding = $padding_store[$row['parent_id']] ?? $padding;
 			}
 
 			$right = $row['right_id'];
@@ -362,12 +367,12 @@ function filelist($rootdir, $dir = '', $type = 'gif|jpg|jpeg|png')
 	$matches = array();
 
 	// Remove initial / if present
-	$rootdir = (substr($rootdir, 0, 1) == '/') ? substr($rootdir, 1) : $rootdir;
+	$rootdir = (str_starts_with($rootdir, '/')) ? substr($rootdir, 1) : $rootdir;
 	// Add closing / if not present
 	$rootdir = ($rootdir && substr($rootdir, -1) != '/') ? $rootdir . '/' : $rootdir;
 
 	// Remove initial / if present
-	$dir = (substr($dir, 0, 1) == '/') ? substr($dir, 1) : $dir;
+	$dir = (str_starts_with($dir, '/')) ? substr($dir, 1) : $dir;
 	// Add closing / if not present
 	$dir = ($dir && substr($dir, -1) != '/') ? $dir . '/' : $dir;
 
@@ -376,7 +381,7 @@ function filelist($rootdir, $dir = '', $type = 'gif|jpg|jpeg|png')
 		return $matches;
 	}
 
-	$dh = @opendir($rootdir . $dir);
+	$dh = opendir($rootdir . $dir);
 
 	if (!$dh)
 	{
@@ -630,7 +635,11 @@ function delete_topics($where_type, $where_ids, $auto_sync = true, $post_count_s
 */
 function delete_posts($where_type, $where_ids, $auto_sync = true, $posted_sync = true, $post_count_sync = true, $call_delete_topics = true)
 {
-	global $db, $config, $phpbb_root_path, $phpEx;
+	$poster_ids = [];
+    
+	global $db, $config, $phpEx;
+	
+	$phpbb_include_path = PHPBB3_INCLUDE_DIR;
 
 	if ($where_type === 'range')
 	{
@@ -740,12 +749,12 @@ function delete_posts($where_type, $where_ids, $auto_sync = true, $posted_sync =
 	// Remove the message from the search index
 	$search_type = basename($config['search_type']);
 
-	if (!file_exists($phpbb_root_path . 'includes/search/' . $search_type . '.' . $phpEx))
+	if (!file_exists(PHPBB3_INCLUDE_DIR . 'search/' . $search_type . '.' . $phpEx))
 	{
 		trigger_error('NO_SUCH_SEARCH_MODULE');
 	}
 
-	include_once("{$phpbb_root_path}includes/search/$search_type.$phpEx");
+	include_once("{$phpbb_include_path}search/$search_type.$phpEx");
 
 	$error = false;
 	$search = new $search_type($error);
@@ -967,7 +976,8 @@ function delete_attachments($mode, $ids, $resync = true)
 */
 function delete_topic_shadows($max_age, $forum_id = '', $auto_sync = true)
 {
-	$where = (is_array($forum_id)) ? 'AND ' . $db->sql_in_set('t.forum_id', array_map('intval', $forum_id)) : (($forum_id) ? 'AND t.forum_id = ' . (int) $forum_id : '');
+	$db = null;
+    $where = (is_array($forum_id)) ? 'AND ' . $db->sql_in_set('t.forum_id', array_map('intval', $forum_id)) : (($forum_id) ? 'AND t.forum_id = ' . (int) $forum_id : '');
 
 	switch ($db->sql_layer)
 	{
@@ -1068,7 +1078,9 @@ function update_posted_info(&$topic_ids)
 */
 function phpbb_unlink($filename, $mode = 'file', $entry_removed = false)
 {
-	global $db, $phpbb_root_path, $config;
+	global $db, $config;
+	
+	$phpbb_root_path = PHPBB3_ROOT_DIR;
 
 	// Because of copying topics or modifications a physical filename could be assigned more than once. If so, do not remove the file itself.
 	$sql = 'SELECT COUNT(attach_id) AS num_entries
@@ -1085,7 +1097,7 @@ function phpbb_unlink($filename, $mode = 'file', $entry_removed = false)
 	}
 
 	$filename = ($mode == 'thumbnail') ? 'thumb_' . basename($filename) : basename($filename);
-	return @unlink($phpbb_root_path . $config['upload_path'] . '/' . $filename);
+	return unlink($phpbb_root_path . $config['upload_path'] . '/' . $filename);
 }
 
 /**
@@ -2128,8 +2140,8 @@ function remove_comments(&$output)
 */
 function cache_moderators()
 {
-	global $db, $cache, $auth, $phpbb_root_path, $phpEx;
-
+	global $db, $cache, $auth, $phpEx;
+	
 	// Remove cached sql results
 	$cache->destroy('sql', MODERATOR_CACHE_TABLE);
 
@@ -2300,7 +2312,10 @@ function cache_moderators()
 */
 function view_log($mode, &$log, &$log_count, $limit = 0, $offset = 0, $forum_id = 0, $topic_id = 0, $user_id = 0, $limit_days = 0, $sort_by = 'l.log_time DESC')
 {
-	global $db, $user, $auth, $phpEx, $phpbb_root_path, $phpbb_admin_path;
+	global $db, $user, $auth, $phpEx;
+	
+	$phpbb_root_path = PHPBB3_ROOT_DIR;
+	$phpbb_admin_path = PHPBB3_ADMIN_DIR;
 
 	$topic_id_list = $reportee_id_list = $is_auth = $is_mod = array();
 
@@ -2389,7 +2404,7 @@ function view_log($mode, &$log, &$log_count, $limit = 0, $offset = 0, $forum_id 
 			'topic_id'			=> $row['topic_id'],
 
 			'viewforum'			=> ($row['forum_id'] && $auth->acl_get('f_read', $row['forum_id'])) ? append_sid("{$phpbb_root_path}viewforum.$phpEx", 'f=' . $row['forum_id']) : false,
-			'action'			=> (isset($user->lang[$row['log_operation']])) ? $user->lang[$row['log_operation']] : '{' . ucfirst(str_replace('_', ' ', $row['log_operation'])) . '}',
+			'action'			=> $user->lang[$row['log_operation']] ?? '{' . ucfirst(str_replace('_', ' ', $row['log_operation'])) . '}',
 		);
 
 		if (!empty($row['log_data']))
@@ -2762,7 +2777,7 @@ function get_database_size()
 						{
 							if ($prefix_phpbb3 != '')
 							{
-								if (strpos($row['Name'], $prefix_phpbb3) !== false)
+								if (strpos($row['Name'], (string) $prefix_phpbb3) !== false)
 								{
 									$database_size += $row['Data_length'] + $row['Index_length'];
 								}
@@ -2863,24 +2878,24 @@ function get_remote_file($host, $directory, $filename, &$errstr, &$errno, $port 
 {
 	global $user;
 
-	if ($fsock = @fsockopen($host, $port, $errno, $errstr, $timeout))
+	if ($fsock = fsockopen($host, $port, $errno, $errstr, $timeout))
 	{
-		@fputs($fsock, "GET $directory/$filename HTTP/1.1\r\n");
-		@fputs($fsock, "HOST: $host\r\n");
-		@fputs($fsock, "Connection: close\r\n\r\n");
+		fputs($fsock, "GET $directory/$filename HTTP/1.1\r\n");
+		fputs($fsock, "HOST: $host\r\n");
+		fputs($fsock, "Connection: close\r\n\r\n");
 
 		$file_info = '';
 		$get_info = false;
 
-		while (!@feof($fsock))
+		while (!feof($fsock))
 		{
 			if ($get_info)
 			{
-				$file_info .= @fread($fsock, 1024);
+				$file_info .= fread($fsock, 1024);
 			}
 			else
 			{
-				$line = @fgets($fsock, 1024);
+				$line = fgets($fsock, 1024);
 				if ($line == "\r\n")
 				{
 					$get_info = true;
@@ -2892,7 +2907,7 @@ function get_remote_file($host, $directory, $filename, &$errstr, &$errno, $port 
 				}
 			}
 		}
-		@fclose($fsock);
+		fclose($fsock);
 	}
 	else
 	{
@@ -3005,13 +3020,13 @@ function add_permission_language()
 	// Now search in acp and mods folder for permissions_ files.
 	foreach (array('acp/', 'mods/') as $path)
 	{
-		$dh = @opendir($user->lang_path . $user->lang_name . '/' . $path);
+		$dh = opendir($user->lang_path . $user->lang_name . '/' . $path);
 
 		if ($dh)
 		{
 			while (($file = readdir($dh)) !== false)
 			{
-				if ($file !== 'permissions_phpbb.' . $phpEx && strpos($file, 'permissions_') === 0 && substr($file, -(strlen($phpEx) + 1)) === '.' . $phpEx)
+				if ($file !== 'permissions_phpbb.' . $phpEx && str_starts_with($file, 'permissions_') && substr($file, -(strlen($phpEx) + 1)) === '.' . $phpEx)
 				{
 					$files_to_add[] = $path . substr($file, 0, -(strlen($phpEx) + 1));
 				}
