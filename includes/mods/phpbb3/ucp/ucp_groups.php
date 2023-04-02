@@ -9,8 +9,12 @@
 */
 
 /**
-* @ignore
-*/
+ * Applied rules:
+ * AddDefaultValueForUndefinedVariableRector (https://github.com/vimeo/psalm/blob/29b70442b11e3e66113935a2ee22e165a70c74a4/docs/fixing_code.md#possiblyundefinedvariable)
+ * TernaryToNullCoalescingRector
+ * ListEachRector (https://wiki.php.net/rfc/deprecations_php_7_2#each)
+ */
+
 if (!defined('IN_PHPBB'))
 {
 	exit;
@@ -26,8 +30,16 @@ class ucp_groups
 
 	function main($id, $mode)
 	{
-		global $config, $phpbb_root_path, $phpEx;
+		$group_status = null;
+        $group_row = [];
+        $group_rank = null;
+        $group_type = null;
+        $group_desc_data = [];
+        
+		global $config, $phpEx;
 		global $db, $user, $auth, $cache, $template;
+		
+		$phpbb_root_path = PHPBB3_ROOT_DIR;
 
 		$user->add_lang('groups');
 
@@ -125,7 +137,8 @@ class ucp_groups
 							{
 								trigger_error($user->lang['NOT_MEMBER_OF_GROUP'] . $return_page);
 							}
-							list(, $row) = each($row);
+							$row = current($row);
+       next($row);
 
 							$sql = 'SELECT group_type
 								FROM ' . GROUPS_TABLE . '
@@ -203,7 +216,7 @@ class ucp_groups
 									$email_template = 'group_request';
 								}
 
-								include_once($phpbb_root_path . 'includes/functions_messenger.' . $phpEx);
+								include_once(PHPBB3_INCLUDE_DIR . 'functions_messenger.' . $phpEx);
 								$messenger = new messenger();
 
 								$sql = 'SELECT u.username, u.username_clean, u.user_email, u.user_notify_type, u.user_jabber, u.user_lang
@@ -259,7 +272,8 @@ class ucp_groups
 							{
 								trigger_error($user->lang['NOT_MEMBER_OF_GROUP'] . $return_page);
 							}
-							list(, $row) = each($row);
+							$row = current($row);
+       next($row);
 
 							if (!$row['group_leader'])
 							{
@@ -415,7 +429,7 @@ class ucp_groups
 				$action		= (isset($_POST['addusers'])) ? 'addusers' : request_var('action', '');
 				$group_id	= request_var('g', 0);
 				
-				include($phpbb_root_path . 'includes/functions_display.' . $phpEx);
+				include(PHPBB3_INCLUDE_DIR . 'functions_display.' . $phpEx);
 
 				add_form_key('ucp_groups');
 
@@ -447,14 +461,14 @@ class ucp_groups
 					$template->assign_vars(array(
 						'GROUP_NAME'			=> ($group_type == GROUP_SPECIAL) ? $user->lang['G_' . $group_name] : $group_name,
 						'GROUP_INTERNAL_NAME'	=> $group_name,
-						'GROUP_COLOUR'			=> (isset($group_row['group_colour'])) ? $group_row['group_colour'] : '',
+						'GROUP_COLOUR'			=> $group_row['group_colour'] ?? '',
 						'GROUP_DESC_DISP'		=> generate_text_for_display($group_row['group_desc'], $group_row['group_desc_uid'], $group_row['group_desc_bitfield'], $group_row['group_desc_options']),
 						'GROUP_TYPE'			=> $group_row['group_type'],
 						
 						'AVATAR'				=> $avatar_img,
 						'AVATAR_IMAGE'			=> $avatar_img,
-						'AVATAR_WIDTH'			=> (isset($group_row['group_avatar_width'])) ? $group_row['group_avatar_width'] : '',
-						'AVATAR_HEIGHT'			=> (isset($group_row['group_avatar_height'])) ? $group_row['group_avatar_height'] : '',
+						'AVATAR_WIDTH'			=> $group_row['group_avatar_width'] ?? '',
+						'AVATAR_HEIGHT'			=> $group_row['group_avatar_height'] ?? '',
 					));
 				}
 
@@ -471,14 +485,15 @@ class ucp_groups
 						{
 							trigger_error($user->lang['NOT_MEMBER_OF_GROUP'] . $return_page);
 						}
-						list(, $row) = each($row);
+						$row = current($row);
+      next($row);
 
 						if (!$row['group_leader'])
 						{
 							trigger_error($user->lang['NOT_LEADER_OF_GROUP'] . $return_page);
 						}
 
-						$file_uploads = (@ini_get('file_uploads') || strtolower(@ini_get('file_uploads')) == 'on') ? true : false;
+						$file_uploads = (ini_get('file_uploads') || strtolower(ini_get('file_uploads')) == 'on') ? true : false;
 						$user->add_lang(array('acp/groups', 'acp/common'));
 
 						$data = $submit_ary = array();
@@ -490,7 +505,7 @@ class ucp_groups
 						$avatar_select = basename(request_var('avatar_select', ''));
 						$category = basename(request_var('category', ''));
 
-						$can_upload = (file_exists($phpbb_root_path . $config['avatar_path']) && @is_writable($phpbb_root_path . $config['avatar_path']) && $file_uploads) ? true : false;
+						$can_upload = (file_exists($phpbb_root_path . $config['avatar_path']) && is_writable($phpbb_root_path . $config['avatar_path']) && $file_uploads) ? true : false;
 
 						// Did we submit?
 						if ($update)
@@ -695,8 +710,8 @@ class ucp_groups
 
 							'ERROR_MSG'				=> (sizeof($error)) ? implode('<br />', $error) : '',
 							'GROUP_RECEIVE_PM'		=> (isset($group_row['group_receive_pm']) && $group_row['group_receive_pm']) ? ' checked="checked"' : '',
-							'GROUP_MESSAGE_LIMIT'	=> (isset($group_row['group_message_limit'])) ? $group_row['group_message_limit'] : 0,
-							'GROUP_MAX_RECIPIENTS'	=> (isset($group_row['group_max_recipients'])) ? $group_row['group_max_recipients'] : 0,
+							'GROUP_MESSAGE_LIMIT'	=> $group_row['group_message_limit'] ?? 0,
+							'GROUP_MAX_RECIPIENTS'	=> $group_row['group_max_recipients'] ?? 0,
 							
 							'GROUP_DESC'			=> $group_desc_data['text'],
 							'S_DESC_BBCODE_CHECKED'	=> $group_desc_data['allow_bbcode'],
@@ -735,7 +750,8 @@ class ucp_groups
 						{
 							trigger_error($user->lang['NOT_MEMBER_OF_GROUP'] . $return_page);
 						}
-						list(, $row) = each($row);
+						$row = current($row);
+      next($row);
 
 						if (!$row['group_leader'])
 						{
@@ -855,7 +871,8 @@ class ucp_groups
 						{
 							trigger_error($user->lang['NOT_MEMBER_OF_GROUP'] . $return_page);
 						}
-						list(, $row) = each($row);
+						$row = current($row);
+      next($row);
 
 						if (!$row['group_leader'])
 						{
@@ -882,7 +899,8 @@ class ucp_groups
 						{
 							trigger_error($user->lang['NOT_MEMBER_OF_GROUP'] . $return_page);
 						}
-						list(, $row) = each($row);
+						$row = current($row);
+      next($row);
 
 						if (!$row['group_leader'])
 						{
@@ -958,7 +976,8 @@ class ucp_groups
 						{
 							trigger_error($user->lang['NOT_MEMBER_OF_GROUP'] . $return_page);
 						}
-						list(, $row) = each($row);
+						$row = current($row);
+      next($row);
 
 						if (!$row['group_leader'])
 						{
@@ -1016,7 +1035,8 @@ class ucp_groups
 						{
 							trigger_error($user->lang['NOT_MEMBER_OF_GROUP'] . $return_page);
 						}
-						list(, $row) = each($row);
+						$row = current($row);
+      next($row);
 
 						if (!$row['group_leader'])
 						{
