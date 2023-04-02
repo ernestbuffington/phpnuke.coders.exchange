@@ -9,8 +9,11 @@
 */
 
 /**
-* @ignore
-*/
+ * Applied rules:
+ * AddDefaultValueForUndefinedVariableRector (https://github.com/vimeo/psalm/blob/29b70442b11e3e66113935a2ee22e165a70c74a4/docs/fixing_code.md#possiblyundefinedvariable)
+ * TernaryToNullCoalescingRector
+ */
+
 if (!defined('IN_PHPBB'))
 {
 	exit;
@@ -21,8 +24,12 @@ if (!defined('IN_PHPBB'))
 */
 function display_forums($root_data = '', $display_moderators = true, $return_moderators = false)
 {
+	$tracking_topics = [];
+    
 	global $db, $auth, $user, $template;
-	global $phpbb_root_path, $phpEx, $config;
+	global $phpEx, $config;
+	
+	$phpbb_root_path = PHPBB3_ROOT_DIR;
 
 	$forum_rows = $subforums = $forum_ids = $forum_ids_moderator = $forum_moderators = $active_forum_ary = array();
 	$parent_id = $visible_forums = 0;
@@ -436,7 +443,7 @@ function display_forums($root_data = '', $display_moderators = true, $return_mod
 			$l_post_click_count		=> $post_click_count,
 			'FORUM_FOLDER_IMG'		=> $user->img($folder_image, $folder_alt),
 			'FORUM_FOLDER_IMG_SRC'	=> $user->img($folder_image, $folder_alt, false, '', 'src'),
-			'FORUM_FOLDER_IMG_ALT'	=> isset($user->lang[$folder_alt]) ? $user->lang[$folder_alt] : '',
+			'FORUM_FOLDER_IMG_ALT'	=> $user->lang[$folder_alt] ?? '',
 			'FORUM_IMAGE'			=> ($row['forum_image']) ? '<img src="' . $phpbb_root_path . $row['forum_image'] . '" alt="' . $user->lang[$folder_alt] . '" />' : '',
 			'FORUM_IMAGE_SRC'		=> ($row['forum_image']) ? $phpbb_root_path . $row['forum_image'] : '',
 			'LAST_POST_SUBJECT'		=> $last_post_subject,
@@ -495,7 +502,7 @@ function generate_forum_rules(&$forum_data)
 		return;
 	}
 
-	global $template, $phpbb_root_path, $phpEx;
+	global $template, $phpEx;
 
 	if ($forum_data['forum_rules'])
 	{
@@ -516,7 +523,9 @@ function generate_forum_rules(&$forum_data)
 function generate_forum_nav(&$forum_data)
 {
 	global $db, $user, $template, $auth;
-	global $phpEx, $phpbb_root_path;
+	global $phpEx;
+	
+	$phpbb_root_path = PHPBB3_ROOT_DIR;
 
 	if (!$auth->acl_get('f_list', $forum_data['forum_id']))
 	{
@@ -657,7 +666,9 @@ function topic_generate_pagination($replies, $url)
 */
 function get_moderators(&$forum_moderators, $forum_id = false)
 {
-	global $config, $template, $db, $phpbb_root_path, $phpEx, $user, $auth;
+	global $config, $template, $db, $phpEx, $user, $auth;
+	
+	$phpbb_root_path = PHPBB3_ROOT_DIR;
 
 	// Have we disabled the display of moderators? If so, then return
 	// from whence we came ...
@@ -911,7 +922,9 @@ function display_reasons($reason_id = 0)
 function display_user_activity(&$userdata)
 {
 	global $auth, $template, $db, $user;
-	global $phpbb_root_path, $phpEx;
+	global $phpEx;
+	
+	$phpbb_root_path = PHPBB3_ROOT_DIR;
 
 	// Do not display user activity for users having more than 5000 posts...
 	if ($userdata['user_posts'] > 5000)
@@ -1020,7 +1033,12 @@ function display_user_activity(&$userdata)
 */
 function watch_topic_forum($mode, &$s_watching, $user_id, $forum_id, $topic_id, $notify_status = 'unset', $start = 0)
 {
-	global $template, $db, $user, $phpEx, $start, $phpbb_root_path;
+	$can_watch = null;
+    $is_watching = null;
+    
+	global $template, $db, $user, $phpEx, $start;
+ 
+    $phpbb_root_path = PHPBB3_ROOT_DIR;
 
 	$table_sql = ($mode == 'forum') ? FORUMS_WATCH_TABLE : TOPICS_WATCH_TABLE;
 	$where_sql = ($mode == 'forum') ? 'forum_id' : 'topic_id';
@@ -1155,7 +1173,9 @@ function watch_topic_forum($mode, &$s_watching, $user_id, $forum_id, $topic_id, 
 */
 function get_user_rank($user_rank, $user_posts, &$rank_title, &$rank_img, &$rank_img_src)
 {
-	global $ranks, $config, $phpbb_root_path;
+	global $ranks, $config;
+	
+	$phpbb_root_path = PHPBB3_ROOT_DIR;
 
 	if (empty($ranks))
 	{
@@ -1165,7 +1185,7 @@ function get_user_rank($user_rank, $user_posts, &$rank_title, &$rank_img, &$rank
 
 	if (!empty($user_rank))
 	{
-		$rank_title = (isset($ranks['special'][$user_rank]['rank_title'])) ? $ranks['special'][$user_rank]['rank_title'] : '';
+		$rank_title = $ranks['special'][$user_rank]['rank_title'] ?? '';
 		$rank_img = (!empty($ranks['special'][$user_rank]['rank_image'])) ? '<img src="' . $phpbb_root_path . $config['ranks_path'] . '/' . $ranks['special'][$user_rank]['rank_image'] . '" alt="' . $ranks['special'][$user_rank]['rank_title'] . '" title="' . $ranks['special'][$user_rank]['rank_title'] . '" />' : '';
 		$rank_img_src = (!empty($ranks['special'][$user_rank]['rank_image'])) ? $phpbb_root_path . $config['ranks_path'] . '/' . $ranks['special'][$user_rank]['rank_image'] : '';
 	}
@@ -1200,8 +1220,10 @@ function get_user_rank($user_rank, $user_posts, &$rank_title, &$rank_img, &$rank
 */
 function get_user_avatar($avatar, $avatar_type, $avatar_width, $avatar_height, $alt = 'USER_AVATAR')
 {
-	global $user, $config, $phpbb_root_path, $phpEx;
-
+	global $user, $config, $phpEx;
+	
+	$phpbb_root_path = PHPBB3_ROOT_DIR;
+	
 	if (empty($avatar) || !$avatar_type)
 	{
 		return '<img src="images/avatars/no_avatar.gif" alt="' . ((!empty($user->lang[$alt])) ? $user->lang[$alt] : $alt) . '" />';
@@ -1245,11 +1267,12 @@ function get_user_flag($user_flag, &$flag_country, &$flag_code, &$flag_img, &$fl
 
 	if (!empty($user_flag))
 	{
-		$flag_country = (isset($flags[$user_flag]['country'])) ? $flags[$user_flag]['country'] : '';
-		$flag_code = (isset($flags[$user_flag]['code'])) ? $flags[$user_flag]['code'] : '';
+		$flag_country = $flags[$user_flag]['country'] ?? '';
+		$flag_code = $flags[$user_flag]['code'] ?? '';
 		$flag_text = $flags[$user_flag]['country'] . ' (' . $flags[$user_flag]['code'] . ')';
 		$flag_img = (!empty($flags[$user_flag]['image'])) ? '<img src="' . $config['flags_path'] . '/' . $flags[$user_flag]['image'] . '" alt="' . $flag_text . '" title="' . $flag_text . '" />' : '';
 		$flag_img_src = (!empty($flags[$user_flag]['image'])) ? $config['flags_path'] . '/' . $flags[$user_flag]['image'] : '';
 	}
 }
+
 ?>
