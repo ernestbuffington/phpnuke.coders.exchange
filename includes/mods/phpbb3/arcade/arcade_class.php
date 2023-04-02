@@ -51,8 +51,10 @@ class arcade
 	*/
 	function __construct($in_arcade = true)
 	{
-		global $config, $arcade_cache, $template, $phpbb_root_path, $phpEx;
-
+		global $config, $arcade_cache, $template, $phpEx;
+        
+		$phpbb_root_path = PHPBB3_ROOT_DIR;
+		
 		$arcade_cache = new arcade_cache();
 		$this->config = $arcade_cache->obtain_arcade_config();
 		$this->init_points();
@@ -208,8 +210,10 @@ class arcade
 	*/
 	function set_favorites($mode, $cat_id, $game_id)
 	{
-		global $db, $phpbb_root_path, $phpEx, $user, $start, $term;
+		global $db, $phpEx, $user, $start, $term;
 
+		$phpbb_root_path = PHPBB3_ROOT_DIR;
+		
 		$page = request_var('page', '');
 		if ($mode == 'addfav' &&  $user->data['is_registered'])
 		{
@@ -307,7 +311,10 @@ class arcade
 	*/
 	function set_path($file, $type = '', $use_phpbb_root = true)
 	{
-		global $phpbb_root_path, $phpEx, $file_functions;
+		global $phpEx, $file_functions;
+		
+		$phpbb_root_path = PHPBB3_ROOT_DIR; 
+		
 		$path = $file_functions->remove_extension($file);
 
 		$return = '';
@@ -418,7 +425,7 @@ class arcade
 	function get_img($path, $alt = '')
 	{
 		$alt = (!empty($alt)) ? 'alt="' . $alt . '" title="' . $alt . '"' : 'alt=""';
-		if (list($width, $height) = @getimagesize($path))
+		if (list($width, $height) = getimagesize($path))
 		{
 			$img = '<img src="' . $path . '" width="' . $width . '" height="' . $height . '" ' . $alt . ' />';
 		}
@@ -436,7 +443,7 @@ class arcade
 	*/
 	function get_user_info($user_id = false)
 	{
-		global $db, $phpbb_root_path, $phpEx, $user;
+		global $db, $phpEx, $user;
 
 		if ($user_id)
 		{
@@ -1082,8 +1089,10 @@ class arcade
 	*/
 	function get_username_string($mode, $user_id, $username, $user_colour)
 	{
-		global $phpbb_root_path, $phpEx;
+		global $phpEx;
 
+        $phpbb_root_path = PHPBB3_ROOT_DIR;
+		
 		return get_username_string($mode, $user_id, $username, $user_colour, false, append_sid("{$phpbb_root_path}arcade.$phpEx", 'mode=stats'));
 
 	}
@@ -1326,7 +1335,8 @@ class arcade
 	function get_total($type = '', $id = 0)
 	{
 		$sql = null;
-  global $db, $user;
+        
+		global $db, $user;
 
 		$type = strtolower($type);
 		$sql_where = '';
@@ -1583,7 +1593,10 @@ class arcade
 	function set_fav_image($game_data, $game_id, $cat_id)
 	{
 		$locate = null;
-  global $user, $phpbb_root_path, $phpEx, $start, $term;
+        
+		global $user, $phpEx, $start, $term;
+		
+		$phpbb_root_path = PHPBB3_ROOT_DIR;
 
 		if (!$user->data['is_registered'] || $user->data['is_bot'])
 		{
@@ -1832,15 +1845,16 @@ class arcade
 	function send_pm($subject, $message, $score_data)
 	{
 		$address_list = [];
-  global $user, $phpbb_root_path, $phpEx;
+        
+		global $user, $phpEx;
 
 		if (!$user->data['is_registered'])
 		{
 			return;
 		}
 
-		include($phpbb_root_path . 'includes/functions_privmsgs.' . $phpEx);
-		include($phpbb_root_path . 'includes/message_parser.' . $phpEx);
+		include(PHPBB3_INCLUDE_DIR . 'functions_privmsgs.' . $phpEx);
+		include(PHPBB3_INCLUDE_DIR . 'message_parser.' . $phpEx);
 
 		$message_parser = new parse_message();
 
@@ -1987,12 +2001,12 @@ class arcade
 	*/
 	function set_header_no_cache()
 	{
-		@header("HTTP/1.0 200 OK");
-		@header("HTTP/1.1 200 OK");
-		@header("Content-type: text/html");
-		@header("Cache-Control: no-store,no-cache, must-revalidate, max-age=0");
-		@header("Expires: Mon, 27 Jul 1981 05:00:00 GMT");
-		@header("pragma: no-cache");
+		header("HTTP/1.0 200 OK");
+		header("HTTP/1.1 200 OK");
+		header("Content-type: text/html");
+		header("Cache-Control: no-store,no-cache, must-revalidate, max-age=0");
+		header("Expires: Mon, 27 Jul 1981 05:00:00 GMT");
+		header("pragma: no-cache");
 	}
 
 	/**
@@ -2059,7 +2073,7 @@ class arcade
 
 		foreach ($available_methods as $type => $module)
 		{
-			if (!@extension_loaded($module))
+			if (!extension_loaded($module))
 			{
 				continue;
 			}
@@ -2130,7 +2144,8 @@ class arcade
 	function obtain_downloaded_games($type, $limit)
 	{
 		$order = null;
-  global $db, $arcade;
+        
+		global $db, $arcade;
 
 		$type = strtolower($type);
 		switch ($type)
@@ -2167,7 +2182,8 @@ class arcade
 	function obtain_popular_games($type, $limit)
 	{
 		$order = null;
-  global $db, $arcade;
+        
+		global $db, $arcade;
 
 		$type = strtolower($type);
 		switch ($type)
@@ -2268,7 +2284,7 @@ class arcade
 	*/
 	function init_points()
 	{
-		global $phpbb_root_path, $phpEx;
+		global $phpEx;
 
 		$this->points = array(
 			'installed' 	=> false,
@@ -2278,11 +2294,11 @@ class arcade
 			'total'			=> 0,
 		);
 
-		if (file_exists($phpbb_root_path . 'includes/mods/functions_points.' . $phpEx))
+		if (file_exists(PHPBB3_ROOT_DIR . 'mods/functions_points.' . $phpEx))
 		{
 			if (!function_exists('add_points'))
 			{
-				include($phpbb_root_path . 'includes/mods/functions_points.' . $phpEx);
+				include(PHPBB3_ROOT_DIR . 'mods/functions_points.' . $phpEx);
 			}
 
 			if (!function_exists('set_bank'))
@@ -2297,7 +2313,7 @@ class arcade
 
 			$this->points['installed'] = true;
 		}
-		else if (file_exists($phpbb_root_path . 'includes/mods/cash/cash_class.' . $phpEx))
+		else if (file_exists(PHPBB3_ROOT_DIR . 'mods/cash/cash_class.' . $phpEx))
 		{
 			$this->points['type'] = CASH_MOD;
 			$this->points['installed'] = true;
