@@ -22,11 +22,13 @@ if (!defined('IN_PHPBB'))
 function mcp_forum_view($id, $mode, $action, $forum_info)
 {
 	global $template, $db, $user, $auth, $cache, $module;
-	global $phpEx, $phpbb_root_path, $config;
+	global $phpEx, $config;
 
+    $phpbb_root_path = PHPBB3_ROOT_DIR;
+	
 	$user->add_lang(array('viewtopic', 'viewforum'));
 
-	include_once($phpbb_root_path . 'includes/functions_display.' . $phpEx);
+	include_once(PHPBB3_ROOT_DIR . 'functions_display.' . $phpEx);
 
 	// merge_topic is the quickmod action, merge_topics is the mcp_forum action, and merge_select is the mcp_topic action
 	$merge_select = ($action == 'merge_select' || $action == 'merge_topic' || $action == 'merge_topics') ? true : false;
@@ -293,8 +295,8 @@ function mcp_forum_view($id, $mode, $action, $forum_info)
 */
 function mcp_resync_topics($topic_ids)
 {
-	global $auth, $db, $template, $phpEx, $user, $phpbb_root_path;
-
+	global $auth, $db, $template, $phpEx, $user;
+	
 	if (!sizeof($topic_ids))
 	{
 		trigger_error('NO_TOPIC_SELECTED');
@@ -337,7 +339,9 @@ function mcp_resync_topics($topic_ids)
 */
 function merge_topics($forum_id, $topic_ids, $to_topic_id)
 {
-	global $db, $template, $user, $phpEx, $phpbb_root_path, $auth;
+	global $db, $template, $user, $phpEx, $auth;
+	
+	$phpbb_root_path = PHPBB3_ROOT_DIR;
 
 	if (!sizeof($topic_ids))
 	{
