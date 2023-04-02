@@ -22,7 +22,9 @@ if (!defined('IN_PHPBB'))
 function view_message($id, $mode, $folder_id, $msg_id, $folder, $message_row)
 {
 	global $user, $template, $auth, $db, $cache;
-	global $phpbb_root_path, $phpEx, $config;
+	global $phpEx, $config;
+	
+	$phpbb_root_path = PHPBB3_ROOT_DIR;
 
 	$user->add_lang(array('viewtopic', 'memberlist'));
 
@@ -54,7 +56,7 @@ function view_message($id, $mode, $folder_id, $msg_id, $folder, $message_row)
 	// Instantiate BBCode if need be
 	if ($message_row['bbcode_bitfield'])
 	{
-		include($phpbb_root_path . 'includes/bbcode.' . $phpEx);
+		include(PHPBB3_INCLUDE_DIR . 'bbcode.' . $phpEx);
 		$bbcode = new bbcode($message_row['bbcode_bitfield']);
 	}
 
@@ -155,7 +157,7 @@ function view_message($id, $mode, $folder_id, $msg_id, $folder, $message_row)
 		{
 			if ($bbcode === false)
 			{
-				include($phpbb_root_path . 'includes/bbcode.' . $phpEx);
+				include(PHPBB3_INCLUDE_DIR . 'bbcode.' . $phpEx);
 				$bbcode = new bbcode($user_info['user_sig_bbcode_bitfield']);
 			}
 
@@ -254,7 +256,9 @@ function view_message($id, $mode, $folder_id, $msg_id, $folder, $message_row)
 function get_user_information($user_id, $user_row)
 {
 	global $db, $auth, $user, $cache;
-	global $phpbb_root_path, $phpEx, $config;
+	global $phpEx, $config;
+
+	$phpbb_root_path = PHPBB3_ROOT_DIR;
 
 	if (!$user_id)
 	{
@@ -295,7 +299,7 @@ function get_user_information($user_id, $user_row)
 
 	if (!function_exists('get_user_avatar'))
 	{
-		include($phpbb_root_path . 'includes/functions_display.' . $phpEx);
+		include(PHPBB3_INCLUDE_DIR . 'functions_display.' . $phpEx);
 	}
 
 	$user_row['avatar'] = ($user->optionget('viewavatars')) ? get_user_avatar($user_row['user_avatar'], $user_row['user_avatar_type'], $user_row['user_avatar_width'], $user_row['user_avatar_height']) : '';
