@@ -9,8 +9,12 @@
 */
 
 /**
-* @ignore
-*/
+ * Applied rules:
+ * PregReplaceEModifierRector (https://wiki.php.net/rfc/remove_preg_replace_eval_modifier https://stackoverflow.com/q/19245205/1348344)
+ * TernaryToNullCoalescingRector
+ * ClosureToArrowFunctionRector (https://wiki.php.net/rfc/arrow_functions_v2)
+ */
+
 if (!defined('IN_PHPBB'))
 {
 	exit;
@@ -21,7 +25,9 @@ if (!defined('IN_PHPBB'))
 */
 function message_options($id, $mode, $global_privmsgs_rules, $global_rule_conditions)
 {
-	global $phpbb_root_path, $phpEx, $user, $template, $auth, $config, $db;
+	global $phpEx, $user, $template, $auth, $config, $db;
+	
+	$phpbb_root_path = PHPBB3_ROOT_DIR;
 
 	$redirect_url = append_sid("{$phpbb_root_path}ucp.$phpEx", "i=pm&amp;mode=options");
 
@@ -483,7 +489,7 @@ function message_options($id, $mode, $global_privmsgs_rules, $global_rule_condit
 	$rule_lang = $action_lang = $check_lang = array();
 
 	// Build all three language arrays
-	preg_replace('#^((RULE|ACTION|CHECK)_([A-Z0-9_]+))$#e', "\${strtolower('\\2') . '_lang'}[constant('\\1')] = \$user->lang['PM_\\2']['\\3']", array_keys(get_defined_constants()));
+	preg_replace_callback('#^((RULE|ACTION|CHECK)_([A-Z0-9_]+))$#', fn($matches) => ${strtolower($matches[2]) . '_lang'}[constant($matches[1])] = $user->lang[$matches[2]][$matches[3]], array_keys(get_defined_constants()));
 
 	/*
 		Rule Ordering:
@@ -574,7 +580,7 @@ function define_check_option($hardcoded, $check_option, $check_lang)
 	$template->assign_vars(array(
 		'S_CHECK_DEFINED'	=> true,
 		'S_CHECK_SELECT'	=> ($hardcoded) ? false : true,
-		'CHECK_CURRENT'		=> isset($check_lang[$check_option]) ? $check_lang[$check_option] : '',
+		'CHECK_CURRENT'		=> $check_lang[$check_option] ?? '',
 		'S_CHECK_OPTIONS'	=> $s_check_options,
 		'CHECK_OPTION'		=> $check_option)
 	);
@@ -646,7 +652,7 @@ function define_rule_option($hardcoded, $rule_option, $rule_lang, $check_ary)
 	$template->assign_vars(array(
 		'S_RULE_DEFINED'	=> true,
 		'S_RULE_SELECT'		=> !$hardcoded,
-		'RULE_CURRENT'		=> isset($rule_lang[$rule_option]) ? $rule_lang[$rule_option] : '',
+		'RULE_CURRENT'		=> $rule_lang[$rule_option] ?? '',
 		'S_RULE_OPTIONS'	=> $s_rule_options,
 		'RULE_OPTION'		=> $rule_option)
 	);
