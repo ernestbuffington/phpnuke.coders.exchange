@@ -158,4 +158,5 @@ function obtain_activity_data()
 
 	return $activity;
 }
+
 ?>
