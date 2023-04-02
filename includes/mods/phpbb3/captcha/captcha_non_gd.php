@@ -9,8 +9,12 @@
 */
 
 /**
-* @ignore
-*/
+ * Applied rules:
+ * Php4ConstructorRector (https://wiki.php.net/rfc/remove_php4_constructors)
+ * RandomFunctionRector
+ * CurlyToSquareBracketArrayStringRector (https://www.php.net/manual/en/migration74.deprecated.php)
+ */
+ 
 if (!defined('IN_PHPBB'))
 {
 	exit;
@@ -30,7 +34,7 @@ class captcha
 	/**
 	* Define filtered pngs on init
 	*/
-	function captcha()
+	function __construct()
 	{
 		// If we can we will generate a single filtered png, we avoid nastiness via emulation of some Zlib stuff
 		$this->define_filtered_pngs();
@@ -53,7 +57,7 @@ class captcha
 		{
 			$char = $code[$i];
 
-			$width = mt_rand(0, 4);
+			$width = random_int(0, 4);
 			$raw_width = $this->filtered_pngs[$char]['width'];
 			$char_widths[$i] = $width;
 			$img_width += $raw_width - $width;
@@ -65,8 +69,8 @@ class captcha
 			}
 		}
 
-		$offset_x = mt_rand(0, $this->width - $img_width);
-		$offset_y = mt_rand(0, $this->height - $img_height);
+		$offset_x = random_int(0, $this->width - $img_width);
+		$offset_y = random_int(0, $this->height - $img_height);
 
 		$image = '';
 		for ($i = 0; $i < $this->height; $i++)
@@ -77,24 +81,24 @@ class captcha
 			{
 				for ($j = 0; $j < $offset_x; $j++)
 				{
-					$image .= chr(mt_rand(140, 255));
+					$image .= chr(random_int(140, 255));
 				}
 
 				for ($j = 0; $j < $code_len; $j++)
 				{
-					$image .= $this->randomise(substr($hold_chars[$code{$j}][$i - $offset_y - 1], 1), $char_widths[$j]);
+					$image .= $this->randomise(substr($hold_chars[$code[$j]][$i - $offset_y - 1], 1), $char_widths[$j]);
 				}
 
 				for ($j = $offset_x + $img_width; $j < $this->width; $j++)
 				{
-					$image .= chr(mt_rand(140, 255));
+					$image .= chr(random_int(140, 255));
 				}
 			}
 			else
 			{
 				for ($j = 0; $j < $this->width; $j++)
 				{
-					$image .= chr(mt_rand(140, 255));
+					$image .= chr(random_int(140, 255));
 				}
 			}
 		}
@@ -121,19 +125,19 @@ class captcha
 		$end = strlen($scanline) - ceil($width/2);
 		for ($i = floor($width/2); $i < $end; $i++)
 		{
-			$pixel = ord($scanline{$i});
+			$pixel = ord($scanline[$i]);
 
 			if ($pixel < 190)
 			{
-				$new_line .= chr(mt_rand(0, 205));
+				$new_line .= chr(random_int(0, 205));
 			}
 			else if ($pixel > 190)
 			{
-				$new_line .= chr(mt_rand(145, 255));
+				$new_line .= chr(random_int(145, 255));
 			}
 			else
 			{
-				$new_line .= $scanline{$i};
+				$new_line .= $scanline[$i];
 			}
 		}
 
@@ -168,7 +172,7 @@ class captcha
 		$image .= $this->png_chunk(13, 'IHDR', $raw);
 
 		// IDAT
-		if (@extension_loaded('zlib'))
+		if (extension_loaded('zlib'))
 		{
 			$raw_image = gzcompress($raw_image);
 			$length = strlen($raw_image);
@@ -181,11 +185,11 @@ class captcha
 			// Adler-32 hash generation
 			// Note: The hash is _backwards_ so we must reverse it
 
-			if (@extension_loaded('hash'))
+			if (extension_loaded('hash'))
 			{
 				$adler_hash = strrev(hash('adler32', $raw_image, true));
 			}
-			else if (@extension_loaded('mhash'))
+			else if (extension_loaded('mhash'))
 			{
 				$adler_hash = strrev(mhash(MHASH_ADLER32, $raw_image));
 			}
