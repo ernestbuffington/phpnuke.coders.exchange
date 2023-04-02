@@ -9,8 +9,12 @@
 */
 
 /**
-* @ignore
-*/
+ * Applied rules:
+ * PregReplaceEModifierRector (https://wiki.php.net/rfc/remove_preg_replace_eval_modifier https://stackoverflow.com/q/19245205/1348344)
+ * RandomFunctionRector
+ * ClosureToArrowFunctionRector (https://wiki.php.net/rfc/arrow_functions_v2)
+ */
+
 if (!defined('IN_PHPBB'))
 {
 	exit;
@@ -27,15 +31,16 @@ class ucp_register
 
 	function main($id, $mode)
 	{
-		global $config, $db, $user, $auth, $template, $phpbb_root_path, $phpEx;
-
+		global $config, $db, $user, $auth, $template, $phpEx;
+        
+		$phpbb_root_path = PHPBB3_ROOT_DIR;  
 		//
 		if ($config['require_activation'] == USER_ACTIVATION_DISABLE)
 		{
 			trigger_error('UCP_REGISTER_DISABLE');
 		}
 
-		include($phpbb_root_path . 'includes/functions_profile_fields.' . $phpEx);
+		include(PHPBB3_INCLUDE_DIR . 'functions_profile_fields.' . $phpEx);
 
 		$confirm_id		= request_var('confirm_id', '');
 		$coppa			= (isset($_REQUEST['coppa'])) ? ((!empty($_REQUEST['coppa'])) ? 1 : 0) : false;
@@ -199,7 +204,7 @@ class ucp_register
 				$error[] = $user->lang['FORM_INVALID'];
 			}
 			// Replace "error" strings with their real, localised form
-			$error = preg_replace('#^([A-Z_]+)$#e', "(!empty(\$user->lang['\\1'])) ? \$user->lang['\\1'] : '\\1'", $error);
+			$error = preg_replace_callback('#^([A-Z_]+)$#', fn($matches) => !empty($user->lang[$matches[1]]) ? $user->lang[$matches[1]] : $matches[1], $error);
 
 			// DNSBL check
 			if ($config['check_dnsbl'])
@@ -362,7 +367,7 @@ class ucp_register
 
 				if ($config['email_enable'])
 				{
-					include_once($phpbb_root_path . 'includes/functions_messenger.' . $phpEx);
+					include_once(PHPBB3_INCLUDE_DIR . 'functions_messenger.' . $phpEx);
 
 					$messenger = new messenger(false);
 
@@ -448,7 +453,7 @@ class ucp_register
 							FROM ' . USERS_TABLE . ' ' .
 							$where_sql;
 						$result = $db->sql_query($sql);
-						
+
 						while ($row = $db->sql_fetchrow($result))
 						{
 							$messenger->template('admin_notify_registered', $row['user_lang']);
@@ -526,7 +531,7 @@ class ucp_register
 					trigger_error('TOO_MANY_REGISTERS');
 				}
 
-				$code = gen_rand_string(mt_rand(5, 8));
+				$code = gen_rand_string(random_int(5, 8));
 				$confirm_id = md5(unique_id($user->ip));
 				$seed = hexdec(substr(unique_id(), 4, 10));
 
