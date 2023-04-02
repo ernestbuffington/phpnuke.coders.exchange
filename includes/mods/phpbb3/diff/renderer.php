@@ -9,8 +9,12 @@
 */
 
 /**
-* @ignore
-*/
+ * Applied rules:
+ * AddDefaultValueForUndefinedVariableRector (https://github.com/vimeo/psalm/blob/29b70442b11e3e66113935a2ee22e165a70c74a4/docs/fixing_code.md#possiblyundefinedvariable)
+ * ParenthesizeNestedTernaryRector (https://www.php.net/manual/en/migration74.deprecated.php)
+ * StrStartsWithRector (https://wiki.php.net/rfc/add_str_starts_with_and_ends_with_functions)
+ */
+
 if (!defined('IN_PHPBB'))
 {
 	exit;
@@ -53,7 +57,7 @@ class diff_renderer
 	/**
 	* Constructor.
 	*/
-	function diff_renderer($params = array())
+	function __construct($params = array())
 	{
 		foreach ($params as $param => $value)
 		{
@@ -93,7 +97,9 @@ class diff_renderer
 	*/
 	function render(&$diff)
 	{
-		$xi = $yi = 1;
+		$x0 = null;
+  $y0 = null;
+  $xi = $yi = 1;
 		$block = false;
 		$context = array();
 
@@ -448,7 +454,7 @@ class diff_renderer_inline extends diff_renderer
 		if ($this->_split_level == 'words')
 		{
 			$prefix = '';
-			while ($orig[0] !== false && $final[0] !== false && substr($orig[0], 0, 1) == ' ' && substr($final[0], 0, 1) == ' ')
+			while ($orig[0] !== false && $final[0] !== false && str_starts_with($orig[0], ' ') && str_starts_with($final[0], ' '))
 			{
 				$prefix .= substr($orig[0], 0, 1);
 				$orig[0] = substr($orig[0], 1);
