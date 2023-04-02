@@ -9,8 +9,13 @@
 */
 
 /**
-* @ignore
-*/
+ * Applied rules:
+ * Php4ConstructorRector (https://wiki.php.net/rfc/remove_php4_constructors)
+ * RandomFunctionRector
+ * TernaryToNullCoalescingRector
+ * StrStartsWithRector (https://wiki.php.net/rfc/add_str_starts_with_and_ends_with_functions)
+ */
+ 
 if (!defined('IN_PHPBB'))
 {
 	exit;
@@ -49,7 +54,7 @@ class jabber
 
 	/**
 	*/
-	function jabber($server, $port, $username, $password, $use_ssl = false)
+	function __construct($server, $port, $username, $password, $use_ssl = false)
 	{
 		$this->connect_server		= ($server) ? $server : 'localhost';
 		$this->port					= ($port) ? $port : 5222;
@@ -231,9 +236,9 @@ class jabber
 	*/
 	function open_socket($server, $port, $use_ssl = false)
 	{
-		if (@function_exists('dns_get_record'))
+		if (function_exists('dns_get_record'))
 		{
-			$record = @dns_get_record("_xmpp-client._tcp.$server", DNS_SRV);
+			$record = dns_get_record("_xmpp-client._tcp.$server", DNS_SRV);
 			if (!empty($record) && !empty($record[0]['target']))
 			{
 				$server = $record[0]['target'];
@@ -242,7 +247,7 @@ class jabber
 
 		$server = $use_ssl ? 'ssl://' . $server : $server;
 
-		if ($this->connection = @fsockopen($server, $port, $errorno, $errorstr, $this->timeout))
+		if ($this->connection = fsockopen($server, $port, $errorno, $errorstr, $this->timeout))
 		{
 			socket_set_blocking($this->connection, 0);
 			socket_set_timeout($this->connection, 60);
@@ -514,7 +519,7 @@ class jabber
 				}
 
 				// better generate a cnonce, maybe it's needed
-				$decoded['cnonce'] = base64_encode(md5(uniqid(mt_rand(), true)));
+				$decoded['cnonce'] = base64_encode(md5(uniqid(random_int(0, mt_getrandmax()), true)));
 
 				// second challenge?
 				if (isset($decoded['rspauth']))
@@ -747,7 +752,7 @@ class jabber
 				$key = trim(substr($pair, 0, $dd));
 				$pairs[$key] = trim(trim(substr($pair, $dd + 1)), '"');
 			}
-			else if (strpos(strrev(trim($pair)), '"') === 0 && $key)
+			else if (str_starts_with(strrev(trim($pair)), '"') && $key)
 			{
 				// We are actually having something left from "a, b" values, add it to the last one we handled.
 				$pairs[$key] .= ',' . trim(trim($pair), '"');
@@ -783,7 +788,7 @@ class jabber
 	{
 		$data = trim($data);
 
-		if (substr($data, 0, 5) != '<?xml')
+		if (!str_starts_with($data, '<?xml'))
 		{
 			// mod
 			$data = '<root>'. $data . '</root>';
@@ -799,10 +804,10 @@ class jabber
 		$i = 0;
 		$tagname = $vals[$i]['tag'];
 
-		$array[$tagname][0]['@'] = (isset($vals[$i]['attributes'])) ? $vals[$i]['attributes'] : array();
+		$array[$tagname][0]['@'] = $vals[$i]['attributes'] ?? array();
 		$array[$tagname][0]['#'] = $this->_xml_depth($vals, $i);
 
-		if (substr($data, 0, 5) != '<?xml')
+		if (!str_starts_with($data, '<?xml'))
 		{
 			$array = $array['root'][0]['#'];
 		}
@@ -830,7 +835,7 @@ class jabber
 			{
 				case 'open':
 
-					$tagname = (isset($vals[$i]['tag'])) ? $vals[$i]['tag'] : '';
+					$tagname = $vals[$i]['tag'] ?? '';
 					$size = (isset($children[$tagname])) ? sizeof($children[$tagname]) : 0;
 
 					if (isset($vals[$i]['attributes']))
@@ -850,7 +855,7 @@ class jabber
 
 					$tagname = $vals[$i]['tag'];
 					$size = (isset($children[$tagname])) ? sizeof($children[$tagname]) : 0;
-					$children[$tagname][$size]['#'] = (isset($vals[$i]['value'])) ? $vals[$i]['value'] : array();
+					$children[$tagname][$size]['#'] = $vals[$i]['value'] ?? array();
 
 					if (isset($vals[$i]['attributes']))
 					{
