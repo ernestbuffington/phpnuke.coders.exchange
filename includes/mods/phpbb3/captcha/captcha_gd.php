@@ -9,8 +9,11 @@
 */
 
 /**
-* @ignore
-*/
+ * Applied rules:
+ * Php4ConstructorRector (https://wiki.php.net/rfc/remove_php4_constructors)
+ * RandomFunctionRector
+ */
+ 
 if (!defined('IN_PHPBB'))
 {
 	exit;
@@ -33,7 +36,7 @@ class captcha
 	function execute($code, $seed)
 	{
 		global $config;
-		srand($seed);
+		mt_srand($seed);
 		mt_srand($seed);
 
 		// Create image
@@ -49,7 +52,7 @@ class captcha
 		$scheme = $colour->mono_range($scheme, 10, false);
 		shuffle($scheme);
 
-		$bg_colours = array_splice($scheme, mt_rand(6, 12));
+		$bg_colours = array_splice($scheme, random_int(6, 12));
 
 		// Generate code characters
 		$characters = $sizes = $bounding_boxes = array();
@@ -62,7 +65,7 @@ class captcha
 			$characters[$i] = new char_cube3d($captcha_bitmaps, $code[$i]);
 
 			list($min, $max) = $characters[$i]->range();
-			$sizes[$i] = mt_rand($min, $max);
+			$sizes[$i] = random_int($min, $max);
 
 			$box = $characters[$i]->dimensions($sizes[$i]);
 			$width_avail -= ($box[2] - $box[0]);
@@ -75,27 +78,27 @@ class captcha
 		{
 			$denom = ($code_len - $i);
 			$denom = max(1.3, $denom);
-			$offset[$i] = mt_rand(0, (1.5 * $width_avail) / $denom);
+			$offset[$i] = random_int(0, (1.5 * $width_avail) / $denom);
 			$width_avail -= $offset[$i];
 		}
 
 		if ($config['captcha_gd_x_grid'])
 		{
 			$grid = (int) $config['captcha_gd_x_grid'];
-			for ($y = 0; $y < $this->height; $y += mt_rand($grid - 2, $grid + 2))
+			for ($y = 0; $y < $this->height; $y += random_int($grid - 2, $grid + 2))
 			{
 				$current_colour = $scheme[array_rand($scheme)];
-				imageline($img, mt_rand(0,4), mt_rand($y - 3, $y), mt_rand($this->width - 5, $this->width), mt_rand($y - 3, $y), $current_colour);
+				imageline($img, random_int(0,4), random_int($y - 3, $y), random_int($this->width - 5, $this->width), random_int($y - 3, $y), $current_colour);
 			}
 		}
 
 		if ($config['captcha_gd_y_grid'])
 		{
 			$grid = (int) $config['captcha_gd_y_grid'];
-			for ($x = 0; $x < $this->width; $x += mt_rand($grid - 2, $grid + 2))
+			for ($x = 0; $x < $this->width; $x += random_int($grid - 2, $grid + 2))
 			{
 				$current_colour = $scheme[array_rand($scheme)];
-				imagedashedline($img, mt_rand($x -3, $x + 3), mt_rand(0, 4), mt_rand($x -3, $x + 3), mt_rand($this->height - 5, $this->height), $current_colour);
+				imagedashedline($img, random_int($x -3, $x + 3), random_int(0, 4), random_int($x -3, $x + 3), random_int($this->height - 5, $this->height), $current_colour);
 			}
 		}
 
@@ -104,7 +107,7 @@ class captcha
 		{
 			$dimm = $bounding_boxes[$i];
 			$xoffset += ($offset[$i] - $dimm[0]);
-			$yoffset = mt_rand(-$dimm[1], $this->height - $dimm[3]);
+			$yoffset = random_int(-$dimm[1], $this->height - $dimm[3]);
 
 			$characters[$i]->drawchar($sizes[$i], $xoffset, $yoffset, $img, $colour->get_resource('background'), $scheme);
 			$xoffset += $dimm[2];
@@ -137,15 +140,15 @@ class captcha
 		do
 		{
 			$line = array_merge(
-				array_fill(0, mt_rand(30, 60), $non_font[array_rand($non_font)]),
-				array_fill(0, mt_rand(30, 60), $bg)
+				array_fill(0, random_int(30, 60), $non_font[array_rand($non_font)]),
+				array_fill(0, random_int(30, 60), $bg)
 			);
 
 			imagesetstyle($img, $line);
 			imageline($img, $x1, $y1, $x2, $y2, IMG_COLOR_STYLED);
 
-			$y1 += mt_rand(12, 35);
-			$y2 += mt_rand(12, 35);
+			$y1 += random_int(12, 35);
+			$y2 += random_int(12, 35);
 		}
 		while ($y1 < $max_y && $y2 < $max_y);
 
@@ -157,15 +160,15 @@ class captcha
 		do
 		{
 			$line = array_merge(
-				array_fill(0, mt_rand(30, 60), $non_font[array_rand($non_font)]),
-				array_fill(0, mt_rand(30, 60), $bg)
+				array_fill(0, random_int(30, 60), $non_font[array_rand($non_font)]),
+				array_fill(0, random_int(30, 60), $bg)
 			);
 
 			imagesetstyle($img, $line);
 			imageline($img, $x1, $y1, $x2, $y2, IMG_COLOR_STYLED);
 
-			$x1 += mt_rand(20, 35);
-			$x2 += mt_rand(20, 35);
+			$x1 += random_int(20, 35);
+			$x2 += random_int(20, 35);
 		}
 		while ($x1 < $max_x && $x2 < $max_x);
 		imagesetthickness($img, 1);
@@ -800,18 +803,18 @@ class char_cube3d
 
 	/**
 	*/
-	function char_cube3d(&$bitmaps, $letter)
+	function __construct(&$bitmaps, $letter)
 	{
 		$this->bitmap			= $bitmaps['data'][$letter];
 		$this->bitmap_width		= $bitmaps['width'];
 		$this->bitmap_height	= $bitmaps['height'];
 
-		$this->basis_matrix[0][0] = mt_rand(-600, 600);
-		$this->basis_matrix[0][1] = mt_rand(-600, 600);
-		$this->basis_matrix[0][2] = (mt_rand(0, 1) * 2000) - 1000;
-		$this->basis_matrix[1][0] = mt_rand(-1000, 1000);
-		$this->basis_matrix[1][1] = mt_rand(-1000, 1000);
-		$this->basis_matrix[1][2] = mt_rand(-1000, 1000);
+		$this->basis_matrix[0][0] = random_int(-600, 600);
+		$this->basis_matrix[0][1] = random_int(-600, 600);
+		$this->basis_matrix[0][2] = (random_int(0, 1) * 2000) - 1000;
+		$this->basis_matrix[1][0] = random_int(-1000, 1000);
+		$this->basis_matrix[1][1] = random_int(-1000, 1000);
+		$this->basis_matrix[1][2] = random_int(-1000, 1000);
 
 		$this->normalize($this->basis_matrix[0]);
 		$this->normalize($this->basis_matrix[1]);
@@ -1060,7 +1063,7 @@ class colour_manager
 	/**
 	* Create the colour manager, link it to the image resource
 	*/
-	function colour_manager($img, $background = false, $mode = 'ahsv')
+	function __construct($img, $background = false, $mode = 'ahsv')
 	{
 		$this->img = $img;
 		$this->mode = $mode;
@@ -1251,9 +1254,9 @@ class colour_manager
 					}
 				}
 
-				$h = mt_rand($min_hue, $max_hue);
-				$s = mt_rand($min_saturation, $max_saturation);
-				$v = mt_rand($min_value, $max_value);
+				$h = random_int($min_hue, $max_hue);
+				$s = random_int($min_saturation, $max_saturation);
+				$v = random_int($min_value, $max_value);
 
 				return $this->allocate(array($h, $s, $v), $mode);
 
@@ -1320,8 +1323,8 @@ class colour_manager
 		
 		while ($count > 0)
 		{
-			$colour[1] = ($colour[1] + mt_rand(40,60)) % 99;
-			$colour[2] = ($colour[2] + mt_rand(40,60));
+			$colour[1] = ($colour[1] + random_int(40,60)) % 99;
+			$colour[2] = ($colour[2] + random_int(40,60));
 			$results[] = $this->allocate($colour, $mode);
 			$count--;
 		}
