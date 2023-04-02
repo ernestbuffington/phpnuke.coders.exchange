@@ -9,8 +9,11 @@
 */
 
 /**
-* @ignore
-*/
+ * Applied rules:
+ * Php4ConstructorRector (https://wiki.php.net/rfc/remove_php4_constructors)
+ * ListEachRector (https://wiki.php.net/rfc/deprecations_php_7_2#each)
+ */
+
 if (!defined('IN_PHPBB'))
 {
 	exit;
@@ -26,7 +29,7 @@ class mcp_notes
 	var $p_master;
 	var $u_action;
 
-	function mcp_notes(&$p_master)
+	function __construct(&$p_master)
 	{
 		$this->p_master = &$p_master;
 	}
@@ -34,13 +37,15 @@ class mcp_notes
 	function main($id, $mode)
 	{
 		global $auth, $db, $user, $template;
-		global $config, $phpbb_root_path, $phpEx;
+		global $config, $phpEx;
+		
+		$phpbb_root_path = PHPBB3_ROOT_DIR;
 
 		$action = request_var('action', array('' => ''));
 
 		if (is_array($action))
 		{
-			list($action, ) = each($action);
+			$action = key($action);
 		}
 
 		$this->page_title = 'MCP_NOTES';
@@ -72,7 +77,7 @@ class mcp_notes
 	*/
 	function mcp_notes_user_view($action)
 	{
-		global $phpEx, $phpbb_root_path, $config;
+		global $phpEx, $config;
 		global $template, $db, $user, $auth;
 
 		$user_id = request_var('u', 0);
@@ -176,7 +181,7 @@ class mcp_notes
 		// Generate the appropriate user information for the user we are looking at
 		if (!function_exists('get_user_avatar'))
 		{
-			include($phpbb_root_path . 'includes/functions_display.' . $phpEx);
+			include(PHPBB3_INCLUDE_DIR . 'functions_display.' . $phpEx);
 		}
 
 		$rank_title = $rank_img = '';
