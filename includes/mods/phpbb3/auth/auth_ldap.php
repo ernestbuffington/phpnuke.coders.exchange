@@ -29,7 +29,7 @@ function init_ldap()
 {
 	global $config, $user;
 
-	if (!@extension_loaded('ldap'))
+	if (!extension_loaded('ldap'))
 	{
 		return $user->lang['LDAP_NO_LDAP_EXTENSION'];
 	}
@@ -37,11 +37,11 @@ function init_ldap()
 	$config['ldap_port'] = (int) $config['ldap_port'];
 	if ($config['ldap_port'])
 	{
-		$ldap = @ldap_connect($config['ldap_server'], $config['ldap_port']);
+		$ldap = ldap_connect($config['ldap_server'], $config['ldap_port']);
 	}
 	else
 	{
-		$ldap = @ldap_connect($config['ldap_server']);
+		$ldap = ldap_connect($config['ldap_server']);
 	}
 
 	if (!$ldap)
@@ -49,19 +49,19 @@ function init_ldap()
 		return $user->lang['LDAP_NO_SERVER_CONNECTION'];
 	}
 
-	@ldap_set_option($ldap, LDAP_OPT_PROTOCOL_VERSION, 3);
-	@ldap_set_option($ldap, LDAP_OPT_REFERRALS, 0);
+	ldap_set_option($ldap, LDAP_OPT_PROTOCOL_VERSION, 3);
+	ldap_set_option($ldap, LDAP_OPT_REFERRALS, 0);
 
 	if ($config['ldap_user'] || $config['ldap_password'])
 	{
-		if (!@ldap_bind($ldap, htmlspecialchars_decode($config['ldap_user']), htmlspecialchars_decode($config['ldap_password'])))
+		if (!ldap_bind($ldap, htmlspecialchars_decode($config['ldap_user']), htmlspecialchars_decode($config['ldap_password'])))
 		{
 			return $user->lang['LDAP_INCORRECT_USER_PASSWORD'];
 		}
 	}
 
 	// ldap_connect only checks whether the specified server is valid, so the connection might still fail
-	$search = @ldap_search(
+	$search = ldap_search(
 		$ldap,
 		$config['ldap_base_dn'],
 		ldap_user_filter($user->data['username']),
@@ -75,9 +75,9 @@ function init_ldap()
 		return $user->lang['LDAP_NO_SERVER_CONNECTION'];
 	}
 
-	$result = @ldap_get_entries($ldap, $search);
+	$result = ldap_get_entries($ldap, $search);
 
-	@ldap_close($ldap);
+	ldap_close($ldap);
 
 
 	if (!is_array($result) || sizeof($result) < 2)
@@ -119,7 +119,7 @@ function login_ldap(&$username, &$password)
 		);
 	}
 
-	if (!@extension_loaded('ldap'))
+	if (!extension_loaded('ldap'))
 	{
 		return array(
 			'status'		=> LOGIN_ERROR_EXTERNAL_AUTH,
@@ -131,11 +131,11 @@ function login_ldap(&$username, &$password)
 	$config['ldap_port'] = (int) $config['ldap_port'];
 	if ($config['ldap_port'])
 	{
-		$ldap = @ldap_connect($config['ldap_server'], $config['ldap_port']);
+		$ldap = ldap_connect($config['ldap_server'], $config['ldap_port']);
 	}
 	else
 	{
-		$ldap = @ldap_connect($config['ldap_server']);
+		$ldap = ldap_connect($config['ldap_server']);
 	}
 
 	if (!$ldap)
@@ -147,18 +147,18 @@ function login_ldap(&$username, &$password)
 		);
 	}
 
-	@ldap_set_option($ldap, LDAP_OPT_PROTOCOL_VERSION, 3);
-	@ldap_set_option($ldap, LDAP_OPT_REFERRALS, 0);
+	ldap_set_option($ldap, LDAP_OPT_PROTOCOL_VERSION, 3);
+	ldap_set_option($ldap, LDAP_OPT_REFERRALS, 0);
 
 	if ($config['ldap_user'] || $config['ldap_password'])
 	{
-		if (!@ldap_bind($ldap, $config['ldap_user'], htmlspecialchars_decode($config['ldap_password'])))
+		if (!ldap_bind($ldap, $config['ldap_user'], htmlspecialchars_decode($config['ldap_password'])))
 		{
 			return $user->lang['LDAP_NO_SERVER_CONNECTION'];
 		}
 	}
 
-	$search = @ldap_search(
+	$search = ldap_search(
 		$ldap,
 		$config['ldap_base_dn'],
 		ldap_user_filter($username),
@@ -167,13 +167,13 @@ function login_ldap(&$username, &$password)
 		1
 	);
 
-	$ldap_result = @ldap_get_entries($ldap, $search);
+	$ldap_result = ldap_get_entries($ldap, $search);
 
 	if (is_array($ldap_result) && sizeof($ldap_result) > 1)
 	{
-		if (@ldap_bind($ldap, $ldap_result[0]['dn'], htmlspecialchars_decode($password)))
+		if (ldap_bind($ldap, $ldap_result[0]['dn'], htmlspecialchars_decode($password)))
 		{
-			@ldap_close($ldap);
+			ldap_close($ldap);
 
 			$sql ='SELECT user_id, username, user_password, user_passchg, user_email, user_type
 				FROM ' . USERS_TABLE . "
@@ -242,7 +242,7 @@ function login_ldap(&$username, &$password)
 		else
 		{
 			unset($ldap_result);
-			@ldap_close($ldap);
+			ldap_close($ldap);
 
 			// Give status about wrong password...
 			return array(
@@ -253,7 +253,7 @@ function login_ldap(&$username, &$password)
 		}
 	}
 
-	@ldap_close($ldap);
+	ldap_close($ldap);
 
 	return array(
 		'status'	=> LOGIN_ERROR_USERNAME,
