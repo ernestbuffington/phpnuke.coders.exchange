@@ -9,8 +9,11 @@
 */
 
 /**
-* @ignore
-*/
+ * Applied rules:
+ * AddDefaultValueForUndefinedVariableRector (https://github.com/vimeo/psalm/blob/29b70442b11e3e66113935a2ee22e165a70c74a4/docs/fixing_code.md#possiblyundefinedvariable)
+ * Php4ConstructorRector (https://wiki.php.net/rfc/remove_php4_constructors)
+ */
+
 if (!defined('IN_PHPBB'))
 {
 	exit;
@@ -19,7 +22,7 @@ if (!defined('IN_PHPBB'))
 /**
 * @ignore
 */
-include_once($phpbb_root_path . 'includes/search/search.' . $phpEx);
+include_once(PHPBB3_INCLUDE_DIR . 'search/search.' . $phpEx);
 
 /**
 * fulltext_native
@@ -44,9 +47,9 @@ class fulltext_native extends search_backend
 	*
 	* @access	public
 	*/
-	function fulltext_native(&$error)
+	function __construct(&$error)
 	{
-		global $phpbb_root_path, $phpEx, $config;
+		global $phpEx, $config;
 
 		$this->word_length = array('min' => $config['fulltext_native_min_chars'], 'max' => $config['fulltext_native_max_chars']);
 
@@ -55,7 +58,7 @@ class fulltext_native extends search_backend
 		*/
 		if (!class_exists('utf_normalizer'))
 		{
-			include($phpbb_root_path . 'includes/utf/utf_normalizer.' . $phpEx);
+			include(NUKE_INCLUDE_DIR . 'utf/utf_normalizer.' . $phpEx);
 		}
 
 
@@ -977,7 +980,7 @@ class fulltext_native extends search_backend
 	*/
 	function split_message($text)
 	{
-		global $phpbb_root_path, $phpEx, $user;
+		global $phpEx, $user;
 
 		$match = $words = array();
 
@@ -1215,6 +1218,8 @@ class fulltext_native extends search_backend
 	*/
 	function index_remove($post_ids, $author_ids, $forum_ids)
 	{
+		$word_texts = [];
+        
 		global $db;
 
 		if (sizeof($post_ids))
@@ -1423,7 +1428,7 @@ class fulltext_native extends search_backend
 	*/
 	function cleanup($text, $allowed_chars = null, $encoding = 'utf-8')
 	{
-		global $phpbb_root_path, $phpEx;
+		global $phpEx;
 		static $conv = array(), $conv_loaded = array();
 		$words = $allow = array();
 
@@ -1620,7 +1625,7 @@ class fulltext_native extends search_backend
 			if (!isset($conv_loaded[$idx]))
 			{
 				$conv_loaded[$idx] = 1;
-				$file = $phpbb_root_path . 'includes/utf/data/search_indexer_' . $idx . '.' . $phpEx;
+				$file = NUKE_INCLUDE_DIR . 'utf/data/search_indexer_' . $idx . '.' . $phpEx;
 
 				if (file_exists($file))
 				{
