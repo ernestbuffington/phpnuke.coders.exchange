@@ -9,8 +9,13 @@
 */
 
 /**
-* @ignore
-*/
+ * Applied rules:
+ * PregReplaceEModifierRector (https://wiki.php.net/rfc/remove_preg_replace_eval_modifier https://stackoverflow.com/q/19245205/1348344)
+ * TernaryToNullCoalescingRector
+ * ClosureToArrowFunctionRector (https://wiki.php.net/rfc/arrow_functions_v2)
+ * StrStartsWithRector (https://wiki.php.net/rfc/add_str_starts_with_and_ends_with_functions)
+ */
+
 if (!defined('IN_PHPBB'))
 {
 	exit;
@@ -36,7 +41,7 @@ class bbcode
 	* Constructor
 	* Init bbcode cache entries if bitfield is specified
 	*/
-	function bbcode($bitfield = '')
+	function __construct($bitfield = '')
 	{
 		if ($bitfield)
 		{
@@ -135,12 +140,12 @@ class bbcode
 			$this->template_bitfield = new bitfield($user->theme['bbcode_bitfield']);
 			$this->template_filename = $phpbb_root_path . 'styles/' . $user->theme['template_path'] . '/template/bbcode.html';
 			
-			if (!@file_exists($this->template_filename))
+			if (!file_exists($this->template_filename))
 			{
 				if (isset($user->theme['template_inherits_id']) && $user->theme['template_inherits_id'])
 				{
 					$this->template_filename = $phpbb_root_path . 'styles/' . $user->theme['template_inherit_path'] . '/template/bbcode.html';
-					if (!@file_exists($this->template_filename))
+					if (!file_exists($this->template_filename))
 					{
 						trigger_error('The file ' . $this->template_filename . ' is missing.', E_USER_ERROR);
 					}
@@ -376,7 +381,7 @@ class bbcode
 						}
 
 						// Replace {L_*} lang strings
-						$bbcode_tpl = preg_replace('/{L_([A-Z_]+)}/e', "(!empty(\$user->lang['\$1'])) ? \$user->lang['\$1'] : ucwords(strtolower(str_replace('_', ' ', '\$1')))", $bbcode_tpl);
+						$bbcode_tpl = preg_replace_callback('/{L_([A-Z_]+)}/', fn($matches) => !empty($user->lang[$matches[1]]) ? $user->lang[$matches[1]] : ucwords(strtolower(str_replace('_', ' ', $matches[1]))), $bbcode_tpl);
 
 						if (!empty($rowset[$bbcode_id]['second_pass_replace']))
 						{
@@ -427,7 +432,7 @@ class bbcode
 
 		if ($bbcode_id != -1 && !$skip_bitfield_check && !$this->template_bitfield->get($bbcode_id))
 		{
-			return (isset($bbcode_hardtpl[$tpl_name])) ? $bbcode_hardtpl[$tpl_name] : false;
+			return $bbcode_hardtpl[$tpl_name] ?? false;
 		}
 
 		if (empty($this->bbcode_template))
@@ -460,7 +465,7 @@ class bbcode
 			}
 		}
 
-		return (isset($this->bbcode_template[$tpl_name])) ? $this->bbcode_template[$tpl_name] : ((isset($bbcode_hardtpl[$tpl_name])) ? $bbcode_hardtpl[$tpl_name] : false);
+		return $this->bbcode_template[$tpl_name] ?? $bbcode_hardtpl[$tpl_name] ?? false;
 	}
 
 	/**
@@ -480,7 +485,7 @@ class bbcode
 			'email'					=> array('{EMAIL}'		=> '$1', '{DESCRIPTION}'	=> '$2')
 		);
 
-		$tpl = preg_replace('/{L_([A-Z_]+)}/e', "(!empty(\$user->lang['\$1'])) ? \$user->lang['\$1'] : ucwords(strtolower(str_replace('_', ' ', '\$1')))", $tpl);
+		$tpl = preg_replace_callback('/{L_([A-Z_]+)}/', fn($matches) => !empty($user->lang[$matches[1]]) ? $user->lang[$matches[1]] : ucwords(strtolower(str_replace('_', ' ', $matches[1]))), $tpl);
 
 		if (!empty($replacements[$tpl_name]))
 		{
@@ -573,7 +578,7 @@ class bbcode
 		{
 			case 'php':
 				// Not the english way, but valid because of hardcoded syntax highlighting
-				if (strpos($code, '<span class="syntaxdefault"><br /></span>') === 0)
+				if (str_starts_with($code, '<span class="syntaxdefault"><br /></span>'))
 				{
 					$code = substr($code, 41);
 				}
