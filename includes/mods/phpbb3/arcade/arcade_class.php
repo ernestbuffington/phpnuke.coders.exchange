@@ -2611,4 +2611,5 @@ class arcade
 		return false;
 	}
 }
+
 ?>
