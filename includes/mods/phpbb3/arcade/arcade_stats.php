@@ -18,6 +18,8 @@ if (!defined('IN_PHPBB'))
 	exit;
 }
 
+$phpbb_root_path = PHPBB3_ROOT_DIR;
+
 // Set the link to the main statistics page in the nav
 $template->assign_var('S_IN_STATS', true);
 $page_title = '';
@@ -562,4 +564,5 @@ $template->set_filenames(array(
 );
 
 page_footer();
+
 ?>
