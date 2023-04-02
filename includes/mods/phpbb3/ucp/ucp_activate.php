@@ -27,8 +27,10 @@ class ucp_activate
 
 	function main($id, $mode)
 	{
-		global $config, $phpbb_root_path, $phpEx;
+		global $config, $phpEx;
 		global $db, $user, $auth, $template;
+
+        $phpbb_root_path = PHPBB3_ROOT_DIR;
 
 		$user_id = request_var('u', 0);
 		$key = request_var('k', '');
@@ -76,7 +78,7 @@ class ucp_activate
 
 		if (!$update_password)
 		{
-			include_once($phpbb_root_path . 'includes/functions_user.' . $phpEx);
+			include_once(PHPBB3_INCLUDE_DIR . 'functions_user.' . $phpEx);
 
 			user_active_flip('activate', $user_row['user_id']);
 
@@ -88,7 +90,7 @@ class ucp_activate
 
 		if ($config['require_activation'] == USER_ACTIVATION_ADMIN && !$update_password)
 		{
-			include_once($phpbb_root_path . 'includes/functions_messenger.' . $phpEx);
+			include_once(PHPBB3_INCLUDE_DIR . 'functions_messenger.' . $phpEx);
 
 			$messenger = new messenger(false);
 
