@@ -17,25 +17,25 @@ if (!defined('IN_PHPBB'))
 
 $user->add_lang('mods/arcade');
 
-include($phpbb_root_path . 'includes/arcade/functions_files.' . $phpEx);
+include(PHPBB3_INCLUDE_DIR . 'arcade/functions_files.' . $phpEx);
 // Define file functions class
 $file_functions = new file_functions();
 
-include($phpbb_root_path . 'includes/arcade/arcade_constants.' . $phpEx);
-include($phpbb_root_path . 'includes/arcade/arcade_cache.' . $phpEx);
-include($phpbb_root_path . 'includes/arcade/functions_arcade.' . $phpEx);
+include(PHPBB3_INCLUDE_DIR . 'arcade/arcade_constants.' . $phpEx);
+include(PHPBB3_INCLUDE_DIR . 'arcade/arcade_cache.' . $phpEx);
+include(PHPBB3_INCLUDE_DIR . 'arcade/functions_arcade.' . $phpEx);
 
 if (!class_exists('auth_arcade'))
 {
-     include($phpbb_root_path . 'includes/auth_arcade.' . $phpEx);
+     include(PHPBB3_INCLUDE_DIR . 'auth_arcade.' . $phpEx);
 } 
 
-include($phpbb_root_path . 'includes/arcade/arcade_class.' . $phpEx);
+include(PHPBB3_INCLUDE_DIR . 'arcade/arcade_class.' . $phpEx);
 
 if (defined('IN_ADMIN'))
 {
-	include($phpbb_root_path . 'includes/acp/auth_arcade.' . $phpEx);
-	include($phpbb_root_path . 'includes/arcade/arcade_admin_class.' . $phpEx);
+	include(PHPBB3_INCLUDE_DIR . 'acp/auth_arcade.' . $phpEx);
+	include(PHPBB3_INCLUDE_DIR . 'arcade/arcade_admin_class.' . $phpEx);
 }
 
 // Arcade auth
@@ -43,7 +43,7 @@ $auth_arcade = new auth_arcade();
 
 if (!function_exists('get_user_avatar') || !function_exists('get_user_rank'))
 {
-	include($phpbb_root_path . 'includes/functions_display.' . $phpEx);
+	include(PHPBB3_INCLUDE_DIR . 'functions_display.' . $phpEx);
 }
 
 ?>
