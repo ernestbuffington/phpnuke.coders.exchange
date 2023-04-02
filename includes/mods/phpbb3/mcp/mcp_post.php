@@ -21,9 +21,11 @@ if (!defined('IN_PHPBB'))
 */
 function mcp_post_details($id, $mode, $action)
 {
-	global $phpEx, $phpbb_root_path, $config;
+	global $phpEx, $config;
 	global $template, $db, $user, $auth, $cache;
-
+    
+	$phpbb_root_path = PHPBB3_ROOT_DIR;
+	
 	$user->add_lang('posting');
 
 	$post_id = request_var('p', 0);
@@ -49,7 +51,7 @@ function mcp_post_details($id, $mode, $action)
 			if ($auth->acl_get('m_info', $post_info['forum_id']))
 			{
 				$ip = request_var('ip', '');
-				include($phpbb_root_path . 'includes/functions_user.' . $phpEx);
+				include(PHPBB3_INCLUDE_DIR . 'functions_user.' . $phpEx);
 
 				$template->assign_vars(array(
 					'RETURN_POST'	=> sprintf($user->lang['RETURN_POST'], '<a href="' . append_sid("{$phpbb_root_path}mcp.$phpEx", "i=$id&amp;mode=$mode&amp;p=$post_id") . '">', '</a>'),
@@ -130,7 +132,7 @@ function mcp_post_details($id, $mode, $action)
 
 	if ($post_info['bbcode_bitfield'])
 	{
-		include_once($phpbb_root_path . 'includes/bbcode.' . $phpEx);
+		include_once(PHPBB3_INCLUDE_DIR . 'bbcode.' . $phpEx);
 		$bbcode = new bbcode($post_info['bbcode_bitfield']);
 		$bbcode->bbcode_second_pass($message, $post_info['bbcode_uid'], $post_info['bbcode_bitfield']);
 	}
@@ -394,7 +396,10 @@ function mcp_post_details($id, $mode, $action)
 */
 function change_poster(&$post_info, $userdata)
 {
-	global $auth, $db, $config, $phpbb_root_path, $phpEx;
+	global $auth, $db, $config, $phpEx;
+	
+	$phpbb_include_path = PHPBB3_INCLUDE_DIR;
+	$phpbb_root_path = PHPBB3_ROOT_DIR;
 
 	if (empty($userdata) || $userdata['user_id'] == $post_info['user_id'])
 	{
@@ -467,9 +472,9 @@ function change_poster(&$post_info, $userdata)
 	// refresh search cache of this post
 	$search_type = basename($config['search_type']);
 
-	if (file_exists($phpbb_root_path . 'includes/search/' . $search_type . '.' . $phpEx))
+	if (file_exists(PHPBB3_INCLUDE_DIR . 'search/' . $search_type . '.' . $phpEx))
 	{
-		require("{$phpbb_root_path}includes/search/$search_type.$phpEx");
+		require("{$phpbb_include_path}search/$search_type.$phpEx");
 
 		// We do some additional checks in the module to ensure it can actually be utilised
 		$error = false;
