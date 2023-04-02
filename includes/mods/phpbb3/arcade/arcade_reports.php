@@ -16,6 +16,8 @@ if (!defined('IN_PHPBB'))
 	exit;
 }
 
+$phpbb_root_path = PHPBB3_ROOT_DIR;
+
 $row = $arcade->get_game_data($game_id);
 if (!$auth_arcade->acl_get('c_report', $row['cat_id']))
 {
