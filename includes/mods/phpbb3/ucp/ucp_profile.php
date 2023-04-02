@@ -9,8 +9,12 @@
 */
 
 /**
-* @ignore
-*/
+ * Applied rules:
+ * PregReplaceEModifierRector (https://wiki.php.net/rfc/remove_preg_replace_eval_modifier https://stackoverflow.com/q/19245205/1348344)
+ * AddDefaultValueForUndefinedVariableRector (https://github.com/vimeo/psalm/blob/29b70442b11e3e66113935a2ee22e165a70c74a4/docs/fixing_code.md#possiblyundefinedvariable)
+ * ClosureToArrowFunctionRector (https://wiki.php.net/rfc/arrow_functions_v2)
+ */
+
 if (!defined('IN_PHPBB'))
 {
 	exit;
@@ -29,7 +33,10 @@ class ucp_profile
 
 	function main($id, $mode)
 	{
-		global $config, $db, $user, $auth, $template, $phpbb_root_path, $phpEx;
+		$message_parser = null;
+        global $config, $db, $user, $auth, $template, $phpEx;
+		
+		$phpbb_root_path = PHPBB3_ROOT_DIR;
 
 		$user->add_lang('posting');
 
@@ -137,7 +144,7 @@ class ucp_profile
 						{
 							$message = ($config['require_activation'] == USER_ACTIVATION_SELF) ? 'ACCOUNT_EMAIL_CHANGED' : 'ACCOUNT_EMAIL_CHANGED_ADMIN';
 
-							include_once($phpbb_root_path . 'includes/functions_messenger.' . $phpEx);
+							include_once(PHPBB3_INCLUDE_DIR . 'functions_messenger.' . $phpEx);
 
 							$server_url = generate_board_url();
 
@@ -241,7 +248,7 @@ class ucp_profile
 					}
 
 					// Replace "error" strings with their real, localised form
-					$error = preg_replace('#^([A-Z_]+)$#e', "(!empty(\$user->lang['\\1'])) ? \$user->lang['\\1'] : '\\1'", $error);
+					$error = preg_replace_callback('#^([A-Z_]+)$#', fn($matches) => !empty($user->lang[$matches[1]]) ? $user->lang[$matches[1]] : $matches[1], $error);
 				}
 
 				$template->assign_vars(array(
@@ -265,7 +272,7 @@ class ucp_profile
 
 			case 'profile_info':
 
-				include($phpbb_root_path . 'includes/functions_profile_fields.' . $phpEx);
+				include(PHPBB3_INCLUDE_DIR . 'functions_profile_fields.' . $phpEx);
 
 				$cp = new custom_profile();
 
@@ -363,7 +370,7 @@ class ucp_profile
 					{
 						$data['notify'] = $user->data['user_notify_type'];
 
-						if (!$config['jab_enable'] || !$data['jabber'] || !@extension_loaded('xml'))
+						if (!$config['jab_enable'] || !$data['jabber'] || !extension_loaded('xml'))
 						{
 							// User has not filled in a jabber address (Or one of the modules is disabled or jabber is disabled)
 							// Disable notify by Jabber now for this user.
@@ -424,7 +431,7 @@ class ucp_profile
 					}
 
 					// Replace "error" strings with their real, localised form
-					$error = preg_replace('#^([A-Z_]+)$#e', "(!empty(\$user->lang['\\1'])) ? \$user->lang['\\1'] : '\\1'", $error);
+					$error = preg_replace_callback('#^([A-Z_]+)$#', fn($matches) => !empty($user->lang[$matches[1]]) ? $user->lang[$matches[1]] : $matches[1], $error);
 				}
 
 				if ($config['allow_birthdays'])
@@ -523,8 +530,8 @@ class ucp_profile
 					trigger_error('NO_AUTH_SIGNATURE');
 				}
 
-				include($phpbb_root_path . 'includes/functions_posting.' . $phpEx);
-				include($phpbb_root_path . 'includes/functions_display.' . $phpEx);
+				include(PHPBB3_INCLUDE_DIR . 'functions_posting.' . $phpEx);
+				include(PHPBB3_INCLUDE_DIR . 'functions_display.' . $phpEx);
 
 				$enable_bbcode	= ($config['allow_sig_bbcode']) ? ((request_var('disable_bbcode', !$user->optionget('bbcode'))) ? false : true) : false;
 				$enable_smilies	= ($config['allow_sig_smilies']) ? ((request_var('disable_smilies', !$user->optionget('smilies'))) ? false : true) : false;
@@ -536,7 +543,7 @@ class ucp_profile
 
 				if ($submit || $preview)
 				{
-					include($phpbb_root_path . 'includes/message_parser.' . $phpEx);
+					include(PHPBB3_INCLUDE_DIR . 'message_parser.' . $phpEx);
 
 					if (!sizeof($error))
 					{
@@ -574,7 +581,7 @@ class ucp_profile
 					}
 
 					// Replace "error" strings with their real, localised form
-					$error = preg_replace('#^([A-Z_]+)$#e', "(!empty(\$user->lang['\\1'])) ? \$user->lang['\\1'] : '\\1'", $error);
+					$error = preg_replace_callback('#^([A-Z_]+)$#', fn($matches) => !empty($user->lang[$matches[1]]) ? $user->lang[$matches[1]] : $matches[1], $error);
 				}
 
 				$signature_preview = '';
@@ -618,13 +625,13 @@ class ucp_profile
 
 			case 'avatar':
 
-				include($phpbb_root_path . 'includes/functions_display.' . $phpEx);
+				include(PHPBB3_INCLUDE_DIR . 'functions_display.' . $phpEx);
 
 				$display_gallery = request_var('display_gallery', '0');
 				$avatar_select = basename(request_var('avatar_select', ''));
 				$category = basename(request_var('category', ''));
 
-				$can_upload = ($config['allow_avatar_upload'] && file_exists($phpbb_root_path . $config['avatar_path']) && @is_writable($phpbb_root_path . $config['avatar_path']) && $auth->acl_get('u_chgavatar') && (@ini_get('file_uploads') || strtolower(@ini_get('file_uploads')) == 'on')) ? true : false;
+				$can_upload = ($config['allow_avatar_upload'] && file_exists($phpbb_root_path . $config['avatar_path']) && is_writable($phpbb_root_path . $config['avatar_path']) && $auth->acl_get('u_chgavatar') && (ini_get('file_uploads') || strtolower(ini_get('file_uploads')) == 'on')) ? true : false;
 
 				add_form_key('ucp_avatar');
 
@@ -644,7 +651,7 @@ class ucp_profile
 						$error[] = 'FORM_INVALID';
 					}
 					// Replace "error" strings with their real, localised form
-					$error = preg_replace('#^([A-Z_]+)$#e', "(!empty(\$user->lang['\\1'])) ? \$user->lang['\\1'] : '\\1'", $error);
+					$error = preg_replace_callback('#^([A-Z_]+)$#', fn($matches) => !empty($user->lang[$matches[1]]) ? $user->lang[$matches[1]] : $matches[1], $error);
 				}
 
 				$template->assign_vars(array(
