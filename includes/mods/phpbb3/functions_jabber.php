@@ -92,7 +92,7 @@ class jabber
 	function can_use_ssl()
 	{
 		// Will not work with PHP >= 5.2.1 or < 5.2.3RC2 until timeout problem with ssl hasn't been fixed (http://bugs.php.net/41236)
-		return ((version_compare(PHP_VERSION, '5.2.1', '<') || version_compare(PHP_VERSION, '5.2.3RC2', '>=')) && @extension_loaded('openssl')) ? true : false;
+		return ((version_compare(PHP_VERSION, '5.2.1', '<') || version_compare(PHP_VERSION, '5.2.3RC2', '>=')) && extension_loaded('openssl')) ? true : false;
 	}
 
 	/**
@@ -100,7 +100,7 @@ class jabber
 	*/
 	function can_use_tls()
 	{
-		if (!@extension_loaded('openssl') || !function_exists('stream_socket_enable_crypto') || !function_exists('stream_get_meta_data') || !function_exists('socket_set_blocking') || !function_exists('stream_get_wrappers'))
+		if (!extension_loaded('openssl') || !function_exists('stream_socket_enable_crypto') || !function_exists('stream_get_meta_data') || !function_exists('socket_set_blocking') || !function_exists('stream_get_wrappers'))
 		{
 			return false;
 		}
