@@ -21,9 +21,11 @@ if (!defined('IN_PHPBB'))
 */
 function mcp_front_view($id, $mode, $action)
 {
-	global $phpEx, $phpbb_root_path, $config;
+	global $phpEx, $config;
 	global $template, $db, $user, $auth, $module;
 
+    $phpbb_root_path = PHPBB3_ROOT_DIR;
+	
 	// Latest 5 unapproved
 	if ($module->loaded('queue'))
 	{
