@@ -36,19 +36,19 @@ if (!defined('PHPBB3_INSTALLED') || empty($dbms) || empty($acm_type))
 	exit;
 }
 	
-require($phpbb_root_path . 'includes/acm/acm_' . $acm_type . '.' . $phpEx);
-require($phpbb_root_path . 'includes/cache.' . $phpEx);
-require($phpbb_root_path . 'includes/db/' . $dbms . '.' . $phpEx);
-require($phpbb_root_path . 'includes/constants.' . $phpEx);
+require(PHPBB3_INCLUDE_DIR . 'acm/acm_' . $acm_type . '.' . $phpEx);
+require(PHPBB3_INCLUDE_DIR . 'cache.' . $phpEx);
+require(PHPBB3_ROOT_DIR . 'includes/db/' . $dbms . '.' . $phpEx);
+require(PHPBB3_INCLUDE_DIR . 'constants.' . $phpEx);
 
-require($phpbb_root_path . 'includes/arcade/functions_files.' . $phpEx);
-require($phpbb_root_path . 'includes/arcade/arcade_constants.' . $phpEx);
-require($phpbb_root_path . 'includes/arcade/functions_arcade.' . $phpEx);
-require($phpbb_root_path . 'includes/arcade/arcade_cache.' . $phpEx);
+require(PHPBB3_INCLUDE_DIR . 'arcade/functions_files.' . $phpEx);
+require(PHPBB3_INCLUDE_DIR . 'arcade/arcade_constants.' . $phpEx);
+require(PHPBB3_INCLUDE_DIR . 'arcade/functions_arcade.' . $phpEx);
+require(PHPBB3_INCLUDE_DIR . 'arcade/arcade_cache.' . $phpEx);
 
 $db = new $sql_db();
 // Connect to DB
-if (!@$db->sql_connect($dbhost, $dbuser, $dbpasswd, $dbname, $dbport, false, false))
+if (!$db->sql_connect($dbhost, $dbuser, $dbpasswd, $dbname, $dbport, false, false))
 {
 	exit;
 }
@@ -96,7 +96,9 @@ if (isset($_GET['img']))
 */
 function send_swf_to_browser($file, $browser)
 {
-	global $config, $phpbb_root_path;
+	global $config;
+
+    $phpbb_root_path = PHPBB3_ROOT_DIR;
 
 	$game_path = $config['game_path'];
 	// Adjust game path (no trailing slash)
@@ -112,7 +114,7 @@ function send_swf_to_browser($file, $browser)
 	}
 	$file_path = $phpbb_root_path . $game_path . '/' . $file . '/' . $file . '.swf';
 
-	if ((@file_exists($file_path) && @is_readable($file_path)) && !headers_sent())
+	if ((file_exists($file_path) && is_readable($file_path)) && !headers_sent())
 	{
 		header('Pragma: public');
 		header('Content-Type: application/x-shockwave-flash');
@@ -135,15 +137,15 @@ function send_swf_to_browser($file, $browser)
 			header('Expires: ' . gmdate('D, d M Y H:i:s \G\M\T', time() + 31536000));
 		}
 
-		$size = @filesize($file_path);
+		$size = filesize($file_path);
 		if ($size)
 		{
 			header("Content-Length: $size");
 		}
 
-		if (@readfile($file_path) == false)
+		if (readfile($file_path) == false)
 		{
-			$fp = @fopen($file_path, 'rb');
+			$fp = fopen($file_path, 'rb');
 
 			if ($fp !== false)
 			{
@@ -167,6 +169,8 @@ function send_img_to_browser($file, $browser)
 {
 	global $config, $phpbb_root_path, $file_functions;
 
+    $phpbb_root_path = PHPBB3_ROOT_DIR;
+
 	$file_folder = $file_functions->remove_extension($file);
 	$game_path = $config['game_path'];
 	// Adjust game path (no trailing slash)
@@ -183,7 +187,7 @@ function send_img_to_browser($file, $browser)
 
 	// Try to be more tolerant for people that do not RTFM
 	$file_path = $phpbb_root_path . $game_path . '/' . $file_folder . '/' . $file;
-	if (!@file_exists($file_path) || !@is_readable($file_path))
+	if (!file_exists($file_path) || !is_readable($file_path))
 	{
 		$ext = strrchr($file, '.');
 		$ibp_image = array(
@@ -193,9 +197,9 @@ function send_img_to_browser($file, $browser)
 
 		foreach ($ibp_image as $image)
 		{
-			if (@file_exists($image) && @is_readable($image))
+			if (file_exists($image) && is_readable($image))
 			{
-				//if (!@rename($image, $file_path))
+				//if (!rename($image, $file_path))
 				//{
 					$file_path = $image;
 				//}
@@ -204,11 +208,11 @@ function send_img_to_browser($file, $browser)
 		}
 	}
 
-	if ((@file_exists($file_path) && @is_readable($file_path)) && !headers_sent())
+	if ((file_exists($file_path) && is_readable($file_path)) && !headers_sent())
 	{
 		header('Pragma: public');
 
-		$image_data = @getimagesize($file_path);
+		$image_data = getimagesize($file_path);
 		header('Content-Type: ' . image_type_to_mime_type($image_data[2]));
 
 		if (strpos(strtolower($browser), 'msie') !== false && strpos(strtolower($browser), 'msie 8.0') === false)
@@ -230,15 +234,15 @@ function send_img_to_browser($file, $browser)
 			header('Expires: ' . gmdate('D, d M Y H:i:s \G\M\T', time() + 31536000));
 		}
 
-		$size = @filesize($file_path);
+		$size = filesize($file_path);
 		if ($size)
 		{
 			header("Content-Length: $size");
 		}
 
-		if (@readfile($file_path) == false)
+		if (readfile($file_path) == false)
 		{
-			$fp = @fopen($file_path, 'rb');
+			$fp = fopen($file_path, 'rb');
 
 			if ($fp !== false)
 			{
@@ -283,4 +287,5 @@ function file_gc()
 	$db->sql_close();
 	exit;
 }
+
 ?>
