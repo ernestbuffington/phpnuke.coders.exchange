@@ -8,8 +8,10 @@
 */
 
 /**
-* @ignore
-*/
+ * Applied rules:
+ * AddDefaultValueForUndefinedVariableRector (https://github.com/vimeo/psalm/blob/29b70442b11e3e66113935a2ee22e165a70c74a4/docs/fixing_code.md#possiblyundefinedvariable)
+ */
+
 if (!defined('IN_PHPBB'))
 {
 	exit;
@@ -43,7 +45,12 @@ class ucp_pm
 
 	function main($id, $mode)
 	{
-		global $user, $template, $phpbb_root_path, $auth, $phpEx, $db, $config;
+		$global_privmsgs_rules = null;
+        $global_rule_conditions = null;
+        
+		global $user, $template, $auth, $phpEx, $db, $config;
+		
+		$phpbb_root_path = PHPBB3_ROOT_DIR;
 
 		if (!$user->data['is_registered'])
 		{
@@ -80,7 +87,7 @@ class ucp_pm
 			$mode = 'view';
 		}
 
-		include($phpbb_root_path . 'includes/functions_privmsgs.' . $phpEx);
+		include(PHPBB3_INCLUDE_DIR . 'functions_privmsgs.' . $phpEx);
 
 		switch ($mode)
 		{
@@ -122,7 +129,7 @@ class ucp_pm
 					trigger_error('NO_AUTH_SEND_MESSAGE');
 				}
 
-				include($phpbb_root_path . 'includes/ucp/ucp_pm_compose.' . $phpEx);
+				include(PHPBB3_INCLUDE_DIR . 'ucp/ucp_pm_compose.' . $phpEx);
 				compose_pm($id, $mode, $action);
 
 				$tpl_file = 'posting_body';
@@ -133,7 +140,7 @@ class ucp_pm
 
 				get_folder($user->data['user_id']);
 
-				include($phpbb_root_path . 'includes/ucp/ucp_pm_options.' . $phpEx);
+				include(PHPBB3_INCLUDE_DIR . 'ucp/ucp_pm_options.' . $phpEx);
 				message_options($id, $mode, $global_privmsgs_rules, $global_rule_conditions);
 
 				$tpl_file = 'ucp_pm_options';
@@ -145,7 +152,7 @@ class ucp_pm
 				$this->p_name = 'pm';
 
 				// Call another module... please do not try this at home... Hoochie Coochie Man
-				include($phpbb_root_path . 'includes/ucp/ucp_main.' . $phpEx);
+				include(PHPBB3_INCLUDE_DIR . 'ucp/ucp_main.' . $phpEx);
 
 				$module = new ucp_main($this);
 				$module->u_action = $this->u_action;
@@ -366,7 +373,7 @@ class ucp_pm
 
 				if ($action == 'view_folder')
 				{
-					include($phpbb_root_path . 'includes/ucp/ucp_pm_viewfolder.' . $phpEx);
+					include(PHPBB3_INCLUDE_DIR . 'ucp/ucp_pm_viewfolder.' . $phpEx);
 					view_folder($id, $mode, $folder_id, $folder);
 
 					$tpl_file = 'ucp_pm_viewfolder';
@@ -383,7 +390,7 @@ class ucp_pm
 						trigger_error('NO_MESSAGE');
 					}
 
-					include($phpbb_root_path . 'includes/ucp/ucp_pm_viewmessage.' . $phpEx);
+					include(PHPBB3_INCLUDE_DIR . 'ucp/ucp_pm_viewmessage.' . $phpEx);
 					view_message($id, $mode, $folder_id, $msg_id, $folder, $message_row);
 
 					$tpl_file = ($view == 'print') ? 'ucp_pm_viewmessage_print' : 'ucp_pm_viewmessage';
