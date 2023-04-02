@@ -9,8 +9,15 @@
 */
 
 /**
-* @ignore
-*/
+ * Applied rules:
+ * AddDefaultValueForUndefinedVariableRector (https://github.com/vimeo/psalm/blob/29b70442b11e3e66113935a2ee22e165a70c74a4/docs/fixing_code.md#possiblyundefinedvariable)
+ * RandomFunctionRector
+ * TernaryToNullCoalescingRector
+ * ListEachRector (https://wiki.php.net/rfc/deprecations_php_7_2#each)
+ * StringifyStrNeedlesRector (https://wiki.php.net/rfc/deprecations_php_7_3#string_search_functions_with_integer_needle)
+ * StrStartsWithRector (https://wiki.php.net/rfc/add_str_starts_with_and_ends_with_functions)
+ */
+
 if (!defined('IN_PHPBB'))
 {
 	exit;
@@ -68,7 +75,7 @@ function request_var($var_name, $default, $multibyte = false, $cookie = false)
 		{
 			return (is_array($default)) ? array() : $default;
 		}
-		$_REQUEST[$var_name] = isset($_POST[$var_name]) ? $_POST[$var_name] : $_GET[$var_name];
+		$_REQUEST[$var_name] = $_POST[$var_name] ?? $_GET[$var_name];
 	}
 
 	if (!isset($_REQUEST[$var_name]) || (is_array($_REQUEST[$var_name]) && !is_array($default)) || (is_array($default) && !is_array($_REQUEST[$var_name])))
@@ -83,14 +90,18 @@ function request_var($var_name, $default, $multibyte = false, $cookie = false)
 	}
 	else
 	{
-		list($key_type, $type) = each($default);
+		$key_type = key($default);
+        $type = current($default);
+        next($default);
 		$type = gettype($type);
 		$key_type = gettype($key_type);
 		if ($type == 'array')
 		{
 			reset($default);
 			$default = current($default);
-			list($sub_key_type, $sub_type) = each($default);
+			$sub_key_type = key($default);
+            $sub_type = current($default);
+            next($default);
 			$sub_type = gettype($sub_type);
 			$sub_type = ($sub_type == 'array') ? 'NULL' : $sub_type;
 			$sub_key_type = gettype($sub_key_type);
@@ -188,7 +199,7 @@ function unique_id($extra = 'c')
 	$val = md5($val);
 	$config['rand_seed'] = md5($config['rand_seed'] . $val . $extra);
 
-	if ($dss_seeded !== true && ($config['rand_seed_last_update'] < time() - rand(1,10)))
+	if ($dss_seeded !== true && ($config['rand_seed_last_update'] < time() - random_int(1,10)))
 	{
 		set_config('rand_seed', $config['rand_seed'], true);
 		set_config('rand_seed_last_update', time(), true);
@@ -233,7 +244,7 @@ function still_on_time($extra_time = 15)
 
 	if (empty($max_execution_time))
 	{
-		$max_execution_time = (function_exists('ini_get')) ? (int) @ini_get('max_execution_time') : (int) @get_cfg_var('max_execution_time');
+		$max_execution_time = (function_exists('ini_get')) ? (int) ini_get('max_execution_time') : (int) get_cfg_var('max_execution_time');
 
 		// If zero, then set to something higher to not let the user catch the ten seconds barrier.
 		if ($max_execution_time === 0)
@@ -290,7 +301,7 @@ function phpbb_hash($password)
 	$random = '';
 	$count = 6;
 
-	if (($fh = @fopen('/dev/urandom', 'rb')))
+	if (($fh = fopen('/dev/urandom', 'rb')))
 	{
 		$random = fread($fh, $count);
 		fclose($fh);
@@ -406,12 +417,12 @@ function _hash_crypt_private($password, $setting, &$itoa64)
 	$output = '*';
 
 	// Check for correct hash
-	if (substr($setting, 0, 3) != '$H$')
+	if (!str_starts_with($setting, '$H$'))
 	{
 		return $output;
 	}
 
-	$count_log2 = strpos($itoa64, $setting[3]);
+	$count_log2 = strpos($itoa64, (string) $setting[3]);
 
 	if ($count_log2 < 7 || $count_log2 > 30)
 	{
@@ -496,7 +507,9 @@ function phpbb_chmod($filename, $perms = CHMOD_READ)
 	}
 	else
 	{
-		global $phpbb_root_path, $phpEx;
+		global $phpEx;
+		
+		$phpbb_root_path = PHPBB3_ROOT_DIR;
 
 		// Determine owner/group of common.php file and the filename we want to change here
 		$common_php_owner = fileowner($phpbb_root_path . 'common.' . $phpEx);
@@ -509,7 +522,7 @@ function phpbb_chmod($filename, $perms = CHMOD_READ)
 		if ($common_php_owner !== $file_uid && $common_php_owner !== false && $file_uid !== false)
 		{
 			// Will most likely not work
-			if (@chown($filename, $common_php_owner));
+			if (chown($filename, $common_php_owner));
 			{
 				clearstatcache();
 				$file_uid = fileowner($filename);
@@ -519,7 +532,7 @@ function phpbb_chmod($filename, $perms = CHMOD_READ)
 		// Try to set the group to the same common.php has
 		if ($common_php_group !== $file_gid && $common_php_group !== false && $file_gid !== false)
 		{
-			if (@chgrp($filename, $common_php_group));
+			if (chgrp($filename, $common_php_group));
 			{
 				clearstatcache();
 				$file_gid = filegroup($filename);
@@ -528,8 +541,8 @@ function phpbb_chmod($filename, $perms = CHMOD_READ)
 	}
 
 	// And the owner and the groups PHP is running under.
-	$php_uid = (function_exists('posix_getuid')) ? @posix_getuid() : false;
-	$php_gids = (function_exists('posix_getgroups')) ? @posix_getgroups() : false;
+	$php_uid = (function_exists('posix_getuid')) ? posix_getuid() : false;
+	$php_gids = (function_exists('posix_getgroups')) ? posix_getgroups() : false;
 
 	// Who is PHP?
 	if ($file_uid === false || $file_gid === false || $php_uid === false || $php_gids === false)
@@ -568,7 +581,7 @@ function phpbb_chmod($filename, $perms = CHMOD_READ)
 		case 'owner':
 			/* ATTENTION: if php is owner or NULL we set it to group here. This is the most failsafe combination for the vast majority of server setups.
 
-			$result = @chmod($filename, ($owner << 6) + (0 << 3) + (0 << 0));
+			$result = chmod($filename, ($owner << 6) + (0 << 3) + (0 << 0));
 
 			clearstatcache();
 
@@ -579,7 +592,7 @@ function phpbb_chmod($filename, $perms = CHMOD_READ)
 		*/
 
 		case 'group':
-			$result = @chmod($filename, ($owner << 6) + ($perms << 3) + (0 << 0));
+			$result = chmod($filename, ($owner << 6) + ($perms << 3) + (0 << 0));
 
 			clearstatcache();
 
@@ -589,7 +602,7 @@ function phpbb_chmod($filename, $perms = CHMOD_READ)
 			}
 
 		case 'other':
-			$result = @chmod($filename, ($owner << 6) + ($perms << 3) + ($perms << 0));
+			$result = chmod($filename, ($owner << 6) + ($perms << 3) + ($perms << 0));
 
 			clearstatcache();
 
@@ -824,7 +837,7 @@ function phpbb_own_realpath($path)
 
 	foreach ($bits as $i => $bit)
 	{
-		if (@is_dir("$resolved/$bit") || ($i == $max && @is_file("$resolved/$bit")))
+		if (is_dir("$resolved/$bit") || ($i == $max && is_file("$resolved/$bit")))
 		{
 			// Path Exists
 			if ($symlink_resolve && is_link("$resolved/$bit") && ($link = readlink("$resolved/$bit")))
@@ -846,7 +859,7 @@ function phpbb_own_realpath($path)
 	// @todo If the file exists fine and open_basedir only has one path we should be able to prepend it
 	// because we must be inside that basedir, the question is where...
 	// @internal The slash in is_dir() gets around an open_basedir restriction
-	if (!@file_exists($resolved) || (!is_dir($resolved . '/') && !is_file($resolved)))
+	if (!file_exists($resolved) || (!is_dir($resolved . '/') && !is_file($resolved)))
 	{
 		return false;
 	}
@@ -1100,7 +1113,7 @@ function markread($mode, $forum_id = false, $topic_id = false, $post_time = 0, $
 
 			foreach ($forum_id as $f_id)
 			{
-				$topic_ids36 = (isset($tracking['tf'][$f_id])) ? $tracking['tf'][$f_id] : array();
+				$topic_ids36 = $tracking['tf'][$f_id] ?? array();
 
 				if (isset($tracking['tf'][$f_id]))
 				{
@@ -1317,13 +1330,13 @@ function get_topic_tracking($forum_id, $topic_ids, &$rowset, $forum_mark_time, $
 			$mark_time[$forum_id] = $forum_mark_time[$forum_id];
 		}
 
-		$user_lastmark = (isset($mark_time[$forum_id])) ? $mark_time[$forum_id] : $user->data['user_lastmark'];
+		$user_lastmark = $mark_time[$forum_id] ?? $user->data['user_lastmark'];
 
 		foreach ($topic_ids as $topic_id)
 		{
 			if ($global_announce_list && isset($global_announce_list[$topic_id]))
 			{
-				$last_read[$topic_id] = (isset($mark_time[0])) ? $mark_time[0] : $user_lastmark;
+				$last_read[$topic_id] = $mark_time[0] ?? $user_lastmark;
 			}
 			else
 			{
@@ -1383,13 +1396,13 @@ function get_complete_topic_tracking($forum_id, $topic_ids, $global_announce_lis
 			}
 			$db->sql_freeresult($result);
 
-			$user_lastmark = (isset($mark_time[$forum_id])) ? $mark_time[$forum_id] : $user->data['user_lastmark'];
+			$user_lastmark = $mark_time[$forum_id] ?? $user->data['user_lastmark'];
 
 			foreach ($topic_ids as $topic_id)
 			{
 				if ($global_announce_list && isset($global_announce_list[$topic_id]))
 				{
-					$last_read[$topic_id] = (isset($mark_time[0])) ? $mark_time[0] : $user_lastmark;
+					$last_read[$topic_id] = $mark_time[0] ?? $user_lastmark;
 				}
 				else
 				{
@@ -1445,13 +1458,13 @@ function get_complete_topic_tracking($forum_id, $topic_ids, $global_announce_lis
 				$mark_time[$forum_id] = base_convert($tracking_topics['f'][$forum_id], 36, 10) + $config['board_startdate'];
 			}
 
-			$user_lastmark = (isset($mark_time[$forum_id])) ? $mark_time[$forum_id] : $user_lastmark;
+			$user_lastmark = $mark_time[$forum_id] ?? $user_lastmark;
 
 			foreach ($topic_ids as $topic_id)
 			{
 				if ($global_announce_list && isset($global_announce_list[$topic_id]))
 				{
-					$last_read[$topic_id] = (isset($mark_time[0])) ? $mark_time[0] : $user_lastmark;
+					$last_read[$topic_id] = $mark_time[0] ?? $user_lastmark;
 				}
 				else
 				{
@@ -1977,7 +1990,9 @@ function generate_board_url($without_script_path = false)
 */
 function redirect($url, $return = false, $disable_cd_check = false)
 {
-	global $db, $cache, $config, $user, $phpbb_root_path;
+	global $db, $cache, $config, $user;
+
+	$phpbb_root_path = PHPBB3_ROOT_DIR;
 
 	if (empty($user->lang))
 	{
@@ -2024,7 +2039,7 @@ function redirect($url, $return = false, $disable_cd_check = false)
 			$url = str_replace('./', '', $url);
 
 			// Strip / from the beginning
-			if ($url && substr($url, 0, 1) == '/')
+			if ($url && str_starts_with($url, '/'))
 			{
 				$url = substr($url, 1);
 			}
@@ -2057,7 +2072,7 @@ function redirect($url, $return = false, $disable_cd_check = false)
 			}
 
 			// Strip / from the beginning
-			if ($dir && substr($dir, 0, 1) == '/')
+			if ($dir && str_starts_with($dir, '/'))
 			{
 				$dir = substr($dir, 1);
 			}
@@ -2065,7 +2080,7 @@ function redirect($url, $return = false, $disable_cd_check = false)
 			$url = str_replace($pathinfo['dirname'] . '/', '', $url);
 
 			// Strip / from the beginning
-			if (substr($url, 0, 1) == '/')
+			if (str_starts_with($url, '/'))
 			{
 				$url = substr($url, 1);
 			}
@@ -2096,7 +2111,7 @@ function redirect($url, $return = false, $disable_cd_check = false)
 	}
 
 	// Redirect via an HTML form for PITA webservers
-	if (@preg_match('#Microsoft|WebSTAR|Xitami#', getenv('SERVER_SOFTWARE')))
+	if (preg_match('#Microsoft|WebSTAR|Xitami#', getenv('SERVER_SOFTWARE')))
 	{
 		header('Refresh: 0; URL=' . $url);
 
@@ -2125,7 +2140,9 @@ function redirect($url, $return = false, $disable_cd_check = false)
 */
 function reapply_sid($url)
 {
-	global $phpEx, $phpbb_root_path;
+	global $phpEx;
+
+	$phpbb_root_path = PHPBB3_ROOT_DIR;
 
 	if ($url === "index.$phpEx")
 	{
@@ -2158,7 +2175,9 @@ function reapply_sid($url)
 */
 function build_url($strip_vars = false)
 {
-	global $user, $phpbb_root_path;
+	global $user;
+
+	$phpbb_root_path = PHPBB3_ROOT_DIR;
 
 	// Append SID
 	$redirect = append_sid($user->page['page'], false, false);
@@ -2354,7 +2373,9 @@ function check_form_key($form_name, $timespan = false, $return_page = '', $trigg
 function confirm_box($check, $title = '', $hidden = '', $html_body = 'confirm_body.html', $u_action = '')
 {
 	global $user, $template, $db;
-	global $phpEx, $phpbb_root_path;
+	global $phpEx;
+
+	$phpbb_root_path = PHPBB3_ROOT_DIR;
 
 	if (isset($_POST['cancel']))
 	{
@@ -2456,7 +2477,9 @@ function confirm_box($check, $title = '', $hidden = '', $html_body = 'confirm_bo
 */
 function login_box($redirect = '', $l_explain = '', $l_success = '', $admin = false, $s_display = true)
 {
-	global $db, $user, $template, $auth, $phpEx, $phpbb_root_path, $config;
+	global $db, $user, $template, $auth, $phpEx, $config;
+	
+	$phpbb_root_path = PHPBB3_ROOT_DIR;
 
 	$err = '';
 
@@ -2553,7 +2576,7 @@ function login_box($redirect = '', $l_explain = '', $l_success = '', $admin = fa
 			 */
 			if($config['wpm_enable'] && $user->data['user_lastvisit'] == 0)
 			{
-				include($phpbb_root_path . 'includes/functions_wpm.' . $phpEx);
+				include(PHPBB3_INCLUDE_DIR . 'functions_wpm.' . $phpEx);
 				send_wpm($user->data['user_id']);
 			}
 			/* End WPM */
@@ -2586,7 +2609,7 @@ function login_box($redirect = '', $l_explain = '', $l_success = '', $admin = fa
 				$db->sql_query($sql);
 
 				// Generate code
-				$code = gen_rand_string(mt_rand(5, 8));
+				$code = gen_rand_string(random_int(5, 8));
 				$confirm_id = md5(unique_id($user->ip));
 				$seed = hexdec(substr(unique_id(), 4, 10));
 
@@ -2938,7 +2961,7 @@ function add_log()
 */
 function get_backtrace()
 {
-	global $phpbb_root_path;
+	$phpbb_root_path = PHPBB3_ROOT_DIR;
 
 	$output = '<div style="font-family: monospace;">';
 	$backtrace = debug_backtrace();
@@ -3104,8 +3127,8 @@ function phpbb_checkdnsrr($host, $type = '')
 			return NULL;
 		}
 
-		// @exec('nslookup -retry=1 -timout=1 -type=' . escapeshellarg($type) . ' ' . escapeshellarg($host), $output);
-		@exec('nslookup -type=' . escapeshellarg($type) . ' ' . escapeshellarg($host) . '.', $output);
+		// exec('nslookup -retry=1 -timout=1 -type=' . escapeshellarg($type) . ' ' . escapeshellarg($host), $output);
+		exec('nslookup -type=' . escapeshellarg($type) . ' ' . escapeshellarg($host) . '.', $output);
 
 		// If output is empty, the nslookup failed
 		if (empty($output))
@@ -3121,7 +3144,7 @@ function phpbb_checkdnsrr($host, $type = '')
 			}
 
 			// Valid records begin with host name:
-			if (strpos($line, $host) === 0)
+			if (str_starts_with($line, $host))
 			{
 				return true;
 			}
@@ -3146,9 +3169,11 @@ function phpbb_checkdnsrr($host, $type = '')
 function msg_handler($errno, $msg_text, $errfile, $errline)
 {
 	global $cache, $db, $auth, $template, $config, $user;
-	global $phpEx, $phpbb_root_path, $msg_title, $msg_long_text;
+	global $phpEx, $msg_title, $msg_long_text;
 
-	// Do not display notices if we suppress them via @
+	$phpbb_root_path = PHPBB3_ROOT_DIR;
+
+	// Do not display notices if we suppress them via 
 	if (error_reporting() == 0)
 	{
 		return;
@@ -3175,17 +3200,17 @@ function msg_handler($errno, $msg_text, $errfile, $errline)
 			if (strpos($errfile, 'cache') === false && strpos($errfile, 'template.') === false)
 			{
 				// flush the content, else we get a white page if output buffering is on
-				if ((int) @ini_get('output_buffering') === 1 || strtolower(@ini_get('output_buffering')) === 'on')
+				if ((int) ini_get('output_buffering') === 1 || strtolower(ini_get('output_buffering')) === 'on')
 				{
-					@ob_flush();
+					ob_flush();
 				}
 
 				// Another quick fix for those having gzip compression enabled, but do not flush if the coder wants to catch "something". ;)
 				if (!empty($config['gzip_compress']))
 				{
-					if (@extension_loaded('zlib') && !headers_sent() && !ob_get_level())
+					if (extension_loaded('zlib') && !headers_sent() && !ob_get_level())
 					{
-						@ob_flush();
+						ob_flush();
 					}
 				}
 
@@ -3458,7 +3483,11 @@ function obtain_users_online($forum_id = 0)
 */
 function obtain_users_online_string($online_users, $forum_id = 0)
 {
-	global $config, $db, $user, $auth;
+	$l_t_user_s = null;
+ $l_r_user_s = null;
+ $l_h_user_s = null;
+ $l_g_user_s = null;
+ global $config, $db, $user, $auth;
 
 	$user_online_link = $online_userlist = '';
 
@@ -3566,8 +3595,10 @@ function obtain_users_online_string($online_users, $forum_id = 0)
 */
 function page_header($page_title = '', $display_online_list = true, $post_text = '') // post_text added by Meta Keywords MOD 1..0
 {
-	global $db, $config, $template, $SID, $_SID, $user, $auth, $phpEx, $phpbb_root_path;
+	global $db, $config, $template, $SID, $_SID, $user, $auth, $phpEx;
 	global $arcade;
+
+	$phpbb_root_path = PHPBB3_ROOT_DIR;
 
 	if (defined('HEADER_INC'))
 	{
@@ -3579,7 +3610,7 @@ function page_header($page_title = '', $display_online_list = true, $post_text =
 	// gzip_compression
 	if ($config['gzip_compress'])
 	{
-		if (@extension_loaded('zlib') && !headers_sent())
+		if (extension_loaded('zlib') && !headers_sent())
 		{
 			ob_start('ob_gzhandler');
 		}
@@ -3631,7 +3662,7 @@ function page_header($page_title = '', $display_online_list = true, $post_text =
 	}
 	
 	//-- mod: Ban List ----------------------------------------------------------//
-	include($phpbb_root_path . 'includes/ban_list.' . $phpEx);
+	include(PHPBB3_INCLUDE_DIR . 'ban_list.' . $phpEx);
 	ban_list_set_template_vars();
     //-- end: Ban List ----------------------------------------------------------//
 
@@ -3687,14 +3718,14 @@ function page_header($page_title = '', $display_online_list = true, $post_text =
 	{
 		if (!function_exists('clear_user_reminders'))
 		{
-			include($phpbb_root_path . 'includes/functions_user_reminder.' . $phpEx);
+			include(PHPBB3_INCLUDE_DIR . 'functions_user_reminder.' . $phpEx);
 		}
 		clear_user_reminders();
 	}
 	
 	//---- [ who was here ] ----
-include_once($phpbb_root_path . 'includes/functions_wwh2.' . $phpEx);
-//---- [ who was here ] ----
+    include_once(PHPBB3_INCLUDE_DIR . 'functions_wwh2.' . $phpEx);
+    //---- [ who was here ] ----
 
     // Meta Keywords MOD 2.0
 	$page_keywords = $config['global_keywords'];
@@ -3823,7 +3854,7 @@ include_once($phpbb_root_path . 'includes/functions_wwh2.' . $phpEx);
 		'S_IS_BOT'				=> (!empty($user->data['is_bot'])) ? true : false,
 		'S_USER_PM_POPUP'		=> $user->optionget('popuppm'),
 		'S_USER_LANG'			=> $user_lang,
-		'S_USER_BROWSER'		=> (isset($user->data['session_browser'])) ? $user->data['session_browser'] : $user->lang['UNKNOWN_BROWSER'],
+		'S_USER_BROWSER'		=> $user->data['session_browser'] ?? $user->lang['UNKNOWN_BROWSER'],
 		'S_USERNAME'			=> $user->data['username'],
 		'S_CONTENT_DIRECTION'	=> $user->lang['DIRECTION'],
 		'S_CONTENT_FLOW_BEGIN'	=> ($user->lang['DIRECTION'] == 'ltr') ? 'left' : 'right',
@@ -3875,7 +3906,8 @@ include_once($phpbb_root_path . 'includes/functions_wwh2.' . $phpEx);
 */
 function page_footer($run_cron = true)
 {
-	global $db, $config, $template, $user, $auth, $cache, $starttime, $phpbb_root_path, $phpEx;
+	$debug_output = null;
+ global $db, $config, $template, $user, $auth, $cache, $starttime, $phpbb_root_path, $phpEx;
 
 	// Output page creation time
 	if (defined('DEBUG'))
@@ -4001,7 +4033,7 @@ function exit_handler()
 	}
 
 	// As a pre-caution... some setups display a blank page if the flush() is not there.
-	(empty($config['gzip_compress'])) ? @flush() : @ob_flush();
+	(empty($config['gzip_compress'])) ? flush() : ob_flush();
 
 	exit;
 }
