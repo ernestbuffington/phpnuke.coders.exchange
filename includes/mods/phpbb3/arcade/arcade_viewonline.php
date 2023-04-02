@@ -16,10 +16,12 @@ if (!defined('IN_PHPBB'))
 	exit;
 }
 
+$phpbb_root_path = PHPBB3_ROOT_DIR;
+
 if (!isset($arcade))
 {
-	include($phpbb_root_path . 'includes/arcade/arcade_common.' . $phpEx);
-	include($phpbb_root_path . 'includes/functions_user.' . $phpEx);
+	include(PHPBB3_INCLUDE_DIR . 'arcade/arcade_common.' . $phpEx);
+	include(PHPBB3_INCLUDE_DIR . 'functions_user.' . $phpEx);
 	// Initialize arcade auth
 	$auth_arcade->acl($user->data);
 	// Initialize arcade class
