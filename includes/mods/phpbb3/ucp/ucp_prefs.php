@@ -9,8 +9,11 @@
 */
 
 /**
-* @ignore
-*/
+ * Applied rules:
+ * PregReplaceEModifierRector (https://wiki.php.net/rfc/remove_preg_replace_eval_modifier https://stackoverflow.com/q/19245205/1348344)
+ * ClosureToArrowFunctionRector (https://wiki.php.net/rfc/arrow_functions_v2)
+ */
+
 if (!defined('IN_PHPBB'))
 {
 	exit;
@@ -27,8 +30,8 @@ class ucp_prefs
 
 	function main($id, $mode)
 	{
-		global $config, $db, $user, $auth, $template, $phpbb_root_path, $phpEx;
-
+		global $config, $db, $user, $auth, $template, $phpEx;
+		
 		$submit = (isset($_POST['submit'])) ? true : false;
 		$error = $data = array();
 		$s_hidden_fields = '';
@@ -53,7 +56,7 @@ class ucp_prefs
 					'allowpm'		=> request_var('allowpm', (bool) $user->data['user_allow_pm']),
 				);
 
-				if ($data['notifymethod'] == NOTIFY_IM && (!$config['jab_enable'] || !$user->data['user_jabber'] || !@extension_loaded('xml')))
+				if ($data['notifymethod'] == NOTIFY_IM && (!$config['jab_enable'] || !$user->data['user_jabber'] || !extension_loaded('xml')))
 				{
 					// Jabber isnt enabled, or no jabber field filled in. Update the users table to be sure its correct.
 					$data['notifymethod'] = NOTIFY_BOTH;
@@ -105,7 +108,7 @@ class ucp_prefs
 					}
 
 					// Replace "error" strings with their real, localised form
-					$error = preg_replace('#^([A-Z_]+)$#e', "(!empty(\$user->lang['\\1'])) ? \$user->lang['\\1'] : '\\1'", $error);
+					$error = preg_replace_callback('#^([A-Z_]+)$#', fn($matches) => !empty($user->lang[$matches[1]]) ? $user->lang[$matches[1]] : $matches[1], $error);
 				}
 
 				$dateformat_options = '';
@@ -152,7 +155,7 @@ class ucp_prefs
 					'S_STYLE_OPTIONS'		=> ($config['override_user_style']) ? '' : style_select($data['style']),
 					'S_TZ_OPTIONS'			=> tz_select($data['tz'], true),
 					'S_CAN_HIDE_ONLINE'		=> ($auth->acl_get('u_hideonline')) ? true : false,
-					'S_SELECT_NOTIFY'		=> ($config['jab_enable'] && $user->data['user_jabber'] && @extension_loaded('xml')) ? true : false)
+					'S_SELECT_NOTIFY'		=> ($config['jab_enable'] && $user->data['user_jabber'] && extension_loaded('xml')) ? true : false)
 				);
 
 			break;
@@ -227,7 +230,7 @@ class ucp_prefs
 					}
 
 					// Replace "error" strings with their real, localised form
-					$error = preg_replace('#^([A-Z_]+)$#e', "(!empty(\$user->lang['\\1'])) ? \$user->lang['\\1'] : '\\1'", $error);
+					$error = preg_replace_callback('#^([A-Z_]+)$#', fn($matches) => !empty($user->lang[$matches[1]]) ? $user->lang[$matches[1]] : $matches[1], $error);
 				}
 
 				$sort_dir_text = array('a' => $user->lang['ASCENDING'], 'd' => $user->lang['DESCENDING']);
