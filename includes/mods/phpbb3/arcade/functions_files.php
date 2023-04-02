@@ -117,7 +117,7 @@ class file_functions
 
 		if (!$empty)
 		{
-			@rmdir($dir);
+			rmdir($dir);
 		}
 	}
 	
