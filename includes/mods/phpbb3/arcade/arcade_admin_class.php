@@ -91,8 +91,9 @@ class arcade_admin extends arcade
 	*/
 	function add_game($game_filename, $cat_id)
 	{
-		global $db, $phpbb_root_path, $phpEx, $file_functions;
-		include ($phpbb_root_path . $this->config['game_path'] .$game_filename.'/'.$game_filename.'.' . $phpEx);
+		global $db, $phpEx, $file_functions;
+		
+		include (PHPBB3_ROOT_DIR . $this->config['game_path'] .$game_filename.'/'.$game_filename.'.' . $phpEx);
 
 		$sql = 'SELECT MAX(game_order) AS max_order
 			FROM ' . ARCADE_GAMES_TABLE;
@@ -141,7 +142,7 @@ class arcade_admin extends arcade
 		{
 			foreach ($extra_game_files as $file)
 			{
-				$file = $phpbb_root_path . $file;
+				$file = PHPBB3_ROOT_DIR . $file;
 				if (file_exists($file))
 				{
 					$game_files_array[] = $file;
@@ -639,7 +640,7 @@ class arcade_admin extends arcade
 			   	$list = file_get_contents($url);
 			}
 			
-			$list = @gzuncompress($list);
+			$list = gzuncompress($list);
 			$list = (is_string($list) && (preg_match("/^[adobis]:[0-9]+:.*[;}]/si", $list))) ? unserialize($list) : false;		
 			
 			$arcade_cache->put('_arcade_dl_' . $md5_url, $list, $this->config['cache_time'] * 3600);
@@ -1032,7 +1033,7 @@ class arcade_admin extends arcade
 	*/
 	function create_install_folder($install_file, $game_filename, $overwrite = false)
 	{
-		global $phpbb_root_path, $phpEx;
+		global $phpEx;
 
 		$success = true;
 
@@ -1043,7 +1044,7 @@ class arcade_admin extends arcade
 		if (!is_dir($folder_path))
 		{
 			// Create directory
-			if (!@mkdir($folder_path, 0755))
+			if (!mkdir($folder_path, 0755))
 			{
 				$success = false;
 			}
@@ -1055,7 +1056,7 @@ class arcade_admin extends arcade
 			trigger_error('ARCADE_CREATE_INSTALL_FILE_EXISTS', E_USER_WARNING);
 		}
 
-		if ($fp = @fopen($file_path, 'wb'))
+		if ($fp = fopen($file_path, 'wb'))
 		{
 			fwrite($fp, $install_file);
 			fclose($fp);
@@ -1066,7 +1067,7 @@ class arcade_admin extends arcade
 		}
 
 		// Write blank index.htm file
-		if ($fp = @fopen($index_file_path, 'wb'))
+		if ($fp = fopen($index_file_path, 'wb'))
 		{
 			fwrite($fp, '');
 			fclose($fp);
@@ -1203,7 +1204,7 @@ class arcade_admin extends arcade
 	*/
 	function update_install_file($game_id)
 	{
-		global $phpbb_root_path, $phpEx;
+		global $phpEx;
 
 		if ($game_id)
 		{
@@ -1211,7 +1212,7 @@ class arcade_admin extends arcade
 			$install_file = $this->create_install_file($game_info);
 			$updated_file = $this->set_path($game_info['game_swf'], 'install');
 
-			if ($fp = @fopen($updated_file, 'wb'))
+			if ($fp = fopen($updated_file, 'wb'))
 			{
 				fwrite($fp, $install_file);
 				fclose($fp);
@@ -1229,22 +1230,22 @@ class arcade_admin extends arcade
 	*/
 	function download_install_file($file, $filename, $use_method, $methods)
 	{
-		global $phpbb_root_path, $phpEx;
+		global $phpEx;
 
 		if (!in_array($use_method, $methods))
 		{
 			$use_method = '.tar';
 		}
 
-		include($phpbb_root_path . 'includes/functions_compress.' . $phpEx);
+		include(PHPBB3_INCLUDE_DIR . 'functions_compress.' . $phpEx);
 
 		if ($use_method == '.zip')
 		{
-			$compress = new compress_zip('w', $phpbb_root_path . 'store/' . $filename . $use_method);
+			$compress = new compress_zip('w', PHPBB3_ROOT_DIR . 'store/' . $filename . $use_method);
 		}
 		else
 		{
-			$compress = new compress_tar('w', $phpbb_root_path . 'store/' . $filename . $use_method, $use_method);
+			$compress = new compress_tar('w', PHPBB3_ROOT_DIR . 'store/' . $filename . $use_method, $use_method);
 		}
 
 		$compress->add_data('', 'index.htm');
@@ -1252,7 +1253,7 @@ class arcade_admin extends arcade
 
 		$compress->close();
 		$compress->download($filename);
-		@unlink($phpbb_root_path . 'store/' . $filename . $use_method);
+		unlink(PHPBB3_ROOT_DIR . 'store/' . $filename . $use_method);
 		exit;
 
 	}
@@ -1444,9 +1445,9 @@ class arcade_admin extends arcade
 	*/
 	function generate_cat_images($cat_image)
 	{
-		global $db, $user, $auth, $phpbb_root_path, $arcade;
+		global $db, $user, $auth, $arcade;
 
-		$dir = $phpbb_root_path . $arcade->config['cat_image_path'];
+		$dir = PHPBB3_ROOT_DIR . $arcade->config['cat_image_path'];
 
 		if (!is_dir($dir))
 		{
@@ -1458,7 +1459,7 @@ class arcade_admin extends arcade
 		{
 			foreach ($files as $file)
 			{
-				$img_size = @getimagesize($dir . $file);
+				$img_size = getimagesize($dir . $file);
 				if ($img_size[0] && $img_size[1])
 				{
 					$category_images[] = $file;
@@ -1565,11 +1566,11 @@ $game_data = array(
 	*/
 	function create_announcement($game_data, $forum_id)
 	{
-	    global $db, $phpbb_root_path, $phpEx;
+	    global $db, $phpEx;
 
 	    if (!function_exists('submit_post'))
 	    {
-	        include($phpbb_root_path . 'includes/functions_posting.' . $phpEx);
+	        include(PHPBB3_INCLUDE_DIR . 'functions_posting.' . $phpEx);
 	    }
 
 		$subject =  utf8_normalize_nfc($this->prepare_announce($this->config['announce_subject'], $game_data));
