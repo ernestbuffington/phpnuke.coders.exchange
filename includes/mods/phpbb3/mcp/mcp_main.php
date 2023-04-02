@@ -9,8 +9,11 @@
 */
 
 /**
-* @ignore
-*/
+ * Applied rules:
+ * AddDefaultValueForUndefinedVariableRector (https://github.com/vimeo/psalm/blob/29b70442b11e3e66113935a2ee22e165a70c74a4/docs/fixing_code.md#possiblyundefinedvariable)
+ * Php4ConstructorRector (https://wiki.php.net/rfc/remove_php4_constructors)
+ */
+
 if (!defined('IN_PHPBB'))
 {
 	exit;
@@ -26,7 +29,7 @@ class mcp_main
 	var $p_master;
 	var $u_action;
 
-	function mcp_main(&$p_master)
+	function __construct(&$p_master)
 	{
 		$this->p_master = &$p_master;
 	}
@@ -34,7 +37,9 @@ class mcp_main
 	function main($id, $mode)
 	{
 		global $auth, $db, $user, $template, $action;
-		global $config, $phpbb_root_path, $phpEx;
+		global $config, $phpEx;
+		
+		$phpbb_root_path = PHPBB3_ROOT_DIR;
 
 		$quickmod = ($mode == 'quickmod') ? true : false;
 
@@ -136,7 +141,7 @@ class mcp_main
 		switch ($mode)
 		{
 			case 'front':
-				include($phpbb_root_path . 'includes/mcp/mcp_front.' . $phpEx);
+				include(PHPBB3_INCLUDE_DIR . 'mcp/mcp_front.' . $phpEx);
 
 				$user->add_lang('acp/common');
 
@@ -147,7 +152,7 @@ class mcp_main
 			break;
 
 			case 'forum_view':
-				include($phpbb_root_path . 'includes/mcp/mcp_forum.' . $phpEx);
+				include(PHPBB3_INCLUDE_DIR . 'mcp/mcp_forum.' . $phpEx);
 
 				$user->add_lang('viewforum');
 
@@ -170,7 +175,7 @@ class mcp_main
 			break;
 
 			case 'topic_view':
-				include($phpbb_root_path . 'includes/mcp/mcp_topic.' . $phpEx);
+				include(PHPBB3_INCLUDE_DIR . 'mcp/mcp_topic.' . $phpEx);
 
 				mcp_topic_view($id, $mode, $action);
 
@@ -179,7 +184,7 @@ class mcp_main
 			break;
 
 			case 'post_details':
-				include($phpbb_root_path . 'includes/mcp/mcp_post.' . $phpEx);
+				include(PHPBB3_INCLUDE_DIR . 'mcp/mcp_post.' . $phpEx);
 
 				mcp_post_details($id, $mode, $action);
 
@@ -199,7 +204,7 @@ class mcp_main
 */
 function lock_unlock($action, $ids)
 {
-	global $auth, $user, $db, $phpEx, $phpbb_root_path;
+	global $auth, $user, $db, $phpEx;
 
 	if ($action == 'lock' || $action == 'unlock')
 	{
@@ -284,7 +289,7 @@ function lock_unlock($action, $ids)
 */
 function change_topic_type($action, $topic_ids)
 {
-	global $auth, $user, $db, $phpEx, $phpbb_root_path;
+	global $auth, $user, $db, $phpEx;
 
 	// For changing topic types, we only allow operations in one forum.
 	$forum_id = check_ids($topic_ids, TOPICS_TABLE, 'topic_id', array('f_announce', 'f_sticky', 'm_'), true);
@@ -531,7 +536,9 @@ function change_topic_type($action, $topic_ids)
 function mcp_move_topic($topic_ids)
 {
 	global $auth, $user, $db, $template;
-	global $phpEx, $phpbb_root_path;
+	global $phpEx;
+	
+	$phpbb_root_path = PHPBB3_ROOT_DIR;
 
 	// Here we limit the operation to one forum only
 	$forum_id = check_ids($topic_ids, TOPICS_TABLE, 'topic_id', array('m_move'), true);
@@ -755,7 +762,9 @@ function mcp_move_topic($topic_ids)
 */
 function mcp_delete_topic($topic_ids)
 {
-	global $auth, $user, $db, $phpEx, $phpbb_root_path;
+	global $auth, $user, $db, $phpEx;
+	
+	$phpbb_root_path = PHPBB3_ROOT_DIR;
 
 	if (!check_ids($topic_ids, TOPICS_TABLE, 'topic_id', array('m_delete')))
 	{
@@ -819,7 +828,11 @@ function mcp_delete_topic($topic_ids)
 */
 function mcp_delete_post($post_ids)
 {
-	global $auth, $user, $db, $phpEx, $phpbb_root_path;
+	$return_link = [];
+    
+	global $auth, $user, $db, $phpEx;
+	
+	$phpbb_root_path = PHPBB3_ROOT_DIR;
 
 	if (!check_ids($post_ids, POSTS_TABLE, 'post_id', array('m_delete')))
 	{
@@ -841,7 +854,7 @@ function mcp_delete_post($post_ids)
 	{
 		if (!function_exists('delete_posts'))
 		{
-			include($phpbb_root_path . 'includes/functions_admin.' . $phpEx);
+			include(PHPBB3_INCLUDE_DIR . 'functions_admin.' . $phpEx);
 		}
 
 		// Count the number of topics that are affected
@@ -940,7 +953,9 @@ function mcp_delete_post($post_ids)
 function mcp_fork_topic($topic_ids)
 {
 	global $auth, $user, $db, $template, $config;
-	global $phpEx, $phpbb_root_path;
+	global $phpEx;
+	
+	$phpbb_root_path = PHPBB3_ROOT_DIR;
 
 	if (!check_ids($topic_ids, TOPICS_TABLE, 'topic_id', array('m_')))
 	{
