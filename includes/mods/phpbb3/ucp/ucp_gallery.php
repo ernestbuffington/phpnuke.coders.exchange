@@ -10,8 +10,10 @@
 */
 
 /**
-* @ignore
-*/
+ * Applied rules:
+ * AddDefaultValueForUndefinedVariableRector (https://github.com/vimeo/psalm/blob/29b70442b11e3e66113935a2ee22e165a70c74a4/docs/fixing_code.md#possiblyundefinedvariable)
+ */
+ 
 if (!defined('IN_PHPBB'))
 {
 	exit;
@@ -22,7 +24,10 @@ class ucp_gallery
 	var $u_action;
 	function main($id, $mode)
 	{
-		global $user, $phpbb_root_path, $phpEx, $db, $template;
+		global $user, $phpEx, $db, $template;
+		
+		$phpbb_root_path = PHPBB3_ROOT_DIR;
+		
 		$gallery_root_path = GALLERY_ROOT_PATH;
 		include($phpbb_root_path . $gallery_root_path . 'includes/functions.' . $phpEx);
 		include($phpbb_root_path . $gallery_root_path . 'includes/ucp_functions.' . $phpEx);
@@ -117,7 +122,8 @@ class ucp_gallery
 	function set_personal_settings()
 	{
 		global $db, $user, $auth, $template, $cache;
-		global $config, $phpbb_admin_path, $phpbb_root_path, $phpEx;
+		global $config, $phpEx;
+		
 		$gallery_root_path = GALLERY_ROOT_PATH;
 
 		$submit = (isset($_POST['submit'])) ? true : false;
@@ -168,7 +174,10 @@ class ucp_gallery
 	function manage_favorites()
 	{
 		global $db, $user, $auth, $template, $cache, $album_config;
-		global $config, $phpbb_admin_path, $phpbb_root_path, $phpEx;
+		global $config, $phpEx;
+		
+		$phpbb_root_path = PHPBB3_ROOT_DIR;
+		
 		$gallery_root_path = GALLERY_ROOT_PATH;
 		include_once($phpbb_root_path . $gallery_root_path . 'includes/functions.' . $phpEx);
 
@@ -241,7 +250,10 @@ class ucp_gallery
 	function manage_subscriptions()
 	{
 		global $db, $user, $auth, $template, $cache, $album_config;
-		global $config, $phpbb_admin_path, $phpbb_root_path, $phpEx;
+		global $config, $phpEx;
+		
+		$phpbb_root_path = PHPBB3_ROOT_DIR;
+		
 		$gallery_root_path = GALLERY_ROOT_PATH;
 		include_once($phpbb_root_path . $gallery_root_path . 'includes/functions.' . $phpEx);
 
@@ -385,7 +397,9 @@ class ucp_gallery
 	function initialise_album()
 	{
 		global $db, $user, $auth, $template, $cache;
-		global $config, $phpbb_admin_path, $phpbb_root_path, $phpEx;
+		global $config, $phpEx;
+
+		$phpbb_root_path = PHPBB3_ROOT_DIR;
 
 		$gallery_root_path = GALLERY_ROOT_PATH;
 
@@ -445,7 +459,10 @@ class ucp_gallery
 	function manage_albums()
 	{
 		global $db, $user, $auth, $template, $cache;
-		global $config, $phpbb_admin_path, $phpbb_root_path, $phpEx;
+		global $config, $phpEx;
+		
+		$phpbb_root_path = PHPBB3_ROOT_DIR;
+		
 		$gallery_root_path = GALLERY_ROOT_PATH;
 
 		$parent_id = request_var('parent_id', $user->gallery['personal_album_id']);
@@ -525,11 +542,13 @@ class ucp_gallery
 	function create_album()
 	{
 		global $db, $user, $auth, $template, $cache;
-		global $config, $phpbb_admin_path, $phpbb_root_path, $phpEx;
+		global $config, $phpEx;
+
+		$phpbb_root_path = PHPBB3_ROOT_DIR;
 
 		$gallery_root_path = GALLERY_ROOT_PATH;
 
-		include_once($phpbb_root_path . 'includes/message_parser.' . $phpEx);
+		include_once(PHPBB3_INCLUDE_DIR . 'message_parser.' . $phpEx);
 		include_once("{$phpbb_root_path}{$gallery_root_path}includes/permissions.$phpEx");
 		$album_access_array = get_album_access_array();
 
@@ -633,12 +652,16 @@ class ucp_gallery
 
 	function edit_album()
 	{
+		$new = [];
+        
 		global $db, $user, $auth, $template, $cache;
-		global $config, $phpbb_admin_path, $phpbb_root_path, $phpEx;
+		global $config, $phpEx;
+		
+		$phpbb_root_path = PHPBB3_ROOT_DIR;
 
 		$gallery_root_path = GALLERY_ROOT_PATH;
 		
-		include_once($phpbb_root_path . 'includes/message_parser.' . $phpEx);
+		include_once(PHPBB3_INCLUDE_DIR . 'message_parser.' . $phpEx);
 		include_once($phpbb_root_path . $gallery_root_path . 'includes/functions.' . $phpEx);
 
 		$album_id = request_var('album_id', 0);
@@ -808,7 +831,12 @@ class ucp_gallery
 
 	function delete_album()
 	{
-		global $db, $template, $user, $cache, $phpbb_root_path, $phpEx;
+		$album = [];
+        $parent_id = null;
+        
+		global $db, $template, $user, $cache, $phpEx;
+		
+		$phpbb_root_path = PHPBB3_ROOT_DIR;
 
 		$s_hidden_fields = build_hidden_fields(array(
 			'album_id'		=> request_var('album_id', 0),
@@ -858,8 +886,8 @@ class ucp_gallery
 			while ($row = $db->sql_fetchrow($result))
 			{
 				//delete the files themselves
-				@unlink($phpbb_root_path . GALLERY_CACHE_PATH . $row['image_thumbnail']);
-				@unlink($phpbb_root_path . GALLERY_UPLOAD_PATH . $row['image_filename']);
+				unlink($phpbb_root_path . GALLERY_CACHE_PATH . $row['image_thumbnail']);
+				unlink($phpbb_root_path . GALLERY_UPLOAD_PATH . $row['image_filename']);
 
 				$deleted_images .= (($deleted_images) ? ', ' : '') . $row['image_id'];
 				$deleted_images_a[] = $row['image_id'];
@@ -927,7 +955,9 @@ class ucp_gallery
 
 	function move_album()
 	{
-		global $db, $user, $cache, $phpEx, $phpbb_root_path;
+		global $db, $user, $cache, $phpEx;
+
+		$phpbb_root_path = PHPBB3_ROOT_DIR;
 
 		$album_id = request_var('album_id', 0);
 		album_hacking($album_id);
