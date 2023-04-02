@@ -9,8 +9,12 @@
 */
 
 /**
-* @ignore
-*/
+ * Applied rules:
+ * AddDefaultValueForUndefinedVariableRector (https://github.com/vimeo/psalm/blob/29b70442b11e3e66113935a2ee22e165a70c74a4/docs/fixing_code.md#possiblyundefinedvariable)
+ * Php4ConstructorRector (https://wiki.php.net/rfc/remove_php4_constructors)
+ * TernaryToNullCoalescingRector
+ */
+
 if (!defined('IN_PHPBB'))
 {
 	exit;
@@ -26,14 +30,20 @@ class ucp_main
 	var $p_master;
 	var $u_action;
 
-	function ucp_main(&$p_master)
+	function __construct(&$p_master)
 	{
 		$this->p_master = &$p_master;
 	}
 
 	function main($id, $mode)
 	{
-		global $config, $db, $user, $auth, $template, $phpbb_root_path, $phpEx;
+		$row = [];
+        $tracking_topics = [];
+        $topic_rows = [];
+        
+		global $config, $db, $user, $auth, $template, $phpEx;
+		
+		$phpbb_root_path = PHPBB3_ROOT_DIR;
 
 		switch ($mode)
 		{
@@ -167,7 +177,7 @@ class ucp_main
 				{
 					if (!function_exists('display_user_activity'))
 					{
-						include_once($phpbb_root_path . 'includes/functions_display.' . $phpEx);
+						include_once(PHPBB3_INCLUDE_DIR . 'functions_display.' . $phpEx);
 					}
 					display_user_activity($user->data);
 				}
@@ -198,7 +208,7 @@ class ucp_main
 
 			case 'subscribed':
 
-				include($phpbb_root_path . 'includes/functions_display.' . $phpEx);
+				include(PHPBB3_INCLUDE_DIR . 'functions_display.' . $phpEx);
 
 				$user->add_lang('viewforum');
 
@@ -383,7 +393,7 @@ class ucp_main
 					break;
 				}
 
-				include($phpbb_root_path . 'includes/functions_display.' . $phpEx);
+				include(PHPBB3_INCLUDE_DIR . 'functions_display.' . $phpEx);
 
 				$user->add_lang('viewforum');
 
@@ -616,7 +626,7 @@ class ucp_main
 			'L_TITLE'			=> $user->lang['UCP_MAIN_' . strtoupper($mode)],
 
 			'S_DISPLAY_MARK_ALL'	=> ($mode == 'watched' || ($mode == 'drafts' && !isset($_GET['edit']))) ? true : false,
-			'S_HIDDEN_FIELDS'		=> (isset($s_hidden_fields)) ? $s_hidden_fields : '',
+			'S_HIDDEN_FIELDS'		=> $s_hidden_fields ?? '',
 			'S_UCP_ACTION'			=> $this->u_action,
 
 			'LAST_POST_IMG'			=> $user->img('icon_topic_latest', 'VIEW_LATEST_POST'),
@@ -633,7 +643,9 @@ class ucp_main
 	*/
 	function assign_topiclist($mode = 'subscribed', $forbidden_forum_ary = array())
 	{
-		global $user, $db, $template, $config, $auth, $phpbb_root_path, $phpEx;
+		global $user, $db, $template, $config, $auth, $phpEx;
+		
+		$phpbb_root_path = PHPBB3_ROOT_DIR;
 
 		$table = ($mode == 'subscribed') ? TOPICS_WATCH_TABLE : BOOKMARKS_TABLE;
 		$start = request_var('start', 0);
@@ -724,7 +736,7 @@ class ucp_main
 		$topic_list = $topic_forum_list = $global_announce_list = $rowset = array();
 		while ($row = $db->sql_fetchrow($result))
 		{
-			$topic_id = (isset($row['b_topic_id'])) ? $row['b_topic_id'] : $row['topic_id'];
+			$topic_id = $row['b_topic_id'] ?? $row['topic_id'];
 
 			$topic_list[] = $topic_id;
 			$rowset[$topic_id] = $row;
@@ -760,7 +772,7 @@ class ucp_main
 			$row = &$rowset[$topic_id];
 
 			$forum_id = $row['forum_id'];
-			$topic_id = (isset($row['b_topic_id'])) ? $row['b_topic_id'] : $row['topic_id'];
+			$topic_id = $row['b_topic_id'] ?? $row['topic_id'];
 
 			$unread_topic = (isset($topic_tracking_info[$topic_id]) && $row['topic_last_post_time'] > $topic_tracking_info[$topic_id]) ? true : false;
 
