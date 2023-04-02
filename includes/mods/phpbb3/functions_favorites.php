@@ -421,7 +421,7 @@ class favorite_functions
 		}
 		else
 		{
-		
+
 			//figure out what item number it will be
 			$sql = 'SELECT MAX(listitem_id) as max_id
 				FROM ' . FAVORITES_USER_TABLE .
@@ -430,7 +430,7 @@ class favorite_functions
 			$new_id = ((int) $db->sql_fetchfield('max_id'));
 			$new_id++;
 			$db->sql_freeresult($result);
-			
+
 			$sql_ary = array (
 				'user_id'					=>	$uid,
 				'category_id'		=>	$catid,
@@ -438,7 +438,7 @@ class favorite_functions
 				'listitem_text'	=>	$text,
 				'listitem_url'	=>	$url,
 			);		
-			
+
 			$db->sql_query('INSERT INTO ' . FAVORITES_USER_TABLE . ' ' . $db->sql_build_array('INSERT', $sql_ary));
 			$favfunct = new favorite_functions;
 			$favfunct->refresh_forum_favorites($catid);
@@ -446,4 +446,5 @@ class favorite_functions
 		}
 	}
 }
+
 ?>
