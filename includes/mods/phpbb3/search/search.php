@@ -17,8 +17,10 @@ if (!defined('IN_PHPBB'))
 }
 
 /**
-* @ignore
-*/
+ * Applied rules:
+ * Php4ConstructorRector (https://wiki.php.net/rfc/remove_php4_constructors)
+ */
+
 define('SEARCH_RESULT_NOT_IN_CACHE', 0);
 define('SEARCH_RESULT_IN_CACHE', 1);
 define('SEARCH_RESULT_INCOMPLETE', 2);
@@ -35,7 +37,7 @@ class search_backend
 	var $match_synonym = array();
 	var $replace_synonym = array();
 
-	function search_backend(&$error)
+	function __construct(&$error)
 	{
 		// This class cannot be used as a search plugin
 		$error = true;
