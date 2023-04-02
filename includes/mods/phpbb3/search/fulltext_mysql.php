@@ -9,8 +9,12 @@
 */
 
 /**
-* @ignore
-*/
+ * Applied rules:
+ * Php4ConstructorRector (https://wiki.php.net/rfc/remove_php4_constructors)
+ * TernaryToNullCoalescingRector
+ * StrStartsWithRector (https://wiki.php.net/rfc/add_str_starts_with_and_ends_with_functions)
+ */
+
 if (!defined('IN_PHPBB'))
 {
 	exit;
@@ -19,7 +23,7 @@ if (!defined('IN_PHPBB'))
 /**
 * @ignore
 */
-include_once($phpbb_root_path . 'includes/search/search.' . $phpEx);
+include_once(PHPBB3_INCLUDE_DIR . 'search/search.' . $phpEx);
 
 /**
 * fulltext_mysql
@@ -36,7 +40,7 @@ class fulltext_mysql extends search_backend
 	var $pcre_properties = false;
 	var $mbstring_regex = false;
 
-	function fulltext_mysql(&$error)
+	function __construct(&$error)
 	{
 		global $config;
 
@@ -45,7 +49,7 @@ class fulltext_mysql extends search_backend
 		if (version_compare(PHP_VERSION, '5.1.0', '>=') || (version_compare(PHP_VERSION, '5.0.0-dev', '<=') && version_compare(PHP_VERSION, '4.4.0', '>=')))
 		{
 			// While this is the proper range of PHP versions, PHP may not be linked with the bundled PCRE lib and instead with an older version
-			if (@preg_match('/\p{L}/u', 'a') !== false)
+			if (preg_match('/\p{L}/u', 'a') !== false)
 			{
 				$this->pcre_properties = true;
 			}
@@ -218,7 +222,7 @@ class fulltext_mysql extends search_backend
 			$this->search_query = '';
 			foreach ($this->split_words as $word)
 			{
-				if ((strpos($word, '+') === 0) || (strpos($word, '-') === 0) || (strpos($word, '|') === 0))
+				if ((str_starts_with($word, '+')) || (str_starts_with($word, '-')) || (str_starts_with($word, '|')))
 				{
 					$word = substr($word, 1);
 				}
@@ -230,11 +234,11 @@ class fulltext_mysql extends search_backend
 			$this->search_query = '';
 			foreach ($this->split_words as $word)
 			{
-				if ((strpos($word, '+') === 0) || (strpos($word, '-') === 0))
+				if ((str_starts_with($word, '+')) || (str_starts_with($word, '-')))
 				{
 					$this->search_query .= $word . ' ';
 				}
-				else if (strpos($word, '|') === 0)
+				else if (str_starts_with($word, '|'))
 				{
 					$this->search_query .= substr($word, 1) . ' ';
 				}
@@ -835,7 +839,7 @@ class fulltext_mysql extends search_backend
 		while ($row = $db->sql_fetchrow($result))
 		{
 			// deal with older MySQL versions which didn't use Index_type
-			$index_type = (isset($row['Index_type'])) ? $row['Index_type'] : $row['Comment'];
+			$index_type = $row['Index_type'] ?? $row['Comment'];
 
 			if ($index_type == 'FULLTEXT')
 			{
