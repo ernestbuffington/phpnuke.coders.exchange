@@ -26,7 +26,9 @@ if (!defined('IN_PHPBB'))
 function display_arcade($root_data = '')
 {
 	global $db, $auth, $auth_arcade, $user, $template;
-	global $phpbb_root_path, $phpEx, $config, $arcade;
+	global $phpEx, $config, $arcade;
+
+    $phpbb_root_path = PHPBB3_ROOT_DIR;
 
 	$cat_rows = $subcats = $cat_ids = array();
 	$parent_id = $visible_cats = 0;
