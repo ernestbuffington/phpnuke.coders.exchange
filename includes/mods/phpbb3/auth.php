@@ -9,8 +9,11 @@
 */
 
 /**
-* @ignore
-*/
+ * Applied rules:
+ * TernaryToNullCoalescingRector
+ * StrStartsWithRector (https://wiki.php.net/rfc/add_str_starts_with_and_ends_with_functions)
+ */
+
 if (!defined('IN_PHPBB'))
 {
 	exit;
@@ -144,7 +147,7 @@ class auth
 	{
 		$negate = false;
 
-		if (strpos($opt, '!') === 0)
+		if (str_starts_with($opt, '!'))
 		{
 			$negate = true;
 			$opt = substr($opt, 1);
@@ -191,7 +194,7 @@ class auth
 		$acl_f = array();
 		$negate = false;
 
-		if (strpos($opt, '!') === 0)
+		if (str_starts_with($opt, '!'))
 		{
 			$negate = true;
 			$opt = substr($opt, 1);
@@ -388,7 +391,7 @@ class auth
 		{
 			foreach ($this->acl_options['global'] as $opt => $id)
 			{
-				if (strpos($opt, 'a_') === 0)
+				if (str_starts_with($opt, 'a_'))
 				{
 					$hold_ary[0][$this->acl_options['id'][$opt]] = ACL_YES;
 				}
@@ -518,9 +521,9 @@ class auth
 		//Clear arcade permissions
 		if (!class_exists('auth_arcade'))
 		{
-			global $phpbb_root_path, $prefix_phpbb3, $phpEx;
-			include_once($phpbb_root_path . 'includes/arcade/arcade_constants.' . $phpEx);
-			include_once($phpbb_root_path . 'includes/auth_arcade.' . $phpEx);
+			global $prefix_phpbb3, $phpEx;
+			include_once(PHPBB3_INCLUDE_DIR . 'arcade/arcade_constants.' . $phpEx);
+			include_once(PHPBB3_INCLUDE_DIR . 'auth_arcade.' . $phpEx);
 
 		}
 		$auth_arcade = new auth_arcade();
@@ -894,10 +897,10 @@ class auth
 	*/
 	function login($username, $password, $autologin = false, $viewonline = 1, $admin = 0)
 	{
-		global $config, $db, $user, $phpbb_root_path, $phpEx;
+		global $config, $db, $user, $phpEx;
 
 		$method = trim(basename($config['auth_method']));
-		include_once($phpbb_root_path . 'includes/auth/auth_' . $method . '.' . $phpEx);
+		include_once(PHPBB3_INCLUDE_DIR . 'auth/auth_' . $method . '.' . $phpEx);
 
 		$method = 'login_' . $method;
 		if (function_exists($method))
@@ -910,10 +913,10 @@ class auth
 				// we are going to use the user_add function so include functions_user.php if it wasn't defined yet
 				if (!function_exists('user_add'))
 				{
-					include($phpbb_root_path . 'includes/functions_user.' . $phpEx);
+					include(PHPBB3_INCLUDE_DIR . 'functions_user.' . $phpEx);
 				}
 
-				user_add($login['user_row'], (isset($login['cp_data'])) ? $login['cp_data'] : false);
+				user_add($login['user_row'], $login['cp_data'] ?? false);
 
 				$sql = 'SELECT user_id, username, user_password, user_passchg, user_email, user_type
 					FROM ' . USERS_TABLE . "
