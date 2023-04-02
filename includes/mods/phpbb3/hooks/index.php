@@ -9,8 +9,10 @@
 */
 
 /**
-* @ignore
-*/
+ * Applied rules:
+ * Php4ConstructorRector (https://wiki.php.net/rfc/remove_php4_constructors)
+ */
+
 if (!defined('IN_PHPBB'))
 {
 	exit;
@@ -42,7 +44,7 @@ class phpbb_hook
 	*
 	* @param array $valid_hooks array containing the hookable functions/methods
 	*/
-	function phpbb_hook($valid_hooks)
+	function __construct($valid_hooks)
 	{
 		foreach ($valid_hooks as $_null => $method)
 		{
@@ -61,7 +63,9 @@ class phpbb_hook
 	*
 	* @param mixed $definition Declaring function (with __FUNCTION__) or class with array(__CLASS__, __FUNCTION__)
 	* @param mixed $hook The replacement function/method to be called. Passing function name or array with object/class definition
-	* @param string $mode Specify the priority/chain mode. 'normal' -> hook gets appended to the chain. 'standalone' -> only the specified hook gets called - later hooks are not able to overwrite this (E_NOTICE is triggered then). 'first' -> hook is called as the first one within the chain. 'last' -> hook is called as the last one within the chain.
+	* @param string $mode Specify the priority/chain mode. 'normal' -> hook gets appended to the chain. 'standalone' -> only the 
+	* specified hook gets called - later hooks are not able to overwrite this (E_NOTICE is triggered then). 'first' -> hook is called 
+	* as the first one within the chain. 'last' -> hook is called as the last one within the chain.
 	*/
 	function register($definition, $hook, $mode = 'normal')
 	{
