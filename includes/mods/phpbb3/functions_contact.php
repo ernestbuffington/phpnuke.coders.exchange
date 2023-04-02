@@ -11,8 +11,10 @@
  */
 function install_contact($contact_version)
 {
-	global $phpbb_root_path, $phpEx;
+	global $phpEx;
 	global $user;
+	
+	$phpbb_root_path = PHPBB3_ROOT_DIR;
 	
 	if ($user->data['user_type'] != USER_FOUNDER)
 	{
@@ -47,8 +49,10 @@ function install_contact($contact_version)
  */
 function update_contact($contact_version)
 {
-	global $phpbb_root_path, $phpEx, $config;
+	global $phpEx, $config;
 	global $db, $user, $cache;
+	
+	$phpbb_root_path = PHPBB3_ROOT_DIR;
 	
 	if ($user->data['user_type'] != USER_FOUNDER)
 	{
@@ -74,11 +78,18 @@ function update_contact($contact_version)
  */
 function uninstall_contact()
 {
-	global $phpbb_root_path, $phpEx;
+	global $phpEx;
 	global $db, $user, $cache;
 	
 	$sql = array();
-	$sql[] = 'DELETE FROM ' . CONFIG_TABLE . ' WHERE ' . $db->sql_in_set('config_name', array('contact_enable', 'contact_confirm', 'contact_confirm_guests', 'contact_max_attempts', 'contact_method', 'contact_bot_user', 'contact_bot_forum', 'contact_version'));
+	$sql[] = 'DELETE FROM '.CONFIG_TABLE.' WHERE '.$db->sql_in_set('config_name',array('contact_enable',
+	                                                                                  'contact_confirm',
+																			   'contact_confirm_guests',
+																			     'contact_max_attempts',
+																				       'contact_method',
+																					 'contact_bot_user',
+																					'contact_bot_forum', 
+																					  'contact_version'));
 	
 	for ($i = 0, $size = sizeof($sql); $i < $size; $i++)
 	{
