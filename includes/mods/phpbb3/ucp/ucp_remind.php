@@ -27,8 +27,10 @@ class ucp_remind
 
 	function main($id, $mode)
 	{
-		global $config, $phpbb_root_path, $phpEx;
+		global $config, $phpEx;
 		global $db, $user, $auth, $template;
+		
+		$phpbb_root_path = PHPBB3_ROOT_DIR;
 
 		$username	= request_var('username', '', true);
 		$email		= strtolower(request_var('email', ''));
@@ -88,7 +90,7 @@ class ucp_remind
 				WHERE user_id = " . $user_row['user_id'];
 			$db->sql_query($sql);
 
-			include_once($phpbb_root_path . 'includes/functions_messenger.' . $phpEx);
+			include_once(PHPBB3_INCLUDE_DIR . 'functions_messenger.' . $phpEx);
 
 			$messenger = new messenger(false);
 
