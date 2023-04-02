@@ -9,8 +9,12 @@
 */
 
 /**
-* @ignore
-*/
+ * Applied rules:
+ * AddDefaultValueForUndefinedVariableRector (https://github.com/vimeo/psalm/blob/29b70442b11e3e66113935a2ee22e165a70c74a4/docs/fixing_code.md#possiblyundefinedvariable)
+ * Php4ConstructorRector (https://wiki.php.net/rfc/remove_php4_constructors)
+ * ListEachRector (https://wiki.php.net/rfc/deprecations_php_7_2#each)
+ */
+
 if (!defined('IN_PHPBB'))
 {
 	exit;
@@ -26,7 +30,7 @@ class mcp_warn
 	var $p_master;
 	var $u_action;
 
-	function mcp_warn(&$p_master)
+	function __construct(&$p_master)
 	{
 		$this->p_master = &$p_master;
 	}
@@ -34,13 +38,13 @@ class mcp_warn
 	function main($id, $mode)
 	{
 		global $auth, $db, $user, $template;
-		global $config, $phpbb_root_path, $phpEx;
-
+		global $config, $phpEx;
+		
 		$action = request_var('action', array('' => ''));
 
 		if (is_array($action))
 		{
-			list($action, ) = each($action);
+			$action = key($action);
 		}
 
 		$this->page_title = 'MCP_WARN';
@@ -76,8 +80,10 @@ class mcp_warn
 	*/
 	function mcp_warn_front_view()
 	{
-		global $phpEx, $phpbb_root_path, $config;
+		global $phpEx, $config;
 		global $template, $db, $user, $auth;
+		
+		$phpbb_root_path = PHPBB3_ROOT_DIR;
 
 		$template->assign_vars(array(
 			'U_FIND_USERNAME'	=> append_sid("{$phpbb_root_path}memberlist.$phpEx", 'mode=searchuser&amp;form=mcp&amp;field=username&amp;select_single=true'),
@@ -135,8 +141,10 @@ class mcp_warn
 	*/
 	function mcp_warn_list_view($action)
 	{
-		global $phpEx, $phpbb_root_path, $config;
+		global $phpEx, $config;
 		global $template, $db, $user, $auth;
+		
+		$phpbb_root_path = PHPBB3_ROOT_DIR; 
 
 		$user->add_lang('memberlist');
 
@@ -194,8 +202,10 @@ class mcp_warn
 	*/
 	function mcp_warn_post_view($action)
 	{
-		global $phpEx, $phpbb_root_path, $config;
+		global $phpEx, $config;
 		global $template, $db, $user, $auth;
+		
+		$phpbb_root_path = PHPBB3_ROOT_DIR;
 
 		$post_id = request_var('p', 0);
 		$forum_id = request_var('f', 0);
@@ -293,7 +303,7 @@ class mcp_warn
 		// Second parse bbcode here
 		if ($user_row['bbcode_bitfield'])
 		{
-			include_once($phpbb_root_path . 'includes/bbcode.' . $phpEx);
+			include_once(PHPBB3_INCLUDE_DIR . 'bbcode.' . $phpEx);
 
 			$bbcode = new bbcode($user_row['bbcode_bitfield']);
 			$bbcode->bbcode_second_pass($message, $user_row['bbcode_uid'], $user_row['bbcode_bitfield']);
@@ -305,7 +315,7 @@ class mcp_warn
 		// Generate the appropriate user information for the user we are looking at
 		if (!function_exists('get_user_avatar'))
 		{
-			include($phpbb_root_path . 'includes/functions_display.' . $phpEx);
+			include(PHPBB3_INCLUDE_DIR . 'functions_display.' . $phpEx);
 		}
 
 		$rank_title = $rank_img = '';
@@ -336,8 +346,10 @@ class mcp_warn
 	*/
 	function mcp_warn_user_view($action)
 	{
-		global $phpEx, $phpbb_root_path, $config, $module;
+		global $phpEx, $config, $module;
 		global $template, $db, $user, $auth;
+		
+		$phpbb_root_path = PHPBB3_ROOT_DIR;
 
 		$user_id = request_var('u', 0);
 		$username = request_var('username', '', true);
@@ -410,7 +422,7 @@ class mcp_warn
 		// Generate the appropriate user information for the user we are looking at
 		if (!function_exists('get_user_avatar'))
 		{
-			include($phpbb_root_path . 'includes/functions_display.' . $phpEx);
+			include(PHPBB3_INCLUDE_DIR . 'functions_display.' . $phpEx);
 		}
 
 		$rank_title = $rank_img = '';
@@ -442,13 +454,17 @@ class mcp_warn
 */
 function add_warning($user_row, $warning, $send_pm = true, $post_id = 0)
 {
-	global $phpEx, $phpbb_root_path, $config;
+	$lang = [];
+    
+	global $phpEx, $config;
 	global $template, $db, $user, $auth;
+	
+	$phpbb_root_path = PHPBB3_ROOT_DIR;
 
 	if ($send_pm)
 	{
-		include_once($phpbb_root_path . 'includes/functions_privmsgs.' . $phpEx);
-		include_once($phpbb_root_path . 'includes/message_parser.' . $phpEx);
+		include_once(PHPBB3_INCLUDE_DIR . 'functions_privmsgs.' . $phpEx);
+		include_once(PHPBB3_INCLUDE_DIR . 'message_parser.' . $phpEx);
 
 		$user_row['user_lang'] = (file_exists($phpbb_root_path . 'language/' . $user_row['user_lang'] . "/mcp.$phpEx")) ? $user_row['user_lang'] : $config['default_lang'];
 		include($phpbb_root_path . 'language/' . basename($user_row['user_lang']) . "/mcp.$phpEx");
