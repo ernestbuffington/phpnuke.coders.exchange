@@ -27,8 +27,10 @@ class ucp_resend
 
 	function main($id, $mode)
 	{
-		global $config, $phpbb_root_path, $phpEx;
+		global $config, $phpEx;
 		global $db, $user, $auth, $template;
+		
+		$phpbb_root_path = PHPBB3_ROOT_DIR;
 
 		$username	= request_var('username', '', true);
 		$email		= strtolower(request_var('email', ''));
@@ -86,7 +88,7 @@ class ucp_resend
 
 			$coppa = ($row['group_name'] == 'REGISTERED_COPPA' && $row['group_type'] == GROUP_SPECIAL) ? true : false;
 
-			include_once($phpbb_root_path . 'includes/functions_messenger.' . $phpEx);
+			include_once(PHPBB3_INCLUDE_DIR . 'functions_messenger.' . $phpEx);
 			$messenger = new messenger(false);
 
 			if ($config['require_activation'] == USER_ACTIVATION_SELF || $coppa)
