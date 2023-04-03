@@ -9,8 +9,12 @@
 */
 
 /**
-* @ignore
-*/
+ * Applied rules:
+ * AddDefaultValueForUndefinedVariableRector (https://github.com/vimeo/psalm/blob/29b70442b11e3e66113935a2ee22e165a70c74a4/docs/fixing_code.md#possiblyundefinedvariable)
+ * TernaryToNullCoalescingRector
+ * StrStartsWithRector (https://wiki.php.net/rfc/add_str_starts_with_and_ends_with_functions)
+ */
+
 if (!defined('IN_PHPBB'))
 {
 	exit;
@@ -529,7 +533,7 @@ class custom_profile
 
 				if ($ident_ary['data']['field_length'] == 1)
 				{
-					return (isset($this->options_lang[$field_id][$lang_id][(int) $value])) ? $this->options_lang[$field_id][$lang_id][(int) $value] : NULL;
+					return $this->options_lang[$field_id][$lang_id][(int) $value] ?? NULL;
 				}
 				else if (!$value)
 				{
@@ -555,7 +559,7 @@ class custom_profile
 	{
 		global $user;
 
-		$profile_row['field_ident'] = (isset($profile_row['var_name'])) ? $profile_row['var_name'] : 'pf_' . $profile_row['field_ident'];
+		$profile_row['field_ident'] = $profile_row['var_name'] ?? 'pf_' . $profile_row['field_ident'];
 		$user_ident = $profile_row['field_ident'];
 		// checkbox - only testing for isset
 		if ($profile_row['field_type'] == FIELD_BOOL && $profile_row['field_length'] == 2)
@@ -626,7 +630,7 @@ class custom_profile
 	{
 		global $user, $template;
 
-		$profile_row['field_ident'] = (isset($profile_row['var_name'])) ? $profile_row['var_name'] : 'pf_' . $profile_row['field_ident'];
+		$profile_row['field_ident'] = $profile_row['var_name'] ?? 'pf_' . $profile_row['field_ident'];
 		$user_ident = $profile_row['field_ident'];
 
 		$now = getdate();
@@ -727,7 +731,7 @@ class custom_profile
 	function generate_text($profile_row, $preview = false)
 	{
 		global $template;
-		global $user, $phpEx, $phpbb_root_path;
+		global $user, $phpEx;
 
 		$field_length = explode('|', $profile_row['field_length']);
 		$profile_row['field_rows'] = $field_length[0];
@@ -805,7 +809,7 @@ class custom_profile
 		$sql_not_in = array();
 		foreach ($cp_data as $key => $null)
 		{
-			$sql_not_in[] = (strncmp($key, 'pf_', 3) === 0) ? substr($key, 3) : $key;
+			$sql_not_in[] = (str_starts_with($key, 'pf_')) ? substr($key, 3) : $key;
 		}
 
 		$sql = 'SELECT f.field_type, f.field_ident, f.field_default_value, l.lang_default_value
@@ -836,9 +840,9 @@ class custom_profile
 	*/
 	function get_profile_field($profile_row)
 	{
-		global $phpbb_root_path, $phpEx;
+		global $phpEx;
 		global $config;
-
+		
 		$var_name = 'pf_' . $profile_row['field_ident'];
 
 		switch ($profile_row['field_type'])
@@ -1018,7 +1022,8 @@ class custom_profile_admin extends custom_profile
 	*/
 	function get_dropdown_options()
 	{
-		global $user, $config, $lang_defs;
+		$profile_row = [];
+  global $user, $config, $lang_defs;
 
 		$default_lang_id = $lang_defs['iso'][$config['default_lang']];
 
