@@ -14,7 +14,7 @@ if (!defined('IN_PHPBB'))
 	exit;
 }
 $new_mod_version = $old_mod_version = '1';
-include_once($phpbb_root_path . 'includes/functions_wwh2.' . $phpEx);
+include_once(PHPBB3_INCLUDE_DIR . 'functions_wwh2.' . $phpEx);
 
 if ($old_mod_version == $new_mod_version)
 {
@@ -287,4 +287,5 @@ if ($old_mod_version == $new_mod_version)
 			'WHO_WAS_HERE_EXP'		=> $who_was_here_explain,
 	));
 }
+
 ?>
