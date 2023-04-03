@@ -9,8 +9,14 @@
 */
 
 /**
-* @ignore
-*/
+ * Applied rules:
+ * AddDefaultValueForUndefinedVariableRector (https://github.com/vimeo/psalm/blob/29b70442b11e3e66113935a2ee22e165a70c74a4/docs/fixing_code.md#possiblyundefinedvariable)
+ * RandomFunctionRector
+ * TernaryToNullCoalescingRector
+ * CountOnNullRector (https://3v4l.org/Bndc9)
+ * StrStartsWithRector (https://wiki.php.net/rfc/add_str_starts_with_and_ends_with_functions)
+ */
+
 if (!defined('IN_PHPBB'))
 {
 	exit;
@@ -88,12 +94,16 @@ if (!defined('INCLUDES_PRIME_QUICK_REPLY'))
 	// Setup everything we need for the quick reply form.
 	function prime_quick_reply($topic_id, $forum_id, &$topic_data, $last_posts = null)
 	{
-		global $db, $template, $user, $config, $auth, $phpbb_root_path, $phpEx;
+		$post_data = [];
+        
+		global $db, $template, $user, $config, $auth, $phpEx;
+		
+		$phpbb_root_path = PHPBB3_ROOT_DIR;
 
 		// Check if replies are even allowed
 		$on_last_page	= empty($template->_rootref['NEXT_PAGE']);
-		$enable_guests	= isset($config['quick_reply_guests'])	? $config['quick_reply_guests']  : QUICK_REPLY_YES;	// Enable this MOD for guests?
-		$enable_reply	= isset($config['quick_reply_enabled']) ? $config['quick_reply_enabled'] : QUICK_REPLY_YES;	// Enable this MOD
+		$enable_guests	= $config['quick_reply_guests'] ?? QUICK_REPLY_YES;	// Enable this MOD for guests?
+		$enable_reply	= $config['quick_reply_enabled'] ?? QUICK_REPLY_YES;	// Enable this MOD
 		$enable_reply	= ($enable_reply == QUICK_REPLY_YES || ($enable_reply == QUICK_REPLY_LAST && $on_last_page));
 		$enable_reply	= !$enable_reply ? false : ($auth->acl_get('f_reply', $forum_id));
 		$enable_reply	= !$enable_reply ? false : (!empty($template->_rootref['S_DISPLAY_REPLY_INFO']));
@@ -110,12 +120,12 @@ if (!defined('INCLUDES_PRIME_QUICK_REPLY'))
 		$enable_subject		= true;	// Enable the ability to change the post's subject
 		$enable_bbcodes		= true;	// Enable the ability to use BBCodes
 		$enable_smilies 	= true;	// Enable the ability to use emoticons
-		$enable_memory		= isset($config['quick_reply_memory'])	? $config['quick_reply_memory']  : QUICK_REPLY_YES;	// Keep track of the form's display state
-		$display_form		= isset($config['quick_reply_visible'])	? $config['quick_reply_visible'] : QUICK_REPLY_YES;
-		$display_options	= isset($config['quick_reply_options'])	? $config['quick_reply_options'] : true;
-		$display_subject	= isset($config['quick_reply_subject'])	? $config['quick_reply_subject'] : false;
-		$display_bbcodes	= isset($config['quick_reply_bbcodes'])	? $config['quick_reply_bbcodes'] : false;
-		$display_smilies	= isset($config['quick_reply_smilies'])	? $config['quick_reply_smilies'] : false;
+		$enable_memory		= $config['quick_reply_memory'] ?? QUICK_REPLY_YES;	// Keep track of the form's display state
+		$display_form		= $config['quick_reply_visible'] ?? QUICK_REPLY_YES;
+		$display_options	= $config['quick_reply_options'] ?? true;
+		$display_subject	= $config['quick_reply_subject'] ?? false;
+		$display_bbcodes	= $config['quick_reply_bbcodes'] ?? false;
+		$display_smilies	= $config['quick_reply_smilies'] ?? false;
 		$display_form		= ($display_form  == QUICK_REPLY_YES || ($display_form  == QUICK_REPLY_LAST && $on_last_page));
 		$enable_guests		= ($enable_guests == QUICK_REPLY_YES || ($enable_guests == QUICK_REPLY_LAST && $on_last_page));
 		$enable_memory		= ($enable_memory == QUICK_REPLY_YES || ($enable_memory == QUICK_REPLY_LAST && $on_last_page));
@@ -140,10 +150,10 @@ if (!defined('INCLUDES_PRIME_QUICK_REPLY'))
 		{
 			if (!class_exists('prime_captcha'))
 			{
-				include($phpbb_root_path . 'includes/prime_captcha.' . $phpEx);
+				include(PHPBB3_INCLUDE_DIR . 'prime_captcha.' . $phpEx);
 			}
 			$prime_captcha = new prime_captcha();
-			$s_hidden_fields = $s_hidden_fields + (isset($prime_captcha->fields) ? $prime_captcha->fields : array());
+			$s_hidden_fields = $s_hidden_fields + ($prime_captcha->fields ?? array());
 		}
 //-- end: Prime Anti-bot ----------------------------------------------------//
 
@@ -157,7 +167,7 @@ if (!defined('INCLUDES_PRIME_QUICK_REPLY'))
 			$db->sql_query($sql);
 
 			// Generate code
-			$code = gen_rand_string(mt_rand(5, 8));
+			$code = gen_rand_string(random_int(5, 8));
 			$confirm_id = md5(unique_id($user->ip));
 			$seed = hexdec(substr(unique_id(), 4, 10));
 
@@ -231,7 +241,7 @@ if (!defined('INCLUDES_PRIME_QUICK_REPLY'))
 		// Generate smiley listing
 		if ($smilies_status)
 		{
-			include($phpbb_root_path . 'includes/functions_posting.' . $phpEx);
+			include(PHPBB3_INCLUDE_DIR . 'functions_posting.' . $phpEx);
 			generate_smilies('inline', $forum_id);
 		}
 
@@ -248,7 +258,7 @@ if (!defined('INCLUDES_PRIME_QUICK_REPLY'))
 		if ($enable_quote)
 		{
 			$post_ids = array();
-			$post_count = count($last_posts);
+			$post_count = is_countable($last_posts) ? count($last_posts) : 0;
 			foreach ($last_posts as $post_id => $last_post)
 			{
 				decode_message($last_post['post_text'], $last_post['bbcode_uid']);
@@ -272,7 +282,7 @@ if (!defined('INCLUDES_PRIME_QUICK_REPLY'))
 		$template->assign_vars(array(
 			'QUICK_REPLY_POST_ACTION'	=> $s_action,
 			'QUICK_REPLY_ALLOWED'		=> $enable_reply,
-			'QUICK_REPLY_SUBJECT'		=> ((strpos($topic_data['topic_title'], 'Re: ') === 0) ? '' : 'Re: ') . censor_text($topic_data['topic_title']),
+			'QUICK_REPLY_SUBJECT'		=> ((str_starts_with($topic_data['topic_title'], 'Re: ')) ? '' : 'Re: ') . censor_text($topic_data['topic_title']),
 			'QUICK_REPLY_SHOW_FORM'		=> $display_form,
 			'QUICK_REPLY_SHOW_OPTIONS'	=> $display_options,
 			'QUICK_REPLY_SHOW_SUBJECT'	=> $display_subject,
@@ -306,4 +316,5 @@ if (!defined('INCLUDES_PRIME_QUICK_REPLY'))
 		));
 	}
 }
+
 ?>
