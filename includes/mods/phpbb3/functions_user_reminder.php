@@ -23,7 +23,7 @@ if (!defined('IN_PHPBB'))
 function send_user_reminders()
 {
 	global $db, $user, $template, $config;
-	global $phpEx, $phpbb_root_path;
+	global $phpEx;
 
 	//lets exclude the banned users	 
 	$sql = 'SELECT ban_userid 
@@ -354,11 +354,11 @@ function delete_second_reminder()
 */
 function send_reminder_emails($user_list_ary, $case)
 {
-	global $user, $phpbb_root_path, $template, $db, $phpEx;
+	global $user, $template, $db, $phpEx;
 
     if (!class_exists('messenger'))
     {
-    	include($phpbb_root_path . 'includes/functions_messenger.' . $phpEx);
+    	include(PHPBB3_INCLUDE_DIR . 'functions_messenger.' . $phpEx);
 	}
 	
 	$messenger = new messenger();
@@ -384,4 +384,5 @@ function send_reminder_emails($user_list_ary, $case)
 	unset($messenger);
 	
 }
+
 ?>
