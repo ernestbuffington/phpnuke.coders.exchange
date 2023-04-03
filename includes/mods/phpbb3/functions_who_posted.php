@@ -12,7 +12,7 @@
 */
 if (!defined('IN_PHPBB'))
 {
-	echo '<a href="http://phpbbmodders.net/goto/who_posted_phpbb3">Who Posted?</a> &copy; 2007 eviL&lt;3';
+	echo 'Who Posted? &copy; 2007 eviL&lt;3';
 	exit;
 }
 
@@ -25,7 +25,9 @@ if (!defined('IN_PHPBB'))
 function who_posted($topic_id)
 {
 	global $auth, $db, $user, $template;
-	global $phpEx, $phpbb_root_path;
+	global $phpEx;
+	
+	$phpbb_root_path = PHPBB3_ROOT_DIR;
 	
 	// make sure the topic exists
 	$sql = 'SELECT topic_id, topic_approved, forum_id
