@@ -9,8 +9,16 @@
 */
 
 /**
-* @ignore
-*/
+ * Applied rules:
+ * PregReplaceEModifierRector (https://wiki.php.net/rfc/remove_preg_replace_eval_modifier https://stackoverflow.com/q/19245205/1348344)
+ * Php4ConstructorRector (https://wiki.php.net/rfc/remove_php4_constructors)
+ * TernaryToNullCoalescingRector
+ * StringifyStrNeedlesRector (https://wiki.php.net/rfc/deprecations_php_7_3#string_search_functions_with_integer_needle)
+ * ClosureToArrowFunctionRector (https://wiki.php.net/rfc/arrow_functions_v2)
+ * ParenthesizeNestedTernaryRector (https://www.php.net/manual/en/migration74.deprecated.php)
+ * StrStartsWithRector (https://wiki.php.net/rfc/add_str_starts_with_and_ends_with_functions)
+ */
+
 if (!defined('IN_PHPBB'))
 {
 	exit;
@@ -18,7 +26,7 @@ if (!defined('IN_PHPBB'))
 
 if (!class_exists('bbcode'))
 {
-	include($phpbb_root_path . 'includes/bbcode.' . $phpEx);
+	include(PHPBB3_INCLUDE_DIR . 'bbcode.' . $phpEx);
 }
 
 /**
@@ -300,7 +308,7 @@ class bbcode_firstpass extends bbcode
 
 		if ($config['max_' . $this->mode . '_img_height'] || $config['max_' . $this->mode . '_img_width'])
 		{
-			$stats = @getimagesize($in);
+			$stats = getimagesize($in);
 
 			if ($stats === false)
 			{
@@ -414,7 +422,7 @@ class bbcode_firstpass extends bbcode
 				$conf = array('highlight.bg', 'highlight.comment', 'highlight.default', 'highlight.html', 'highlight.keyword', 'highlight.string');
 				foreach ($conf as $ini_var)
 				{
-					@ini_set($ini_var, str_replace('highlight.', 'syntax', $ini_var));
+					ini_set($ini_var, str_replace('highlight.', 'syntax', $ini_var));
 				}
 
 				// Because highlight_string is specialcharing the text (but we already did this before), we have to reverse this in order to get correct results
@@ -497,13 +505,13 @@ class bbcode_firstpass extends bbcode
 				{
 					$out .= substr($in, 0, $pos);
 					$in = substr($in, $pos);
-					$stx = (isset($buffer[3])) ? $buffer[3] : '';
+					$stx = $buffer[3] ?? '';
 					$code_block = '';
 				}
 				else
 				{
 					// Already opened block, just append to the current block
-					$code_block .= substr($in, 0, $pos) . ((isset($buffer[2])) ? $buffer[2] : '');
+					$code_block .= substr($in, 0, $pos) . ($buffer[2] ?? '');
 					$in = substr($in, $pos);
 				}
 
@@ -705,7 +713,7 @@ class bbcode_firstpass extends bbcode
 		}
 
 		// To let the parser not catch tokens within quote_username quotes we encode them before we start this...
-		$in = preg_replace('#quote=&quot;(.*?)&quot;\]#ie', "'quote=&quot;' . str_replace(array('[', ']'), array('&#91;', '&#93;'), '\$1') . '&quot;]'", $in);
+		$in = preg_replace_callback('#quote=&quot;(.*?)&quot;\]#i', fn($matches) => 'quote=&quot;' . str_replace(array('[', ']'), array('&#91;', '&#93;'), $matches[1]) . '&quot;]', $in);
 
 		$tok = ']';
 		$out = '[';
@@ -956,7 +964,7 @@ class bbcode_firstpass extends bbcode
 			}
 
 			// Is this a link to somewhere inside this board? If so then remove the session id from the url
-			if (strpos($url, generate_board_url()) !== false && strpos($url, 'sid=') !== false)
+			if (strpos($url, (string) generate_board_url()) !== false && strpos($url, 'sid=') !== false)
 			{
 				$url = preg_replace('/(&amp;|\?)sid=[0-9a-f]{32}&amp;/', '\1', $url);
 				$url = preg_replace('/(&amp;|\?)sid=[0-9a-f]{32}$/', '', $url);
@@ -991,7 +999,7 @@ class bbcode_firstpass extends bbcode
 		}
 
 		// Is the user trying to link to a php file in this domain and script path?
-		if (strpos($url, ".{$phpEx}") !== false && strpos($url, $check_path) !== false)
+		if (strpos($url, ".{$phpEx}") !== false && strpos($url, (string) $check_path) !== false)
 		{
 			$server_name = $user->host;
 
@@ -1003,13 +1011,13 @@ class bbcode_firstpass extends bbcode
 
 			// Check again in correct order...
 			$pos_ext = strpos($url, ".{$phpEx}");
-			$pos_path = strpos($url, $check_path);
-			$pos_domain = strpos($url, $server_name);
+			$pos_path = strpos($url, (string) $check_path);
+			$pos_domain = strpos($url, (string) $server_name);
 
 			if ($pos_domain !== false && $pos_path >= $pos_domain && $pos_ext >= $pos_path)
 			{
 				// Ok, actually we allow linking to some files (this may be able to be extended in some way later...)
-				if (strpos($url, '/' . $check_path . '/download/file.' . $phpEx) !== 0)
+				if (!str_starts_with($url, '/' . $check_path . '/download/file.' . $phpEx))
 				{
 					return false;
 				}
@@ -1045,7 +1053,7 @@ class parse_message extends bbcode_firstpass
 	/**
 	* Init - give message here or manually
 	*/
-	function parse_message($message = '')
+	function __construct($message = '')
 	{
 		// Init BBCode UID
 		$this->bbcode_uid = substr(base_convert(unique_id(), 16, 36), 0, BBCODE_UID_LEN);
@@ -1392,7 +1400,7 @@ class parse_message extends bbcode_firstpass
 					);
 
 					$this->attachment_data = array_merge(array(0 => $new_entry), $this->attachment_data);
-					$this->message = preg_replace('#\[attachment=([0-9]+)\](.*?)\[\/attachment\]#e', "'[attachment='.(\\1 + 1).']\\2[/attachment]'", $this->message);
+					$this->message = preg_replace_callback('#\[attachment=([0-9]+)\](.*?)\[\/attachment\]#', fn($matches) => '[attachment=' . ($matches[1] + 1) . $matches[2], $this->message);
 
 					$this->filename_data['filecomment'] = '';
 
@@ -1455,7 +1463,7 @@ class parse_message extends bbcode_firstpass
 					}
 
 					unset($this->attachment_data[$index]);
-					$this->message = preg_replace('#\[attachment=([0-9]+)\](.*?)\[\/attachment\]#e', "(\\1 == \$index) ? '' : ((\\1 > \$index) ? '[attachment=' . (\\1 - 1) . ']\\2[/attachment]' : '\\0')", $this->message);
+					$this->message = preg_replace_callback('#\[attachment=([0-9]+)\](.*?)\[\/attachment\]#', fn($matches) => $matches[1] == $index ? '' : ($matches[1] > $index ? '[attachment=' . ($matches[1] - 1) . $matches[2] : $matches[0]), $this->message);
 
 					// Reindex Array
 					$this->attachment_data = array_values($this->attachment_data);
@@ -1494,7 +1502,7 @@ class parse_message extends bbcode_firstpass
 						);
 
 						$this->attachment_data = array_merge(array(0 => $new_entry), $this->attachment_data);
-						$this->message = preg_replace('#\[attachment=([0-9]+)\](.*?)\[\/attachment\]#e', "'[attachment='.(\\1 + 1).']\\2[/attachment]'", $this->message);
+						$this->message = preg_replace_callback('#\[attachment=([0-9]+)\](.*?)\[\/attachment\]#', fn($matches) => '[attachment=' . ($matches[1] + 1) . $matches[2], $this->message);
 						$this->filename_data['filecomment'] = '';
 					}
 				}
@@ -1519,7 +1527,7 @@ class parse_message extends bbcode_firstpass
 		global $user, $db, $phpbb_root_path, $phpEx, $config;
 
 		$this->filename_data['filecomment'] = utf8_normalize_nfc(request_var('filecomment', '', true));
-		$attachment_data = (isset($_POST['attachment_data'])) ? $_POST['attachment_data'] : array();
+		$attachment_data = $_POST['attachment_data'] ?? array();
 		$this->attachment_data = array();
 
 		$check_user_id = ($check_user_id === false) ? $user->data['user_id'] : $check_user_id;
