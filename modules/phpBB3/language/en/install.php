@@ -553,7 +553,7 @@ $lang = array_merge($lang, array(
 
 	'UPDATE_DB_SUCCESS'				=> 'Database update was successful.',
 	'USER_ACTIVE'					=> 'Active user',
-	'USER_INACTIVE'					=> 'Inactive user',
+	'PHPBB3_USER_INACTIVE'					=> 'Inactive user',
 
 	'VERSION_CHECK'				=> 'Version check',
 	'VERSION_CHECK_EXPLAIN'		=> 'Checks to see if the version of phpBB you are currently running is up to date.',

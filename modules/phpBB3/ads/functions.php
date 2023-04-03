@@ -42,7 +42,7 @@ function setup_ads()
 	if ($config['ads_last_cron'] < (time() - 3600))
 	{
 		$ads_to_disable = array();
-		$sql = 'SELECT ad_id FROM ' . ADS_TABLE . '
+		$sql = 'SELECT ad_id FROM ' . PHPBB3_ADS_TABLE . '
 			WHERE ad_enabled = 1
 			AND ad_time_end > 0
 			AND ad_time_end < ' . time();
@@ -55,8 +55,8 @@ function setup_ads()
 
 		if (sizeof($ads_to_disable))
 		{
-			$db->sql_query('UPDATE ' . ADS_TABLE . ' SET ad_enabled = 0 WHERE ' . $db->sql_in_set('ad_id', $ads_to_disable));
-			$db->sql_query('UPDATE ' . ADS_IN_POSITIONS_TABLE . ' SET ad_enabled = 0 WHERE ' . $db->sql_in_set('ad_id', $ads_to_disable));
+			$db->sql_query('UPDATE ' . PHPBB3_ADS_TABLE . ' SET ad_enabled = 0 WHERE ' . $db->sql_in_set('ad_id', $ads_to_disable));
+			$db->sql_query('UPDATE ' . PHPBB3_ADS_IN_POSITIONS_TABLE . ' SET ad_enabled = 0 WHERE ' . $db->sql_in_set('ad_id', $ads_to_disable));
 		}
 		set_config('ads_last_cron', time(), true);
 	}
@@ -66,7 +66,7 @@ function setup_ads()
 
 	if ($config['ads_rules_groups'])
 	{
-		$sql = 'SELECT a.ad_id FROM ' . ADS_GROUPS_TABLE . ' a, ' . USER_GROUP_TABLE . ' ug
+		$sql = 'SELECT a.ad_id FROM ' . PHPBB3_ADS_GROUPS_TABLE . ' a, ' . PHPBB3_USER_GROUP_TABLE . ' ug
 			WHERE ug.user_pending = 0
 			AND ug.user_id = ' . $user->data['user_id'] . '
 			AND a.group_id = ug.group_id';
@@ -82,7 +82,7 @@ function setup_ads()
 	{
 		$forum_id = ($forum_id) ? $forum_id : request_var('f', 0);
 
-		$sql = 'SELECT ad_id FROM ' . ADS_FORUMS_TABLE . '
+		$sql = 'SELECT ad_id FROM ' . PHPBB3_ADS_FORUMS_TABLE . '
 			WHERE forum_id = ' . (int) $forum_id;
 		$result = $db->sql_query($sql, 300); // Cache this data for 5 minutes
 		while ($row = $db->sql_fetchrow($result))
@@ -92,7 +92,7 @@ function setup_ads()
 		$db->sql_freeresult($result);
 	}
 
-	$sql = 'SELECT ad_id, position_id, ad_priority FROM ' . ADS_IN_POSITIONS_TABLE . '
+	$sql = 'SELECT ad_id, position_id, ad_priority FROM ' . PHPBB3_ADS_IN_POSITIONS_TABLE . '
 		WHERE ad_enabled = 1' .
 		((sizeof($forum_ads)) ? ' AND (all_forums = 1 OR ' . $db->sql_in_set('ad_id', $forum_ads) . ')' : (($config['ads_rules_forums']) ? ' AND all_forums = 1' : '')) .
 		((sizeof($ignore_ads)) ? ' AND ' . $db->sql_in_set('ad_id', $ignore_ads, true) : '');
@@ -121,7 +121,7 @@ function setup_ads()
 		}
 		$id_list = array_unique($id_list);
 
-		$sql = 'SELECT ad_id, ad_code FROM ' . ADS_TABLE . '
+		$sql = 'SELECT ad_id, ad_code FROM ' . PHPBB3_ADS_TABLE . '
 			WHERE ' . $db->sql_in_set('ad_id', $id_list);
 		$result = $db->sql_query($sql);
 		while ($row = $db->sql_fetchrow($result))
@@ -152,7 +152,7 @@ function setup_ads()
 
 		if ($config['ads_count_views'] && !$config['ads_accurate_views'])
 		{
-			$db->sql_query('UPDATE ' . ADS_TABLE . ' SET ad_views = ad_views + 1 WHERE ' . $db->sql_in_set('ad_id', $id_list));
+			$db->sql_query('UPDATE ' . PHPBB3_ADS_TABLE . ' SET ad_views = ad_views + 1 WHERE ' . $db->sql_in_set('ad_id', $id_list));
 		}
 	}
 

@@ -83,14 +83,14 @@ class acp_flags
 
 				if ($flag_id)
 				{
-					$sql = 'UPDATE ' . FLAGS_TABLE . ' SET ' . $db->sql_build_array('UPDATE', $sql_ary) . " WHERE flag_id = $flag_id";
+					$sql = 'UPDATE ' . PHPBB3_FLAGS_TABLE . ' SET ' . $db->sql_build_array('UPDATE', $sql_ary) . " WHERE flag_id = $flag_id";
 					$message = $user->lang['FLAG_UPDATED'];
 
 					add_log('admin', 'LOG_FLAG_UPDATED', $flag_country, $flag_code);
 				}
 				else
 				{
-					$sql = 'INSERT INTO ' . FLAGS_TABLE . ' ' . $db->sql_build_array('INSERT', $sql_ary);
+					$sql = 'INSERT INTO ' . PHPBB3_FLAGS_TABLE . ' ' . $db->sql_build_array('INSERT', $sql_ary);
 					$message = $user->lang['FLAG_ADDED'];
 
 					add_log('admin', 'LOG_FLAG_ADDED', $flag_country, $flag_code);
@@ -113,14 +113,14 @@ class acp_flags
 				if (confirm_box(true))
 				{
 					$sql = 'SELECT flag_country, flag_code
-						FROM ' . FLAGS_TABLE . '
+						FROM ' . PHPBB3_FLAGS_TABLE . '
 						WHERE flag_id = ' . $flag_id;
 					$result = $db->sql_query($sql);
 					$flag_country = (string) $db->sql_fetchfield('flag_country');
 					$flag_code = (string) $db->sql_fetchfield('flag_code');
 					$db->sql_freeresult($result);
 
-					$sql = 'DELETE FROM ' . FLAGS_TABLE . "
+					$sql = 'DELETE FROM ' . PHPBB3_FLAGS_TABLE . "
 						WHERE flag_id = $flag_id";
 					$db->sql_query($sql);
 
@@ -130,7 +130,7 @@ class acp_flags
 				}
 				else
 				{
-					confirm_box(false, $user->lang['CONFIRM_OPERATION'], build_hidden_fields(array(
+					confirm_box(false, $user->lang['PHPBB3_CONFIRM_OPERATION'], build_hidden_fields(array(
 						'i'			=> $id,
 						'mode'		=> $mode,
 						'flag_id'	=> $flag_id,
@@ -146,7 +146,7 @@ class acp_flags
 				$data = $flags = $existing_imgs = array();
 
 				$sql = 'SELECT *
-					FROM ' . FLAGS_TABLE . '
+					FROM ' . PHPBB3_FLAGS_TABLE . '
 					ORDER BY flag_country';
 				$result = $db->sql_query($sql);
 
@@ -220,8 +220,8 @@ class acp_flags
 
 		// Counting total users of every country flag
 		$sql = 'SELECT user_flag, COUNT(user_flag) AS flag_count
-			FROM ' . USERS_TABLE . '
-			WHERE user_type IN (' . USER_NORMAL . ', ' . USER_FOUNDER . ')
+			FROM ' . PHPBB3_USERS_TABLE . '
+			WHERE user_type IN (' . PHPBB3_USER_NORMAL . ', ' . PHPBB3_USER_FOUNDER . ')
 			GROUP BY user_flag';
 		$result = $db->sql_query($sql);
 
@@ -234,7 +234,7 @@ class acp_flags
 
 		// Select country flags
 		$sql = 'SELECT *
-			FROM ' . FLAGS_TABLE . '
+			FROM ' . PHPBB3_FLAGS_TABLE . '
 			ORDER BY flag_country';
 		$result = $db->sql_query($sql);
 

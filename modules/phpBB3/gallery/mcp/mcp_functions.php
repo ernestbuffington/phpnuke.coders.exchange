@@ -13,7 +13,7 @@ if (!defined('IN_PHPBB'))
 {
 	die('Hacking attempt');
 }
-$gallery_root_path = GALLERY_ROOT_PATH;
+$gallery_root_path = PHPBB3_GALLERY_ROOT_PATH;
 
 function build_gallery_mcp_navigation ($album_id, $mode, $option_id = false)
 {

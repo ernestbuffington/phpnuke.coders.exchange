@@ -67,9 +67,9 @@ function get_top_posters()
 
 	// count top x posters
 	$sql = "SELECT username, user_id, user_type, user_colour, user_posts
-        	FROM " . USERS_TABLE . "
+        	FROM " . PHPBB3_USERS_TABLE . "
         	WHERE user_id <> " . (int) ANONYMOUS . "
-				AND user_type <> " . (int) USER_IGNORE . "
+				AND user_type <> " . (int) PHPBB3_USER_IGNORE . "
 					AND user_posts > 0
 						" . $excluded_ids . "
         	ORDER BY user_posts DESC";
@@ -91,11 +91,11 @@ function get_top_posters()
 		
 		$time = time() - $xhours;
 		$sql = "SELECT u.user_id, u.username, u.user_type, u.user_colour, COUNT(p.post_id) as total_posts
-	        	FROM " . USERS_TABLE . " u, " . POSTS_TABLE . " p 
+	        	FROM " . PHPBB3_USERS_TABLE . " u, " . PHPBB3_POSTS_TABLE . " p 
 				WHERE p.post_time > " . (int) $time . "
 					AND u.user_id = p.poster_id
 						AND u.user_id <> " . (int) ANONYMOUS . "
-							AND u.user_type <> " . (int) USER_IGNORE . "
+							AND u.user_type <> " . (int) PHPBB3_USER_IGNORE . "
 								" . $excluded_ids_hours . "
 				GROUP BY u.user_id 
 				ORDER BY total_posts DESC";

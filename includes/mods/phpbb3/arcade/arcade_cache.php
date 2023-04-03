@@ -33,7 +33,7 @@ class arcade_cache extends cache
 
 			// Arcade Config
 			$sql = 'SELECT *
-				FROM ' . ARCADE_CONFIG_TABLE;
+				FROM ' . ARCADE_PHPBB3_CONFIG_TABLE;
 			$result = $db->sql_query($sql);
 
 			$config = array();
@@ -150,7 +150,7 @@ class arcade_cache extends cache
 
 				'LEFT_JOIN'	=> array(
 					array(
-						'FROM'	=> array(USERS_TABLE => 'u'),
+						'FROM'	=> array(PHPBB3_USERS_TABLE => 'u'),
 						'ON'	=> 's.user_id = u.user_id'
 					)
 				),
@@ -185,7 +185,7 @@ class arcade_cache extends cache
 
 				'LEFT_JOIN'	=> array(
 					array(
-						'FROM'	=> array(USERS_TABLE => 'u'),
+						'FROM'	=> array(PHPBB3_USERS_TABLE => 'u'),
 						'ON'	=> 'g.game_highuser = u.user_id'
 					),
 				),
@@ -223,7 +223,7 @@ class arcade_cache extends cache
 
 				'LEFT_JOIN'	=> array(
 					array(
-						'FROM'	=> array(USERS_TABLE => 'u'),
+						'FROM'	=> array(PHPBB3_USERS_TABLE => 'u'),
 						'ON'	=> 'g.game_highuser = u.user_id'
 					),
 				),

@@ -1103,7 +1103,7 @@ class acp_arcade_games
 							'ON'	=> 's.game_id = g.game_id'
 						),
 						array(
-							'FROM'	=> array(USERS_TABLE => 'u'),
+							'FROM'	=> array(PHPBB3_USERS_TABLE => 'u'),
 							'ON'	=> 's.user_id = u.user_id'
 						),
 					),
@@ -1161,7 +1161,7 @@ class acp_arcade_games
 
 					'LEFT_JOIN'	=> array(
 						array(
-							'FROM'	=> array(USERS_TABLE => 'u'),
+							'FROM'	=> array(PHPBB3_USERS_TABLE => 'u'),
 							'ON'	=> 's.user_id = u.user_id'
 						),
 					),
@@ -1307,7 +1307,7 @@ class acp_arcade_games
 		{
 			// Now lets get the usernames for all the users
 			$sql = 'SELECT user_id, username, username_clean
-				FROM ' . USERS_TABLE . '
+				FROM ' . PHPBB3_USERS_TABLE . '
 				WHERE ' . $db->sql_in_set('user_id', $user_ids) . '
 				ORDER BY username_clean ASC';
 			$result = $db->sql_query($sql);

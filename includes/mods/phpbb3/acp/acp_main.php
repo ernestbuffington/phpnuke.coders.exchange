@@ -38,7 +38,7 @@ class acp_main
 			$this->page_title = 'ACP_MAIN';
 
 			$sql = 'SELECT user_id, username, user_colour
-				FROM ' . USERS_TABLE . '
+				FROM ' . PHPBB3_USERS_TABLE . '
 				WHERE user_id = ' . $user->data['user_perm_from'];
 			$result = $db->sql_query($sql);
 			$user_row = $db->sql_fetchrow($result);
@@ -102,7 +102,7 @@ class acp_main
 
 					default:
 						$confirm = true;
-						$confirm_lang = 'CONFIRM_OPERATION';
+						$confirm_lang = 'PHPBB3_CONFIRM_OPERATION';
 				}
 
 				if ($confirm)
@@ -136,35 +136,35 @@ class acp_main
 						}
 
 						$sql = 'SELECT COUNT(post_id) AS stat
-							FROM ' . POSTS_TABLE . '
+							FROM ' . PHPBB3_POSTS_TABLE . '
 							WHERE post_approved = 1';
 						$result = $db->sql_query($sql);
 						set_config('num_posts', (int) $db->sql_fetchfield('stat'), true);
 						$db->sql_freeresult($result);
 
 						$sql = 'SELECT COUNT(topic_id) AS stat
-							FROM ' . TOPICS_TABLE . '
+							FROM ' . PHPBB3_TOPICS_TABLE . '
 							WHERE topic_approved = 1';
 						$result = $db->sql_query($sql);
 						set_config('num_topics', (int) $db->sql_fetchfield('stat'), true);
 						$db->sql_freeresult($result);
 
 						$sql = 'SELECT COUNT(user_id) AS stat
-							FROM ' . USERS_TABLE . '
-							WHERE user_type IN (' . USER_NORMAL . ',' . USER_FOUNDER . ')';
+							FROM ' . PHPBB3_USERS_TABLE . '
+							WHERE user_type IN (' . PHPBB3_USER_NORMAL . ',' . PHPBB3_USER_FOUNDER . ')';
 						$result = $db->sql_query($sql);
 						set_config('num_users', (int) $db->sql_fetchfield('stat'), true);
 						$db->sql_freeresult($result);
 
 						$sql = 'SELECT COUNT(attach_id) as stat
-							FROM ' . ATTACHMENTS_TABLE . '
+							FROM ' . PHPBB3_ATTACHMENTS_TABLE . '
 							WHERE is_orphan = 0';
 						$result = $db->sql_query($sql);
 						set_config('num_files', (int) $db->sql_fetchfield('stat'), true);
 						$db->sql_freeresult($result);
 
 						$sql = 'SELECT SUM(filesize) as stat
-							FROM ' . ATTACHMENTS_TABLE . '
+							FROM ' . PHPBB3_ATTACHMENTS_TABLE . '
 							WHERE is_orphan = 0';
 						$result = $db->sql_query($sql);
 						set_config('upload_dir_size', (float) $db->sql_fetchfield('stat'), true);
@@ -190,7 +190,7 @@ class acp_main
 
 						// Find the maximum post ID, we can only stop the cycle when we've reached it
 						$sql = 'SELECT MAX(forum_last_post_id) as max_post_id
-							FROM ' . FORUMS_TABLE;
+							FROM ' . PHPBB3_FORUMS_TABLE;
 						$result = $db->sql_query($sql);
 						$max_post_id = (int) $db->sql_fetchfield('max_post_id');
 						$db->sql_freeresult($result);
@@ -199,7 +199,7 @@ class acp_main
 						if (!$max_post_id)
 						{
 							$sql = 'SELECT MAX(post_id)
-								FROM ' . POSTS_TABLE;
+								FROM ' . PHPBB3_POSTS_TABLE;
 							$result = $db->sql_query($sql);
 							$max_post_id = (int) $db->sql_fetchfield('max_post_id');
 							$db->sql_freeresult($result);
@@ -213,12 +213,12 @@ class acp_main
 						}
 
 						$step = ($config['num_posts']) ? (max((int) ($config['num_posts'] / 5), 20000)) : 20000;
-						$db->sql_query('UPDATE ' . USERS_TABLE . ' SET user_posts = 0');
+						$db->sql_query('UPDATE ' . PHPBB3_USERS_TABLE . ' SET user_posts = 0');
 
 						while ($start < $max_post_id)
 						{
 							$sql = 'SELECT COUNT(post_id) AS num_posts, poster_id
-								FROM ' . POSTS_TABLE . '
+								FROM ' . PHPBB3_POSTS_TABLE . '
 								WHERE post_id BETWEEN ' . ($start + 1) . ' AND ' . ($start + $step) . '
 									AND post_postcount = 1 AND post_approved = 1
 								GROUP BY poster_id';
@@ -228,7 +228,7 @@ class acp_main
 							{
 								do
 								{
-									$sql = 'UPDATE ' . USERS_TABLE . " SET user_posts = user_posts + {$row['num_posts']} WHERE user_id = {$row['poster_id']}";
+									$sql = 'UPDATE ' . PHPBB3_USERS_TABLE . " SET user_posts = user_posts + {$row['num_posts']} WHERE user_id = {$row['poster_id']}";
 									$db->sql_query($sql);
 								}
 								while ($row = $db->sql_fetchrow($result));
@@ -257,11 +257,11 @@ class acp_main
 						{
 							case 'sqlite':
 							case 'firebird':
-								$db->sql_query('DELETE FROM ' . TOPICS_POSTED_TABLE);
+								$db->sql_query('DELETE FROM ' . PHPBB3_TOPICS_POSTED_TABLE);
 							break;
 
 							default:
-								$db->sql_query('TRUNCATE TABLE ' . TOPICS_POSTED_TABLE);
+								$db->sql_query('TRUNCATE TABLE ' . PHPBB3_TOPICS_POSTED_TABLE);
 							break;
 						}
 
@@ -270,8 +270,8 @@ class acp_main
 
 						// Select forum ids, do not include categories
 						$sql = 'SELECT forum_id
-							FROM ' . FORUMS_TABLE . '
-							WHERE forum_type <> ' . FORUM_CAT;
+							FROM ' . PHPBB3_FORUMS_TABLE . '
+							WHERE forum_type <> ' . PHPBB3_FORUM_CAT;
 						$result = $db->sql_query($sql);
 
 						$forum_ids = array();
@@ -288,7 +288,7 @@ class acp_main
 						foreach ($forum_ids as $forum_id)
 						{
 							$sql = 'SELECT p.poster_id, p.topic_id
-								FROM ' . POSTS_TABLE . ' p, ' . TOPICS_TABLE . ' t
+								FROM ' . PHPBB3_POSTS_TABLE . ' p, ' . PHPBB3_TOPICS_TABLE . ' t
 								WHERE t.forum_id = ' . $forum_id . '
 									AND t.topic_moved_id = 0
 									AND t.topic_last_post_time > ' . $get_from_time . '
@@ -320,7 +320,7 @@ class acp_main
 
 							if (sizeof($sql_ary))
 							{
-								$db->sql_multi_insert(TOPICS_POSTED_TABLE, $sql_ary);
+								$db->sql_multi_insert(PHPBB3_TOPICS_POSTED_TABLE, $sql_ary);
 							}
 						}
 
@@ -328,7 +328,7 @@ class acp_main
 					break;
 
 					case 'purge_cache':
-						if ((int) $user->data['user_type'] !== USER_FOUNDER)
+						if ((int) $user->data['user_type'] !== PHPBB3_USER_FOUNDER)
 						{
 							trigger_error($user->lang['NO_AUTH_OPERATION'] . adm_back_link($this->u_action), E_USER_WARNING);
 						}
@@ -407,7 +407,7 @@ class acp_main
 		if ($config['allow_attachments'] || $config['allow_pm_attach'])
 		{
 			$sql = 'SELECT COUNT(attach_id) AS total_orphan
-				FROM ' . ATTACHMENTS_TABLE . '
+				FROM ' . PHPBB3_ATTACHMENTS_TABLE . '
 				WHERE is_orphan = 1
 					AND filetime < ' . (time() - 3*60*60);
 			$result = $db->sql_query($sql);
@@ -445,7 +445,7 @@ class acp_main
 			'U_INACTIVE_USERS'	=> append_sid("{$phpbb_admin_path}index.$phpEx", 'i=inactive&amp;mode=list'),
 
 			'S_ACTION_OPTIONS'	=> ($auth->acl_get('a_board')) ? true : false,
-			'S_FOUNDER'			=> ($user->data['user_type'] == USER_FOUNDER) ? true : false,
+			'S_FOUNDER'			=> ($user->data['user_type'] == PHPBB3_USER_FOUNDER) ? true : false,
 			)
 		);
 

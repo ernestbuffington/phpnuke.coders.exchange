@@ -46,7 +46,7 @@ switch ($v3arcade)
 
 		$game_id = $row['game_id'];
 
-		$sql = 'SELECT session_id FROM ' . ARCADE_SESSIONS_TABLE . '
+		$sql = 'SELECT session_id FROM ' . ARCADE_PHPBB3_SESSIONS_TABLE . '
 			WHERE user_id = ' . $user->data['user_id'] . '
 				AND game_id = ' . $game_id;
 		$result = $db->sql_query($sql);

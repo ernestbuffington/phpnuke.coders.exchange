@@ -88,7 +88,7 @@ class acp_modules
 					if ($module_id == $this->parent_id)
 					{
 						$sql = 'SELECT parent_id
-							FROM ' . MODULES_TABLE . '
+							FROM ' . PHPBB3_MODULES_TABLE . '
 							WHERE module_id = ' . $module_id;
 						$result = $db->sql_query($sql);
 						$this->parent_id = (int) $db->sql_fetchfield('parent_id');
@@ -124,7 +124,7 @@ class acp_modules
 				}
 
 				$sql = 'SELECT *
-					FROM ' . MODULES_TABLE . "
+					FROM ' . PHPBB3_MODULES_TABLE . "
 					WHERE module_class = '" . $db->sql_escape($this->module_class) . "'
 						AND module_id = $module_id";
 				$result = $db->sql_query($sql);
@@ -136,13 +136,13 @@ class acp_modules
 					trigger_error($user->lang['NO_MODULE'] . adm_back_link($this->u_action . '&amp;parent_id=' . $this->parent_id), E_USER_WARNING);
 				}
 
-				$sql = 'UPDATE ' . MODULES_TABLE . '
+				$sql = 'UPDATE ' . PHPBB3_MODULES_TABLE . '
 					SET module_enabled = ' . (($action == 'enable') ? 1 : 0) . "
 					WHERE module_class = '" . $db->sql_escape($this->module_class) . "'
 						AND module_id = $module_id";
 				$db->sql_query($sql);
 
-				add_log('admin', 'LOG_MODULE_' . strtoupper($action), $this->lang_name($row['module_langname']));
+				add_log('admin', 'PHPBB3_LOG_MODULE_' . strtoupper($action), $this->lang_name($row['module_langname']));
 				$this->remove_cache_file();
 
 			break;
@@ -155,7 +155,7 @@ class acp_modules
 				}
 
 				$sql = 'SELECT *
-					FROM ' . MODULES_TABLE . "
+					FROM ' . PHPBB3_MODULES_TABLE . "
 					WHERE module_class = '" . $db->sql_escape($this->module_class) . "'
 						AND module_id = $module_id";
 				$result = $db->sql_query($sql);
@@ -171,7 +171,7 @@ class acp_modules
 
 				if ($move_module_name !== false)
 				{
-					add_log('admin', 'LOG_MODULE_' . strtoupper($action), $this->lang_name($row['module_langname']), $move_module_name);
+					add_log('admin', 'PHPBB3_LOG_MODULE_' . strtoupper($action), $this->lang_name($row['module_langname']), $move_module_name);
 					$this->remove_cache_file();
 				}
 		
@@ -413,7 +413,7 @@ class acp_modules
 		$module_box = $this->make_module_select($this->parent_id, false, false, false, false);
 
 		$sql = 'SELECT *
-			FROM ' . MODULES_TABLE . "
+			FROM ' . PHPBB3_MODULES_TABLE . "
 			WHERE parent_id = {$this->parent_id}
 				AND module_class = '" . $db->sql_escape($this->module_class) . "'
 			ORDER BY left_id";
@@ -514,7 +514,7 @@ class acp_modules
 		global $db, $user;
 
 		$sql = 'SELECT *
-			FROM ' . MODULES_TABLE . "
+			FROM ' . PHPBB3_MODULES_TABLE . "
 			WHERE module_class = '" . $db->sql_escape($this->module_class) . "'
 				AND module_id = $module_id";
 		$result = $db->sql_query($sql);
@@ -605,7 +605,7 @@ class acp_modules
 		global $db, $user, $auth, $config;
 
 		$sql = 'SELECT module_id, module_enabled, module_basename, parent_id, module_langname, left_id, right_id, module_auth
-			FROM ' . MODULES_TABLE . "
+			FROM ' . PHPBB3_MODULES_TABLE . "
 			WHERE module_class = '" . $db->sql_escape($this->module_class) . "'
 			ORDER BY left_id ASC";
 		$result = $db->sql_query($sql);
@@ -694,8 +694,8 @@ class acp_modules
 		$rows = array();
 
 		$sql = 'SELECT m2.*
-			FROM ' . MODULES_TABLE . ' m1
-			LEFT JOIN ' . MODULES_TABLE . " m2 ON ($condition)
+			FROM ' . PHPBB3_MODULES_TABLE . ' m1
+			LEFT JOIN ' . PHPBB3_MODULES_TABLE . " m2 ON ($condition)
 			WHERE m1.module_class = '" . $db->sql_escape($this->module_class) . "'
 				AND m2.module_class = '" . $db->sql_escape($this->module_class) . "'
 				AND m1.module_id = $module_id
@@ -729,7 +729,7 @@ class acp_modules
 		$cache->destroy('_modules_' . $p_class);
 
 		// Additionally remove sql cache
-		$cache->destroy('sql', MODULES_TABLE);
+		$cache->destroy('sql', PHPBB3_MODULES_TABLE);
 	}
 
 	/**
@@ -757,7 +757,7 @@ class acp_modules
 			if ($module_data['parent_id'])
 			{
 				$sql = 'SELECT left_id, right_id
-					FROM ' . MODULES_TABLE . "
+					FROM ' . PHPBB3_MODULES_TABLE . "
 					WHERE module_class = '" . $db->sql_escape($module_data['module_class']) . "'
 						AND module_id = " . (int) $module_data['parent_id'];
 				$result = $db->sql_query($sql);
@@ -778,13 +778,13 @@ class acp_modules
 				$row['left_id'] = (int) $row['left_id'];
 				$row['right_id'] = (int) $row['right_id'];
 
-				$sql = 'UPDATE ' . MODULES_TABLE . "
+				$sql = 'UPDATE ' . PHPBB3_MODULES_TABLE . "
 					SET left_id = left_id + 2, right_id = right_id + 2
 					WHERE module_class = '" . $db->sql_escape($module_data['module_class']) . "'
 						AND left_id > {$row['right_id']}";
 				$db->sql_query($sql);
 
-				$sql = 'UPDATE ' . MODULES_TABLE . "
+				$sql = 'UPDATE ' . PHPBB3_MODULES_TABLE . "
 					SET right_id = right_id + 2
 					WHERE module_class = '" . $db->sql_escape($module_data['module_class']) . "'
 						AND {$row['left_id']} BETWEEN left_id AND right_id";
@@ -796,7 +796,7 @@ class acp_modules
 			else
 			{
 				$sql = 'SELECT MAX(right_id) AS right_id
-					FROM ' . MODULES_TABLE . "
+					FROM ' . PHPBB3_MODULES_TABLE . "
 					WHERE module_class = '" . $db->sql_escape($module_data['module_class']) . "'";
 				$result = $db->sql_query($sql);
 				$row = $db->sql_fetchrow($result);
@@ -806,14 +806,14 @@ class acp_modules
 				$module_data['right_id'] = (int) $row['right_id'] + 2;
 			}
 
-			$sql = 'INSERT INTO ' . MODULES_TABLE . ' ' . $db->sql_build_array('INSERT', $module_data);
+			$sql = 'INSERT INTO ' . PHPBB3_MODULES_TABLE . ' ' . $db->sql_build_array('INSERT', $module_data);
 			$db->sql_query($sql);
 
 			$module_data['module_id'] = $db->sql_nextid();
 
 			if (!$run_inline)
 			{
-				add_log('admin', 'LOG_MODULE_ADD', $this->lang_name($module_data['module_langname']));
+				add_log('admin', 'PHPBB3_LOG_MODULE_ADD', $this->lang_name($module_data['module_langname']));
 			}
 		}
 		else
@@ -839,7 +839,7 @@ class acp_modules
 			$update_ary = $module_data;
 			unset($update_ary['module_id']);
 
-			$sql = 'UPDATE ' . MODULES_TABLE . '
+			$sql = 'UPDATE ' . PHPBB3_MODULES_TABLE . '
 				SET ' . $db->sql_build_array('UPDATE', $update_ary) . "
 				WHERE module_class = '" . $db->sql_escape($module_data['module_class']) . "'
 					AND module_id = " . (int) $module_data['module_id'];
@@ -847,7 +847,7 @@ class acp_modules
 
 			if (!$run_inline)
 			{
-				add_log('admin', 'LOG_MODULE_EDIT', $this->lang_name($module_data['module_langname']));
+				add_log('admin', 'PHPBB3_LOG_MODULE_EDIT', $this->lang_name($module_data['module_langname']));
 			}
 		}
 
@@ -872,7 +872,7 @@ class acp_modules
 		}
 
 		// Resync parents
-		$sql = 'UPDATE ' . MODULES_TABLE . "
+		$sql = 'UPDATE ' . PHPBB3_MODULES_TABLE . "
 			SET right_id = right_id - $diff
 			WHERE module_class = '" . $db->sql_escape($this->module_class) . "'
 				AND left_id < " . (int) $from_data['right_id'] . '
@@ -880,7 +880,7 @@ class acp_modules
 		$db->sql_query($sql);
 
 		// Resync righthand side of tree
-		$sql = 'UPDATE ' . MODULES_TABLE . "
+		$sql = 'UPDATE ' . PHPBB3_MODULES_TABLE . "
 			SET left_id = left_id - $diff, right_id = right_id - $diff
 			WHERE module_class = '" . $db->sql_escape($this->module_class) . "'
 				AND left_id > " . (int) $from_data['right_id'];
@@ -891,7 +891,7 @@ class acp_modules
 			$to_data = $this->get_module_row($to_parent_id);
 
 			// Resync new parents
-			$sql = 'UPDATE ' . MODULES_TABLE . "
+			$sql = 'UPDATE ' . PHPBB3_MODULES_TABLE . "
 				SET right_id = right_id + $diff
 				WHERE module_class = '" . $db->sql_escape($this->module_class) . "'
 					AND " . (int) $to_data['right_id'] . ' BETWEEN left_id AND right_id
@@ -899,7 +899,7 @@ class acp_modules
 			$db->sql_query($sql);
 
 			// Resync the righthand side of the tree
-			$sql = 'UPDATE ' . MODULES_TABLE . "
+			$sql = 'UPDATE ' . PHPBB3_MODULES_TABLE . "
 				SET left_id = left_id + $diff, right_id = right_id + $diff
 				WHERE module_class = '" . $db->sql_escape($this->module_class) . "'
 					AND left_id > " . (int) $to_data['right_id'] . '
@@ -920,7 +920,7 @@ class acp_modules
 		else
 		{
 			$sql = 'SELECT MAX(right_id) AS right_id
-				FROM ' . MODULES_TABLE . "
+				FROM ' . PHPBB3_MODULES_TABLE . "
 				WHERE module_class = '" . $db->sql_escape($this->module_class) . "'
 					AND " . $db->sql_in_set('module_id', $moved_ids, true);
 			$result = $db->sql_query($sql);
@@ -930,7 +930,7 @@ class acp_modules
 			$diff = '+ ' . (int) ($row['right_id'] - $from_data['left_id'] + 1);
 		}
 
-		$sql = 'UPDATE ' . MODULES_TABLE . "
+		$sql = 'UPDATE ' . PHPBB3_MODULES_TABLE . "
 			SET left_id = left_id $diff, right_id = right_id $diff
 			WHERE module_class = '" . $db->sql_escape($this->module_class) . "'
 				AND " . $db->sql_in_set('module_id', $moved_ids);
@@ -955,7 +955,7 @@ class acp_modules
 
 		// If not move
 		$diff = 2;
-		$sql = 'DELETE FROM ' . MODULES_TABLE . "
+		$sql = 'DELETE FROM ' . PHPBB3_MODULES_TABLE . "
 			WHERE module_class = '" . $db->sql_escape($this->module_class) . "'
 				AND module_id = $module_id";
 		$db->sql_query($sql);
@@ -964,19 +964,19 @@ class acp_modules
 		$row['left_id'] = (int) $row['left_id'];
 
 		// Resync tree
-		$sql = 'UPDATE ' . MODULES_TABLE . "
+		$sql = 'UPDATE ' . PHPBB3_MODULES_TABLE . "
 			SET right_id = right_id - $diff
 			WHERE module_class = '" . $db->sql_escape($this->module_class) . "'
 				AND left_id < {$row['right_id']} AND right_id > {$row['right_id']}";
 		$db->sql_query($sql);
 
-		$sql = 'UPDATE ' . MODULES_TABLE . "
+		$sql = 'UPDATE ' . PHPBB3_MODULES_TABLE . "
 			SET left_id = left_id - $diff, right_id = right_id - $diff
 			WHERE module_class = '" . $db->sql_escape($this->module_class) . "'
 				AND left_id > {$row['right_id']}";
 		$db->sql_query($sql);
 
-		add_log('admin', 'LOG_MODULE_REMOVED', $this->lang_name($row['module_langname']));
+		add_log('admin', 'PHPBB3_LOG_MODULE_REMOVED', $this->lang_name($row['module_langname']));
 
 		return array();
 
@@ -996,7 +996,7 @@ class acp_modules
 		* module will move as far as possible
 		*/
 		$sql = 'SELECT module_id, left_id, right_id, module_langname
-			FROM ' . MODULES_TABLE . "
+			FROM ' . PHPBB3_MODULES_TABLE . "
 			WHERE module_class = '" . $db->sql_escape($this->module_class) . "'
 				AND parent_id = " . (int) $module_row['parent_id'] . '
 				AND ' . (($action == 'move_up') ? 'right_id < ' . (int) $module_row['right_id'] . ' ORDER BY right_id DESC' : 'left_id > ' . (int) $module_row['left_id'] . ' ORDER BY left_id ASC');
@@ -1046,7 +1046,7 @@ class acp_modules
 		}
 
 		// Now do the dirty job
-		$sql = 'UPDATE ' . MODULES_TABLE . "
+		$sql = 'UPDATE ' . PHPBB3_MODULES_TABLE . "
 			SET left_id = left_id + CASE
 				WHEN left_id BETWEEN {$move_up_left} AND {$move_up_right} THEN -{$diff_up}
 				ELSE {$diff_down}

@@ -51,19 +51,19 @@ class ucp_main
 
 				$user->add_lang('memberlist');
 
-				$sql_from = TOPICS_TABLE . ' t ';
+				$sql_from = PHPBB3_TOPICS_TABLE . ' t ';
 				$sql_select = '';
 
 				if ($config['load_db_track'])
 				{
-					$sql_from .= ' LEFT JOIN ' . TOPICS_POSTED_TABLE . ' tp ON (tp.topic_id = t.topic_id
+					$sql_from .= ' LEFT JOIN ' . PHPBB3_TOPICS_POSTED_TABLE . ' tp ON (tp.topic_id = t.topic_id
 						AND tp.user_id = ' . $user->data['user_id'] . ')';
 					$sql_select .= ', tp.topic_posted';
 				}
 
 				if ($config['load_db_lastread'])
 				{
-					$sql_from .= ' LEFT JOIN ' . TOPICS_TRACK_TABLE . ' tt ON (tt.topic_id = t.topic_id
+					$sql_from .= ' LEFT JOIN ' . PHPBB3_TOPICS_TRACK_TABLE . ' tt ON (tt.topic_id = t.topic_id
 						AND tt.user_id = ' . $user->data['user_id'] . ')';
 					$sql_select .= ', tt.mark_time';
 				}
@@ -78,8 +78,8 @@ class ucp_main
 
 				// Determine first forum the user is able to read into - for global announcement link
 				$sql = 'SELECT forum_id
-					FROM ' . FORUMS_TABLE . '
-					WHERE forum_type = ' . FORUM_POST;
+					FROM ' . PHPBB3_FORUMS_TABLE . '
+					WHERE forum_type = ' . PHPBB3_FORUM_POST;
 
 				if (sizeof($forum_ary))
 				{
@@ -92,7 +92,7 @@ class ucp_main
 				$sql = "SELECT t.* $sql_select
 					FROM $sql_from
 					WHERE t.forum_id = 0
-						AND t.topic_type = " . POST_GLOBAL . '
+						AND t.topic_type = " . PHPBB3_POST_GLOBAL . '
 					ORDER BY t.topic_last_post_time DESC';
 
 				$topic_list = $rowset = array();
@@ -129,9 +129,9 @@ class ucp_main
 					$unread_topic = (isset($topic_tracking_info[$topic_id]) && $row['topic_last_post_time'] > $topic_tracking_info[$topic_id]) ? true : false;
 
 					$folder_img = ($unread_topic) ? $folder_new : $folder;
-					$folder_alt = ($unread_topic) ? 'NEW_POSTS' : (($row['topic_status'] == ITEM_LOCKED) ? 'TOPIC_LOCKED' : 'NO_NEW_POSTS');
+					$folder_alt = ($unread_topic) ? 'NEW_POSTS' : (($row['topic_status'] == PHPBB3_ITEM_LOCKED) ? 'TOPIC_LOCKED' : 'NO_NEW_POSTS');
 
-					if ($row['topic_status'] == ITEM_LOCKED)
+					if ($row['topic_status'] == PHPBB3_ITEM_LOCKED)
 					{
 						$folder_img .= '_locked';
 					}
@@ -229,7 +229,7 @@ class ucp_main
 							$l_unwatch = '';
 							if (sizeof($forums))
 							{
-								$sql = 'DELETE FROM ' . FORUMS_WATCH_TABLE . '
+								$sql = 'DELETE FROM ' . PHPBB3_FORUMS_WATCH_TABLE . '
 									WHERE ' . $db->sql_in_set('forum_id', $forums) . '
 										AND user_id = ' . $user->data['user_id'];
 								$db->sql_query($sql);
@@ -239,7 +239,7 @@ class ucp_main
 
 							if (sizeof($topics))
 							{
-								$sql = 'DELETE FROM ' . TOPICS_WATCH_TABLE . '
+								$sql = 'DELETE FROM ' . PHPBB3_TOPICS_WATCH_TABLE . '
 									WHERE ' . $db->sql_in_set('topic_id', $topics) . '
 										AND user_id = ' . $user->data['user_id'];
 								$db->sql_query($sql);
@@ -273,8 +273,8 @@ class ucp_main
 						'SELECT'	=> 'f.*',
 
 						'FROM'		=> array(
-							FORUMS_WATCH_TABLE	=> 'fw',
-							FORUMS_TABLE		=> 'f'
+							PHPBB3_FORUMS_WATCH_TABLE	=> 'fw',
+							PHPBB3_FORUMS_TABLE		=> 'f'
 						),
 
 						'WHERE'		=> 'fw.user_id = ' . $user->data['user_id'] . '
@@ -288,7 +288,7 @@ class ucp_main
 					{
 						$sql_array['LEFT_JOIN'] = array(
 							array(
-								'FROM'	=> array(FORUMS_TRACK_TABLE => 'ft'),
+								'FROM'	=> array(PHPBB3_FORUMS_TRACK_TABLE => 'ft'),
 								'ON'	=> 'ft.user_id = ' . $user->data['user_id'] . ' AND ft.forum_id = f.forum_id'
 							)
 						);
@@ -320,7 +320,7 @@ class ucp_main
 						$unread_forum = ($row['forum_last_post_time'] > $forum_check) ? true : false;
 
 						// Which folder should we display?
-						if ($row['forum_status'] == ITEM_LOCKED)
+						if ($row['forum_status'] == PHPBB3_ITEM_LOCKED)
 						{
 							$folder_image = ($unread_forum) ? 'forum_unread_locked' : 'forum_read_locked';
 							$folder_alt = 'FORUM_LOCKED';
@@ -415,7 +415,7 @@ class ucp_main
 
 					if (confirm_box(true))
 					{
-						$sql = 'DELETE FROM ' . BOOKMARKS_TABLE . '
+						$sql = 'DELETE FROM ' . PHPBB3_BOOKMARKS_TABLE . '
 							WHERE user_id = ' . $user->data['user_id'] . '
 								AND ' . $db->sql_in_set('topic_id', $topics);
 						$db->sql_query($sql);
@@ -460,7 +460,7 @@ class ucp_main
 
 						if (sizeof($drafts))
 						{
-							$sql = 'DELETE FROM ' . DRAFTS_TABLE . '
+							$sql = 'DELETE FROM ' . PHPBB3_DRAFTS_TABLE . '
 								WHERE ' . $db->sql_in_set('draft_id', $drafts) . '
 									AND user_id = ' . $user->data['user_id'];
 							$db->sql_query($sql);
@@ -490,7 +490,7 @@ class ucp_main
 								'draft_message' => $draft_message
 							);
 
-							$sql = 'UPDATE ' . DRAFTS_TABLE . '
+							$sql = 'UPDATE ' . PHPBB3_DRAFTS_TABLE . '
 								SET ' . $db->sql_build_array('UPDATE', $draft_row) . "
 								WHERE draft_id = $draft_id
 									AND user_id = " . $user->data['user_id'];
@@ -515,7 +515,7 @@ class ucp_main
 				if (!$pm_drafts)
 				{
 					$sql = 'SELECT d.*, f.forum_name
-						FROM ' . DRAFTS_TABLE . ' d, ' . FORUMS_TABLE . ' f
+						FROM ' . PHPBB3_DRAFTS_TABLE . ' d, ' . PHPBB3_FORUMS_TABLE . ' f
 						WHERE d.user_id = ' . $user->data['user_id'] . ' ' .
 							(($edit) ? "AND d.draft_id = $draft_id" : '') . '
 							AND f.forum_id = d.forum_id
@@ -523,7 +523,7 @@ class ucp_main
 				}
 				else
 				{
-					$sql = 'SELECT * FROM ' . DRAFTS_TABLE . '
+					$sql = 'SELECT * FROM ' . PHPBB3_DRAFTS_TABLE . '
 						WHERE user_id = ' . $user->data['user_id'] . ' ' .
 							(($edit) ? "AND draft_id = $draft_id" : '') . '
 							AND forum_id = 0
@@ -547,7 +547,7 @@ class ucp_main
 				if (sizeof($topic_ids))
 				{
 					$sql = 'SELECT topic_id, forum_id, topic_title
-						FROM ' . TOPICS_TABLE . '
+						FROM ' . PHPBB3_TOPICS_TABLE . '
 						WHERE ' . $db->sql_in_set('topic_id', array_unique($topic_ids));
 					$result = $db->sql_query($sql);
 
@@ -647,7 +647,7 @@ class ucp_main
 		
 		$phpbb_root_path = PHPBB3_ROOT_DIR;
 
-		$table = ($mode == 'subscribed') ? TOPICS_WATCH_TABLE : BOOKMARKS_TABLE;
+		$table = ($mode == 'subscribed') ? PHPBB3_TOPICS_WATCH_TABLE : PHPBB3_BOOKMARKS_TABLE;
 		$start = request_var('start', 0);
 
 		$sql_array = array(
@@ -655,7 +655,7 @@ class ucp_main
 
 			'FROM'		=> array(
 				$table			=> 'i',
-				TOPICS_TABLE	=> 't'
+				PHPBB3_TOPICS_TABLE	=> 't'
 			),
 
 			'WHERE'		=>	'i.topic_id = t.topic_id
@@ -682,8 +682,8 @@ class ucp_main
 				'SELECT'	=> 't.*, f.forum_name',
 
 				'FROM'		=> array(
-					TOPICS_WATCH_TABLE	=> 'tw',
-					TOPICS_TABLE		=> 't'
+					PHPBB3_TOPICS_WATCH_TABLE	=> 'tw',
+					PHPBB3_TOPICS_TABLE		=> 't'
 				),
 
 				'WHERE'		=> 'tw.user_id = ' . $user->data['user_id'] . '
@@ -702,7 +702,7 @@ class ucp_main
 				'SELECT'	=> 't.*, f.forum_name, b.topic_id as b_topic_id',
 
 				'FROM'		=> array(
-					BOOKMARKS_TABLE		=> 'b',
+					PHPBB3_BOOKMARKS_TABLE		=> 'b',
 				),
 
 				'WHERE'		=> 'b.user_id = ' . $user->data['user_id'] . '
@@ -712,21 +712,21 @@ class ucp_main
 			);
 
 			$sql_array['LEFT_JOIN'] = array();
-			$sql_array['LEFT_JOIN'][] = array('FROM' => array(TOPICS_TABLE => 't'), 'ON' => 'b.topic_id = t.topic_id');
+			$sql_array['LEFT_JOIN'][] = array('FROM' => array(PHPBB3_TOPICS_TABLE => 't'), 'ON' => 'b.topic_id = t.topic_id');
 		}
 
-		$sql_array['LEFT_JOIN'][] = array('FROM' => array(FORUMS_TABLE => 'f'), 'ON' => 't.forum_id = f.forum_id');
+		$sql_array['LEFT_JOIN'][] = array('FROM' => array(PHPBB3_FORUMS_TABLE => 'f'), 'ON' => 't.forum_id = f.forum_id');
 
 		if ($config['load_db_lastread'])
 		{
-			$sql_array['LEFT_JOIN'][] = array('FROM' => array(FORUMS_TRACK_TABLE => 'ft'), 'ON' => 'ft.forum_id = t.forum_id AND ft.user_id = ' . $user->data['user_id']);
-			$sql_array['LEFT_JOIN'][] = array('FROM' => array(TOPICS_TRACK_TABLE => 'tt'), 'ON' => 'tt.topic_id = t.topic_id AND tt.user_id = ' . $user->data['user_id']);
+			$sql_array['LEFT_JOIN'][] = array('FROM' => array(PHPBB3_FORUMS_TRACK_TABLE => 'ft'), 'ON' => 'ft.forum_id = t.forum_id AND ft.user_id = ' . $user->data['user_id']);
+			$sql_array['LEFT_JOIN'][] = array('FROM' => array(PHPBB3_TOPICS_TRACK_TABLE => 'tt'), 'ON' => 'tt.topic_id = t.topic_id AND tt.user_id = ' . $user->data['user_id']);
 			$sql_array['SELECT'] .= ', tt.mark_time, ft.mark_time AS forum_mark_time';
 		}
 
 		if ($config['load_db_track'])
 		{
-			$sql_array['LEFT_JOIN'][] = array('FROM' => array(TOPICS_POSTED_TABLE => 'tp'), 'ON' => 'tp.topic_id = t.topic_id AND tp.user_id = ' . $user->data['user_id']);
+			$sql_array['LEFT_JOIN'][] = array('FROM' => array(PHPBB3_TOPICS_POSTED_TABLE => 'tp'), 'ON' => 'tp.topic_id = t.topic_id AND tp.user_id = ' . $user->data['user_id']);
 			$sql_array['SELECT'] .= ', tp.topic_posted';
 		}
 
@@ -744,7 +744,7 @@ class ucp_main
 			$topic_forum_list[$row['forum_id']]['forum_mark_time'] = ($config['load_db_lastread']) ? $row['forum_mark_time'] : 0;
 			$topic_forum_list[$row['forum_id']]['topics'][] = $topic_id;
 
-			if ($row['topic_type'] == POST_GLOBAL)
+			if ($row['topic_type'] == PHPBB3_POST_GLOBAL)
 			{
 				$global_announce_list[] = $topic_id;
 			}
@@ -779,7 +779,7 @@ class ucp_main
 			// Replies
 			$replies = ($auth->acl_get('m_approve', $forum_id)) ? $row['topic_replies_real'] : $row['topic_replies'];
 
-			if ($row['topic_status'] == ITEM_MOVED && !empty($row['topic_moved_id']))
+			if ($row['topic_status'] == PHPBB3_ITEM_MOVED && !empty($row['topic_moved_id']))
 			{
 				$topic_id = $row['topic_moved_id'];
 			}

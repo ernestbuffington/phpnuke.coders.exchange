@@ -13,7 +13,7 @@ define('IN_PHPBB', true);
 $phpbb_root_path = (defined('PHPBB_ROOT_PATH')) ? PHPBB_ROOT_PATH : '../';
 $phpEx = substr(strrchr(__FILE__, '.'), 1);
 include($phpbb_root_path . 'common.' . $phpEx);
-$gallery_root_path = GALLERY_ROOT_PATH;
+$gallery_root_path = PHPBB3_GALLERY_ROOT_PATH;
 include($phpbb_root_path . 'includes/functions_display.' . $phpEx);
 include_once($phpbb_root_path . 'includes/message_parser.' . $phpEx);
 
@@ -117,7 +117,7 @@ if ($album_id <> 0)
 		}
 
 		$sql = 'SELECT *
-			FROM ' . GALLERY_IMAGES_TABLE . '
+			FROM ' . PHPBB3_GALLERY_IMAGES_TABLE . '
 			WHERE image_album_id = ' . $album_id . $pic_approval_sql . ' 
 			ORDER BY ' . $sort_method . ' ' . $sort_order . ' 
 			LIMIT ' . $limit_sql;
@@ -182,7 +182,7 @@ if ($album_id <> 0)
 					'DELETE'	=> $allow_delete ? '<a href="' . append_sid("{$phpbb_root_path}{$gallery_root_path}posting.$phpEx", "mode=image&amp;submode=delete&amp;album_id=$album_id&amp;image_id=" . $picrow[$j]['image_id']) . '">' . $user->lang['DELETE_IMAGE'] . '</a>' : '',
 					'MOVE'		=> (gallery_acl_check('a_moderate', $album_id)) ? '<a href="' . append_sid("{$phpbb_root_path}{$gallery_root_path}mcp.$phpEx", "action=images_move&amp;album_id=$album_id&amp;image_id=" . $picrow[$j]['image_id']) . '&amp;redirect=redirect">' . $user->lang['MOVE'] . '</a>' : '',
 					'STATUS'	=> (gallery_acl_check('a_moderate', $album_id)) ? '<a href="'. append_sid("{$phpbb_root_path}{$gallery_root_path}mcp.$phpEx", "mode=queue_details&amp;album_id=$album_id&amp;option_id=" . $picrow[$j]['image_id']) . '">' . $user->lang['IMAGE_STATUS'] . '</a>' : '',
-					'IP'		=> ($user->data['user_type'] == USER_FOUNDER) ? $user->lang['IP'] . ': <a href="http://www.nic.com/cgi-bin/whois.cgi?query=' . $picrow[$j]['image_user_ip'] . '">' . $picrow[$j]['image_user_ip'] . '</a><br />' : ''
+					'IP'		=> ($user->data['user_type'] == PHPBB3_USER_FOUNDER) ? $user->lang['IP'] . ': <a href="http://www.nic.com/cgi-bin/whois.cgi?query=' . $picrow[$j]['image_user_ip'] . '">' . $picrow[$j]['image_user_ip'] . '</a><br />' : ''
 				));
 			}
 		}
@@ -231,7 +231,7 @@ if ($album_data['album_user_id'] == $user->data['user_id'])
 	if (gallery_acl_check('i_upload', '-2'))
 	{
 		$sql = 'SELECT COUNT(album_id) as albums
-			FROM ' . GALLERY_ALBUMS_TABLE . "
+			FROM ' . PHPBB3_GALLERY_ALBUMS_TABLE . "
 			WHERE album_user_id = {$user->data['user_id']}";
 		$result = $db->sql_query($sql);
 		$albums = $db->sql_fetchrow($result);
@@ -243,8 +243,8 @@ if ($album_data['album_user_id'] == $user->data['user_id'])
 	}
 }
 $template->assign_vars(array(
-	'S_IS_POSTABLE'				=> ($album_data['album_type'] == FORUM_POST) ? true : false,
-	'UPLOAD_IMG'				=> /*($album_data['album_status'] == ITEM_LOCKED) ? $user->img('button_topic_locked', $post_alt) : */$user->img('button_upload_image', 'UPLOAD_IMAGE'),
+	'S_IS_POSTABLE'				=> ($album_data['album_type'] == PHPBB3_FORUM_POST) ? true : false,
+	'UPLOAD_IMG'				=> /*($album_data['album_status'] == PHPBB3_ITEM_LOCKED) ? $user->img('button_topic_locked', $post_alt) : */$user->img('button_upload_image', 'UPLOAD_IMAGE'),
 	'S_MODE'					=> $album_data['album_type'],
 	'L_MODERATORS'				=> $l_moderator,
 	'MODERATORS'				=> $moderators_list,
@@ -310,7 +310,7 @@ function cheat_obtain_guest_count($id = 0, $mode = 'forum')
 		$sql = 'SELECT COUNT(session_ip) as num_guests
 			FROM (
 				SELECT DISTINCT s.session_ip
-				FROM ' . SESSIONS_TABLE . ' s
+				FROM ' . PHPBB3_SESSIONS_TABLE . ' s
 				WHERE s.session_user_id = ' . ANONYMOUS . '
 					AND s.session_time >= ' . ($time - ((int) ($time % 60))) .
 				$reading_sql .
@@ -319,7 +319,7 @@ function cheat_obtain_guest_count($id = 0, $mode = 'forum')
 	else
 	{
 		$sql = 'SELECT COUNT(DISTINCT s.session_ip) as num_guests
-			FROM ' . SESSIONS_TABLE . ' s
+			FROM ' . PHPBB3_SESSIONS_TABLE . ' s
 			WHERE s.session_user_id = ' . ANONYMOUS . '
 				AND s.session_time >= ' . ($time - ((int) ($time % 60))) .
 			$reading_sql;
@@ -359,7 +359,7 @@ function cheat_obtain_users_online($id = 0, $mode = 'forum')
 	$time = (time() - (intval($config['load_online_time']) * 60));
 
 	$sql = 'SELECT s.session_user_id, s.session_ip, s.session_viewonline
-		FROM ' . SESSIONS_TABLE . ' s
+		FROM ' . PHPBB3_SESSIONS_TABLE . ' s
 		WHERE s.session_time >= ' . ($time - ((int) ($time % 30))) .
 			$reading_sql .
 		' AND s.session_user_id <> ' . ANONYMOUS;
@@ -399,7 +399,7 @@ function cheat_obtain_users_online_string($online_users, $id = 0, $mode = 'forum
 	if (sizeof($online_users['online_users']))
 	{
 		$sql = 'SELECT username, username_clean, user_id, user_type, user_allow_viewonline, user_colour
-				FROM ' . USERS_TABLE . '
+				FROM ' . PHPBB3_USERS_TABLE . '
 				WHERE ' . $db->sql_in_set('user_id', $online_users['online_users']) . '
 				ORDER BY username_clean ASC';
 		$result = $db->sql_query($sql);
@@ -416,7 +416,7 @@ function cheat_obtain_users_online_string($online_users, $id = 0, $mode = 'forum
 
 				if (!isset($online_users['hidden_users'][$row['user_id']]) || $auth->acl_get('u_viewonline'))
 				{
-					$user_online_link = get_username_string(($row['user_type'] <> USER_IGNORE) ? 'full' : 'no_profile', $row['user_id'], $row['username'], $row['user_colour']);
+					$user_online_link = get_username_string(($row['user_type'] <> PHPBB3_USER_IGNORE) ? 'full' : 'no_profile', $row['user_id'], $row['username'], $row['user_colour']);
 					$online_userlist .= ($online_userlist != '') ? ', ' . $user_online_link : $user_online_link;
 				}
 			}

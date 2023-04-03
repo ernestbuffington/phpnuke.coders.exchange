@@ -208,14 +208,14 @@ function lock_unlock($action, $ids)
 
 	if ($action == 'lock' || $action == 'unlock')
 	{
-		$table = TOPICS_TABLE;
+		$table = PHPBB3_TOPICS_TABLE;
 		$sql_id = 'topic_id';
 		$set_id = 'topic_status';
 		$l_prefix = 'TOPIC';
 	}
 	else
 	{
-		$table = POSTS_TABLE;
+		$table = PHPBB3_POSTS_TABLE;
 		$sql_id = 'post_id';
 		$set_id = 'post_edit_locked';
 		$l_prefix = 'POST';
@@ -252,7 +252,7 @@ function lock_unlock($action, $ids)
 	if (confirm_box(true))
 	{
 		$sql = "UPDATE $table
-			SET $set_id = " . (($action == 'lock' || $action == 'lock_post') ? ITEM_LOCKED : ITEM_UNLOCKED) . '
+			SET $set_id = " . (($action == 'lock' || $action == 'lock_post') ? PHPBB3_ITEM_LOCKED : PHPBB3_ITEM_UNLOCKED) . '
 			WHERE ' . $db->sql_in_set($sql_id, $ids);
 		$db->sql_query($sql);
 
@@ -292,7 +292,7 @@ function change_topic_type($action, $topic_ids)
 	global $auth, $user, $db, $phpEx;
 
 	// For changing topic types, we only allow operations in one forum.
-	$forum_id = check_ids($topic_ids, TOPICS_TABLE, 'topic_id', array('f_announce', 'f_sticky', 'm_'), true);
+	$forum_id = check_ids($topic_ids, PHPBB3_TOPICS_TABLE, 'topic_id', array('f_announce', 'f_sticky', 'm_'), true);
 
 	if ($forum_id === false)
 	{
@@ -302,25 +302,25 @@ function change_topic_type($action, $topic_ids)
 	switch ($action)
 	{
 		case 'make_announce':
-			$new_topic_type = POST_ANNOUNCE;
+			$new_topic_type = PHPBB3_POST_ANNOUNCE;
 			$check_acl = 'f_announce';
 			$l_new_type = (sizeof($topic_ids) == 1) ? 'MCP_MAKE_ANNOUNCEMENT' : 'MCP_MAKE_ANNOUNCEMENTS';
 		break;
 
 		case 'make_global':
-			$new_topic_type = POST_GLOBAL;
+			$new_topic_type = PHPBB3_POST_GLOBAL;
 			$check_acl = 'f_announce';
 			$l_new_type = (sizeof($topic_ids) == 1) ? 'MCP_MAKE_GLOBAL' : 'MCP_MAKE_GLOBALS';
 		break;
 
 		case 'make_sticky':
-			$new_topic_type = POST_STICKY;
+			$new_topic_type = PHPBB3_POST_STICKY;
 			$check_acl = 'f_sticky';
 			$l_new_type = (sizeof($topic_ids) == 1) ? 'MCP_MAKE_STICKY' : 'MCP_MAKE_STICKIES';
 		break;
 
 		default:
-			$new_topic_type = POST_NORMAL;
+			$new_topic_type = PHPBB3_POST_NORMAL;
 			$check_acl = '';
 			$l_new_type = (sizeof($topic_ids) == 1) ? 'MCP_MAKE_NORMAL' : 'MCP_MAKE_NORMALS';
 		break;
@@ -338,9 +338,9 @@ function change_topic_type($action, $topic_ids)
 
 	if (confirm_box(true))
 	{
-		if ($new_topic_type != POST_GLOBAL)
+		if ($new_topic_type != PHPBB3_POST_GLOBAL)
 		{
-			$sql = 'UPDATE ' . TOPICS_TABLE . "
+			$sql = 'UPDATE ' . PHPBB3_TOPICS_TABLE . "
 				SET topic_type = $new_topic_type
 				WHERE " . $db->sql_in_set('topic_id', $topic_ids) . '
 					AND forum_id <> 0';
@@ -351,14 +351,14 @@ function change_topic_type($action, $topic_ids)
 
 			if ($to_forum_id)
 			{
-				$sql = 'UPDATE ' . TOPICS_TABLE . "
+				$sql = 'UPDATE ' . PHPBB3_TOPICS_TABLE . "
 					SET topic_type = $new_topic_type, forum_id = $to_forum_id
 					WHERE " . $db->sql_in_set('topic_id', $topic_ids) . '
 						AND forum_id = 0';
 				$db->sql_query($sql);
 
 				// Update forum_ids for all posts
-				$sql = 'UPDATE ' . POSTS_TABLE . "
+				$sql = 'UPDATE ' . PHPBB3_POSTS_TABLE . "
 					SET forum_id = $to_forum_id
 					WHERE " . $db->sql_in_set('topic_id', $topic_ids) . '
 						AND forum_id = 0';
@@ -366,7 +366,7 @@ function change_topic_type($action, $topic_ids)
 
 				// Do a little forum sync stuff
 				$sql = 'SELECT SUM(t.topic_replies + t.topic_approved) as topic_posts, COUNT(t.topic_approved) as topics_authed
-					FROM ' . TOPICS_TABLE . ' t
+					FROM ' . PHPBB3_TOPICS_TABLE . ' t
 					WHERE ' . $db->sql_in_set('t.topic_id', $topic_ids);
 				$result = $db->sql_query($sql);
 				$row_data = $db->sql_fetchrow($result);
@@ -388,7 +388,7 @@ function change_topic_type($action, $topic_ids)
 
 				foreach ($sync_sql as $forum_id_key => $array)
 				{
-					$sql = 'UPDATE ' . FORUMS_TABLE . '
+					$sql = 'UPDATE ' . PHPBB3_FORUMS_TABLE . '
 						SET ' . implode(', ', $array) . '
 						WHERE forum_id = ' . $forum_id_key;
 					$db->sql_query($sql);
@@ -401,7 +401,7 @@ function change_topic_type($action, $topic_ids)
 		{
 			// Get away with those topics already being a global announcement by re-calculating $topic_ids
 			$sql = 'SELECT topic_id
-				FROM ' . TOPICS_TABLE . '
+				FROM ' . PHPBB3_TOPICS_TABLE . '
 				WHERE ' . $db->sql_in_set('topic_id', $topic_ids) . '
 					AND forum_id <> 0';
 			$result = $db->sql_query($sql);
@@ -416,24 +416,24 @@ function change_topic_type($action, $topic_ids)
 			if (sizeof($topic_ids))
 			{
 				// Delete topic shadows for global announcements
-				$sql = 'DELETE FROM ' . TOPICS_TABLE . '
+				$sql = 'DELETE FROM ' . PHPBB3_TOPICS_TABLE . '
 					WHERE ' . $db->sql_in_set('topic_moved_id', $topic_ids);
 				$db->sql_query($sql);
 
-				$sql = 'UPDATE ' . TOPICS_TABLE . "
+				$sql = 'UPDATE ' . PHPBB3_TOPICS_TABLE . "
 					SET topic_type = $new_topic_type, forum_id = 0
 						WHERE " . $db->sql_in_set('topic_id', $topic_ids);
 				$db->sql_query($sql);
 
 				// Update forum_ids for all posts
-				$sql = 'UPDATE ' . POSTS_TABLE . '
+				$sql = 'UPDATE ' . PHPBB3_POSTS_TABLE . '
 					SET forum_id = 0
 					WHERE ' . $db->sql_in_set('topic_id', $topic_ids);
 				$db->sql_query($sql);
 
 				// Do a little forum sync stuff
 				$sql = 'SELECT SUM(t.topic_replies + t.topic_approved) as topic_posts, COUNT(t.topic_approved) as topics_authed
-					FROM ' . TOPICS_TABLE . ' t
+					FROM ' . PHPBB3_TOPICS_TABLE . ' t
 					WHERE ' . $db->sql_in_set('t.topic_id', $topic_ids);
 				$result = $db->sql_query($sql);
 				$row_data = $db->sql_fetchrow($result);
@@ -455,7 +455,7 @@ function change_topic_type($action, $topic_ids)
 
 				foreach ($sync_sql as $forum_id_key => $array)
 				{
-					$sql = 'UPDATE ' . FORUMS_TABLE . '
+					$sql = 'UPDATE ' . PHPBB3_FORUMS_TABLE . '
 						SET ' . implode(', ', $array) . '
 						WHERE forum_id = ' . $forum_id_key;
 					$db->sql_query($sql);
@@ -482,10 +482,10 @@ function change_topic_type($action, $topic_ids)
 		// Global topic involved?
 		$global_involved = false;
 
-		if ($new_topic_type != POST_GLOBAL)
+		if ($new_topic_type != PHPBB3_POST_GLOBAL)
 		{
 			$sql = 'SELECT forum_id
-				FROM ' . TOPICS_TABLE . '
+				FROM ' . PHPBB3_TOPICS_TABLE . '
 				WHERE ' . $db->sql_in_set('topic_id', $topic_ids) . '
 					AND forum_id = 0';
 			$result = $db->sql_query($sql);
@@ -541,7 +541,7 @@ function mcp_move_topic($topic_ids)
 	$phpbb_root_path = PHPBB3_ROOT_DIR;
 
 	// Here we limit the operation to one forum only
-	$forum_id = check_ids($topic_ids, TOPICS_TABLE, 'topic_id', array('m_move'), true);
+	$forum_id = check_ids($topic_ids, PHPBB3_TOPICS_TABLE, 'topic_id', array('m_move'), true);
 
 	if ($forum_id === false)
 	{
@@ -571,7 +571,7 @@ function mcp_move_topic($topic_ids)
 		{
 			$forum_data = $forum_data[$to_forum_id];
 
-			if ($forum_data['forum_type'] != FORUM_POST)
+			if ($forum_data['forum_type'] != PHPBB3_FORUM_POST)
 			{
 				$additional_msg = $user->lang['FORUM_NOT_POSTABLE'];
 			}
@@ -619,7 +619,7 @@ function mcp_move_topic($topic_ids)
 		$db->sql_transaction('begin');
 
 		$sql = 'SELECT SUM(t.topic_replies + t.topic_approved) as topic_posts
-			FROM ' . TOPICS_TABLE . ' t
+			FROM ' . PHPBB3_TOPICS_TABLE . ' t
 			WHERE ' . $db->sql_in_set('t.topic_id', $topic_ids);
 		$result = $db->sql_query($sql);
 		$row_data = $db->sql_fetchrow($result);
@@ -651,16 +651,16 @@ function mcp_move_topic($topic_ids)
 			add_log('mod', $to_forum_id, $topic_id, 'LOG_MOVE', $row['forum_name'], $forum_data['forum_name']);
 
 			// If we have moved a global announcement, we need to correct the topic type
-			if ($row['topic_type'] == POST_GLOBAL)
+			if ($row['topic_type'] == PHPBB3_POST_GLOBAL)
 			{
-				$sql = 'UPDATE ' . TOPICS_TABLE . '
-					SET topic_type = ' . POST_ANNOUNCE . '
+				$sql = 'UPDATE ' . PHPBB3_TOPICS_TABLE . '
+					SET topic_type = ' . PHPBB3_POST_ANNOUNCE . '
 					WHERE topic_id = ' . (int) $row['topic_id'];
 				$db->sql_query($sql);
 			}
 
 			// Leave a redirection if required and only if the topic is visible to users
-			if ($leave_shadow && $row['topic_approved'] && $row['topic_type'] != POST_GLOBAL)
+			if ($leave_shadow && $row['topic_approved'] && $row['topic_type'] != PHPBB3_POST_GLOBAL)
 			{
 				$shadow = array(
 					'forum_id'				=>	(int) $row['forum_id'],
@@ -675,8 +675,8 @@ function mcp_move_topic($topic_ids)
 					'topic_views'			=>	(int) $row['topic_views'],
 					'topic_replies'			=>	(int) $row['topic_replies'],
 					'topic_replies_real'	=>	(int) $row['topic_replies_real'],
-					'topic_status'			=>	ITEM_MOVED,
-					'topic_type'			=>	POST_NORMAL,
+					'topic_status'			=>	PHPBB3_ITEM_MOVED,
+					'topic_type'			=>	PHPBB3_POST_NORMAL,
 					'topic_first_post_id'	=>	(int) $row['topic_first_post_id'],
 					'topic_first_poster_colour'=>(string) $row['topic_first_poster_colour'],
 					'topic_first_poster_name'=>	(string) $row['topic_first_poster_name'],
@@ -697,7 +697,7 @@ function mcp_move_topic($topic_ids)
 					'poll_last_vote'		=>	(int) $row['poll_last_vote']
 				);
 
-				$db->sql_query('INSERT INTO ' . TOPICS_TABLE . $db->sql_build_array('INSERT', $shadow));
+				$db->sql_query('INSERT INTO ' . PHPBB3_TOPICS_TABLE . $db->sql_build_array('INSERT', $shadow));
 
 				$topics_authed_moved--;
 				$topics_moved--;
@@ -716,7 +716,7 @@ function mcp_move_topic($topic_ids)
 
 		foreach ($sync_sql as $forum_id_key => $array)
 		{
-			$sql = 'UPDATE ' . FORUMS_TABLE . '
+			$sql = 'UPDATE ' . PHPBB3_FORUMS_TABLE . '
 				SET ' . implode(', ', $array) . '
 				WHERE forum_id = ' . $forum_id_key;
 			$db->sql_query($sql);
@@ -766,7 +766,7 @@ function mcp_delete_topic($topic_ids)
 	
 	$phpbb_root_path = PHPBB3_ROOT_DIR;
 
-	if (!check_ids($topic_ids, TOPICS_TABLE, 'topic_id', array('m_delete')))
+	if (!check_ids($topic_ids, PHPBB3_TOPICS_TABLE, 'topic_id', array('m_delete')))
 	{
 		return;
 	}
@@ -834,7 +834,7 @@ function mcp_delete_post($post_ids)
 	
 	$phpbb_root_path = PHPBB3_ROOT_DIR;
 
-	if (!check_ids($post_ids, POSTS_TABLE, 'post_id', array('m_delete')))
+	if (!check_ids($post_ids, PHPBB3_POSTS_TABLE, 'post_id', array('m_delete')))
 	{
 		return;
 	}
@@ -862,7 +862,7 @@ function mcp_delete_post($post_ids)
 		// with it on older versions of MySQL -- Ashe
 
 		$sql = 'SELECT DISTINCT topic_id
-			FROM ' . POSTS_TABLE . '
+			FROM ' . PHPBB3_POSTS_TABLE . '
 			WHERE ' . $db->sql_in_set('post_id', $post_ids);
 		$result = $db->sql_query($sql);
 
@@ -885,7 +885,7 @@ function mcp_delete_post($post_ids)
 		delete_posts('post_id', $post_ids);
 
 		$sql = 'SELECT COUNT(topic_id) AS topics_left
-			FROM ' . TOPICS_TABLE . '
+			FROM ' . PHPBB3_TOPICS_TABLE . '
 			WHERE ' . $db->sql_in_set('topic_id', $topic_id_list);
 		$result = $db->sql_query_limit($sql, 1);
 
@@ -957,7 +957,7 @@ function mcp_fork_topic($topic_ids)
 	
 	$phpbb_root_path = PHPBB3_ROOT_DIR;
 
-	if (!check_ids($topic_ids, TOPICS_TABLE, 'topic_id', array('m_')))
+	if (!check_ids($topic_ids, PHPBB3_TOPICS_TABLE, 'topic_id', array('m_')))
 	{
 		return;
 	}
@@ -990,7 +990,7 @@ function mcp_fork_topic($topic_ids)
 		{
 			$forum_data = $forum_data[$to_forum_id];
 
-			if ($forum_data['forum_type'] != FORUM_POST)
+			if ($forum_data['forum_type'] != PHPBB3_FORUM_POST)
 			{
 				$additional_msg = $user->lang['FORUM_NOT_POSTABLE'];
 			}
@@ -1045,7 +1045,7 @@ function mcp_fork_topic($topic_ids)
 				'poll_length'				=> (int) $topic_row['poll_length']
 			);
 
-			$db->sql_query('INSERT INTO ' . TOPICS_TABLE . ' ' . $db->sql_build_array('INSERT', $sql_ary));
+			$db->sql_query('INSERT INTO ' . PHPBB3_TOPICS_TABLE . ' ' . $db->sql_build_array('INSERT', $sql_ary));
 			$new_topic_id = $db->sql_nextid();
 			$new_topic_id_list[$topic_id] = $new_topic_id;
 
@@ -1054,7 +1054,7 @@ function mcp_fork_topic($topic_ids)
 				$poll_rows = array();
 
 				$sql = 'SELECT *
-					FROM ' . POLL_OPTIONS_TABLE . "
+					FROM ' . PHPBB3_POLL_OPTIONS_TABLE . "
 					WHERE topic_id = $topic_id";
 				$result = $db->sql_query($sql);
 
@@ -1067,12 +1067,12 @@ function mcp_fork_topic($topic_ids)
 						'poll_option_total'	=> 0
 					);
 
-					$db->sql_query('INSERT INTO ' . POLL_OPTIONS_TABLE . ' ' . $db->sql_build_array('INSERT', $sql_ary));
+					$db->sql_query('INSERT INTO ' . PHPBB3_POLL_OPTIONS_TABLE . ' ' . $db->sql_build_array('INSERT', $sql_ary));
 				}
 			}
 
 			$sql = 'SELECT *
-				FROM ' . POSTS_TABLE . "
+				FROM ' . PHPBB3_POSTS_TABLE . "
 				WHERE topic_id = $topic_id
 				ORDER BY post_time ASC";
 			$result = $db->sql_query($sql);
@@ -1120,7 +1120,7 @@ function mcp_fork_topic($topic_ids)
 					'post_postcount'	=> 0,
 				);
 
-				$db->sql_query('INSERT INTO ' . POSTS_TABLE . ' ' . $db->sql_build_array('INSERT', $sql_ary));
+				$db->sql_query('INSERT INTO ' . PHPBB3_POSTS_TABLE . ' ' . $db->sql_build_array('INSERT', $sql_ary));
 				$new_post_id = $db->sql_nextid();
 
 				// Copy whether the topic is dotted
@@ -1129,7 +1129,7 @@ function mcp_fork_topic($topic_ids)
 				// Copy Attachments
 				if ($row['post_attachment'])
 				{
-					$sql = 'SELECT * FROM ' . ATTACHMENTS_TABLE . "
+					$sql = 'SELECT * FROM ' . PHPBB3_ATTACHMENTS_TABLE . "
 						WHERE post_msg_id = {$row['post_id']}
 							AND topic_id = $topic_id
 							AND in_message = 0";
@@ -1159,13 +1159,13 @@ function mcp_fork_topic($topic_ids)
 
 					if (sizeof($sql_ary))
 					{
-						$db->sql_multi_insert(ATTACHMENTS_TABLE, $sql_ary);
+						$db->sql_multi_insert(PHPBB3_ATTACHMENTS_TABLE, $sql_ary);
 					}
 				}
 			}
 
 			$sql = 'SELECT user_id, notify_status
-				FROM ' . TOPICS_WATCH_TABLE . '
+				FROM ' . PHPBB3_TOPICS_WATCH_TABLE . '
 				WHERE topic_id = ' . $topic_id;
 			$result = $db->sql_query($sql);
 
@@ -1182,7 +1182,7 @@ function mcp_fork_topic($topic_ids)
 
 			if (sizeof($sql_ary))
 			{
-				$db->sql_multi_insert(TOPICS_WATCH_TABLE, $sql_ary);
+				$db->sql_multi_insert(PHPBB3_TOPICS_WATCH_TABLE, $sql_ary);
 			}
 		}
 
@@ -1197,7 +1197,7 @@ function mcp_fork_topic($topic_ids)
 
 		foreach ($sync_sql as $forum_id_key => $array)
 		{
-			$sql = 'UPDATE ' . FORUMS_TABLE . '
+			$sql = 'UPDATE ' . PHPBB3_FORUMS_TABLE . '
 				SET ' . implode(', ', $array) . '
 				WHERE forum_id = ' . $forum_id_key;
 			$db->sql_query($sql);

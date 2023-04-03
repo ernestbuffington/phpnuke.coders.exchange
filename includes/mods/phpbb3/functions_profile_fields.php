@@ -61,7 +61,7 @@ class custom_profile
 		}
 
 		$sql = 'SELECT l.*, f.*
-			FROM ' . PROFILE_LANG_TABLE . ' l, ' . PROFILE_FIELDS_TABLE . " f
+			FROM ' . PHPBB3_PROFILE_LANG_TABLE . ' l, ' . PHPBB3_PROFILE_FIELDS_TABLE . " f
 			WHERE f.field_active = 1
 				$sql_where
 				AND l.lang_id = $lang_id
@@ -212,7 +212,7 @@ class custom_profile
 
 		// Display hidden/no_view fields for admin/moderator
 		$sql = 'SELECT l.*, f.*
-			FROM ' . PROFILE_LANG_TABLE . ' l, ' . PROFILE_FIELDS_TABLE . ' f
+			FROM ' . PHPBB3_PROFILE_LANG_TABLE . ' l, ' . PHPBB3_PROFILE_FIELDS_TABLE . ' f
 			WHERE l.lang_id = ' . $user->get_iso_lang_id() . '
 				AND f.field_active = 1 ' .
 				((!$auth->acl_gets('a_', 'm_') && !$auth->acl_getf_global('m_')) ? '	AND f.field_hide = 0 ' : '') . '
@@ -247,7 +247,7 @@ class custom_profile
 		else
 		{
 			$sql = 'SELECT option_id, lang_value
-				FROM ' . PROFILE_FIELDS_LANG_TABLE . "
+				FROM ' . PHPBB3_PROFILE_FIELDS_LANG_TABLE . "
 					WHERE field_id = $field_id
 					AND lang_id = $lang_id
 					AND field_type = $field_type
@@ -292,7 +292,7 @@ class custom_profile
 		}
 
 		$sql = 'SELECT l.*, f.*
-			FROM ' . PROFILE_LANG_TABLE . ' l, ' . PROFILE_FIELDS_TABLE . " f
+			FROM ' . PHPBB3_PROFILE_LANG_TABLE . ' l, ' . PHPBB3_PROFILE_FIELDS_TABLE . " f
 			WHERE l.lang_id = $lang_id
 				AND f.field_active = 1
 				$sql_where
@@ -380,7 +380,7 @@ class custom_profile
 			}
 
 			$sql = 'SELECT *
-				FROM ' . PROFILE_FIELDS_DATA_TABLE . '
+				FROM ' . PHPBB3_PROFILE_FIELDS_DATA_TABLE . '
 				WHERE ' . $db->sql_in_set('user_id', array_map('intval', $user_id));
 			$result = $db->sql_query($sql);
 
@@ -813,7 +813,7 @@ class custom_profile
 		}
 
 		$sql = 'SELECT f.field_type, f.field_ident, f.field_default_value, l.lang_default_value
-			FROM ' . PROFILE_LANG_TABLE . ' l, ' . PROFILE_FIELDS_TABLE . ' f
+			FROM ' . PHPBB3_PROFILE_LANG_TABLE . ' l, ' . PHPBB3_PROFILE_FIELDS_TABLE . ' f
 			WHERE l.lang_id = ' . $user->get_iso_lang_id() . '
 				' . ((sizeof($sql_not_in)) ? ' AND ' . $db->sql_in_set('f.field_ident', $sql_not_in, true) : '') . '
 				AND l.field_id = f.field_id';

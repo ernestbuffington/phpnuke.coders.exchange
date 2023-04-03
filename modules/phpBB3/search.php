@@ -111,9 +111,9 @@ if ($keywords || $author || $author_id || $search_id || $submit)
 		$sql_where = (strpos($author, '*') !== false) ? ' username_clean ' . $db->sql_like_expression(str_replace('*', $db->any_char, utf8_clean_string($author))) : " username_clean = '" . $db->sql_escape(utf8_clean_string($author)) . "'";
 
 		$sql = 'SELECT user_id
-			FROM ' . USERS_TABLE . "
+			FROM ' . PHPBB3_USERS_TABLE . "
 			WHERE $sql_where
-				AND user_type IN (" . USER_NORMAL . ', ' . USER_FOUNDER . ')';
+				AND user_type IN (" . PHPBB3_USER_NORMAL . ', ' . PHPBB3_USER_FOUNDER . ')';
 		$result = $db->sql_query_limit($sql, 100);
 
 		while ($row = $db->sql_fetchrow($result))
@@ -156,8 +156,8 @@ if ($keywords || $author || $author_id || $search_id || $submit)
 	$not_in_fid = (sizeof($ex_fid_ary)) ? 'WHERE ' . $db->sql_in_set('f.forum_id', $ex_fid_ary, true) . " OR (f.forum_password <> '' AND fa.user_id <> " . (int) $user->data['user_id'] . ')' : "";
 
 	$sql = 'SELECT f.forum_id, f.forum_name, f.parent_id, f.forum_type, f.right_id, f.forum_password, fa.user_id
-		FROM ' . FORUMS_TABLE . ' f
-		LEFT JOIN ' . FORUMS_ACCESS_TABLE . " fa ON (fa.forum_id = f.forum_id
+		FROM ' . PHPBB3_FORUMS_TABLE . ' f
+		LEFT JOIN ' . PHPBB3_FORUMS_ACCESS_TABLE . " fa ON (fa.forum_id = f.forum_id
 			AND fa.session_id = '" . $db->sql_escape($user->session_id) . "')
 		$not_in_fid
 		ORDER BY f.left_id";
@@ -279,7 +279,7 @@ if ($keywords || $author || $author_id || $search_id || $submit)
 				$last_post_time_sql = ($sort_days) ? ' AND t.topic_last_post_time > ' . (time() - ($sort_days * 24 * 3600)) : '';
 
 				$sql = 'SELECT t.topic_last_post_time, t.topic_id
-					FROM ' . TOPICS_TABLE . " t
+					FROM ' . PHPBB3_TOPICS_TABLE . " t
 					WHERE t.topic_moved_id = 0
 						$last_post_time_sql
 						" . str_replace(array('p.', 'post_'), array('t.', 'topic_'), $m_approve_fid_sql) . '
@@ -296,7 +296,7 @@ if ($keywords || $author || $author_id || $search_id || $submit)
 				$sort_by_sql['s'] = ($show_results == 'posts') ? 'p.post_subject' : 't.topic_title';
 				$sql_sort = 'ORDER BY ' . $sort_by_sql[$sort_key] . (($sort_dir == 'a') ? ' ASC' : ' DESC');
 
-				$sort_join = ($sort_key == 'f') ? FORUMS_TABLE . ' f, ' : '';
+				$sort_join = ($sort_key == 'f') ? PHPBB3_FORUMS_TABLE . ' f, ' : '';
 				$sql_sort = ($sort_key == 'f') ? ' AND f.forum_id = p.forum_id ' . $sql_sort : $sql_sort;
 
 				if ($sort_days)
@@ -311,13 +311,13 @@ if ($keywords || $author || $author_id || $search_id || $submit)
 
 				if ($sort_key == 'a')
 				{
-					$sort_join = USERS_TABLE . ' u, ';
+					$sort_join = PHPBB3_USERS_TABLE . ' u, ';
 					$sql_sort = ' AND u.user_id = p.poster_id ' . $sql_sort;
 				}
 				if ($show_results == 'posts')
 				{
 					$sql = "SELECT p.post_id
-						FROM $sort_join" . POSTS_TABLE . ' p, ' . TOPICS_TABLE . " t
+						FROM $sort_join" . PHPBB3_POSTS_TABLE . ' p, ' . PHPBB3_TOPICS_TABLE . " t
 						WHERE t.topic_replies = 0
 							AND p.topic_id = t.topic_id
 							$last_post_time
@@ -329,7 +329,7 @@ if ($keywords || $author || $author_id || $search_id || $submit)
 				else
 				{
 					$sql = 'SELECT DISTINCT ' . $sort_by_sql[$sort_key] . ", p.topic_id
-						FROM $sort_join" . POSTS_TABLE . ' p, ' . TOPICS_TABLE . " t
+						FROM $sort_join" . PHPBB3_POSTS_TABLE . ' p, ' . PHPBB3_TOPICS_TABLE . " t
 						WHERE t.topic_replies = 0
 							AND t.topic_moved_id = 0
 							AND p.topic_id = t.topic_id
@@ -356,7 +356,7 @@ if ($keywords || $author || $author_id || $search_id || $submit)
 				if ($show_results == 'posts')
 				{
 					$sql = 'SELECT p.post_id
-						FROM ' . POSTS_TABLE . ' p
+						FROM ' . PHPBB3_POSTS_TABLE . ' p
 						WHERE p.post_time > ' . $user->data['user_lastvisit'] . "
 							$m_approve_fid_sql
 							" . ((sizeof($ex_fid_ary)) ? ' AND ' . $db->sql_in_set('p.forum_id', $ex_fid_ary, true) : '') . "
@@ -366,7 +366,7 @@ if ($keywords || $author || $author_id || $search_id || $submit)
 				else
 				{
 					$sql = 'SELECT t.topic_id
-						FROM ' . TOPICS_TABLE . ' t
+						FROM ' . PHPBB3_TOPICS_TABLE . ' t
 						WHERE t.topic_last_post_time > ' . $user->data['user_lastvisit'] . '
 							AND t.topic_moved_id = 0
 							' . str_replace(array('p.', 'post_'), array('t.', 'topic_'), $m_approve_fid_sql) . '
@@ -516,7 +516,7 @@ if ($keywords || $author || $author_id || $search_id || $submit)
 		{
 			// @todo Joining this query to the one below?
 			$sql = 'SELECT zebra_id, friend, foe
-				FROM ' . ZEBRA_TABLE . '
+				FROM ' . PHPBB3_ZEBRA_TABLE . '
 				WHERE user_id = ' . $user->data['user_id'];
 			$result = $db->sql_query($sql);
 
@@ -528,33 +528,33 @@ if ($keywords || $author || $author_id || $search_id || $submit)
 			$db->sql_freeresult($result);
 
 			$sql = 'SELECT p.*, f.forum_id, f.forum_name, t.*, u.username, u.username_clean, u.user_sig, u.user_sig_bbcode_uid, u.user_colour
-				FROM ' . POSTS_TABLE . ' p
-					LEFT JOIN ' . TOPICS_TABLE . ' t ON (p.topic_id = t.topic_id)
-					LEFT JOIN ' . FORUMS_TABLE . ' f ON (p.forum_id = f.forum_id)
-					LEFT JOIN ' . USERS_TABLE . " u ON (p.poster_id = u.user_id)
+				FROM ' . PHPBB3_POSTS_TABLE . ' p
+					LEFT JOIN ' . PHPBB3_TOPICS_TABLE . ' t ON (p.topic_id = t.topic_id)
+					LEFT JOIN ' . PHPBB3_FORUMS_TABLE . ' f ON (p.forum_id = f.forum_id)
+					LEFT JOIN ' . PHPBB3_USERS_TABLE . " u ON (p.poster_id = u.user_id)
 				WHERE $sql_where";
 		}
 		else
 		{
-			$sql_from = TOPICS_TABLE . ' t
-				LEFT JOIN ' . FORUMS_TABLE . ' f ON (f.forum_id = t.forum_id)
-				' . (($sort_key == 'a') ? ' LEFT JOIN ' . USERS_TABLE . ' u ON (u.user_id = t.topic_poster) ' : '');
+			$sql_from = PHPBB3_TOPICS_TABLE . ' t
+				LEFT JOIN ' . PHPBB3_FORUMS_TABLE . ' f ON (f.forum_id = t.forum_id)
+				' . (($sort_key == 'a') ? ' LEFT JOIN ' . PHPBB3_USERS_TABLE . ' u ON (u.user_id = t.topic_poster) ' : '');
 			$sql_select = 't.*, f.forum_id, f.forum_name';
 
 			if ($user->data['is_registered'])
 			{
 				if ($config['load_db_track'] && $author_id !== $user->data['user_id'])
 				{
-					$sql_from .= ' LEFT JOIN ' . TOPICS_POSTED_TABLE . ' tp ON (tp.user_id = ' . $user->data['user_id'] . '
+					$sql_from .= ' LEFT JOIN ' . PHPBB3_TOPICS_POSTED_TABLE . ' tp ON (tp.user_id = ' . $user->data['user_id'] . '
 						AND t.topic_id = tp.topic_id)';
 					$sql_select .= ', tp.topic_posted';
 				}
 
 				if ($config['load_db_lastread'])
 				{
-					$sql_from .= ' LEFT JOIN ' . TOPICS_TRACK_TABLE . ' tt ON (tt.user_id = ' . $user->data['user_id'] . '
+					$sql_from .= ' LEFT JOIN ' . PHPBB3_TOPICS_TRACK_TABLE . ' tt ON (tt.user_id = ' . $user->data['user_id'] . '
 							AND t.topic_id = tt.topic_id)
-						LEFT JOIN ' . FORUMS_TRACK_TABLE . ' ft ON (ft.user_id = ' . $user->data['user_id'] . '
+						LEFT JOIN ' . PHPBB3_FORUMS_TRACK_TABLE . ' ft ON (ft.user_id = ' . $user->data['user_id'] . '
 							AND ft.forum_id = f.forum_id)';
 					$sql_select .= ', tt.mark_time, ft.mark_time as f_mark_time';
 				}
@@ -581,7 +581,7 @@ if ($keywords || $author || $author_id || $search_id || $submit)
 			$forums = $rowset = $shadow_topic_list = array();
 			while ($row = $db->sql_fetchrow($result))
 			{
-				if ($row['topic_status'] == ITEM_MOVED)
+				if ($row['topic_status'] == PHPBB3_ITEM_MOVED)
 				{
 					$shadow_topic_list[$row['topic_moved_id']] = $row['topic_id'];
 				}
@@ -601,7 +601,7 @@ if ($keywords || $author || $author_id || $search_id || $submit)
 			if (sizeof($shadow_topic_list))
 			{
 				$sql = 'SELECT *
-					FROM ' . TOPICS_TABLE . '
+					FROM ' . PHPBB3_TOPICS_TABLE . '
 					WHERE ' . $db->sql_in_set('topic_id', array_keys($shadow_topic_list));
 				$result = $db->sql_query($sql);
 
@@ -707,7 +707,7 @@ if ($keywords || $author || $author_id || $search_id || $submit)
 			if (sizeof($attach_list))
 			{
 				$sql = 'SELECT *
-					FROM ' . ATTACHMENTS_TABLE . '
+					FROM ' . PHPBB3_ATTACHMENTS_TABLE . '
 					WHERE ' . $db->sql_in_set('post_msg_id', $attach_list) . '
 						AND in_message = 0
 					ORDER BY filetime DESC, post_msg_id ASC';
@@ -749,8 +749,8 @@ if ($keywords || $author || $author_id || $search_id || $submit)
 
 					// Determine first forum the user is able to read (must not be a category)
 					$sql = 'SELECT forum_id
-						FROM ' . FORUMS_TABLE . '
-						WHERE forum_type = ' . FORUM_POST;
+						FROM ' . PHPBB3_FORUMS_TABLE . '
+						WHERE forum_type = ' . PHPBB3_FORUM_POST;
 
 					if (sizeof($forum_ary))
 					{
@@ -934,8 +934,8 @@ if ($keywords || $author || $author_id || $search_id || $submit)
 // Search forum
 $s_forums = '';
 $sql = 'SELECT f.forum_id, f.forum_name, f.parent_id, f.forum_type, f.left_id, f.right_id, f.forum_password, f.enable_indexing, fa.user_id
-	FROM ' . FORUMS_TABLE . ' f
-	LEFT JOIN ' . FORUMS_ACCESS_TABLE . " fa ON (fa.forum_id = f.forum_id
+	FROM ' . PHPBB3_FORUMS_TABLE . ' f
+	LEFT JOIN ' . PHPBB3_FORUMS_ACCESS_TABLE . " fa ON (fa.forum_id = f.forum_id
 		AND fa.session_id = '" . $db->sql_escape($user->session_id) . "')
 	ORDER BY f.left_id ASC";
 $result = $db->sql_query($sql);
@@ -946,19 +946,19 @@ $pad_store = array('0' => '');
 
 while ($row = $db->sql_fetchrow($result))
 {
-	if ($row['forum_type'] == FORUM_CAT && ($row['left_id'] + 1 == $row['right_id']))
+	if ($row['forum_type'] == PHPBB3_FORUM_CAT && ($row['left_id'] + 1 == $row['right_id']))
 	{
 		// Non-postable forum with no subforums, don't display
 		continue;
 	}
 
-	if ($row['forum_type'] == FORUM_POST && ($row['left_id'] + 1 == $row['right_id']) && !$row['enable_indexing'])
+	if ($row['forum_type'] == PHPBB3_FORUM_POST && ($row['left_id'] + 1 == $row['right_id']) && !$row['enable_indexing'])
 	{
 		// Postable forum with no subforums and indexing disabled, don't display
 		continue;
 	}
 
-	if ($row['forum_type'] == FORUM_LINK || ($row['forum_password'] && !$row['user_id']))
+	if ($row['forum_type'] == PHPBB3_FORUM_LINK || ($row['forum_password'] && !$row['user_id']))
 	{
 		// if this forum is a link or password protected (user has not entered the password yet) then skip to the next branch
 		continue;
@@ -1071,7 +1071,7 @@ if ($auth->acl_get('a_search'))
 	{
 		case 'oracle':
 			$sql = 'SELECT search_time, search_keywords
-				FROM ' . SEARCH_RESULTS_TABLE . '
+				FROM ' . PHPBB3_SEARCH_RESULTS_TABLE . '
 				WHERE dbms_lob.getlength(search_keywords) > 0
 				ORDER BY search_time DESC';
 		break;
@@ -1079,14 +1079,14 @@ if ($auth->acl_get('a_search'))
 		case 'mssql':
 		case 'mssql_odbc':
 			$sql = 'SELECT search_time, search_keywords
-				FROM ' . SEARCH_RESULTS_TABLE . '
+				FROM ' . PHPBB3_SEARCH_RESULTS_TABLE . '
 				WHERE DATALENGTH(search_keywords) > 0
 				ORDER BY search_time DESC';
 		break;
 
 		default:
 			$sql = 'SELECT search_time, search_keywords
-				FROM ' . SEARCH_RESULTS_TABLE . '
+				FROM ' . PHPBB3_SEARCH_RESULTS_TABLE . '
 				WHERE search_keywords <> \'\'
 				ORDER BY search_time DESC';
 		break;

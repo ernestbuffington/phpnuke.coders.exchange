@@ -13,7 +13,7 @@ define('IN_PHPBB', true);
 $phpbb_root_path = (defined('PHPBB_ROOT_PATH')) ? PHPBB_ROOT_PATH : '../';
 $phpEx = substr(strrchr(__FILE__, '.'), 1);
 include($phpbb_root_path . 'common.' . $phpEx);
-$gallery_root_path = GALLERY_ROOT_PATH;
+$gallery_root_path = PHPBB3_GALLERY_ROOT_PATH;
 include($phpbb_root_path . 'includes/functions_display.' . $phpEx);
 
 // Start session management
@@ -40,7 +40,7 @@ if (!$image_id)
 // ------------------------------------
 
 $sql = 'SELECT *
-	FROM ' . GALLERY_IMAGES_TABLE . '
+	FROM ' . PHPBB3_GALLERY_IMAGES_TABLE . '
 	WHERE image_id = ' . $image_id . '
 	LIMIT 1';
 $result = $db->sql_query($sql);
@@ -61,7 +61,7 @@ if (empty($image_data) or !file_exists($phpbb_root_path . GALLERY_UPLOAD_PATH . 
 // Get the current Category Info
 // ------------------------------------
 $sql = 'SELECT *
-	FROM ' . GALLERY_ALBUMS_TABLE . '
+	FROM ' . PHPBB3_GALLERY_ALBUMS_TABLE . '
 	WHERE album_id = ' . $album_id;
 $result = $db->sql_query($sql);
 $album_data = $db->sql_fetchrow($result);

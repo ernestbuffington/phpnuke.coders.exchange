@@ -91,8 +91,8 @@ class acp_permissions
 			$sql_and = (!$config['coppa_enable']) ? " AND group_name <> 'REGISTERED_COPPA'" : '';
 
 			$sql = 'SELECT group_id
-				FROM ' . GROUPS_TABLE . '
-				WHERE group_type = ' . GROUP_SPECIAL . "
+				FROM ' . PHPBB3_GROUPS_TABLE . '
+				WHERE group_type = ' . PHPBB3_GROUP_SPECIAL . "
 				$sql_and";
 			$result = $db->sql_query($sql);
 
@@ -125,7 +125,7 @@ class acp_permissions
 		if ($all_forums)
 		{
 			$sql = 'SELECT forum_id
-				FROM ' . FORUMS_TABLE . '
+				FROM ' . PHPBB3_FORUMS_TABLE . '
 				ORDER BY left_id';
 			$result = $db->sql_query($sql);
 
@@ -449,7 +449,7 @@ class acp_permissions
 			if (sizeof($forum_id))
 			{
 				$sql = 'SELECT forum_name
-					FROM ' . FORUMS_TABLE . '
+					FROM ' . PHPBB3_FORUMS_TABLE . '
 					WHERE ' . $db->sql_in_set('forum_id', $forum_id) . '
 					ORDER BY left_id ASC';
 				$result = $db->sql_query($sql);
@@ -478,7 +478,7 @@ class acp_permissions
 
 		$template->assign_vars(array(
 			'S_PERMISSION_DROPDOWN'		=> (sizeof($this->permission_dropdown) > 1) ? $this->build_permission_dropdown($this->permission_dropdown, $permission_type, $permission_scope) : false,
-			'L_PERMISSION_TYPE'			=> $user->lang['ACL_TYPE_' . strtoupper($permission_type)],
+			'L_PERMISSION_TYPE'			=> $user->lang['PHPBB3_ACL_TYPE_' . strtoupper($permission_type)],
 
 			'U_ACTION'					=> $this->u_action,
 			'S_HIDDEN_FIELDS'			=> $s_hidden_fields)
@@ -490,7 +490,7 @@ class acp_permissions
 				'S_SETTING_PERMISSIONS'		=> true)
 			);
 
-			$hold_ary = $auth_admin->get_mask('set', (sizeof($user_id)) ? $user_id : false, (sizeof($group_id)) ? $group_id : false, (sizeof($forum_id)) ? $forum_id : false, $permission_type, $permission_scope, ACL_NO);
+			$hold_ary = $auth_admin->get_mask('set', (sizeof($user_id)) ? $user_id : false, (sizeof($group_id)) ? $group_id : false, (sizeof($forum_id)) ? $forum_id : false, $permission_type, $permission_scope, PHPBB3_PHPBB3_ACL_NO);
 			$auth_admin->display_mask('set', $permission_type, $hold_ary, ((sizeof($user_id)) ? 'user' : 'group'), (($permission_scope == 'local') ? true : false));
 		}
 		else
@@ -499,7 +499,7 @@ class acp_permissions
 				'S_VIEWING_PERMISSIONS'		=> true)
 			);
 
-			$hold_ary = $auth_admin->get_mask('view', (sizeof($user_id)) ? $user_id : false, (sizeof($group_id)) ? $group_id : false, (sizeof($forum_id)) ? $forum_id : false, $permission_type, $permission_scope, ACL_NEVER);
+			$hold_ary = $auth_admin->get_mask('view', (sizeof($user_id)) ? $user_id : false, (sizeof($group_id)) ? $group_id : false, (sizeof($forum_id)) ? $forum_id : false, $permission_type, $permission_scope, PHPBB3_PHPBB3_ACL_NEVER);
 			$auth_admin->display_mask('view', $permission_type, $hold_ary, ((sizeof($user_id)) ? 'user' : 'group'), (($permission_scope == 'local') ? true : false));
 		}
 	}
@@ -583,17 +583,17 @@ class acp_permissions
 		switch ($mode)
 		{
 			case 'user':
-				$table = USERS_TABLE;
+				$table = PHPBB3_USERS_TABLE;
 				$sql_id = 'user_id';
 			break;
 
 			case 'group':
-				$table = GROUPS_TABLE;
+				$table = PHPBB3_GROUPS_TABLE;
 				$sql_id = 'group_id';
 			break;
 
 			case 'forum':
-				$table = FORUMS_TABLE;
+				$table = PHPBB3_FORUMS_TABLE;
 				$sql_id = 'forum_id';
 			break;
 		}
@@ -784,7 +784,7 @@ class acp_permissions
 		global $db;
 
 		$sql = 'SELECT o.auth_option, r.auth_setting
-			FROM ' . ACL_OPTIONS_TABLE . ' o, ' . ACL_ROLES_DATA_TABLE . ' r
+			FROM ' . PHPBB3_ACL_OPTIONS_TABLE . ' o, ' . PHPBB3_ACL_ROLES_DATA_TABLE . ' r
 			WHERE o.auth_option_id = r.auth_option_id
 				AND r.role_id = ' . $role_id;
 		$result = $db->sql_query($sql);
@@ -796,10 +796,10 @@ class acp_permissions
 		}
 		$db->sql_freeresult($result);
 
-		// We need to add any ACL_NO setting from auth_settings to compare correctly
+		// We need to add any PHPBB3_PHPBB3_ACL_NO setting from auth_settings to compare correctly
 		foreach ($auth_settings as $option => $setting)
 		{
-			if ($setting == ACL_NO)
+			if ($setting == PHPBB3_PHPBB3_ACL_NO)
 			{
 				$test_auth_settings[$option] = $setting;
 			}
@@ -860,14 +860,14 @@ class acp_permissions
 		}
 
 		// Logging ... first grab user or groupnames ...
-		$sql = ($ug_type == 'group') ? 'SELECT group_name as name, group_type FROM ' . GROUPS_TABLE . ' WHERE ' : 'SELECT username as name FROM ' . USERS_TABLE . ' WHERE ';
+		$sql = ($ug_type == 'group') ? 'SELECT group_name as name, group_type FROM ' . PHPBB3_GROUPS_TABLE . ' WHERE ' : 'SELECT username as name FROM ' . PHPBB3_USERS_TABLE . ' WHERE ';
 		$sql .= $db->sql_in_set(($ug_type == 'group') ? 'group_id' : 'user_id', array_map('intval', $ug_id));
 		$result = $db->sql_query($sql);
 
 		$l_ug_list = '';
 		while ($row = $db->sql_fetchrow($result))
 		{
-			$l_ug_list .= (($l_ug_list != '') ? ', ' : '') . ((isset($row['group_type']) && $row['group_type'] == GROUP_SPECIAL) ? '<span class="sep">' . $user->lang['G_' . $row['name']] . '</span>' : $row['name']);
+			$l_ug_list .= (($l_ug_list != '') ? ', ' : '') . ((isset($row['group_type']) && $row['group_type'] == PHPBB3_GROUP_SPECIAL) ? '<span class="sep">' . $user->lang['G_' . $row['name']] . '</span>' : $row['name']);
 		}
 		$db->sql_freeresult($result);
 
@@ -875,13 +875,13 @@ class acp_permissions
 
 		if ($forum_id[0] == 0)
 		{
-			add_log('admin', 'LOG_ACL_' . strtoupper($action) . '_' . strtoupper($mode) . '_' . strtoupper($permission_type), $l_ug_list);
+			add_log('admin', 'LOG_PHPBB3_ACL_' . strtoupper($action) . '_' . strtoupper($mode) . '_' . strtoupper($permission_type), $l_ug_list);
 		}
 		else
 		{
 			// Grab the forum details if non-zero forum_id
 			$sql = 'SELECT forum_name
-				FROM ' . FORUMS_TABLE . '
+				FROM ' . PHPBB3_FORUMS_TABLE . '
 				WHERE ' . $db->sql_in_set('forum_id', $forum_id);
 			$result = $db->sql_query($sql);
 
@@ -892,7 +892,7 @@ class acp_permissions
 			}
 			$db->sql_freeresult($result);
 
-			add_log('admin', 'LOG_ACL_' . strtoupper($action) . '_' . strtoupper($mode) . '_' . strtoupper($permission_type), $l_forum_list, $l_ug_list);
+			add_log('admin', 'LOG_PHPBB3_ACL_' . strtoupper($action) . '_' . strtoupper($mode) . '_' . strtoupper($permission_type), $l_forum_list, $l_ug_list);
 		}
 	}
 
@@ -906,7 +906,7 @@ class acp_permissions
 		if ($user_id != $user->data['user_id'])
 		{
 			$sql = 'SELECT user_id, username, user_permissions, user_type
-				FROM ' . USERS_TABLE . '
+				FROM ' . PHPBB3_USERS_TABLE . '
 				WHERE user_id = ' . $user_id;
 			$result = $db->sql_query($sql);
 			$userdata = $db->sql_fetchrow($result);
@@ -927,7 +927,7 @@ class acp_permissions
 		if ($forum_id)
 		{
 			$sql = 'SELECT forum_name
-				FROM ' . FORUMS_TABLE . "
+				FROM ' . PHPBB3_FORUMS_TABLE . "
 				WHERE forum_id = $forum_id";
 			$result = $db->sql_query($sql, 3600);
 			$forum_name = $db->sql_fetchfield('forum_name');
@@ -955,8 +955,8 @@ class acp_permissions
 		);
 
 		$sql = 'SELECT DISTINCT g.group_name, g.group_id, g.group_type
-			FROM ' . GROUPS_TABLE . ' g
-				LEFT JOIN ' . USER_GROUP_TABLE . ' ug ON (ug.group_id = g.group_id)
+			FROM ' . PHPBB3_GROUPS_TABLE . ' g
+				LEFT JOIN ' . PHPBB3_USER_GROUP_TABLE . ' ug ON (ug.group_id = g.group_id)
 			WHERE ug.user_id = ' . $user_id . '
 				AND ug.user_pending = 0
 			ORDER BY g.group_type DESC, g.group_id DESC';
@@ -966,13 +966,13 @@ class acp_permissions
 		while ($row = $db->sql_fetchrow($result))
 		{
 			$groups[$row['group_id']] = array(
-				'auth_setting'		=> ACL_NO,
-				'group_name'		=> ($row['group_type'] == GROUP_SPECIAL) ? $user->lang['G_' . $row['group_name']] : $row['group_name']
+				'auth_setting'		=> PHPBB3_PHPBB3_ACL_NO,
+				'group_name'		=> ($row['group_type'] == PHPBB3_GROUP_SPECIAL) ? $user->lang['G_' . $row['group_name']] : $row['group_name']
 			);
 		}
 		$db->sql_freeresult($result);
 
-		$total = ACL_NO;
+		$total = PHPBB3_PHPBB3_ACL_NO;
 		$add_key = (($forum_id) ? '_LOCAL' : '');
 
 		if (sizeof($groups))
@@ -990,18 +990,18 @@ class acp_permissions
 			{
 				switch ($row['auth_setting'])
 				{
-					case ACL_NO:
+					case PHPBB3_PHPBB3_ACL_NO:
 						$information = $user->lang['TRACE_GROUP_NO' . $add_key];
 					break;
 
-					case ACL_YES:
-						$information = ($total == ACL_YES) ? $user->lang['TRACE_GROUP_YES_TOTAL_YES' . $add_key] : (($total == ACL_NEVER) ? $user->lang['TRACE_GROUP_YES_TOTAL_NEVER' . $add_key] : $user->lang['TRACE_GROUP_YES_TOTAL_NO' . $add_key]);
-						$total = ($total == ACL_NO) ? ACL_YES : $total;
+					case PHPBB3_PHPBB3_ACL_YES:
+						$information = ($total == PHPBB3_PHPBB3_ACL_YES) ? $user->lang['TRACE_GROUP_YES_TOTAL_YES' . $add_key] : (($total == PHPBB3_PHPBB3_ACL_NEVER) ? $user->lang['TRACE_GROUP_YES_TOTAL_NEVER' . $add_key] : $user->lang['TRACE_GROUP_YES_TOTAL_NO' . $add_key]);
+						$total = ($total == PHPBB3_PHPBB3_ACL_NO) ? PHPBB3_PHPBB3_ACL_YES : $total;
 					break;
 
-					case ACL_NEVER:
-						$information = ($total == ACL_YES) ? $user->lang['TRACE_GROUP_NEVER_TOTAL_YES' . $add_key] : (($total == ACL_NEVER) ? $user->lang['TRACE_GROUP_NEVER_TOTAL_NEVER' . $add_key] : $user->lang['TRACE_GROUP_NEVER_TOTAL_NO' . $add_key]);
-						$total = ACL_NEVER;
+					case PHPBB3_PHPBB3_ACL_NEVER:
+						$information = ($total == PHPBB3_PHPBB3_ACL_YES) ? $user->lang['TRACE_GROUP_NEVER_TOTAL_YES' . $add_key] : (($total == PHPBB3_PHPBB3_ACL_NEVER) ? $user->lang['TRACE_GROUP_NEVER_TOTAL_NEVER' . $add_key] : $user->lang['TRACE_GROUP_NEVER_TOTAL_NO' . $add_key]);
+						$total = PHPBB3_PHPBB3_ACL_NEVER;
 					break;
 				}
 
@@ -1009,35 +1009,35 @@ class acp_permissions
 					'WHO'			=> $row['group_name'],
 					'INFORMATION'	=> $information,
 
-					'S_SETTING_NO'		=> ($row['auth_setting'] == ACL_NO) ? true : false,
-					'S_SETTING_YES'		=> ($row['auth_setting'] == ACL_YES) ? true : false,
-					'S_SETTING_NEVER'	=> ($row['auth_setting'] == ACL_NEVER) ? true : false,
-					'S_TOTAL_NO'		=> ($total == ACL_NO) ? true : false,
-					'S_TOTAL_YES'		=> ($total == ACL_YES) ? true : false,
-					'S_TOTAL_NEVER'		=> ($total == ACL_NEVER) ? true : false)
+					'S_SETTING_NO'		=> ($row['auth_setting'] == PHPBB3_PHPBB3_ACL_NO) ? true : false,
+					'S_SETTING_YES'		=> ($row['auth_setting'] == PHPBB3_PHPBB3_ACL_YES) ? true : false,
+					'S_SETTING_NEVER'	=> ($row['auth_setting'] == PHPBB3_PHPBB3_ACL_NEVER) ? true : false,
+					'S_TOTAL_NO'		=> ($total == PHPBB3_PHPBB3_ACL_NO) ? true : false,
+					'S_TOTAL_YES'		=> ($total == PHPBB3_PHPBB3_ACL_YES) ? true : false,
+					'S_TOTAL_NEVER'		=> ($total == PHPBB3_PHPBB3_ACL_NEVER) ? true : false)
 				);
 			}
 		}
 
 		// Get user specific permission... globally or for this forum
 		$hold_ary = $auth->acl_user_raw_data($user_id, $permission, $forum_id);
-		$auth_setting = (!sizeof($hold_ary)) ? ACL_NO : $hold_ary[$user_id][$forum_id][$permission];
+		$auth_setting = (!sizeof($hold_ary)) ? PHPBB3_PHPBB3_ACL_NO : $hold_ary[$user_id][$forum_id][$permission];
 
 		switch ($auth_setting)
 		{
-			case ACL_NO:
-				$information = ($total == ACL_NO) ? $user->lang['TRACE_USER_NO_TOTAL_NO' . $add_key] : $user->lang['TRACE_USER_KEPT' . $add_key];
-				$total = ($total == ACL_NO) ? ACL_NEVER : $total;
+			case PHPBB3_PHPBB3_ACL_NO:
+				$information = ($total == PHPBB3_PHPBB3_ACL_NO) ? $user->lang['TRACE_USER_NO_TOTAL_NO' . $add_key] : $user->lang['TRACE_USER_KEPT' . $add_key];
+				$total = ($total == PHPBB3_PHPBB3_ACL_NO) ? PHPBB3_PHPBB3_ACL_NEVER : $total;
 			break;
 
-			case ACL_YES:
-				$information = ($total == ACL_YES) ? $user->lang['TRACE_USER_YES_TOTAL_YES' . $add_key] : (($total == ACL_NEVER) ? $user->lang['TRACE_USER_YES_TOTAL_NEVER' . $add_key] : $user->lang['TRACE_USER_YES_TOTAL_NO' . $add_key]);
-				$total = ($total == ACL_NO) ? ACL_YES : $total;
+			case PHPBB3_PHPBB3_ACL_YES:
+				$information = ($total == PHPBB3_PHPBB3_ACL_YES) ? $user->lang['TRACE_USER_YES_TOTAL_YES' . $add_key] : (($total == PHPBB3_PHPBB3_ACL_NEVER) ? $user->lang['TRACE_USER_YES_TOTAL_NEVER' . $add_key] : $user->lang['TRACE_USER_YES_TOTAL_NO' . $add_key]);
+				$total = ($total == PHPBB3_PHPBB3_ACL_NO) ? PHPBB3_PHPBB3_ACL_YES : $total;
 			break;
 
-			case ACL_NEVER:
-				$information = ($total == ACL_YES) ? $user->lang['TRACE_USER_NEVER_TOTAL_YES' . $add_key] : (($total == ACL_NEVER) ? $user->lang['TRACE_USER_NEVER_TOTAL_NEVER' . $add_key] : $user->lang['TRACE_USER_NEVER_TOTAL_NO' . $add_key]);
-				$total = ACL_NEVER;
+			case PHPBB3_PHPBB3_ACL_NEVER:
+				$information = ($total == PHPBB3_PHPBB3_ACL_YES) ? $user->lang['TRACE_USER_NEVER_TOTAL_YES' . $add_key] : (($total == PHPBB3_PHPBB3_ACL_NEVER) ? $user->lang['TRACE_USER_NEVER_TOTAL_NEVER' . $add_key] : $user->lang['TRACE_USER_NEVER_TOTAL_NO' . $add_key]);
+				$total = PHPBB3_PHPBB3_ACL_NEVER;
 			break;
 		}
 
@@ -1045,12 +1045,12 @@ class acp_permissions
 			'WHO'			=> $userdata['username'],
 			'INFORMATION'	=> $information,
 
-			'S_SETTING_NO'		=> ($auth_setting == ACL_NO) ? true : false,
-			'S_SETTING_YES'		=> ($auth_setting == ACL_YES) ? true : false,
-			'S_SETTING_NEVER'	=> ($auth_setting == ACL_NEVER) ? true : false,
+			'S_SETTING_NO'		=> ($auth_setting == PHPBB3_PHPBB3_ACL_NO) ? true : false,
+			'S_SETTING_YES'		=> ($auth_setting == PHPBB3_PHPBB3_ACL_YES) ? true : false,
+			'S_SETTING_NEVER'	=> ($auth_setting == PHPBB3_PHPBB3_ACL_NEVER) ? true : false,
 			'S_TOTAL_NO'		=> false,
-			'S_TOTAL_YES'		=> ($total == ACL_YES) ? true : false,
-			'S_TOTAL_NEVER'		=> ($total == ACL_NEVER) ? true : false)
+			'S_TOTAL_YES'		=> ($total == PHPBB3_PHPBB3_ACL_YES) ? true : false,
+			'S_TOTAL_NEVER'		=> ($total == PHPBB3_PHPBB3_ACL_NEVER) ? true : false)
 		);
 
 		if ($forum_id != 0 && isset($auth->acl_options['global'][$permission]))
@@ -1068,8 +1068,8 @@ class acp_permissions
 
 			if ($auth_setting)
 			{
-				$information = ($total == ACL_YES) ? $user->lang['TRACE_USER_GLOBAL_YES_TOTAL_YES'] : $user->lang['TRACE_USER_GLOBAL_YES_TOTAL_NEVER'];
-				$total = ACL_YES;
+				$information = ($total == PHPBB3_PHPBB3_ACL_YES) ? $user->lang['TRACE_USER_GLOBAL_YES_TOTAL_YES'] : $user->lang['TRACE_USER_GLOBAL_YES_TOTAL_NEVER'];
+				$total = PHPBB3_PHPBB3_ACL_YES;
 			}
 			else
 			{
@@ -1087,35 +1087,35 @@ class acp_permissions
 					'S_SETTING_YES'		=> $auth_setting,
 					'S_SETTING_NEVER'	=> !$auth_setting,
 					'S_TOTAL_NO'		=> false,
-					'S_TOTAL_YES'		=> ($total == ACL_YES) ? true : false,
-					'S_TOTAL_NEVER'		=> ($total == ACL_NEVER) ? true : false)
+					'S_TOTAL_YES'		=> ($total == PHPBB3_PHPBB3_ACL_YES) ? true : false,
+					'S_TOTAL_NEVER'		=> ($total == PHPBB3_PHPBB3_ACL_NEVER) ? true : false)
 				);
 			}
 		}
 
 		// Take founder status into account, overwriting the default values
-		if ($userdata['user_type'] == USER_FOUNDER && str_starts_with($permission, 'a_'))
+		if ($userdata['user_type'] == PHPBB3_USER_FOUNDER && str_starts_with($permission, 'a_'))
 		{
 			$template->assign_block_vars('trace', array(
 				'WHO'			=> $userdata['username'],
-				'INFORMATION'	=> $user->lang['TRACE_USER_FOUNDER'],
+				'INFORMATION'	=> $user->lang['TRACE_PHPBB3_USER_FOUNDER'],
 
-				'S_SETTING_NO'		=> ($auth_setting == ACL_NO) ? true : false,
-				'S_SETTING_YES'		=> ($auth_setting == ACL_YES) ? true : false,
-				'S_SETTING_NEVER'	=> ($auth_setting == ACL_NEVER) ? true : false,
+				'S_SETTING_NO'		=> ($auth_setting == PHPBB3_PHPBB3_ACL_NO) ? true : false,
+				'S_SETTING_YES'		=> ($auth_setting == PHPBB3_PHPBB3_ACL_YES) ? true : false,
+				'S_SETTING_NEVER'	=> ($auth_setting == PHPBB3_PHPBB3_ACL_NEVER) ? true : false,
 				'S_TOTAL_NO'		=> false,
 				'S_TOTAL_YES'		=> true,
 				'S_TOTAL_NEVER'		=> false)
 			);
 
-			$total = ACL_YES;
+			$total = PHPBB3_PHPBB3_ACL_YES;
 		}
 
 		// Total value...
 		$template->assign_vars(array(
-			'S_RESULT_NO'		=> ($total == ACL_NO) ? true : false,
-			'S_RESULT_YES'		=> ($total == ACL_YES) ? true : false,
-			'S_RESULT_NEVER'	=> ($total == ACL_NEVER) ? true : false,
+			'S_RESULT_NO'		=> ($total == PHPBB3_PHPBB3_ACL_NO) ? true : false,
+			'S_RESULT_YES'		=> ($total == PHPBB3_PHPBB3_ACL_YES) ? true : false,
+			'S_RESULT_NEVER'	=> ($total == PHPBB3_PHPBB3_ACL_NEVER) ? true : false,
 		));
 	}
 
@@ -1132,7 +1132,7 @@ class acp_permissions
 		$option_ids = $role_ids = array();
 
 		$sql = 'SELECT auth_option_id
-			FROM ' . ACL_OPTIONS_TABLE . '
+			FROM ' . PHPBB3_ACL_OPTIONS_TABLE . '
 			WHERE auth_option ' . $db->sql_like_expression($permission_type . $db->any_char);
 		$result = $db->sql_query($sql);
 
@@ -1145,7 +1145,7 @@ class acp_permissions
 		if (sizeof($option_ids))
 		{
 			$sql = 'SELECT DISTINCT role_id
-				FROM ' . ACL_ROLES_DATA_TABLE . '
+				FROM ' . PHPBB3_ACL_ROLES_DATA_TABLE . '
 				WHERE ' . $db->sql_in_set('auth_option_id', $option_ids);
 			$result = $db->sql_query($sql);
 
@@ -1167,7 +1167,7 @@ class acp_permissions
 
 		// Not ideal, due to the filesort, non-use of indexes, etc.
 		$sql = 'SELECT DISTINCT u.user_id, u.username, u.username_clean, u.user_regdate
-			FROM ' . USERS_TABLE . ' u, ' . ACL_USERS_TABLE . " a
+			FROM ' . PHPBB3_USERS_TABLE . ' u, ' . PHPBB3_ACL_USERS_TABLE . " a
 			WHERE u.user_id = a.user_id
 				$sql_forum_id
 				$sql_where
@@ -1184,7 +1184,7 @@ class acp_permissions
 		$db->sql_freeresult($result);
 
 		$sql = 'SELECT DISTINCT g.group_type, g.group_name, g.group_id
-			FROM ' . GROUPS_TABLE . ' g, ' . ACL_GROUPS_TABLE . " a
+			FROM ' . PHPBB3_GROUPS_TABLE . ' g, ' . PHPBB3_ACL_PHPBB3_GROUPS_TABLE . " a
 			WHERE g.group_id = a.group_id
 				$sql_forum_id
 				$sql_where
@@ -1195,7 +1195,7 @@ class acp_permissions
 		$defined_group_ids = array();
 		while ($row = $db->sql_fetchrow($result))
 		{
-			$s_defined_group_options .= '<option' . (($row['group_type'] == GROUP_SPECIAL) ? ' class="sep"' : '') . ' value="' . $row['group_id'] . '">' . (($row['group_type'] == GROUP_SPECIAL) ? $user->lang['G_' . $row['group_name']] : $row['group_name']) . '</option>';
+			$s_defined_group_options .= '<option' . (($row['group_type'] == PHPBB3_GROUP_SPECIAL) ? ' class="sep"' : '') . ' value="' . $row['group_id'] . '">' . (($row['group_type'] == PHPBB3_GROUP_SPECIAL) ? $user->lang['G_' . $row['group_name']] : $row['group_name']) . '</option>';
 			$defined_group_ids[] = $row['group_id'];
 		}
 		$db->sql_freeresult($result);

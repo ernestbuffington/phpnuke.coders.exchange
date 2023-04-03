@@ -43,7 +43,7 @@ function view_message($id, $mode, $folder_id, $msg_id, $folder, $message_row)
 	}
 
 	// Do not allow hold messages to be seen
-	if ($folder_id == PRIVMSGS_HOLD_BOX)
+	if ($folder_id == PM_HOLD_BOX)
 	{
 		trigger_error('NO_AUTH_READ_HOLD_MESSAGE');
 	}
@@ -101,7 +101,7 @@ function view_message($id, $mode, $folder_id, $msg_id, $folder, $message_row)
 		if ($auth->acl_get('u_pm_download'))
 		{
 			$sql = 'SELECT *
-				FROM ' . ATTACHMENTS_TABLE . "
+				FROM ' . PHPBB3_ATTACHMENTS_TABLE . "
 				WHERE post_msg_id = $msg_id
 					AND in_message = 1
 				ORDER BY filetime DESC, post_msg_id ASC";
@@ -116,7 +116,7 @@ function view_message($id, $mode, $folder_id, $msg_id, $folder, $message_row)
 			// No attachments exist, but message table thinks they do so go ahead and reset attach flags
 			if (!sizeof($attachments))
 			{
-				$sql = 'UPDATE ' . PRIVMSGS_TABLE . "
+				$sql = 'UPDATE ' . PHPBB3_PRIVMSGS_TABLE . "
 					SET message_attachment = 0
 					WHERE msg_id = $msg_id";
 				$db->sql_query($sql);
@@ -137,7 +137,7 @@ function view_message($id, $mode, $folder_id, $msg_id, $folder, $message_row)
 		// Update the attachment download counts
 		if (sizeof($update_count))
 		{
-			$sql = 'UPDATE ' . ATTACHMENTS_TABLE . '
+			$sql = 'UPDATE ' . PHPBB3_ATTACHMENTS_TABLE . '
 				SET download_count = download_count + 1
 				WHERE ' . $db->sql_in_set('attach_id', array_unique($update_count));
 			$db->sql_query($sql);
@@ -215,7 +215,7 @@ function view_message($id, $mode, $folder_id, $msg_id, $folder, $message_row)
 		'U_DELETE'			=> ($auth->acl_get('u_pm_delete')) ? "$url&amp;mode=compose&amp;action=delete&amp;f=$folder_id&amp;p=" . $message_row['msg_id'] : '',
 		'U_EMAIL'			=> $user_info['email'],
 		'U_QUOTE'			=> ($auth->acl_get('u_sendpm') && $author_id != ANONYMOUS) ? "$url&amp;mode=compose&amp;action=quote&amp;f=$folder_id&amp;p=" . $message_row['msg_id'] : '',
-		'U_EDIT'			=> (($message_row['message_time'] > time() - ($config['pm_edit_time'] * 60) || !$config['pm_edit_time']) && $folder_id == PRIVMSGS_OUTBOX && $auth->acl_get('u_pm_edit')) ? "$url&amp;mode=compose&amp;action=edit&amp;f=$folder_id&amp;p=" . $message_row['msg_id'] : '',
+		'U_EDIT'			=> (($message_row['message_time'] > time() - ($config['pm_edit_time'] * 60) || !$config['pm_edit_time']) && $folder_id == PM_OUTBOX && $auth->acl_get('u_pm_edit')) ? "$url&amp;mode=compose&amp;action=edit&amp;f=$folder_id&amp;p=" . $message_row['msg_id'] : '',
 		'U_POST_REPLY_PM'	=> ($auth->acl_get('u_sendpm') && $author_id != ANONYMOUS) ? "$url&amp;mode=compose&amp;action=reply&amp;f=$folder_id&amp;p=" . $message_row['msg_id'] : '',
 		'U_PREVIOUS_PM'		=> "$url&amp;f=$folder_id&amp;p=" . $message_row['msg_id'] . "&amp;view=previous",
 		'U_NEXT_PM'			=> "$url&amp;f=$folder_id&amp;p=" . $message_row['msg_id'] . "&amp;view=next",
@@ -223,7 +223,7 @@ function view_message($id, $mode, $folder_id, $msg_id, $folder, $message_row)
 		'S_HAS_ATTACHMENTS'	=> (sizeof($attachments)) ? true : false,
 		'S_DISPLAY_NOTICE'	=> $display_notice && $message_row['message_attachment'],
 		'S_AUTHOR_DELETED'	=> ($author_id == ANONYMOUS) ? true : false,
-		'S_SPECIAL_FOLDER'	=> in_array($folder_id, array(PRIVMSGS_NO_BOX, PRIVMSGS_OUTBOX)),
+		'S_SPECIAL_FOLDER'	=> in_array($folder_id, array(PM_NO_BOX, PM_OUTBOX)),
 
 		'U_PRINT_PM'		=> ($config['print_pm'] && $auth->acl_get('u_pm_printpm')) ? "$url&amp;f=$folder_id&amp;p=" . $message_row['msg_id'] . "&amp;view=print" : '',
 		'U_FORWARD_PM'		=> ($config['forward_pm'] && $auth->acl_get('u_sendpm') && $auth->acl_get('u_pm_forward')) ? "$url&amp;mode=compose&amp;action=forward&amp;f=$folder_id&amp;p=" . $message_row['msg_id'] : '')
@@ -268,7 +268,7 @@ function get_user_information($user_id, $user_row)
 	if (empty($user_row))
 	{
 		$sql = 'SELECT *
-			FROM ' . USERS_TABLE . '
+			FROM ' . PHPBB3_USERS_TABLE . '
 			WHERE user_id = ' . (int) $user_id;
 		$result = $db->sql_query($sql);
 		$user_row = $db->sql_fetchrow($result);
@@ -283,7 +283,7 @@ function get_user_information($user_id, $user_row)
 	if ($config['load_onlinetrack'])
 	{
 		$sql = 'SELECT session_user_id, MAX(session_time) as online_time, MIN(session_viewonline) AS viewonline
-			FROM ' . SESSIONS_TABLE . "
+			FROM ' . PHPBB3_SESSIONS_TABLE . "
 			WHERE session_user_id = $user_id
 			GROUP BY session_user_id";
 		$result = $db->sql_query_limit($sql, 1);

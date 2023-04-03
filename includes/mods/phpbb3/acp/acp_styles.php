@@ -217,7 +217,7 @@ parse_css_file = {PARSE_CSS_FILE}
 							trigger_error($user->lang['DEACTIVATE_DEFAULT'] . adm_back_link($this->u_action), E_USER_WARNING);
 						}
 
-						$sql = 'UPDATE ' . STYLES_TABLE . '
+						$sql = 'UPDATE ' . PHPBB3_STYLES_TABLE . '
 							SET style_active = ' . (($action == 'activate') ? 1 : 0) . '
 							WHERE style_id = ' . $style_id;
 						$db->sql_query($sql);
@@ -225,12 +225,12 @@ parse_css_file = {PARSE_CSS_FILE}
 						// Set style to default for any member using deactivated style
 						if ($action == 'deactivate')
 						{
-							$sql = 'UPDATE ' . USERS_TABLE . '
+							$sql = 'UPDATE ' . PHPBB3_USERS_TABLE . '
 								SET user_style = ' . $config['default_style'] . "
 								WHERE user_style = $style_id";
 							$db->sql_query($sql);
 
-							$sql = 'UPDATE ' . FORUMS_TABLE . '
+							$sql = 'UPDATE ' . PHPBB3_FORUMS_TABLE . '
 								SET forum_style = 0
 								WHERE forum_style = ' . $style_id;
 							$db->sql_query($sql);
@@ -249,7 +249,7 @@ parse_css_file = {PARSE_CSS_FILE}
 					case 'refresh':
 
 						$sql = 'SELECT *
-							FROM ' . STYLES_TEMPLATE_TABLE . "
+							FROM ' . PHPBB3_STYLES_TEMPLATE_TABLE . "
 							WHERE template_id = $style_id";
 						$result = $db->sql_query($sql);
 						$template_row = $db->sql_fetchrow($result);
@@ -270,7 +270,7 @@ parse_css_file = {PARSE_CSS_FILE}
 								$filelist = array('' => array());
 
 								$sql = 'SELECT template_filename, template_mtime
-									FROM ' . STYLES_TEMPLATE_DATA_TABLE . "
+									FROM ' . PHPBB3_STYLES_TEMPLATE_DATA_TABLE . "
 									WHERE template_id = $style_id";
 								$result = $db->sql_query($sql);
 
@@ -304,7 +304,7 @@ parse_css_file = {PARSE_CSS_FILE}
 						}
 						else
 						{
-							confirm_box(false, ($template_row['template_storedb']) ? $user->lang['CONFIRM_TEMPLATE_REFRESH'] : $user->lang['CONFIRM_TEMPLATE_CLEAR_CACHE'], build_hidden_fields(array(
+							confirm_box(false, ($template_row['template_storedb']) ? $user->lang['PHPBB3_CONFIRM_TEMPLATE_REFRESH'] : $user->lang['PHPBB3_CONFIRM_TEMPLATE_CLEAR_CACHE'], build_hidden_fields(array(
 								'i'			=> $id,
 								'mode'		=> $mode,
 								'action'	=> $action,
@@ -326,7 +326,7 @@ parse_css_file = {PARSE_CSS_FILE}
 					case 'refresh':
 
 						$sql = 'SELECT *
-							FROM ' . STYLES_THEME_TABLE . "
+							FROM ' . PHPBB3_STYLES_THEME_TABLE . "
 							WHERE theme_id = $style_id";
 						$result = $db->sql_query($sql);
 						$theme_row = $db->sql_fetchrow($result);
@@ -352,11 +352,11 @@ parse_css_file = {PARSE_CSS_FILE}
 									'theme_data'	=> $this->db_theme_data($theme_row)
 								);
 
-								$sql = 'UPDATE ' . STYLES_THEME_TABLE . ' SET ' . $db->sql_build_array('UPDATE', $sql_ary) . "
+								$sql = 'UPDATE ' . PHPBB3_STYLES_THEME_TABLE . ' SET ' . $db->sql_build_array('UPDATE', $sql_ary) . "
 									WHERE theme_id = $style_id";
 								$db->sql_query($sql);
 
-								$cache->destroy('sql', STYLES_THEME_TABLE);
+								$cache->destroy('sql', PHPBB3_STYLES_THEME_TABLE);
 
 								add_log('admin', 'LOG_THEME_REFRESHED', $theme_row['theme_name']);
 								trigger_error($user->lang['THEME_REFRESHED'] . adm_back_link($this->u_action));
@@ -364,7 +364,7 @@ parse_css_file = {PARSE_CSS_FILE}
 						}
 						else
 						{
-							confirm_box(false, $user->lang['CONFIRM_THEME_REFRESH'], build_hidden_fields(array(
+							confirm_box(false, $user->lang['PHPBB3_CONFIRM_THEME_REFRESH'], build_hidden_fields(array(
 								'i'			=> $id,
 								'mode'		=> $mode,
 								'action'	=> $action,
@@ -384,7 +384,7 @@ parse_css_file = {PARSE_CSS_FILE}
 					case 'refresh':
 
 						$sql = 'SELECT *
-							FROM ' . STYLES_IMAGESET_TABLE . "
+							FROM ' . PHPBB3_STYLES_IMAGESET_TABLE . "
 							WHERE imageset_id = $style_id";
 						$result = $db->sql_query($sql);
 						$imageset_row = $db->sql_fetchrow($result);
@@ -409,7 +409,7 @@ parse_css_file = {PARSE_CSS_FILE}
 
 							$db->sql_transaction('begin');
 
-							$sql = 'DELETE FROM ' . STYLES_IMAGESET_DATA_TABLE . '
+							$sql = 'DELETE FROM ' . PHPBB3_STYLES_IMAGESET_DATA_TABLE . '
 								WHERE imageset_id = ' . $style_id;
 							$result = $db->sql_query($sql);
 
@@ -451,7 +451,7 @@ parse_css_file = {PARSE_CSS_FILE}
 							}
 
 							$sql = 'SELECT lang_dir
-								FROM ' . LANG_TABLE;
+								FROM ' . PHPBB3_LANG_TABLE;
 							$result = $db->sql_query($sql);
 
 							while ($row = $db->sql_fetchrow($result))
@@ -499,18 +499,18 @@ parse_css_file = {PARSE_CSS_FILE}
 							}
 							$db->sql_freeresult($result);
 
-							$db->sql_multi_insert(STYLES_IMAGESET_DATA_TABLE, $sql_ary);
+							$db->sql_multi_insert(PHPBB3_STYLES_IMAGESET_DATA_TABLE, $sql_ary);
 
 							$db->sql_transaction('commit');
 
-							$cache->destroy('sql', STYLES_IMAGESET_DATA_TABLE);
+							$cache->destroy('sql', PHPBB3_STYLES_IMAGESET_DATA_TABLE);
 
 							add_log('admin', 'LOG_IMAGESET_REFRESHED', $imageset_row['imageset_name']);
 							trigger_error($user->lang['IMAGESET_REFRESHED'] . adm_back_link($this->u_action));
 						}
 						else
 						{
-							confirm_box(false, $user->lang['CONFIRM_IMAGESET_REFRESH'], build_hidden_fields(array(
+							confirm_box(false, $user->lang['PHPBB3_CONFIRM_IMAGESET_REFRESH'], build_hidden_fields(array(
 								'i'			=> $id,
 								'mode'		=> $mode,
 								'action'	=> $action,
@@ -540,10 +540,10 @@ parse_css_file = {PARSE_CSS_FILE}
 		switch ($mode)
 		{
 			case 'style':
-				$sql_from = STYLES_TABLE;
+				$sql_from = PHPBB3_STYLES_TABLE;
 
 				$sql = 'SELECT user_style, COUNT(user_style) AS style_count
-					FROM ' . USERS_TABLE . '
+					FROM ' . PHPBB3_USERS_TABLE . '
 					GROUP BY user_style';
 				$result = $db->sql_query($sql);
 
@@ -556,15 +556,15 @@ parse_css_file = {PARSE_CSS_FILE}
 			break;
 
 			case 'template':
-				$sql_from = STYLES_TEMPLATE_TABLE;
+				$sql_from = PHPBB3_STYLES_TEMPLATE_TABLE;
 			break;
 
 			case 'theme':
-				$sql_from = STYLES_THEME_TABLE;
+				$sql_from = PHPBB3_STYLES_THEME_TABLE;
 			break;
 
 			case 'imageset':
-				$sql_from = STYLES_IMAGESET_TABLE;
+				$sql_from = PHPBB3_STYLES_IMAGESET_TABLE;
 			break;
 		}
 
@@ -714,7 +714,7 @@ parse_css_file = {PARSE_CSS_FILE}
 
 		// Retrieve some information about the template
 		$sql = 'SELECT template_storedb, template_path, template_name
-			FROM ' . STYLES_TEMPLATE_TABLE . "
+			FROM ' . PHPBB3_STYLES_TEMPLATE_TABLE . "
 			WHERE template_id = $template_id";
 		$result = $db->sql_query($sql);
 		$template_info = $db->sql_fetchrow($result);
@@ -772,7 +772,7 @@ parse_css_file = {PARSE_CSS_FILE}
 				}
 
 				// Update the template_data table entry for this template file
-				$sql = 'UPDATE ' . STYLES_TEMPLATE_DATA_TABLE . "
+				$sql = 'UPDATE ' . PHPBB3_STYLES_TEMPLATE_DATA_TABLE . "
 					SET template_data = '" . $db->sql_escape($template_data) . "', template_mtime = " . time() . "
 					WHERE template_id = $template_id
 						AND template_filename = '" . $db->sql_escape($template_file) . "'";
@@ -784,7 +784,7 @@ parse_css_file = {PARSE_CSS_FILE}
 			// destroy the cached version of the template (filename without extension)
 			$this->clear_template_cache($template_info, array(substr($template_file, 0, -5)));
 
-			$cache->destroy('sql', STYLES_TABLE);
+			$cache->destroy('sql', PHPBB3_STYLES_TABLE);
 
 			add_log('admin', 'LOG_TEMPLATE_EDIT', $template_info['template_name'], $template_file);
 			trigger_error($user->lang['TEMPLATE_FILE_UPDATED'] . $additional . adm_back_link($this->u_action . "&amp;action=edit&amp;id=$template_id&amp;text_rows=$text_rows&amp;template_file=$template_file"));
@@ -809,7 +809,7 @@ parse_css_file = {PARSE_CSS_FILE}
 		else
 		{
 			$sql = 'SELECT *
-				FROM ' . STYLES_TEMPLATE_DATA_TABLE . "
+				FROM ' . PHPBB3_STYLES_TEMPLATE_DATA_TABLE . "
 				WHERE template_id = $template_id";
 			$result = $db->sql_query($sql);
 
@@ -937,7 +937,7 @@ parse_css_file = {PARSE_CSS_FILE}
 		$submit		= isset($_POST['submit']) ? true : false;
 
 		$sql = 'SELECT *
-			FROM ' . STYLES_TEMPLATE_TABLE . "
+			FROM ' . PHPBB3_STYLES_TEMPLATE_TABLE . "
 			WHERE template_id = $template_id";
 		$result = $db->sql_query($sql);
 		$template_row = $db->sql_fetchrow($result);
@@ -1020,7 +1020,7 @@ parse_css_file = {PARSE_CSS_FILE}
 			foreach ($ids as $id)
 			{
 				$sql = 'SELECT template_filename, template_mtime
-					FROM ' . STYLES_TEMPLATE_DATA_TABLE . "
+					FROM ' . PHPBB3_STYLES_TEMPLATE_DATA_TABLE . "
 					WHERE template_id = $id";
 				$result = $db->sql_query($sql);
 
@@ -1123,7 +1123,7 @@ parse_css_file = {PARSE_CSS_FILE}
 
 		// Retrieve some information about the theme
 		$sql = 'SELECT theme_storedb, theme_path, theme_name, theme_data
-			FROM ' . STYLES_THEME_TABLE . "
+			FROM ' . PHPBB3_STYLES_THEME_TABLE . "
 			WHERE theme_id = $theme_id";
 		$result = $db->sql_query($sql);
 
@@ -1159,12 +1159,12 @@ parse_css_file = {PARSE_CSS_FILE}
 					'theme_storedb'		=> 1,
 					'theme_data'		=> $this->db_theme_data($theme_info, $theme_data),
 				);
-				$sql = 'UPDATE ' . STYLES_THEME_TABLE . '
+				$sql = 'UPDATE ' . PHPBB3_STYLES_THEME_TABLE . '
 					SET ' . $db->sql_build_array('UPDATE', $sql_ary) . '
 					WHERE theme_id = ' . $theme_id;
 				$db->sql_query($sql);
 
-				$cache->destroy('sql', STYLES_THEME_TABLE);
+				$cache->destroy('sql', PHPBB3_STYLES_THEME_TABLE);
 
 				// notify the user if the theme was not stored in the db before his modification
 				if (!$theme_info['theme_storedb'])
@@ -1173,7 +1173,7 @@ parse_css_file = {PARSE_CSS_FILE}
 					$message .= '<br />' . $user->lang['EDIT_THEME_STORED_DB'];
 				}
 			}
-			$cache->destroy('sql', STYLES_THEME_TABLE);
+			$cache->destroy('sql', PHPBB3_STYLES_THEME_TABLE);
 			add_log('admin', (!$theme_info['theme_storedb']) ? 'LOG_THEME_EDIT_FILE' : 'LOG_THEME_EDIT', $theme_info['theme_name'], (!$theme_info['theme_storedb']) ? $theme_file : '');
 
 			trigger_error($message . adm_back_link($this->u_action . "&amp;action=edit&amp;id=$theme_id&amp;template_file=$theme_file&amp;text_rows=$text_rows"));
@@ -1319,7 +1319,7 @@ parse_css_file = {PARSE_CSS_FILE}
 		if ($imageset_id)
 		{
 			$sql = 'SELECT imageset_path, imageset_name
-				FROM ' . STYLES_IMAGESET_TABLE . "
+				FROM ' . PHPBB3_STYLES_IMAGESET_TABLE . "
 				WHERE imageset_id = $imageset_id";
 			$result = $db->sql_query($sql);
 			$imageset_row = $db->sql_fetchrow($result);
@@ -1336,7 +1336,7 @@ parse_css_file = {PARSE_CSS_FILE}
 			}
 
 			$sql = 'SELECT image_filename, image_width, image_height, image_lang, image_id
-				FROM ' . STYLES_IMAGESET_DATA_TABLE . "
+				FROM ' . PHPBB3_STYLES_IMAGESET_DATA_TABLE . "
 				WHERE imageset_id = $imageset_id
 					AND image_name = '" . $db->sql_escape($imgname) . "'$sql_extra";
 			$result = $db->sql_query($sql);
@@ -1413,7 +1413,7 @@ parse_css_file = {PARSE_CSS_FILE}
 					// already exists
 					if ($imageset_data_row)
 					{
-						$sql = 'UPDATE ' . STYLES_IMAGESET_DATA_TABLE . '
+						$sql = 'UPDATE ' . PHPBB3_STYLES_IMAGESET_DATA_TABLE . '
 							SET ' . $db->sql_build_array('UPDATE', $sql_ary) . "
 							WHERE image_id = $image_id";
 						$db->sql_query($sql);
@@ -1423,10 +1423,10 @@ parse_css_file = {PARSE_CSS_FILE}
 					{
 						$sql_ary['image_name']	= $imgname;
 						$sql_ary['imageset_id']	= (int) $imageset_id;
-						$db->sql_query('INSERT INTO ' . STYLES_IMAGESET_DATA_TABLE . ' ' . $db->sql_build_array('INSERT', $sql_ary));
+						$db->sql_query('INSERT INTO ' . PHPBB3_STYLES_IMAGESET_DATA_TABLE . ' ' . $db->sql_build_array('INSERT', $sql_ary));
 					}
 
-					$cache->destroy('sql', STYLES_IMAGESET_DATA_TABLE);
+					$cache->destroy('sql', PHPBB3_STYLES_IMAGESET_DATA_TABLE);
 
 					add_log('admin', 'LOG_IMAGESET_EDIT', $imageset_name);
 
@@ -1583,23 +1583,23 @@ parse_css_file = {PARSE_CSS_FILE}
 		switch ($mode)
 		{
 			case 'style':
-				$sql_from = STYLES_TABLE;
+				$sql_from = PHPBB3_STYLES_TABLE;
 				$sql_select = 'style_name';
 				$sql_where = 'AND style_active = 1';
 			break;
 
 			case 'template':
-				$sql_from = STYLES_TEMPLATE_TABLE;
+				$sql_from = PHPBB3_STYLES_TEMPLATE_TABLE;
 				$sql_select = 'template_name, template_path, template_storedb';
 			break;
 
 			case 'theme':
-				$sql_from = STYLES_THEME_TABLE;
+				$sql_from = PHPBB3_STYLES_THEME_TABLE;
 				$sql_select = 'theme_name, theme_path, theme_storedb';
 			break;
 
 			case 'imageset':
-				$sql_from = STYLES_IMAGESET_TABLE;
+				$sql_from = PHPBB3_STYLES_IMAGESET_TABLE;
 				$sql_select = 'imageset_name, imageset_path';
 			break;
 		}
@@ -1661,12 +1661,12 @@ parse_css_file = {PARSE_CSS_FILE}
 
 			if ($mode == 'style')
 			{
-				$sql = 'UPDATE ' . USERS_TABLE . "
+				$sql = 'UPDATE ' . PHPBB3_USERS_TABLE . "
 					SET user_style = $new_id
 					WHERE user_style = $style_id";
 				$db->sql_query($sql);
 
-				$sql = 'UPDATE ' . FORUMS_TABLE . "
+				$sql = 'UPDATE ' . PHPBB3_FORUMS_TABLE . "
 					SET forum_style = $new_id
 					WHERE forum_style = $style_id";
 				$db->sql_query($sql);
@@ -1680,17 +1680,17 @@ parse_css_file = {PARSE_CSS_FILE}
 			{
 				if ($mode == 'imageset')
 				{
-					$sql = 'DELETE FROM ' . STYLES_IMAGESET_DATA_TABLE . "
+					$sql = 'DELETE FROM ' . PHPBB3_STYLES_IMAGESET_DATA_TABLE . "
 						WHERE imageset_id = $style_id";
 					$db->sql_query($sql);
 				}
-				$sql = 'UPDATE ' . STYLES_TABLE . "
+				$sql = 'UPDATE ' . PHPBB3_STYLES_TABLE . "
 					SET {$mode}_id = $new_id
 					WHERE {$mode}_id = $style_id";
 				$db->sql_query($sql);
 			}
 
-			$cache->destroy('sql', STYLES_TABLE);
+			$cache->destroy('sql', PHPBB3_STYLES_TABLE);
 
 			add_log('admin', 'LOG_' . $l_prefix . '_DELETE', $style_row[$mode . '_name']);
 			$message = ($mode != 'style') ? $l_prefix . '_DELETED_FS' : $l_prefix . '_DELETED';
@@ -1771,7 +1771,7 @@ parse_css_file = {PARSE_CSS_FILE}
 				$sql_select .= ($inc_template) ? ', t.*' : ', t.template_name';
 				$sql_select .= ($inc_theme) ? ', c.*' : ', c.theme_name';
 				$sql_select .= ($inc_imageset) ? ', i.*' : ', i.imageset_name';
-				$sql_from = STYLES_TABLE . ' s, ' . STYLES_TEMPLATE_TABLE . ' t, ' . STYLES_THEME_TABLE . ' c, ' . STYLES_IMAGESET_TABLE . ' i';
+				$sql_from = PHPBB3_STYLES_TABLE . ' s, ' . PHPBB3_STYLES_TEMPLATE_TABLE . ' t, ' . PHPBB3_STYLES_THEME_TABLE . ' c, ' . PHPBB3_STYLES_IMAGESET_TABLE . ' i';
 				$sql_where = "s.style_id = $style_id AND t.template_id = s.template_id AND c.theme_id = s.theme_id AND i.imageset_id = s.imageset_id";
 
 				$l_prefix = 'STYLE';
@@ -1781,7 +1781,7 @@ parse_css_file = {PARSE_CSS_FILE}
 				$name = 'template_name';
 
 				$sql_select = '*';
-				$sql_from = STYLES_TEMPLATE_TABLE;
+				$sql_from = PHPBB3_STYLES_TEMPLATE_TABLE;
 				$sql_where = "template_id = $style_id";
 
 				$l_prefix = 'TEMPLATE';
@@ -1791,7 +1791,7 @@ parse_css_file = {PARSE_CSS_FILE}
 				$name = 'theme_name';
 
 				$sql_select = '*';
-				$sql_from = STYLES_THEME_TABLE;
+				$sql_from = PHPBB3_STYLES_THEME_TABLE;
 				$sql_where = "theme_id = $style_id";
 
 				$l_prefix = 'THEME';
@@ -1801,7 +1801,7 @@ parse_css_file = {PARSE_CSS_FILE}
 				$name = 'imageset_name';
 
 				$sql_select = '*';
-				$sql_from = STYLES_IMAGESET_TABLE;
+				$sql_from = PHPBB3_STYLES_IMAGESET_TABLE;
 				$sql_where = "imageset_id = $style_id";
 
 				$l_prefix = 'IMAGESET';
@@ -1862,7 +1862,7 @@ parse_css_file = {PARSE_CSS_FILE}
 				{
 					// Get the template name
 					$sql = 'SELECT template_name
-						FROM ' . STYLES_TEMPLATE_TABLE . '
+						FROM ' . PHPBB3_STYLES_TEMPLATE_TABLE . '
 						WHERE template_id = ' . (int) $style_row['template_inherits_id'];
 					$result = $db->sql_query($sql);
 					$use_template_name = (string) $db->sql_fetchfield('template_name');
@@ -1890,7 +1890,7 @@ parse_css_file = {PARSE_CSS_FILE}
 				else
 				{
 					$sql = 'SELECT template_filename, template_data
-						FROM ' . STYLES_TEMPLATE_DATA_TABLE . "
+						FROM ' . PHPBB3_STYLES_TEMPLATE_DATA_TABLE . "
 						WHERE template_id = {$style_row['template_id']}";
 					$result = $db->sql_query($sql);
 
@@ -1953,7 +1953,7 @@ parse_css_file = {PARSE_CSS_FILE}
 				$imageset_main = array();
 
 				$sql = 'SELECT image_filename, image_name, image_height, image_width
-					FROM ' . STYLES_IMAGESET_DATA_TABLE . "
+					FROM ' . PHPBB3_STYLES_IMAGESET_DATA_TABLE . "
 					WHERE imageset_id = $style_id
 						AND image_lang = ''";
 				$result = $db->sql_query($sql);
@@ -2005,7 +2005,7 @@ parse_css_file = {PARSE_CSS_FILE}
 				$imageset_lang = array();
 
 				$sql = 'SELECT image_filename, image_name, image_height, image_width, image_lang
-					FROM ' . STYLES_IMAGESET_DATA_TABLE . "
+					FROM ' . PHPBB3_STYLES_IMAGESET_DATA_TABLE . "
 					WHERE imageset_id = $style_id
 						AND image_lang <> ''";
 				$result = $db->sql_query($sql);
@@ -2120,7 +2120,7 @@ parse_css_file = {PARSE_CSS_FILE}
 		}
 
 		$sql = "SELECT {$mode}_id, {$mode}_name
-			FROM " . (($mode == 'style') ? STYLES_TABLE : $sql_from) . "
+			FROM " . (($mode == 'style') ? PHPBB3_STYLES_TABLE : $sql_from) . "
 			WHERE {$mode}_id = $style_id";
 		$result = $db->sql_query($sql);
 		$style_row = $db->sql_fetchrow($result);
@@ -2175,24 +2175,24 @@ parse_css_file = {PARSE_CSS_FILE}
 		$l_type = strtoupper($mode);
 
 		$error = array();
-		$element_ary = array('template' => STYLES_TEMPLATE_TABLE, 'theme' => STYLES_THEME_TABLE, 'imageset' => STYLES_IMAGESET_TABLE);
+		$element_ary = array('template' => PHPBB3_STYLES_TEMPLATE_TABLE, 'theme' => PHPBB3_STYLES_THEME_TABLE, 'imageset' => PHPBB3_STYLES_IMAGESET_TABLE);
 
 		switch ($mode)
 		{
 			case 'style':
-				$sql_from = STYLES_TABLE;
+				$sql_from = PHPBB3_STYLES_TABLE;
 			break;
 
 			case 'template':
-				$sql_from = STYLES_TEMPLATE_TABLE;
+				$sql_from = PHPBB3_STYLES_TEMPLATE_TABLE;
 			break;
 
 			case 'theme':
-				$sql_from = STYLES_THEME_TABLE;
+				$sql_from = PHPBB3_STYLES_THEME_TABLE;
 			break;
 
 			case 'imageset':
-				$sql_from = STYLES_IMAGESET_TABLE;
+				$sql_from = PHPBB3_STYLES_IMAGESET_TABLE;
 			break;
 		}
 
@@ -2383,7 +2383,7 @@ parse_css_file = {PARSE_CSS_FILE}
 							{
 								// We no longer store within the db, but are also not able to update the file structure
 								// Since the admin want to switch this, we adhere to his decision. But we also need to remove the cache
-								$sql = 'DELETE FROM ' . STYLES_TEMPLATE_DATA_TABLE . "
+								$sql = 'DELETE FROM ' . PHPBB3_STYLES_TEMPLATE_DATA_TABLE . "
 									WHERE template_id = $style_id";
 								$db->sql_query($sql);
 							}
@@ -2410,7 +2410,7 @@ parse_css_file = {PARSE_CSS_FILE}
 				}
 			}
 
-			$cache->destroy('sql', STYLES_TABLE);
+			$cache->destroy('sql', PHPBB3_STYLES_TABLE);
 
 			add_log('admin', 'LOG_' . $l_type . '_EDIT_DETAILS', $name);
 			if (sizeof($error))
@@ -2610,11 +2610,11 @@ parse_css_file = {PARSE_CSS_FILE}
 
 				if ($mode == 'insert')
 				{
-					$sql = 'INSERT INTO ' . STYLES_TEMPLATE_DATA_TABLE . ' ' . $db->sql_build_array('INSERT', $sql_ary);
+					$sql = 'INSERT INTO ' . PHPBB3_STYLES_TEMPLATE_DATA_TABLE . ' ' . $db->sql_build_array('INSERT', $sql_ary);
 				}
 				else
 				{
-					$sql = 'UPDATE ' . STYLES_TEMPLATE_DATA_TABLE . ' SET ' . $db->sql_build_array('UPDATE', $sql_ary) . "
+					$sql = 'UPDATE ' . PHPBB3_STYLES_TEMPLATE_DATA_TABLE . ' SET ' . $db->sql_build_array('UPDATE', $sql_ary) . "
 						WHERE template_id = $style_id
 							AND template_filename = '" . $db->sql_escape("$pathfile$file") . "'";
 				}
@@ -2664,7 +2664,7 @@ parse_css_file = {PARSE_CSS_FILE}
 	/**
 	* Destroys cached versions of template files
 	*
-	* @param array $template_row contains the template's row in the STYLES_TEMPLATE_TABLE database table
+	* @param array $template_row contains the template's row in the PHPBB3_STYLES_TEMPLATE_TABLE database table
 	* @param mixed $file_ary is optional and may contain an array of template file names which should be refreshed in the cache.
 	*	The file names should be the original template file names and not the cache file names.
 	*/
@@ -2720,7 +2720,7 @@ parse_css_file = {PARSE_CSS_FILE}
 
 		$error = $installcfg = $style_row = array();
 		$root_path = $cfg_file = '';
-		$element_ary = array('template' => STYLES_TEMPLATE_TABLE, 'theme' => STYLES_THEME_TABLE, 'imageset' => STYLES_IMAGESET_TABLE);
+		$element_ary = array('template' => PHPBB3_STYLES_TEMPLATE_TABLE, 'theme' => PHPBB3_STYLES_THEME_TABLE, 'imageset' => PHPBB3_STYLES_IMAGESET_TABLE);
 
 		$install_path = request_var('path', '');
 		$update = (isset($_POST['update'])) ? true : false;
@@ -2845,7 +2845,7 @@ parse_css_file = {PARSE_CSS_FILE}
 
 			if (!sizeof($error))
 			{
-				$cache->destroy('sql', STYLES_TABLE);
+				$cache->destroy('sql', PHPBB3_STYLES_TABLE);
 
 				$message = ($style_row['store_db']) ? '_ADDED_DB' : '_ADDED';
 				trigger_error($user->lang[$l_type . $message] . adm_back_link($this->u_action));
@@ -2901,7 +2901,7 @@ parse_css_file = {PARSE_CSS_FILE}
         $phpbb_root_path = PHPBB3_ROOT_DIR;
 
 		$l_type = strtoupper($mode);
-		$element_ary = array('template' => STYLES_TEMPLATE_TABLE, 'theme' => STYLES_THEME_TABLE, 'imageset' => STYLES_IMAGESET_TABLE);
+		$element_ary = array('template' => PHPBB3_STYLES_TEMPLATE_TABLE, 'theme' => PHPBB3_STYLES_THEME_TABLE, 'imageset' => PHPBB3_STYLES_IMAGESET_TABLE);
 		$error = array();
 
 		$style_row = array(
@@ -2924,22 +2924,22 @@ parse_css_file = {PARSE_CSS_FILE}
 			{
 				case 'style':
 					$sql_select = 'template_id, theme_id, imageset_id';
-					$sql_from = STYLES_TABLE;
+					$sql_from = PHPBB3_STYLES_TABLE;
 				break;
 
 				case 'template':
 					$sql_select = 'template_id';
-					$sql_from = STYLES_TEMPLATE_TABLE;
+					$sql_from = PHPBB3_STYLES_TEMPLATE_TABLE;
 				break;
 
 				case 'theme':
 					$sql_select = 'theme_id';
-					$sql_from = STYLES_THEME_TABLE;
+					$sql_from = PHPBB3_STYLES_THEME_TABLE;
 				break;
 
 				case 'imageset':
 					$sql_select = 'imageset_id';
-					$sql_from = STYLES_IMAGESET_TABLE;
+					$sql_from = PHPBB3_STYLES_IMAGESET_TABLE;
 				break;
 			}
 
@@ -2987,7 +2987,7 @@ parse_css_file = {PARSE_CSS_FILE}
 
 			if (!sizeof($error))
 			{
-				$cache->destroy('sql', STYLES_TABLE);
+				$cache->destroy('sql', PHPBB3_STYLES_TABLE);
 
 				$message = ($style_row['store_db']) ? '_ADDED_DB' : '_ADDED';
 				trigger_error($user->lang[$l_type . $message] . adm_back_link($this->u_action));
@@ -3073,15 +3073,15 @@ parse_css_file = {PARSE_CSS_FILE}
 		switch ($element)
 		{
 			case 'template':
-				$sql_from = STYLES_TEMPLATE_TABLE;
+				$sql_from = PHPBB3_STYLES_TEMPLATE_TABLE;
 			break;
 
 			case 'theme':
-				$sql_from = STYLES_THEME_TABLE;
+				$sql_from = PHPBB3_STYLES_THEME_TABLE;
 			break;
 
 			case 'imageset':
-				$sql_from = STYLES_IMAGESET_TABLE;
+				$sql_from = PHPBB3_STYLES_IMAGESET_TABLE;
 			break;
 		}
 
@@ -3145,7 +3145,7 @@ parse_css_file = {PARSE_CSS_FILE}
 
 		// Check if the name already exist
 		$sql = 'SELECT style_id
-			FROM ' . STYLES_TABLE . "
+			FROM ' . PHPBB3_STYLES_TABLE . "
 			WHERE style_name = '" . $db->sql_escape($name) . "'";
 		$result = $db->sql_query($sql);
 		$row = $db->sql_fetchrow($result);
@@ -3192,7 +3192,7 @@ parse_css_file = {PARSE_CSS_FILE}
 			'imageset_id'		=> (int) $style_row['imageset_id'],
 		);
 
-		$sql = 'INSERT INTO ' . STYLES_TABLE . '
+		$sql = 'INSERT INTO ' . PHPBB3_STYLES_TABLE . '
 			' . $db->sql_build_array('INSERT', $sql_ary);
 		$db->sql_query($sql);
 
@@ -3200,7 +3200,7 @@ parse_css_file = {PARSE_CSS_FILE}
 
 		if ($default)
 		{
-			$sql = 'UPDATE ' . USERS_TABLE . "
+			$sql = 'UPDATE ' . PHPBB3_USERS_TABLE . "
 				SET user_style = $id
 				WHERE user_style = " . $config['default_style'];
 			$db->sql_query($sql);
@@ -3229,15 +3229,15 @@ parse_css_file = {PARSE_CSS_FILE}
 		switch ($mode)
 		{
 			case 'template':
-				$sql_from = STYLES_TEMPLATE_TABLE;
+				$sql_from = PHPBB3_STYLES_TEMPLATE_TABLE;
 			break;
 
 			case 'theme':
-				$sql_from = STYLES_THEME_TABLE;
+				$sql_from = PHPBB3_STYLES_THEME_TABLE;
 			break;
 
 			case 'imageset':
-				$sql_from = STYLES_IMAGESET_TABLE;
+				$sql_from = PHPBB3_STYLES_IMAGESET_TABLE;
 			break;
 		}
 
@@ -3421,14 +3421,14 @@ parse_css_file = {PARSE_CSS_FILE}
 							'imageset_id'		=> (int) $id,
 							'image_lang'		=> '',
 						);
-						$db->sql_query('INSERT INTO ' . STYLES_IMAGESET_DATA_TABLE . ' ' . $db->sql_build_array('INSERT', $sql_ary));
+						$db->sql_query('INSERT INTO ' . PHPBB3_STYLES_IMAGESET_DATA_TABLE . ' ' . $db->sql_build_array('INSERT', $sql_ary));
 					}
 				}
 			}
 			unset($cfg_data);
 
 			$sql = 'SELECT lang_dir
-				FROM ' . LANG_TABLE;
+				FROM ' . PHPBB3_LANG_TABLE;
 			$result = $db->sql_query($sql);
 
 			while ($row = $db->sql_fetchrow($result))
@@ -3469,7 +3469,7 @@ parse_css_file = {PARSE_CSS_FILE}
 									'imageset_id'		=> (int) $id,
 									'image_lang'		=> $row['lang_dir'],
 								);
-								$db->sql_query('INSERT INTO ' . STYLES_IMAGESET_DATA_TABLE . ' ' . $db->sql_build_array('INSERT', $sql_ary));
+								$db->sql_query('INSERT INTO ' . PHPBB3_STYLES_IMAGESET_DATA_TABLE . ' ' . $db->sql_build_array('INSERT', $sql_ary));
 							}
 						}
 					}
@@ -3506,15 +3506,15 @@ parse_css_file = {PARSE_CSS_FILE}
 		switch ($mode)
 		{
 			case 'template':
-				$sql_from = STYLES_TEMPLATE_TABLE;
+				$sql_from = PHPBB3_STYLES_TEMPLATE_TABLE;
 			break;
 
 			case 'theme':
-				$sql_from = STYLES_THEME_TABLE;
+				$sql_from = PHPBB3_STYLES_THEME_TABLE;
 			break;
 
 			case 'imageset':
-				$sql_from = STYLES_IMAGESET_TABLE;
+				$sql_from = PHPBB3_STYLES_IMAGESET_TABLE;
 			break;
 		}
 
@@ -3563,15 +3563,15 @@ parse_css_file = {PARSE_CSS_FILE}
 		switch ($mode)
 		{
 			case 'template':
-				$sql_from = STYLES_TEMPLATE_TABLE;
+				$sql_from = PHPBB3_STYLES_TEMPLATE_TABLE;
 			break;
 
 			case 'theme':
-				$sql_from = STYLES_THEME_TABLE;
+				$sql_from = PHPBB3_STYLES_THEME_TABLE;
 			break;
 
 			case 'imageset':
-				$sql_from = STYLES_IMAGESET_TABLE;
+				$sql_from = PHPBB3_STYLES_IMAGESET_TABLE;
 			break;
 		}
 
@@ -3626,7 +3626,7 @@ parse_css_file = {PARSE_CSS_FILE}
 		}
 
 		$sql = "SELECT {$mode}_id, {$mode}_name, {$mode}_path
-			FROM " . STYLES_TEMPLATE_TABLE . '
+			FROM " . PHPBB3_STYLES_TEMPLATE_TABLE . '
 			WHERE template_id = ' . (int) $id;
 
 		$result = $db->sql_query_limit($sql, 1);
@@ -3673,7 +3673,7 @@ parse_css_file = {PARSE_CSS_FILE}
 		$this->store_templates('insert', $id, $path, $filelist);
 
 		// Okay, we do the query here -shouldn't be triggered often.
-		$sql = 'UPDATE ' . STYLES_TEMPLATE_TABLE . '
+		$sql = 'UPDATE ' . PHPBB3_STYLES_TEMPLATE_TABLE . '
 						SET template_storedb = 1
 						WHERE template_id = ' . $id;
 		$db->sql_query($sql);
@@ -3699,7 +3699,7 @@ parse_css_file = {PARSE_CSS_FILE}
 		}
 
 		$sql = "SELECT {$mode}_id, {$mode}_name, {$mode}_path
-			FROM " . STYLES_TEMPLATE_TABLE . '
+			FROM " . PHPBB3_STYLES_TEMPLATE_TABLE . '
 			WHERE template_id = ' . (int) $id;
 
 		$result = $db->sql_query_limit($sql, 1);
@@ -3748,7 +3748,7 @@ parse_css_file = {PARSE_CSS_FILE}
 		if (!$safe_mode && is_writable("{$phpbb_root_path}styles/{$path}/template"))
 		{
 			$sql = 'SELECT *
-					FROM ' . STYLES_TEMPLATE_DATA_TABLE . "
+					FROM ' . PHPBB3_STYLES_TEMPLATE_DATA_TABLE . "
 					WHERE template_id = $id";
 			$result = $db->sql_query($sql);
 
@@ -3768,7 +3768,7 @@ parse_css_file = {PARSE_CSS_FILE}
 
 			if (!$store_db)
 			{
-				$sql = 'DELETE FROM ' . STYLES_TEMPLATE_DATA_TABLE . "
+				$sql = 'DELETE FROM ' . PHPBB3_STYLES_TEMPLATE_DATA_TABLE . "
 						WHERE template_id = $id";
 				$db->sql_query($sql);
 			}
@@ -3777,7 +3777,7 @@ parse_css_file = {PARSE_CSS_FILE}
 		{
 			return $error;
 		}
-		$sql = 'UPDATE ' . STYLES_TEMPLATE_TABLE . '
+		$sql = 'UPDATE ' . PHPBB3_STYLES_TEMPLATE_TABLE . '
 				SET template_storedb = 0
 				WHERE template_id = ' . $id;
 		$db->sql_query($sql);

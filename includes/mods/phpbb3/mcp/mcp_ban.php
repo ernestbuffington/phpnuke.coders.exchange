@@ -69,7 +69,7 @@ class mcp_ban
 				}
 				else
 				{
-					confirm_box(false, $user->lang['CONFIRM_OPERATION'], build_hidden_fields(array(
+					confirm_box(false, $user->lang['PHPBB3_CONFIRM_OPERATION'], build_hidden_fields(array(
 						'mode'				=> $mode,
 						'ban'				=> $ban,
 						'bansubmit'			=> true,
@@ -95,7 +95,7 @@ class mcp_ban
 				}
 				else
 				{
-					confirm_box(false, $user->lang['CONFIRM_OPERATION'], build_hidden_fields(array(
+					confirm_box(false, $user->lang['PHPBB3_CONFIRM_OPERATION'], build_hidden_fields(array(
 						'mode'			=> $mode,
 						'unbansubmit'	=> true,
 						'unban'			=> $ban)));
@@ -166,7 +166,7 @@ class mcp_ban
 		if ($user_id && $user_id <> ANONYMOUS)
 		{
 			$sql = 'SELECT username, user_email, user_ip
-				FROM ' . USERS_TABLE . '
+				FROM ' . PHPBB3_USERS_TABLE . '
 				WHERE user_id = ' . $user_id;
 			$result = $db->sql_query($sql);
 			switch ($mode)

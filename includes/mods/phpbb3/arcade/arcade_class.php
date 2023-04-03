@@ -184,14 +184,14 @@ class arcade
 	{
 		global $db, $cache;
 
-		$sql = 'UPDATE ' . ARCADE_CONFIG_TABLE . "
+		$sql = 'UPDATE ' . ARCADE_PHPBB3_CONFIG_TABLE . "
 			SET config_value = '" . $db->sql_escape($config_value) . "'
 			WHERE config_name = '" . $db->sql_escape($config_name) . "'";
 		$db->sql_query($sql);
 
 		if (!$db->sql_affectedrows() && !isset($this->config[$config_name]))
 		{
-			$sql = 'INSERT INTO ' . ARCADE_CONFIG_TABLE . ' ' . $db->sql_build_array('INSERT', array(
+			$sql = 'INSERT INTO ' . ARCADE_PHPBB3_CONFIG_TABLE . ' ' . $db->sql_build_array('INSERT', array(
 				'config_name'	=> $config_name,
 				'config_value'	=> $config_value));
 			$db->sql_query($sql);
@@ -447,7 +447,7 @@ class arcade
 
 		if ($user_id)
 		{
-			$sql = 'SELECT * FROM ' . USERS_TABLE . '
+			$sql = 'SELECT * FROM ' . PHPBB3_USERS_TABLE . '
 					WHERE user_id = ' . $user_id;
 			$result = $db->sql_query($sql);
 			$user_info = $db->sql_fetchrow($result);
@@ -730,7 +730,7 @@ class arcade
 				),
 			),
 
-			'WHERE'	=> 'c.cat_status <> ' . ITEM_LOCKED . ' AND ' . $db->sql_in_set('c.cat_id', $this->get_permissions('c_play'), false, true),
+			'WHERE'	=> 'c.cat_status <> ' . PHPBB3_ITEM_LOCKED . ' AND ' . $db->sql_in_set('c.cat_id', $this->get_permissions('c_play'), false, true),
 		);
 
 		$sql = $db->sql_build_query('SELECT', $sql_array);
@@ -1399,7 +1399,7 @@ class arcade
 
 						'LEFT_JOIN'	=> array(
 							array(
-								'FROM'	=> array(USERS_TABLE => 'u'),
+								'FROM'	=> array(PHPBB3_USERS_TABLE => 'u'),
 								'ON'	=> 's.user_id = u.user_id'
 							),
 						),
@@ -1711,11 +1711,11 @@ class arcade
 					'ON'	=> 'g.cat_id = c.cat_id'
 				),
 				array(
-					'FROM'	=> array(ARCADE_SESSIONS_TABLE => 's'),
+					'FROM'	=> array(ARCADE_PHPBB3_SESSIONS_TABLE => 's'),
 					'ON'	=> 'g.game_id = s.game_id'
 				),
 				array(
-					'FROM'	=> array(USERS_TABLE => 'u'),
+					'FROM'	=> array(PHPBB3_USERS_TABLE => 'u'),
 					'ON'	=> 'g.game_highuser = u.user_id'
 				),
 			),
@@ -1747,7 +1747,7 @@ class arcade
 		$row['total_time'] = $row['current_time'] - $row['start_time'];
 
 		// Remove old entries from Arcade Sessions Table
-		$sql = 'DELETE FROM ' . ARCADE_SESSIONS_TABLE . '
+		$sql = 'DELETE FROM ' . ARCADE_PHPBB3_SESSIONS_TABLE . '
 			WHERE start_time < ' . (time() - 72000 ) . '
 				OR (user_id = ' . $user->data['user_id'] . '
 			AND game_id = ' . (int) $row['game_id'] . ')';
@@ -1916,7 +1916,7 @@ class arcade
 			if ($this->config['limit_play'] == LIMIT_PLAY_TYPE_POSTS || $this->config['limit_play'] == LIMIT_PLAY_TYPE_BOTH)
 			{
 				$sql = 'SELECT COUNT(post_id) as total_posts
-						FROM ' . POSTS_TABLE . '
+						FROM ' . PHPBB3_POSTS_TABLE . '
 						WHERE poster_id = ' . $user->data['user_id'] . '
 							AND post_postcount > 0';
 
@@ -1933,7 +1933,7 @@ class arcade
 			if  ($this->config['limit_play'] == LIMIT_PLAY_TYPE_DAYS || $this->config['limit_play'] == LIMIT_PLAY_TYPE_BOTH)
 			{
 				$sql = 'SELECT COUNT(post_id) as total_posts
-						FROM ' . POSTS_TABLE . '
+						FROM ' . PHPBB3_POSTS_TABLE . '
 						WHERE poster_id = ' . $user->data['user_id'] . '
 							AND post_time
 								BETWEEN ' . $old_time . ' AND ' . $current_time . '
@@ -2017,7 +2017,7 @@ class arcade
 		global $db, $user;
 
 		// Delete old and/or duplicate arcade sessions...
-		$sql = 'DELETE FROM ' . ARCADE_SESSIONS_TABLE . '
+		$sql = 'DELETE FROM ' . ARCADE_PHPBB3_SESSIONS_TABLE . '
 				WHERE start_time < ' . (time() - 72000 ) . '
 					OR (user_id = ' . $user->data['user_id'] . '
 						AND game_id = ' . (int) $game_id . ')';
@@ -2044,7 +2044,7 @@ class arcade
 			'start_time'		=> time(),
 		);
 
-		$sql = 'INSERT INTO ' . ARCADE_SESSIONS_TABLE . ' ' . $db->sql_build_array('INSERT', $sql_ary);
+		$sql = 'INSERT INTO ' . ARCADE_PHPBB3_SESSIONS_TABLE . ' ' . $db->sql_build_array('INSERT', $sql_ary);
 		$db->sql_query($sql);
 
 		$data = array(
@@ -2099,7 +2099,7 @@ class arcade
 
 			'LEFT_JOIN'	=> array(
 				array(
-					'FROM'	=> array(USERS_TABLE => 'u'),
+					'FROM'	=> array(PHPBB3_USERS_TABLE => 'u'),
 					'ON'	=> 'g.game_highuser = u.user_id'
 				)
 			),
@@ -2231,7 +2231,7 @@ class arcade
 
 			'LEFT_JOIN'	=> array(
 				array(
-					'FROM'	=> array(USERS_TABLE => 'u'),
+					'FROM'	=> array(PHPBB3_USERS_TABLE => 'u'),
 					'ON'	=> 'g.game_highuser = u.user_id'
 				)
 			),
@@ -2374,7 +2374,7 @@ class arcade
 			else
 			{
 				$sql = 'SELECT points_name
-					FROM ' . POINTS_CONFIG_TABLE;
+					FROM ' . POINTS_PHPBB3_CONFIG_TABLE;
 				$result = $db->sql_query($sql);
 				$return['name'] = $db->sql_fetchfield('points_name');
 				$db->sql_freeresult($result);
@@ -2387,7 +2387,7 @@ class arcade
 			else
 			{
 				$sql = 'SELECT ' . USER_POINTS . '
-						FROM ' . USERS_TABLE . '
+						FROM ' . PHPBB3_USERS_TABLE . '
 					WHERE user_id = ' . $user_id;
 
 				$result = $db->sql_query($sql);
@@ -2424,7 +2424,7 @@ class arcade
 				}
 				else
 				{
-					$sql = 'UPDATE ' . USERS_TABLE . '
+					$sql = 'UPDATE ' . PHPBB3_USERS_TABLE . '
 						SET ' . USER_POINTS . ' = ' . USER_POINTS . ' + ' . $amount . '
 						WHERE user_id = ' . $user_id;
 					$db->sql_query($sql);
@@ -2450,7 +2450,7 @@ class arcade
 					}
 					else
 					{
-						$sql = 'UPDATE ' . USERS_TABLE . '
+						$sql = 'UPDATE ' . PHPBB3_USERS_TABLE . '
 							SET ' . USER_POINTS . ' = ' . USER_POINTS . ' - ' . $amount . '
 							WHERE user_id = ' . $user_id;
 						$db->sql_query($sql);

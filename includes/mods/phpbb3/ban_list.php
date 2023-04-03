@@ -55,7 +55,7 @@ if (!defined('INCLUDES_BAN_LIST_PHP'))
         }
 
 		$sql = 'SELECT COUNT(ban_userid) AS total_banned
-				FROM ' . BANLIST_TABLE . '
+				FROM ' . PHPBB3_BANLIST_TABLE . '
 				WHERE ban_userid <> 0
 				AND (ban_end >= ' . time() . ' OR ban_end = 0)';
 		$result = $db->sql_query($sql);

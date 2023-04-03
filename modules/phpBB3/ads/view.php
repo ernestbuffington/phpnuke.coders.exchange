@@ -26,7 +26,7 @@ $db = new $sql_db();
 $db->sql_connect($dbhost, $dbuser, $dbpasswd, $dbname, $dbport, false, defined('PHPBB_DB_NEW_LINK') ? PHPBB_DB_NEW_LINK : false);
 unset($dbpasswd);
 
-$db->sql_query('UPDATE ' . ADS_TABLE . ' SET ad_views = ad_views + 1 WHERE ad_id = ' . $ad_id);
+$db->sql_query('UPDATE ' . PHPBB3_ADS_TABLE . ' SET ad_views = ad_views + 1 WHERE ad_id = ' . $ad_id);
 
 $db->sql_close();
 

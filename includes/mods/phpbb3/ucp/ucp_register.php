@@ -35,7 +35,7 @@ class ucp_register
         
 		$phpbb_root_path = PHPBB3_ROOT_DIR;  
 		//
-		if ($config['require_activation'] == USER_ACTIVATION_DISABLE)
+		if ($config['require_activation'] == PHPBB3_USER_ACTIVATION_DISABLE)
 		{
 			trigger_error('UCP_REGISTER_DISABLE');
 		}
@@ -224,16 +224,16 @@ class ucp_register
 			{
 				if (!$confirm_id)
 				{
-					$error[] = $user->lang['CONFIRM_CODE_WRONG'];
+					$error[] = $user->lang['PHPBB3_CONFIRM_CODE_WRONG'];
 					$wrong_confirm = true;
 				}
 				else
 				{
 					$sql = 'SELECT code
-						FROM ' . CONFIRM_TABLE . "
+						FROM ' . PHPBB3_CONFIRM_TABLE . "
 						WHERE confirm_id = '" . $db->sql_escape($confirm_id) . "'
 							AND session_id = '" . $db->sql_escape($user->session_id) . "'
-							AND confirm_type = " . CONFIRM_REG;
+							AND confirm_type = " . PHPBB3_CONFIRM_REG;
 					$result = $db->sql_query($sql);
 					$row = $db->sql_fetchrow($result);
 					$db->sql_freeresult($result);
@@ -242,21 +242,21 @@ class ucp_register
 					{
 						if (strcasecmp($row['code'], $data['confirm_code']) === 0)
 						{
-							$sql = 'DELETE FROM ' . CONFIRM_TABLE . "
+							$sql = 'DELETE FROM ' . PHPBB3_CONFIRM_TABLE . "
 								WHERE confirm_id = '" . $db->sql_escape($confirm_id) . "'
 									AND session_id = '" . $db->sql_escape($user->session_id) . "'
-									AND confirm_type = " . CONFIRM_REG;
+									AND confirm_type = " . PHPBB3_CONFIRM_REG;
 							$db->sql_query($sql);
 						}
 						else
 						{
-							$error[] = $user->lang['CONFIRM_CODE_WRONG'];
+							$error[] = $user->lang['PHPBB3_CONFIRM_CODE_WRONG'];
 							$wrong_confirm = true;
 						}
 					}
 					else
 					{
-						$error[] = $user->lang['CONFIRM_CODE_WRONG'];
+						$error[] = $user->lang['PHPBB3_CONFIRM_CODE_WRONG'];
 						$wrong_confirm = true;
 					}
 				}
@@ -283,9 +283,9 @@ class ucp_register
 				$group_name = ($coppa) ? 'REGISTERED_COPPA' : 'REGISTERED';
 
 				$sql = 'SELECT group_id
-					FROM ' . GROUPS_TABLE . "
+					FROM ' . PHPBB3_GROUPS_TABLE . "
 					WHERE group_name = '" . $db->sql_escape($group_name) . "'
-						AND group_type = " . GROUP_SPECIAL;
+						AND group_type = " . PHPBB3_GROUP_SPECIAL;
 				$result = $db->sql_query($sql);
 				$row = $db->sql_fetchrow($result);
 				$db->sql_freeresult($result);
@@ -298,21 +298,21 @@ class ucp_register
 				$group_id = $row['group_id'];
 
 				if (($coppa ||
-					$config['require_activation'] == USER_ACTIVATION_SELF ||
-					$config['require_activation'] == USER_ACTIVATION_ADMIN) && $config['email_enable'])
+					$config['require_activation'] == PHPBB3_USER_ACTIVATION_SELF ||
+					$config['require_activation'] == PHPBB3_USER_ACTIVATION_ADMIN) && $config['email_enable'])
 				{
 					$user_actkey = gen_rand_string(10);
 					$key_len = 54 - (strlen($server_url));
 					$key_len = ($key_len < 6) ? 6 : $key_len;
 					$user_actkey = substr($user_actkey, 0, $key_len);
 
-					$user_type = USER_INACTIVE;
-					$user_inactive_reason = INACTIVE_REGISTER;
+					$user_type = PHPBB3_USER_INACTIVE;
+					$user_inactive_reason = PHPBB3_INACTIVE_REGISTER;
 					$user_inactive_time = time();
 				}
 				else
 				{
-					$user_type = USER_NORMAL;
+					$user_type = PHPBB3_USER_NORMAL;
 					$user_actkey = '';
 					$user_inactive_reason = 0;
 					$user_inactive_time = 0;
@@ -349,12 +349,12 @@ class ucp_register
 					$message = $user->lang['ACCOUNT_COPPA'];
 					$email_template = 'coppa_welcome_inactive';
 				}
-				else if ($config['require_activation'] == USER_ACTIVATION_SELF && $config['email_enable'])
+				else if ($config['require_activation'] == PHPBB3_USER_ACTIVATION_SELF && $config['email_enable'])
 				{
 					$message = $user->lang['ACCOUNT_INACTIVE'];
 					$email_template = 'user_welcome_inactive';
 				}
-				else if ($config['require_activation'] == USER_ACTIVATION_ADMIN && $config['email_enable'])
+				else if ($config['require_activation'] == PHPBB3_USER_ACTIVATION_ADMIN && $config['email_enable'])
 				{
 					$message = $user->lang['ACCOUNT_INACTIVE_ADMIN'];
 					$email_template = 'admin_welcome_inactive';
@@ -396,16 +396,16 @@ class ucp_register
 						);
 					}
 
-					$messenger->send(NOTIFY_EMAIL);
+					$messenger->send(PHPBB3_NOTIFY_EMAIL);
 
-					if ($config['require_activation'] == USER_ACTIVATION_ADMIN)
+					if ($config['require_activation'] == PHPBB3_USER_ACTIVATION_ADMIN)
 					{
 						// Grab an array of user_id's with a_user permissions ... these users can activate a user
 						$admin_ary = $auth->acl_get_list(false, 'a_user', false);
 						$admin_ary = (!empty($admin_ary[0]['a_user'])) ? $admin_ary[0]['a_user'] : array();
 
 						// Also include founders
-						$where_sql = ' WHERE user_type = ' . USER_FOUNDER;
+						$where_sql = ' WHERE user_type = ' . PHPBB3_USER_FOUNDER;
 
 						if (sizeof($admin_ary))
 						{
@@ -413,7 +413,7 @@ class ucp_register
 						}
 
 						$sql = 'SELECT user_id, username, user_email, user_lang, user_jabber, user_notify_type
-							FROM ' . USERS_TABLE . ' ' .
+							FROM ' . PHPBB3_USERS_TABLE . ' ' .
 							$where_sql;
 						$result = $db->sql_query($sql);
 
@@ -435,14 +435,14 @@ class ucp_register
 					}
 					// BEGIN "Notify admin on registration MOD" - most of the code borrowed from phpBB, thank you
 					// Don't send e-mail if activation was sent, would only be duplicite
-					if ($config['require_activation'] != USER_ACTIVATION_ADMIN) 
+					if ($config['require_activation'] != PHPBB3_USER_ACTIVATION_ADMIN) 
 					{
 						// Grab an array of user_id's with a_user permissions ... these users can activate a user
 						$admin_ary = $auth->acl_get_list(false, 'a_user', false);
 						$admin_ary = (!empty($admin_ary[0]['a_user'])) ? $admin_ary[0]['a_user'] : array();
 
 						// Also include founders
-						$where_sql = ' WHERE user_type = ' . USER_FOUNDER;
+						$where_sql = ' WHERE user_type = ' . PHPBB3_USER_FOUNDER;
 
 						if (sizeof($admin_ary))
 						{
@@ -450,7 +450,7 @@ class ucp_register
 						}
 
 						$sql = 'SELECT user_id, username, user_email, user_lang, user_jabber, user_notify_type
-							FROM ' . USERS_TABLE . ' ' .
+							FROM ' . PHPBB3_USERS_TABLE . ' ' .
 							$where_sql;
 						$result = $db->sql_query($sql);
 
@@ -499,10 +499,10 @@ class ucp_register
 			{
 				$str = '&amp;change_lang=' . $change_lang;
 				$sql = 'SELECT code
-						FROM ' . CONFIRM_TABLE . "
+						FROM ' . PHPBB3_CONFIRM_TABLE . "
 						WHERE confirm_id = '" . $db->sql_escape($confirm_id) . "'
 							AND session_id = '" . $db->sql_escape($user->session_id) . "'
-							AND confirm_type = " . CONFIRM_REG;
+							AND confirm_type = " . PHPBB3_CONFIRM_REG;
 				$result = $db->sql_query($sql);
 				if (!$row = $db->sql_fetchrow($result))
 				{
@@ -516,12 +516,12 @@ class ucp_register
 			}
 			if (!$change_lang || !$confirm_id)
 			{
-				$user->confirm_gc(CONFIRM_REG);
+				$user->confirm_gc(PHPBB3_CONFIRM_REG);
 
 				$sql = 'SELECT COUNT(session_id) AS attempts
-					FROM ' . CONFIRM_TABLE . "
+					FROM ' . PHPBB3_CONFIRM_TABLE . "
 					WHERE session_id = '" . $db->sql_escape($user->session_id) . "'
-						AND confirm_type = " . CONFIRM_REG;
+						AND confirm_type = " . PHPBB3_CONFIRM_REG;
 				$result = $db->sql_query($sql);
 				$attempts = (int) $db->sql_fetchfield('attempts');
 				$db->sql_freeresult($result);
@@ -538,16 +538,16 @@ class ucp_register
 				// compute $seed % 0x7fffffff
 				$seed -= 0x7fffffff * floor($seed / 0x7fffffff);
 
-				$sql = 'INSERT INTO ' . CONFIRM_TABLE . ' ' . $db->sql_build_array('INSERT', array(
+				$sql = 'INSERT INTO ' . PHPBB3_CONFIRM_TABLE . ' ' . $db->sql_build_array('INSERT', array(
 					'confirm_id'	=> (string) $confirm_id,
 					'session_id'	=> (string) $user->session_id,
-					'confirm_type'	=> (int) CONFIRM_REG,
+					'confirm_type'	=> (int) PHPBB3_CONFIRM_REG,
 					'code'			=> (string) $code,
 					'seed'			=> (int) $seed)
 				);
 				$db->sql_query($sql);
 			}
-			$confirm_image = '<img src="' . append_sid("{$phpbb_root_path}ucp.$phpEx", 'mode=confirm&amp;id=' . $confirm_id . '&amp;type=' . CONFIRM_REG . $str) . '" alt="" title="" />';
+			$confirm_image = '<img src="' . append_sid("{$phpbb_root_path}ucp.$phpEx", 'mode=confirm&amp;id=' . $confirm_id . '&amp;type=' . PHPBB3_CONFIRM_REG . $str) . '" alt="" title="" />';
 			$s_hidden_fields .= '<input type="hidden" name="confirm_id" value="' . $confirm_id . '" />';
 		}
 
@@ -555,18 +555,18 @@ class ucp_register
 		$l_reg_cond = '';
 		switch ($config['require_activation'])
 		{
-			case USER_ACTIVATION_SELF:
+			case PHPBB3_USER_ACTIVATION_SELF:
 				$l_reg_cond = $user->lang['UCP_EMAIL_ACTIVATE'];
 			break;
 
-			case USER_ACTIVATION_ADMIN:
+			case PHPBB3_USER_ACTIVATION_ADMIN:
 				$l_reg_cond = $user->lang['UCP_ADMIN_ACTIVATE'];
 			break;
 		}
 		
 		// Select country flags
 		$sql = 'SELECT *
-			FROM ' . FLAGS_TABLE . '
+			FROM ' . PHPBB3_FLAGS_TABLE . '
 			ORDER BY flag_country';
 		$result = $db->sql_query($sql);
 
@@ -592,9 +592,9 @@ class ucp_register
 			'PASSWORD_CONFIRM'	=> $data['password_confirm'],
 			'EMAIL'				=> $data['email'],
 			'EMAIL_CONFIRM'		=> $data['email_confirm'],
-			'CONFIRM_IMG'		=> $confirm_image,
+			'PHPBB3_CONFIRM_IMG'		=> $confirm_image,
 
-			'L_CONFIRM_EXPLAIN'			=> sprintf($user->lang['CONFIRM_EXPLAIN'], '<a href="mailto:' . htmlspecialchars($config['board_contact']) . '">', '</a>'),
+			'L_PHPBB3_CONFIRM_EXPLAIN'			=> sprintf($user->lang['PHPBB3_CONFIRM_EXPLAIN'], '<a href="mailto:' . htmlspecialchars($config['board_contact']) . '">', '</a>'),
 			'L_REG_COND'				=> $l_reg_cond,
 			'L_USERNAME_EXPLAIN'		=> sprintf($user->lang[$config['allow_name_chars'] . '_EXPLAIN'], $config['min_name_chars'], $config['max_name_chars']),
 			'L_PASSWORD_EXPLAIN'		=> sprintf($user->lang[$config['pass_complex'] . '_EXPLAIN'], $config['min_pass_chars'], $config['max_pass_chars']),
@@ -605,7 +605,7 @@ class ucp_register
 			'S_FLAG_OPTIONS'	=> $s_flag_options,
 			'S_LANG_OPTIONS'	=> language_select($data['lang']),
 			'S_TZ_OPTIONS'		=> tz_select($data['tz']),
-			'S_CONFIRM_CODE'	=> ($config['enable_confirm']) ? true : false,
+			'S_PHPBB3_CONFIRM_CODE'	=> ($config['enable_confirm']) ? true : false,
 			'S_COPPA'			=> $coppa,
 			'S_HIDDEN_FIELDS'	=> $s_hidden_fields,
 			'S_UCP_ACTION'		=> append_sid("{$phpbb_root_path}ucp.$phpEx", 'mode=register'),

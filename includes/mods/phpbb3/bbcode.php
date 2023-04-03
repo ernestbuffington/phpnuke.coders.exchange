@@ -182,7 +182,7 @@ class bbcode
 			global $db;
 
 			$sql = 'SELECT *
-				FROM ' . BBCODES_TABLE . '
+				FROM ' . PHPBB3_BBCODES_TABLE . '
 				WHERE ' . $db->sql_in_set('bbcode_id', $sql);
 			$result = $db->sql_query($sql, 3600);
 

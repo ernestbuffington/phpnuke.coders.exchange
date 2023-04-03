@@ -13,7 +13,7 @@ if (!defined('IN_PHPBB'))
 {
 	die('Hacking attempt');
 }
-$gallery_root_path = GALLERY_ROOT_PATH;
+$gallery_root_path = PHPBB3_GALLERY_ROOT_PATH;
 
 $gd_check = function_exists('gd_info') ? gd_info() : array();;
 $gd_success = isset($gd_check['GD Version']);
@@ -21,7 +21,7 @@ if (!$gd_success)
 {
 	if (!isset($album_config['gd_version']))
 	{
-		$sql = 'SELECT * FROM ' . GALLERY_CONFIG_TABLE . " WHERE config_name = 'gd_version'";
+		$sql = 'SELECT * FROM ' . PHPBB3_GALLERY_CONFIG_TABLE . " WHERE config_name = 'gd_version'";
 		$result = $db->sql_query($sql);
 		while( $row = $db->sql_fetchrow($result) )
 		{
@@ -32,14 +32,14 @@ if (!$gd_success)
 	}
 	if ($album_config['gd_version'] > 0)
 	{
-		$sql = 'UPDATE ' . GALLERY_CONFIG_TABLE . " SET config_value = 0 WHERE config_name = 'gd_version'";
+		$sql = 'UPDATE ' . PHPBB3_GALLERY_CONFIG_TABLE . " SET config_value = 0 WHERE config_name = 'gd_version'";
 		$result = $db->sql_query($sql);
 		$album_config['gd_version'] = 0;
 	}
 }
 
 $sql = 'SELECT *
-	FROM ' . GALLERY_USERS_TABLE . '
+	FROM ' . PHPBB3_GALLERY_USERS_TABLE . '
 	WHERE user_id = ' . (int) $user->data['user_id'];
 $result = $db->sql_query($sql);
 $user->gallery = $db->sql_fetchrow($result);
@@ -54,7 +54,7 @@ function get_album_children($album_id)
 	$rows = array();
 
 	$sql = 'SELECT *
-		FROM ' . GALLERY_ALBUMS_TABLE . "
+		FROM ' . PHPBB3_GALLERY_ALBUMS_TABLE . "
 		WHERE parent_id = $album_id
 		ORDER BY left_id ASC";
 	$result = $db->sql_query($sql);
@@ -77,8 +77,8 @@ function get_album_info($album_id)
 	global $db, $user, $gallery_root_path, $phpbb_root_path, $phpEx;
 
 	$sql = 'SELECT a.*, w.watch_id
-		FROM ' . GALLERY_ALBUMS_TABLE . ' AS a
-		LEFT JOIN ' . GALLERY_WATCH_TABLE . ' AS w
+		FROM ' . PHPBB3_GALLERY_ALBUMS_TABLE . ' AS a
+		LEFT JOIN ' . PHPBB3_GALLERY_WATCH_TABLE . ' AS w
 			ON a.album_id = w.album_id
 				AND w.user_id = ' . $user->data['user_id']  . "
 		WHERE a.album_id = $album_id";
@@ -105,7 +105,7 @@ function generate_album_nav(&$album_data)
 	if ($album_data['album_user_id'] > 0 )
 	{
 		$sql = 'SELECT user_id, username, user_colour
-			FROM ' . USERS_TABLE . '
+			FROM ' . PHPBB3_USERS_TABLE . '
 			WHERE user_id = ' . $album_data['album_user_id'] . '
 			LIMIT 1';
 		$result = $db->sql_query($sql);
@@ -160,7 +160,7 @@ function get_album_parents(&$album_data)
 		if ($album_data['album_parents'] == '')
 		{
 			$sql = 'SELECT album_id, album_name, album_type
-				FROM ' . GALLERY_ALBUMS_TABLE . '
+				FROM ' . PHPBB3_GALLERY_ALBUMS_TABLE . '
 				WHERE left_id < ' . $album_data['left_id'] . '
 					AND right_id > ' . $album_data['right_id'] . '
 					AND album_user_id = ' . $album_data['album_user_id'] . '
@@ -175,7 +175,7 @@ function get_album_parents(&$album_data)
 
 			$album_data['album_parents'] = serialize($album_parents);
 
-			$sql = 'UPDATE ' . GALLERY_ALBUMS_TABLE . "
+			$sql = 'UPDATE ' . PHPBB3_GALLERY_ALBUMS_TABLE . "
 				SET album_parents = '" . $db->sql_escape($album_data['album_parents']) . "'
 				WHERE parent_id = " . $album_data['parent_id'];
 			$db->sql_query($sql);
@@ -201,7 +201,7 @@ function make_album_jumpbox($select_id = false, $ignore_id = false, $album = fal
 
 	// This query is identical to the jumpbox one
 	$sql = 'SELECT *
-		FROM ' . GALLERY_ALBUMS_TABLE . '
+		FROM ' . PHPBB3_GALLERY_ALBUMS_TABLE . '
 		WHERE album_user_id = 0
 		ORDER BY left_id ASC';
 	$result = $db->sql_query($sql, 600);
@@ -262,7 +262,7 @@ function make_personal_jumpbox($album_user_id, $select_id = false, $ignore_id = 
 
 	// This query is identical to the jumpbox one
 	$sql = 'SELECT *
-		FROM ' . GALLERY_ALBUMS_TABLE . "
+		FROM ' . PHPBB3_GALLERY_ALBUMS_TABLE . "
 		WHERE album_user_id = $album_user_id
 		ORDER BY left_id ASC";
 	$result = $db->sql_query($sql, 600);
@@ -323,7 +323,7 @@ function make_move_jumpbox($select_id = false, $ignore_id = false, $album = fals
 
 	// This query is identical to the jumpbox one
 	$sql = 'SELECT *
-		FROM ' . GALLERY_ALBUMS_TABLE . "
+		FROM ' . PHPBB3_GALLERY_ALBUMS_TABLE . "
 		ORDER BY album_user_id, left_id ASC";
 	$result = $db->sql_query($sql);
 
@@ -398,11 +398,11 @@ function get_image_info($image_id)
 	global $db, $user;
 
 	$sql = 'SELECT *
-		FROM ' . GALLERY_IMAGES_TABLE . ' i
-		LEFT JOIN ' . GALLERY_WATCH_TABLE . ' w
+		FROM ' . PHPBB3_GALLERY_IMAGES_TABLE . ' i
+		LEFT JOIN ' . PHPBB3_GALLERY_WATCH_TABLE . ' w
 			ON w.image_id = i.image_id
 				AND w.user_id = ' . $user->data['user_id']  . '
-		LEFT JOIN ' . GALLERY_FAVORITES_TABLE . ' f
+		LEFT JOIN ' . PHPBB3_GALLERY_FAVORITES_TABLE . ' f
 			ON f.image_id = i.image_id
 				AND f.user_id = ' . $user->data['user_id']  . '
 		WHERE i.image_id = ' . $image_id;
@@ -428,7 +428,7 @@ function update_lastimage_info($album_id)
 	//update album-information
 	$images_real = $images = $album_user_id = 0;
 	$sql = 'SELECT album_user_id
-		FROM ' . GALLERY_ALBUMS_TABLE . "
+		FROM ' . PHPBB3_GALLERY_ALBUMS_TABLE . "
 		WHERE album_id = $album_id";
 	$result = $db->sql_query($sql);
 	if ($row = $db->sql_fetchrow($result))
@@ -437,7 +437,7 @@ function update_lastimage_info($album_id)
 	}
 	$db->sql_freeresult($result);
 	$sql = 'SELECT COUNT(image_id) images
-		FROM ' . GALLERY_IMAGES_TABLE . "
+		FROM ' . PHPBB3_GALLERY_IMAGES_TABLE . "
 		WHERE image_album_id = $album_id
 			AND image_status = 1";
 	$result = $db->sql_query($sql);
@@ -447,7 +447,7 @@ function update_lastimage_info($album_id)
 	}
 	$db->sql_freeresult($result);
 	$sql = 'SELECT COUNT(image_id) images_real
-		FROM ' . GALLERY_IMAGES_TABLE . "
+		FROM ' . PHPBB3_GALLERY_IMAGES_TABLE . "
 		WHERE image_album_id = $album_id";
 	$result = $db->sql_query($sql);
 	if ($row = $db->sql_fetchrow($result))
@@ -456,7 +456,7 @@ function update_lastimage_info($album_id)
 	}
 	$db->sql_freeresult($result);
 	$sql = 'SELECT *
-		FROM ' . GALLERY_IMAGES_TABLE . "
+		FROM ' . PHPBB3_GALLERY_IMAGES_TABLE . "
 		WHERE image_album_id = $album_id
 			AND image_status = 1
 		ORDER BY image_time DESC
@@ -493,7 +493,7 @@ function update_lastimage_info($album_id)
 		}
 	}
 	$db->sql_freeresult($result);
-	$sql = 'UPDATE ' . GALLERY_ALBUMS_TABLE . ' SET ' . $db->sql_build_array('UPDATE', $sql_ary) . '
+	$sql = 'UPDATE ' . PHPBB3_GALLERY_ALBUMS_TABLE . ' SET ' . $db->sql_build_array('UPDATE', $sql_ary) . '
 		WHERE ' . $db->sql_in_set('album_id', $album_id);
 	$db->sql_query($sql);
 
@@ -536,16 +536,16 @@ function get_album_moderators(&$album_moderators, $album_id = false)
 		'SELECT'	=> 'm.*, u.user_colour, g.group_colour, g.group_type',
 
 		'FROM'		=> array(
-			GALLERY_MODSCACHE_TABLE	=> 'm',
+			PHPBB3_GALLERY_MODSCACHE_TABLE	=> 'm',
 		),
 
 		'LEFT_JOIN'	=> array(
 			array(
-				'FROM'	=> array(USERS_TABLE => 'u'),
+				'FROM'	=> array(PHPBB3_USERS_TABLE => 'u'),
 				'ON'	=> 'm.user_id = u.user_id',
 			),
 			array(
-				'FROM'	=> array(GROUPS_TABLE => 'g'),
+				'FROM'	=> array(PHPBB3_GROUPS_TABLE => 'g'),
 				'ON'	=> 'm.group_id = g.group_id',
 			),
 		),
@@ -564,7 +564,7 @@ function get_album_moderators(&$album_moderators, $album_id = false)
 		}
 		else
 		{
-			$album_moderators[$row['album_id']][] = '<a' . (($row['group_colour']) ? ' style="color:#' . $row['group_colour'] . ';"' : '') . ' href="' . append_sid("{$phpbb_root_path}memberlist.$phpEx", 'mode=group&amp;g=' . $row['group_id']) . '">' . (($row['group_type'] == GROUP_SPECIAL) ? $user->lang['G_' . $row['group_name']] : $row['group_name']) . '</a>';
+			$album_moderators[$row['album_id']][] = '<a' . (($row['group_colour']) ? ' style="color:#' . $row['group_colour'] . ';"' : '') . ' href="' . append_sid("{$phpbb_root_path}memberlist.$phpEx", 'mode=group&amp;g=' . $row['group_id']) . '">' . (($row['group_type'] == PHPBB3_GROUP_SPECIAL) ? $user->lang['G_' . $row['group_name']] : $row['group_name']) . '</a>';
 		}
 	}
 	$db->sql_freeresult($result);
@@ -577,7 +577,7 @@ function handle_image_counter($image_id_ary, $add, $readd = false)
 
 	$num_images = 0;
 	$sql = 'SELECT count(image_id) AS images, image_user_id
-		FROM ' . GALLERY_IMAGES_TABLE . '
+		FROM ' . PHPBB3_GALLERY_IMAGES_TABLE . '
 		WHERE image_status ' . (($readd) ? '<>' : '=') . ' 1
 			AND ' . $db->sql_in_set('image_id', $image_id_ary) . '
 		GROUP BY image_user_id';
@@ -590,12 +590,12 @@ function handle_image_counter($image_id_ary, $add, $readd = false)
 			'user_images'			=> $row['images'],
 		);
 		$num_images = $num_images + $row['images'];
-		$sql = 'UPDATE ' . GALLERY_USERS_TABLE . ' SET user_images = user_images ' . (($add) ? '+ ' : '- ') . $row['images'] . '
+		$sql = 'UPDATE ' . PHPBB3_GALLERY_USERS_TABLE . ' SET user_images = user_images ' . (($add) ? '+ ' : '- ') . $row['images'] . '
 			WHERE ' . $db->sql_in_set('user_id', $row['image_user_id']);
 		$db->sql_query($sql);
 		if ($db->sql_affectedrows() != 1)
 		{
-			$sql = 'INSERT INTO ' . GALLERY_USERS_TABLE . ' ' . $db->sql_build_array('INSERT', $sql_ary);
+			$sql = 'INSERT INTO ' . PHPBB3_GALLERY_USERS_TABLE . ' ' . $db->sql_build_array('INSERT', $sql_ary);
 			$db->sql_query($sql);
 		}
 	}

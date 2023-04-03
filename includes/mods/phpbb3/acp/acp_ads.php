@@ -52,26 +52,26 @@ class acp_ads
 		// Get the ad/position info if either id is sent.
 		if ($ad_id)
 		{
-			$result = $db->sql_query('SELECT * FROM ' . ADS_TABLE . ' WHERE ad_id = ' . $ad_id);
+			$result = $db->sql_query('SELECT * FROM ' . PHPBB3_ADS_TABLE . ' WHERE ad_id = ' . $ad_id);
 			$ad_data = $db->sql_fetchrow($result);
 			$db->sql_freeresult($result);
 
 			if ($ad_data)
 			{
 				$ad_data['forums'] = $ad_data['groups'] = $ad_data['positions'] = array();
-				$result = $db->sql_query('SELECT forum_id FROM ' . ADS_FORUMS_TABLE . ' WHERE ad_id = ' . $ad_id);
+				$result = $db->sql_query('SELECT forum_id FROM ' . PHPBB3_ADS_FORUMS_TABLE . ' WHERE ad_id = ' . $ad_id);
 				while ($row = $db->sql_fetchrow($result))
 				{
 					$ad_data['forums'][] = $row['forum_id'];
 				}
 				$db->sql_freeresult($result);
-				$result = $db->sql_query('SELECT group_id FROM ' . ADS_GROUPS_TABLE . ' WHERE ad_id = ' . $ad_id);
+				$result = $db->sql_query('SELECT group_id FROM ' . PHPBB3_ADS_GROUPS_TABLE . ' WHERE ad_id = ' . $ad_id);
 				while ($row = $db->sql_fetchrow($result))
 				{
 					$ad_data['groups'][] = $row['group_id'];
 				}
 				$db->sql_freeresult($result);
-				$result = $db->sql_query('SELECT position_id FROM ' . ADS_IN_POSITIONS_TABLE . ' WHERE ad_id = ' . $ad_id);
+				$result = $db->sql_query('SELECT position_id FROM ' . PHPBB3_ADS_IN_POSITIONS_TABLE . ' WHERE ad_id = ' . $ad_id);
 				while ($row = $db->sql_fetchrow($result))
 				{
 					$ad_data['positions'][] = $row['position_id'];
@@ -81,7 +81,7 @@ class acp_ads
 		}
 		if ($position_id)
 		{
-			$result = $db->sql_query('SELECT * FROM ' . ADS_POSITIONS_TABLE . ' WHERE position_id = ' . $position_id);
+			$result = $db->sql_query('SELECT * FROM ' . PHPBB3_ADS_POSITIONS_TABLE . ' WHERE position_id = ' . $position_id);
 			$position_data = $db->sql_fetchrow($result);
 			$db->sql_freeresult($result);
 		}
@@ -128,28 +128,28 @@ class acp_ads
 					if ($action == 'add')
 					{
 						// Make sure the given position name isn't already in the database.
-						$sql = 'SELECT position_id FROM ' . ADS_POSITIONS_TABLE . ' WHERE lang_key = \'' . $db->sql_escape($position_name) . "'";
+						$sql = 'SELECT position_id FROM ' . PHPBB3_ADS_POSITIONS_TABLE . ' WHERE lang_key = \'' . $db->sql_escape($position_name) . "'";
 						$result = $db->sql_query($sql);
 						if ($db->sql_fetchrow($result))
 						{
 							trigger_error($user->lang['POSTITION_ALREADY_EXIST'] . adm_back_link($this->u_action));
 						}
 
-						$db->sql_query('INSERT INTO ' . ADS_POSITIONS_TABLE . ' ' . $db->sql_build_array('INSERT', array('lang_key' => $position_name)));
+						$db->sql_query('INSERT INTO ' . PHPBB3_ADS_POSITIONS_TABLE . ' ' . $db->sql_build_array('INSERT', array('lang_key' => $position_name)));
 					}
 					else
 					{
 						if ($submit && $position_name != $position_data['lang_key'])
 						{
 							// Make sure the given position name isn't already in the database.
-							$sql = 'SELECT position_id FROM ' . ADS_POSITIONS_TABLE . ' WHERE lang_key = \'' . $db->sql_escape($position_name) . "'";
+							$sql = 'SELECT position_id FROM ' . PHPBB3_ADS_POSITIONS_TABLE . ' WHERE lang_key = \'' . $db->sql_escape($position_name) . "'";
 							$result = $db->sql_query($sql);
 							if ($db->sql_fetchrow($result))
 							{
 								trigger_error($user->lang['POSTITION_ALREADY_EXIST'] . adm_back_link($this->u_action));
 							}
 
-							$db->sql_query('UPDATE ' . ADS_POSITIONS_TABLE . ' SET ' . $db->sql_build_array('UPDATE', array('lang_key' => $position_name)) . ' WHERE position_id = ' . $position_id);
+							$db->sql_query('UPDATE ' . PHPBB3_ADS_POSITIONS_TABLE . ' SET ' . $db->sql_build_array('UPDATE', array('lang_key' => $position_name)) . ' WHERE position_id = ' . $position_id);
 						}
 						else
 						{
@@ -163,7 +163,7 @@ class acp_ads
 
 					if ($submit)
 					{
-						$cache->destroy('sql', ADS_POSITIONS_TABLE);
+						$cache->destroy('sql', PHPBB3_ADS_POSITIONS_TABLE);
 
 						trigger_error((($action == 'add') ? $user->lang['POSTITION_ADD_SUCCESS'] : $user->lang['POSITION_EDIT_SUCCESS']) . adm_back_link($this->u_action));
 					}
@@ -206,22 +206,22 @@ class acp_ads
 
 						if ($action == 'edit')
 						{
-							$db->sql_query('UPDATE ' . ADS_TABLE . ' SET ' . $db->sql_build_array('UPDATE', $sql_ary) . ' WHERE ad_id = ' . $ad_id);
+							$db->sql_query('UPDATE ' . PHPBB3_ADS_TABLE . ' SET ' . $db->sql_build_array('UPDATE', $sql_ary) . ' WHERE ad_id = ' . $ad_id);
 
 							// This is the simplest way to update the groups/forums/positions list
 							if ($config['ads_rules_groups'])
 							{
-								$db->sql_query('DELETE FROM ' . ADS_GROUPS_TABLE . ' WHERE ad_id = ' . $ad_id);
+								$db->sql_query('DELETE FROM ' . PHPBB3_ADS_GROUPS_TABLE . ' WHERE ad_id = ' . $ad_id);
 							}
 							if ($config['ads_rules_forums'])
 							{
-								$db->sql_query('DELETE FROM ' . ADS_FORUMS_TABLE . ' WHERE ad_id = ' . $ad_id);
+								$db->sql_query('DELETE FROM ' . PHPBB3_ADS_FORUMS_TABLE . ' WHERE ad_id = ' . $ad_id);
 							}
-							$db->sql_query('DELETE FROM ' . ADS_IN_POSITIONS_TABLE . ' WHERE ad_id = ' . $ad_id);
+							$db->sql_query('DELETE FROM ' . PHPBB3_ADS_IN_POSITIONS_TABLE . ' WHERE ad_id = ' . $ad_id);
 						}
 						else
 						{
-							$db->sql_query('INSERT INTO ' . ADS_TABLE . ' ' . $db->sql_build_array('INSERT', $sql_ary));
+							$db->sql_query('INSERT INTO ' . PHPBB3_ADS_TABLE . ' ' . $db->sql_build_array('INSERT', $sql_ary));
 							$ad_id = $db->sql_nextid();
 						}
 
@@ -229,18 +229,18 @@ class acp_ads
 						{
 							foreach ($ad_groups as $group_id)
 							{
-								$db->sql_query('INSERT INTO ' . ADS_GROUPS_TABLE . ' ' . $db->sql_build_array('INSERT', array('ad_id' => $ad_id, 'group_id' => $group_id)));
+								$db->sql_query('INSERT INTO ' . PHPBB3_ADS_GROUPS_TABLE . ' ' . $db->sql_build_array('INSERT', array('ad_id' => $ad_id, 'group_id' => $group_id)));
 							}
-							$cache->destroy('sql', ADS_GROUPS_TABLE);
+							$cache->destroy('sql', PHPBB3_ADS_GROUPS_TABLE);
 						}
 
 						if ($config['ads_rules_forums'])
 						{
 							foreach ($ad_forums as $forum_id)
 							{
-								$db->sql_query('INSERT INTO ' . ADS_FORUMS_TABLE . ' ' . $db->sql_build_array('INSERT', array('ad_id' => $ad_id, 'forum_id' => $forum_id)));
+								$db->sql_query('INSERT INTO ' . PHPBB3_ADS_FORUMS_TABLE . ' ' . $db->sql_build_array('INSERT', array('ad_id' => $ad_id, 'forum_id' => $forum_id)));
 							}
-							$cache->destroy('sql', ADS_FORUMS_TABLE);
+							$cache->destroy('sql', PHPBB3_ADS_FORUMS_TABLE);
 						}
 
 						foreach ($ad_positions as $position_id)
@@ -252,7 +252,7 @@ class acp_ads
 								'ad_enabled'		=> (isset($_POST['ad_enabled'])) ? true : false,
 								'all_forums'		=> (isset($_POST['all_forums']) || !$config['ads_rules_forums']) ? true : false,
 							);
-							$db->sql_query('INSERT INTO ' . ADS_IN_POSITIONS_TABLE . ' ' . $db->sql_build_array('INSERT', $sql_ary));
+							$db->sql_query('INSERT INTO ' . PHPBB3_ADS_IN_POSITIONS_TABLE . ' ' . $db->sql_build_array('INSERT', $sql_ary));
 						}
 
 						trigger_error((($action == 'edit') ? $user->lang['AD_EDIT_SUCCESS'] : $user->lang['AD_ADD_SUCCESS']) . adm_back_link($this->u_action));
@@ -278,7 +278,7 @@ class acp_ads
 						));
 
 						// List the groups
-						$sql = 'SELECT group_id, group_name FROM ' . GROUPS_TABLE . ' ORDER BY group_name ASC';
+						$sql = 'SELECT group_id, group_name FROM ' . PHPBB3_GROUPS_TABLE . ' ORDER BY group_name ASC';
 						$result = $db->sql_query($sql);
 						while ($row = $db->sql_fetchrow($result))
 						{
@@ -294,7 +294,7 @@ class acp_ads
 						// List the forums
 						$right = $padding = 0;
 						$padding_store = array('0' => 0);
-						$sql = 'SELECT forum_id, forum_name, parent_id, left_id, right_id FROM ' . FORUMS_TABLE . ' ORDER BY left_id ASC';
+						$sql = 'SELECT forum_id, forum_name, parent_id, left_id, right_id FROM ' . PHPBB3_FORUMS_TABLE . ' ORDER BY left_id ASC';
 						$result = $db->sql_query($sql);
 						while ($row = $db->sql_fetchrow($result))
 						{
@@ -323,7 +323,7 @@ class acp_ads
 						$db->sql_freeresult($result);
 
 						// List the positions
-						$sql = 'SELECT * FROM ' . ADS_POSITIONS_TABLE . ' ORDER BY position_id ASC';
+						$sql = 'SELECT * FROM ' . PHPBB3_ADS_POSITIONS_TABLE . ' ORDER BY position_id ASC';
 						$result = $db->sql_query($sql);
 						while ($row = $db->sql_fetchrow($result))
 						{
@@ -365,20 +365,20 @@ class acp_ads
 				{
 					if ($ad_id)
 					{
-						$db->sql_query('DELETE FROM ' . ADS_TABLE . ' WHERE ad_id = ' . $ad_id);
-						$db->sql_query('DELETE FROM ' . ADS_FORUMS_TABLE . ' WHERE ad_id = ' . $ad_id);
-						$db->sql_query('DELETE FROM ' . ADS_GROUPS_TABLE . ' WHERE ad_id = ' . $ad_id);
-						$db->sql_query('DELETE FROM ' . ADS_IN_POSITIONS_TABLE . ' WHERE ad_id = ' . $ad_id);
-						$cache->destroy('sql', ADS_FORUMS_TABLE);
-						$cache->destroy('sql', ADS_GROUPS_TABLE);
+						$db->sql_query('DELETE FROM ' . PHPBB3_ADS_TABLE . ' WHERE ad_id = ' . $ad_id);
+						$db->sql_query('DELETE FROM ' . PHPBB3_ADS_FORUMS_TABLE . ' WHERE ad_id = ' . $ad_id);
+						$db->sql_query('DELETE FROM ' . PHPBB3_ADS_GROUPS_TABLE . ' WHERE ad_id = ' . $ad_id);
+						$db->sql_query('DELETE FROM ' . PHPBB3_ADS_IN_POSITIONS_TABLE . ' WHERE ad_id = ' . $ad_id);
+						$cache->destroy('sql', PHPBB3_ADS_FORUMS_TABLE);
+						$cache->destroy('sql', PHPBB3_ADS_GROUPS_TABLE);
 
 						trigger_error($user->lang['DELETE_AD_SUCCESS'] . adm_back_link($this->u_action));
 					}
 					else if ($position_id)
 					{
-						$db->sql_query('DELETE FROM ' . ADS_POSITIONS_TABLE . ' WHERE position_id = ' . $position_id);
-						$db->sql_query('DELETE FROM ' . ADS_IN_POSITIONS_TABLE . ' WHERE position_id = ' . $position_id);
-						$cache->destroy('sql', ADS_POSITIONS_TABLE);
+						$db->sql_query('DELETE FROM ' . PHPBB3_ADS_POSITIONS_TABLE . ' WHERE position_id = ' . $position_id);
+						$db->sql_query('DELETE FROM ' . PHPBB3_ADS_IN_POSITIONS_TABLE . ' WHERE position_id = ' . $position_id);
+						$cache->destroy('sql', PHPBB3_ADS_POSITIONS_TABLE);
 
 						trigger_error($user->lang['DELETE_POSITION_SUCCESS'] . adm_back_link($this->u_action));
 					}
@@ -419,7 +419,7 @@ class acp_ads
 					));
 
 					// Positions
-					$sql = 'SELECT * FROM ' . ADS_POSITIONS_TABLE . ' ORDER BY position_id ASC';
+					$sql = 'SELECT * FROM ' . PHPBB3_ADS_POSITIONS_TABLE . ' ORDER BY position_id ASC';
 					$result = $db->sql_query($sql);
 					while ($row = $db->sql_fetchrow($result))
 					{
@@ -435,7 +435,7 @@ class acp_ads
 					$db->sql_freeresult($result);
 
 					// Advertisements
-					$sql = 'SELECT * FROM ' . ADS_TABLE . ' ORDER BY ad_enabled DESC, ad_name ASC';
+					$sql = 'SELECT * FROM ' . PHPBB3_ADS_TABLE . ' ORDER BY ad_enabled DESC, ad_name ASC';
 					$result = $db->sql_query($sql);
 					while ($row = $db->sql_fetchrow($result))
 					{

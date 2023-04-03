@@ -340,7 +340,7 @@ class acp_arcade_manage
 						'parent_id'				=> request_var('cat_parent_id', $this->parent_id),
 						'cat_type'				=> request_var('cat_type', ARCADE_CAT_GAMES),
 						'type_action'			=> request_var('type_action', ''),
-						'cat_status'			=> request_var('cat_status', ITEM_UNLOCKED),
+						'cat_status'			=> request_var('cat_status', PHPBB3_ITEM_UNLOCKED),
 						'cat_parents'			=> '',
 						'cat_name'				=> utf8_normalize_nfc(request_var('cat_name', '', true)),
 						'cat_link'				=> request_var('cat_link', ''),
@@ -379,7 +379,7 @@ class acp_arcade_manage
 					if ($cat_data['cat_type'] == ARCADE_LINK || $cat_data['cat_type'] == ARCADE_CAT)
 					{
 						// Linked forums are not able to be locked...
-						$cat_data['cat_status'] = ITEM_UNLOCKED;
+						$cat_data['cat_status'] = PHPBB3_ITEM_UNLOCKED;
 					}
 
 					// Get data for forum rules if specified...
@@ -407,11 +407,11 @@ class acp_arcade_manage
 							// if we edit a category delete current permissions first
 							if ($action == 'edit')
 							{
-								$sql = 'DELETE FROM ' . ACL_ARCADE_USERS_TABLE . '
+								$sql = 'DELETE FROM ' . PHPBB3_ACL_ARCADE_PHPBB3_USERS_TABLE . '
 									WHERE cat_id = ' . (int) $cat_data['cat_id'];
 								$db->sql_query($sql);
 
-								$sql = 'DELETE FROM ' . ACL_ARCADE_GROUPS_TABLE . '
+								$sql = 'DELETE FROM ' . PHPBB3_ACL_ARCADE_PHPBB3_GROUPS_TABLE . '
 									WHERE cat_id = ' . (int) $cat_data['cat_id'];
 								$db->sql_query($sql);
 							}
@@ -422,7 +422,7 @@ class acp_arcade_manage
 
 							// Copy permisisons from/to the acl users table (only cat_id gets changed)
 							$sql = 'SELECT user_id, auth_option_id, auth_role_id, auth_setting
-								FROM ' . ACL_ARCADE_USERS_TABLE . '
+								FROM ' . PHPBB3_ACL_ARCADE_PHPBB3_USERS_TABLE . '
 								WHERE cat_id = ' . $cat_perm_from;
 							$result = $db->sql_query($sql);
 
@@ -441,7 +441,7 @@ class acp_arcade_manage
 
 							// Copy permisisons from/to the acl groups table (only cat_id gets changed)
 							$sql = 'SELECT group_id, auth_option_id, auth_role_id, auth_setting
-								FROM ' . ACL_ARCADE_GROUPS_TABLE . '
+								FROM ' . PHPBB3_ACL_ARCADE_PHPBB3_GROUPS_TABLE . '
 								WHERE cat_id = ' . $cat_perm_from;
 							$result = $db->sql_query($sql);
 
@@ -459,8 +459,8 @@ class acp_arcade_manage
 							$db->sql_freeresult($result);
 
 							// Now insert the data
-							$db->sql_multi_insert(ACL_ARCADE_USERS_TABLE, $users_sql_ary);
-							$db->sql_multi_insert(ACL_ARCADE_GROUPS_TABLE, $groups_sql_ary);
+							$db->sql_multi_insert(PHPBB3_ACL_ARCADE_PHPBB3_USERS_TABLE, $users_sql_ary);
+							$db->sql_multi_insert(PHPBB3_ACL_ARCADE_PHPBB3_GROUPS_TABLE, $groups_sql_ary);
 						}
 
 						$auth_arcade->acl_clear_prefetch();
@@ -739,7 +739,7 @@ class acp_arcade_manage
 						$cat_data = array(
 							'parent_id'				=> $this->parent_id,
 							'cat_type'				=> ARCADE_CAT_GAMES,
-							'cat_status'			=> ITEM_UNLOCKED,
+							'cat_status'			=> PHPBB3_ITEM_UNLOCKED,
 							'cat_name'				=> utf8_normalize_nfc(request_var('cat_name', '', true)),
 							'cat_link'				=> '',
 							'cat_link_track'		=> false,
@@ -826,7 +826,7 @@ class acp_arcade_manage
 
 				$styles_list = style_select($cat_data['cat_style'], true);
 				$cat_display_list = $this->cat_display_select($cat_data['cat_display']);
-				$statuslist = '<option value="' . ITEM_UNLOCKED . '"' . (($cat_data['cat_status'] == ITEM_UNLOCKED) ? ' selected="selected"' : '') . '>' . $user->lang['UNLOCKED'] . '</option><option value="' . ITEM_LOCKED . '"' . (($cat_data['cat_status'] == ITEM_LOCKED) ? ' selected="selected"' : '') . '>' . $user->lang['LOCKED'] . '</option>';
+				$statuslist = '<option value="' . PHPBB3_ITEM_UNLOCKED . '"' . (($cat_data['cat_status'] == PHPBB3_ITEM_UNLOCKED) ? ' selected="selected"' : '') . '>' . $user->lang['UNLOCKED'] . '</option><option value="' . PHPBB3_ITEM_LOCKED . '"' . (($cat_data['cat_status'] == PHPBB3_ITEM_LOCKED) ? ' selected="selected"' : '') . '>' . $user->lang['LOCKED'] . '</option>';
 
 				// Subforum move options
 				if ($action == 'edit' && $cat_data['cat_type'] == ARCADE_CAT)
@@ -1039,7 +1039,7 @@ class acp_arcade_manage
 			{
 				$cat_type = $row['cat_type'];
 
-				if ($row['cat_status'] == ITEM_LOCKED)
+				if ($row['cat_status'] == PHPBB3_ITEM_LOCKED)
 				{
 					$folder_image = '<img src="images/icon_folder_lock.gif" alt="' . $user->lang['LOCKED'] . '" />';
 				}

@@ -43,7 +43,7 @@ class ucp_attachments
 		{
 			// Validate $delete_ids...
 			$sql = 'SELECT attach_id
-				FROM ' . ATTACHMENTS_TABLE . '
+				FROM ' . PHPBB3_ATTACHMENTS_TABLE . '
 				WHERE poster_id = ' . $user->data['user_id'] . '
 					AND is_orphan = 0
 					AND ' . $db->sql_in_set('attach_id', $delete_ids);
@@ -78,7 +78,7 @@ class ucp_attachments
 				delete_attachments('attach', $delete_ids);
 
 				meta_refresh(3, $this->u_action);
-				$message = ((sizeof($delete_ids) == 1) ? $user->lang['ATTACHMENT_DELETED'] : $user->lang['ATTACHMENTS_DELETED']) . '<br /><br />' . sprintf($user->lang['RETURN_UCP'], '<a href="' . $this->u_action . '">', '</a>');
+				$message = ((sizeof($delete_ids) == 1) ? $user->lang['PHPBB3_ATTACHMENT_DELETED'] : $user->lang['ATTACHMENTS_DELETED']) . '<br /><br />' . sprintf($user->lang['RETURN_UCP'], '<a href="' . $this->u_action . '">', '</a>');
 				trigger_error($message);
 			}
 			else
@@ -115,7 +115,7 @@ class ucp_attachments
 		$order_by = $sort_key_sql[$sort_key] . ' ' . (($sort_dir == 'a') ? 'ASC' : 'DESC');
 
 		$sql = 'SELECT COUNT(attach_id) as num_attachments
-			FROM ' . ATTACHMENTS_TABLE . '
+			FROM ' . PHPBB3_ATTACHMENTS_TABLE . '
 			WHERE poster_id = ' . $user->data['user_id'] . '
 				AND is_orphan = 0';
 		$result = $db->sql_query($sql);
@@ -123,9 +123,9 @@ class ucp_attachments
 		$db->sql_freeresult($result);
 
 		$sql = 'SELECT a.*, t.topic_title, p.message_subject as message_title
-			FROM ' . ATTACHMENTS_TABLE . ' a
-				LEFT JOIN ' . TOPICS_TABLE . ' t ON (a.topic_id = t.topic_id AND a.in_message = 0)
-				LEFT JOIN ' . PRIVMSGS_TABLE . ' p ON (a.post_msg_id = p.msg_id AND a.in_message = 1)
+			FROM ' . PHPBB3_ATTACHMENTS_TABLE . ' a
+				LEFT JOIN ' . PHPBB3_TOPICS_TABLE . ' t ON (a.topic_id = t.topic_id AND a.in_message = 0)
+				LEFT JOIN ' . PHPBB3_PRIVMSGS_TABLE . ' p ON (a.post_msg_id = p.msg_id AND a.in_message = 1)
 			WHERE a.poster_id = ' . $user->data['user_id'] . "
 				AND a.is_orphan = 0
 			ORDER BY $order_by";
@@ -134,7 +134,7 @@ class ucp_attachments
 		$row_count = 0;
 		if ($row = $db->sql_fetchrow($result))
 		{
-			$template->assign_var('S_ATTACHMENT_ROWS', true);
+			$template->assign_var('S_PHPBB3_ATTACHMENT_ROWS', true);
 
 			do
 			{

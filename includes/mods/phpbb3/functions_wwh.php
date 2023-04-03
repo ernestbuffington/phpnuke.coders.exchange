@@ -42,14 +42,14 @@ if ($old_mod_version == $new_mod_version)
 		$timestamp_cleaning = $timestamp - $wwh_del_time;
 	}
 
-	$sql = 'DELETE FROM ' . WWH_TABLE . " WHERE last_page <= " . $timestamp_cleaning;
+	$sql = 'DELETE FROM ' . PHPBB3_WWH_TABLE . " WHERE last_page <= " . $timestamp_cleaning;
 	$db->sql_query($sql);
 
 	$pre_sql = 'SELECT u.user_id, u.username, u.username_clean, u.user_type, u.user_colour, u.user_allow_viewonline, u.user_lastvisit, w.viewonline, w.id, w.last_page
-		FROM ' . USERS_TABLE . ' u
-		LEFT JOIN ' . WWH_TABLE . ' w
+		FROM ' . PHPBB3_USERS_TABLE . ' u
+		LEFT JOIN ' . PHPBB3_WWH_TABLE . ' w
 			ON u.user_id = w.id
-		WHERE (u.user_type = ' . USER_IGNORE . '
+		WHERE (u.user_type = ' . PHPBB3_USER_IGNORE . '
 				AND u.user_id != ' . ANONYMOUS . '
 				AND u.user_lastvisit > ' . $timestamp_cleaning . '
 				AND u.user_lastvisit > ' . $wwh_reset_time . ')
@@ -67,7 +67,7 @@ if ($old_mod_version == $new_mod_version)
 
 		case '2':
 			$sql = $pre_sql . 'CASE WHEN
-				( u.user_type = ' . USER_IGNORE . '
+				( u.user_type = ' . PHPBB3_USER_IGNORE . '
 					AND u.user_id != ' . ANONYMOUS . '
 					AND u.user_lastvisit > ' . $timestamp_cleaning . '
 					AND u.user_lastvisit > ' . $wwh_reset_time . ')
@@ -77,7 +77,7 @@ if ($old_mod_version == $new_mod_version)
 
 		case '3':
 			$sql = $pre_sql . 'CASE WHEN
-				( u.user_type = ' . USER_IGNORE . '
+				( u.user_type = ' . PHPBB3_USER_IGNORE . '
 					AND u.user_id != ' . ANONYMOUS . '
 					AND u.user_lastvisit > ' . $timestamp_cleaning . '
 					AND u.user_lastvisit > ' . $wwh_reset_time . ')
@@ -100,7 +100,7 @@ if ($old_mod_version == $new_mod_version)
 	while ($row = $db->sql_fetchrow($result))
 	{
 		// colour them
-		if ($row['user_type'] == USER_IGNORE)
+		if ($row['user_type'] == PHPBB3_USER_IGNORE)
 		{
 			$wwh_username = get_username_string('username', $row['user_id'], $row['username'], $row['user_colour'], $guest_username = false, $custom_profile_url = false);
 			$wwh_username_colour = get_username_string('colour', $row['user_id'], $row['username'], $row['user_colour'], $guest_username = false, $custom_profile_url = false);
@@ -110,12 +110,12 @@ if ($old_mod_version == $new_mod_version)
 		{
 			$wwh_username_full = get_username_string('full', $row['user_id'], $row['username'], $row['user_colour'], $guest_username = false, $custom_profile_url = false);
 		}
-		$hover_time = (($wwh_disp_time == '2') ? ' title="' . $user->lang['WHO_WAS_HERE_LATEST1'] . '&nbsp;' . $user->format_date((($row['user_type'] == USER_IGNORE) ? $row['user_lastvisit'] : $row['last_page']),'H:i') . $user->lang['WHO_WAS_HERE_LATEST2'] . '" ' : '' );
-		$disp_time = (($wwh_disp_time == '1') ? '&nbsp;(' . $user->lang['WHO_WAS_HERE_LATEST1'] . '&nbsp;' . $user->format_date((($row['user_type'] == USER_IGNORE) ? $row['user_lastvisit'] : $row['last_page']),'H:i') . $user->lang['WHO_WAS_HERE_LATEST2'] . ')' : '' );
+		$hover_time = (($wwh_disp_time == '2') ? ' title="' . $user->lang['WHO_WAS_HERE_LATEST1'] . '&nbsp;' . $user->format_date((($row['user_type'] == PHPBB3_USER_IGNORE) ? $row['user_lastvisit'] : $row['last_page']),'H:i') . $user->lang['WHO_WAS_HERE_LATEST2'] . '" ' : '' );
+		$disp_time = (($wwh_disp_time == '1') ? '&nbsp;(' . $user->lang['WHO_WAS_HERE_LATEST1'] . '&nbsp;' . $user->format_date((($row['user_type'] == PHPBB3_USER_IGNORE) ? $row['user_lastvisit'] : $row['last_page']),'H:i') . $user->lang['WHO_WAS_HERE_LATEST2'] . ')' : '' );
 		//list the user / bot
-		if (($row['user_allow_viewonline'] && $row['viewonline']) || ($row['user_type'] == USER_IGNORE))
+		if (($row['user_allow_viewonline'] && $row['viewonline']) || ($row['user_type'] == PHPBB3_USER_IGNORE))
 		{
-			if (($row['user_type'] == USER_IGNORE) && ($row['user_id'] != ANONYMOUS))
+			if (($row['user_type'] == PHPBB3_USER_IGNORE) && ($row['user_id'] != ANONYMOUS))
 			{
 				if ($wwh_disp_bots == '1')
 				{
@@ -139,7 +139,7 @@ if ($old_mod_version == $new_mod_version)
 		{
 			$wwh_count_guests = $wwh_count_guests + 1;
 		}
-		else if ($row['user_type'] == USER_IGNORE)
+		else if ($row['user_type'] == PHPBB3_USER_IGNORE)
 		{
 			$wwh_count_bot = $wwh_count_bot + 1;
 		}

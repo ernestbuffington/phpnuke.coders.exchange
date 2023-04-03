@@ -13,14 +13,14 @@ if ( !defined('IN_PHPBB') )
 {
 	die('Hacking attempt');
 }
-$gallery_root_path = GALLERY_ROOT_PATH;
+$gallery_root_path = PHPBB3_GALLERY_ROOT_PATH;
 include("{$phpbb_root_path}{$gallery_root_path}includes/constants.$phpEx");
 
 //
 // Get Album Config
 //
 $sql = 'SELECT *
-	FROM ' . GALLERY_CONFIG_TABLE;
+	FROM ' . PHPBB3_GALLERY_CONFIG_TABLE;
 @$result = $db->sql_query($sql);
 while ($row = $db->sql_fetchrow($result))
 {

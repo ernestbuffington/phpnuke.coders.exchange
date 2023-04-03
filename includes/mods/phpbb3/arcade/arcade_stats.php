@@ -121,7 +121,7 @@ if (($game_id && $user_id) || ($user_id))
 	if ($config['load_onlinetrack'])
 	{
 		$sql = 'SELECT MAX(session_time) AS session_time, MIN(session_viewonline) AS session_viewonline
-			FROM ' . SESSIONS_TABLE . "
+			FROM ' . PHPBB3_SESSIONS_TABLE . "
 			WHERE session_user_id = $user_id";
 		$result = $db->sql_query($sql);
 		$row = $db->sql_fetchrow($result);
@@ -304,7 +304,7 @@ else if ($game_id && $game_id > 0)
 
 		'LEFT_JOIN'	=> array(
 			array(
-				'FROM'	=> array(USERS_TABLE => 'u'),
+				'FROM'	=> array(PHPBB3_USERS_TABLE => 'u'),
 				'ON'	=> 's.user_id = u.user_id'
 			),
 		),
@@ -363,7 +363,7 @@ else if ($game_id && $game_id > 0)
 	if ($config['load_onlinetrack'])
 	{
 		$sql = 'SELECT MAX(session_time) AS session_time, MIN(session_viewonline) AS session_viewonline
-			FROM ' . SESSIONS_TABLE . '
+			FROM ' . PHPBB3_SESSIONS_TABLE . '
 			WHERE session_user_id = ' . $best_user['user_id'];
 		$result = $db->sql_query($sql);
 		$row = $db->sql_fetchrow($result);

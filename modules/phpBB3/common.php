@@ -194,9 +194,9 @@ require(PHPBB3_INCLUDE_DIR . 'auth.' . $phpEx);
 require(PHPBB3_INCLUDE_DIR . 'functions.' . $phpEx);
 require(PHPBB3_INCLUDE_DIR . 'functions_content.' . $phpEx);
 
-require(PHPBB3_INCLUDE_DIR . 'constants.' . $phpEx);
+include_once(PHPBB3_INCLUDE_DIR . 'constants.' . $phpEx);
 require($phpbb_root_path . 'includes/db/' . $dbms . '.' . $phpEx);
-require(NUKE_INLCUDE_DIR . 'utf/utf_tools.' . $phpEx);
+require(NUKE_INCLUDE_DIR . 'utf/utf_tools.' . $phpEx);
 
 // Set PHP error handler to ours
 set_error_handler(defined('PHPBB_MSG_HANDLER') ? PHPBB_MSG_HANDLER : 'msg_handler');

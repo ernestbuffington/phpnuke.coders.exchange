@@ -31,7 +31,7 @@
             SELECT distinct(p.topic_id) , p.forum_id, p.post_time, p.post_subject, p.post_text, p.bbcode_bitfield, p.bbcode_uid,
                 u.user_id, u.user_email, u.username, u.user_allow_viewemail,
                 t.topic_title, f.left_id, f.right_id, t.topic_replies as aantal_posts
-            FROM " . POSTS_TABLE . " p JOIN " . USERS_TABLE . " u on p.poster_id = u.user_id JOIN " . TOPICS_TABLE . " t on p.topic_id = t.topic_id JOIN ". FORUMS_TABLE ." f on p.forum_id = f.forum_id
+            FROM " . PHPBB3_POSTS_TABLE . " p JOIN " . PHPBB3_USERS_TABLE . " u on p.poster_id = u.user_id JOIN " . PHPBB3_TOPICS_TABLE . " t on p.topic_id = t.topic_id JOIN ". PHPBB3_FORUMS_TABLE ." f on p.forum_id = f.forum_id
             ORDER BY p.post_time DESC";
         $result = $db->sql_query( $query );
         $rss = '';
@@ -47,19 +47,19 @@
               while( $row = $db->sql_fetchrow($result) )
                {
             //gather extra information on each post
-                 $sql_view_post ="SELECT * FROM " . POSTS_TABLE . "
+                 $sql_view_post ="SELECT * FROM " . PHPBB3_POSTS_TABLE . "
                  WHERE post_time = ". $row['post_time'] . "";
                  $res_views_post = $db->sql_query($sql_view_post);
                  $row_views_post = $db->sql_fetchrow($res_views_post);
-                 $sql_view ="SELECT * FROM " . TOPICS_TABLE . "
+                 $sql_view ="SELECT * FROM " . PHPBB3_TOPICS_TABLE . "
                  WHERE topic_id = ". $row['topic_id'] . "";
                 $res_views = $db->sql_query($sql_view);
                 $row_views = $db->sql_fetchrow($res_views);
-                $sql_tracking ="SELECT * FROM " . TOPICS_TRACK_TABLE . "
+                $sql_tracking ="SELECT * FROM " . PHPBB3_TOPICS_TRACK_TABLE . "
                 WHERE topic_id = ". $row_views_post['topic_id'] . " AND user_id = " . $user->data['user_id'] . "";
                 $tracking_views = $db->sql_query($sql_tracking);
                 $tracking_row = $db->sql_fetchrow($tracking_views);
-                $sql_session ="SELECT * FROM " . SESSIONS_TABLE . "
+                $sql_session ="SELECT * FROM " . PHPBB3_SESSIONS_TABLE . "
                 WHERE session_user_id = ". $user->data['user_id'] . "";
                 $res_session = $db->sql_query($sql_session);
                 $row_session = $db->sql_fetchrow($res_session);

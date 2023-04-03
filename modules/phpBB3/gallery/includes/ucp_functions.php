@@ -19,7 +19,7 @@ function personal_album_select($user_id, $select_id = 0, $disable_id = 0)
 
 	// This query is identical to the jumpbox one
 	$sql = 'SELECT album_id, album_name, parent_id, left_id, right_id, album_type
-		FROM ' . GALLERY_ALBUMS_TABLE . "
+		FROM ' . PHPBB3_GALLERY_ALBUMS_TABLE . "
 		WHERE album_user_id = $user_id
 			AND parent_id != 0
 		ORDER BY left_id ASC";
@@ -73,7 +73,7 @@ function album_hacking($album_id)
 	}
 
 	$sql = 'SELECT album_id
-		FROM ' . GALLERY_ALBUMS_TABLE . '
+		FROM ' . PHPBB3_GALLERY_ALBUMS_TABLE . '
 		WHERE album_id = ' . $album_id . '
 			AND album_user_id = ' . $user->data['user_id'];
 	$result = $db->sql_query($sql);
@@ -108,8 +108,8 @@ function get_album_branch($album_id, $type = 'all', $order = 'descending', $incl
 	$rows = array();
 
 	$sql = 'SELECT a2.*
-		FROM ' . GALLERY_ALBUMS_TABLE . ' a1
-		LEFT JOIN ' . GALLERY_ALBUMS_TABLE . " a2 ON ($condition) AND a2.album_user_id = {$user->data['user_id']}
+		FROM ' . PHPBB3_GALLERY_ALBUMS_TABLE . ' a1
+		LEFT JOIN ' . PHPBB3_GALLERY_ALBUMS_TABLE . " a2 ON ($condition) AND a2.album_user_id = {$user->data['user_id']}
 		WHERE a1.album_id = $album_id
 			AND a1.album_user_id = {$user->data['user_id']}
 		ORDER BY a2.left_id " . (($order == 'descending') ? 'ASC' : 'DESC');

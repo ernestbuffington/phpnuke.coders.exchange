@@ -301,7 +301,7 @@ class session
 		if (!empty($this->session_id) && (!defined('NEED_SID') || (isset($_GET['sid']) && $this->session_id === $_GET['sid'])))
 		{
 			$sql = 'SELECT u.*, s.*
-				FROM ' . SESSIONS_TABLE . ' s, ' . USERS_TABLE . " u
+				FROM ' . PHPBB3_SESSIONS_TABLE . ' s, ' . PHPBB3_USERS_TABLE . " u
 				WHERE s.session_id = '" . $db->sql_escape($this->session_id) . "'
 					AND u.user_id = s.session_user_id";
 			$result = $db->sql_query($sql);
@@ -393,7 +393,7 @@ class session
 
 							$db->sql_return_on_error(true);
 
-							$sql = 'UPDATE ' . SESSIONS_TABLE . ' SET ' . $db->sql_build_array('UPDATE', $sql_ary) . "
+							$sql = 'UPDATE ' . PHPBB3_SESSIONS_TABLE . ' SET ' . $db->sql_build_array('UPDATE', $sql_ary) . "
 								WHERE session_id = '" . $db->sql_escape($this->session_id) . "'";
 							$result = $db->sql_query($sql);
 
@@ -410,13 +410,13 @@ class session
 							{
 								unset($sql_ary['session_forum_id']);
 
-								$sql = 'UPDATE ' . SESSIONS_TABLE . ' SET ' . $db->sql_build_array('UPDATE', $sql_ary) . "
+								$sql = 'UPDATE ' . PHPBB3_SESSIONS_TABLE . ' SET ' . $db->sql_build_array('UPDATE', $sql_ary) . "
 									WHERE session_id = '" . $db->sql_escape($this->session_id) . "'";
 								$db->sql_query($sql);
 							}
 						}
 
-						$this->data['is_registered'] = ($this->data['user_id'] != ANONYMOUS && ($this->data['user_type'] == USER_NORMAL || $this->data['user_type'] == USER_FOUNDER)) ? true : false;
+						$this->data['is_registered'] = ($this->data['user_id'] != ANONYMOUS && ($this->data['user_type'] == PHPBB3_USER_NORMAL || $this->data['user_type'] == PHPBB3_USER_FOUNDER)) ? true : false;
 						$this->data['is_bot'] = (!$this->data['is_registered'] && $this->data['user_id'] != ANONYMOUS) ? true : false;
 						$this->data['user_lang'] = basename($this->data['user_lang']);
 
@@ -532,9 +532,9 @@ class session
 		if (isset($this->cookie_data['k']) && $this->cookie_data['k'] && $this->cookie_data['u'] && !sizeof($this->data))
 		{
 			$sql = 'SELECT u.*
-				FROM ' . USERS_TABLE . ' u, ' . SESSIONS_KEYS_TABLE . ' k
+				FROM ' . PHPBB3_USERS_TABLE . ' u, ' . PHPBB3_SESSIONS_KEYS_TABLE . ' k
 				WHERE u.user_id = ' . (int) $this->cookie_data['u'] . '
-					AND u.user_type IN (' . USER_NORMAL . ', ' . USER_FOUNDER . ")
+					AND u.user_type IN (' . PHPBB3_USER_NORMAL . ', ' . PHPBB3_USER_FOUNDER . ")
 					AND k.user_id = u.user_id
 					AND k.key_id = '" . $db->sql_escape(md5($this->cookie_data['k'])) . "'";
 			$result = $db->sql_query($sql);
@@ -548,9 +548,9 @@ class session
 			$this->cookie_data['u'] = $user_id;
 
 			$sql = 'SELECT *
-				FROM ' . USERS_TABLE . '
+				FROM ' . PHPBB3_USERS_TABLE . '
 				WHERE user_id = ' . (int) $this->cookie_data['u'] . '
-					AND user_type IN (' . USER_NORMAL . ', ' . USER_FOUNDER . ')';
+					AND user_type IN (' . PHPBB3_USER_NORMAL . ', ' . PHPBB3_USER_FOUNDER . ')';
 			$result = $db->sql_query($sql);
 			$this->data = $db->sql_fetchrow($result);
 			$db->sql_freeresult($result);
@@ -570,15 +570,15 @@ class session
 			if (!$bot)
 			{
 				$sql = 'SELECT *
-					FROM ' . USERS_TABLE . '
+					FROM ' . PHPBB3_USERS_TABLE . '
 					WHERE user_id = ' . (int) $this->cookie_data['u'];
 			}
 			else
 			{
 				// We give bots always the same session if it is not yet expired.
 				$sql = 'SELECT u.*, s.*
-					FROM ' . USERS_TABLE . ' u
-					LEFT JOIN ' . SESSIONS_TABLE . ' s ON (s.session_user_id = u.user_id)
+					FROM ' . PHPBB3_USERS_TABLE . ' u
+					LEFT JOIN ' . PHPBB3_SESSIONS_TABLE . ' s ON (s.session_user_id = u.user_id)
 					WHERE u.user_id = ' . (int) $bot;
 			}
 
@@ -604,7 +604,7 @@ class session
 		// session exists in which case session_id will also be set
 
 		// Is user banned? Are they excluded? Won't return on ban, exists within method
-		if ($this->data['user_type'] != USER_FOUNDER)
+		if ($this->data['user_type'] != PHPBB3_USER_FOUNDER)
 		{
 			if (!$config['forwarded_for_check'])
 			{
@@ -618,7 +618,7 @@ class session
 			}
 		}
 
-		$this->data['is_registered'] = (!$bot && $this->data['user_id'] != ANONYMOUS && ($this->data['user_type'] == USER_NORMAL || $this->data['user_type'] == USER_FOUNDER)) ? true : false;
+		$this->data['is_registered'] = (!$bot && $this->data['user_id'] != ANONYMOUS && ($this->data['user_type'] == PHPBB3_USER_NORMAL || $this->data['user_type'] == PHPBB3_USER_FOUNDER)) ? true : false;
 		$this->data['is_bot'] = ($bot) ? true : false;
 
 		// If our friend is a bot, we re-assign a previously assigned session
@@ -660,12 +660,12 @@ class session
 						$sql_ary['session_album_id'] = $this->page['album'];
 					}
 
-					$sql = 'UPDATE ' . SESSIONS_TABLE . ' SET ' . $db->sql_build_array('UPDATE', $sql_ary) . "
+					$sql = 'UPDATE ' . PHPBB3_SESSIONS_TABLE . ' SET ' . $db->sql_build_array('UPDATE', $sql_ary) . "
 						WHERE session_id = '" . $db->sql_escape($this->session_id) . "'";
 					$db->sql_query($sql);
 
 					// Update the last visit time
-					$sql = 'UPDATE ' . USERS_TABLE . '
+					$sql = 'UPDATE ' . PHPBB3_USERS_TABLE . '
 						SET user_lastvisit = ' . (int) $this->data['session_time'] . '
 						WHERE user_id = ' . (int) $this->data['user_id'];
 					$db->sql_query($sql);
@@ -678,7 +678,7 @@ class session
 			else
 			{
 				// If the ip and browser does not match make sure we only have one bot assigned to one session
-				$db->sql_query('DELETE FROM ' . SESSIONS_TABLE . ' WHERE session_user_id = ' . $this->data['user_id']);
+				$db->sql_query('DELETE FROM ' . PHPBB3_SESSIONS_TABLE . ' WHERE session_user_id = ' . $this->data['user_id']);
 			}
 		}
 
@@ -709,7 +709,7 @@ class session
 		$db->sql_return_on_error(true);
 
 		$sql = 'DELETE
-			FROM ' . SESSIONS_TABLE . '
+			FROM ' . PHPBB3_SESSIONS_TABLE . '
 			WHERE session_id = \'' . $db->sql_escape($this->session_id) . '\'
 				AND session_user_id = ' . ANONYMOUS;
 
@@ -721,7 +721,7 @@ class session
 //				$db->sql_return_on_error(false);
 
 				$sql = 'SELECT COUNT(session_id) AS sessions
-					FROM ' . SESSIONS_TABLE . '
+					FROM ' . PHPBB3_SESSIONS_TABLE . '
 					WHERE session_time >= ' . ($this->time_now - 60);
 				$result = $db->sql_query($sql);
 				$row = $db->sql_fetchrow($result);
@@ -746,7 +746,7 @@ class session
 		$sql_ary['session_forum_id'] = $this->page['forum'];
 		$sql_ary['session_album_id'] = $this->page['album'];
 
-		$sql = 'INSERT INTO ' . SESSIONS_TABLE . ' ' . $db->sql_build_array('INSERT', $sql_ary);
+		$sql = 'INSERT INTO ' . PHPBB3_SESSIONS_TABLE . ' ' . $db->sql_build_array('INSERT', $sql_ary);
 		$db->sql_query($sql);
 
 		$db->sql_return_on_error(false);
@@ -773,7 +773,7 @@ class session
 			unset($cookie_expire);
 
 			$sql = 'SELECT COUNT(session_id) AS sessions
-					FROM ' . SESSIONS_TABLE . '
+					FROM ' . PHPBB3_SESSIONS_TABLE . '
 					WHERE session_user_id = ' . (int) $this->data['user_id'] . '
 					AND session_time >= ' . (int) ($this->time_now - (max($config['session_length'], $config['form_token_lifetime'])));
 			$result = $db->sql_query($sql);
@@ -784,7 +784,7 @@ class session
 			{
 				$this->data['user_form_salt'] = unique_id();
 				// Update the form key
-				$sql = 'UPDATE ' . USERS_TABLE . '
+				$sql = 'UPDATE ' . PHPBB3_USERS_TABLE . '
 					SET user_form_salt = \'' . $db->sql_escape($this->data['user_form_salt']) . '\'
 					WHERE user_id = ' . (int) $this->data['user_id'];
 				$db->sql_query($sql);
@@ -795,7 +795,7 @@ class session
 			$this->data['session_time'] = $this->data['session_last_visit'] = $this->time_now;
 
 			// Update the last visit time
-			$sql = 'UPDATE ' . USERS_TABLE . '
+			$sql = 'UPDATE ' . PHPBB3_USERS_TABLE . '
 				SET user_lastvisit = ' . (int) $this->data['session_time'] . '
 				WHERE user_id = ' . (int) $this->data['user_id'];
 			$db->sql_query($sql);
@@ -819,7 +819,7 @@ class session
 	{
 		global $SID, $_SID, $db, $config, $phpbb_root_path, $phpEx;
 
-		$sql = 'DELETE FROM ' . SESSIONS_TABLE . "
+		$sql = 'DELETE FROM ' . PHPBB3_SESSIONS_TABLE . "
 			WHERE session_id = '" . $db->sql_escape($this->session_id) . "'
 				AND session_user_id = " . (int) $this->data['user_id'];
 		$db->sql_query($sql);
@@ -842,14 +842,14 @@ class session
 				$this->data['session_time'] = time();
 			}
 
-			$sql = 'UPDATE ' . USERS_TABLE . '
+			$sql = 'UPDATE ' . PHPBB3_USERS_TABLE . '
 				SET user_lastvisit = ' . (int) $this->data['session_time'] . '
 				WHERE user_id = ' . (int) $this->data['user_id'];
 			$db->sql_query($sql);
 
 			if ($this->cookie_data['k'])
 			{
-				$sql = 'DELETE FROM ' . SESSIONS_KEYS_TABLE . '
+				$sql = 'DELETE FROM ' . PHPBB3_SESSIONS_KEYS_TABLE . '
 					WHERE user_id = ' . (int) $this->data['user_id'] . "
 						AND key_id = '" . $db->sql_escape(md5($this->cookie_data['k'])) . "'";
 				$db->sql_query($sql);
@@ -859,7 +859,7 @@ class session
 			$this->data = array();
 
 			$sql = 'SELECT *
-				FROM ' . USERS_TABLE . '
+				FROM ' . PHPBB3_USERS_TABLE . '
 				WHERE user_id = ' . ANONYMOUS;
 			$result = $db->sql_query($sql);
 			$this->data = $db->sql_fetchrow($result);
@@ -906,14 +906,14 @@ class session
 		}
 
 		// Firstly, delete guest sessions
-		$sql = 'DELETE FROM ' . SESSIONS_TABLE . '
+		$sql = 'DELETE FROM ' . PHPBB3_SESSIONS_TABLE . '
 			WHERE session_user_id = ' . ANONYMOUS . '
 				AND session_time < ' . (int) ($this->time_now - $config['session_length']);
 		$db->sql_query($sql);
 
 		// Get expired sessions, only most recent for each user
 		$sql = 'SELECT session_user_id, session_page, MAX(session_time) AS recent_time
-			FROM ' . SESSIONS_TABLE . '
+			FROM ' . PHPBB3_SESSIONS_TABLE . '
 			WHERE session_time < ' . ($this->time_now - $config['session_length']) . '
 			GROUP BY session_user_id, session_page';
 		$result = $db->sql_query_limit($sql, $batch_size);
@@ -923,7 +923,7 @@ class session
 
 		while ($row = $db->sql_fetchrow($result))
 		{
-			$sql = 'UPDATE ' . USERS_TABLE . '
+			$sql = 'UPDATE ' . PHPBB3_USERS_TABLE . '
 				SET user_lastvisit = ' . (int) $row['recent_time'] . ", user_lastpage = '" . $db->sql_escape($row['session_page']) . "'
 				WHERE user_id = " . (int) $row['session_user_id'];
 			$db->sql_query($sql);
@@ -936,7 +936,7 @@ class session
 		if (sizeof($del_user_id))
 		{
 			// Delete expired sessions
-			$sql = 'DELETE FROM ' . SESSIONS_TABLE . '
+			$sql = 'DELETE FROM ' . PHPBB3_SESSIONS_TABLE . '
 				WHERE ' . $db->sql_in_set('session_user_id', $del_user_id) . '
 					AND session_time < ' . ($this->time_now - $config['session_length']);
 			$db->sql_query($sql);
@@ -950,7 +950,7 @@ class session
 
 			if ($config['max_autologin_time'])
 			{
-				$sql = 'DELETE FROM ' . SESSIONS_KEYS_TABLE . '
+				$sql = 'DELETE FROM ' . PHPBB3_SESSIONS_KEYS_TABLE . '
 					WHERE last_login < ' . (time() - (86400 * (int) $config['max_autologin_time']));
 				$db->sql_query($sql);
 			}
@@ -965,8 +965,8 @@ class session
 		global $db, $config;
 
 		$sql = 'SELECT DISTINCT c.session_id
-				FROM ' . CONFIRM_TABLE . ' c
-				LEFT JOIN ' . SESSIONS_TABLE . ' s ON (c.session_id = s.session_id)
+				FROM ' . PHPBB3_CONFIRM_TABLE . ' c
+				LEFT JOIN ' . PHPBB3_SESSIONS_TABLE . ' s ON (c.session_id = s.session_id)
 				WHERE s.session_id IS NULL' .
 					((empty($type)) ? '' : ' AND c.confirm_type = ' . (int) $type);
 		$result = $db->sql_query($sql);
@@ -982,7 +982,7 @@ class session
 
 			if (sizeof($sql_in))
 			{
-				$sql = 'DELETE FROM ' . CONFIRM_TABLE . '
+				$sql = 'DELETE FROM ' . PHPBB3_CONFIRM_TABLE . '
 					WHERE ' . $db->sql_in_set('session_id', $sql_in);
 				$db->sql_query($sql);
 			}
@@ -1037,7 +1037,7 @@ class session
 		$where_sql = array();
 
 		$sql = 'SELECT ban_ip, ban_userid, ban_email, ban_exclude, ban_give_reason, ban_end
-			FROM ' . BANLIST_TABLE . '
+			FROM ' . PHPBB3_BANLIST_TABLE . '
 			WHERE ';
 
 		// Determine which entries to check, only return those
@@ -1335,14 +1335,14 @@ class session
 
 		if ($key)
 		{
-			$sql = 'UPDATE ' . SESSIONS_KEYS_TABLE . '
+			$sql = 'UPDATE ' . PHPBB3_SESSIONS_KEYS_TABLE . '
 				SET ' . $db->sql_build_array('UPDATE', $sql_ary) . '
 				WHERE user_id = ' . (int) $user_id . "
 					AND key_id = '" . $db->sql_escape(md5($key)) . "'";
 		}
 		else
 		{
-			$sql = 'INSERT INTO ' . SESSIONS_KEYS_TABLE . ' ' . $db->sql_build_array('INSERT', $sql_ary);
+			$sql = 'INSERT INTO ' . PHPBB3_SESSIONS_KEYS_TABLE . ' ' . $db->sql_build_array('INSERT', $sql_ary);
 		}
 		$db->sql_query($sql);
 
@@ -1363,7 +1363,7 @@ class session
 
 		$user_id = ($user_id === false) ? $this->data['user_id'] : $user_id;
 
-		$sql = 'DELETE FROM ' . SESSIONS_KEYS_TABLE . '
+		$sql = 'DELETE FROM ' . PHPBB3_SESSIONS_KEYS_TABLE . '
 			WHERE user_id = ' . (int) $user_id;
 		$db->sql_query($sql);
 
@@ -1372,7 +1372,7 @@ class session
 		$sql_where = 'session_user_id = ' . (int) $user_id;
 		$sql_where .= ($user_id === $this->data['user_id']) ? " AND session_id <> '" . $db->sql_escape($this->session_id) . "'" : '';
 
-		$sql = 'DELETE FROM ' . SESSIONS_TABLE . "
+		$sql = 'DELETE FROM ' . PHPBB3_SESSIONS_TABLE . "
 			WHERE $sql_where";
 		$db->sql_query($sql);
 
@@ -1427,7 +1427,7 @@ class session
 	function unset_admin()
 	{
 		global $db;
-		$sql = 'UPDATE ' . SESSIONS_TABLE . '
+		$sql = 'UPDATE ' . PHPBB3_SESSIONS_TABLE . '
 			SET session_admin = 0
 			WHERE session_id = \'' . $db->sql_escape($this->session_id) . '\'';
 		$db->sql_query($sql);
@@ -1575,7 +1575,7 @@ class user extends session
 		}
 
 		$sql = 'SELECT s.style_id, t.template_storedb, t.template_path, t.template_id, t.bbcode_bitfield, t.template_inherits_id, t.template_inherit_path, c.theme_path, c.theme_name, c.theme_storedb, c.theme_id, i.imageset_path, i.imageset_id, i.imageset_name
-			FROM ' . STYLES_TABLE . ' s, ' . STYLES_TEMPLATE_TABLE . ' t, ' . STYLES_THEME_TABLE . ' c, ' . STYLES_IMAGESET_TABLE . " i
+			FROM ' . PHPBB3_STYLES_TABLE . ' s, ' . PHPBB3_STYLES_TEMPLATE_TABLE . ' t, ' . PHPBB3_STYLES_THEME_TABLE . ' c, ' . PHPBB3_STYLES_IMAGESET_TABLE . " i
 			WHERE s.style_id = $style
 				AND t.template_id = s.template_id
 				AND c.theme_id = s.theme_id
@@ -1589,13 +1589,13 @@ class user extends session
 		{
 			$style = $this->data['user_style'] = $config['default_style'];
 
-			$sql = 'UPDATE ' . USERS_TABLE . "
+			$sql = 'UPDATE ' . PHPBB3_USERS_TABLE . "
 				SET user_style = $style
 				WHERE user_id = {$this->data['user_id']}";
 			$db->sql_query($sql);
 
 			$sql = 'SELECT s.style_id, t.template_storedb, t.template_path, t.template_id, t.bbcode_bitfield, c.theme_path, c.theme_name, c.theme_storedb, c.theme_id, i.imageset_path, i.imageset_id, i.imageset_name
-				FROM ' . STYLES_TABLE . ' s, ' . STYLES_TEMPLATE_TABLE . ' t, ' . STYLES_THEME_TABLE . ' c, ' . STYLES_IMAGESET_TABLE . " i
+				FROM ' . PHPBB3_STYLES_TABLE . ' s, ' . PHPBB3_STYLES_TEMPLATE_TABLE . ' t, ' . PHPBB3_STYLES_THEME_TABLE . ' c, ' . PHPBB3_STYLES_IMAGESET_TABLE . " i
 				WHERE s.style_id = $style
 					AND t.template_id = s.template_id
 					AND c.theme_id = s.theme_id
@@ -1670,7 +1670,7 @@ class user extends session
 				'theme_storedb'	=> 1
 			);
 
-			$sql = 'UPDATE ' . STYLES_THEME_TABLE . '
+			$sql = 'UPDATE ' . PHPBB3_STYLES_THEME_TABLE . '
 				SET ' . $db->sql_build_array('UPDATE', $sql_ary) . '
 				WHERE theme_id = ' . $this->theme['theme_id'];
 			$db->sql_query($sql);
@@ -1683,7 +1683,7 @@ class user extends session
 		$this->img_lang = (file_exists($phpbb_root_path . 'styles/' . $this->theme['imageset_path'] . '/imageset/' . $this->lang_name)) ? $this->lang_name : $config['default_lang'];
 
 		$sql = 'SELECT image_name, image_filename, image_lang, image_height, image_width
-			FROM ' . STYLES_IMAGESET_DATA_TABLE . '
+			FROM ' . PHPBB3_STYLES_IMAGESET_DATA_TABLE . '
 			WHERE imageset_id = ' . $this->theme['imageset_id'] . "
 			AND image_filename <> ''
 			AND image_lang IN ('" . $db->sql_escape($this->img_lang) . "', '')";
@@ -1711,7 +1711,7 @@ class user extends session
 
 			$db->sql_transaction('begin');
 
-			$sql = 'DELETE FROM ' . STYLES_IMAGESET_DATA_TABLE . '
+			$sql = 'DELETE FROM ' . PHPBB3_STYLES_IMAGESET_DATA_TABLE . '
 				WHERE imageset_id = ' . $this->theme['imageset_id'] . '
 					AND image_lang = \'' . $db->sql_escape($this->img_lang) . '\'';
 			$result = $db->sql_query($sql);
@@ -1756,9 +1756,9 @@ class user extends session
 
 			if (sizeof($sql_ary))
 			{
-				$db->sql_multi_insert(STYLES_IMAGESET_DATA_TABLE, $sql_ary);
+				$db->sql_multi_insert(PHPBB3_STYLES_IMAGESET_DATA_TABLE, $sql_ary);
 				$db->sql_transaction('commit');
-				$cache->destroy('sql', STYLES_IMAGESET_DATA_TABLE);
+				$cache->destroy('sql', PHPBB3_STYLES_IMAGESET_DATA_TABLE);
 
 				add_log('admin', 'LOG_IMAGESET_LANG_REFRESHED', $this->theme['imageset_name'], $this->img_lang);
 			}
@@ -1828,7 +1828,7 @@ class user extends session
 				// Reset online status if not allowed to hide the session...
 				if (!$auth->acl_get('u_hideonline'))
 				{
-					$sql = 'UPDATE ' . SESSIONS_TABLE . '
+					$sql = 'UPDATE ' . PHPBB3_SESSIONS_TABLE . '
 						SET session_viewonline = 1
 						WHERE session_user_id = ' . $this->data['user_id'];
 					$db->sql_query($sql);
@@ -1840,7 +1840,7 @@ class user extends session
 				// the user wants to hide and is allowed to  -> cloaking device on.
 				if ($auth->acl_get('u_hideonline'))
 				{
-					$sql = 'UPDATE ' . SESSIONS_TABLE . '
+					$sql = 'UPDATE ' . PHPBB3_SESSIONS_TABLE . '
 						SET session_viewonline = 0
 						WHERE session_user_id = ' . $this->data['user_id'];
 					$db->sql_query($sql);
@@ -2151,7 +2151,7 @@ class user extends session
 		}
 
 		$sql = 'SELECT lang_id
-			FROM ' . LANG_TABLE . "
+			FROM ' . PHPBB3_LANG_TABLE . "
 			WHERE lang_iso = '" . $db->sql_escape($this->lang_name) . "'";
 		$result = $db->sql_query($sql);
 		$this->lang_id = (int) $db->sql_fetchfield('lang_id');
@@ -2173,7 +2173,7 @@ class user extends session
 		}
 
 		$sql = 'SELECT *
-			FROM ' . PROFILE_FIELDS_DATA_TABLE . "
+			FROM ' . PHPBB3_PROFILE_FIELDS_DATA_TABLE . "
 			WHERE user_id = $user_id";
 		$result = $db->sql_query_limit($sql, 1);
 		$this->profile_fields = (!($row = $db->sql_fetchrow($result))) ? array() : $row;

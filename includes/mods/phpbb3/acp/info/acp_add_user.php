@@ -52,13 +52,13 @@ class acp_add_user_info
 		$module_basename = substr(strchr($module_data['filename'], '_'), 1);
 		
 		$sql = 'SELECT module_id
-				FROM ' . MODULES_TABLE . "
+				FROM ' . PHPBB3_MODULES_TABLE . "
 				WHERE module_basename = '$module_basename'";
 		$result = $db->sql_query($sql);
 		$module_id = $db->sql_fetchfield('module_id');
 		$db->sql_freeresult($result);
 		
-		$sql = 'UPDATE ' . MODULES_TABLE . " SET module_auth = 'acl_a_add_user' WHERE module_id = $module_id";
+		$sql = 'UPDATE ' . PHPBB3_MODULES_TABLE . " SET module_auth = 'acl_a_add_user' WHERE module_id = $module_id";
 		$db->sql_query($sql);
 		
 		set_config('add_user_version', $module_data['version']);

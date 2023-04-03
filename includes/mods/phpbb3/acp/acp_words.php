@@ -57,7 +57,7 @@ class acp_words
 				}
 
 				$sql = 'SELECT *
-					FROM ' . WORDS_TABLE . "
+					FROM ' . PHPBB3_WORDS_TABLE . "
 					WHERE word_id = $word_id";
 				$result = $db->sql_query($sql);
 				$word_info = $db->sql_fetchrow($result);
@@ -102,11 +102,11 @@ class acp_words
 				
 				if ($word_id)
 				{
-					$db->sql_query('UPDATE ' . WORDS_TABLE . ' SET ' . $db->sql_build_array('UPDATE', $sql_ary) . ' WHERE word_id = ' . $word_id);
+					$db->sql_query('UPDATE ' . PHPBB3_WORDS_TABLE . ' SET ' . $db->sql_build_array('UPDATE', $sql_ary) . ' WHERE word_id = ' . $word_id);
 				}
 				else
 				{
-					$db->sql_query('INSERT INTO ' . WORDS_TABLE . ' ' . $db->sql_build_array('INSERT', $sql_ary));
+					$db->sql_query('INSERT INTO ' . PHPBB3_WORDS_TABLE . ' ' . $db->sql_build_array('INSERT', $sql_ary));
 				}
 
 				$cache->destroy('_word_censors');
@@ -131,13 +131,13 @@ class acp_words
 				if (confirm_box(true))
 				{
 					$sql = 'SELECT word
-						FROM ' . WORDS_TABLE . "
+						FROM ' . PHPBB3_WORDS_TABLE . "
 						WHERE word_id = $word_id";
 					$result = $db->sql_query($sql);
 					$deleted_word = $db->sql_fetchfield('word');
 					$db->sql_freeresult($result);
 
-					$sql = 'DELETE FROM ' . WORDS_TABLE . "
+					$sql = 'DELETE FROM ' . PHPBB3_WORDS_TABLE . "
 						WHERE word_id = $word_id";
 					$db->sql_query($sql);
 
@@ -149,7 +149,7 @@ class acp_words
 				}
 				else
 				{
-					confirm_box(false, $user->lang['CONFIRM_OPERATION'], build_hidden_fields(array(
+					confirm_box(false, $user->lang['PHPBB3_CONFIRM_OPERATION'], build_hidden_fields(array(
 						'i'			=> $id,
 						'mode'		=> $mode,
 						'id'		=> $word_id,
@@ -167,7 +167,7 @@ class acp_words
 		);
 
 		$sql = 'SELECT *
-			FROM ' . WORDS_TABLE . '
+			FROM ' . PHPBB3_WORDS_TABLE . '
 			ORDER BY word';
 		$result = $db->sql_query($sql);
 

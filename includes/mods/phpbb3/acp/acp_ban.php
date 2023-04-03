@@ -147,7 +147,7 @@ class acp_ban
 				$l_ban_cell = $user->lang['USERNAME'];
 
 				$sql = 'SELECT b.*, u.user_id, u.username, u.username_clean
-					FROM ' . BANLIST_TABLE . ' b, ' . USERS_TABLE . ' u
+					FROM ' . PHPBB3_BANLIST_TABLE . ' b, ' . PHPBB3_USERS_TABLE . ' u
 					WHERE (b.ban_end >= ' . time() . '
 							OR b.ban_end = 0)
 						AND u.user_id = b.ban_userid
@@ -160,7 +160,7 @@ class acp_ban
 				$l_ban_cell = $user->lang['IP_HOSTNAME'];
 
 				$sql = 'SELECT *
-					FROM ' . BANLIST_TABLE . '
+					FROM ' . PHPBB3_BANLIST_TABLE . '
 					WHERE (ban_end >= ' . time() . "
 							OR ban_end = 0)
 						AND ban_ip <> ''";
@@ -172,7 +172,7 @@ class acp_ban
 				$l_ban_cell = $user->lang['EMAIL_ADDRESS'];
 
 				$sql = 'SELECT *
-					FROM ' . BANLIST_TABLE . '
+					FROM ' . PHPBB3_BANLIST_TABLE . '
 					WHERE (ban_end >= ' . time() . "
 							OR ban_end = 0)
 						AND ban_email <> ''";

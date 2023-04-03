@@ -24,7 +24,7 @@ $lang = array_merge($lang, array(
 	'CONTACT_YOUR_EMAIL'			=> 'Your email adress',
 	'CONTACT_YOUR_EMAIL_EXPLAIN'	=> 'Please enter a valid email adress, so we can contact you.',
 	'CONTACT_CONFIRM'				=> 'Confirm',
-	'CONTACT_CONFIRM_EXPLAIN'		=> 'To prevent automated advertisement emails, the board administration requires you to enter a confirmation code. The code is displayed in the image you should see below.',
+	'CONTACT_PHPBB3_CONFIRM_EXPLAIN'		=> 'To prevent automated advertisement emails, the board administration requires you to enter a confirmation code. The code is displayed in the image you should see below.',
 	'CONTACT_REASON'				=> 'Reason',
 	
 	'CONTACT_NO_NAME'				=> 'You didn’t enter a name.',

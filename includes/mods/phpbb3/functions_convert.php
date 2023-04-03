@@ -115,7 +115,7 @@ function str_to_primary_group($status)
 */
 function is_item_locked($bool)
 {
-	return ($bool) ? ITEM_LOCKED : ITEM_UNLOCKED;
+	return ($bool) ? PHPBB3_ITEM_LOCKED : PHPBB3_ITEM_UNLOCKED;
 }
 
 /**
@@ -157,7 +157,7 @@ function auto_id($pad = 0)
 */
 function set_user_type($user_active)
 {
-	return ($user_active) ? USER_NORMAL : USER_INACTIVE;
+	return ($user_active) ? PHPBB3_USER_NORMAL : PHPBB3_USER_INACTIVE;
 }
 
 /**
@@ -178,7 +178,7 @@ function get_group_id($group_name)
 	if (empty($group_mapping))
 	{
 		$sql = 'SELECT group_name, group_id
-			FROM ' . GROUPS_TABLE;
+			FROM ' . PHPBB3_GROUPS_TABLE;
 		$result = $db->sql_query($sql);
 
 		$group_mapping = array();
@@ -216,7 +216,7 @@ function gen_email_hash($email)
 */
 function is_topic_locked($bool)
 {
-	return (!empty($bool)) ? ITEM_LOCKED : ITEM_UNLOCKED;
+	return (!empty($bool)) ? PHPBB3_ITEM_LOCKED : PHPBB3_ITEM_UNLOCKED;
 }
 
 /**
@@ -393,8 +393,8 @@ function remote_avatar_dims()
 	global $db;
 
 	$sql = 'SELECT user_id, user_avatar
-		FROM ' . USERS_TABLE . '
-		WHERE user_avatar_type = ' . AVATAR_REMOTE;
+		FROM ' . PHPBB3_USERS_TABLE . '
+		WHERE user_avatar_type = ' . PHPBB3_AVATAR_REMOTE;
 	$result = $db->sql_query($sql);
 
 	$remote_avatars = array();
@@ -409,7 +409,7 @@ function remote_avatar_dims()
 		$width = (int) get_remote_avatar_dim($avatar, 0);
 		$height = (int) get_remote_avatar_dim($avatar, 1);
 
-		$sql = 'UPDATE ' . USERS_TABLE . '
+		$sql = 'UPDATE ' . PHPBB3_USERS_TABLE . '
 			SET user_avatar_width = ' . (int) $width . ', user_avatar_height = ' . (int) $height . '
 			WHERE user_id = ' . $user_id;
 		$db->sql_query($sql);
@@ -489,7 +489,7 @@ function import_attachment_files($category_name = '')
 	global $config, $convert, $db, $user;
 	
 	$sql = 'SELECT config_value AS upload_path
-		FROM ' . CONFIG_TABLE . "
+		FROM ' . PHPBB3_CONFIG_TABLE . "
 		WHERE config_name = 'upload_path'";
 	$result = $db->sql_query($sql);
 	$config['upload_path'] = $db->sql_fetchfield('upload_path');
@@ -786,7 +786,7 @@ function get_avatar_height($src, $func = false, $arg1 = false, $arg2 = false)
 */
 function get_avatar_dim($src, $axis, $func = false, $arg1 = false, $arg2 = false)
 {
-	$avatar_type = AVATAR_UPLOAD;
+	$avatar_type = PHPBB3_AVATAR_UPLOAD;
 
 	if ($func)
 	{
@@ -809,15 +809,15 @@ function get_avatar_dim($src, $axis, $func = false, $arg1 = false, $arg2 = false
 
 	switch ($avatar_type)
 	{
-		case AVATAR_UPLOAD:
+		case PHPBB3_AVATAR_UPLOAD:
 			return get_upload_avatar_dim($src, $axis);
 		break;
 
-		case AVATAR_GALLERY:
+		case PHPBB3_AVATAR_GALLERY:
 			return get_gallery_avatar_dim($src, $axis);
 		break;
 
-		case AVATAR_REMOTE:
+		case PHPBB3_AVATAR_REMOTE:
 			 // see notes on this functions usage and (hopefully) model $func to avoid this accordingly
 			return get_remote_avatar_dim($src, $axis);
 		break;
@@ -1113,7 +1113,7 @@ function add_user_group($group_id, $user_id, $group_leader=false)
 {
 	global $convert, $config, $user, $db;
 	
-	$sql = 'INSERT INTO ' . USER_GROUP_TABLE . ' ' . $db->sql_build_array('INSERT', array(
+	$sql = 'INSERT INTO ' . PHPBB3_USER_GROUP_TABLE . ' ' . $db->sql_build_array('INSERT', array(
 		'group_id'		=> $group_id,
 		'user_id'		=> $user_id,
 		'group_leader'	=> ($group_leader) ? 1 : 0,
@@ -1140,7 +1140,7 @@ function user_group_auth($group, $select_query, $use_src_db)
 	}
 
 	$sql = 'SELECT group_id
-		FROM ' . GROUPS_TABLE . "
+		FROM ' . PHPBB3_GROUPS_TABLE . "
 		WHERE group_name = '" . $db->sql_escape(strtoupper($group)) . "'";
 	$result = $db->sql_query($sql);
 	$group_id = (int) $db->sql_fetchfield('group_id');
@@ -1154,7 +1154,7 @@ function user_group_auth($group, $select_query, $use_src_db)
 
 	if ($same_db || !$use_src_db)
 	{
-		$sql = 'INSERT INTO ' . USER_GROUP_TABLE . ' (user_id, group_id, user_pending)
+		$sql = 'INSERT INTO ' . PHPBB3_USER_GROUP_TABLE . ' (user_id, group_id, user_pending)
 			' . str_replace('{' . strtoupper($group) . '}', $group_id . ', 0', $select_query);
 		$db->sql_query($sql);
 	}
@@ -1164,7 +1164,7 @@ function user_group_auth($group, $select_query, $use_src_db)
 		while ($row = $src_db->sql_fetchrow($result))
 		{
 			// this might become quite a lot of INSERTS unfortunately
-			$sql = 'INSERT INTO ' . USER_GROUP_TABLE . " (user_id, group_id, user_pending)
+			$sql = 'INSERT INTO ' . PHPBB3_USER_GROUP_TABLE . " (user_id, group_id, user_pending)
 				VALUES ({$row['user_id']}, $group_id, 0)";
 			$db->sql_query($sql);
 		}
@@ -1303,14 +1303,14 @@ function update_folder_pm_count()
 	global $db, $convert, $user;
 
 	$sql = 'SELECT user_id, folder_id, COUNT(msg_id) as num_messages
-		FROM ' . PRIVMSGS_TO_TABLE . '
-		WHERE folder_id NOT IN (' . PRIVMSGS_NO_BOX . ', ' . PRIVMSGS_HOLD_BOX . ', ' . PRIVMSGS_INBOX . ', ' . PRIVMSGS_OUTBOX . ', ' . PRIVMSGS_SENTBOX . ')
+		FROM ' . PHPBB3_PRIVMSGS_TO_TABLE . '
+		WHERE folder_id NOT IN (' . PM_NO_BOX . ', ' . PM_HOLD_BOX . ', ' . PM_INBOX . ', ' . PM_OUTBOX . ', ' . PM_SENTBOX . ')
 		GROUP BY folder_id, user_id';
 	$result = $db->sql_query($sql);
 
 	while ($row = $db->sql_fetchrow($result))
 	{
-		$db->sql_query('UPDATE ' . PRIVMSGS_FOLDER_TABLE . ' SET pm_count = ' . $row['num_messages'] . '
+		$db->sql_query('UPDATE ' . PHPBB3_PRIVMSGS_FOLDER_TABLE . ' SET pm_count = ' . $row['num_messages'] . '
 			WHERE user_id = ' . $row['user_id'] . ' AND folder_id = ' . $row['folder_id']);
 	}
 	$db->sql_freeresult($result);
@@ -1468,9 +1468,9 @@ function compare_table($tables, $tablename, &$prefixes)
 * @param mixed $forum_id forum ids (array|int|0) -> 0 == all forums
 * @param mixed $ug_id [int] user_id|group_id : [string] usergroup name
 * @param mixed $acl_list [string] acl entry : [array] acl entries : [string] role entry
-* @param int $setting ACL_YES|ACL_NO|ACL_NEVER
+* @param int $setting PHPBB3_PHPBB3_ACL_YES|PHPBB3_PHPBB3_ACL_NO|PHPBB3_PHPBB3_ACL_NEVER
 */
-function mass_auth($ug_type, $forum_id, $ug_id, $acl_list, $setting = ACL_NO)
+function mass_auth($ug_type, $forum_id, $ug_id, $acl_list, $setting = PHPBB3_PHPBB3_ACL_NO)
 {
 	global $db, $convert, $user, $config;
 	static $acl_option_ids, $group_ids;
@@ -1480,7 +1480,7 @@ function mass_auth($ug_type, $forum_id, $ug_id, $acl_list, $setting = ACL_NO)
 		if (!isset($group_ids[$ug_id]))
 		{
 			$sql = 'SELECT group_id
-				FROM ' . GROUPS_TABLE . "
+				FROM ' . PHPBB3_GROUPS_TABLE . "
 				WHERE group_name = '" . $db->sql_escape(strtoupper($ug_id)) . "'";
 			$result = $db->sql_query_limit($sql, 1);
 			$id = (int) $db->sql_fetchfield('group_id');
@@ -1497,7 +1497,7 @@ function mass_auth($ug_type, $forum_id, $ug_id, $acl_list, $setting = ACL_NO)
 		$ug_id = (int) $group_ids[$ug_id];
 	}
 
-	$table = ($ug_type == 'user' || $ug_type == 'user_role') ? ACL_USERS_TABLE : ACL_GROUPS_TABLE;
+	$table = ($ug_type == 'user' || $ug_type == 'user_role') ? PHPBB3_ACL_USERS_TABLE : PHPBB3_ACL_PHPBB3_GROUPS_TABLE;
 	$id_field = ($ug_type == 'user' || $ug_type == 'user_role') ? 'user_id' : 'group_id';
 
 	// Role based permissions are the simplest to handle so check for them first
@@ -1506,7 +1506,7 @@ function mass_auth($ug_type, $forum_id, $ug_id, $acl_list, $setting = ACL_NO)
 		if (is_numeric($forum_id))
 		{
 			$sql = 'SELECT role_id
-				FROM ' . ACL_ROLES_TABLE . "
+				FROM ' . PHPBB3_ACL_ROLES_TABLE . "
 				WHERE role_name = 'ROLE_" . $db->sql_escape($acl_list) . "'";
 			$result = $db->sql_query_limit($sql, 1);
 			$row = $db->sql_fetchrow($result);
@@ -1557,7 +1557,7 @@ function mass_auth($ug_type, $forum_id, $ug_id, $acl_list, $setting = ACL_NO)
 	if (!is_array($acl_option_ids) || empty($acl_option_ids))
 	{
 		$sql = 'SELECT auth_option_id, auth_option
-			FROM ' . ACL_OPTIONS_TABLE;
+			FROM ' . PHPBB3_ACL_OPTIONS_TABLE;
 		$result = $db->sql_query($sql);
 
 		while ($row = $db->sql_fetchrow($result))
@@ -1569,7 +1569,7 @@ function mass_auth($ug_type, $forum_id, $ug_id, $acl_list, $setting = ACL_NO)
 
 	$sql_forum = 'AND ' . $db->sql_in_set('a.forum_id', array_map('intval', $forum_id), false, true);
 
-	$sql = ($ug_type == 'user') ? 'SELECT o.auth_option_id, o.auth_option, a.forum_id, a.auth_setting FROM ' . ACL_USERS_TABLE . ' a, ' . ACL_OPTIONS_TABLE . " o WHERE a.auth_option_id = o.auth_option_id $sql_forum AND a.user_id = $ug_id" : 'SELECT o.auth_option_id, o.auth_option, a.forum_id, a.auth_setting FROM ' . ACL_GROUPS_TABLE . ' a, ' . ACL_OPTIONS_TABLE . " o WHERE a.auth_option_id = o.auth_option_id $sql_forum AND a.group_id = $ug_id";
+	$sql = ($ug_type == 'user') ? 'SELECT o.auth_option_id, o.auth_option, a.forum_id, a.auth_setting FROM ' . PHPBB3_ACL_USERS_TABLE . ' a, ' . PHPBB3_ACL_OPTIONS_TABLE . " o WHERE a.auth_option_id = o.auth_option_id $sql_forum AND a.user_id = $ug_id" : 'SELECT o.auth_option_id, o.auth_option, a.forum_id, a.auth_setting FROM ' . PHPBB3_ACL_PHPBB3_GROUPS_TABLE . ' a, ' . PHPBB3_ACL_OPTIONS_TABLE . " o WHERE a.auth_option_id = o.auth_option_id $sql_forum AND a.group_id = $ug_id";
 	$result = $db->sql_query($sql);
 
 	$cur_auth = array();
@@ -1593,7 +1593,7 @@ function mass_auth($ug_type, $forum_id, $ug_id, $acl_list, $setting = ACL_NO)
 
 			switch ($setting)
 			{
-				case ACL_NO:
+				case PHPBB3_PHPBB3_ACL_NO:
 					if (isset($cur_auth[$forum][$auth_option_id]))
 					{
 						$sql_ary['delete'][] = "DELETE FROM $table
@@ -1678,15 +1678,15 @@ function update_unread_count()
 	global $db;
 
 	$sql = 'SELECT user_id, COUNT(msg_id) as num_messages
-		FROM ' . PRIVMSGS_TO_TABLE . '
+		FROM ' . PHPBB3_PRIVMSGS_TO_TABLE . '
 		WHERE pm_unread = 1
-			AND folder_id <> ' . PRIVMSGS_OUTBOX . '
+			AND folder_id <> ' . PM_OUTBOX . '
 		GROUP BY user_id';
 	$result = $db->sql_query($sql);
 
 	while ($row = $db->sql_fetchrow($result))
 	{
-		$db->sql_query('UPDATE ' . USERS_TABLE . ' SET user_unread_privmsg = ' . $row['num_messages'] . '
+		$db->sql_query('UPDATE ' . PHPBB3_USERS_TABLE . ' SET user_unread_privmsg = ' . $row['num_messages'] . '
 			WHERE user_id = ' . $row['user_id']);
 	}
 	$db->sql_freeresult($result);
@@ -1709,7 +1709,7 @@ function add_default_groups()
 	);
 
 	$sql = 'SELECT *
-		FROM ' . GROUPS_TABLE . '
+		FROM ' . PHPBB3_GROUPS_TABLE . '
 		WHERE ' . $db->sql_in_set('group_name', array_keys($default_groups));
 	$result = $db->sql_query($sql);
 
@@ -1728,7 +1728,7 @@ function add_default_groups()
 			'group_desc'			=> '',
 			'group_desc_uid'		=> '',
 			'group_desc_bitfield'	=> '',
-			'group_type'			=> GROUP_SPECIAL,
+			'group_type'			=> PHPBB3_GROUP_SPECIAL,
 			'group_colour'			=> (string) $data[0],
 			'group_legend'			=> (int) $data[1],
 			'group_founder_manage'	=> (int) $data[2]
@@ -1737,7 +1737,7 @@ function add_default_groups()
 
 	if (sizeof($sql_ary))
 	{
-		$db->sql_multi_insert(GROUPS_TABLE, $sql_ary);
+		$db->sql_multi_insert(PHPBB3_GROUPS_TABLE, $sql_ary);
 	}
 }
 
@@ -1749,7 +1749,7 @@ function sync_post_count($offset, $limit)
 {
 	global $db;
 	$sql = 'SELECT COUNT(post_id) AS num_posts, poster_id
-			FROM ' . POSTS_TABLE . '
+			FROM ' . PHPBB3_POSTS_TABLE . '
 			WHERE post_postcount = 1
 				AND post_approved = 1
 			GROUP BY poster_id
@@ -1758,7 +1758,7 @@ function sync_post_count($offset, $limit)
 
 	while ($row = $db->sql_fetchrow($result))
 	{
-		$db->sql_query('UPDATE ' . USERS_TABLE . " SET user_posts = {$row['num_posts']} WHERE user_id = {$row['poster_id']}");
+		$db->sql_query('UPDATE ' . PHPBB3_USERS_TABLE . " SET user_posts = {$row['num_posts']} WHERE user_id = {$row['poster_id']}");
 	}
 	$db->sql_freeresult($result);
 }
@@ -1775,9 +1775,9 @@ function add_bots()
 	
 	$phpbb_root_path = PHPBB3_ROOT_DIR;
 
-	$db->sql_query($convert->truncate_statement . BOTS_TABLE);
+	$db->sql_query($convert->truncate_statement . PHPBB3_BOTS_TABLE);
 
-	$sql = 'SELECT group_id FROM ' . GROUPS_TABLE . " WHERE group_name = 'BOTS'";
+	$sql = 'SELECT group_id FROM ' . PHPBB3_GROUPS_TABLE . " WHERE group_name = 'BOTS'";
 	$result = $db->sql_query($sql);
 	$group_id = (int) $db->sql_fetchfield('group_id', false, $result);
 	$db->sql_freeresult($result);
@@ -1786,7 +1786,7 @@ function add_bots()
 	{
 		add_default_groups();
 
-		$sql = 'SELECT group_id FROM ' . GROUPS_TABLE . " WHERE group_name = 'BOTS'";
+		$sql = 'SELECT group_id FROM ' . PHPBB3_GROUPS_TABLE . " WHERE group_name = 'BOTS'";
 		$result = $db->sql_query($sql);
 		$group_id = (int) $db->sql_fetchfield('group_id', false, $result);
 		$db->sql_freeresult($result);
@@ -1859,7 +1859,7 @@ function add_bots()
 	foreach ($bots as $bot_name => $bot_ary)
 	{
 		$user_row = array(
-			'user_type'				=> USER_IGNORE,
+			'user_type'				=> PHPBB3_USER_IGNORE,
 			'group_id'				=> $group_id,
 			'username'				=> $bot_name,
 			'user_regdate'			=> time(),
@@ -1876,7 +1876,7 @@ function add_bots()
 
 		if ($user_id)
 		{
-			$sql = 'INSERT INTO ' . BOTS_TABLE . ' ' . $db->sql_build_array('INSERT', array(
+			$sql = 'INSERT INTO ' . PHPBB3_BOTS_TABLE . ' ' . $db->sql_build_array('INSERT', array(
 				'bot_active'	=> 1,
 				'bot_name'		=> $bot_name,
 				'user_id'		=> $user_id,
@@ -1898,8 +1898,8 @@ function update_dynamic_config()
 
 	// Get latest username
 	$sql = 'SELECT user_id, username, user_colour
-		FROM ' . USERS_TABLE . '
-		WHERE user_type IN (' . USER_NORMAL . ', ' . USER_FOUNDER . ')';
+		FROM ' . PHPBB3_USERS_TABLE . '
+		WHERE user_type IN (' . PHPBB3_USER_NORMAL . ', ' . PHPBB3_USER_FOUNDER . ')';
 
 	if (!empty($config['increment_user_id']))
 	{
@@ -1924,7 +1924,7 @@ function update_dynamic_config()
 //	set_config('record_online_date', time(), true);
 
 	$sql = 'SELECT COUNT(post_id) AS stat
-		FROM ' . POSTS_TABLE . '
+		FROM ' . PHPBB3_POSTS_TABLE . '
 		WHERE post_approved = 1';
 	$result = $db->sql_query($sql);
 	$row = $db->sql_fetchrow($result);
@@ -1933,7 +1933,7 @@ function update_dynamic_config()
 	set_config('num_posts', (int) $row['stat'], true);
 
 	$sql = 'SELECT COUNT(topic_id) AS stat
-		FROM ' . TOPICS_TABLE . '
+		FROM ' . PHPBB3_TOPICS_TABLE . '
 		WHERE topic_approved = 1';
 	$result = $db->sql_query($sql);
 	$row = $db->sql_fetchrow($result);
@@ -1942,8 +1942,8 @@ function update_dynamic_config()
 	set_config('num_topics', (int) $row['stat'], true);
 
 	$sql = 'SELECT COUNT(user_id) AS stat
-		FROM ' . USERS_TABLE . '
-		WHERE user_type IN (' . USER_NORMAL . ',' . USER_FOUNDER . ')';
+		FROM ' . PHPBB3_USERS_TABLE . '
+		WHERE user_type IN (' . PHPBB3_USER_NORMAL . ',' . PHPBB3_USER_FOUNDER . ')';
 	$result = $db->sql_query($sql);
 	$row = $db->sql_fetchrow($result);
 	$db->sql_freeresult($result);
@@ -1951,14 +1951,14 @@ function update_dynamic_config()
 	set_config('num_users', (int) $row['stat'], true);
 
 	$sql = 'SELECT COUNT(attach_id) as stat
-		FROM ' . ATTACHMENTS_TABLE . '
+		FROM ' . PHPBB3_ATTACHMENTS_TABLE . '
 		WHERE is_orphan = 0';
 	$result = $db->sql_query($sql);
 	set_config('num_files', (int) $db->sql_fetchfield('stat'), true);
 	$db->sql_freeresult($result);
 
 	$sql = 'SELECT SUM(filesize) as stat
-		FROM ' . ATTACHMENTS_TABLE . '
+		FROM ' . PHPBB3_ATTACHMENTS_TABLE . '
 		WHERE is_orphan = 0';
 	$result = $db->sql_query($sql);
 	set_config('upload_dir_size', (float) $db->sql_fetchfield('stat'), true);
@@ -1967,14 +1967,14 @@ function update_dynamic_config()
 	/**
 	* We do not resync users post counts - this can be done by the admin after conversion if wanted.
 	$sql = 'SELECT COUNT(post_id) AS num_posts, poster_id
-		FROM ' . POSTS_TABLE . '
+		FROM ' . PHPBB3_POSTS_TABLE . '
 		WHERE post_postcount = 1
 		GROUP BY poster_id';
 	$result = $db->sql_query($sql);
 
 	while ($row = $db->sql_fetchrow($result))
 	{
-		$db->sql_query('UPDATE ' . USERS_TABLE . " SET user_posts = {$row['num_posts']} WHERE user_id = {$row['poster_id']}");
+		$db->sql_query('UPDATE ' . PHPBB3_USERS_TABLE . " SET user_posts = {$row['num_posts']} WHERE user_id = {$row['poster_id']}");
 	}
 	$db->sql_freeresult($result);
 	*/
@@ -1991,11 +1991,11 @@ function update_topics_posted()
 	{
 		case 'sqlite':
 		case 'firebird':
-			$db->sql_query('DELETE FROM ' . TOPICS_POSTED_TABLE);
+			$db->sql_query('DELETE FROM ' . PHPBB3_TOPICS_POSTED_TABLE);
 		break;
 
 		default:
-			$db->sql_query('TRUNCATE TABLE ' . TOPICS_POSTED_TABLE);
+			$db->sql_query('TRUNCATE TABLE ' . PHPBB3_TOPICS_POSTED_TABLE);
 		break;
 	}
 
@@ -2004,8 +2004,8 @@ function update_topics_posted()
 
 	// Select forum ids, do not include categories
 	$sql = 'SELECT forum_id
-		FROM ' . FORUMS_TABLE . '
-		WHERE forum_type <> ' . FORUM_CAT;
+		FROM ' . PHPBB3_FORUMS_TABLE . '
+		WHERE forum_type <> ' . PHPBB3_FORUM_CAT;
 	$result = $db->sql_query($sql);
 
 	$forum_ids = array();
@@ -2022,7 +2022,7 @@ function update_topics_posted()
 	foreach ($forum_ids as $forum_id)
 	{
 		$sql = 'SELECT p.poster_id, p.topic_id
-			FROM ' . POSTS_TABLE . ' p, ' . TOPICS_TABLE . ' t
+			FROM ' . PHPBB3_POSTS_TABLE . ' p, ' . PHPBB3_TOPICS_TABLE . ' t
 			WHERE t.forum_id = ' . $forum_id . '
 				AND t.topic_moved_id = 0
 				AND t.topic_last_post_time > ' . $get_from_time . '
@@ -2054,7 +2054,7 @@ function update_topics_posted()
 
 		if (sizeof($sql_ary))
 		{
-			$db->sql_multi_insert(TOPICS_POSTED_TABLE, $sql_ary);
+			$db->sql_multi_insert(PHPBB3_TOPICS_POSTED_TABLE, $sql_ary);
 		}
 	}
 }
@@ -2067,17 +2067,17 @@ function fix_empty_primary_groups()
 	global $db;
 
 	// Set group ids for users not already having it
-	$sql = 'UPDATE ' . USERS_TABLE . ' SET group_id = ' . get_group_id('registered') . '
-		WHERE group_id = 0 AND user_type = ' . USER_INACTIVE;
+	$sql = 'UPDATE ' . PHPBB3_USERS_TABLE . ' SET group_id = ' . get_group_id('registered') . '
+		WHERE group_id = 0 AND user_type = ' . PHPBB3_USER_INACTIVE;
 	$db->sql_query($sql);
 
-	$sql = 'UPDATE ' . USERS_TABLE . ' SET group_id = ' . get_group_id('registered') . '
-		WHERE group_id = 0 AND user_type = ' . USER_NORMAL;
+	$sql = 'UPDATE ' . PHPBB3_USERS_TABLE . ' SET group_id = ' . get_group_id('registered') . '
+		WHERE group_id = 0 AND user_type = ' . PHPBB3_USER_NORMAL;
 	$db->sql_query($sql);
 
-	$db->sql_query('UPDATE ' . USERS_TABLE . ' SET group_id = ' . get_group_id('guests') . ' WHERE user_id = ' . ANONYMOUS);
+	$db->sql_query('UPDATE ' . PHPBB3_USERS_TABLE . ' SET group_id = ' . get_group_id('guests') . ' WHERE user_id = ' . ANONYMOUS);
 
-	$sql = 'SELECT user_id FROM ' . USER_GROUP_TABLE . ' WHERE group_id = ' . get_group_id('administrators');
+	$sql = 'SELECT user_id FROM ' . PHPBB3_USER_GROUP_TABLE . ' WHERE group_id = ' . get_group_id('administrators');
 	$result = $db->sql_query($sql);
 
 	$user_ids = array();
@@ -2089,11 +2089,11 @@ function fix_empty_primary_groups()
 
 	if (sizeof($user_ids))
 	{
-		$db->sql_query('UPDATE ' . USERS_TABLE . ' SET group_id = ' . get_group_id('administrators') . '
+		$db->sql_query('UPDATE ' . PHPBB3_USERS_TABLE . ' SET group_id = ' . get_group_id('administrators') . '
 			WHERE group_id = 0 AND ' . $db->sql_in_set('user_id', $user_ids));
 	}
 
-	$sql = 'SELECT user_id FROM ' . USER_GROUP_TABLE . ' WHERE group_id = ' . get_group_id('global_moderators');
+	$sql = 'SELECT user_id FROM ' . PHPBB3_USER_GROUP_TABLE . ' WHERE group_id = ' . get_group_id('global_moderators');
 
 	$user_ids = array();
 	while ($row = $db->sql_fetchrow($result))
@@ -2104,18 +2104,18 @@ function fix_empty_primary_groups()
 
 	if (sizeof($user_ids))
 	{
-		$db->sql_query('UPDATE ' . USERS_TABLE . ' SET group_id = ' . get_group_id('global_moderators') . '
+		$db->sql_query('UPDATE ' . PHPBB3_USERS_TABLE . ' SET group_id = ' . get_group_id('global_moderators') . '
 			WHERE group_id = 0 AND ' . $db->sql_in_set('user_id', $user_ids));
 	}
 
 	// Set user colour
-	$sql = 'SELECT group_id, group_colour FROM ' . GROUPS_TABLE . "
+	$sql = 'SELECT group_id, group_colour FROM ' . PHPBB3_GROUPS_TABLE . "
 		WHERE group_colour <> ''";
 	$result = $db->sql_query($sql);
 
 	while ($row = $db->sql_fetchrow($result))
 	{
-		$db->sql_query('UPDATE ' . USERS_TABLE . " SET user_colour = '{$row['group_colour']}' WHERE group_id = {$row['group_id']}");
+		$db->sql_query('UPDATE ' . PHPBB3_USERS_TABLE . " SET user_colour = '{$row['group_colour']}' WHERE group_id = {$row['group_id']}");
 	}
 	$db->sql_freeresult($result);
 }
@@ -2131,7 +2131,7 @@ function remove_invalid_users()
 
 	// username_clean is UNIQUE
 	$sql = 'SELECT user_id
-		FROM ' . USERS_TABLE . "
+		FROM ' . PHPBB3_USERS_TABLE . "
 		WHERE username_clean = ''";
 	$result = $db->sql_query($sql);
 	$row = $db->sql_fetchrow($result);

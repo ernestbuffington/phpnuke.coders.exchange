@@ -32,7 +32,7 @@ function login_db(&$username, &$password)
 	if (!$password)
 	{
 		return array(
-			'status'	=> LOGIN_ERROR_PASSWORD,
+			'status'	=> PHPBB3_LOGIN_ERROR_PASSWORD,
 			'error_msg'	=> 'NO_PASSWORD_SUPPLIED',
 			'user_row'	=> array('user_id' => ANONYMOUS),
 		);
@@ -41,14 +41,14 @@ function login_db(&$username, &$password)
 	if (!$username)
 	{
 		return array(
-			'status'	=> LOGIN_ERROR_USERNAME,
-			'error_msg'	=> 'LOGIN_ERROR_USERNAME',
+			'status'	=> PHPBB3_LOGIN_ERROR_USERNAME,
+			'error_msg'	=> 'PHPBB3_LOGIN_ERROR_USERNAME',
 			'user_row'	=> array('user_id' => ANONYMOUS),
 		);
 	}
 
 	$sql = 'SELECT user_id, username, user_password, user_passchg, user_pass_convert, user_email, user_type, user_login_attempts
-		FROM ' . USERS_TABLE . "
+		FROM ' . PHPBB3_USERS_TABLE . "
 		WHERE username_clean = '" . $db->sql_escape(utf8_clean_string($username)) . "'";
 	$result = $db->sql_query($sql);
 	$row = $db->sql_fetchrow($result);
@@ -57,8 +57,8 @@ function login_db(&$username, &$password)
 	if (!$row)
 	{
 		return array(
-			'status'	=> LOGIN_ERROR_USERNAME,
-			'error_msg'	=> 'LOGIN_ERROR_USERNAME',
+			'status'	=> PHPBB3_LOGIN_ERROR_USERNAME,
+			'error_msg'	=> 'PHPBB3_LOGIN_ERROR_USERNAME',
 			'user_row'	=> array('user_id' => ANONYMOUS),
 		);
 	}
@@ -74,8 +74,8 @@ function login_db(&$username, &$password)
 		if (!$confirm_id)
 		{
 			return array(
-				'status'		=> LOGIN_ERROR_ATTEMPTS,
-				'error_msg'		=> 'LOGIN_ERROR_ATTEMPTS',
+				'status'		=> PHPBB3_LOGIN_ERROR_ATTEMPTS,
+				'error_msg'		=> 'PHPBB3_LOGIN_ERROR_ATTEMPTS',
 				'user_row'		=> $row,
 			);
 		}
@@ -84,10 +84,10 @@ function login_db(&$username, &$password)
 			global $user;
 
 			$sql = 'SELECT code
-				FROM ' . CONFIRM_TABLE . "
+				FROM ' . PHPBB3_CONFIRM_TABLE . "
 				WHERE confirm_id = '" . $db->sql_escape($confirm_id) . "'
 					AND session_id = '" . $db->sql_escape($user->session_id) . "'
-					AND confirm_type = " . CONFIRM_LOGIN;
+					AND confirm_type = " . PHPBB3_CONFIRM_LOGIN;
 			$result = $db->sql_query($sql);
 			$confirm_row = $db->sql_fetchrow($result);
 			$db->sql_freeresult($result);
@@ -96,17 +96,17 @@ function login_db(&$username, &$password)
 			{
 				if (strcasecmp($confirm_row['code'], $confirm_code) === 0)
 				{
-					$sql = 'DELETE FROM ' . CONFIRM_TABLE . "
+					$sql = 'DELETE FROM ' . PHPBB3_CONFIRM_TABLE . "
 						WHERE confirm_id = '" . $db->sql_escape($confirm_id) . "'
 							AND session_id = '" . $db->sql_escape($user->session_id) . "'
-							AND confirm_type = " . CONFIRM_LOGIN;
+							AND confirm_type = " . PHPBB3_CONFIRM_LOGIN;
 					$db->sql_query($sql);
 				}
 				else
 				{
 					return array(
-						'status'		=> LOGIN_ERROR_ATTEMPTS,
-						'error_msg'		=> 'CONFIRM_CODE_WRONG',
+						'status'		=> PHPBB3_LOGIN_ERROR_ATTEMPTS,
+						'error_msg'		=> 'PHPBB3_CONFIRM_CODE_WRONG',
 						'user_row'		=> $row,
 					);
 				}
@@ -114,8 +114,8 @@ function login_db(&$username, &$password)
 			else
 			{
 				return array(
-					'status'		=> LOGIN_ERROR_ATTEMPTS,
-					'error_msg'		=> 'CONFIRM_CODE_WRONG',
+					'status'		=> PHPBB3_LOGIN_ERROR_ATTEMPTS,
+					'error_msg'		=> 'PHPBB3_CONFIRM_CODE_WRONG',
 					'user_row'		=> $row,
 				);
 			}
@@ -146,7 +146,7 @@ function login_db(&$username, &$password)
 				$hash = phpbb_hash($password_new_format);
 
 				// Update the password in the users table to the new format and remove user_pass_convert flag
-				$sql = 'UPDATE ' . USERS_TABLE . '
+				$sql = 'UPDATE ' . PHPBB3_USERS_TABLE . '
 					SET user_password = \'' . $db->sql_escape($hash) . '\',
 						user_pass_convert = 0
 					WHERE user_id = ' . $row['user_id'];
@@ -159,14 +159,14 @@ function login_db(&$username, &$password)
 			{
 				// Although we weren't able to convert this password we have to
 				// increase login attempt count to make sure this cannot be exploited
-				$sql = 'UPDATE ' . USERS_TABLE . '
+				$sql = 'UPDATE ' . PHPBB3_USERS_TABLE . '
 					SET user_login_attempts = user_login_attempts + 1
 					WHERE user_id = ' . $row['user_id'];
 				$db->sql_query($sql);
 
 				return array(
-					'status'		=> LOGIN_ERROR_PASSWORD_CONVERT,
-					'error_msg'		=> 'LOGIN_ERROR_PASSWORD_CONVERT',
+					'status'		=> PHPBB3_LOGIN_ERROR_PASSWORD_CONVERT,
+					'error_msg'		=> 'PHPBB3_LOGIN_ERROR_PASSWORD_CONVERT',
 					'user_row'		=> $row,
 				);
 			}
@@ -182,7 +182,7 @@ function login_db(&$username, &$password)
 			$hash = phpbb_hash($password);
 
 			// Update the password in the users table to the new format
-			$sql = 'UPDATE ' . USERS_TABLE . "
+			$sql = 'UPDATE ' . PHPBB3_USERS_TABLE . "
 				SET user_password = '" . $db->sql_escape($hash) . "',
 					user_pass_convert = 0
 				WHERE user_id = {$row['user_id']}";
@@ -194,17 +194,17 @@ function login_db(&$username, &$password)
 		if ($row['user_login_attempts'] != 0)
 		{
 			// Successful, reset login attempts (the user passed all stages)
-			$sql = 'UPDATE ' . USERS_TABLE . '
+			$sql = 'UPDATE ' . PHPBB3_USERS_TABLE . '
 				SET user_login_attempts = 0
 				WHERE user_id = ' . $row['user_id'];
 			$db->sql_query($sql);
 		}
 
 		// User inactive...
-		if ($row['user_type'] == USER_INACTIVE || $row['user_type'] == USER_IGNORE)
+		if ($row['user_type'] == PHPBB3_USER_INACTIVE || $row['user_type'] == PHPBB3_USER_IGNORE)
 		{
 			return array(
-				'status'		=> LOGIN_ERROR_ACTIVE,
+				'status'		=> PHPBB3_LOGIN_ERROR_ACTIVE,
 				'error_msg'		=> 'ACTIVE_ERROR',
 				'user_row'		=> $row,
 			);
@@ -212,22 +212,22 @@ function login_db(&$username, &$password)
 
 		// Successful login... set user_login_attempts to zero...
 		return array(
-			'status'		=> LOGIN_SUCCESS,
+			'status'		=> PHPBB3_LOGIN_SUCCESS,
 			'error_msg'		=> false,
 			'user_row'		=> $row,
 		);
 	}
 
 	// Password incorrect - increase login attempts
-	$sql = 'UPDATE ' . USERS_TABLE . '
+	$sql = 'UPDATE ' . PHPBB3_USERS_TABLE . '
 		SET user_login_attempts = user_login_attempts + 1
 		WHERE user_id = ' . $row['user_id'];
 	$db->sql_query($sql);
 
 	// Give status about wrong password...
 	return array(
-		'status'		=> LOGIN_ERROR_PASSWORD,
-		'error_msg'		=> 'LOGIN_ERROR_PASSWORD',
+		'status'		=> PHPBB3_LOGIN_ERROR_PASSWORD,
+		'error_msg'		=> 'PHPBB3_LOGIN_ERROR_PASSWORD',
 		'user_row'		=> $row,
 	);
 }

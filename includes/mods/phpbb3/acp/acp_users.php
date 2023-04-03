@@ -98,7 +98,7 @@ class acp_users
 		if (!$user_id)
 		{
 			$sql = 'SELECT user_id
-				FROM ' . USERS_TABLE . "
+				FROM ' . PHPBB3_USERS_TABLE . "
 				WHERE username_clean = '" . $db->sql_escape(utf8_clean_string($username)) . "'";
 			$result = $db->sql_query($sql);
 			$user_id = (int) $db->sql_fetchfield('user_id');
@@ -112,8 +112,8 @@ class acp_users
 
 		// Generate content for all modes
 		$sql = 'SELECT u.*, s.*
-			FROM ' . USERS_TABLE . ' u
-				LEFT JOIN ' . SESSIONS_TABLE . ' s ON (s.session_user_id = u.user_id)
+			FROM ' . PHPBB3_USERS_TABLE . ' u
+				LEFT JOIN ' . PHPBB3_SESSIONS_TABLE . ' s ON (s.session_user_id = u.user_id)
 			WHERE u.user_id = ' . $user_id . '
 			ORDER BY s.session_time DESC';
 		$result = $db->sql_query($sql);
@@ -130,7 +130,7 @@ class acp_users
 
 		// Build modes dropdown list
 		$sql = 'SELECT module_mode, module_auth
-			FROM ' . MODULES_TABLE . "
+			FROM ' . PHPBB3_MODULES_TABLE . "
 			WHERE module_basename = 'users'
 				AND module_enabled = 1
 				AND module_class = 'acp'
@@ -164,7 +164,7 @@ class acp_users
 		);
 
 		// Prevent normal users/admins change/view founders if they are not a founder by themselves
-		if ($user->data['user_type'] != USER_FOUNDER && $user_row['user_type'] == USER_FOUNDER)
+		if ($user->data['user_type'] != PHPBB3_USER_FOUNDER && $user_row['user_type'] == PHPBB3_USER_FOUNDER)
 		{
 			trigger_error($user->lang['NOT_MANAGE_FOUNDER'] . adm_back_link($this->u_action), E_USER_WARNING);
 		}
@@ -184,7 +184,7 @@ class acp_users
 				if ($submit)
 				{
 					// You can't delete the founder
-					if ($delete && $user_row['user_type'] != USER_FOUNDER)
+					if ($delete && $user_row['user_type'] != PHPBB3_USER_FOUNDER)
 					{
 						if (!$auth->acl_get('a_userdel'))
 						{
@@ -211,7 +211,7 @@ class acp_users
 						}
 						else
 						{
-							confirm_box(false, $user->lang['CONFIRM_OPERATION'], build_hidden_fields(array(
+							confirm_box(false, $user->lang['PHPBB3_CONFIRM_OPERATION'], build_hidden_fields(array(
 								'u'				=> $user_id,
 								'i'				=> $id,
 								'mode'			=> $mode,
@@ -235,7 +235,7 @@ class acp_users
 								trigger_error($user->lang['CANNOT_BAN_YOURSELF'] . adm_back_link($this->u_action . '&amp;u=' . $user_id), E_USER_WARNING);
 							}
 
-							if ($user_row['user_type'] == USER_FOUNDER)
+							if ($user_row['user_type'] == PHPBB3_USER_FOUNDER)
 							{
 								trigger_error($user->lang['CANNOT_BAN_FOUNDER'] . adm_back_link($this->u_action . '&amp;u=' . $user_id), E_USER_WARNING);
 							}
@@ -265,7 +265,7 @@ class acp_users
 									$ban[] = $user_row['user_ip'];
 
 									$sql = 'SELECT DISTINCT poster_ip
-										FROM ' . POSTS_TABLE . "
+										FROM ' . PHPBB3_POSTS_TABLE . "
 										WHERE poster_id = $user_id";
 									$result = $db->sql_query($sql);
 
@@ -302,12 +302,12 @@ class acp_users
 								trigger_error($user->lang['FORM_INVALID'] . adm_back_link($this->u_action . '&amp;u=' . $user_id), E_USER_WARNING);
 							}
 
-							if ($user_row['user_type'] == USER_FOUNDER)
+							if ($user_row['user_type'] == PHPBB3_USER_FOUNDER)
 							{
 								trigger_error($user->lang['CANNOT_FORCE_REACT_FOUNDER'] . adm_back_link($this->u_action . '&amp;u=' . $user_id), E_USER_WARNING);
 							}
 
-							if ($user_row['user_type'] == USER_IGNORE)
+							if ($user_row['user_type'] == PHPBB3_USER_IGNORE)
 							{
 								trigger_error($user->lang['CANNOT_FORCE_REACT_BOT'] . adm_back_link($this->u_action . '&amp;u=' . $user_id), E_USER_WARNING);
 							}
@@ -322,13 +322,13 @@ class acp_users
 								$key_len = 54 - (strlen($server_url));
 								$key_len = ($key_len > 6) ? $key_len : 6;
 								$user_actkey = substr($user_actkey, 0, $key_len);
-								$email_template = ($user_row['user_type'] == USER_NORMAL) ? 'user_reactivate_account' : 'user_resend_inactive';
+								$email_template = ($user_row['user_type'] == PHPBB3_USER_NORMAL) ? 'user_reactivate_account' : 'user_resend_inactive';
 
-								if ($user_row['user_type'] == USER_NORMAL)
+								if ($user_row['user_type'] == PHPBB3_USER_NORMAL)
 								{
-									user_active_flip('deactivate', $user_id, INACTIVE_REMIND);
+									user_active_flip('deactivate', $user_id, PHPBB3_INACTIVE_REMIND);
 
-									$sql = 'UPDATE ' . USERS_TABLE . "
+									$sql = 'UPDATE ' . PHPBB3_USERS_TABLE . "
 										SET user_actkey = '" . $db->sql_escape($user_actkey) . "'
 										WHERE user_id = $user_id";
 									$db->sql_query($sql);
@@ -337,7 +337,7 @@ class acp_users
 								{
 									// Grabbing the last confirm key - we only send a reminder
 									$sql = 'SELECT user_actkey
-										FROM ' . USERS_TABLE . '
+										FROM ' . PHPBB3_USERS_TABLE . '
 										WHERE user_id = ' . $user_id;
 									$result = $db->sql_query($sql);
 									$user_actkey = (string) $db->sql_fetchfield('user_actkey');
@@ -361,7 +361,7 @@ class acp_users
 									'U_ACTIVATE'	=> "$server_url/ucp.$phpEx?mode=activate&u={$user_row['user_id']}&k=$user_actkey")
 								);
 
-								$messenger->send(NOTIFY_EMAIL);
+								$messenger->send(PHPBB3_NOTIFY_EMAIL);
 
 								add_log('admin', 'LOG_USER_REACTIVATE', $user_row['username']);
 								add_log('user', $user_id, 'LOG_USER_REACTIVATE_USER');
@@ -384,20 +384,20 @@ class acp_users
 								trigger_error($user->lang['FORM_INVALID'] . adm_back_link($this->u_action . '&amp;u=' . $user_id), E_USER_WARNING);
 							}
 
-							if ($user_row['user_type'] == USER_FOUNDER)
+							if ($user_row['user_type'] == PHPBB3_USER_FOUNDER)
 							{
 								trigger_error($user->lang['CANNOT_DEACTIVATE_FOUNDER'] . adm_back_link($this->u_action . '&amp;u=' . $user_id), E_USER_WARNING);
 							}
 
-							if ($user_row['user_type'] == USER_IGNORE)
+							if ($user_row['user_type'] == PHPBB3_USER_IGNORE)
 							{
 								trigger_error($user->lang['CANNOT_DEACTIVATE_BOT'] . adm_back_link($this->u_action . '&amp;u=' . $user_id), E_USER_WARNING);
 							}
 
 							user_active_flip('flip', $user_id);
 
-							$message = ($user_row['user_type'] == USER_INACTIVE) ? 'USER_ADMIN_ACTIVATED' : 'USER_ADMIN_DEACTIVED';
-							$log = ($user_row['user_type'] == USER_INACTIVE) ? 'LOG_USER_ACTIVE' : 'LOG_USER_INACTIVE';
+							$message = ($user_row['user_type'] == PHPBB3_USER_INACTIVE) ? 'USER_ADMIN_ACTIVATED' : 'USER_ADMIN_DEACTIVED';
+							$log = ($user_row['user_type'] == PHPBB3_USER_INACTIVE) ? 'LOG_USER_ACTIVE' : 'LOG_PHPBB3_USER_INACTIVE';
 
 							add_log('admin', $log, $user_row['username']);
 							add_log('user', $user_id, $log . '_USER');
@@ -419,7 +419,7 @@ class acp_users
 								'user_sig_bbcode_bitfield'	=> ''
 							);
 
-							$sql = 'UPDATE ' . USERS_TABLE . ' SET ' . $db->sql_build_array('UPDATE', $sql_ary) . "
+							$sql = 'UPDATE ' . PHPBB3_USERS_TABLE . ' SET ' . $db->sql_build_array('UPDATE', $sql_ary) . "
 								WHERE user_id = $user_id";
 							$db->sql_query($sql);
 
@@ -444,13 +444,13 @@ class acp_users
 								'user_avatar_height'	=> 0,
 							);
 
-							$sql = 'UPDATE ' . USERS_TABLE . '
+							$sql = 'UPDATE ' . PHPBB3_USERS_TABLE . '
 								SET ' . $db->sql_build_array('UPDATE', $sql_ary) . "
 								WHERE user_id = $user_id";
 							$db->sql_query($sql);
 
 							// Delete old avatar if present
-							if ($user_row['user_avatar'] && $user_row['user_avatar_type'] != AVATAR_GALLERY)
+							if ($user_row['user_avatar'] && $user_row['user_avatar_type'] != PHPBB3_AVATAR_GALLERY)
 							{
 								avatar_delete('user', $user_row);
 							}
@@ -473,7 +473,7 @@ class acp_users
 							}
 							else
 							{
-								confirm_box(false, $user->lang['CONFIRM_OPERATION'], build_hidden_fields(array(
+								confirm_box(false, $user->lang['PHPBB3_CONFIRM_OPERATION'], build_hidden_fields(array(
 									'u'				=> $user_id,
 									'i'				=> $id,
 									'mode'			=> $mode,
@@ -495,7 +495,7 @@ class acp_users
 							}
 							else
 							{
-								confirm_box(false, $user->lang['CONFIRM_OPERATION'], build_hidden_fields(array(
+								confirm_box(false, $user->lang['PHPBB3_CONFIRM_OPERATION'], build_hidden_fields(array(
 									'u'				=> $user_id,
 									'i'				=> $id,
 									'mode'			=> $mode,
@@ -533,7 +533,7 @@ class acp_users
 
 							// Is the new forum postable to?
 							$sql = 'SELECT forum_name, forum_type
-								FROM ' . FORUMS_TABLE . "
+								FROM ' . PHPBB3_FORUMS_TABLE . "
 								WHERE forum_id = $new_forum_id";
 							$result = $db->sql_query($sql);
 							$forum_info = $db->sql_fetchrow($result);
@@ -544,7 +544,7 @@ class acp_users
 								trigger_error($user->lang['NO_FORUM'] . adm_back_link($this->u_action . '&amp;u=' . $user_id), E_USER_WARNING);
 							}
 
-							if ($forum_info['forum_type'] != FORUM_POST)
+							if ($forum_info['forum_type'] != PHPBB3_FORUM_POST)
 							{
 								trigger_error($user->lang['MOVE_POSTS_NO_POSTABLE_FORUM'] . adm_back_link($this->u_action . '&amp;u=' . $user_id), E_USER_WARNING);
 							}
@@ -555,7 +555,7 @@ class acp_users
 							$forum_id_ary = array($new_forum_id);
 
 							$sql = 'SELECT topic_id, COUNT(post_id) AS total_posts
-								FROM ' . POSTS_TABLE . "
+								FROM ' . PHPBB3_POSTS_TABLE . "
 								WHERE poster_id = $user_id
 									AND forum_id <> $new_forum_id
 								GROUP BY topic_id";
@@ -570,7 +570,7 @@ class acp_users
 							if (sizeof($topic_id_ary))
 							{
 								$sql = 'SELECT topic_id, forum_id, topic_title, topic_replies, topic_replies_real, topic_attachment
-									FROM ' . TOPICS_TABLE . '
+									FROM ' . PHPBB3_TOPICS_TABLE . '
 									WHERE ' . $db->sql_in_set('topic_id', array_keys($topic_id_ary));
 								$result = $db->sql_query($sql);
 
@@ -604,7 +604,7 @@ class acp_users
 								foreach ($move_post_ary as $topic_id => $post_ary)
 								{
 									// Create new topic
-									$sql = 'INSERT INTO ' . TOPICS_TABLE . ' ' . $db->sql_build_array('INSERT', array(
+									$sql = 'INSERT INTO ' . PHPBB3_TOPICS_TABLE . ' ' . $db->sql_build_array('INSERT', array(
 										'topic_poster'				=> $user_id,
 										'topic_time'				=> time(),
 										'forum_id' 					=> $new_forum_id,
@@ -612,7 +612,7 @@ class acp_users
 										'topic_approved'			=> 1,
 										'topic_title' 				=> $post_ary['title'],
 										'topic_first_poster_name'	=> $user_row['username'],
-										'topic_type'				=> POST_NORMAL,
+										'topic_type'				=> PHPBB3_POST_NORMAL,
 										'topic_time_limit'			=> 0,
 										'topic_attachment'			=> $post_ary['attach'])
 									);
@@ -621,7 +621,7 @@ class acp_users
 									$new_topic_id = $db->sql_nextid();
 
 									// Move posts
-									$sql = 'UPDATE ' . POSTS_TABLE . "
+									$sql = 'UPDATE ' . PHPBB3_POSTS_TABLE . "
 										SET forum_id = $new_forum_id, topic_id = $new_topic_id
 										WHERE topic_id = $topic_id
 											AND poster_id = $user_id";
@@ -629,7 +629,7 @@ class acp_users
 
 									if ($post_ary['attach'])
 									{
-										$sql = 'UPDATE ' . ATTACHMENTS_TABLE . "
+										$sql = 'UPDATE ' . PHPBB3_ATTACHMENTS_TABLE . "
 											SET topic_id = $new_topic_id
 											WHERE topic_id = $topic_id
 												AND poster_id = $user_id";
@@ -667,7 +667,7 @@ class acp_users
 					$data = array(
 						'username'			=> utf8_normalize_nfc(request_var('user', $user_row['username'], true)),
 						'user_posts'		=> request_var('user_posts', $user_row['user_posts'], true),
-						'user_founder'		=> request_var('user_founder', ($user_row['user_type'] == USER_FOUNDER) ? 1 : 0),
+						'user_founder'		=> request_var('user_founder', ($user_row['user_type'] == PHPBB3_USER_FOUNDER) ? 1 : 0),
 						'email'				=> strtolower(request_var('user_email', $user_row['user_email'])),
 						'email_confirm'		=> strtolower(request_var('email_confirm', '')),
 						'new_password'		=> request_var('new_password', '', true),
@@ -732,33 +732,33 @@ class acp_users
 					{
 						$sql_ary = array();
 
-						if ($user_row['user_type'] != USER_FOUNDER || $user->data['user_type'] == USER_FOUNDER)
+						if ($user_row['user_type'] != PHPBB3_USER_FOUNDER || $user->data['user_type'] == PHPBB3_USER_FOUNDER)
 						{
 							// Only allow founders updating the founder status...
-							if ($user->data['user_type'] == USER_FOUNDER)
+							if ($user->data['user_type'] == PHPBB3_USER_FOUNDER)
 							{
 								// Setting a normal member to be a founder
-								if ($data['user_founder'] && $user_row['user_type'] != USER_FOUNDER)
+								if ($data['user_founder'] && $user_row['user_type'] != PHPBB3_USER_FOUNDER)
 								{
 									// Make sure the user is not setting an Inactive or ignored user to be a founder
-									if ($user_row['user_type'] == USER_IGNORE)
+									if ($user_row['user_type'] == PHPBB3_USER_IGNORE)
 									{
 										trigger_error($user->lang['CANNOT_SET_FOUNDER_IGNORED'] . adm_back_link($this->u_action . '&amp;u=' . $user_id), E_USER_WARNING);
 									}
 
-									if ($user_row['user_type'] == USER_INACTIVE)
+									if ($user_row['user_type'] == PHPBB3_USER_INACTIVE)
 									{
 										trigger_error($user->lang['CANNOT_SET_FOUNDER_INACTIVE'] . adm_back_link($this->u_action . '&amp;u=' . $user_id), E_USER_WARNING);
 									}
 
-									$sql_ary['user_type'] = USER_FOUNDER;
+									$sql_ary['user_type'] = PHPBB3_USER_FOUNDER;
 								}
-								else if (!$data['user_founder'] && $user_row['user_type'] == USER_FOUNDER)
+								else if (!$data['user_founder'] && $user_row['user_type'] == PHPBB3_USER_FOUNDER)
 								{
 									// Check if at least one founder is present
 									$sql = 'SELECT user_id
-										FROM ' . USERS_TABLE . '
-										WHERE user_type = ' . USER_FOUNDER . '
+										FROM ' . PHPBB3_USERS_TABLE . '
+										WHERE user_type = ' . PHPBB3_USER_FOUNDER . '
 											AND user_id <> ' . $user_id;
 									$result = $db->sql_query_limit($sql, 1);
 									$row = $db->sql_fetchrow($result);
@@ -766,7 +766,7 @@ class acp_users
 
 									if ($row)
 									{
-										$sql_ary['user_type'] = USER_NORMAL;
+										$sql_ary['user_type'] = PHPBB3_USER_NORMAL;
 									}
 									else
 									{
@@ -817,7 +817,7 @@ class acp_users
 
 						if (sizeof($sql_ary))
 						{
-							$sql = 'UPDATE ' . USERS_TABLE . '
+							$sql = 'UPDATE ' . PHPBB3_USERS_TABLE . '
 								SET ' . $db->sql_build_array('UPDATE', $sql_ary) . '
 								WHERE user_id = ' . $user_id;
 							$db->sql_query($sql);
@@ -848,19 +848,19 @@ class acp_users
 				{
 					$quick_tool_ary = array();
 
-					if ($user_row['user_type'] != USER_FOUNDER)
+					if ($user_row['user_type'] != PHPBB3_USER_FOUNDER)
 					{
 						$quick_tool_ary += array('banuser' => 'BAN_USER', 'banemail' => 'BAN_EMAIL', 'banip' => 'BAN_IP');
 					}
 
-					if ($user_row['user_type'] != USER_FOUNDER && $user_row['user_type'] != USER_IGNORE)
+					if ($user_row['user_type'] != PHPBB3_USER_FOUNDER && $user_row['user_type'] != PHPBB3_USER_IGNORE)
 					{
-						$quick_tool_ary += array('active' => (($user_row['user_type'] == USER_INACTIVE) ? 'ACTIVATE' : 'DEACTIVATE'));
+						$quick_tool_ary += array('active' => (($user_row['user_type'] == PHPBB3_USER_INACTIVE) ? 'ACTIVATE' : 'DEACTIVATE'));
 					}
 
 					$quick_tool_ary += array('delsig' => 'DEL_SIG', 'delavatar' => 'DEL_AVATAR', 'moveposts' => 'MOVE_POSTS', 'delposts' => 'DEL_POSTS', 'delattach' => 'DEL_ATTACH');
 
-					if ($config['email_enable'] && ($user_row['user_type'] == USER_NORMAL || $user_row['user_type'] == USER_INACTIVE))
+					if ($config['email_enable'] && ($user_row['user_type'] == PHPBB3_USER_NORMAL || $user_row['user_type'] == PHPBB3_USER_INACTIVE))
 					{
 						$quick_tool_ary['reactivate'] = 'FORCE';
 					}
@@ -875,7 +875,7 @@ class acp_users
 				if ($config['load_onlinetrack'])
 				{
 					$sql = 'SELECT MAX(session_time) AS session_time, MIN(session_viewonline) AS session_viewonline
-						FROM ' . SESSIONS_TABLE . "
+						FROM ' . PHPBB3_SESSIONS_TABLE . "
 						WHERE session_user_id = $user_id";
 					$result = $db->sql_query($sql);
 					$row = $db->sql_fetchrow($result);
@@ -889,32 +889,32 @@ class acp_users
 				$last_visit = (!empty($user_row['session_time'])) ? $user_row['session_time'] : $user_row['user_lastvisit'];
 
 				$inactive_reason = '';
-				if ($user_row['user_type'] == USER_INACTIVE)
+				if ($user_row['user_type'] == PHPBB3_USER_INACTIVE)
 				{
 					$inactive_reason = $user->lang['INACTIVE_REASON_UNKNOWN'];
 
 					switch ($user_row['user_inactive_reason'])
 					{
-						case INACTIVE_REGISTER:
+						case PHPBB3_INACTIVE_REGISTER:
 							$inactive_reason = $user->lang['INACTIVE_REASON_REGISTER'];
 						break;
 
-						case INACTIVE_PROFILE:
+						case PHPBB3_INACTIVE_PROFILE:
 							$inactive_reason = $user->lang['INACTIVE_REASON_PROFILE'];
 						break;
 
-						case INACTIVE_MANUAL:
+						case PHPBB3_INACTIVE_MANUAL:
 							$inactive_reason = $user->lang['INACTIVE_REASON_MANUAL'];
 						break;
 
-						case INACTIVE_REMIND:
+						case PHPBB3_INACTIVE_REMIND:
 							$inactive_reason = $user->lang['INACTIVE_REASON_REMIND'];
 						break;
 					}
 				}
                 // Get the user's total post count in case a reset is requested
 				$sql = 'SELECT COUNT(post_id) as total_posts
-					FROM ' . POSTS_TABLE . '
+					FROM ' . PHPBB3_POSTS_TABLE . '
 					WHERE poster_id = ' . $user_row['user_id'];
 				$results = $db->sql_query($sql);
 				$posts_counted = (int) $db->sql_fetchfield('total_posts');
@@ -924,14 +924,14 @@ class acp_users
 					'L_NAME_CHARS_EXPLAIN'		=> sprintf($user->lang[$config['allow_name_chars'] . '_EXPLAIN'], $config['min_name_chars'], $config['max_name_chars']),
 					'L_CHANGE_PASSWORD_EXPLAIN'	=> sprintf($user->lang[$config['pass_complex'] . '_EXPLAIN'], $config['min_pass_chars'], $config['max_pass_chars']),
 					'POSTS_COUNTED'				=> $posts_counted,
-					'S_FOUNDER'					=> ($user->data['user_type'] == USER_FOUNDER) ? true : false,
+					'S_FOUNDER'					=> ($user->data['user_type'] == PHPBB3_USER_FOUNDER) ? true : false,
 
 					'S_OVERVIEW'		=> true,
 					'S_USER_IP'			=> ($user_row['user_ip']) ? true : false,
-					'S_USER_FOUNDER'	=> ($user_row['user_type'] == USER_FOUNDER) ? true : false,
+					'S_PHPBB3_USER_FOUNDER'	=> ($user_row['user_type'] == PHPBB3_USER_FOUNDER) ? true : false,
 					'S_ACTION_OPTIONS'	=> $s_action_options,
 					'S_OWN_ACCOUNT'		=> ($user_id == $user->data['user_id']) ? true : false,
-					'S_USER_INACTIVE'	=> ($user_row['user_type'] == USER_INACTIVE) ? true : false,
+					'S_PHPBB3_USER_INACTIVE'	=> ($user_row['user_type'] == PHPBB3_USER_INACTIVE) ? true : false,
 
 					'U_SHOW_IP'		=> $this->u_action . "&amp;u=$user_id&amp;ip=" . (($ip == 'ip') ? 'hostname' : 'ip'),
 					'U_WHOIS'		=> $this->u_action . "&amp;action=whois&amp;user_ip={$user_row['user_ip']}",
@@ -947,7 +947,7 @@ class acp_users
 					'USER_EMAIL'		=> $user_row['user_email'],
 					'USER_WARNINGS'		=> $user_row['user_warnings'],
 					'USER_POSTS'		=> $user_row['user_posts'],
-					'USER_INACTIVE_REASON'	=> $inactive_reason,
+					'PHPBB3_USER_INACTIVE_REASON'	=> $inactive_reason,
 				));
 
 			break;
@@ -990,8 +990,8 @@ class acp_users
 
 					if ($where_sql || $deleteall)
 					{
-						$sql = 'DELETE FROM ' . LOG_TABLE . '
-							WHERE log_type = ' . LOG_USERS . "
+						$sql = 'DELETE FROM ' . PHPBB3_LOG_TABLE . '
+							WHERE log_type = ' . PHPBB3_LOG_USERS . "
 							$where_sql";
 						$db->sql_query($sql);
 
@@ -1064,7 +1064,7 @@ class acp_users
 				$cp_data = $cp_error = array();
 
 				$sql = 'SELECT lang_id
-					FROM ' . LANG_TABLE . "
+					FROM ' . PHPBB3_LANG_TABLE . "
 					WHERE lang_iso = '" . $db->sql_escape($user->data['user_lang']) . "'";
 				$result = $db->sql_query($sql);
 				$row = $db->sql_fetchrow($result);
@@ -1160,7 +1160,7 @@ class acp_users
 //-- fin mod : Genders --------------------------------------------------------
 						);
 
-						$sql = 'UPDATE ' . USERS_TABLE . '
+						$sql = 'UPDATE ' . PHPBB3_USERS_TABLE . '
 							SET ' . $db->sql_build_array('UPDATE', $sql_ary) . "
 							WHERE user_id = $user_id";
 						$db->sql_query($sql);
@@ -1196,7 +1196,7 @@ class acp_users
 								unset($cp_data[$key]);
 							}
 
-							$sql = 'UPDATE ' . PROFILE_FIELDS_DATA_TABLE . '
+							$sql = 'UPDATE ' . PHPBB3_PROFILE_FIELDS_DATA_TABLE . '
 								SET ' . $db->sql_build_array('UPDATE', $cp_data) . "
 								WHERE user_id = $user_id";
 							$db->sql_query($sql);
@@ -1207,7 +1207,7 @@ class acp_users
 
 								$db->sql_return_on_error(true);
 
-								$sql = 'INSERT INTO ' . PROFILE_FIELDS_DATA_TABLE . ' ' . $db->sql_build_array('INSERT', $cp_data);
+								$sql = 'INSERT INTO ' . PHPBB3_PROFILE_FIELDS_DATA_TABLE . ' ' . $db->sql_build_array('INSERT', $cp_data);
 								$db->sql_query($sql);
 
 								$db->sql_return_on_error(false);
@@ -1376,7 +1376,7 @@ class acp_users
 							'user_notify'	=> $data['notify'],
 						);
 
-						$sql = 'UPDATE ' . USERS_TABLE . '
+						$sql = 'UPDATE ' . PHPBB3_USERS_TABLE . '
 							SET ' . $db->sql_build_array('UPDATE', $sql_ary) . "
 							WHERE user_id = $user_id";
 						$db->sql_query($sql);
@@ -1452,9 +1452,9 @@ class acp_users
 					'MASS_EMAIL'		=> $data['massemail'],
 					'ALLOW_PM'			=> $data['allowpm'],
 					'HIDE_ONLINE'		=> $data['hideonline'],
-					'NOTIFY_EMAIL'		=> ($data['notifymethod'] == NOTIFY_EMAIL) ? true : false,
-					'NOTIFY_IM'			=> ($data['notifymethod'] == NOTIFY_IM) ? true : false,
-					'NOTIFY_BOTH'		=> ($data['notifymethod'] == NOTIFY_BOTH) ? true : false,
+					'PHPBB3_NOTIFY_EMAIL'		=> ($data['notifymethod'] == PHPBB3_NOTIFY_EMAIL) ? true : false,
+					'PHPBB3_NOTIFY_IM'			=> ($data['notifymethod'] == PHPBB3_NOTIFY_IM) ? true : false,
+					'PHPBB3_NOTIFY_BOTH'		=> ($data['notifymethod'] == PHPBB3_NOTIFY_BOTH) ? true : false,
 					'NOTIFY_PM'			=> $data['notifypm'],
 					'POPUP_PM'			=> $data['popuppm'],
 					'DST'				=> $data['dst'],
@@ -1551,7 +1551,7 @@ class acp_users
 				{
 					$flag_code = request_var('user_flag', '');
 
-					$sql = 'UPDATE ' . USERS_TABLE . "
+					$sql = 'UPDATE ' . PHPBB3_USERS_TABLE . "
 						SET user_flag = '$flag_code'
 						WHERE user_id = $user_id";
 					$db->sql_query($sql);
@@ -1561,7 +1561,7 @@ class acp_users
 
 				// Select country flags
 				$sql = 'SELECT *
-					FROM ' . FLAGS_TABLE . '
+					FROM ' . PHPBB3_FLAGS_TABLE . '
 					ORDER BY flag_country';
 				$result = $db->sql_query($sql);
 
@@ -1601,7 +1601,7 @@ class acp_users
 
 					$rank_id = request_var('user_rank', 0);
 
-					$sql = 'UPDATE ' . USERS_TABLE . "
+					$sql = 'UPDATE ' . PHPBB3_USERS_TABLE . "
 						SET user_rank = $rank_id
 						WHERE user_id = $user_id";
 					$db->sql_query($sql);
@@ -1610,7 +1610,7 @@ class acp_users
 				}
 
 				$sql = 'SELECT *
-					FROM ' . RANKS_TABLE . '
+					FROM ' . PHPBB3_RANKS_TABLE . '
 					WHERE rank_special = 1
 					ORDER BY rank_title';
 				$result = $db->sql_query($sql);
@@ -1670,7 +1670,7 @@ class acp_users
 							'user_sig_bbcode_bitfield'	=> (string) $message_parser->bbcode_bitfield
 						);
 
-						$sql = 'UPDATE ' . USERS_TABLE . '
+						$sql = 'UPDATE ' . PHPBB3_USERS_TABLE . '
 							SET ' . $db->sql_build_array('UPDATE', $sql_ary) . '
 							WHERE user_id = ' . $user_id;
 						$db->sql_query($sql);
@@ -1736,7 +1736,7 @@ class acp_users
 				if ($deletemark && sizeof($marked))
 				{
 					$sql = 'SELECT attach_id
-						FROM ' . ATTACHMENTS_TABLE . '
+						FROM ' . PHPBB3_ATTACHMENTS_TABLE . '
 						WHERE poster_id = ' . $user_id . '
 							AND is_orphan = 0
 							AND ' . $db->sql_in_set('attach_id', $marked);
@@ -1755,7 +1755,7 @@ class acp_users
 					if (confirm_box(true))
 					{
 						$sql = 'SELECT real_filename
-							FROM ' . ATTACHMENTS_TABLE . '
+							FROM ' . PHPBB3_ATTACHMENTS_TABLE . '
 							WHERE ' . $db->sql_in_set('attach_id', $marked);
 						$result = $db->sql_query($sql);
 
@@ -1768,14 +1768,14 @@ class acp_users
 
 						delete_attachments('attach', $marked);
 
-						$message = (sizeof($log_attachments) == 1) ? $user->lang['ATTACHMENT_DELETED'] : $user->lang['ATTACHMENTS_DELETED'];
+						$message = (sizeof($log_attachments) == 1) ? $user->lang['PHPBB3_ATTACHMENT_DELETED'] : $user->lang['ATTACHMENTS_DELETED'];
 
 						add_log('admin', 'LOG_ATTACHMENTS_DELETED', implode(', ', $log_attachments));
 						trigger_error($message . adm_back_link($this->u_action . '&amp;u=' . $user_id));
 					}
 					else
 					{
-						confirm_box(false, $user->lang['CONFIRM_OPERATION'], build_hidden_fields(array(
+						confirm_box(false, $user->lang['PHPBB3_CONFIRM_OPERATION'], build_hidden_fields(array(
 							'u'				=> $user_id,
 							'i'				=> $id,
 							'mode'			=> $mode,
@@ -1813,7 +1813,7 @@ class acp_users
 				$order_by = $sk_sql[$sort_key] . ' ' . (($sort_dir == 'a') ? 'ASC' : 'DESC');
 
 				$sql = 'SELECT COUNT(attach_id) as num_attachments
-					FROM ' . ATTACHMENTS_TABLE . "
+					FROM ' . PHPBB3_ATTACHMENTS_TABLE . "
 					WHERE poster_id = $user_id
 						AND is_orphan = 0";
 				$result = $db->sql_query_limit($sql, 1);
@@ -1821,10 +1821,10 @@ class acp_users
 				$db->sql_freeresult($result);
 
 				$sql = 'SELECT a.*, t.topic_title, p.message_subject as message_title
-					FROM ' . ATTACHMENTS_TABLE . ' a
-						LEFT JOIN ' . TOPICS_TABLE . ' t ON (a.topic_id = t.topic_id
+					FROM ' . PHPBB3_ATTACHMENTS_TABLE . ' a
+						LEFT JOIN ' . PHPBB3_TOPICS_TABLE . ' t ON (a.topic_id = t.topic_id
 							AND a.in_message = 0)
-						LEFT JOIN ' . PRIVMSGS_TABLE . ' p ON (a.post_msg_id = p.msg_id
+						LEFT JOIN ' . PHPBB3_PRIVMSGS_TABLE . ' p ON (a.post_msg_id = p.msg_id
 							AND a.in_message = 1)
 					WHERE a.poster_id = ' . $user_id . "
 						AND a.is_orphan = 0
@@ -1885,13 +1885,13 @@ class acp_users
 				{
 					// Check the founder only entry for this group to make sure everything is well
 					$sql = 'SELECT group_founder_manage
-						FROM ' . GROUPS_TABLE . '
+						FROM ' . PHPBB3_GROUPS_TABLE . '
 						WHERE group_id = ' . $group_id;
 					$result = $db->sql_query($sql);
 					$founder_manage = (int) $db->sql_fetchfield('group_founder_manage');
 					$db->sql_freeresult($result);
 
-					if ($user->data['user_type'] != USER_FOUNDER && $founder_manage)
+					if ($user->data['user_type'] != PHPBB3_USER_FOUNDER && $founder_manage)
 					{
 						trigger_error($user->lang['NOT_ALLOWED_MANAGE_GROUP'] . adm_back_link($this->u_action . '&amp;u=' . $user_id), E_USER_WARNING);
 					}
@@ -1936,7 +1936,7 @@ class acp_users
 						}
 						else
 						{
-							confirm_box(false, $user->lang['CONFIRM_OPERATION'], build_hidden_fields(array(
+							confirm_box(false, $user->lang['PHPBB3_CONFIRM_OPERATION'], build_hidden_fields(array(
 								'u'				=> $user_id,
 								'i'				=> $id,
 								'mode'			=> $mode,
@@ -1973,7 +1973,7 @@ class acp_users
 
 
 				$sql = 'SELECT ug.*, g.*
-					FROM ' . GROUPS_TABLE . ' g, ' . USER_GROUP_TABLE . " ug
+					FROM ' . PHPBB3_GROUPS_TABLE . ' g, ' . PHPBB3_USER_GROUP_TABLE . " ug
 					WHERE ug.user_id = $user_id
 						AND g.group_id = ug.group_id
 					ORDER BY g.group_type DESC, ug.user_pending ASC, g.group_name";
@@ -1983,7 +1983,7 @@ class acp_users
 				$group_data = $id_ary = array();
 				while ($row = $db->sql_fetchrow($result))
 				{
-					$type = ($row['group_type'] == GROUP_SPECIAL) ? 'special' : (($row['user_pending']) ? 'pending' : 'normal');
+					$type = ($row['group_type'] == PHPBB3_GROUP_SPECIAL) ? 'special' : (($row['user_pending']) ? 'pending' : 'normal');
 
 					$group_data[$type][$i]['group_id']		= $row['group_id'];
 					$group_data[$type][$i]['group_name']	= $row['group_name'];
@@ -1997,7 +1997,7 @@ class acp_users
 
 				// Select box for other groups
 				$sql = 'SELECT group_id, group_name, group_type, group_founder_manage
-					FROM ' . GROUPS_TABLE . '
+					FROM ' . PHPBB3_GROUPS_TABLE . '
 					' . ((sizeof($id_ary)) ? 'WHERE ' . $db->sql_in_set('group_id', $id_ary, true) : '') . '
 					ORDER BY group_type DESC, group_name ASC';
 				$result = $db->sql_query($sql);
@@ -2011,12 +2011,12 @@ class acp_users
 					}
 
 					// Do not display those groups not allowed to be managed
-					if ($user->data['user_type'] != USER_FOUNDER && $row['group_founder_manage'])
+					if ($user->data['user_type'] != PHPBB3_USER_FOUNDER && $row['group_founder_manage'])
 					{
 						continue;
 					}
 
-					$s_group_options .= '<option' . (($row['group_type'] == GROUP_SPECIAL) ? ' class="sep"' : '') . ' value="' . $row['group_id'] . '">' . (($row['group_type'] == GROUP_SPECIAL) ? $user->lang['G_' . $row['group_name']] : $row['group_name']) . '</option>';
+					$s_group_options .= '<option' . (($row['group_type'] == PHPBB3_GROUP_SPECIAL) ? ' class="sep"' : '') . ' value="' . $row['group_id'] . '">' . (($row['group_type'] == PHPBB3_GROUP_SPECIAL) ? $user->lang['G_' . $row['group_name']] : $row['group_name']) . '</option>';
 				}
 				$db->sql_freeresult($result);
 
@@ -2072,7 +2072,7 @@ class acp_users
 				{
 					// Select auth options
 					$sql = 'SELECT auth_option, is_local, is_global
-						FROM ' . ACL_OPTIONS_TABLE . '
+						FROM ' . PHPBB3_ACL_OPTIONS_TABLE . '
 						WHERE auth_option ' . $db->sql_like_expression($db->any_char . '_') . '
 							AND is_global = 1
 						ORDER BY auth_option';
@@ -2082,7 +2082,7 @@ class acp_users
 
 					while ($row = $db->sql_fetchrow($result))
 					{
-						$hold_ary = $auth_admin->get_mask('view', $user_id, false, false, $row['auth_option'], 'global', ACL_NEVER);
+						$hold_ary = $auth_admin->get_mask('view', $user_id, false, false, $row['auth_option'], 'global', PHPBB3_PHPBB3_ACL_NEVER);
 						$auth_admin->display_mask('view', $row['auth_option'], $hold_ary, 'user', false, false);
 					}
 					$db->sql_freeresult($result);
@@ -2092,7 +2092,7 @@ class acp_users
 				else
 				{
 					$sql = 'SELECT auth_option, is_local, is_global
-						FROM ' . ACL_OPTIONS_TABLE . "
+						FROM ' . PHPBB3_ACL_OPTIONS_TABLE . "
 						WHERE auth_option " . $db->sql_like_expression($db->any_char . '_') . "
 							AND is_local = 1
 						ORDER BY is_global DESC, auth_option";
@@ -2100,7 +2100,7 @@ class acp_users
 
 					while ($row = $db->sql_fetchrow($result))
 					{
-						$hold_ary = $auth_admin->get_mask('view', $user_id, false, $forum_id, $row['auth_option'], 'local', ACL_NEVER);
+						$hold_ary = $auth_admin->get_mask('view', $user_id, false, $forum_id, $row['auth_option'], 'local', PHPBB3_PHPBB3_ACL_NEVER);
 						$auth_admin->display_mask('view', $row['auth_option'], $hold_ary, 'user', true, false);
 					}
 					$db->sql_freeresult($result);

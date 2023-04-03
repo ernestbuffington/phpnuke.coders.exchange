@@ -114,7 +114,7 @@ class mcp_warn
 
 		// And now the 5 most recent users to get in trouble
 		$sql = 'SELECT u.user_id, u.username, u.username_clean, u.user_colour, u.user_warnings, w.warning_time
-			FROM ' . USERS_TABLE . ' u, ' . WARNINGS_TABLE . ' w
+			FROM ' . PHPBB3_USERS_TABLE . ' u, ' . PHPBB3_WARNINGS_TABLE . ' w
 			WHERE u.user_id = w.user_id
 			ORDER BY w.warning_time DESC';
 		$result = $db->sql_query_limit($sql, 5);
@@ -213,7 +213,7 @@ class mcp_warn
 		$warning = utf8_normalize_nfc(request_var('warning', '', true));
 
 		$sql = 'SELECT u.*, p.*
-			FROM ' . POSTS_TABLE . ' p, ' . USERS_TABLE . " u
+			FROM ' . PHPBB3_POSTS_TABLE . ' p, ' . PHPBB3_USERS_TABLE . " u
 			WHERE post_id = $post_id
 				AND u.user_id = p.poster_id";
 		$result = $db->sql_query($sql);
@@ -226,7 +226,7 @@ class mcp_warn
 		}
 
 		// There is no point issuing a warning to ignored users (ie anonymous and bots)
-		if ($user_row['user_type'] == USER_IGNORE)
+		if ($user_row['user_type'] == PHPBB3_USER_IGNORE)
 		{
 			trigger_error('CANNOT_WARN_ANONYMOUS');
 		}
@@ -240,7 +240,7 @@ class mcp_warn
 		// Check if there is already a warning for this post to prevent multiple
 		// warnings for the same offence
 		$sql = 'SELECT post_id
-			FROM ' . WARNINGS_TABLE . "
+			FROM ' . PHPBB3_WARNINGS_TABLE . "
 			WHERE post_id = $post_id";
 		$result = $db->sql_query($sql);
 		$row = $db->sql_fetchrow($result);
@@ -359,7 +359,7 @@ class mcp_warn
 		$sql_where = ($user_id) ? "user_id = $user_id" : "username_clean = '" . $db->sql_escape(utf8_clean_string($username)) . "'";
 
 		$sql = 'SELECT *
-			FROM ' . USERS_TABLE . '
+			FROM ' . PHPBB3_USERS_TABLE . '
 			WHERE ' . $sql_where;
 		$result = $db->sql_query($sql);
 		$user_row = $db->sql_fetchrow($result);
@@ -502,9 +502,9 @@ function add_warning($user_row, $warning, $send_pm = true, $post_id = 0)
 		'warning_time'	=> time(),
 	);
 
-	$db->sql_query('INSERT INTO ' . WARNINGS_TABLE . ' ' . $db->sql_build_array('INSERT', $sql_ary));
+	$db->sql_query('INSERT INTO ' . PHPBB3_WARNINGS_TABLE . ' ' . $db->sql_build_array('INSERT', $sql_ary));
 
-	$sql = 'UPDATE ' . USERS_TABLE . '
+	$sql = 'UPDATE ' . PHPBB3_USERS_TABLE . '
 		SET user_warnings = user_warnings + 1,
 			user_last_warning = ' . time() . '
 		WHERE user_id = ' . $user_row['user_id'];
@@ -512,7 +512,7 @@ function add_warning($user_row, $warning, $send_pm = true, $post_id = 0)
 
 	// We add this to the mod log too for moderators to see that a specific user got warned.
 	$sql = 'SELECT forum_id, topic_id
-		FROM ' . POSTS_TABLE . '
+		FROM ' . PHPBB3_POSTS_TABLE . '
 		WHERE post_id = ' . $post_id;
 	$result = $db->sql_query($sql);
 	$row = $db->sql_fetchrow($result);

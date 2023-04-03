@@ -29,8 +29,8 @@ else
 	$report_status = 2;
 }
 $sql = 'SELECT r.*, i.*
-	FROM ' . GALLERY_REPORTS_TABLE . " r
-	LEFT JOIN " . GALLERY_IMAGES_TABLE . " i
+	FROM ' . PHPBB3_GALLERY_REPORTS_TABLE . " r
+	LEFT JOIN " . PHPBB3_GALLERY_IMAGES_TABLE . " i
 		ON r.report_image_id = i.image_id
 	WHERE r.report_album_id = $album_id
 		AND r.report_status = $report_status";
@@ -41,12 +41,12 @@ while( $row = $db->sql_fetchrow($result) )
 }
 $db->sql_freeresult($result);
 $sql = 'SELECT r.*, u.username reporter_name, u.user_colour reporter_colour, m.username mod_username, m.user_colour mod_user_colour, i.*
-	FROM ' . GALLERY_REPORTS_TABLE . " r
-	LEFT JOIN " . USERS_TABLE . " u
+	FROM ' . PHPBB3_GALLERY_REPORTS_TABLE . " r
+	LEFT JOIN " . PHPBB3_USERS_TABLE . " u
 		ON r.reporter_id = u.user_id
-	LEFT JOIN " . USERS_TABLE . " m
+	LEFT JOIN " . PHPBB3_USERS_TABLE . " m
 		ON r.report_manager = m.user_id
-	LEFT JOIN " . GALLERY_IMAGES_TABLE . " i
+	LEFT JOIN " . PHPBB3_GALLERY_IMAGES_TABLE . " i
 		ON r.report_image_id = i.image_id
 	WHERE r.report_album_id = $album_id
 		AND r.report_status = $report_status

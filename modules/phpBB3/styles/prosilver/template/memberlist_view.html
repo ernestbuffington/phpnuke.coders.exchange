@@ -26,7 +26,7 @@
 			<!-- IF RANK_TITLE --><dt>{L_RANK}:</dt> <dd>{RANK_TITLE}</dd><!-- ENDIF -->
 			<!-- IF RANK_IMG --><dt><!-- IF RANK_TITLE -->&nbsp;<!-- ELSE -->{L_RANK}:<!-- ENDIF --></dt> <dd>{RANK_IMG}</dd><!-- ENDIF -->
 		<!-- ENDIF -->
-		<!-- IF S_USER_INACTIVE --><dt>{L_USER_IS_INACTIVE}:</dt> <dd>{USER_INACTIVE_REASON}</dd><!-- ENDIF -->
+		<!-- IF S_PHPBB3_USER_INACTIVE --><dt>{L_USER_IS_INACTIVE}:</dt> <dd>{PHPBB3_USER_INACTIVE_REASON}</dd><!-- ENDIF -->
         <!-- IF USER_GENDER --><dt>{L_GENDER}:</dt> <dd>{USER_GENDER_IMG}</dd><!-- ENDIF -->
 		<!-- IF LOCATION --><dt>{L_LOCATION}:</dt> <dd>{LOCATION}</dd><!-- ENDIF -->
         <!-- IF FLAG_IMG --><dt>{L_COUNTRY}:</dt> <dd>{FLAG_IMG}</dd><!-- ENDIF -->
@@ -87,7 +87,7 @@
 			<!-- ENDIF -->
 			<dt>{L_TOTAL_POSTS}:</dt> <dd>{POSTS} | <strong><a href="{U_SEARCH_USER}">{L_SEARCH_USER_POSTS}</a></strong><!-- IF POSTS_PCT --><br />({POSTS_PCT} / {POSTS_DAY})<!-- ENDIF --></dd><!-- IF TOTAL_IMAGES --><dt>{L_TOTAL_IMAGES}:</dt> <dd>{IMAGES} | <strong><a href="{U_SEARCH_GALLERY}">{L_SEARCH_USER_IMAGES}</a></strong><!-- IF IMAGES_PCT --><br />({IMAGES_PCT} / {IMAGES_DAY})<!-- ENDIF --></dd><!-- ENDIF --><!-- IF S_HAS_HIGHSCORES --><dt>{L_ARCADE_HIGHSCORES}:</dt> <dd>{TOTAL_HIGHSCORES} | <strong><a href="{U_ARCADE_STATS}">{L_ARCADE_VIEW_USERS_STATS}</a></strong></dd><!-- ENDIF -->
 			<!-- IF S_SHOW_ACTIVITY and POSTS -->
-				<dt>{L_ACTIVE_IN_FORUM}:</dt> <dd><!-- IF ACTIVE_FORUM --><strong><a href="{U_ACTIVE_FORUM}">{ACTIVE_FORUM}</a></strong><br />({ACTIVE_FORUM_POSTS} / {ACTIVE_FORUM_PCT})<!-- ELSE --> - <!-- ENDIF --></dd>
+				<dt>{L_ACTIVE_IN_FORUM}:</dt> <dd><!-- IF ACTIVE_FORUM --><strong><a href="{U_ACTIVE_FORUM}">{ACTIVE_FORUM}</a></strong><br />({ACTIVE_PHPBB3_FORUM_POSTS} / {ACTIVE_FORUM_PCT})<!-- ELSE --> - <!-- ENDIF --></dd>
 				<dt>{L_ACTIVE_IN_TOPIC}:</dt> <dd><!-- IF ACTIVE_TOPIC --><strong><a href="{U_ACTIVE_TOPIC}">{ACTIVE_TOPIC}</a></strong><br />({ACTIVE_TOPIC_POSTS} / {ACTIVE_TOPIC_PCT})<!-- ELSE --> - <!-- ENDIF --></dd>
 			<!-- ENDIF -->
 		</dl>

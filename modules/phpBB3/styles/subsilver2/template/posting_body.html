@@ -225,10 +225,10 @@
 	</td>
 </tr>
 
-<!-- IF S_INLINE_ATTACHMENT_OPTIONS -->
+<!-- IF S_INLINE_PHPBB3_ATTACHMENT_OPTIONS -->
 	<tr>
 		<td class="row1"><b class="genmed">{L_ATTACHMENTS}:</b></td>
-		<td class="row2"><select name="attachments">{S_INLINE_ATTACHMENT_OPTIONS}</select>&nbsp;<input type="button" class="btnbbcode" accesskey="a" value="{L_PLACE_INLINE}" name="attachinline" onclick="attach_form = document.forms[form_name].elements['attachments']; attach_inline(attach_form.value, attach_form.options[attach_form.selectedIndex].text);" onmouseover="helpline('a')" onmouseout="helpline('tip')" />
+		<td class="row2"><select name="attachments">{S_INLINE_PHPBB3_ATTACHMENT_OPTIONS}</select>&nbsp;<input type="button" class="btnbbcode" accesskey="a" value="{L_PLACE_INLINE}" name="attachinline" onclick="attach_form = document.forms[form_name].elements['attachments']; attach_inline(attach_form.value, attach_form.options[attach_form.selectedIndex].text);" onmouseover="helpline('a')" onmouseout="helpline('tip')" />
 		</td>
 	</tr>
 <!-- ENDIF -->
@@ -332,21 +332,21 @@
 	</tr>
 <!-- ENDIF -->
 
-<!-- IF S_CONFIRM_CODE -->
+<!-- IF S_PHPBB3_CONFIRM_CODE -->
 	<tr>
 		<th colspan="2" valign="middle">{L_POST_CONFIRMATION}</th>
 	</tr>
 	<tr>
-		<td class="row3" colspan="2"><span class="gensmall">{L_POST_CONFIRM_EXPLAIN}</span></td>
+		<td class="row3" colspan="2"><span class="gensmall">{L_POST_PHPBB3_CONFIRM_EXPLAIN}</span></td>
 	</tr>
 	<tr>
 		<td class="row1" colspan="2" align="center">
-			<input type="hidden" name="confirm_id" value="{CONFIRM_ID}" />
-			{CONFIRM_IMAGE}
+			<input type="hidden" name="confirm_id" value="{PHPBB3_CONFIRM_ID}" />
+			{PHPBB3_CONFIRM_IMAGE}
 		</td>
 	</tr>
 	<tr>
-		<td class="row1"><b class="genmed">{L_CONFIRM_CODE}: </b><br /><span class="gensmall">{L_CONFIRM_CODE_EXPLAIN}</span></td>
+		<td class="row1"><b class="genmed">{L_PHPBB3_CONFIRM_CODE}: </b><br /><span class="gensmall">{L_PHPBB3_CONFIRM_CODE_EXPLAIN}</span></td>
 		<td class="row2"><input class="post" type="text" name="confirm_code" size="8" maxlength="8" /></td>
 	</tr>
 <!-- ENDIF -->

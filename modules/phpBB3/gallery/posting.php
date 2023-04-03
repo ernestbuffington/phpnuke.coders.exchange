@@ -13,7 +13,7 @@ define('IN_PHPBB', true);
 $phpbb_root_path = (defined('PHPBB_ROOT_PATH')) ? PHPBB_ROOT_PATH : '../';
 $phpEx = substr(strrchr(__FILE__, '.'), 1);
 include($phpbb_root_path . 'common.' . $phpEx);
-$gallery_root_path = GALLERY_ROOT_PATH;
+$gallery_root_path = PHPBB3_GALLERY_ROOT_PATH;
 include($phpbb_root_path . 'includes/functions_user.' . $phpEx);
 include($phpbb_root_path . 'includes/functions_posting.' . $phpEx);
 include($phpbb_root_path . 'includes/functions_display.' . $phpEx);
@@ -200,7 +200,7 @@ switch ($mode)
 			trigger_error('IMAGE_LOCKED');
 		}
 		$sql = 'SELECT *
-			FROM ' . GALLERY_COMMENTS_TABLE . "
+			FROM ' . PHPBB3_GALLERY_COMMENTS_TABLE . "
 			WHERE comment_id = '$comment_id'";
 		$result = $db->sql_query($sql);
 		$comment_data = $db->sql_fetchrow($result);
@@ -235,7 +235,7 @@ switch ($mode)
 						trigger_error('NOT_AUTHORISED');
 					}
 				}
-				else if ((($comment_data['comment_user_id'] != $user->data['user_id']) && ($user->data['user_type'] != USER_FOUNDER)) || !$user->data['is_registered'])
+				else if ((($comment_data['comment_user_id'] != $user->data['user_id']) && ($user->data['user_type'] != PHPBB3_USER_FOUNDER)) || !$user->data['is_registered'])
 				{
 					meta_refresh(3, $image_backlink);
 					trigger_error('NOT_AUTHORISED');
@@ -255,7 +255,7 @@ switch ($mode)
 						trigger_error('NOT_AUTHORISED');
 					}
 				}
-				else if ((($comment_data['comment_user_id'] != $user->data['user_id']) && ($user->data['user_type'] != USER_FOUNDER)) || !$user->data['is_registered'])
+				else if ((($comment_data['comment_user_id'] != $user->data['user_id']) && ($user->data['user_type'] != PHPBB3_USER_FOUNDER)) || !$user->data['is_registered'])
 				{
 					meta_refresh(3, $image_backlink);
 					trigger_error('NOT_AUTHORISED');
@@ -293,7 +293,7 @@ switch ($mode)
 					'album_id'			=> $album_id,
 					'user_id'			=> $user->data['user_id'],
 				);
-				$sql = 'INSERT INTO ' . GALLERY_WATCH_TABLE . ' ' . $db->sql_build_array('INSERT', $sql_ary);
+				$sql = 'INSERT INTO ' . PHPBB3_GALLERY_WATCH_TABLE . ' ' . $db->sql_build_array('INSERT', $sql_ary);
 				$db->sql_query($sql);
 				$message = $user->lang['WATCHING_ALBUM'] . '<br />';
 				$submit = true;//to redirect
@@ -302,7 +302,7 @@ switch ($mode)
 			case 'unwatch':
 			if ($submode == 'unwatch')
 			{
-				$sql = 'DELETE FROM ' . GALLERY_WATCH_TABLE . " WHERE album_id = $album_id AND user_id = " . $user->data['user_id'];
+				$sql = 'DELETE FROM ' . PHPBB3_GALLERY_WATCH_TABLE . " WHERE album_id = $album_id AND user_id = " . $user->data['user_id'];
 				$db->sql_query($sql);
 				$message = $user->lang['UNWATCHED_ALBUM'] . '<br />';
 				$submit = true;//to redirect
@@ -331,7 +331,7 @@ switch ($mode)
 				}
 				// Check User Limit
 				$sql = 'SELECT COUNT(image_id) AS count
-					FROM ' . GALLERY_IMAGES_TABLE . '
+					FROM ' . PHPBB3_GALLERY_IMAGES_TABLE . '
 					WHERE image_user_id = ' . $user->data['user_id'] . '
 						AND image_album_id = ' . $album_id;
 				$result = $db->sql_query($sql);
@@ -616,7 +616,7 @@ switch ($mode)
 						}
 						notify_gallery('album', $album_id, $image_name);
 						handle_image_counter($image_id_ary, true);
-						$sql = 'UPDATE ' . GALLERY_ALBUMS_TABLE . " 
+						$sql = 'UPDATE ' . PHPBB3_GALLERY_ALBUMS_TABLE . " 
 							SET album_images_real = album_images_real + $images
 							WHERE album_id = $album_id";
 						$db->sql_query($sql);
@@ -716,7 +716,7 @@ switch ($mode)
 						'image_desc_bitfield'		=> $message_parser->bbcode_bitfield,
 					);
 
-					$sql = 'UPDATE ' . GALLERY_IMAGES_TABLE . ' 
+					$sql = 'UPDATE ' . PHPBB3_GALLERY_IMAGES_TABLE . ' 
 						SET ' . $db->sql_build_array('UPDATE', $sql_ary) . "
 						WHERE image_id = $image_id";
 					$db->sql_query($sql);
@@ -726,7 +726,7 @@ switch ($mode)
 						$sql_ary = array(
 							'album_last_image_name'		=> $image_name,
 						);
-						$sql = 'UPDATE ' . GALLERY_ALBUMS_TABLE . ' SET ' . $db->sql_build_array('UPDATE', $sql_ary) . '
+						$sql = 'UPDATE ' . PHPBB3_GALLERY_ALBUMS_TABLE . ' SET ' . $db->sql_build_array('UPDATE', $sql_ary) . '
 							WHERE ' . $db->sql_in_set('album_id', $image_data['image_album_id']);
 						$db->sql_query($sql);
 					}
@@ -780,7 +780,7 @@ switch ($mode)
 					);
 					if (!$error)
 					{
-						$sql = 'INSERT INTO ' . GALLERY_REPORTS_TABLE . ' ' . $db->sql_build_array('INSERT', $sql_ary);
+						$sql = 'INSERT INTO ' . PHPBB3_GALLERY_REPORTS_TABLE . ' ' . $db->sql_build_array('INSERT', $sql_ary);
 						$db->sql_query($sql);
 					}
 				}
@@ -805,7 +805,7 @@ switch ($mode)
 					'image_id'			=> $image_id,
 					'user_id'			=> $user->data['user_id'],
 				);
-				$sql = 'INSERT INTO ' . GALLERY_WATCH_TABLE . ' ' . $db->sql_build_array('INSERT', $sql_ary);
+				$sql = 'INSERT INTO ' . PHPBB3_GALLERY_WATCH_TABLE . ' ' . $db->sql_build_array('INSERT', $sql_ary);
 				$db->sql_query($sql);
 				$message = $user->lang['WATCHING_IMAGE'] . '<br />';
 				$submit = true;//to redirect
@@ -814,7 +814,7 @@ switch ($mode)
 			case 'unwatch':
 			if ($submode == 'unwatch')
 			{
-				$sql = 'DELETE FROM ' . GALLERY_WATCH_TABLE . " WHERE image_id = $image_id AND user_id = " . $user->data['user_id'];
+				$sql = 'DELETE FROM ' . PHPBB3_GALLERY_WATCH_TABLE . " WHERE image_id = $image_id AND user_id = " . $user->data['user_id'];
 				$db->sql_query($sql);
 				$message = $user->lang['UNWATCHED_IMAGE'] . '<br />';
 				$submit = true;//to redirect
@@ -827,9 +827,9 @@ switch ($mode)
 					'image_id'			=> $image_id,
 					'user_id'			=> $user->data['user_id'],
 				);
-				$sql = 'INSERT INTO ' . GALLERY_FAVORITES_TABLE . ' ' . $db->sql_build_array('INSERT', $sql_ary);
+				$sql = 'INSERT INTO ' . PHPBB3_GALLERY_FAVORITES_TABLE . ' ' . $db->sql_build_array('INSERT', $sql_ary);
 				$db->sql_query($sql);
-				$sql = 'UPDATE ' . GALLERY_IMAGES_TABLE . ' SET image_favorited = image_favorited + 1 WHERE image_id = ' . $image_id;
+				$sql = 'UPDATE ' . PHPBB3_GALLERY_IMAGES_TABLE . ' SET image_favorited = image_favorited + 1 WHERE image_id = ' . $image_id;
 				$db->sql_query($sql);
 				if ($user->gallery['watch_favo'] && !$image_data['watch_id'])
 				{
@@ -837,7 +837,7 @@ switch ($mode)
 						'image_id'			=> $image_id,
 						'user_id'			=> $user->data['user_id'],
 					);
-					$sql = 'INSERT INTO ' . GALLERY_WATCH_TABLE . ' ' . $db->sql_build_array('INSERT', $sql_ary);
+					$sql = 'INSERT INTO ' . PHPBB3_GALLERY_WATCH_TABLE . ' ' . $db->sql_build_array('INSERT', $sql_ary);
 					$db->sql_query($sql);
 				}
 				$message = $user->lang['FAVORITED_IMAGE'] . '<br />';
@@ -847,9 +847,9 @@ switch ($mode)
 			case 'unfavorite':
 			if ($submode == 'unfavorite')
 			{
-				$sql = 'DELETE FROM ' . GALLERY_FAVORITES_TABLE . " WHERE image_id = $image_id AND user_id = " . $user->data['user_id'];
+				$sql = 'DELETE FROM ' . PHPBB3_GALLERY_FAVORITES_TABLE . " WHERE image_id = $image_id AND user_id = " . $user->data['user_id'];
 				$db->sql_query($sql);
-				$sql = 'UPDATE ' . GALLERY_IMAGES_TABLE . ' SET image_favorited = image_favorited - 1 WHERE image_id = ' . $image_id;
+				$sql = 'UPDATE ' . PHPBB3_GALLERY_IMAGES_TABLE . ' SET image_favorited = image_favorited - 1 WHERE image_id = ' . $image_id;
 				$db->sql_query($sql);
 				$message = $user->lang['UNFAVORITED_IMAGE'] . '<br />';
 				$submit = true;//to redirect
@@ -874,23 +874,23 @@ switch ($mode)
 					@unlink($phpbb_root_path . GALLERY_UPLOAD_PATH . $image_data['image_filename']);
 					handle_image_counter($image_id, false);
 
-					$sql = 'DELETE FROM ' . GALLERY_COMMENTS_TABLE . "
+					$sql = 'DELETE FROM ' . PHPBB3_GALLERY_COMMENTS_TABLE . "
 						WHERE comment_image_id = $image_id";
 					$result = $db->sql_query($sql);
 
-					$sql = 'DELETE FROM ' . GALLERY_FAVORITES_TABLE . "
+					$sql = 'DELETE FROM ' . PHPBB3_GALLERY_FAVORITES_TABLE . "
 						WHERE image_id = $image_id";
 					$result = $db->sql_query($sql);
 
-					$sql = 'DELETE FROM ' . GALLERY_RATES_TABLE . "
+					$sql = 'DELETE FROM ' . PHPBB3_GALLERY_RATES_TABLE . "
 						WHERE rate_image_id = $image_id";
 					$result = $db->sql_query($sql);
 
-					$sql = 'DELETE FROM ' . GALLERY_WATCH_TABLE . "
+					$sql = 'DELETE FROM ' . PHPBB3_GALLERY_WATCH_TABLE . "
 						WHERE image_id = $image_id";
 					$result = $db->sql_query($sql);
 
-					$sql = 'DELETE FROM ' . GALLERY_IMAGES_TABLE . "
+					$sql = 'DELETE FROM ' . PHPBB3_GALLERY_IMAGES_TABLE . "
 						WHERE image_id = $image_id";
 					$result = $db->sql_query($sql);
 
@@ -984,9 +984,9 @@ switch ($mode)
 					);
 					if (!$error)
 					{
-						$db->sql_query('INSERT INTO ' . GALLERY_COMMENTS_TABLE . ' ' . $db->sql_build_array('INSERT', $sql_ary));
+						$db->sql_query('INSERT INTO ' . PHPBB3_GALLERY_COMMENTS_TABLE . ' ' . $db->sql_build_array('INSERT', $sql_ary));
 						$newest_comment = $db->sql_nextid();
-						$sql = 'UPDATE ' . GALLERY_IMAGES_TABLE . " SET image_comments = image_comments + 1,
+						$sql = 'UPDATE ' . PHPBB3_GALLERY_IMAGES_TABLE . " SET image_comments = image_comments + 1,
 							image_last_comment = $newest_comment
 							WHERE " . $db->sql_in_set('image_id', $image_id);
 						$db->sql_query($sql);
@@ -996,7 +996,7 @@ switch ($mode)
 								'image_id'			=> $image_id,
 								'user_id'			=> $user->data['user_id'],
 							);
-							$sql = 'INSERT INTO ' . GALLERY_WATCH_TABLE . ' ' . $db->sql_build_array('INSERT', $sql_ary);
+							$sql = 'INSERT INTO ' . PHPBB3_GALLERY_WATCH_TABLE . ' ' . $db->sql_build_array('INSERT', $sql_ary);
 							$db->sql_query($sql);
 						}
 						notify_gallery('image', $image_id, $image_data['image_name']);
@@ -1071,7 +1071,7 @@ switch ($mode)
 					);
 					if (!$error)
 					{
-						$db->sql_query('UPDATE ' . GALLERY_COMMENTS_TABLE . ' SET ' . $db->sql_build_array('UPDATE', $sql_ary) . ' WHERE comment_id = ' . (int) $comment_id);
+						$db->sql_query('UPDATE ' . PHPBB3_GALLERY_COMMENTS_TABLE . ' SET ' . $db->sql_build_array('UPDATE', $sql_ary) . ' WHERE comment_id = ' . (int) $comment_id);
 						$message = $user->lang['COMMENT_STORED'] . '<br />';
 					}
 				}
@@ -1094,10 +1094,10 @@ switch ($mode)
 				$comment = $comment_username = $comment_username_req = '';
 				if (confirm_box(true))
 				{
-					$sql = 'DELETE FROM ' . GALLERY_COMMENTS_TABLE . " WHERE comment_id = $comment_id;";
+					$sql = 'DELETE FROM ' . PHPBB3_GALLERY_COMMENTS_TABLE . " WHERE comment_id = $comment_id;";
 					$db->sql_query($sql);
 					$sql = 'SELECT comment_id
-						FROM ' . GALLERY_COMMENTS_TABLE . "
+						FROM ' . PHPBB3_GALLERY_COMMENTS_TABLE . "
 						WHERE comment_image_id = $image_id
 						ORDER BY comment_id
 						LIMIT 1";
@@ -1105,7 +1105,7 @@ switch ($mode)
 					$row = $db->sql_fetchrow($result);
 					$last_comment_id = (isset($row['comment_id']))? $row['comment_id'] : 0;
 					$db->sql_freeresult($result);
-					$sql = 'UPDATE ' . GALLERY_IMAGES_TABLE . " SET image_comments = image_comments - 1,
+					$sql = 'UPDATE ' . PHPBB3_GALLERY_IMAGES_TABLE . " SET image_comments = image_comments - 1,
 						image_last_comment = $last_comment_id
 						WHERE " . $db->sql_in_set('image_id', $image_id);
 					$db->sql_query($sql);
@@ -1203,7 +1203,7 @@ function upload_image(&$image_data)
 		$sql_ary['image_desc_bitfield']	= '';
 	}
 
-	$sql = 'INSERT INTO ' . GALLERY_IMAGES_TABLE . ' ' . $db->sql_build_array('INSERT', $sql_ary);
+	$sql = 'INSERT INTO ' . PHPBB3_GALLERY_IMAGES_TABLE . ' ' . $db->sql_build_array('INSERT', $sql_ary);
 	$db->sql_query($sql);
 	$image_id = $db->sql_nextid();
 
@@ -1213,7 +1213,7 @@ function upload_image(&$image_data)
 			'image_id'			=> $image_id,
 			'user_id'			=> $user->data['user_id'],
 		);
-		$sql = 'INSERT INTO ' . GALLERY_WATCH_TABLE . ' ' . $db->sql_build_array('INSERT', $sql_ary);
+		$sql = 'INSERT INTO ' . PHPBB3_GALLERY_WATCH_TABLE . ' ' . $db->sql_build_array('INSERT', $sql_ary);
 		$db->sql_query($sql);
 	}
 
@@ -1234,7 +1234,7 @@ function notify_gallery($mode, $handle_id, $image_name)
 	
 	// Get banned User ID's
 	$sql = 'SELECT ban_userid
-		FROM ' . BANLIST_TABLE . '
+		FROM ' . PHPBB3_BANLIST_TABLE . '
 		WHERE ban_userid <> 0
 			AND ban_exclude <> 1';
 	$result = $db->sql_query($sql);
@@ -1251,10 +1251,10 @@ function notify_gallery($mode, $handle_id, $image_name)
 
 	// -- get forum_userids	|| topic_userids
 	$sql = 'SELECT u.user_id, u.username, u.user_email, u.user_lang, u.user_notify_type, u.user_jabber
-		FROM ' . GALLERY_WATCH_TABLE . ' w, ' . USERS_TABLE . ' u
+		FROM ' . PHPBB3_GALLERY_WATCH_TABLE . ' w, ' . PHPBB3_USERS_TABLE . ' u
 		WHERE w.' . $help_mode . ' = ' . $handle_id . "
 			AND w.user_id NOT IN ($sql_ignore_users)
-			AND u.user_type IN (" . USER_NORMAL . ', ' . USER_FOUNDER . ')
+			AND u.user_type IN (" . PHPBB3_USER_NORMAL . ', ' . PHPBB3_USER_FOUNDER . ')
 			AND u.user_id = w.user_id';
 	$result = $db->sql_query($sql);
 
@@ -1282,8 +1282,8 @@ function notify_gallery($mode, $handle_id, $image_name)
 	// Make sure users are allowed to view the album
 	$i_view_ary = array();
 	$sql = "SELECT pr.i_view, p.perm_group_id
-		FROM " . GALLERY_PERMISSIONS_TABLE . " as p
-		LEFT JOIN " .  GALLERY_ROLES_TABLE .  " as pr
+		FROM " . PHPBB3_GALLERY_PERMISSIONS_TABLE . " as p
+		LEFT JOIN " .  PHPBB3_GALLERY_ROLES_TABLE .  " as pr
 			ON p.perm_role_id = pr.role_id
 		WHERE p.perm_album_id = $album_id
 		ORDER BY pr.i_view ASC";
@@ -1291,7 +1291,7 @@ function notify_gallery($mode, $handle_id, $image_name)
 	while ($row = $db->sql_fetchrow($result))
 	{
 		$sql2 = "SELECT ug.user_id
-			FROM " . USER_GROUP_TABLE . " ug
+			FROM " . PHPBB3_USER_GROUP_TABLE . " ug
 			WHERE ug.group_id = {$row['perm_group_id']}
 				AND ug.user_pending = 0";
 		$result2 = $db->sql_query($sql2);
@@ -1372,7 +1372,7 @@ function notify_gallery($mode, $handle_id, $image_name)
 	// Now delete the user_ids not authorised to receive notifications on this image/album
 	if (!empty($delete_ids['image']))
 	{
-		$sql = 'DELETE FROM ' . GALLERY_WATCH_TABLE . "
+		$sql = 'DELETE FROM ' . PHPBB3_GALLERY_WATCH_TABLE . "
 			WHERE image_id = $image_id
 				AND " . $db->sql_in_set('user_id', $delete_ids['image']);
 		$db->sql_query($sql);
@@ -1380,7 +1380,7 @@ function notify_gallery($mode, $handle_id, $image_name)
 
 	if (!empty($delete_ids['album']))
 	{
-		$sql = 'DELETE FROM ' . GALLERY_WATCH_TABLE . "
+		$sql = 'DELETE FROM ' . PHPBB3_GALLERY_WATCH_TABLE . "
 			WHERE album_id = $album_id
 				AND " . $db->sql_in_set('user_id', $delete_ids['album']);
 		$db->sql_query($sql);

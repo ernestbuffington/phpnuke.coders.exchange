@@ -140,9 +140,9 @@ class ucp_profile
 
 						$message = 'PROFILE_UPDATED';
 
-						if ($config['email_enable'] && $data['email'] != $user->data['user_email'] && $user->data['user_type'] != USER_FOUNDER && ($config['require_activation'] == USER_ACTIVATION_SELF || $config['require_activation'] == USER_ACTIVATION_ADMIN))
+						if ($config['email_enable'] && $data['email'] != $user->data['user_email'] && $user->data['user_type'] != PHPBB3_USER_FOUNDER && ($config['require_activation'] == PHPBB3_USER_ACTIVATION_SELF || $config['require_activation'] == PHPBB3_USER_ACTIVATION_ADMIN))
 						{
-							$message = ($config['require_activation'] == USER_ACTIVATION_SELF) ? 'ACCOUNT_EMAIL_CHANGED' : 'ACCOUNT_EMAIL_CHANGED_ADMIN';
+							$message = ($config['require_activation'] == PHPBB3_USER_ACTIVATION_SELF) ? 'ACCOUNT_EMAIL_CHANGED' : 'ACCOUNT_EMAIL_CHANGED_ADMIN';
 
 							include_once(PHPBB3_INCLUDE_DIR . 'functions_messenger.' . $phpEx);
 
@@ -155,7 +155,7 @@ class ucp_profile
 
 							$messenger = new messenger(false);
 
-							$template_file = ($config['require_activation'] == USER_ACTIVATION_ADMIN) ? 'user_activate_inactive' : 'user_activate';
+							$template_file = ($config['require_activation'] == PHPBB3_USER_ACTIVATION_ADMIN) ? 'user_activate_inactive' : 'user_activate';
 							$messenger->template($template_file, $user->data['user_lang']);
 
 							$messenger->to($data['email'], $data['username']);
@@ -170,16 +170,16 @@ class ucp_profile
 								'U_ACTIVATE'	=> "$server_url/ucp.$phpEx?mode=activate&u={$user->data['user_id']}&k=$user_actkey")
 							);
 
-							$messenger->send(NOTIFY_EMAIL);
+							$messenger->send(PHPBB3_NOTIFY_EMAIL);
 
-							if ($config['require_activation'] == USER_ACTIVATION_ADMIN)
+							if ($config['require_activation'] == PHPBB3_USER_ACTIVATION_ADMIN)
 							{
 								// Grab an array of user_id's with a_user permissions ... these users can activate a user
 								$admin_ary = $auth->acl_get_list(false, 'a_user', false);
 								$admin_ary = (!empty($admin_ary[0]['a_user'])) ? $admin_ary[0]['a_user'] : array();
 
 								// Also include founders
-								$where_sql = ' WHERE user_type = ' . USER_FOUNDER;
+								$where_sql = ' WHERE user_type = ' . PHPBB3_USER_FOUNDER;
 
 								if (sizeof($admin_ary))
 								{
@@ -187,7 +187,7 @@ class ucp_profile
 								}
 
 								$sql = 'SELECT user_id, username, user_email, user_lang, user_jabber, user_notify_type
-									FROM ' . USERS_TABLE . ' ' .
+									FROM ' . PHPBB3_USERS_TABLE . ' ' .
 									$where_sql;
 								$result = $db->sql_query($sql);
 
@@ -208,7 +208,7 @@ class ucp_profile
 								$db->sql_freeresult($result);
 							}
 
-							user_active_flip('deactivate', $user->data['user_id'], INACTIVE_PROFILE);
+							user_active_flip('deactivate', $user->data['user_id'], PHPBB3_INACTIVE_PROFILE);
 
 							// Because we want the profile to be reactivated we set user_newpasswd to empty (else the reactivation will fail)
 							$sql_ary['user_actkey'] = $user_actkey;
@@ -217,7 +217,7 @@ class ucp_profile
 
 						if (sizeof($sql_ary))
 						{
-							$sql = 'UPDATE ' . USERS_TABLE . '
+							$sql = 'UPDATE ' . PHPBB3_USERS_TABLE . '
 								SET ' . $db->sql_build_array('UPDATE', $sql_ary) . '
 								WHERE user_id = ' . $user->data['user_id'];
 							$db->sql_query($sql);
@@ -374,7 +374,7 @@ class ucp_profile
 						{
 							// User has not filled in a jabber address (Or one of the modules is disabled or jabber is disabled)
 							// Disable notify by Jabber now for this user.
-							$data['notify'] = NOTIFY_BOTH;
+							$data['notify'] = PHPBB3_NOTIFY_BOTH;
 						}
 
 						$sql_ary = array(
@@ -399,7 +399,7 @@ class ucp_profile
 							$sql_ary['user_birthday'] = $data['user_birthday'];
 						}
 
-						$sql = 'UPDATE ' . USERS_TABLE . '
+						$sql = 'UPDATE ' . PHPBB3_USERS_TABLE . '
 							SET ' . $db->sql_build_array('UPDATE', $sql_ary) . '
 							WHERE user_id = ' . $user->data['user_id'];
 						$db->sql_query($sql);
@@ -407,7 +407,7 @@ class ucp_profile
 						// Update Custom Fields
 						if (sizeof($cp_data))
 						{
-							$sql = 'UPDATE ' . PROFILE_FIELDS_DATA_TABLE . '
+							$sql = 'UPDATE ' . PHPBB3_PROFILE_FIELDS_DATA_TABLE . '
 								SET ' . $db->sql_build_array('UPDATE', $cp_data) . '
 								WHERE user_id = ' . $user->data['user_id'];
 							$db->sql_query($sql);
@@ -418,7 +418,7 @@ class ucp_profile
 
 								$db->sql_return_on_error(true);
 
-								$sql = 'INSERT INTO ' . PROFILE_FIELDS_DATA_TABLE . ' ' . $db->sql_build_array('INSERT', $cp_data);
+								$sql = 'INSERT INTO ' . PHPBB3_PROFILE_FIELDS_DATA_TABLE . ' ' . $db->sql_build_array('INSERT', $cp_data);
 								$db->sql_query($sql);
 
 								$db->sql_return_on_error(false);
@@ -470,7 +470,7 @@ class ucp_profile
 				
 				// Select country flags
 				$sql = 'SELECT *
-					FROM ' . FLAGS_TABLE . '
+					FROM ' . PHPBB3_FLAGS_TABLE . '
 					ORDER BY flag_country';
 				$result = $db->sql_query($sql);
 
@@ -570,7 +570,7 @@ class ucp_profile
 								'user_sig_bbcode_bitfield'	=> $message_parser->bbcode_bitfield
 							);
 
-							$sql = 'UPDATE ' . USERS_TABLE . '
+							$sql = 'UPDATE ' . PHPBB3_USERS_TABLE . '
 								SET ' . $db->sql_build_array('UPDATE', $sql_ary) . '
 								WHERE user_id = ' . $user->data['user_id'];
 							$db->sql_query($sql);

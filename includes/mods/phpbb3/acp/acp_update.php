@@ -54,7 +54,7 @@ class acp_update
 
 		// Determine automatic update...
 		$sql = 'SELECT config_value
-			FROM ' . CONFIG_TABLE . "
+			FROM ' . PHPBB3_CONFIG_TABLE . "
 			WHERE config_name = 'version_update_from'";
 		$result = $db->sql_query($sql);
 		$version_update_from = (string) $db->sql_fetchfield('config_value');

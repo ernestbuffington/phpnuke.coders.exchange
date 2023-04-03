@@ -34,7 +34,7 @@ else if ($mode == 'queue_locked')
 	$where_case = 'AND image_status = 2';
 }
 $sql = 'SELECT image_id
-	FROM ' . GALLERY_IMAGES_TABLE . "
+	FROM ' . PHPBB3_GALLERY_IMAGES_TABLE . "
 	WHERE image_album_id = $album_id
 	$where_case";
 $result = $db->sql_query($sql);
@@ -44,7 +44,7 @@ while( $row = $db->sql_fetchrow($result) )
 }
 $db->sql_freeresult($result);
 $sql = 'SELECT image_time, image_name, image_id, image_user_id, image_username, image_user_colour
-	FROM ' . GALLERY_IMAGES_TABLE . "
+	FROM ' . PHPBB3_GALLERY_IMAGES_TABLE . "
 	WHERE image_album_id = $album_id
 	$where_case
 	ORDER BY $sort_key $sort_dir

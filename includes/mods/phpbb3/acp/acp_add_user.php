@@ -38,7 +38,7 @@ class acp_add_user
 		include(PHPBB3_INCLUDE_DIR . 'acp/info/acp_add_user.' . $phpEx);
 		
 		$submit 		= (isset($_POST['submit'])) ? true : false;
-		$admin_activate = (isset($_POST['activate'])) ? (($config['require_activation'] == USER_ACTIVATION_ADMIN) ? true : false) : false;
+		$admin_activate = (isset($_POST['activate'])) ? (($config['require_activation'] == PHPBB3_USER_ACTIVATION_ADMIN) ? true : false) : false;
 
 		$user->add_lang(array('posting', 'ucp', 'acp/users'));
 
@@ -130,9 +130,9 @@ class acp_add_user
 				$server_url = generate_board_url();
 
 				$sql = 'SELECT group_id
-						FROM ' . GROUPS_TABLE . "
+						FROM ' . PHPBB3_GROUPS_TABLE . "
 						WHERE group_name = 'REGISTERED'
-							AND group_type = " . GROUP_SPECIAL;
+							AND group_type = " . PHPBB3_GROUP_SPECIAL;
 				$result = $db->sql_query($sql);
 				$group_id = $db->sql_fetchfield('group_id');
 				$db->sql_freeresult($result);
@@ -146,20 +146,20 @@ class acp_add_user
 				/**
 				 * @todo Version 2 - have the ability for the Admin to activate instantly regardless of activation type
 				 */
-				if (($config['require_activation'] == USER_ACTIVATION_SELF || $config['require_activation'] == USER_ACTIVATION_ADMIN) && $config['email_enable'] && !$admin_activate)
+				if (($config['require_activation'] == PHPBB3_USER_ACTIVATION_SELF || $config['require_activation'] == PHPBB3_USER_ACTIVATION_ADMIN) && $config['email_enable'] && !$admin_activate)
 				{
 					$user_actkey = gen_rand_string(10);
 					$key_len = 54 - (strlen($server_url));
 					$key_len = ($key_len < 6) ? 6 : $key_len;
 					$user_actkey = substr($user_actkey, 0, $key_len);
 
-					$user_type = USER_INACTIVE;
-					$user_inactive_reason = INACTIVE_REGISTER;
+					$user_type = PHPBB3_USER_INACTIVE;
+					$user_inactive_reason = PHPBB3_INACTIVE_REGISTER;
 					$user_inactive_time = time();
 				}
 				else
 				{
-					$user_type = USER_NORMAL;
+					$user_type = PHPBB3_USER_NORMAL;
 					$user_actkey = '';
 					$user_inactive_reason = 0;
 					$user_inactive_time = 0;
@@ -194,12 +194,12 @@ class acp_add_user
 					trigger_error($user->lang['NO_USER'], E_USER_ERROR);
 				}
 
-				if ($config['require_activation'] == USER_ACTIVATION_SELF && $config['email_enable'])
+				if ($config['require_activation'] == PHPBB3_USER_ACTIVATION_SELF && $config['email_enable'])
 				{
 					$message[] = $user->lang['ACP_ACCOUNT_INACTIVE'];
 					$email_template = 'user_welcome_inactive';
 				}
-				else if ($config['require_activation'] == USER_ACTIVATION_ADMIN && $config['email_enable'] && !$admin_activate)
+				else if ($config['require_activation'] == PHPBB3_USER_ACTIVATION_ADMIN && $config['email_enable'] && !$admin_activate)
 				{
 					$message[] = $user->lang['ACP_ACCOUNT_INACTIVE_ADMIN'];
 					$email_template = 'admin_welcome_inactive';
@@ -233,16 +233,16 @@ class acp_add_user
 						'U_ACTIVATE'	=> "$server_url/ucp.$phpEx?mode=activate&u=$user_id&k=$user_actkey")
 					);
 
-					$messenger->send(NOTIFY_EMAIL);
+					$messenger->send(PHPBB3_NOTIFY_EMAIL);
 
-					if ($config['require_activation'] == USER_ACTIVATION_ADMIN && !$admin_activate)
+					if ($config['require_activation'] == PHPBB3_USER_ACTIVATION_ADMIN && !$admin_activate)
 					{
 						// Grab an array of user_id's with a_user permissions ... these users can activate a user
 						$admin_ary = $auth->acl_get_list(false, 'a_user', false);
 						$admin_ary = (!empty($admin_ary[0]['a_user'])) ? $admin_ary[0]['a_user'] : array();
 
 						// Also include founders
-						$where_sql = ' WHERE user_type = ' . USER_FOUNDER;
+						$where_sql = ' WHERE user_type = ' . PHPBB3_USER_FOUNDER;
 
 						if (sizeof($admin_ary))
 						{
@@ -250,7 +250,7 @@ class acp_add_user
 						}
 
 						$sql = 'SELECT user_id, username, user_email, user_lang, user_jabber, user_notify_type
-							FROM ' . USERS_TABLE . ' ' .
+							FROM ' . PHPBB3_USERS_TABLE . ' ' .
 							$where_sql;
 						$result = $db->sql_query($sql);
 
@@ -283,11 +283,11 @@ class acp_add_user
 		$l_reg_cond = '';
 		switch ($config['require_activation'])
 		{
-			case USER_ACTIVATION_SELF:
+			case PHPBB3_USER_ACTIVATION_SELF:
 				$l_reg_cond = $user->lang['ACP_EMAIL_ACTIVATE'];
 			break;
 
-			case USER_ACTIVATION_ADMIN:
+			case PHPBB3_USER_ACTIVATION_ADMIN:
 				$l_reg_cond = $user->lang['ACP_ADMIN_ACTIVATE'];
 			break;
 			
@@ -350,7 +350,7 @@ class acp_add_user
 			'EMAIL'				=> $data['email'],
 			'EMAIL_CONFIRM'		=> $data['email_confirm'],
 
-			'L_CONFIRM_EXPLAIN'	=> sprintf($user->lang['CONFIRM_EXPLAIN'], '<a href="mailto:' . htmlspecialchars($config['board_contact']) . '">', '</a>'),
+			'L_PHPBB3_CONFIRM_EXPLAIN'	=> sprintf($user->lang['PHPBB3_CONFIRM_EXPLAIN'], '<a href="mailto:' . htmlspecialchars($config['board_contact']) . '">', '</a>'),
 			'L_USERNAME_EXPLAIN'=> sprintf($user->lang[$config['allow_name_chars'] . '_EXPLAIN'], $config['min_name_chars'], $config['max_name_chars']),
 
 			'S_LANG_OPTIONS'	=> language_select($data['lang']),
@@ -358,7 +358,7 @@ class acp_add_user
 			'S_TZ_OPTIONS'		=> tz_select($data['tz']),
 			'U_ACTION'			=> $this->u_action,
 			
-			'S_ADMIN_ACTIVATE'			=> ($config['require_activation'] == USER_ACTIVATION_ADMIN) ? true : false,
+			'S_ADMIN_ACTIVATE'			=> ($config['require_activation'] == PHPBB3_USER_ACTIVATION_ADMIN) ? true : false,
 			'U_ADMIN_ACTIVATE'			=> ($admin_activate) ? ' checked="checked"' : '',
 			)
 		);

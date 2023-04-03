@@ -57,7 +57,7 @@ if ($mode == 'whois' && $auth->acl_get('a_') && $session_id)
 	include($phpbb_root_path . 'includes/functions_user.' . $phpEx);
 
 	$sql = 'SELECT u.user_id, u.username, u.user_type, s.session_ip
-		FROM ' . USERS_TABLE . ' u, ' . SESSIONS_TABLE . " s
+		FROM ' . PHPBB3_USERS_TABLE . ' u, ' . PHPBB3_SESSIONS_TABLE . " s
 		WHERE s.session_id = '" . $db->sql_escape($session_id) . "'
 			AND	u.user_id = s.session_user_id";
 	$result = $db->sql_query($sql);
@@ -81,7 +81,7 @@ if ($mode == 'whois' && $auth->acl_get('a_') && $session_id)
 
 // Forum info
 $sql = 'SELECT forum_id, forum_name, parent_id, forum_type, left_id, right_id
-	FROM ' . FORUMS_TABLE . '
+	FROM ' . PHPBB3_FORUMS_TABLE . '
 	ORDER BY left_id ASC';
 $result = $db->sql_query($sql, 600);
 
@@ -93,7 +93,7 @@ while ($row = $db->sql_fetchrow($result))
 $db->sql_freeresult($result);
 
 // Album info
-$gallery_root_path = GALLERY_ROOT_PATH;
+$gallery_root_path = PHPBB3_GALLERY_ROOT_PATH;
 $recent_image_addon = false;
 include_once("{$phpbb_root_path}{$gallery_root_path}includes/common.$phpEx");
 include_once("{$phpbb_root_path}{$gallery_root_path}includes/permissions.$phpEx");
@@ -112,7 +112,7 @@ if (!$show_guests)
 			$sql = 'SELECT COUNT(session_ip) as num_guests
 				FROM (
 					SELECT DISTINCT session_ip
-						FROM ' . SESSIONS_TABLE . '
+						FROM ' . PHPBB3_SESSIONS_TABLE . '
 						WHERE session_user_id = ' . ANONYMOUS . '
 							AND session_time >= ' . (time() - ($config['load_online_time'] * 60)) .
 				')';
@@ -120,7 +120,7 @@ if (!$show_guests)
 
 		default:
 			$sql = 'SELECT COUNT(DISTINCT session_ip) as num_guests
-				FROM ' . SESSIONS_TABLE . '
+				FROM ' . PHPBB3_SESSIONS_TABLE . '
 				WHERE session_user_id = ' . ANONYMOUS . '
 					AND session_time >= ' . (time() - ($config['load_online_time'] * 60));
 		break;
@@ -132,7 +132,7 @@ if (!$show_guests)
 
 // Get user list
 $sql = 'SELECT u.user_id, u.username, u.username_clean, u.user_type, u.user_colour, s.session_id, s.session_time, s.session_page, s.session_ip, s.session_browser, s.session_viewonline, s.session_forum_id, s.session_album_id
-	FROM ' . USERS_TABLE . ' u, ' . SESSIONS_TABLE . ' s
+	FROM ' . PHPBB3_USERS_TABLE . ' u, ' . PHPBB3_SESSIONS_TABLE . ' s
 	WHERE u.user_id = s.session_user_id
 		AND s.session_time >= ' . (time() - ($config['load_online_time'] * 60)) .
 		((!$show_guests) ? ' AND s.session_user_id <> ' . ANONYMOUS : '') . '
@@ -205,7 +205,7 @@ if (sizeof($topic_ids) || sizeof($post_ids))
 {
 	if (sizeof($post_ids))
 	{
-		$sql = 'SELECT topic_id, post_id FROM ' . POSTS_TABLE . ' WHERE ' . $db->sql_in_set('post_id', $post_ids);
+		$sql = 'SELECT topic_id, post_id FROM ' . PHPBB3_POSTS_TABLE . ' WHERE ' . $db->sql_in_set('post_id', $post_ids);
 		$post_result = $db->sql_query($sql);
 		while ($row = $db->sql_fetchrow($post_result))
 		{
@@ -215,7 +215,7 @@ if (sizeof($topic_ids) || sizeof($post_ids))
 		$db->sql_freeresult($post_result);
 	}
 
-	$sql = 'SELECT topic_id, topic_title FROM ' . TOPICS_TABLE . ' WHERE ' . $db->sql_in_set('topic_id', array_unique($topic_ids));
+	$sql = 'SELECT topic_id, topic_title FROM ' . PHPBB3_TOPICS_TABLE . ' WHERE ' . $db->sql_in_set('topic_id', array_unique($topic_ids));
 	$topic_result = $db->sql_query($sql);
 	while ($row = $db->sql_fetchrow($topic_result))
 	{
@@ -234,7 +234,7 @@ while ($row = $db->sql_fetchrow($result))
 		$view_online = $s_user_hidden = false;
 		$user_colour = ($row['user_colour']) ? ' style="color:#' . $row['user_colour'] . '" class="username-coloured"' : '';
 		
-		$username_full = ($row['user_type'] != USER_IGNORE) ? get_username_string('full', $row['user_id'], $row['username'], $row['user_colour']) : '<span' . $user_colour . '>' . $row['username'] . '</span>';
+		$username_full = ($row['user_type'] != PHPBB3_USER_IGNORE) ? get_username_string('full', $row['user_id'], $row['username'], $row['user_colour']) : '<span' . $user_colour . '>' . $row['username'] . '</span>';
 
 		if (!$row['session_viewonline'])
 		{
@@ -324,7 +324,7 @@ while ($row = $db->sql_fetchrow($result))
 				$location = '';
 				$location_url = append_sid("{$phpbb_root_path}viewforum.$phpEx", 'f=' . $forum_id);
 
-				if ($forum_data[$forum_id]['forum_type'] == FORUM_LINK)
+				if ($forum_data[$forum_id]['forum_type'] == PHPBB3_FORUM_LINK)
 				{
 					$location = sprintf($user->lang['READING_LINK'], $forum_data[$forum_id]['forum_name']);
 					break;
@@ -529,7 +529,7 @@ while ($row = $db->sql_fetchrow($result))
 		'USER_IP'			=> ($auth->acl_get('a_')) ? (($mode == 'lookup' && $session_id == $row['session_id']) ? gethostbyaddr($row['session_ip']) : $row['session_ip']) : '',
 		'USER_BROWSER'		=> ($auth->acl_get('a_user')) ? $row['session_browser'] : '',
 
-		'U_USER_PROFILE'	=> ($row['user_type'] != USER_IGNORE) ? get_username_string('profile', $row['user_id'], '') : '',
+		'U_USER_PROFILE'	=> ($row['user_type'] != PHPBB3_USER_IGNORE) ? get_username_string('profile', $row['user_id'], '') : '',
 		'U_USER_IP'			=> append_sid("{$phpbb_root_path}viewonline.$phpEx", 'mode=lookup' . (($mode != 'lookup' || $row['session_id'] != $session_id) ? '&amp;s=' . $row['session_id'] : '') . "&amp;sg=$show_guests&amp;start=$start&amp;sk=$sort_key&amp;sd=$sort_dir"),
 		'U_WHOIS'			=> append_sid("{$phpbb_root_path}viewonline.$phpEx", 'mode=whois&amp;s=' . $row['session_id']),
 		'U_FORUM_LOCATION'	=> $location_url,
@@ -574,22 +574,22 @@ $pagination = generate_pagination(append_sid("{$phpbb_root_path}viewonline.$phpE
 if ($auth->acl_gets('a_group', 'a_groupadd', 'a_groupdel'))
 {
 	$sql = 'SELECT group_id, group_name, group_colour, group_type
-		FROM ' . GROUPS_TABLE . '
+		FROM ' . PHPBB3_GROUPS_TABLE . '
 		WHERE group_legend = 1
 		ORDER BY group_name ASC';
 }
 else
 {
 	$sql = 'SELECT g.group_id, g.group_name, g.group_colour, g.group_type
-		FROM ' . GROUPS_TABLE . ' g
-		LEFT JOIN ' . USER_GROUP_TABLE . ' ug
+		FROM ' . PHPBB3_GROUPS_TABLE . ' g
+		LEFT JOIN ' . PHPBB3_USER_GROUP_TABLE . ' ug
 			ON (
 				g.group_id = ug.group_id
 				AND ug.user_id = ' . $user->data['user_id'] . '
 				AND ug.user_pending = 0
 			)
 		WHERE g.group_legend = 1
-			AND (g.group_type <> ' . GROUP_HIDDEN . ' OR ug.user_id = ' . $user->data['user_id'] . ')
+			AND (g.group_type <> ' . PHPBB3_GROUP_HIDDEN . ' OR ug.user_id = ' . $user->data['user_id'] . ')
 		ORDER BY g.group_name ASC';
 }
 $result = $db->sql_query($sql);
@@ -603,7 +603,7 @@ while ($row = $db->sql_fetchrow($result))
 	}
 	else
 	{
-		$legend .= (($legend != '') ? ', ' : '') . '<a style="color:#' . $row['group_colour'] . '" href="' . append_sid("{$phpbb_root_path}memberlist.$phpEx", 'mode=group&amp;g=' . $row['group_id']) . '">' . (($row['group_type'] == GROUP_SPECIAL) ? $user->lang['G_' . $row['group_name']] : $row['group_name']) . '</a>';
+		$legend .= (($legend != '') ? ', ' : '') . '<a style="color:#' . $row['group_colour'] . '" href="' . append_sid("{$phpbb_root_path}memberlist.$phpEx", 'mode=group&amp;g=' . $row['group_id']) . '">' . (($row['group_type'] == PHPBB3_GROUP_SPECIAL) ? $user->lang['G_' . $row['group_name']] : $row['group_name']) . '</a>';
 	}
 }
 $db->sql_freeresult($result);

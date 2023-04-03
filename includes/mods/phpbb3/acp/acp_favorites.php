@@ -375,7 +375,7 @@ class acp_favorites
 						}
 						else
 						{
-							confirm_box(false, $user->lang['CONFIRM_OPERATION'], build_hidden_fields(array(
+							confirm_box(false, $user->lang['PHPBB3_CONFIRM_OPERATION'], build_hidden_fields(array(
 							   'i'			=> $id,
 							   'mode'		=> $mode,
                                'id'			=> $cat_id,

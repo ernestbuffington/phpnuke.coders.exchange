@@ -52,7 +52,7 @@ if ($submit)
 	
 	generate_text_for_storage($report_data['report_desc'], $report_data['report_desc_uid'], $report_data['report_desc_bitfield'], $report_data['report_desc_options'], true, true, true);	
 	
-	$sql = 'INSERT INTO ' . ARCADE_REPORTS_TABLE . ' ' . $db->sql_build_array('INSERT', $report_data);
+	$sql = 'INSERT INTO ' . ARCADE_PHPBB3_REPORTS_TABLE . ' ' . $db->sql_build_array('INSERT', $report_data);
 	$db->sql_query($sql);
 
 	$template->assign_vars(array(

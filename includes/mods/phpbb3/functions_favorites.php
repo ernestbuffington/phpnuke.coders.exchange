@@ -348,7 +348,7 @@ class favorite_functions
 		}		
 								
 		$sql = 'SELECT DISTINCT a.user_id as user_id, b.username as username FROM ' . FAVORITES_USER_TABLE . 
-			' a LEFT JOIN ' . USERS_TABLE . ' b ON a.user_id = b.user_id 
+			' a LEFT JOIN ' . PHPBB3_USERS_TABLE . ' b ON a.user_id = b.user_id 
 			WHERE a.category_id = '. $catid . //intval'd above so safe here
 			' AND a.listitem_text = \''. $db->sql_escape($text) . 
 			'\' ORDER BY a.user_id ASC';

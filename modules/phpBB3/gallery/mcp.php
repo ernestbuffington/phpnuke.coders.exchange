@@ -14,7 +14,7 @@ $phpbb_root_path = (defined('PHPBB_ROOT_PATH')) ? PHPBB_ROOT_PATH : '../';
 $album_root_path = $phpbb_root_path . 'gallery/';
 $phpEx = substr(strrchr(__FILE__, '.'), 1);
 include($phpbb_root_path . 'common.' . $phpEx);
-$gallery_root_path = GALLERY_ROOT_PATH;
+$gallery_root_path = PHPBB3_GALLERY_ROOT_PATH;
 include($phpbb_root_path . 'includes/functions_display.' . $phpEx);
 
 // Start session management
@@ -35,7 +35,7 @@ $album_id = request_var('album_id', 0);
 if($image_id)
 {
 	$sql = 'SELECT *
-			FROM ' . GALLERY_IMAGES_TABLE . '
+			FROM ' . PHPBB3_GALLERY_IMAGES_TABLE . '
 			WHERE image_id = ' . $image_id;
 	$result = $db->sql_query($sql);
 	$image_data = $db->sql_fetchrow($result);
@@ -48,7 +48,7 @@ if($image_id)
 	$album_id = $image_data['image_album_id'];
 }
 $sql = 'SELECT *
-	FROM ' . GALLERY_ALBUMS_TABLE . '
+	FROM ' . PHPBB3_GALLERY_ALBUMS_TABLE . '
 	WHERE album_id = ' . $album_id;
 $result = $db->sql_query($sql);
 $album_data = $db->sql_fetchrow($result);
@@ -110,11 +110,11 @@ if ($action && $image_id_ary)
 			if ($moving_target)
 			{
 				$sql_ary = array('image_album_id' => $moving_target,);
-				$sql = 'UPDATE ' . GALLERY_IMAGES_TABLE . ' SET ' . $db->sql_build_array('UPDATE', $sql_ary) . '
+				$sql = 'UPDATE ' . PHPBB3_GALLERY_IMAGES_TABLE . ' SET ' . $db->sql_build_array('UPDATE', $sql_ary) . '
 					WHERE ' . $db->sql_in_set('image_id', $image_id_ary);
 				$db->sql_query($sql);
 				$sql_ary = array('report_album_id' => $moving_target,);
-				$sql = 'UPDATE ' . GALLERY_REPORTS_TABLE . ' SET ' . $db->sql_build_array('UPDATE', $sql_ary) . '
+				$sql = 'UPDATE ' . PHPBB3_GALLERY_REPORTS_TABLE . ' SET ' . $db->sql_build_array('UPDATE', $sql_ary) . '
 					WHERE ' . $db->sql_in_set('report_image_id', $image_id_ary);
 				$db->sql_query($sql);
 				$success = true;
@@ -139,7 +139,7 @@ if ($action && $image_id_ary)
 				$sql_ary = array(
 					'image_status'			=> 0,
 				);
-				$sql = 'UPDATE ' . GALLERY_IMAGES_TABLE . ' SET ' . $db->sql_build_array('UPDATE', $sql_ary) . '
+				$sql = 'UPDATE ' . PHPBB3_GALLERY_IMAGES_TABLE . ' SET ' . $db->sql_build_array('UPDATE', $sql_ary) . '
 					WHERE ' . $db->sql_in_set('image_id', $image_id_ary);
 				$db->sql_query($sql);
 				$success = true;
@@ -156,7 +156,7 @@ if ($action && $image_id_ary)
 				$sql_ary = array(
 					'image_status'			=> 1,
 				);
-				$sql = 'UPDATE ' . GALLERY_IMAGES_TABLE . ' SET ' . $db->sql_build_array('UPDATE', $sql_ary) . '
+				$sql = 'UPDATE ' . PHPBB3_GALLERY_IMAGES_TABLE . ' SET ' . $db->sql_build_array('UPDATE', $sql_ary) . '
 					WHERE ' . $db->sql_in_set('image_id', $image_id_ary);
 				$db->sql_query($sql);
 				$success = true;
@@ -173,7 +173,7 @@ if ($action && $image_id_ary)
 				$sql_ary = array(
 					'image_status'			=> 2,
 				);
-				$sql = 'UPDATE ' . GALLERY_IMAGES_TABLE . ' SET ' . $db->sql_build_array('UPDATE', $sql_ary) . '
+				$sql = 'UPDATE ' . PHPBB3_GALLERY_IMAGES_TABLE . ' SET ' . $db->sql_build_array('UPDATE', $sql_ary) . '
 					WHERE ' . $db->sql_in_set('image_id', $image_id_ary);
 				$db->sql_query($sql);
 				$success = true;
@@ -187,17 +187,17 @@ if ($action && $image_id_ary)
 			if (confirm_box(true))
 			{
 				handle_image_counter($image_id_ary, false);
-				$sql = 'DELETE FROM ' . GALLERY_IMAGES_TABLE . ' WHERE ' . $db->sql_in_set('image_id', $image_id_ary);
+				$sql = 'DELETE FROM ' . PHPBB3_GALLERY_IMAGES_TABLE . ' WHERE ' . $db->sql_in_set('image_id', $image_id_ary);
 				$db->sql_query($sql);
-				$sql = 'DELETE FROM ' . GALLERY_COMMENTS_TABLE . ' WHERE ' . $db->sql_in_set('comment_image_id', $image_id_ary);
+				$sql = 'DELETE FROM ' . PHPBB3_GALLERY_COMMENTS_TABLE . ' WHERE ' . $db->sql_in_set('comment_image_id', $image_id_ary);
 				$db->sql_query($sql);
-				$sql = 'DELETE FROM ' . GALLERY_RATES_TABLE . ' WHERE ' . $db->sql_in_set('rate_image_id', $image_id_ary);
+				$sql = 'DELETE FROM ' . PHPBB3_GALLERY_RATES_TABLE . ' WHERE ' . $db->sql_in_set('rate_image_id', $image_id_ary);
 				$db->sql_query($sql);
-				$sql = 'DELETE FROM ' . GALLERY_REPORTS_TABLE . ' WHERE ' . $db->sql_in_set('report_image_id', $image_id_ary);
+				$sql = 'DELETE FROM ' . PHPBB3_GALLERY_REPORTS_TABLE . ' WHERE ' . $db->sql_in_set('report_image_id', $image_id_ary);
 				$db->sql_query($sql);
-				$sql = 'DELETE FROM ' . GALLERY_FAVORITES_TABLE . ' WHERE ' . $db->sql_in_set('image_id', $image_id_ary);
+				$sql = 'DELETE FROM ' . PHPBB3_GALLERY_FAVORITES_TABLE . ' WHERE ' . $db->sql_in_set('image_id', $image_id_ary);
 				$db->sql_query($sql);
-				$sql = 'DELETE FROM ' . GALLERY_WATCH_TABLE . ' WHERE ' . $db->sql_in_set('image_id', $image_id_ary);
+				$sql = 'DELETE FROM ' . PHPBB3_GALLERY_WATCH_TABLE . ' WHERE ' . $db->sql_in_set('image_id', $image_id_ary);
 				$db->sql_query($sql);
 				$success = true;
 			}
@@ -213,7 +213,7 @@ if ($action && $image_id_ary)
 					'report_manager'		=> $user->data['user_id'],
 					'report_status'			=> 2,
 				);
-				$sql = 'UPDATE ' . GALLERY_REPORTS_TABLE . ' SET ' . $db->sql_build_array('UPDATE', $sql_ary) . '
+				$sql = 'UPDATE ' . PHPBB3_GALLERY_REPORTS_TABLE . ' SET ' . $db->sql_build_array('UPDATE', $sql_ary) . '
 					WHERE ' . $db->sql_in_set('report_id', $image_id_ary);
 				$db->sql_query($sql);
 				$success = true;
@@ -230,7 +230,7 @@ if ($action && $image_id_ary)
 					'report_manager'		=> $user->data['user_id'],
 					'report_status'			=> 1,
 				);
-				$sql = 'UPDATE ' . GALLERY_REPORTS_TABLE . ' SET ' . $db->sql_build_array('UPDATE', $sql_ary) . '
+				$sql = 'UPDATE ' . PHPBB3_GALLERY_REPORTS_TABLE . ' SET ' . $db->sql_build_array('UPDATE', $sql_ary) . '
 					WHERE ' . $db->sql_in_set('report_id', $image_id_ary);
 				$db->sql_query($sql);
 				$success = true;
@@ -243,7 +243,7 @@ if ($action && $image_id_ary)
 		case 'reports_delete':
 			if (confirm_box(true))
 			{
-				$sql = 'DELETE FROM ' . GALLERY_REPORTS_TABLE . ' WHERE ' . $db->sql_in_set('report_id', $image_id_ary);
+				$sql = 'DELETE FROM ' . PHPBB3_GALLERY_REPORTS_TABLE . ' WHERE ' . $db->sql_in_set('report_id', $image_id_ary);
 				$db->sql_query($sql);
 				$success = true;
 			}

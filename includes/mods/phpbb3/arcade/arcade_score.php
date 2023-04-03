@@ -371,7 +371,7 @@ if (($game_data['game_scoretype'] == SCORETYPE_HIGH && $game_data['game_highscor
 	$saved_highscore = true;
 
 	$sql = 'SELECT user_arcade_pm
-		FROM ' . USERS_TABLE . '
+		FROM ' . PHPBB3_USERS_TABLE . '
 		WHERE user_id = ' . (int) $game_data['game_highuser'];
 	$result = $db->sql_query($sql);
 	$user_arcade_pm = (int) $db->sql_fetchfield('user_arcade_pm');

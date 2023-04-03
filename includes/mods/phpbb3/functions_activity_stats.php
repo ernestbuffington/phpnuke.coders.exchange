@@ -44,7 +44,7 @@ function activity_mod()
 	foreach ($active_users as $row)
 	{
 			$template->assign_block_vars('lastvisit', array(
-				'USERNAME_FULL'	=> get_username_string((($row['user_type'] == USER_IGNORE) ? 'no_profile' : 'full'), $row['user_id'], $row['username'], $row['user_colour']),
+				'USERNAME_FULL'	=> get_username_string((($row['user_type'] == PHPBB3_USER_IGNORE) ? 'no_profile' : 'full'), $row['user_id'], $row['username'], $row['user_colour']),
 			));
 	}
 
@@ -78,10 +78,10 @@ function obtain_active_user_data()
 		// and users who have visited in the last 24 hours
 		$sql_ary = array(
 			'SELECT'	=> 'u.user_id, u.user_colour, u.username, u.user_type',
-			'FROM'		=> array(USERS_TABLE => 'u'),
+			'FROM'		=> array(PHPBB3_USERS_TABLE => 'u'),
 			'LEFT_JOIN'	=> array(
 				array(
-					'FROM'	=> array(SESSIONS_TABLE => 's'),
+					'FROM'	=> array(PHPBB3_SESSIONS_TABLE => 's'),
 					'ON'	=> 's.session_user_id = u.user_id',
 				),
 			),
@@ -130,7 +130,7 @@ function obtain_activity_data()
 
 		// total new posts in the last 24 hours
 		$sql = 'SELECT COUNT(post_id) AS new_posts
-				FROM ' . POSTS_TABLE . '
+				FROM ' . PHPBB3_POSTS_TABLE . '
 				WHERE post_time > ' . $interval;
 		$result = $db->sql_query($sql);
 		$activity['posts'] = $db->sql_fetchfield('new_posts');
@@ -138,7 +138,7 @@ function obtain_activity_data()
 
 		// total new topics in the last 24 hours
 		$sql = 'SELECT COUNT(topic_id) AS new_topics
-				FROM ' . TOPICS_TABLE . '
+				FROM ' . PHPBB3_TOPICS_TABLE . '
 				WHERE topic_time > ' . $interval;
 		$result = $db->sql_query($sql);
 		$activity['topics'] = $db->sql_fetchfield('new_topics');
@@ -146,7 +146,7 @@ function obtain_activity_data()
 
 		// total new users in the last 24 hours, counts inactive users as well
 		$sql = 'SELECT COUNT(user_id) AS new_users
-				FROM ' . USERS_TABLE . '
+				FROM ' . PHPBB3_USERS_TABLE . '
 				WHERE user_regdate > ' . $interval;
 		$result = $db->sql_query($sql);
 		$activity['users'] = $db->sql_fetchfield('new_users');

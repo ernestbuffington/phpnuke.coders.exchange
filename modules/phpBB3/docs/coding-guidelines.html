@@ -698,7 +698,7 @@ $db-&gt;sql_query($sql);
 
 	<div class="codebox"><pre>
 $sql = 'SELECT *
-	FROM ' . FORUMS_TABLE . '
+	FROM ' . PHPBB3_FORUMS_TABLE . '
 	WHERE ' . $db-&gt;sql_in_set('forum_id', $forum_ids);
 $db-&gt;sql_query($sql);
 	</pre></div>
@@ -721,7 +721,7 @@ SELECT FROM phpbb_forums WHERE forum_id = 1
 
 	<div class="codebox"><pre>
 $sql = 'SELECT *
-	FROM ' . FORUMS_TABLE . '
+	FROM ' . PHPBB3_FORUMS_TABLE . '
 	WHERE ' . $db-&gt;sql_in_set('forum_id', $forum_ids, <strong>true</strong>);
 $db-&gt;sql_query($sql);
 	</pre></div>
@@ -751,13 +751,13 @@ $sql_array = array(
 	'SELECT'	=&gt; 'f.*, ft.mark_time',
 
 	'FROM'		=&gt; array(
-		FORUMS_WATCH_TABLE	=&gt; 'fw',
-		FORUMS_TABLE		=&gt; 'f'
+		PHPBB3_FORUMS_WATCH_TABLE	=&gt; 'fw',
+		PHPBB3_FORUMS_TABLE		=&gt; 'f'
 	),
 
 	'LEFT_JOIN'	=&gt; array(
 		array(
-			'FROM'	=&gt; array(FORUMS_TRACK_TABLE =&gt; 'ft'),
+			'FROM'	=&gt; array(PHPBB3_FORUMS_TRACK_TABLE =&gt; 'ft'),
 			'ON'	=&gt; 'ft.user_id = ' . $user-&gt;data['user_id'] . ' AND ft.forum_id = f.forum_id'
 		)
 	),
@@ -778,8 +778,8 @@ $sql_array = array(
 	'SELECT'	=&gt; 'f.*',
 
 	'FROM'		=&gt; array(
-		FORUMS_WATCH_TABLE	=&gt; 'fw',
-		FORUMS_TABLE		=&gt; 'f'
+		PHPBB3_FORUMS_WATCH_TABLE	=&gt; 'fw',
+		PHPBB3_FORUMS_TABLE		=&gt; 'f'
 	),
 
 	'WHERE'		=&gt; 'fw.user_id = ' . $user-&gt;data['user_id'] . '
@@ -792,7 +792,7 @@ if ($config['load_db_lastread'])
 {
 	$sql_array['LEFT_JOIN'] = array(
 		array(
-			'FROM'	=&gt; array(FORUMS_TRACK_TABLE =&gt; 'ft'),
+			'FROM'	=&gt; array(PHPBB3_FORUMS_TRACK_TABLE =&gt; 'ft'),
 			'ON'	=&gt; 'ft.user_id = ' . $user-&gt;data['user_id'] . ' AND ft.forum_id = f.forum_id'
 		)
 	);

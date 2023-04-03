@@ -30,7 +30,7 @@ class acp_user_reminder
 
 		//lets exclude the banned users	 
 		$sql = 'SELECT ban_userid 
-			FROM ' . BANLIST_TABLE;
+			FROM ' . PHPBB3_BANLIST_TABLE;
 		$result = $db->sql_query($sql);
 
 		$excl_user_id_ary = $excl_user_type_ary = array();
@@ -45,7 +45,7 @@ class acp_user_reminder
 		//... and the ones the admins have spared
 		$excl_user_id_ary = explode(',', $config['user_reminder_protected_users']);
 		//lets exclude also some user types
-		$excl_user_type_ary = array(USER_IGNORE, USER_INACTIVE);
+		$excl_user_type_ary = array(PHPBB3_USER_IGNORE, PHPBB3_USER_INACTIVE);
 
 		switch ($mode)
 		{
@@ -191,7 +191,7 @@ class acp_user_reminder
 		$no_email_arry = array();		
 					 
 		$sql = 'SELECT * 
-			FROM ' . USERS_TABLE . '
+			FROM ' . PHPBB3_USERS_TABLE . '
         	WHERE ' . $db->sql_in_set('user_id', $excl_user_id_ary, true) . '
 				AND ' . $db->sql_in_set('user_type', $excl_user_type_ary, true) . "
 				AND user_posts = 0
@@ -245,8 +245,8 @@ class acp_user_reminder
 		$no_email_arry = array();	
 		
 		$sql = 'SELECT u.*, s.*, MAX(s.session_time) AS session_time 
-			FROM ' . USERS_TABLE . ' u
-				LEFT JOIN ' . SESSIONS_TABLE . ' s ON (s.session_user_id = u.user_id)
+			FROM ' . PHPBB3_USERS_TABLE . ' u
+				LEFT JOIN ' . PHPBB3_SESSIONS_TABLE . ' s ON (s.session_user_id = u.user_id)
         	WHERE ' . $db->sql_in_set('u.user_id', $excl_user_id_ary, true) . '
 				AND ' . $db->sql_in_set('u.user_type', $excl_user_type_ary, true) . "
 				AND (u.user_lastvisit < " . (int) $time . " OR session_time < " . $time . ")" .  
@@ -299,8 +299,8 @@ class acp_user_reminder
 		$no_email_arry = array();
 				
 		$sql = 'SELECT u.*, s.*, MAX(s.session_time) AS session_time 
-			FROM ' . USERS_TABLE . ' u
-				LEFT JOIN ' . SESSIONS_TABLE . ' s ON (s.session_user_id = u.user_id)
+			FROM ' . PHPBB3_USERS_TABLE . ' u
+				LEFT JOIN ' . PHPBB3_SESSIONS_TABLE . ' s ON (s.session_user_id = u.user_id)
         	WHERE ' . $db->sql_in_set('u.user_id', $excl_user_id_ary, true) . '
 				AND ' . $db->sql_in_set('u.user_type', $excl_user_type_ary, true) . "
 				AND u.user_lastvisit = 0
@@ -366,7 +366,7 @@ class acp_user_reminder
 		}
 
 		$sql = 'SELECT * 
-			FROM ' . USERS_TABLE . '
+			FROM ' . PHPBB3_USERS_TABLE . '
          	WHERE ' . $db->sql_in_set('user_id', $excl_user_id_ary, true) . '
 				AND ' . $db->sql_in_set('user_type', $excl_user_type_ary, true) . 
 				$sql_choice . "
@@ -412,7 +412,7 @@ class acp_user_reminder
 		$protected_users_ids = explode(",", $config['user_reminder_protected_users']);
 
 		$sql = 'SELECT * 
-			FROM ' . USERS_TABLE . '
+			FROM ' . PHPBB3_USERS_TABLE . '
          	WHERE ' . $db->sql_in_set('user_id', $protected_users_ids) . '
 			ORDER BY user_lastvisit DESC';
 		$result = $db->sql_query($sql);
@@ -477,7 +477,7 @@ class acp_user_reminder
 							
 							$sql_id = ' IN (' . implode(', ', $mark) . ')';
 							$sql = 'SELECT * 
-								FROM ' . USERS_TABLE . " 
+								FROM ' . PHPBB3_USERS_TABLE . " 
 								WHERE user_id $sql_id";
 							$result = $db->sql_query($sql);
 							
@@ -494,7 +494,7 @@ class acp_user_reminder
 						}
 						else
 						{
-							confirm_box(false, $user->lang['CONFIRM_OPERATION'], build_hidden_fields(array(
+							confirm_box(false, $user->lang['PHPBB3_CONFIRM_OPERATION'], build_hidden_fields(array(
 								'mark'		=> $mark,
 								'action'	=> $action))
 							);
@@ -520,7 +520,7 @@ class acp_user_reminder
 							$email_delete = request_var('email_delete', 0);
 							$sql_id = ' IN (' . implode(', ', $mark) . ')';
 							$sql = 'SELECT *
-								FROM ' . USERS_TABLE . " 
+								FROM ' . PHPBB3_USERS_TABLE . " 
 								WHERE user_id $sql_id";
 							$result = $db->sql_query($sql);
 	
@@ -529,7 +529,7 @@ class acp_user_reminder
 							while ($row = $db->sql_fetchrow($result))
 							{
 								// Some basic rules, you can't delete a founder, the guest user(should not happen anyway but better be sure) or yourself ;P
-								if ($row['user_type'] != USER_FOUNDER || ($row['user_id'] != (ANONYMOUS || $user->data['user_id'])) )
+								if ($row['user_type'] != PHPBB3_USER_FOUNDER || ($row['user_id'] != (ANONYMOUS || $user->data['user_id'])) )
 								{
 	
 									$username_ary[] = (string) $row['username_clean'];
@@ -575,8 +575,8 @@ class acp_user_reminder
 						else
 						{
 							
-							$message = $user->lang['DELETE_USER_CONFIRM_OPERATION'];
-							$message .= $user->lang['CONFIRM_OPERATION'];
+							$message = $user->lang['DELETE_USER_PHPBB3_CONFIRM_OPERATION'];
+							$message .= $user->lang['PHPBB3_CONFIRM_OPERATION'];
 							confirm_box(false, $message, build_hidden_fields(array(
 								'mark'		=> $mark,
 								'action'	=> $action)), 'confirm_body_user_reminder_delete.html'
@@ -591,7 +591,7 @@ class acp_user_reminder
 						{
 							$sql_id = ' IN (' . implode(', ', $mark) . ')';
 							$sql = 'SELECT user_id, username_clean 
-								FROM ' . USERS_TABLE . " 
+								FROM ' . PHPBB3_USERS_TABLE . " 
 								WHERE user_id $sql_id";
 							$result = $db->sql_query($sql);
 	
@@ -611,7 +611,7 @@ class acp_user_reminder
 								'user_reminder_inactive_still'	=> 0,
 							);
 	
-							$sql = 'UPDATE ' . USERS_TABLE . '
+							$sql = 'UPDATE ' . PHPBB3_USERS_TABLE . '
 								SET ' . $db->sql_build_array('UPDATE', $sql_ary) . "
 								WHERE user_id $sql_id";
 							$db->sql_query($sql);
@@ -624,7 +624,7 @@ class acp_user_reminder
 						}
 						else
 						{
-							confirm_box(false, $user->lang['CONFIRM_OPERATION'], build_hidden_fields(array(
+							confirm_box(false, $user->lang['PHPBB3_CONFIRM_OPERATION'], build_hidden_fields(array(
 								'mark'		=> $mark,
 								'action'	=> $action))
 							);
@@ -646,7 +646,7 @@ class acp_user_reminder
 						{
 							$sql_id = ' IN (' . implode(', ', $mark) . ')';
 							$sql = 'SELECT * 
-								FROM ' . USERS_TABLE . " 
+								FROM ' . PHPBB3_USERS_TABLE . " 
 								WHERE user_id $sql_id";
 							$result = $db->sql_query($sql);
 							
@@ -680,7 +680,7 @@ class acp_user_reminder
 									(string) $case		=> (int) time(),
 								);
 		
-								$sql = 'UPDATE ' . USERS_TABLE . '
+								$sql = 'UPDATE ' . PHPBB3_USERS_TABLE . '
 									SET ' . $db->sql_build_array('UPDATE', $sql_ary) . "
 									WHERE user_id $sql_id";
 								$db->sql_query($sql);
@@ -706,7 +706,7 @@ class acp_user_reminder
 							// lets check if we want to carry out an action that has previously been done already and make sure the admin is aware of this
 							$sql_id = ' IN (' . implode(', ', $mark) . ')';
 							$sql = 'SELECT user_id, username, user_allow_massemail, ' . (string) $case . '
-								FROM ' . USERS_TABLE . " 
+								FROM ' . PHPBB3_USERS_TABLE . " 
 								WHERE user_id $sql_id
 								AND ($case > 0 OR user_allow_massemail = 0)";
 							$result = $db->sql_query($sql);
@@ -725,9 +725,9 @@ class acp_user_reminder
 							}
 							$db->sql_freeresult($result);
 							
-							$lang_confirm = (sizeof($already_emailed_ary)) ? $user->lang['ERROR_EMAIL_CONFIRM_OPERATION'] : '';
-							$lang_confirm .= (sizeof($no_emails_ary)) ? $user->lang['ERROR_NOEMAIL_CONFIRM_OPERATION'] : '';
-							$lang_confirm .= $user->lang['CONFIRM_OPERATION'];
+							$lang_confirm = (sizeof($already_emailed_ary)) ? $user->lang['ERROR_EMAIL_PHPBB3_CONFIRM_OPERATION'] : '';
+							$lang_confirm .= (sizeof($no_emails_ary)) ? $user->lang['ERROR_NOEMAIL_PHPBB3_CONFIRM_OPERATION'] : '';
+							$lang_confirm .= $user->lang['PHPBB3_CONFIRM_OPERATION'];
 	
 							confirm_box(false, $lang_confirm, build_hidden_fields(array(
 								'mark'		=> $mark,
@@ -745,7 +745,7 @@ class acp_user_reminder
 						{
 							$sql_id = ' IN (' . implode(', ', $mark) . ')';
 							$sql = 'SELECT user_id, username_clean 
-								FROM ' . USERS_TABLE . " 
+								FROM ' . PHPBB3_USERS_TABLE . " 
 								WHERE user_id $sql_id";
 							$result = $db->sql_query($sql);
 	
@@ -762,7 +762,7 @@ class acp_user_reminder
 								$case		=> 0,
 							);
 	
-							$sql = 'UPDATE ' . USERS_TABLE . '
+							$sql = 'UPDATE ' . PHPBB3_USERS_TABLE . '
 								SET ' . $db->sql_build_array('UPDATE', $sql_ary) . "
 								WHERE user_id $sql_id";
 							$db->sql_query($sql);
@@ -775,7 +775,7 @@ class acp_user_reminder
 						}
 						else
 						{
-							confirm_box(false, $user->lang['CONFIRM_OPERATION'], build_hidden_fields(array(
+							confirm_box(false, $user->lang['PHPBB3_CONFIRM_OPERATION'], build_hidden_fields(array(
 								'mark'		=> $mark,
 								'action'	=> $action))
 							);
@@ -801,7 +801,7 @@ class acp_user_reminder
 							$email_delete = request_var('email_delete', 0);
 							$sql_id = ' IN (' . implode(', ', $mark) . ')';
 							$sql = 'SELECT *
-								FROM ' . USERS_TABLE . " 
+								FROM ' . PHPBB3_USERS_TABLE . " 
 								WHERE user_id $sql_id";
 							$result = $db->sql_query($sql);
 	
@@ -810,7 +810,7 @@ class acp_user_reminder
 							while ($row = $db->sql_fetchrow($result))
 							{
 								// Some basic rules, you can't delete a founder, the guest user(should not happen anyway but better be sure) or yourself ;P
-								if ($row['user_type'] != USER_FOUNDER || ($row['user_id'] != (ANONYMOUS || $user->data['user_id'])) )
+								if ($row['user_type'] != PHPBB3_USER_FOUNDER || ($row['user_id'] != (ANONYMOUS || $user->data['user_id'])) )
 								{
 	
 									$username_ary[] = (string) $row['username_clean'];
@@ -856,8 +856,8 @@ class acp_user_reminder
 						else
 						{
 							
-							$message = $user->lang['DELETE_USER_CONFIRM_OPERATION'];
-							$message .= $user->lang['CONFIRM_OPERATION'];
+							$message = $user->lang['DELETE_USER_PHPBB3_CONFIRM_OPERATION'];
+							$message .= $user->lang['PHPBB3_CONFIRM_OPERATION'];
 							confirm_box(false, $message, build_hidden_fields(array(
 								'mark'		=> $mark,
 								'action'	=> $action)), 'confirm_body_user_reminder_delete.html'
@@ -882,7 +882,7 @@ class acp_user_reminder
 							
 							$sql_id = ' IN (' . implode(', ', $mark) . ')';
 							$sql = 'SELECT user_id, username_clean 
-								FROM ' . USERS_TABLE . " 
+								FROM ' . PHPBB3_USERS_TABLE . " 
 								WHERE user_id $sql_id";
 							$result = $db->sql_query($sql);
 	
@@ -899,7 +899,7 @@ class acp_user_reminder
 						}
 						else
 						{
-							$message = $user->lang['CONFIRM_OPERATION'];
+							$message = $user->lang['PHPBB3_CONFIRM_OPERATION'];
 							confirm_box(false, $message, build_hidden_fields(array(
 								'mark'		=> $mark,
 								'action'	=> $action))

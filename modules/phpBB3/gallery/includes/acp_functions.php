@@ -65,7 +65,7 @@ function get_album_parents(&$album_data)
 		if ($album_data['album_parents'] == '')
 		{
 			$sql = 'SELECT album_id, album_name, album_type
-				FROM ' . GALLERY_ALBUMS_TABLE . '
+				FROM ' . PHPBB3_GALLERY_ALBUMS_TABLE . '
 				WHERE left_id < ' . $album_data['left_id'] . '
 					AND right_id > ' . $album_data['right_id'] . '
 				ORDER BY left_id ASC';
@@ -79,7 +79,7 @@ function get_album_parents(&$album_data)
 
 			$album_data['album_parents'] = serialize($album_parents);
 
-			$sql = 'UPDATE ' . GALLERY_ALBUMS_TABLE . "
+			$sql = 'UPDATE ' . PHPBB3_GALLERY_ALBUMS_TABLE . "
 				SET album_parents = '" . $db->sql_escape($album_data['album_parents']) . "'
 				WHERE parent_id = " . $album_data['parent_id'];
 			//$db->sql_query($sql);
@@ -102,7 +102,7 @@ function make_album_select($select_id = false, $ignore_id = false, $album = fals
 
 	// This query is identical to the jumpbox one
 	$sql = 'SELECT album_id, album_name, parent_id, left_id, right_id, album_type
-		FROM ' . GALLERY_ALBUMS_TABLE . '
+		FROM ' . PHPBB3_GALLERY_ALBUMS_TABLE . '
 		WHERE album_user_id = 0
 		ORDER BY left_id ASC';
 	$result = $db->sql_query($sql, 600);
@@ -187,7 +187,7 @@ function get_album_info($album_id)
 	global $db, $user;
 
 	$sql = 'SELECT *
-		FROM ' . GALLERY_ALBUMS_TABLE . "
+		FROM ' . PHPBB3_GALLERY_ALBUMS_TABLE . "
 		WHERE album_id = $album_id";
 	$result = $db->sql_query($sql);
 	$row = $db->sql_fetchrow($result);
@@ -225,8 +225,8 @@ function get_album_branch($album_id, $type = 'all', $order = 'descending', $incl
 	$rows = array();
 
 	$sql = 'SELECT a2.*
-		FROM ' . GALLERY_ALBUMS_TABLE . ' a1
-		LEFT JOIN ' . GALLERY_ALBUMS_TABLE . " a2 ON ($condition) AND a2.album_user_id = 0
+		FROM ' . PHPBB3_GALLERY_ALBUMS_TABLE . ' a1
+		LEFT JOIN ' . PHPBB3_GALLERY_ALBUMS_TABLE . " a2 ON ($condition) AND a2.album_user_id = 0
 		WHERE a1.album_id = $album_id
 			AND a1.album_user_id = 0
 		ORDER BY a2.left_id " . (($order == 'descending') ? 'ASC' : 'DESC');
@@ -256,7 +256,7 @@ function update_lastimage_info($album_id)
 	//update album-information
 	$images_real = $images = $album_user_id = 0;
 	$sql = 'SELECT album_user_id
-		FROM ' . GALLERY_ALBUMS_TABLE . "
+		FROM ' . PHPBB3_GALLERY_ALBUMS_TABLE . "
 		WHERE album_id = $album_id";
 	$result = $db->sql_query($sql);
 	if ($row = $db->sql_fetchrow($result))
@@ -265,7 +265,7 @@ function update_lastimage_info($album_id)
 	}
 	$db->sql_freeresult($result);
 	$sql = 'SELECT COUNT(image_id) images
-		FROM ' . GALLERY_IMAGES_TABLE . "
+		FROM ' . PHPBB3_GALLERY_IMAGES_TABLE . "
 		WHERE image_album_id = $album_id
 			AND image_status = 1";
 	$result = $db->sql_query($sql);
@@ -275,7 +275,7 @@ function update_lastimage_info($album_id)
 	}
 	$db->sql_freeresult($result);
 	$sql = 'SELECT COUNT(image_id) images_real
-		FROM ' . GALLERY_IMAGES_TABLE . "
+		FROM ' . PHPBB3_GALLERY_IMAGES_TABLE . "
 		WHERE image_album_id = $album_id";
 	$result = $db->sql_query($sql);
 	if ($row = $db->sql_fetchrow($result))
@@ -284,7 +284,7 @@ function update_lastimage_info($album_id)
 	}
 	$db->sql_freeresult($result);
 	$sql = 'SELECT *
-		FROM ' . GALLERY_IMAGES_TABLE . "
+		FROM ' . PHPBB3_GALLERY_IMAGES_TABLE . "
 		WHERE image_album_id = $album_id
 			AND image_status = 1
 		ORDER BY image_time DESC
@@ -321,7 +321,7 @@ function update_lastimage_info($album_id)
 		}
 	}
 	$db->sql_freeresult($result);
-	$sql = 'UPDATE ' . GALLERY_ALBUMS_TABLE . ' SET ' . $db->sql_build_array('UPDATE', $sql_ary) . '
+	$sql = 'UPDATE ' . PHPBB3_GALLERY_ALBUMS_TABLE . ' SET ' . $db->sql_build_array('UPDATE', $sql_ary) . '
 		WHERE ' . $db->sql_in_set('album_id', $album_id);
 	$db->sql_query($sql);
 

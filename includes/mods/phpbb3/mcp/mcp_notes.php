@@ -92,7 +92,7 @@ class mcp_notes
 		$sql_where = ($user_id) ? "user_id = $user_id" : "username_clean = '" . $db->sql_escape(utf8_clean_string($username)) . "'";
 
 		$sql = 'SELECT *
-			FROM ' . USERS_TABLE . "
+			FROM ' . PHPBB3_USERS_TABLE . "
 			WHERE $sql_where";
 		$result = $db->sql_query($sql);
 		$userrow = $db->sql_fetchrow($result);
@@ -138,8 +138,8 @@ class mcp_notes
 			{
 				if (check_form_key('mcp_notes'))
 				{
-					$sql = 'DELETE FROM ' . LOG_TABLE . '
-						WHERE log_type = ' . LOG_USERS . "
+					$sql = 'DELETE FROM ' . PHPBB3_LOG_TABLE . '
+						WHERE log_type = ' . PHPBB3_LOG_USERS . "
 							AND reportee_id = $user_id
 							$where_sql";
 					$db->sql_query($sql);

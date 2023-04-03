@@ -53,9 +53,9 @@ $lang = array_merge($lang, array(
 	'SEND_TO_USERS'			=> 'Send to users',
 	'SEND_TO_USERS_EXPLAIN'	=> 'Entering names here will override any group selected above. Enter each username on a new line.',
 	
-	'MAIL_HIGH_PRIORITY'	=> 'High',
-	'MAIL_LOW_PRIORITY'		=> 'Low',
-	'MAIL_NORMAL_PRIORITY'	=> 'Normal',
+	'PHPBB3_MAIL_HIGH_PRIORITY'	=> 'High',
+	'PHPBB3_MAIL_LOW_PRIORITY'		=> 'Low',
+	'PHPBB3_MAIL_NORMAL_PRIORITY'	=> 'Normal',
 	'MAIL_PRIORITY'			=> 'Mail priority',
 	'MASS_MESSAGE'			=> 'Your message',
 	'MASS_MESSAGE_EXPLAIN'	=> 'Please note that you may enter only plain text. All markup will be removed before sending.',

@@ -20,22 +20,22 @@ if (!defined('IN_PHPBB'))
 	exit;
 }
 
-define('ACL_ARCADE_GROUPS_TABLE',		$prefix_phpbb3 . 'acl_arcade_groups');
-define('ACL_ARCADE_OPTIONS_TABLE',		$prefix_phpbb3 . 'acl_arcade_options');
-define('ACL_ARCADE_ROLES_DATA_TABLE',	$prefix_phpbb3 . 'acl_arcade_roles_data');
-define('ACL_ARCADE_ROLES_TABLE',		$prefix_phpbb3 . 'acl_arcade_roles');
-define('ACL_ARCADE_USERS_TABLE',		$prefix_phpbb3 . 'acl_arcade_users');
+define('PHPBB3_ACL_ARCADE_PHPBB3_GROUPS_TABLE',		$prefix_phpbb3 . 'acl_arcade_groups');
+define('PHPBB3_ACL_ARCADE_OPTIONS_TABLE',		$prefix_phpbb3 . 'acl_arcade_options');
+define('PHPBB3_ACL_ARCADE_ROLES_DATA_TABLE',	$prefix_phpbb3 . 'acl_arcade_roles_data');
+define('PHPBB3_ACL_ARCADE_ROLES_TABLE',		$prefix_phpbb3 . 'acl_arcade_roles');
+define('PHPBB3_ACL_ARCADE_PHPBB3_USERS_TABLE',		$prefix_phpbb3 . 'acl_arcade_users');
 define('ARCADE_ACCESS_TABLE',			$prefix_phpbb3 . 'arcade_access');
 define('ARCADE_CATS_TABLE',				$prefix_phpbb3 . 'arcade_categories');
-define('ARCADE_CONFIG_TABLE',			$prefix_phpbb3 . 'arcade_config');
+define('ARCADE_PHPBB3_CONFIG_TABLE',			$prefix_phpbb3 . 'arcade_config');
 define('ARCADE_DOWNLOAD_TABLE',			$prefix_phpbb3 . 'arcade_download');
 define('ARCADE_GAMES_TABLE',			$prefix_phpbb3 . 'arcade_games');
 define('ARCADE_FAVS_TABLE', 			$prefix_phpbb3 . 'arcade_favorites');
 define('ARCADE_RATING_TABLE', 			$prefix_phpbb3 . 'arcade_game_rating');
-define('ARCADE_SESSIONS_TABLE', 		$prefix_phpbb3 . 'arcade_sessions');
+define('ARCADE_PHPBB3_SESSIONS_TABLE', 		$prefix_phpbb3 . 'arcade_sessions');
 define('ARCADE_SCORES_TABLE', 			$prefix_phpbb3 . 'arcade_scores');
 define('ARCADE_ERRORS_TABLE', 			$prefix_phpbb3 . 'arcade_errors');
-define('ARCADE_REPORTS_TABLE', 			$prefix_phpbb3 . 'arcade_reports');
+define('ARCADE_PHPBB3_REPORTS_TABLE', 			$prefix_phpbb3 . 'arcade_reports');
 
 define('ARCADE_ERROR_UNKNOWN', 0);
 define('ARCADE_ERROR_SESSION', 1);

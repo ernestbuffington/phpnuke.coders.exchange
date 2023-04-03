@@ -51,7 +51,7 @@ if ($do == 'verifyscore')
 		'randchar2'		=> $randchar2,
 	);
 
-	$sql = 'UPDATE ' . ARCADE_SESSIONS_TABLE . '
+	$sql = 'UPDATE ' . ARCADE_PHPBB3_SESSIONS_TABLE . '
 		SET ' . $db->sql_build_array('UPDATE', $sql_ary) . "
 		WHERE session_id = '$game_sid'";
 	$db->sql_query($sql);
@@ -88,7 +88,7 @@ else if ($do == 'savescore' || $do == 'newscore')
 	}
 
 	$sql = 'SELECT game_id, game_type, randchar1, randchar2, randgid1, randgid2, start_time
-		FROM ' . ARCADE_SESSIONS_TABLE . "
+		FROM ' . ARCADE_PHPBB3_SESSIONS_TABLE . "
 		WHERE session_id = '$game_sid'";
 	$result = $db->sql_query($sql);
 	$row = $db->sql_fetchrow($result);

@@ -198,7 +198,7 @@ function display_arcade($root_data = '')
 		}
 
 		// Which folder should we display?
-		if ($row['cat_status'] == ITEM_LOCKED)
+		if ($row['cat_status'] == PHPBB3_ITEM_LOCKED)
 		{
 			$folder_image = ($cat_new_games) ? 'forum_unread_locked' : 'forum_read_locked';
 			$folder_alt = 'ARCADE_CAT_LOCKED';
@@ -258,7 +258,7 @@ function display_arcade($root_data = '')
 			'S_NO_CAT'			=> $catless && !$last_catless,
 			'S_IS_LINK'			=> ($row['cat_type'] == ARCADE_LINK) ? true : false,
 			'S_CAT_NEW_GAMES'	=> $cat_new_games,
-			'S_LOCKED_CAT'		=> ($row['cat_status'] == ITEM_LOCKED) ? true : false,
+			'S_LOCKED_CAT'		=> ($row['cat_status'] == PHPBB3_ITEM_LOCKED) ? true : false,
 			'S_LIST_SUBCATS'	=> ($row['display_subcat_list']) ? true : false,
 			'S_SUBCATS'			=> (sizeof($subcats_list)) ? true : false,
 
@@ -317,16 +317,16 @@ function display_arcade_online()
 		'SELECT'	=> 'u.username, u.user_id, u.user_colour, s.session_viewonline, g.game_name, g.game_id',
 
 		'FROM'		=> array(
-			ARCADE_SESSIONS_TABLE	=> 'a',
+			ARCADE_PHPBB3_SESSIONS_TABLE	=> 'a',
 		),
 
 		'LEFT_JOIN'	=> array(
 			array(
-				'FROM'	=> array(SESSIONS_TABLE => 's'),
+				'FROM'	=> array(PHPBB3_SESSIONS_TABLE => 's'),
 				'ON'	=> 'a.user_id = s.session_user_id'
 			),
 			array(
-				'FROM'	=> array(USERS_TABLE => 'u'),
+				'FROM'	=> array(PHPBB3_USERS_TABLE => 'u'),
 				'ON'	=> 'a.user_id = u.user_id'
 			),
 			array(
@@ -652,7 +652,7 @@ function gen_arcade_auth_level($cat_id, $cat_status)
 {
 	global $template, $auth, $auth_arcade, $arcade, $user, $config;
 
-	$locked = ($cat_status == ITEM_LOCKED && !$auth->acl_get('a_arcade_cat')) ? true : false;
+	$locked = ($cat_status == PHPBB3_ITEM_LOCKED && !$auth->acl_get('a_arcade_cat')) ? true : false;
 
 	$rules = array_filter(array(
 		($auth_arcade->acl_get('c_play', $cat_id) && !$locked) ? $user->lang['ARCADE_RULES_PLAY_CAN'] : $user->lang['ARCADE_RULES_PLAY_CANNOT'],
@@ -846,7 +846,7 @@ function login_arcade_box($cat_data)
 	{
 		// Remove expired authorised sessions
 		$sql = 'SELECT session_id
-			FROM ' . SESSIONS_TABLE;
+			FROM ' . PHPBB3_SESSIONS_TABLE;
 		$result = $db->sql_query($sql);
 
 		if ($row = $db->sql_fetchrow($result))

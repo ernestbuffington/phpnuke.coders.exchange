@@ -164,7 +164,7 @@ class acp_language
 				}
 
 				$sql = 'SELECT *
-					FROM ' . LANG_TABLE . "
+					FROM ' . PHPBB3_LANG_TABLE . "
 					WHERE lang_id = $lang_id";
 				$result = $db->sql_query($sql);
 				$row = $db->sql_fetchrow($result);
@@ -176,7 +176,7 @@ class acp_language
 					'lang_author'			=> utf8_normalize_nfc(request_var('lang_author', $row['lang_author'], true)),
 				);
 
-				$db->sql_query('UPDATE ' . LANG_TABLE . '
+				$db->sql_query('UPDATE ' . PHPBB3_LANG_TABLE . '
 					SET ' . $db->sql_build_array('UPDATE', $sql_ary) . '
 					WHERE lang_id = ' . $lang_id);
 
@@ -210,7 +210,7 @@ class acp_language
 				}
 
 				$sql = 'SELECT *
-					FROM ' . LANG_TABLE . "
+					FROM ' . PHPBB3_LANG_TABLE . "
 					WHERE lang_id = $lang_id";
 				$result = $db->sql_query($sql);
 				$row = $db->sql_fetchrow($result);
@@ -375,7 +375,7 @@ class acp_language
 				else if ($action == 'upload_data')
 				{
 					$sql = 'SELECT lang_iso
-						FROM ' . LANG_TABLE . "
+						FROM ' . PHPBB3_LANG_TABLE . "
 						WHERE lang_id = $lang_id";
 					$result = $db->sql_query($sql);
 					$row = $db->sql_fetchrow($result);
@@ -444,7 +444,7 @@ class acp_language
 				$this->page_title = 'LANGUAGE_PACK_DETAILS';
 
 				$sql = 'SELECT *
-					FROM ' . LANG_TABLE . '
+					FROM ' . PHPBB3_LANG_TABLE . '
 					WHERE lang_id = ' . $lang_id;
 				$result = $db->sql_query($sql);
 				$lang_entries = $db->sql_fetchrow($result);
@@ -762,7 +762,7 @@ class acp_language
 				}
 
 				$sql = 'SELECT *
-					FROM ' . LANG_TABLE . '
+					FROM ' . PHPBB3_LANG_TABLE . '
 					WHERE lang_id = ' . $lang_id;
 				$result = $db->sql_query($sql);
 				$row = $db->sql_fetchrow($result);
@@ -773,24 +773,24 @@ class acp_language
 					trigger_error($user->lang['NO_REMOVE_DEFAULT_LANG'] . adm_back_link($this->u_action), E_USER_WARNING);
 				}
 
-				$db->sql_query('DELETE FROM ' . LANG_TABLE . ' WHERE lang_id = ' . $lang_id);
+				$db->sql_query('DELETE FROM ' . PHPBB3_LANG_TABLE . ' WHERE lang_id = ' . $lang_id);
 
-				$sql = 'UPDATE ' . USERS_TABLE . "
+				$sql = 'UPDATE ' . PHPBB3_USERS_TABLE . "
 					SET user_lang = '" . $db->sql_escape($config['default_lang']) . "'
 					WHERE user_lang = '" . $db->sql_escape($row['lang_iso']) . "'";
 				$db->sql_query($sql);
 
 				// We also need to remove the translated entries for custom profile fields - we want clean tables, don't we?
-				$sql = 'DELETE FROM ' . PROFILE_LANG_TABLE . ' WHERE lang_id = ' . $lang_id;
+				$sql = 'DELETE FROM ' . PHPBB3_PROFILE_LANG_TABLE . ' WHERE lang_id = ' . $lang_id;
 				$db->sql_query($sql);
 
-				$sql = 'DELETE FROM ' . PROFILE_FIELDS_LANG_TABLE . ' WHERE lang_id = ' . $lang_id;
+				$sql = 'DELETE FROM ' . PHPBB3_PROFILE_FIELDS_LANG_TABLE . ' WHERE lang_id = ' . $lang_id;
 				$db->sql_query($sql);
 
-				$sql = 'DELETE FROM ' . STYLES_IMAGESET_DATA_TABLE . " WHERE image_lang = '" . $db->sql_escape($row['lang_iso']) . "'";
+				$sql = 'DELETE FROM ' . PHPBB3_STYLES_IMAGESET_DATA_TABLE . " WHERE image_lang = '" . $db->sql_escape($row['lang_iso']) . "'";
 				$result = $db->sql_query($sql);
 
-				$cache->destroy('sql', STYLES_IMAGESET_DATA_TABLE);
+				$cache->destroy('sql', PHPBB3_STYLES_IMAGESET_DATA_TABLE);
 
 				add_log('admin', 'LOG_LANGUAGE_PACK_DELETED', $row['lang_english_name']);
 
@@ -817,7 +817,7 @@ class acp_language
 				unset($file);
 
 				$sql = 'SELECT lang_iso
-					FROM ' . LANG_TABLE . "
+					FROM ' . PHPBB3_LANG_TABLE . "
 					WHERE lang_iso = '" . $db->sql_escape($lang_iso) . "'";
 				$result = $db->sql_query($sql);
 				$row = $db->sql_fetchrow($result);
@@ -842,7 +842,7 @@ class acp_language
 					'lang_author'		=> $lang_pack['author']
 				);
 
-				$db->sql_query('INSERT INTO ' . LANG_TABLE . ' ' . $db->sql_build_array('INSERT', $sql_ary));
+				$db->sql_query('INSERT INTO ' . PHPBB3_LANG_TABLE . ' ' . $db->sql_build_array('INSERT', $sql_ary));
 				$lang_id = $db->sql_nextid();
 
 				$valid_localized = array(
@@ -852,7 +852,7 @@ class acp_language
 				$sql_ary = array();
 
 				$sql = 'SELECT *
-					FROM ' . STYLES_IMAGESET_TABLE;
+					FROM ' . PHPBB3_STYLES_IMAGESET_TABLE;
 				$result = $db->sql_query($sql);
 				while ($imageset_row = $db->sql_fetchrow($result))
 				{
@@ -901,13 +901,13 @@ class acp_language
 
 				if (sizeof($sql_ary))
 				{
-					$db->sql_multi_insert(STYLES_IMAGESET_DATA_TABLE, $sql_ary);
-					$cache->destroy('sql', STYLES_IMAGESET_DATA_TABLE);
+					$db->sql_multi_insert(PHPBB3_STYLES_IMAGESET_DATA_TABLE, $sql_ary);
+					$cache->destroy('sql', PHPBB3_STYLES_IMAGESET_DATA_TABLE);
 				}
 
 				// Now let's copy the default language entries for custom profile fields for this new language - makes admin's life easier.
 				$sql = 'SELECT lang_id
-					FROM ' . LANG_TABLE . "
+					FROM ' . PHPBB3_LANG_TABLE . "
 					WHERE lang_iso = '" . $db->sql_escape($config['default_lang']) . "'";
 				$result = $db->sql_query($sql);
 				$default_lang_id = (int) $db->sql_fetchfield('lang_id');
@@ -918,26 +918,26 @@ class acp_language
 				// Due to this we stay on the safe side if we do the insertion "the manual way"
 
 				$sql = 'SELECT field_id, lang_name, lang_explain, lang_default_value
-					FROM ' . PROFILE_LANG_TABLE . '
+					FROM ' . PHPBB3_PROFILE_LANG_TABLE . '
 					WHERE lang_id = ' . $default_lang_id;
 				$result = $db->sql_query($sql);
 
 				while ($row = $db->sql_fetchrow($result))
 				{
 					$row['lang_id'] = $lang_id;
-					$db->sql_query('INSERT INTO ' . PROFILE_LANG_TABLE . ' ' . $db->sql_build_array('INSERT', $row));
+					$db->sql_query('INSERT INTO ' . PHPBB3_PROFILE_LANG_TABLE . ' ' . $db->sql_build_array('INSERT', $row));
 				}
 				$db->sql_freeresult($result);
 
 				$sql = 'SELECT field_id, option_id, field_type, lang_value
-					FROM ' . PROFILE_FIELDS_LANG_TABLE . '
+					FROM ' . PHPBB3_PROFILE_FIELDS_LANG_TABLE . '
 					WHERE lang_id = ' . $default_lang_id;
 				$result = $db->sql_query($sql);
 
 				while ($row = $db->sql_fetchrow($result))
 				{
 					$row['lang_id'] = $lang_id;
-					$db->sql_query('INSERT INTO ' . PROFILE_FIELDS_LANG_TABLE . ' ' . $db->sql_build_array('INSERT', $row));
+					$db->sql_query('INSERT INTO ' . PHPBB3_PROFILE_FIELDS_LANG_TABLE . ' ' . $db->sql_build_array('INSERT', $row));
 				}
 				$db->sql_freeresult($result);
 
@@ -955,7 +955,7 @@ class acp_language
 				}
 
 				$sql = 'SELECT *
-					FROM ' . LANG_TABLE . '
+					FROM ' . PHPBB3_LANG_TABLE . '
 					WHERE lang_id = ' . $lang_id;
 				$result = $db->sql_query($sql);
 				$row = $db->sql_fetchrow($result);
@@ -1070,7 +1070,7 @@ class acp_language
 		}
 
 		$sql = 'SELECT user_lang, COUNT(user_lang) AS lang_count
-			FROM ' . USERS_TABLE . '
+			FROM ' . PHPBB3_USERS_TABLE . '
 			GROUP BY user_lang';
 		$result = $db->sql_query($sql);
 
@@ -1082,7 +1082,7 @@ class acp_language
 		$db->sql_freeresult($result);
 
 		$sql = 'SELECT *
-			FROM ' . LANG_TABLE . '
+			FROM ' . PHPBB3_LANG_TABLE . '
 			ORDER BY lang_english_name';
 		$result = $db->sql_query($sql);
 

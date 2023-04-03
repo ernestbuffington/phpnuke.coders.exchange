@@ -102,7 +102,7 @@ class acp_forums
 					}
 
 					$auth->acl_clear_prefetch();
-					$cache->destroy('sql', FORUMS_TABLE);
+					$cache->destroy('sql', PHPBB3_FORUMS_TABLE);
 
 					trigger_error($user->lang['FORUM_DELETED'] . adm_back_link($this->u_action . '&amp;parent_id=' . $this->parent_id));
 	
@@ -119,9 +119,9 @@ class acp_forums
 
 					$forum_data += array(
 						'parent_id'				=> request_var('forum_parent_id', $this->parent_id),
-						'forum_type'			=> request_var('forum_type', FORUM_POST),
+						'forum_type'			=> request_var('forum_type', PHPBB3_FORUM_POST),
 						'type_action'			=> request_var('type_action', ''),
-						'forum_status'			=> request_var('forum_status', ITEM_UNLOCKED),
+						'forum_status'			=> request_var('forum_status', PHPBB3_ITEM_UNLOCKED),
 						'forum_parents'			=> '',
 						'forum_name'			=> utf8_normalize_nfc(request_var('forum_name', '', true)),
 						'forum_link'			=> request_var('forum_link', ''),
@@ -156,18 +156,18 @@ class acp_forums
 					);
 
 					// Use link_display_on_index setting if forum type is link
-					if ($forum_data['forum_type'] == FORUM_LINK)
+					if ($forum_data['forum_type'] == PHPBB3_FORUM_LINK)
 					{
 						$forum_data['display_on_index'] = request_var('link_display_on_index', false);
 					}
 
 					// Linked forums and categories are not able to be locked...
-					if ($forum_data['forum_type'] == FORUM_LINK || $forum_data['forum_type'] == FORUM_CAT)
+					if ($forum_data['forum_type'] == PHPBB3_FORUM_LINK || $forum_data['forum_type'] == PHPBB3_FORUM_CAT)
 					{
-						$forum_data['forum_status'] = ITEM_UNLOCKED;
+						$forum_data['forum_status'] = PHPBB3_ITEM_UNLOCKED;
 					}
 
-					$forum_data['show_active'] = ($forum_data['forum_type'] == FORUM_POST) ? request_var('display_recent', false) : request_var('display_active', false);
+					$forum_data['show_active'] = ($forum_data['forum_type'] == PHPBB3_FORUM_POST) ? request_var('display_recent', false) : request_var('display_active', false);
 
 					// Get data for forum rules if specified...
 					if ($forum_data['forum_rules'])
@@ -194,11 +194,11 @@ class acp_forums
 							// if we edit a forum delete current permissions first
 							if ($action == 'edit')
 							{
-								$sql = 'DELETE FROM ' . ACL_USERS_TABLE . '
+								$sql = 'DELETE FROM ' . PHPBB3_ACL_USERS_TABLE . '
 									WHERE forum_id = ' . (int) $forum_data['forum_id'];
 								$db->sql_query($sql);
 	
-								$sql = 'DELETE FROM ' . ACL_GROUPS_TABLE . '
+								$sql = 'DELETE FROM ' . PHPBB3_ACL_PHPBB3_GROUPS_TABLE . '
 									WHERE forum_id = ' . (int) $forum_data['forum_id'];
 								$db->sql_query($sql);
 							}
@@ -209,7 +209,7 @@ class acp_forums
 
 							// Copy permisisons from/to the acl users table (only forum_id gets changed)
 							$sql = 'SELECT user_id, auth_option_id, auth_role_id, auth_setting
-								FROM ' . ACL_USERS_TABLE . '
+								FROM ' . PHPBB3_ACL_USERS_TABLE . '
 								WHERE forum_id = ' . $forum_perm_from;
 							$result = $db->sql_query($sql);
 
@@ -228,7 +228,7 @@ class acp_forums
 
 							// Copy permisisons from/to the acl groups table (only forum_id gets changed)
 							$sql = 'SELECT group_id, auth_option_id, auth_role_id, auth_setting
-								FROM ' . ACL_GROUPS_TABLE . '
+								FROM ' . PHPBB3_ACL_PHPBB3_GROUPS_TABLE . '
 								WHERE forum_id = ' . $forum_perm_from;
 							$result = $db->sql_query($sql);
 
@@ -246,13 +246,13 @@ class acp_forums
 							$db->sql_freeresult($result);
 
 							// Now insert the data
-							$db->sql_multi_insert(ACL_USERS_TABLE, $users_sql_ary);
-							$db->sql_multi_insert(ACL_GROUPS_TABLE, $groups_sql_ary);
+							$db->sql_multi_insert(PHPBB3_ACL_USERS_TABLE, $users_sql_ary);
+							$db->sql_multi_insert(PHPBB3_ACL_PHPBB3_GROUPS_TABLE, $groups_sql_ary);
 							cache_moderators();
 						}
 
 						$auth->acl_clear_prefetch();
-						$cache->destroy('sql', FORUMS_TABLE);
+						$cache->destroy('sql', PHPBB3_FORUMS_TABLE);
 	
 						$acl_url = '&amp;mode=setting_forum_local&amp;forum_id[]=' . $forum_data['forum_id'];
 
@@ -288,7 +288,7 @@ class acp_forums
 				}
 
 				$sql = 'SELECT *
-					FROM ' . FORUMS_TABLE . "
+					FROM ' . PHPBB3_FORUMS_TABLE . "
 					WHERE forum_id = $forum_id";
 				$result = $db->sql_query($sql);
 				$row = $db->sql_fetchrow($result);
@@ -304,7 +304,7 @@ class acp_forums
 				if ($move_forum_name !== false)
 				{
 					add_log('admin', 'LOG_FORUM_' . strtoupper($action), $row['forum_name'], $move_forum_name);
-					$cache->destroy('sql', FORUMS_TABLE);
+					$cache->destroy('sql', PHPBB3_FORUMS_TABLE);
 				}
 
 			break;
@@ -318,7 +318,7 @@ class acp_forums
 				@set_time_limit(0);
 
 				$sql = 'SELECT forum_name, forum_topics_real
-					FROM ' . FORUMS_TABLE . "
+					FROM ' . PHPBB3_FORUMS_TABLE . "
 					WHERE forum_id = $forum_id";
 				$result = $db->sql_query($sql);
 				$row = $db->sql_fetchrow($result);
@@ -332,7 +332,7 @@ class acp_forums
 				if ($row['forum_topics_real'])
 				{
 					$sql = 'SELECT MIN(topic_id) as min_topic_id, MAX(topic_id) as max_topic_id
-						FROM ' . TOPICS_TABLE . '
+						FROM ' . PHPBB3_TOPICS_TABLE . '
 						WHERE forum_id = ' . $forum_id;
 					$result = $db->sql_query($sql);
 					$row2 = $db->sql_fetchrow($result);
@@ -355,7 +355,7 @@ class acp_forums
 					{
 						// We really need to find a way of showing statistics... no progress here
 						$sql = 'SELECT COUNT(topic_id) as num_topics
-							FROM ' . TOPICS_TABLE . '
+							FROM ' . PHPBB3_TOPICS_TABLE . '
 							WHERE forum_id = ' . $forum_id . '
 								AND topic_id BETWEEN ' . $start . ' AND ' . $end;
 						$result = $db->sql_query($sql);
@@ -396,7 +396,7 @@ class acp_forums
 			case 'sync_forum':
 
 				$sql = 'SELECT forum_name, forum_type
-					FROM ' . FORUMS_TABLE . "
+					FROM ' . PHPBB3_FORUMS_TABLE . "
 					WHERE forum_id = $forum_id";
 				$result = $db->sql_query($sql);
 				$row = $db->sql_fetchrow($result);
@@ -410,7 +410,7 @@ class acp_forums
 				sync('forum', 'forum_id', $forum_id, false, true);
 
 				add_log('admin', 'LOG_FORUM_SYNC', $row['forum_name']);
-				$cache->destroy('sql', FORUMS_TABLE);
+				$cache->destroy('sql', PHPBB3_FORUMS_TABLE);
 
 				$template->assign_var('L_FORUM_RESYNCED', sprintf($user->lang['FORUM_RESYNCED'], $row['forum_name']));
 
@@ -422,12 +422,12 @@ class acp_forums
 				if ($update)
 				{
 					$forum_data['forum_flags'] = 0;
-					$forum_data['forum_flags'] += (request_var('forum_link_track', false)) ? FORUM_FLAG_LINK_TRACK : 0;
-					$forum_data['forum_flags'] += (request_var('prune_old_polls', false)) ? FORUM_FLAG_PRUNE_POLL : 0;
-					$forum_data['forum_flags'] += (request_var('prune_announce', false)) ? FORUM_FLAG_PRUNE_ANNOUNCE : 0;
-					$forum_data['forum_flags'] += (request_var('prune_sticky', false)) ? FORUM_FLAG_PRUNE_STICKY : 0;
-					$forum_data['forum_flags'] += ($forum_data['show_active']) ? FORUM_FLAG_ACTIVE_TOPICS : 0;
-					$forum_data['forum_flags'] += (request_var('enable_post_review', true)) ? FORUM_FLAG_POST_REVIEW : 0;
+					$forum_data['forum_flags'] += (request_var('forum_link_track', false)) ? PHPBB3_FORUM_FLAG_LINK_TRACK : 0;
+					$forum_data['forum_flags'] += (request_var('prune_old_polls', false)) ? PHPBB3_FORUM_FLAG_PRUNE_POLL : 0;
+					$forum_data['forum_flags'] += (request_var('prune_announce', false)) ? PHPBB3_FORUM_FLAG_PRUNE_ANNOUNCE : 0;
+					$forum_data['forum_flags'] += (request_var('prune_sticky', false)) ? PHPBB3_FORUM_FLAG_PRUNE_STICKY : 0;
+					$forum_data['forum_flags'] += ($forum_data['show_active']) ? PHPBB3_FORUM_FLAG_ACTIVE_TOPICS : 0;
+					$forum_data['forum_flags'] += (request_var('enable_post_review', true)) ? PHPBB3_FORUM_FLAG_POST_REVIEW : 0;
 				}
 
 				// Show form to create/modify a forum
@@ -470,8 +470,8 @@ class acp_forums
 					{
 						$forum_data = array(
 							'parent_id'				=> $this->parent_id,
-							'forum_type'			=> FORUM_POST,
-							'forum_status'			=> ITEM_UNLOCKED,
+							'forum_type'			=> PHPBB3_FORUM_POST,
+							'forum_status'			=> PHPBB3_ITEM_UNLOCKED,
 							'forum_name'			=> utf8_normalize_nfc(request_var('forum_name', '', true)),
 							'forum_link'			=> '',
 							'forum_link_track'		=> false,
@@ -489,7 +489,7 @@ class acp_forums
 							'prune_days'			=> 7,
 							'prune_viewed'			=> 7,
 							'prune_freq'			=> 1,
-							'forum_flags'			=> FORUM_FLAG_POST_REVIEW,
+							'forum_flags'			=> PHPBB3_FORUM_FLAG_POST_REVIEW,
 							'forum_password'		=> '',
 							'forum_password_confirm'=> '',
 						);
@@ -550,7 +550,7 @@ class acp_forums
 				}
 
 				$forum_type_options = '';
-				$forum_type_ary = array(FORUM_CAT => 'CAT', FORUM_POST => 'FORUM', FORUM_LINK => 'LINK');
+				$forum_type_ary = array(PHPBB3_FORUM_CAT => 'CAT', PHPBB3_FORUM_POST => 'FORUM', PHPBB3_FORUM_LINK => 'LINK');
 		
 				foreach ($forum_type_ary as $value => $lang)
 				{
@@ -559,11 +559,11 @@ class acp_forums
 
 				$styles_list = style_select($forum_data['forum_style'], true);
 
-				$statuslist = '<option value="' . ITEM_UNLOCKED . '"' . (($forum_data['forum_status'] == ITEM_UNLOCKED) ? ' selected="selected"' : '') . '>' . $user->lang['UNLOCKED'] . '</option><option value="' . ITEM_LOCKED . '"' . (($forum_data['forum_status'] == ITEM_LOCKED) ? ' selected="selected"' : '') . '>' . $user->lang['LOCKED'] . '</option>';
+				$statuslist = '<option value="' . PHPBB3_ITEM_UNLOCKED . '"' . (($forum_data['forum_status'] == PHPBB3_ITEM_UNLOCKED) ? ' selected="selected"' : '') . '>' . $user->lang['UNLOCKED'] . '</option><option value="' . PHPBB3_ITEM_LOCKED . '"' . (($forum_data['forum_status'] == PHPBB3_ITEM_LOCKED) ? ' selected="selected"' : '') . '>' . $user->lang['LOCKED'] . '</option>';
 
 				$sql = 'SELECT forum_id
-					FROM ' . FORUMS_TABLE . '
-					WHERE forum_type = ' . FORUM_POST . "
+					FROM ' . PHPBB3_FORUMS_TABLE . '
+					WHERE forum_type = ' . PHPBB3_FORUM_POST . "
 						AND forum_id <> $forum_id";
 				$result = $db->sql_query($sql);
 
@@ -576,7 +576,7 @@ class acp_forums
 				$db->sql_freeresult($result);
 
 				// Subforum move options
-				if ($action == 'edit' && $forum_data['forum_type'] == FORUM_CAT)
+				if ($action == 'edit' && $forum_data['forum_type'] == PHPBB3_FORUM_CAT)
 				{
 					$subforums_id = array();
 					$subforums = get_forum_branch($forum_id, 'children');
@@ -589,8 +589,8 @@ class acp_forums
 					$forums_list = make_forum_select($forum_data['parent_id'], $subforums_id);
 
 					$sql = 'SELECT forum_id
-						FROM ' . FORUMS_TABLE . '
-						WHERE forum_type = ' . FORUM_POST . "
+						FROM ' . PHPBB3_FORUMS_TABLE . '
+						WHERE forum_type = ' . PHPBB3_FORUM_POST . "
 							AND forum_id <> $forum_id";
 					$result = $db->sql_query($sql);
 
@@ -615,7 +615,7 @@ class acp_forums
 					// if this forum is a subforum put the "display on index" checkbox
 					if ($parent_info = $this->get_forum_info($forum_data['parent_id']))
 					{
-						if ($parent_info['parent_id'] > 0 || $parent_info['forum_type'] == FORUM_CAT)
+						if ($parent_info['parent_id'] > 0 || $parent_info['forum_type'] == PHPBB3_FORUM_CAT)
 						{
 							$s_show_display_on_index = true;
 						}
@@ -645,9 +645,9 @@ class acp_forums
 					'FORUM_DATA_LINK'			=> $forum_data['forum_link'],
 					'FORUM_IMAGE'				=> $forum_data['forum_image'],
 					'FORUM_IMAGE_SRC'			=> ($forum_data['forum_image']) ? $phpbb_root_path . $forum_data['forum_image'] : '',
-					'FORUM_POST'				=> FORUM_POST,
-					'FORUM_LINK'				=> FORUM_LINK,
-					'FORUM_CAT'					=> FORUM_CAT,
+					'PHPBB3_FORUM_POST'				=> PHPBB3_FORUM_POST,
+					'PHPBB3_FORUM_LINK'				=> PHPBB3_FORUM_LINK,
+					'PHPBB3_FORUM_CAT'					=> PHPBB3_FORUM_CAT,
 					'PRUNE_FREQ'				=> $forum_data['prune_freq'],
 					'PRUNE_DAYS'				=> $forum_data['prune_days'],
 					'PRUNE_VIEWED'				=> $forum_data['prune_viewed'],
@@ -672,23 +672,23 @@ class acp_forums
 					'S_STYLES_OPTIONS'			=> $styles_list,
 					'S_FORUM_OPTIONS'			=> make_forum_select(($action == 'add') ? $forum_data['parent_id'] : false, ($action == 'edit') ? $forum_data['forum_id'] : false, false, false, false),
 					'S_SHOW_DISPLAY_ON_INDEX'	=> $s_show_display_on_index,
-					'S_FORUM_POST'				=> ($forum_data['forum_type'] == FORUM_POST) ? true : false,
-					'S_FORUM_ORIG_POST'			=> (isset($old_forum_type) && $old_forum_type == FORUM_POST) ? true : false,
-					'S_FORUM_ORIG_CAT'			=> (isset($old_forum_type) && $old_forum_type == FORUM_CAT) ? true : false,
-					'S_FORUM_ORIG_LINK'			=> (isset($old_forum_type) && $old_forum_type == FORUM_LINK) ? true : false,
-					'S_FORUM_LINK'				=> ($forum_data['forum_type'] == FORUM_LINK) ? true : false,
-					'S_FORUM_CAT'				=> ($forum_data['forum_type'] == FORUM_CAT) ? true : false,
+					'S_PHPBB3_FORUM_POST'				=> ($forum_data['forum_type'] == PHPBB3_FORUM_POST) ? true : false,
+					'S_FORUM_ORIG_POST'			=> (isset($old_forum_type) && $old_forum_type == PHPBB3_FORUM_POST) ? true : false,
+					'S_FORUM_ORIG_CAT'			=> (isset($old_forum_type) && $old_forum_type == PHPBB3_FORUM_CAT) ? true : false,
+					'S_FORUM_ORIG_LINK'			=> (isset($old_forum_type) && $old_forum_type == PHPBB3_FORUM_LINK) ? true : false,
+					'S_PHPBB3_FORUM_LINK'				=> ($forum_data['forum_type'] == PHPBB3_FORUM_LINK) ? true : false,
+					'S_PHPBB3_FORUM_CAT'				=> ($forum_data['forum_type'] == PHPBB3_FORUM_CAT) ? true : false,
 					'S_ENABLE_INDEXING'			=> ($forum_data['enable_indexing']) ? true : false,
 					'S_TOPIC_ICONS'				=> ($forum_data['enable_icons']) ? true : false,
 					'S_DISPLAY_SUBFORUM_LIST'	=> ($forum_data['display_subforum_list']) ? true : false,
 					'S_DISPLAY_ON_INDEX'		=> ($forum_data['display_on_index']) ? true : false,
 					'S_PRUNE_ENABLE'			=> ($forum_data['enable_prune']) ? true : false,
-					'S_FORUM_LINK_TRACK'		=> ($forum_data['forum_flags'] & FORUM_FLAG_LINK_TRACK) ? true : false,
-					'S_PRUNE_OLD_POLLS'			=> ($forum_data['forum_flags'] & FORUM_FLAG_PRUNE_POLL) ? true : false,
-					'S_PRUNE_ANNOUNCE'			=> ($forum_data['forum_flags'] & FORUM_FLAG_PRUNE_ANNOUNCE) ? true : false,
-					'S_PRUNE_STICKY'			=> ($forum_data['forum_flags'] & FORUM_FLAG_PRUNE_STICKY) ? true : false,
-					'S_DISPLAY_ACTIVE_TOPICS'	=> ($forum_data['forum_flags'] & FORUM_FLAG_ACTIVE_TOPICS) ? true : false,
-					'S_ENABLE_POST_REVIEW'		=> ($forum_data['forum_flags'] & FORUM_FLAG_POST_REVIEW) ? true : false,
+					'S_PHPBB3_FORUM_LINK_TRACK'		=> ($forum_data['forum_flags'] & PHPBB3_FORUM_FLAG_LINK_TRACK) ? true : false,
+					'S_PRUNE_OLD_POLLS'			=> ($forum_data['forum_flags'] & PHPBB3_FORUM_FLAG_PRUNE_POLL) ? true : false,
+					'S_PRUNE_ANNOUNCE'			=> ($forum_data['forum_flags'] & PHPBB3_FORUM_FLAG_PRUNE_ANNOUNCE) ? true : false,
+					'S_PRUNE_STICKY'			=> ($forum_data['forum_flags'] & PHPBB3_FORUM_FLAG_PRUNE_STICKY) ? true : false,
+					'S_DISPLAY_ACTIVE_TOPICS'	=> ($forum_data['forum_flags'] & PHPBB3_FORUM_FLAG_ACTIVE_TOPICS) ? true : false,
+					'S_ENABLE_POST_REVIEW'		=> ($forum_data['forum_flags'] & PHPBB3_FORUM_FLAG_POST_REVIEW) ? true : false,
 					'S_CAN_COPY_PERMISSIONS'	=> ($action != 'edit' || empty($forum_id) || ($auth->acl_get('a_fauth') && $auth->acl_get('a_authusers') && $auth->acl_get('a_authgroups') && $auth->acl_get('a_mauth'))) ? true : false,
 				));
 
@@ -716,8 +716,8 @@ class acp_forums
 				$forums_list = make_forum_select($forum_data['parent_id'], $subforums_id);
 
 				$sql = 'SELECT forum_id
-					FROM ' . FORUMS_TABLE . '
-					WHERE forum_type = ' . FORUM_POST . "
+					FROM ' . PHPBB3_FORUMS_TABLE . '
+					WHERE forum_type = ' . PHPBB3_FORUM_POST . "
 						AND forum_id <> $forum_id";
 				$result = $db->sql_query($sql);
 
@@ -737,8 +737,8 @@ class acp_forums
 					'U_BACK'				=> $this->u_action . '&amp;parent_id=' . $this->parent_id,
 
 					'FORUM_NAME'			=> $forum_data['forum_name'],
-					'S_FORUM_POST'			=> ($forum_data['forum_type'] == FORUM_POST) ? true : false,
-					'S_FORUM_LINK'			=> ($forum_data['forum_type'] == FORUM_LINK) ? true : false,
+					'S_PHPBB3_FORUM_POST'			=> ($forum_data['forum_type'] == PHPBB3_FORUM_POST) ? true : false,
+					'S_PHPBB3_FORUM_LINK'			=> ($forum_data['forum_type'] == PHPBB3_FORUM_LINK) ? true : false,
 					'S_HAS_SUBFORUMS'		=> ($forum_data['right_id'] - $forum_data['left_id'] > 1) ? true : false,
 					'S_FORUMS_LIST'			=> $forums_list,
 					'S_ERROR'				=> (sizeof($errors)) ? true : false,
@@ -781,7 +781,7 @@ class acp_forums
 		}
 
 		$sql = 'SELECT *
-			FROM ' . FORUMS_TABLE . "
+			FROM ' . PHPBB3_FORUMS_TABLE . "
 			WHERE parent_id = $this->parent_id
 			ORDER BY left_id";
 		$result = $db->sql_query($sql);
@@ -792,7 +792,7 @@ class acp_forums
 			{
 				$forum_type = $row['forum_type'];
 
-				if ($row['forum_status'] == ITEM_LOCKED)
+				if ($row['forum_status'] == PHPBB3_ITEM_LOCKED)
 				{
 					$folder_image = '<img src="images/icon_folder_lock.gif" alt="' . $user->lang['LOCKED'] . '" />';
 				}
@@ -800,7 +800,7 @@ class acp_forums
 				{
 					switch ($forum_type)
 					{
-						case FORUM_LINK:
+						case PHPBB3_FORUM_LINK:
 							$folder_image = '<img src="images/icon_folder_link.gif" alt="' . $user->lang['LINK'] . '" />';
 						break;
 
@@ -812,9 +812,9 @@ class acp_forums
 
 				$url = $this->u_action . "&amp;parent_id=$this->parent_id&amp;f={$row['forum_id']}";
 
-				$forum_title = ($forum_type != FORUM_LINK) ? '<a href="' . $this->u_action . '&amp;parent_id=' . $row['forum_id'] . '">' : '';
+				$forum_title = ($forum_type != PHPBB3_FORUM_LINK) ? '<a href="' . $this->u_action . '&amp;parent_id=' . $row['forum_id'] . '">' : '';
 				$forum_title .= $row['forum_name'];
-				$forum_title .= ($forum_type != FORUM_LINK) ? '</a>' : '';
+				$forum_title .= ($forum_type != PHPBB3_FORUM_LINK) ? '</a>' : '';
 
 				$template->assign_block_vars('forums', array(
 					'FOLDER_IMAGE'		=> $folder_image,
@@ -823,10 +823,10 @@ class acp_forums
 					'FORUM_NAME'		=> $row['forum_name'],
 					'FORUM_DESCRIPTION'	=> generate_text_for_display($row['forum_desc'], $row['forum_desc_uid'], $row['forum_desc_bitfield'], $row['forum_desc_options']),
 					'FORUM_TOPICS'		=> $row['forum_topics'],
-					'FORUM_POSTS'		=> $row['forum_posts'],
+					'PHPBB3_FORUM_POSTS'		=> $row['forum_posts'],
 
-					'S_FORUM_LINK'		=> ($forum_type == FORUM_LINK) ? true : false,
-					'S_FORUM_POST'		=> ($forum_type == FORUM_POST) ? true : false,
+					'S_PHPBB3_FORUM_LINK'		=> ($forum_type == PHPBB3_FORUM_LINK) ? true : false,
+					'S_PHPBB3_FORUM_POST'		=> ($forum_type == PHPBB3_FORUM_POST) ? true : false,
 
 					'U_FORUM'			=> $this->u_action . '&amp;parent_id=' . $row['forum_id'],
 					'U_MOVE_UP'			=> $url . '&amp;action=move_up',
@@ -874,7 +874,7 @@ class acp_forums
 		global $db;
 
 		$sql = 'SELECT *
-			FROM ' . FORUMS_TABLE . "
+			FROM ' . PHPBB3_FORUMS_TABLE . "
 			WHERE forum_id = $forum_id";
 		$result = $db->sql_query($sql);
 		$row = $db->sql_fetchrow($result);
@@ -942,12 +942,12 @@ class acp_forums
 		// 16 = show active topics
 		// 32 = enable post review
 		$forum_data['forum_flags'] = 0;
-		$forum_data['forum_flags'] += ($forum_data['forum_link_track']) ? FORUM_FLAG_LINK_TRACK : 0;
-		$forum_data['forum_flags'] += ($forum_data['prune_old_polls']) ? FORUM_FLAG_PRUNE_POLL : 0;
-		$forum_data['forum_flags'] += ($forum_data['prune_announce']) ? FORUM_FLAG_PRUNE_ANNOUNCE : 0;
-		$forum_data['forum_flags'] += ($forum_data['prune_sticky']) ? FORUM_FLAG_PRUNE_STICKY : 0;
-		$forum_data['forum_flags'] += ($forum_data['show_active']) ? FORUM_FLAG_ACTIVE_TOPICS : 0;
-		$forum_data['forum_flags'] += ($forum_data['enable_post_review']) ? FORUM_FLAG_POST_REVIEW : 0;
+		$forum_data['forum_flags'] += ($forum_data['forum_link_track']) ? PHPBB3_FORUM_FLAG_LINK_TRACK : 0;
+		$forum_data['forum_flags'] += ($forum_data['prune_old_polls']) ? PHPBB3_FORUM_FLAG_PRUNE_POLL : 0;
+		$forum_data['forum_flags'] += ($forum_data['prune_announce']) ? PHPBB3_FORUM_FLAG_PRUNE_ANNOUNCE : 0;
+		$forum_data['forum_flags'] += ($forum_data['prune_sticky']) ? PHPBB3_FORUM_FLAG_PRUNE_STICKY : 0;
+		$forum_data['forum_flags'] += ($forum_data['show_active']) ? PHPBB3_FORUM_FLAG_ACTIVE_TOPICS : 0;
+		$forum_data['forum_flags'] += ($forum_data['enable_post_review']) ? PHPBB3_FORUM_FLAG_POST_REVIEW : 0;
 
 		// Unset data that are not database fields
 		$forum_data_sql = $forum_data;
@@ -991,7 +991,7 @@ class acp_forums
 			if ($forum_data_sql['parent_id'])
 			{
 				$sql = 'SELECT left_id, right_id, forum_type
-					FROM ' . FORUMS_TABLE . '
+					FROM ' . PHPBB3_FORUMS_TABLE . '
 					WHERE forum_id = ' . $forum_data_sql['parent_id'];
 				$result = $db->sql_query($sql);
 				$row = $db->sql_fetchrow($result);
@@ -1002,18 +1002,18 @@ class acp_forums
 					trigger_error($user->lang['PARENT_NOT_EXIST'] . adm_back_link($this->u_action . '&amp;' . $this->parent_id), E_USER_WARNING);
 				}
 
-				if ($row['forum_type'] == FORUM_LINK)
+				if ($row['forum_type'] == PHPBB3_FORUM_LINK)
 				{
 					$errors[] = $user->lang['PARENT_IS_LINK_FORUM'];
 					return $errors;
 				}
 
-				$sql = 'UPDATE ' . FORUMS_TABLE . '
+				$sql = 'UPDATE ' . PHPBB3_FORUMS_TABLE . '
 					SET left_id = left_id + 2, right_id = right_id + 2
 					WHERE left_id > ' . $row['right_id'];
 				$db->sql_query($sql);
 
-				$sql = 'UPDATE ' . FORUMS_TABLE . '
+				$sql = 'UPDATE ' . PHPBB3_FORUMS_TABLE . '
 					SET right_id = right_id + 2
 					WHERE ' . $row['left_id'] . ' BETWEEN left_id AND right_id';
 				$db->sql_query($sql);
@@ -1024,7 +1024,7 @@ class acp_forums
 			else
 			{
 				$sql = 'SELECT MAX(right_id) AS right_id
-					FROM ' . FORUMS_TABLE;
+					FROM ' . PHPBB3_FORUMS_TABLE;
 				$result = $db->sql_query($sql);
 				$row = $db->sql_fetchrow($result);
 				$db->sql_freeresult($result);
@@ -1033,7 +1033,7 @@ class acp_forums
 				$forum_data_sql['right_id'] = $row['right_id'] + 2;
 			}
 
-			$sql = 'INSERT INTO ' . FORUMS_TABLE . ' ' . $db->sql_build_array('INSERT', $forum_data_sql);
+			$sql = 'INSERT INTO ' . PHPBB3_FORUMS_TABLE . ' ' . $db->sql_build_array('INSERT', $forum_data_sql);
 			$db->sql_query($sql);
 
 			$forum_data['forum_id'] = $db->sql_nextid();
@@ -1044,10 +1044,10 @@ class acp_forums
 		{
 			$row = $this->get_forum_info($forum_data_sql['forum_id']);
 
-			if ($row['forum_type'] == FORUM_POST && $row['forum_type'] != $forum_data_sql['forum_type'])
+			if ($row['forum_type'] == PHPBB3_FORUM_POST && $row['forum_type'] != $forum_data_sql['forum_type'])
 			{
 				// Has subforums and want to change into a link?
-				if ($row['right_id'] - $row['left_id'] > 1 && $forum_data_sql['forum_type'] == FORUM_LINK)
+				if ($row['right_id'] - $row['left_id'] > 1 && $forum_data_sql['forum_type'] == PHPBB3_FORUM_LINK)
 				{
 					$errors[] = $user->lang['FORUM_WITH_SUBFORUMS_NOT_TO_LINK'];
 					return $errors;
@@ -1079,7 +1079,7 @@ class acp_forums
 				$forum_data_sql['forum_posts'] = $forum_data_sql['forum_topics'] = $forum_data_sql['forum_topics_real'] = $forum_data_sql['forum_last_post_id'] = $forum_data_sql['forum_last_poster_id'] = $forum_data_sql['forum_last_post_time'] = 0;
 				$forum_data_sql['forum_last_poster_name'] = $forum_data_sql['forum_last_poster_colour'] = '';
 			}
-			else if ($row['forum_type'] == FORUM_CAT && $forum_data_sql['forum_type'] == FORUM_LINK)
+			else if ($row['forum_type'] == PHPBB3_FORUM_CAT && $forum_data_sql['forum_type'] == PHPBB3_FORUM_LINK)
 			{
 				// Has subforums?
 				if ($row['right_id'] - $row['left_id'] > 1)
@@ -1111,21 +1111,21 @@ class acp_forums
 
 						if (sizeof($forum_ids))
 						{
-							$sql = 'DELETE FROM ' . FORUMS_TABLE . '
+							$sql = 'DELETE FROM ' . PHPBB3_FORUMS_TABLE . '
 								WHERE ' . $db->sql_in_set('forum_id', $forum_ids);
 							$db->sql_query($sql);
 
-							$sql = 'DELETE FROM ' . ACL_GROUPS_TABLE . '
+							$sql = 'DELETE FROM ' . PHPBB3_ACL_PHPBB3_GROUPS_TABLE . '
 								WHERE ' . $db->sql_in_set('forum_id', $forum_ids);
 							$db->sql_query($sql);
 
-							$sql = 'DELETE FROM ' . ACL_USERS_TABLE . '
+							$sql = 'DELETE FROM ' . PHPBB3_ACL_USERS_TABLE . '
 								WHERE ' . $db->sql_in_set('forum_id', $forum_ids);
 							$db->sql_query($sql);
 
 							// Delete forum ids from extension groups table
 							$sql = 'SELECT group_id, allowed_forums
-								FROM ' . EXTENSION_GROUPS_TABLE;
+								FROM ' . PHPBB3_EXTENSION_GROUPS_TABLE;
 							$result = $db->sql_query($sql);
 
 							while ($_row = $db->sql_fetchrow($result))
@@ -1138,7 +1138,7 @@ class acp_forums
 								$allowed_forums = unserialize(trim($_row['allowed_forums']));
 								$allowed_forums = array_diff($allowed_forums, $forum_ids);
 
-								$sql = 'UPDATE ' . EXTENSION_GROUPS_TABLE . "
+								$sql = 'UPDATE ' . PHPBB3_EXTENSION_GROUPS_TABLE . "
 									SET allowed_forums = '" . ((sizeof($allowed_forums)) ? serialize($allowed_forums) : '') . "'
 									WHERE group_id = {$_row['group_id']}";
 								$db->sql_query($sql);
@@ -1156,7 +1156,7 @@ class acp_forums
 						}
 
 						$sql = 'SELECT forum_name
-							FROM ' . FORUMS_TABLE . '
+							FROM ' . PHPBB3_FORUMS_TABLE . '
 							WHERE forum_id = ' . $subforums_to_id;
 						$result = $db->sql_query($sql);
 						$_row = $db->sql_fetchrow($result);
@@ -1170,7 +1170,7 @@ class acp_forums
 						$subforums_to_name = $_row['forum_name'];
 
 						$sql = 'SELECT forum_id
-							FROM ' . FORUMS_TABLE . "
+							FROM ' . PHPBB3_FORUMS_TABLE . "
 							WHERE parent_id = {$row['forum_id']}";
 						$result = $db->sql_query($sql);
 
@@ -1180,20 +1180,20 @@ class acp_forums
 						}
 						$db->sql_freeresult($result);
 
-						$sql = 'UPDATE ' . FORUMS_TABLE . "
+						$sql = 'UPDATE ' . PHPBB3_FORUMS_TABLE . "
 							SET parent_id = $subforums_to_id
 							WHERE parent_id = {$row['forum_id']}";
 						$db->sql_query($sql);
 					}
 
 					// Adjust the left/right id
-					$sql = 'UPDATE ' . FORUMS_TABLE . '
+					$sql = 'UPDATE ' . PHPBB3_FORUMS_TABLE . '
 						SET right_id = left_id + 1
 						WHERE forum_id = ' . $row['forum_id'];
 					$db->sql_query($sql);
 				}
 			}
-			else if ($row['forum_type'] == FORUM_CAT && $forum_data_sql['forum_type'] == FORUM_POST)
+			else if ($row['forum_type'] == PHPBB3_FORUM_CAT && $forum_data_sql['forum_type'] == PHPBB3_FORUM_POST)
 			{
 				// Changing a category to a forum? Reset the data (you can't post directly in a cat, you must use a forum)
 				$forum_data_sql['forum_posts'] = 0;
@@ -1234,7 +1234,7 @@ class acp_forums
 			if ($row['forum_name'] != $forum_data_sql['forum_name'])
 			{
 				// the forum name has changed, clear the parents list of all forums (for safety)
-				$sql = 'UPDATE ' . FORUMS_TABLE . "
+				$sql = 'UPDATE ' . PHPBB3_FORUMS_TABLE . "
 					SET forum_parents = ''";
 				$db->sql_query($sql);
 			}
@@ -1243,7 +1243,7 @@ class acp_forums
 			$forum_id = $forum_data_sql['forum_id'];
 			unset($forum_data_sql['forum_id']);
 
-			$sql = 'UPDATE ' . FORUMS_TABLE . '
+			$sql = 'UPDATE ' . PHPBB3_FORUMS_TABLE . '
 				SET ' . $db->sql_build_array('UPDATE', $forum_data_sql) . '
 				WHERE forum_id = ' . $forum_id;
 			$db->sql_query($sql);
@@ -1271,7 +1271,7 @@ class acp_forums
 		{
 			$to_data = $this->get_forum_info($to_id);
 
-			if ($to_data['forum_type'] == FORUM_LINK)
+			if ($to_data['forum_type'] == PHPBB3_FORUM_LINK)
 			{
 				$errors[] = $user->lang['PARENT_IS_LINK_FORUM'];
 				return $errors;
@@ -1289,14 +1289,14 @@ class acp_forums
 		}
 
 		// Resync parents
-		$sql = 'UPDATE ' . FORUMS_TABLE . "
+		$sql = 'UPDATE ' . PHPBB3_FORUMS_TABLE . "
 			SET right_id = right_id - $diff, forum_parents = ''
 			WHERE left_id < " . $from_data['right_id'] . "
 				AND right_id > " . $from_data['right_id'];
 		$db->sql_query($sql);
 
 		// Resync righthand side of tree
-		$sql = 'UPDATE ' . FORUMS_TABLE . "
+		$sql = 'UPDATE ' . PHPBB3_FORUMS_TABLE . "
 			SET left_id = left_id - $diff, right_id = right_id - $diff, forum_parents = ''
 			WHERE left_id > " . $from_data['right_id'];
 		$db->sql_query($sql);
@@ -1307,14 +1307,14 @@ class acp_forums
 			$to_data = $this->get_forum_info($to_id);
 
 			// Resync new parents
-			$sql = 'UPDATE ' . FORUMS_TABLE . "
+			$sql = 'UPDATE ' . PHPBB3_FORUMS_TABLE . "
 				SET right_id = right_id + $diff, forum_parents = ''
 				WHERE " . $to_data['right_id'] . ' BETWEEN left_id AND right_id
 					AND ' . $db->sql_in_set('forum_id', $moved_ids, true);
 			$db->sql_query($sql);
 
 			// Resync the righthand side of the tree
-			$sql = 'UPDATE ' . FORUMS_TABLE . "
+			$sql = 'UPDATE ' . PHPBB3_FORUMS_TABLE . "
 				SET left_id = left_id + $diff, right_id = right_id + $diff, forum_parents = ''
 				WHERE left_id > " . $to_data['right_id'] . '
 					AND ' . $db->sql_in_set('forum_id', $moved_ids, true);
@@ -1335,7 +1335,7 @@ class acp_forums
 		else
 		{
 			$sql = 'SELECT MAX(right_id) AS right_id
-				FROM ' . FORUMS_TABLE . '
+				FROM ' . PHPBB3_FORUMS_TABLE . '
 				WHERE ' . $db->sql_in_set('forum_id', $moved_ids, true);
 			$result = $db->sql_query($sql);
 			$row = $db->sql_fetchrow($result);
@@ -1344,7 +1344,7 @@ class acp_forums
 			$diff = '+ ' . ($row['right_id'] - $from_data['left_id'] + 1);
 		}
 
-		$sql = 'UPDATE ' . FORUMS_TABLE . "
+		$sql = 'UPDATE ' . PHPBB3_FORUMS_TABLE . "
 			SET left_id = left_id $diff, right_id = right_id $diff, forum_parents = ''
 			WHERE " . $db->sql_in_set('forum_id', $moved_ids);
 		$db->sql_query($sql);
@@ -1359,7 +1359,7 @@ class acp_forums
 	{
 		global $db;
 
-		$table_ary = array(LOG_TABLE, POSTS_TABLE, TOPICS_TABLE, DRAFTS_TABLE, TOPICS_TRACK_TABLE);
+		$table_ary = array(PHPBB3_LOG_TABLE, PHPBB3_POSTS_TABLE, PHPBB3_TOPICS_TABLE, PHPBB3_DRAFTS_TABLE, PHPBB3_TOPICS_TRACK_TABLE);
 
 		foreach ($table_ary as $table)
 		{
@@ -1370,7 +1370,7 @@ class acp_forums
 		}
 		unset($table_ary);
 
-		$table_ary = array(FORUMS_ACCESS_TABLE, FORUMS_TRACK_TABLE, FORUMS_WATCH_TABLE, MODERATOR_CACHE_TABLE);
+		$table_ary = array(PHPBB3_FORUMS_ACCESS_TABLE, PHPBB3_FORUMS_TRACK_TABLE, PHPBB3_FORUMS_WATCH_TABLE, PHPBB3_MODERATOR_CACHE_TABLE);
 
 		foreach ($table_ary as $table)
 		{
@@ -1419,7 +1419,7 @@ class acp_forums
 				$log_action_posts = 'MOVE_POSTS';
 
 				$sql = 'SELECT forum_name
-					FROM ' . FORUMS_TABLE . '
+					FROM ' . PHPBB3_FORUMS_TABLE . '
 					WHERE forum_id = ' . $posts_to_id;
 				$result = $db->sql_query($sql);
 				$row = $db->sql_fetchrow($result);
@@ -1460,15 +1460,15 @@ class acp_forums
 
 			$diff = sizeof($forum_ids) * 2;
 
-			$sql = 'DELETE FROM ' . FORUMS_TABLE . '
+			$sql = 'DELETE FROM ' . PHPBB3_FORUMS_TABLE . '
 				WHERE ' . $db->sql_in_set('forum_id', $forum_ids);
 			$db->sql_query($sql);
 
-			$sql = 'DELETE FROM ' . ACL_GROUPS_TABLE . '
+			$sql = 'DELETE FROM ' . PHPBB3_ACL_PHPBB3_GROUPS_TABLE . '
 				WHERE ' . $db->sql_in_set('forum_id', $forum_ids);
 			$db->sql_query($sql);
 
-			$sql = 'DELETE FROM ' . ACL_USERS_TABLE . '
+			$sql = 'DELETE FROM ' . PHPBB3_ACL_USERS_TABLE . '
 				WHERE ' . $db->sql_in_set('forum_id', $forum_ids);
 			$db->sql_query($sql);
 		}
@@ -1483,7 +1483,7 @@ class acp_forums
 				$log_action_forums = 'MOVE_FORUMS';
 
 				$sql = 'SELECT forum_name
-					FROM ' . FORUMS_TABLE . '
+					FROM ' . PHPBB3_FORUMS_TABLE . '
 					WHERE forum_id = ' . $subforums_to_id;
 				$result = $db->sql_query($sql);
 				$row = $db->sql_fetchrow($result);
@@ -1498,7 +1498,7 @@ class acp_forums
 					$subforums_to_name = $row['forum_name'];
 
 					$sql = 'SELECT forum_id
-						FROM ' . FORUMS_TABLE . "
+						FROM ' . PHPBB3_FORUMS_TABLE . "
 						WHERE parent_id = $forum_id";
 					$result = $db->sql_query($sql);
 
@@ -1511,21 +1511,21 @@ class acp_forums
 					// Grab new forum data for correct tree updating later
 					$forum_data = $this->get_forum_info($forum_id);
 
-					$sql = 'UPDATE ' . FORUMS_TABLE . "
+					$sql = 'UPDATE ' . PHPBB3_FORUMS_TABLE . "
 						SET parent_id = $subforums_to_id
 						WHERE parent_id = $forum_id";
 					$db->sql_query($sql);
 
 					$diff = 2;
-					$sql = 'DELETE FROM ' . FORUMS_TABLE . "
+					$sql = 'DELETE FROM ' . PHPBB3_FORUMS_TABLE . "
 						WHERE forum_id = $forum_id";
 					$db->sql_query($sql);
 
-					$sql = 'DELETE FROM ' . ACL_GROUPS_TABLE . "
+					$sql = 'DELETE FROM ' . PHPBB3_ACL_PHPBB3_GROUPS_TABLE . "
 						WHERE forum_id = $forum_id";
 					$db->sql_query($sql);
 
-					$sql = 'DELETE FROM ' . ACL_USERS_TABLE . "
+					$sql = 'DELETE FROM ' . PHPBB3_ACL_USERS_TABLE . "
 						WHERE forum_id = $forum_id";
 					$db->sql_query($sql);
 				}
@@ -1539,33 +1539,33 @@ class acp_forums
 		else
 		{
 			$diff = 2;
-			$sql = 'DELETE FROM ' . FORUMS_TABLE . "
+			$sql = 'DELETE FROM ' . PHPBB3_FORUMS_TABLE . "
 				WHERE forum_id = $forum_id";
 			$db->sql_query($sql);
 
-			$sql = 'DELETE FROM ' . ACL_GROUPS_TABLE . "
+			$sql = 'DELETE FROM ' . PHPBB3_ACL_PHPBB3_GROUPS_TABLE . "
 				WHERE forum_id = $forum_id";
 			$db->sql_query($sql);
 
-			$sql = 'DELETE FROM ' . ACL_USERS_TABLE . "
+			$sql = 'DELETE FROM ' . PHPBB3_ACL_USERS_TABLE . "
 				WHERE forum_id = $forum_id";
 			$db->sql_query($sql);
 		}
 
 		// Resync tree
-		$sql = 'UPDATE ' . FORUMS_TABLE . "
+		$sql = 'UPDATE ' . PHPBB3_FORUMS_TABLE . "
 			SET right_id = right_id - $diff
 			WHERE left_id < {$forum_data['right_id']} AND right_id > {$forum_data['right_id']}";
 		$db->sql_query($sql);
 
-		$sql = 'UPDATE ' . FORUMS_TABLE . "
+		$sql = 'UPDATE ' . PHPBB3_FORUMS_TABLE . "
 			SET left_id = left_id - $diff, right_id = right_id - $diff
 			WHERE left_id > {$forum_data['right_id']}";
 		$db->sql_query($sql);
 
 		// Delete forum ids from extension groups table
 		$sql = 'SELECT group_id, allowed_forums
-			FROM ' . EXTENSION_GROUPS_TABLE;
+			FROM ' . PHPBB3_EXTENSION_GROUPS_TABLE;
 		$result = $db->sql_query($sql);
 
 		while ($row = $db->sql_fetchrow($result))
@@ -1578,7 +1578,7 @@ class acp_forums
 			$allowed_forums = unserialize(trim($row['allowed_forums']));
 			$allowed_forums = array_diff($allowed_forums, $forum_ids);
 
-			$sql = 'UPDATE ' . EXTENSION_GROUPS_TABLE . "
+			$sql = 'UPDATE ' . PHPBB3_EXTENSION_GROUPS_TABLE . "
 				SET allowed_forums = '" . ((sizeof($allowed_forums)) ? serialize($allowed_forums) : '') . "'
 				WHERE group_id = {$row['group_id']}";
 			$db->sql_query($sql);
@@ -1644,7 +1644,7 @@ class acp_forums
 
 		// Select then delete all attachments
 		$sql = 'SELECT a.topic_id
-			FROM ' . POSTS_TABLE . ' p, ' . ATTACHMENTS_TABLE . " a
+			FROM ' . PHPBB3_POSTS_TABLE . ' p, ' . PHPBB3_ATTACHMENTS_TABLE . " a
 			WHERE p.forum_id = $forum_id
 				AND a.in_message = 0
 				AND a.topic_id = p.topic_id";
@@ -1661,7 +1661,7 @@ class acp_forums
 
 		// Before we remove anything we make sure we are able to adjust the post counts later. ;)
 		$sql = 'SELECT poster_id
-			FROM ' . POSTS_TABLE . '
+			FROM ' . PHPBB3_POSTS_TABLE . '
 			WHERE forum_id = ' . $forum_id . '
 				AND post_postcount = 1
 				AND post_approved = 1';
@@ -1681,25 +1681,25 @@ class acp_forums
 
 				// Delete everything else and thank MySQL for offering multi-table deletion
 				$tables_ary = array(
-					SEARCH_WORDMATCH_TABLE	=> 'post_id',
-					REPORTS_TABLE			=> 'post_id',
-					WARNINGS_TABLE			=> 'post_id',
-					BOOKMARKS_TABLE			=> 'topic_id',
-					TOPICS_WATCH_TABLE		=> 'topic_id',
-					TOPICS_POSTED_TABLE		=> 'topic_id',
-					POLL_OPTIONS_TABLE		=> 'topic_id',
-					POLL_VOTES_TABLE		=> 'topic_id',
+					PHPBB3_SEARCH_WORDMATCH_TABLE	=> 'post_id',
+					PHPBB3_REPORTS_TABLE			=> 'post_id',
+					PHPBB3_WARNINGS_TABLE			=> 'post_id',
+					PHPBB3_BOOKMARKS_TABLE			=> 'topic_id',
+					PHPBB3_TOPICS_WATCH_TABLE		=> 'topic_id',
+					PHPBB3_TOPICS_POSTED_TABLE		=> 'topic_id',
+					PHPBB3_POLL_OPTIONS_TABLE		=> 'topic_id',
+					PHPBB3_POLL_VOTES_TABLE		=> 'topic_id',
 				);
 
-				$sql = 'DELETE ' . POSTS_TABLE;
-				$sql_using = "\nFROM " . POSTS_TABLE;
-				$sql_where = "\nWHERE " . POSTS_TABLE . ".forum_id = $forum_id\n";
+				$sql = 'DELETE ' . PHPBB3_POSTS_TABLE;
+				$sql_using = "\nFROM " . PHPBB3_POSTS_TABLE;
+				$sql_where = "\nWHERE " . PHPBB3_POSTS_TABLE . ".forum_id = $forum_id\n";
 
 				foreach ($tables_ary as $table => $field)
 				{
 					$sql .= ", $table ";
 					$sql_using .= ", $table ";
-					$sql_where .= "\nAND $table.$field = " . POSTS_TABLE . ".$field";
+					$sql_where .= "\nAND $table.$field = " . PHPBB3_POSTS_TABLE . ".$field";
 				}
 
 				$db->sql_query($sql . $sql_using . $sql_where);
@@ -1711,17 +1711,17 @@ class acp_forums
 				// Delete everything else and curse your DB for not offering multi-table deletion
 				$tables_ary = array(
 					'post_id'	=>	array(
-						SEARCH_WORDMATCH_TABLE,
-						REPORTS_TABLE,
-						WARNINGS_TABLE,
+						PHPBB3_SEARCH_WORDMATCH_TABLE,
+						PHPBB3_REPORTS_TABLE,
+						PHPBB3_WARNINGS_TABLE,
 					),
 
 					'topic_id'	=>	array(
-						BOOKMARKS_TABLE,
-						TOPICS_WATCH_TABLE,
-						TOPICS_POSTED_TABLE,
-						POLL_OPTIONS_TABLE,
-						POLL_VOTES_TABLE,
+						PHPBB3_BOOKMARKS_TABLE,
+						PHPBB3_TOPICS_WATCH_TABLE,
+						PHPBB3_TOPICS_POSTED_TABLE,
+						PHPBB3_POLL_OPTIONS_TABLE,
+						PHPBB3_POLL_VOTES_TABLE,
 					)
 				);
 
@@ -1732,7 +1732,7 @@ class acp_forums
 					do
 					{
 						$sql = "SELECT $field
-							FROM " . POSTS_TABLE . '
+							FROM " . PHPBB3_POSTS_TABLE . '
 							WHERE forum_id = ' . $forum_id;
 						$result = $db->sql_query_limit($sql, 500, $start);
 
@@ -1760,7 +1760,7 @@ class acp_forums
 			break;
 		}
 
-		$table_ary = array(FORUMS_ACCESS_TABLE, FORUMS_TRACK_TABLE, FORUMS_WATCH_TABLE, LOG_TABLE, MODERATOR_CACHE_TABLE, POSTS_TABLE, TOPICS_TABLE, TOPICS_TRACK_TABLE);
+		$table_ary = array(PHPBB3_FORUMS_ACCESS_TABLE, PHPBB3_FORUMS_TRACK_TABLE, PHPBB3_FORUMS_WATCH_TABLE, PHPBB3_LOG_TABLE, PHPBB3_MODERATOR_CACHE_TABLE, PHPBB3_POSTS_TABLE, PHPBB3_TOPICS_TABLE, PHPBB3_TOPICS_TRACK_TABLE);
 
 		foreach ($table_ary as $table)
 		{
@@ -1768,7 +1768,7 @@ class acp_forums
 		}
 
 		// Set forum ids to 0
-		$table_ary = array(DRAFTS_TABLE);
+		$table_ary = array(PHPBB3_DRAFTS_TABLE);
 
 		foreach ($table_ary as $table)
 		{
@@ -1780,13 +1780,13 @@ class acp_forums
 		{
 			foreach ($post_counts as $poster_id => $substract)
 			{
-				$sql = 'UPDATE ' . USERS_TABLE . '
+				$sql = 'UPDATE ' . PHPBB3_USERS_TABLE . '
 					SET user_posts = 0
 					WHERE user_id = ' . $poster_id . '
 					AND user_posts < ' . $substract;
 				$db->sql_query($sql);
 
-				$sql = 'UPDATE ' . USERS_TABLE . '
+				$sql = 'UPDATE ' . PHPBB3_USERS_TABLE . '
 					SET user_posts = user_posts - ' . $substract . '
 					WHERE user_id = ' . $poster_id . '
 					AND user_posts >= ' . $substract;
@@ -1798,7 +1798,7 @@ class acp_forums
 
 		// Make sure the overall post/topic count is correct...
 		$sql = 'SELECT COUNT(post_id) AS stat
-			FROM ' . POSTS_TABLE . '
+			FROM ' . PHPBB3_POSTS_TABLE . '
 			WHERE post_approved = 1';
 		$result = $db->sql_query($sql);
 		$row = $db->sql_fetchrow($result);
@@ -1807,7 +1807,7 @@ class acp_forums
 		set_config('num_posts', (int) $row['stat'], true);
 
 		$sql = 'SELECT COUNT(topic_id) AS stat
-			FROM ' . TOPICS_TABLE . '
+			FROM ' . PHPBB3_TOPICS_TABLE . '
 			WHERE topic_approved = 1';
 		$result = $db->sql_query($sql);
 		$row = $db->sql_fetchrow($result);
@@ -1816,7 +1816,7 @@ class acp_forums
 		set_config('num_topics', (int) $row['stat'], true);
 
 		$sql = 'SELECT COUNT(attach_id) as stat
-			FROM ' . ATTACHMENTS_TABLE;
+			FROM ' . PHPBB3_ATTACHMENTS_TABLE;
 		$result = $db->sql_query($sql);
 		$row = $db->sql_fetchrow($result);
 		$db->sql_freeresult($result);
@@ -1824,7 +1824,7 @@ class acp_forums
 		set_config('num_files', (int) $row['stat'], true);
 
 		$sql = 'SELECT SUM(filesize) as stat
-			FROM ' . ATTACHMENTS_TABLE;
+			FROM ' . PHPBB3_ATTACHMENTS_TABLE;
 		$result = $db->sql_query($sql);
 		$row = $db->sql_fetchrow($result);
 		$db->sql_freeresult($result);
@@ -1848,7 +1848,7 @@ class acp_forums
 		* module will move as far as possible
 		*/
 		$sql = 'SELECT forum_id, forum_name, left_id, right_id
-			FROM ' . FORUMS_TABLE . "
+			FROM ' . PHPBB3_FORUMS_TABLE . "
 			WHERE parent_id = {$forum_row['parent_id']}
 				AND " . (($action == 'move_up') ? "right_id < {$forum_row['right_id']} ORDER BY right_id DESC" : "left_id > {$forum_row['left_id']} ORDER BY left_id ASC");
 		$result = $db->sql_query_limit($sql, $steps);
@@ -1897,7 +1897,7 @@ class acp_forums
 		}
 
 		// Now do the dirty job
-		$sql = 'UPDATE ' . FORUMS_TABLE . "
+		$sql = 'UPDATE ' . PHPBB3_FORUMS_TABLE . "
 			SET left_id = left_id + CASE
 				WHEN left_id BETWEEN {$move_up_left} AND {$move_up_right} THEN -{$diff_up}
 				ELSE {$diff_down}

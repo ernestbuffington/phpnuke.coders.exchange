@@ -130,15 +130,15 @@ if ($mode == 'send')
 		
 		if (!$confirm_id)
 		{
-			$error[] = $user->lang['CONFIRM_CODE_WRONG'];
+			$error[] = $user->lang['PHPBB3_CONFIRM_CODE_WRONG'];
 		}
 		else
 		{
 			$sql = 'SELECT code
-				FROM ' . CONFIRM_TABLE . "
+				FROM ' . PHPBB3_CONFIRM_TABLE . "
 				WHERE confirm_id = '" . $db->sql_escape($confirm_id) . "'
 					AND session_id = '" . $db->sql_escape($user->session_id) . "'
-					AND confirm_type = " . CONFIRM_CONTACT;
+					AND confirm_type = " . PHPBB3_CONFIRM_CONTACT;
 			$result = $db->sql_query($sql);
 			$row = $db->sql_fetchrow($result);
 			$db->sql_freeresult($result);
@@ -147,20 +147,20 @@ if ($mode == 'send')
 			{
 				if (strcasecmp($row['code'], $confirm_code) === 0)
 				{
-					$sql = 'DELETE FROM ' . CONFIRM_TABLE . "
+					$sql = 'DELETE FROM ' . PHPBB3_CONFIRM_TABLE . "
 						WHERE confirm_id = '" . $db->sql_escape($confirm_id) . "'
 							AND session_id = '" . $db->sql_escape($user->session_id) . "'
-							AND confirm_type = " . CONFIRM_CONTACT;
+							AND confirm_type = " . PHPBB3_CONFIRM_CONTACT;
 					$db->sql_query($sql);
 				}
 				else
 				{
-					$error[] = $user->lang['CONFIRM_CODE_WRONG'];
+					$error[] = $user->lang['PHPBB3_CONFIRM_CODE_WRONG'];
 				}
 			}
 			else
 			{
-				$error[] = $user->lang['CONFIRM_CODE_WRONG'];
+				$error[] = $user->lang['PHPBB3_CONFIRM_CODE_WRONG'];
 			}
 		}
 	}
@@ -181,7 +181,7 @@ if ($mode == 'send')
 			$admin_ary = (!empty($admin_ary[0]['a_'])) ? $admin_ary[0]['a_'] : array();
 	
 			// Also include founders
-			$where_sql = ' WHERE user_type = ' . USER_FOUNDER;
+			$where_sql = ' WHERE user_type = ' . PHPBB3_USER_FOUNDER;
 	
 			if (sizeof($admin_ary))
 			{
@@ -189,7 +189,7 @@ if ($mode == 'send')
 			}
 	
 			$sql = 'SELECT user_id, username, user_email, user_lang, user_jabber, user_notify_type
-				FROM ' . USERS_TABLE . ' ' .
+				FROM ' . PHPBB3_USERS_TABLE . ' ' .
 				$where_sql;
 			$result = $db->sql_query($sql);
 			
@@ -210,9 +210,9 @@ if ($mode == 'send')
 			);
 			
 			$sql = 'SELECT username, user_colour
-				FROM ' . USERS_TABLE . '
+				FROM ' . PHPBB3_USERS_TABLE . '
 				WHERE user_id = ' . (int) $config['contact_bot_user'] . '
-				AND user_type <> ' . USER_IGNORE;
+				AND user_type <> ' . PHPBB3_USER_IGNORE;
 			$result = $db->sql_query($sql);
 			$row = $db->sql_fetchrow($result);
 			$db->sql_freeresult($result);
@@ -288,7 +288,7 @@ if ($mode == 'send')
 				include_once($phpbb_root_path . 'includes/message_parser.' . $phpEx);
 				
 				$sql = 'SELECT forum_name
-					FROM ' . FORUMS_TABLE . '
+					FROM ' . PHPBB3_FORUMS_TABLE . '
 					WHERE forum_id = ' . (int) $config['contact_bot_forum'];
 				$result = $db->sql_query($sql);
 				$forum_name = $db->sql_fetchfield('forum_name');
@@ -330,7 +330,7 @@ if ($mode == 'send')
 				$poll = array();
 				
 				// Submit the post!
-				submit_post('post', $subject, $user->data['username'], POST_NORMAL, $poll, $post_data);
+				submit_post('post', $subject, $user->data['username'], PHPBB3_POST_NORMAL, $poll, $post_data);
 				
 				break;
 				
@@ -400,7 +400,7 @@ $confirm_image = '';
 if ($config['contact_confirm'])
 {
 	$sql = 'SELECT session_id
-		FROM ' . SESSIONS_TABLE;
+		FROM ' . PHPBB3_SESSIONS_TABLE;
 	$result = $db->sql_query($sql);
 
 	if ($row = $db->sql_fetchrow($result))
@@ -414,18 +414,18 @@ if ($config['contact_confirm'])
 
 		if (sizeof($sql_in))
 		{
-			$sql = 'DELETE FROM ' . CONFIRM_TABLE . '
+			$sql = 'DELETE FROM ' . PHPBB3_CONFIRM_TABLE . '
 				WHERE ' . $db->sql_in_set('session_id', $sql_in, true) . '
-					AND confirm_type = ' . CONFIRM_CONTACT;
+					AND confirm_type = ' . PHPBB3_CONFIRM_CONTACT;
 			$db->sql_query($sql);
 		}
 	}
 	$db->sql_freeresult($result);
 
 	$sql = 'SELECT COUNT(session_id) AS attempts
-		FROM ' . CONFIRM_TABLE . "
+		FROM ' . PHPBB3_CONFIRM_TABLE . "
 		WHERE session_id = '" . $db->sql_escape($user->session_id) . "'
-			AND confirm_type = " . CONFIRM_CONTACT;
+			AND confirm_type = " . PHPBB3_CONFIRM_CONTACT;
 	$result = $db->sql_query($sql);
 	$attempts = (int) $db->sql_fetchfield('attempts');
 	$db->sql_freeresult($result);
@@ -442,16 +442,16 @@ if ($config['contact_confirm'])
 	// compute $seed % 0x7fffffff
 	$seed -= 0x7fffffff * floor($seed / 0x7fffffff);
 
-	$sql = 'INSERT INTO ' . CONFIRM_TABLE . ' ' . $db->sql_build_array('INSERT', array(
+	$sql = 'INSERT INTO ' . PHPBB3_CONFIRM_TABLE . ' ' . $db->sql_build_array('INSERT', array(
 		'confirm_id'	=> (string) $confirm_id,
 		'session_id'	=> (string) $user->session_id,
-		'confirm_type'	=> (int) CONFIRM_CONTACT,
+		'confirm_type'	=> (int) PHPBB3_CONFIRM_CONTACT,
 		'code'			=> (string) $code,
 		'seed'			=> (int) $seed)
 	);
 	$db->sql_query($sql);
 
-	$confirm_image = '<img src="' . append_sid("{$phpbb_root_path}ucp.$phpEx", 'mode=confirm&amp;id=' . $confirm_id . '&amp;type=' . CONFIRM_CONTACT) . '" alt="" title="" />';
+	$confirm_image = '<img src="' . append_sid("{$phpbb_root_path}ucp.$phpEx", 'mode=confirm&amp;id=' . $confirm_id . '&amp;type=' . PHPBB3_CONFIRM_CONTACT) . '" alt="" title="" />';
 	$s_hidden_fields .= '<input type="hidden" name="confirm_id" value="' . $confirm_id . '" />';
 }
 
@@ -462,12 +462,12 @@ $template->assign_vars(array(
 	'MESSAGE'			=> $message,
 	'REASONS'			=> (!empty($config['contact_reasons'])) ? contact_make_select(explode("\n", $config['contact_reasons']), $reason) : '',
 	
-	'CONFIRM_IMG'		=> $confirm_image,
+	'PHPBB3_CONFIRM_IMG'		=> $confirm_image,
 	
 	'S_CONTACT_ACTION'	=> append_sid("{$phpbb_root_path}contact.$phpEx"),
 	'S_HIDDEN_FIELDS'	=> $s_hidden_fields,
 	'S_ERROR'			=> (isset($error) && sizeof($error)) ? implode('<br />', $error) : '',
-	'S_CONFIRM_CODE'	=> ($config['contact_confirm']) ? true : false,
+	'S_PHPBB3_CONFIRM_CODE'	=> ($config['contact_confirm']) ? true : false,
 ));
 
 // Output the page

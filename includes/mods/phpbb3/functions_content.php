@@ -125,7 +125,7 @@ function make_jumpbox($action, $forum_id = false, $select_all = false, $acl_list
 	}
 
 	$sql = 'SELECT forum_id, forum_name, parent_id, forum_type, left_id, right_id
-		FROM ' . FORUMS_TABLE . '
+		FROM ' . PHPBB3_FORUMS_TABLE . '
 		ORDER BY left_id ASC';
 	$result = $db->sql_query($sql, 600);
 
@@ -154,7 +154,7 @@ function make_jumpbox($action, $forum_id = false, $select_all = false, $acl_list
 
 		$right = $row['right_id'];
 
-		if ($row['forum_type'] == FORUM_CAT && ($row['left_id'] + 1 == $row['right_id']))
+		if ($row['forum_type'] == PHPBB3_FORUM_CAT && ($row['left_id'] + 1 == $row['right_id']))
 		{
 			// Non-postable forum with no subforums, don't display
 			continue;
@@ -188,9 +188,9 @@ function make_jumpbox($action, $forum_id = false, $select_all = false, $acl_list
 			'FORUM_NAME'	=> $row['forum_name'],
 			'SELECTED'		=> ($row['forum_id'] == $forum_id) ? ' selected="selected"' : '',
 			'S_FORUM_COUNT'	=> $iteration,
-			'S_IS_CAT'		=> ($row['forum_type'] == FORUM_CAT) ? true : false,
-			'S_IS_LINK'		=> ($row['forum_type'] == FORUM_LINK) ? true : false,
-			'S_IS_POST'		=> ($row['forum_type'] == FORUM_POST) ? true : false)
+			'S_IS_CAT'		=> ($row['forum_type'] == PHPBB3_FORUM_CAT) ? true : false,
+			'S_IS_LINK'		=> ($row['forum_type'] == PHPBB3_FORUM_LINK) ? true : false,
+			'S_IS_POST'		=> ($row['forum_type'] == PHPBB3_FORUM_POST) ? true : false)
 		);
 
 		for ($i = 0; $i < $padding; $i++)
@@ -417,7 +417,7 @@ function generate_text_for_display($text, $uid, $bitfield, $flags)
 	$text = censor_text($text);
 
 	// Parse bbcode if bbcode uid stored and bbcode enabled
-	if ($uid && ($flags & OPTION_FLAG_BBCODE))
+	if ($uid && ($flags & PHPBB3_OPTION_FLAG_BBCODE))
 	{
 		if (!class_exists('bbcode'))
 		{
@@ -441,7 +441,7 @@ function generate_text_for_display($text, $uid, $bitfield, $flags)
 	}
 
 	$text = bbcode_nl2br($text);
-	$text = smiley_text($text, !($flags & OPTION_FLAG_SMILIES));
+	$text = smiley_text($text, !($flags & PHPBB3_OPTION_FLAG_SMILIES));
 
 	return $text;
 }
@@ -458,7 +458,7 @@ function generate_text_for_storage(&$text, &$uid, &$bitfield, &$flags, $allow_bb
 	$phpbb_include_path = PHPBB3_INCLUDE_DIR;
 
 	$uid = $bitfield = '';
-	$flags = (($allow_bbcode) ? OPTION_FLAG_BBCODE : 0) + (($allow_smilies) ? OPTION_FLAG_SMILIES : 0) + (($allow_urls) ? OPTION_FLAG_LINKS : 0);
+	$flags = (($allow_bbcode) ? PHPBB3_OPTION_FLAG_BBCODE : 0) + (($allow_smilies) ? PHPBB3_OPTION_FLAG_SMILIES : 0) + (($allow_urls) ? PHPBB3_OPTION_FLAG_LINKS : 0);
 
 	if (!$text)
 	{
@@ -498,9 +498,9 @@ function generate_text_for_edit($text, $uid, $flags)
 	decode_message($text, $uid);
 
 	return array(
-		'allow_bbcode'	=> ($flags & OPTION_FLAG_BBCODE) ? 1 : 0,
-		'allow_smilies'	=> ($flags & OPTION_FLAG_SMILIES) ? 1 : 0,
-		'allow_urls'	=> ($flags & OPTION_FLAG_LINKS) ? 1 : 0,
+		'allow_bbcode'	=> ($flags & PHPBB3_OPTION_FLAG_BBCODE) ? 1 : 0,
+		'allow_smilies'	=> ($flags & PHPBB3_OPTION_FLAG_SMILIES) ? 1 : 0,
+		'allow_urls'	=> ($flags & PHPBB3_OPTION_FLAG_LINKS) ? 1 : 0,
 		'text'			=> $text
 	);
 }
@@ -807,7 +807,7 @@ function parse_attachments($forum_id, &$message, &$attachments, &$update_count, 
 		$new_attachment_data = array();
 
 		$sql = 'SELECT *
-			FROM ' . ATTACHMENTS_TABLE . '
+			FROM ' . PHPBB3_ATTACHMENTS_TABLE . '
 			WHERE ' . $db->sql_in_set('attach_id', array_keys($attach_ids));
 		$result = $db->sql_query($sql);
 
@@ -906,11 +906,11 @@ function parse_attachments($forum_id, &$message, &$attachments, &$update_count, 
 			$l_downloaded_viewed = $download_link = '';
 			$display_cat = $extensions[$attachment['extension']]['display_cat'];
 
-			if ($display_cat == ATTACHMENT_CATEGORY_IMAGE)
+			if ($display_cat == PHPBB3_ATTACHMENT_CATEGORY_IMAGE)
 			{
 				if ($attachment['thumbnail'])
 				{
-					$display_cat = ATTACHMENT_CATEGORY_THUMB;
+					$display_cat = PHPBB3_ATTACHMENT_CATEGORY_THUMB;
 				}
 				else
 				{
@@ -923,30 +923,30 @@ function parse_attachments($forum_id, &$message, &$attachments, &$update_count, 
 							// If the dimensions could not be determined or the image being 0x0 we display it as a link for safety purposes
 							if ($dimension === false || empty($dimension[0]) || empty($dimension[1]))
 							{
-								$display_cat = ATTACHMENT_CATEGORY_NONE;
+								$display_cat = PHPBB3_ATTACHMENT_CATEGORY_NONE;
 							}
 							else
 							{
-								$display_cat = ($dimension[0] <= $config['img_link_width'] && $dimension[1] <= $config['img_link_height']) ? ATTACHMENT_CATEGORY_IMAGE : ATTACHMENT_CATEGORY_NONE;
+								$display_cat = ($dimension[0] <= $config['img_link_width'] && $dimension[1] <= $config['img_link_height']) ? PHPBB3_ATTACHMENT_CATEGORY_IMAGE : PHPBB3_ATTACHMENT_CATEGORY_NONE;
 							}
 						}
 					}
 					else
 					{
-						$display_cat = ATTACHMENT_CATEGORY_NONE;
+						$display_cat = PHPBB3_ATTACHMENT_CATEGORY_NONE;
 					}
 				}
 			}
 
 			// Make some descisions based on user options being set.
-			if (($display_cat == ATTACHMENT_CATEGORY_IMAGE || $display_cat == ATTACHMENT_CATEGORY_THUMB) && !$user->optionget('viewimg'))
+			if (($display_cat == PHPBB3_ATTACHMENT_CATEGORY_IMAGE || $display_cat == PHPBB3_ATTACHMENT_CATEGORY_THUMB) && !$user->optionget('viewimg'))
 			{
-				$display_cat = ATTACHMENT_CATEGORY_NONE;
+				$display_cat = PHPBB3_ATTACHMENT_CATEGORY_NONE;
 			}
 
-			if ($display_cat == ATTACHMENT_CATEGORY_FLASH && !$user->optionget('viewflash'))
+			if ($display_cat == PHPBB3_ATTACHMENT_CATEGORY_FLASH && !$user->optionget('viewflash'))
 			{
-				$display_cat = ATTACHMENT_CATEGORY_NONE;
+				$display_cat = PHPBB3_ATTACHMENT_CATEGORY_NONE;
 			}
 
 			$download_link = append_sid("{$phpbb_root_path}download/file.$phpEx", 'id=' . $attachment['attach_id']);
@@ -954,21 +954,21 @@ function parse_attachments($forum_id, &$message, &$attachments, &$update_count, 
 			switch ($display_cat)
 			{
 				// Images
-				case ATTACHMENT_CATEGORY_IMAGE:
+				case PHPBB3_ATTACHMENT_CATEGORY_IMAGE:
 					$l_downloaded_viewed = 'VIEWED_COUNT';
 					$inline_link = append_sid("{$phpbb_root_path}download/file.$phpEx", 'id=' . $attachment['attach_id']);
 					$download_link .= '&amp;mode=view';
 
 					$block_array += array(
 						'S_IMAGE'		=> true,
-						'U_INLINE_LINK'		=> $inline_link,
+						'U_PHPBB3_INLINE_LINK'		=> $inline_link,
 					);
 
 					$update_count[] = $attachment['attach_id'];
 				break;
 
 				// Images, but display Thumbnail
-				case ATTACHMENT_CATEGORY_THUMB:
+				case PHPBB3_ATTACHMENT_CATEGORY_THUMB:
 					$l_downloaded_viewed = 'VIEWED_COUNT';
 					$thumbnail_link = append_sid("{$phpbb_root_path}download/file.$phpEx", 'id=' . $attachment['attach_id'] . '&amp;t=1');
 					$download_link .= '&amp;mode=view';
@@ -980,7 +980,7 @@ function parse_attachments($forum_id, &$message, &$attachments, &$update_count, 
 				break;
 
 				// Windows Media Streams
-				case ATTACHMENT_CATEGORY_WM:
+				case PHPBB3_ATTACHMENT_CATEGORY_WM:
 					$l_downloaded_viewed = 'VIEWED_COUNT';
 
 					// Giving the filename directly because within the wm object all variables are in local context making it impossible
@@ -998,13 +998,13 @@ function parse_attachments($forum_id, &$message, &$attachments, &$update_count, 
 				break;
 
 				// Real Media Streams
-				case ATTACHMENT_CATEGORY_RM:
-				case ATTACHMENT_CATEGORY_QUICKTIME:
+				case PHPBB3_ATTACHMENT_CATEGORY_RM:
+				case PHPBB3_ATTACHMENT_CATEGORY_QUICKTIME:
 					$l_downloaded_viewed = 'VIEWED_COUNT';
 
 					$block_array += array(
-						'S_RM_FILE'			=> ($display_cat == ATTACHMENT_CATEGORY_RM) ? true : false,
-						'S_QUICKTIME_FILE'	=> ($display_cat == ATTACHMENT_CATEGORY_QUICKTIME) ? true : false,
+						'S_RM_FILE'			=> ($display_cat == PHPBB3_ATTACHMENT_CATEGORY_RM) ? true : false,
+						'S_QUICKTIME_FILE'	=> ($display_cat == PHPBB3_ATTACHMENT_CATEGORY_QUICKTIME) ? true : false,
 						'U_FORUM'			=> generate_board_url(),
 						'ATTACH_ID'			=> $attachment['attach_id'],
 					);
@@ -1014,7 +1014,7 @@ function parse_attachments($forum_id, &$message, &$attachments, &$update_count, 
 				break;
 
 				// Macromedia Flash Files
-				case ATTACHMENT_CATEGORY_FLASH:
+				case PHPBB3_ATTACHMENT_CATEGORY_FLASH:
 					list($width, $height) = getimagesize($filename);
 
 					$l_downloaded_viewed = 'VIEWED_COUNT';

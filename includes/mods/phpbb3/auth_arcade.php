@@ -42,7 +42,7 @@ class auth_arcade
 		if (($this->acl_options = $cache->get('_acl_arcade_options')) === false)
 		{
 			$sql = 'SELECT auth_option_id, auth_option, is_global, is_local
-				FROM ' . ACL_ARCADE_OPTIONS_TABLE . '
+				FROM ' . PHPBB3_ACL_ARCADE_OPTIONS_TABLE . '
 				ORDER BY auth_option_id';
 			$result = $db->sql_query($sql);
 
@@ -384,13 +384,13 @@ class auth_arcade
 		// Key 0 in $hold_ary are global options, all others are cat_ids
 
 		// If this user is founder we're going to force fill the admin options ...
-		/*if ($userdata['user_type'] == USER_FOUNDER)
+		/*if ($userdata['user_type'] == PHPBB3_USER_FOUNDER)
 		{
 			foreach ($this->acl_options['global'] as $opt => $id)
 			{
 				if (strpos($opt, 'a_') === 0)
 				{
-					$hold_ary[0][$this->acl_options['id'][$opt]] = ACL_YES;
+					$hold_ary[0][$this->acl_options['id'][$opt]] = PHPBB3_PHPBB3_ACL_YES;
 				}
 			}
 		}*/
@@ -401,7 +401,7 @@ class auth_arcade
 		{
 			$userdata['user_arcade_permissions'] = $hold_str;
 
-			$sql = 'UPDATE ' . USERS_TABLE . "
+			$sql = 'UPDATE ' . PHPBB3_USERS_TABLE . "
 				SET user_arcade_permissions = '" . $db->sql_escape($userdata['user_arcade_permissions']) . "',
 					user_arcade_perm_from = 0
 				WHERE user_id = " . $userdata['user_id'];
@@ -439,14 +439,14 @@ class auth_arcade
 
 						// If one option is allowed, the global permission for this option has to be allowed too
 						// example: if the user has the a_ permission this means he has one or more a_* permissions
-						if ($auth_ary[$this->acl_options['id'][$opt]] == ACL_YES && (!isset($bitstring[$this->acl_options[$ary_key][$option_key]]) || $bitstring[$this->acl_options[$ary_key][$option_key]] == ACL_NEVER))
+						if ($auth_ary[$this->acl_options['id'][$opt]] == PHPBB3_PHPBB3_ACL_YES && (!isset($bitstring[$this->acl_options[$ary_key][$option_key]]) || $bitstring[$this->acl_options[$ary_key][$option_key]] == PHPBB3_PHPBB3_ACL_NEVER))
 						{
-							$bitstring[$this->acl_options[$ary_key][$option_key]] = ACL_YES;
+							$bitstring[$this->acl_options[$ary_key][$option_key]] = PHPBB3_PHPBB3_ACL_YES;
 						}
 					}
 					else
 					{
-						$bitstring[$id] = ACL_NEVER;
+						$bitstring[$id] = PHPBB3_PHPBB3_ACL_NEVER;
 					}
 				}
 
@@ -483,7 +483,7 @@ class auth_arcade
 		$cache->destroy('_arcade_role_cache');
 
 		$sql = 'SELECT *
-			FROM ' . ACL_ARCADE_ROLES_DATA_TABLE . '
+			FROM ' . PHPBB3_ACL_ARCADE_ROLES_DATA_TABLE . '
 			ORDER BY role_id ASC';
 		$result = $db->sql_query($sql);
 
@@ -510,7 +510,7 @@ class auth_arcade
 			$where_sql = ' WHERE ' . $db->sql_in_set('user_id', $user_id);
 		}
 
-		$sql = 'UPDATE ' . USERS_TABLE . "
+		$sql = 'UPDATE ' . PHPBB3_USERS_TABLE . "
 			SET user_arcade_permissions = '',
 				user_arcade_perm_from = 0
 			$where_sql";
@@ -535,7 +535,7 @@ class auth_arcade
 
 		// Grab assigned roles...
 		$sql = 'SELECT a.auth_role_id, a.' . $sql_id . ', a.cat_id
-			FROM ' . (($user_type == 'user') ? ACL_ARCADE_USERS_TABLE : ACL_ARCADE_GROUPS_TABLE) . ' a, ' . ACL_ARCADE_ROLES_TABLE . " r
+			FROM ' . (($user_type == 'user') ? PHPBB3_ACL_ARCADE_PHPBB3_USERS_TABLE : PHPBB3_ACL_ARCADE_PHPBB3_GROUPS_TABLE) . ' a, ' . PHPBB3_ACL_ARCADE_ROLES_TABLE . " r
 			WHERE a.auth_role_id = r.role_id
 				AND r.role_type = '" . $db->sql_escape($role_type) . "'
 				$sql_ug
@@ -568,7 +568,7 @@ class auth_arcade
 		if ($opts !== false)
 		{
 			$sql_opts_select = ', ao.auth_option';
-			$sql_opts_from = ', ' . ACL_ARCADE_OPTIONS_TABLE . ' ao';
+			$sql_opts_from = ', ' . PHPBB3_ACL_ARCADE_OPTIONS_TABLE . ' ao';
 			$this->build_auth_option_statement('ao.auth_option', $opts, $sql_opts);
 		}
 
@@ -576,7 +576,7 @@ class auth_arcade
 
 		// Grab non-role settings - user-specific
 		$sql_ary[] = 'SELECT a.user_id, a.cat_id, a.auth_setting, a.auth_option_id' . $sql_opts_select . '
-			FROM ' . ACL_ARCADE_USERS_TABLE . ' a' . $sql_opts_from . '
+			FROM ' . PHPBB3_ACL_ARCADE_PHPBB3_USERS_TABLE . ' a' . $sql_opts_from . '
 			WHERE a.auth_role_id = 0 ' .
 				(($sql_opts_from) ? 'AND a.auth_option_id = ao.auth_option_id ' : '') .
 				(($sql_user) ? 'AND a.' . $sql_user : '') . "
@@ -585,7 +585,7 @@ class auth_arcade
 
 		// Now the role settings - user-specific
 		$sql_ary[] = 'SELECT a.user_id, a.cat_id, r.auth_option_id, r.auth_setting, r.auth_option_id' . $sql_opts_select . '
-			FROM ' . ACL_ARCADE_USERS_TABLE . ' a, ' . ACL_ARCADE_ROLES_DATA_TABLE . ' r' . $sql_opts_from . '
+			FROM ' . PHPBB3_ACL_ARCADE_PHPBB3_USERS_TABLE . ' a, ' . PHPBB3_ACL_ARCADE_ROLES_DATA_TABLE . ' r' . $sql_opts_from . '
 			WHERE a.auth_role_id = r.role_id ' .
 				(($sql_opts_from) ? 'AND r.auth_option_id = ao.auth_option_id ' : '') .
 				(($sql_user) ? 'AND a.' . $sql_user : '') . "
@@ -608,7 +608,7 @@ class auth_arcade
 
 		// Now grab group settings - non-role specific...
 		$sql_ary[] = 'SELECT ug.user_id, a.cat_id, a.auth_setting, a.auth_option_id' . $sql_opts_select . '
-			FROM ' . ACL_ARCADE_GROUPS_TABLE . ' a, ' . USER_GROUP_TABLE . ' ug' . $sql_opts_from . '
+			FROM ' . PHPBB3_ACL_ARCADE_PHPBB3_GROUPS_TABLE . ' a, ' . PHPBB3_USER_GROUP_TABLE . ' ug' . $sql_opts_from . '
 			WHERE a.auth_role_id = 0 ' .
 				(($sql_opts_from) ? 'AND a.auth_option_id = ao.auth_option_id ' : '') . '
 				AND a.group_id = ug.group_id
@@ -619,7 +619,7 @@ class auth_arcade
 
 		// Now grab group settings - role specific...
 		$sql_ary[] = 'SELECT ug.user_id, a.cat_id, r.auth_setting, r.auth_option_id' . $sql_opts_select . '
-			FROM ' . ACL_ARCADE_GROUPS_TABLE . ' a, ' . USER_GROUP_TABLE . ' ug, ' . ACL_ARCADE_ROLES_DATA_TABLE . ' r' . $sql_opts_from . '
+			FROM ' . PHPBB3_ACL_ARCADE_PHPBB3_GROUPS_TABLE . ' a, ' . PHPBB3_USER_GROUP_TABLE . ' ug, ' . PHPBB3_ACL_ARCADE_ROLES_DATA_TABLE . ' r' . $sql_opts_from . '
 			WHERE a.auth_role_id = r.role_id ' .
 				(($sql_opts_from) ? 'AND r.auth_option_id = ao.auth_option_id ' : '') . '
 				AND a.group_id = ug.group_id
@@ -636,22 +636,22 @@ class auth_arcade
 			{
 				$option = ($sql_opts_select) ? $row['auth_option'] : $this->acl_options['option'][$row['auth_option_id']];
 
-				if (!isset($hold_ary[$row['user_id']][$row['cat_id']][$option]) || (isset($hold_ary[$row['user_id']][$row['cat_id']][$option]) && $hold_ary[$row['user_id']][$row['cat_id']][$option] != ACL_NEVER))
+				if (!isset($hold_ary[$row['user_id']][$row['cat_id']][$option]) || (isset($hold_ary[$row['user_id']][$row['cat_id']][$option]) && $hold_ary[$row['user_id']][$row['cat_id']][$option] != PHPBB3_PHPBB3_ACL_NEVER))
 				{
 					$hold_ary[$row['user_id']][$row['cat_id']][$option] = $row['auth_setting'];
 
-					// If we detect ACL_NEVER, we will unset the flag option (within building the bitstring it is correctly set again)
-					if ($row['auth_setting'] == ACL_NEVER)
+					// If we detect PHPBB3_PHPBB3_ACL_NEVER, we will unset the flag option (within building the bitstring it is correctly set again)
+					if ($row['auth_setting'] == PHPBB3_PHPBB3_ACL_NEVER)
 					{
 						$flag = substr($option, 0, strpos($option, '_') + 1);
 
-						if (isset($hold_ary[$row['user_id']][$row['cat_id']][$flag]) && $hold_ary[$row['user_id']][$row['cat_id']][$flag] == ACL_YES)
+						if (isset($hold_ary[$row['user_id']][$row['cat_id']][$flag]) && $hold_ary[$row['user_id']][$row['cat_id']][$flag] == PHPBB3_PHPBB3_ACL_YES)
 						{
 							unset($hold_ary[$row['user_id']][$row['cat_id']][$flag]);
 
-/*							if (in_array(ACL_YES, $hold_ary[$row['user_id']][$row['cat_id']]))
+/*							if (in_array(PHPBB3_PHPBB3_ACL_YES, $hold_ary[$row['user_id']][$row['cat_id']]))
 							{
-								$hold_ary[$row['user_id']][$row['cat_id']][$flag] = ACL_YES;
+								$hold_ary[$row['user_id']][$row['cat_id']][$flag] = PHPBB3_PHPBB3_ACL_YES;
 							}
 */
 						}
@@ -684,7 +684,7 @@ class auth_arcade
 
 		// Grab user settings - non-role specific...
 		$sql_ary[] = 'SELECT a.user_id, a.cat_id, a.auth_setting, a.auth_option_id, ao.auth_option
-			FROM ' . ACL_ARCADE_USERS_TABLE . ' a, ' . ACL_ARCADE_OPTIONS_TABLE . ' ao
+			FROM ' . PHPBB3_ACL_ARCADE_PHPBB3_USERS_TABLE . ' a, ' . PHPBB3_ACL_ARCADE_OPTIONS_TABLE . ' ao
 			WHERE a.auth_role_id = 0
 				AND a.auth_option_id = ao.auth_option_id ' .
 				(($sql_user) ? 'AND a.' . $sql_user : '') . "
@@ -694,7 +694,7 @@ class auth_arcade
 
 		// Now the role settings - user-specific
 		$sql_ary[] = 'SELECT a.user_id, a.cat_id, r.auth_option_id, r.auth_setting, r.auth_option_id, ao.auth_option
-			FROM ' . ACL_ARCADE_USERS_TABLE . ' a, ' . ACL_ARCADE_ROLES_DATA_TABLE . ' r, ' . ACL_ARCADE_OPTIONS_TABLE . ' ao
+			FROM ' . PHPBB3_ACL_ARCADE_PHPBB3_USERS_TABLE . ' a, ' . PHPBB3_ACL_ARCADE_ROLES_DATA_TABLE . ' r, ' . PHPBB3_ACL_ARCADE_OPTIONS_TABLE . ' ao
 			WHERE a.auth_role_id = r.role_id
 				AND r.auth_option_id = ao.auth_option_id ' .
 				(($sql_user) ? 'AND a.' . $sql_user : '') . "
@@ -736,7 +736,7 @@ class auth_arcade
 
 		// Grab group settings - non-role specific...
 		$sql_ary[] = 'SELECT a.group_id, a.cat_id, a.auth_setting, a.auth_option_id, ao.auth_option
-			FROM ' . ACL_ARCADE_GROUPS_TABLE . ' a, ' . ACL_ARCADE_OPTIONS_TABLE . ' ao
+			FROM ' . PHPBB3_ACL_ARCADE_PHPBB3_GROUPS_TABLE . ' a, ' . PHPBB3_ACL_ARCADE_OPTIONS_TABLE . ' ao
 			WHERE a.auth_role_id = 0
 				AND a.auth_option_id = ao.auth_option_id ' .
 				(($sql_group) ? 'AND a.' . $sql_group : '') . "
@@ -746,7 +746,7 @@ class auth_arcade
 
 		// Now grab group settings - role specific...
 		$sql_ary[] = 'SELECT a.group_id, a.cat_id, r.auth_setting, r.auth_option_id, ao.auth_option
-			FROM ' . ACL_ARCADE_GROUPS_TABLE . ' a, ' . ACL_ARCADE_ROLES_DATA_TABLE . ' r, ' . ACL_ARCADE_OPTIONS_TABLE . ' ao
+			FROM ' . PHPBB3_ACL_ARCADE_PHPBB3_GROUPS_TABLE . ' a, ' . PHPBB3_ACL_ARCADE_ROLES_DATA_TABLE . ' r, ' . PHPBB3_ACL_ARCADE_OPTIONS_TABLE . ' ao
 			WHERE a.auth_role_id = r.role_id
 				AND r.auth_option_id = ao.auth_option_id ' .
 				(($sql_group) ? 'AND a.' . $sql_group : '') . "
@@ -783,7 +783,7 @@ class auth_arcade
 
 			// We pre-fetch roles
 			$sql = 'SELECT *
-				FROM ' . ACL_ARCADE_ROLES_DATA_TABLE . '
+				FROM ' . PHPBB3_ACL_ARCADE_ROLES_DATA_TABLE . '
 				ORDER BY role_id ASC';
 			$result = $db->sql_query($sql);
 
@@ -805,7 +805,7 @@ class auth_arcade
 
 		// Grab user-specific permission settings
 		$sql = 'SELECT cat_id, auth_option_id, auth_role_id, auth_setting
-			FROM ' . ACL_ARCADE_USERS_TABLE . '
+			FROM ' . PHPBB3_ACL_ARCADE_PHPBB3_USERS_TABLE . '
 			WHERE user_id = ' . $user_id;
 		$result = $db->sql_query($sql);
 
@@ -825,7 +825,7 @@ class auth_arcade
 
 		// Now grab group-specific permission settings
 		$sql = 'SELECT a.cat_id, a.auth_option_id, a.auth_role_id, a.auth_setting
-			FROM ' . ACL_ARCADE_GROUPS_TABLE . ' a, ' . USER_GROUP_TABLE . ' ug
+			FROM ' . PHPBB3_ACL_ARCADE_PHPBB3_GROUPS_TABLE . ' a, ' . PHPBB3_USER_GROUP_TABLE . ' ug
 			WHERE a.group_id = ug.group_id
 				AND ug.user_pending = 0
 				AND ug.user_id = ' . $user_id;
@@ -855,24 +855,24 @@ class auth_arcade
 	*/
 	function _set_group_hold_ary(&$hold_ary, $option_id, $setting)
 	{
-		if (!isset($hold_ary[$option_id]) || (isset($hold_ary[$option_id]) && $hold_ary[$option_id] != ACL_NEVER))
+		if (!isset($hold_ary[$option_id]) || (isset($hold_ary[$option_id]) && $hold_ary[$option_id] != PHPBB3_PHPBB3_ACL_NEVER))
 		{
 			$hold_ary[$option_id] = $setting;
 
-			// If we detect ACL_NEVER, we will unset the flag option (within building the bitstring it is correctly set again)
-			if ($setting == ACL_NEVER)
+			// If we detect PHPBB3_PHPBB3_ACL_NEVER, we will unset the flag option (within building the bitstring it is correctly set again)
+			if ($setting == PHPBB3_PHPBB3_ACL_NEVER)
 			{
 				$flag = substr($this->acl_options['option'][$option_id], 0, strpos($this->acl_options['option'][$option_id], '_') + 1);
 				$flag = (int) $this->acl_options['id'][$flag];
 
-				if (isset($hold_ary[$flag]) && $hold_ary[$flag] == ACL_YES)
+				if (isset($hold_ary[$flag]) && $hold_ary[$flag] == PHPBB3_PHPBB3_ACL_YES)
 				{
 					unset($hold_ary[$flag]);
 
 /*					This is uncommented, because i suspect this being slightly wrong due to mixed permission classes being possible
-					if (in_array(ACL_YES, $hold_ary))
+					if (in_array(PHPBB3_PHPBB3_ACL_YES, $hold_ary))
 					{
-						$hold_ary[$flag] = ACL_YES;
+						$hold_ary[$flag] = PHPBB3_PHPBB3_ACL_YES;
 					}*/
 				}
 			}

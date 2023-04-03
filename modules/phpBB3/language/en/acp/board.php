@@ -108,8 +108,8 @@ $lang = array_merge($lang, array(
 	'ALLOW_REMOTE'					=> 'Enable remote avatars',
 	'ALLOW_REMOTE_EXPLAIN'			=> 'Avatars linked to from another website.',
 	'ALLOW_UPLOAD'					=> 'Enable avatar uploading',
-	'AVATAR_GALLERY_PATH'			=> 'Avatar gallery path',
-	'AVATAR_GALLERY_PATH_EXPLAIN'	=> 'Path under your phpBB root directory for pre-loaded images, e.g. <samp>images/avatars/gallery</samp>.',
+	'PHPBB3_AVATAR_GALLERY_PATH'			=> 'Avatar gallery path',
+	'PHPBB3_AVATAR_GALLERY_PATH_EXPLAIN'	=> 'Path under your phpBB root directory for pre-loaded images, e.g. <samp>images/avatars/gallery</samp>.',
 	'AVATAR_STORAGE_PATH'			=> 'Avatar storage path',
 	'AVATAR_STORAGE_PATH_EXPLAIN'	=> 'Path under your phpBB root directory, e.g. <samp>images/avatars/upload</samp>.',
 	'MAX_AVATAR_SIZE'				=> 'Maximum avatar dimensions',
@@ -263,10 +263,10 @@ $lang = array_merge($lang, array(
 
 	'CAPTCHA_PREVIEW_MSG'					=> 'Your changes to the visual confirmation setting were not saved. This is just a preview.',
 	'CAPTCHA_PREVIEW_EXPLAIN'				=> 'The CAPTCHA as it will look like using the current settings. Use the preview button to refresh. Note that captchas are randomized and will differ from one view to the next.',
-	'VISUAL_CONFIRM_POST'					=> 'Enable visual confirmation for guest postings',
-	'VISUAL_CONFIRM_POST_EXPLAIN'			=> 'Requires anonymous users to enter a random code matching an image to help prevent mass postings.',
-	'VISUAL_CONFIRM_REG'					=> 'Enable visual confirmation for registrations',
-	'VISUAL_CONFIRM_REG_EXPLAIN'			=> 'Requires new users to enter a random code matching an image to help prevent mass registrations.',
+	'VISUAL_PHPBB3_CONFIRM_POST'					=> 'Enable visual confirmation for guest postings',
+	'VISUAL_PHPBB3_CONFIRM_POST_EXPLAIN'			=> 'Requires anonymous users to enter a random code matching an image to help prevent mass postings.',
+	'VISUAL_PHPBB3_CONFIRM_REG'					=> 'Enable visual confirmation for registrations',
+	'VISUAL_PHPBB3_CONFIRM_REG_EXPLAIN'			=> 'Requires new users to enter a random code matching an image to help prevent mass registrations.',
 ));
 
 // Cookie Settings
@@ -513,9 +513,9 @@ $lang = array_merge($lang, array(
 	'CONTACT_ENABLE'					=> 'Enable contact page',
 	'CONTACT_ENABLE_EXPLAIN'			=> 'If disabled, the contact page will display an error when you visit it and the link will not display in the header.',
 	'CONTACT_CONFIRM'					=> 'Enable visual confirmation',
-	'CONTACT_CONFIRM_EXPLAIN'			=> 'If you enable this option, guests will have to enter a visual confirmation to send the message. This is supposed to prevent automized messages. Note that this option is for the contact page only, it does not affect other visual confirmation settings.',
-	'CONTACT_CONFIRM_GUESTS'			=> 'Visual confirmation for guests only',
-	'CONTACT_CONFIRM_GUESTS_EXPLAIN'	=> 'If you this option is enabled, the visual confirmation is only displayed to guests (if it\'s enabled).',
+	'CONTACT_PHPBB3_CONFIRM_EXPLAIN'			=> 'If you enable this option, guests will have to enter a visual confirmation to send the message. This is supposed to prevent automized messages. Note that this option is for the contact page only, it does not affect other visual confirmation settings.',
+	'CONTACT_PHPBB3_CONFIRM_GUESTS'			=> 'Visual confirmation for guests only',
+	'CONTACT_PHPBB3_CONFIRM_GUESTS_EXPLAIN'	=> 'If you this option is enabled, the visual confirmation is only displayed to guests (if it\'s enabled).',
 	'CONTACT_MAX_ATTEMPTS'				=> 'Maximal confirmation attempts',
 	'CONTACT_MAX_ATTEMPTS_EXPLAIN'		=> 'How many often may a user attempt to enter the correct confirmation image? Enter 0 for unlimited attempts.',
 	'CONTACT_METHOD'					=> 'Contact method',

@@ -27,7 +27,7 @@ function send_user_reminders()
 
 	//lets exclude the banned users	 
 	$sql = 'SELECT ban_userid 
-		FROM ' . BANLIST_TABLE;
+		FROM ' . PHPBB3_BANLIST_TABLE;
 	$result = $db->sql_query($sql);
 
 	$excl_user_id_ary = $excl_user_type_ary = $massmailchce = array();
@@ -43,7 +43,7 @@ function send_user_reminders()
 	$excl_user_id_ary = explode(',', $config['user_reminder_protected_users']);
 
 	//lets exclude also some user types
-	$excl_user_type_ary = array(USER_IGNORE, USER_INACTIVE);
+	$excl_user_type_ary = array(PHPBB3_USER_IGNORE, PHPBB3_USER_INACTIVE);
 
 	// did we override the users 'dont email me if i 
 	$massmailchce = ($config['user_reminder_ignore_no_email'] == OVERRIDE) ? array(0,1) : array(1);
@@ -67,7 +67,7 @@ function send_user_reminders()
 		}
 
 		$sql = 'SELECT *
-			FROM ' . USERS_TABLE . '
+			FROM ' . PHPBB3_USERS_TABLE . '
         	WHERE ' . $db->sql_in_set('user_id', $excl_user_id_ary, true) . '
 				AND ' . $db->sql_in_set('user_type', $excl_user_type_ary, true) . "
 				AND (" . $and_choice . ")
@@ -92,7 +92,7 @@ function send_user_reminders()
 			'user_reminder_inactive_still'		=> time()
 			);
 
-			$sql = 'UPDATE ' . USERS_TABLE . '
+			$sql = 'UPDATE ' . PHPBB3_USERS_TABLE . '
 				SET ' . $db->sql_build_array('UPDATE', $sql_ary) . '
 				WHERE user_id = ' . (int) $row['user_id'];
 			$db->sql_query($sql);
@@ -113,7 +113,7 @@ function send_user_reminders()
 		$user_list_ary = array();		
 		
 		$sql = 'SELECT *
-			FROM ' . USERS_TABLE . '
+			FROM ' . PHPBB3_USERS_TABLE . '
         	WHERE ' . $db->sql_in_set('user_id', $excl_user_id_ary, true) . '
 				AND ' . $db->sql_in_set('user_type', $excl_user_type_ary, true) . "
 				AND user_posts = 0
@@ -139,7 +139,7 @@ function send_user_reminders()
 			'user_reminder_zero_poster'		=> (int) time()
 			);
 
-			$sql = 'UPDATE ' . USERS_TABLE . '
+			$sql = 'UPDATE ' . PHPBB3_USERS_TABLE . '
 				SET ' . $db->sql_build_array('UPDATE', $sql_ary) . '
 				WHERE user_id = ' . (int) $row['user_id'];
 			$db->sql_query($sql);
@@ -159,8 +159,8 @@ function send_user_reminders()
 		$user_list_ary = array();			
 		
 		$sql = 'SELECT u.*, s.*, MAX(s.session_time) AS session_time 
-			FROM ' . USERS_TABLE . ' u
-				LEFT JOIN ' . SESSIONS_TABLE . ' s ON (s.session_user_id = u.user_id)
+			FROM ' . PHPBB3_USERS_TABLE . ' u
+				LEFT JOIN ' . PHPBB3_SESSIONS_TABLE . ' s ON (s.session_user_id = u.user_id)
         	WHERE ' . $db->sql_in_set('u.user_id', $excl_user_id_ary, true) . '
 				AND ' . $db->sql_in_set('u.user_type', $excl_user_type_ary, true) . '
 				AND user_reminder_inactive = 0
@@ -190,7 +190,7 @@ function send_user_reminders()
 				'user_reminder_inactive'		=> (int) time()
 				);
 	
-				$sql = 'UPDATE ' . USERS_TABLE . '
+				$sql = 'UPDATE ' . PHPBB3_USERS_TABLE . '
 					SET ' . $db->sql_build_array('UPDATE', $sql_ary) . '
 					WHERE user_id = ' . (int) $row['user_id'];
 				$db->sql_query($sql);
@@ -210,8 +210,8 @@ function send_user_reminders()
 		$user_list_ary = array();				
 		
 		$sql = 'SELECT u.*, s.*, MAX(s.session_time) AS session_time 
-			FROM ' . USERS_TABLE . ' u
-				LEFT JOIN ' . SESSIONS_TABLE . ' s ON (s.session_user_id = u.user_id)
+			FROM ' . PHPBB3_USERS_TABLE . ' u
+				LEFT JOIN ' . PHPBB3_SESSIONS_TABLE . ' s ON (s.session_user_id = u.user_id)
         	WHERE ' . $db->sql_in_set('u.user_id', $excl_user_id_ary, true) . '
 				AND ' . $db->sql_in_set('u.user_type', $excl_user_type_ary, true) . "
 				AND user_reminder_not_logged_in = 0
@@ -245,7 +245,7 @@ function send_user_reminders()
 				'user_reminder_not_logged_in'		=> time()
 				);
 	
-				$sql = 'UPDATE ' . USERS_TABLE . '
+				$sql = 'UPDATE ' . PHPBB3_USERS_TABLE . '
 					SET ' . $db->sql_build_array('UPDATE', $sql_ary) . '
 					WHERE user_id = ' . (int) $row['user_id'];
 				$db->sql_query($sql);
@@ -304,7 +304,7 @@ function delete_zero_post_reminder()
 	'user_reminder_zero_poster'		=> 0
 	);
 
-	$sql = 'UPDATE ' . USERS_TABLE . '
+	$sql = 'UPDATE ' . PHPBB3_USERS_TABLE . '
 		SET ' . $db->sql_build_array('UPDATE', $sql_ary) . "
 		WHERE user_id = " . $user->data['user_id'];
 	$db->sql_query($sql);
@@ -323,7 +323,7 @@ function delete_inactive_user_reminder()
 	'user_reminder_not_logged_in'	=> 0
 	);
 
-	$sql = 'UPDATE ' . USERS_TABLE . '
+	$sql = 'UPDATE ' . PHPBB3_USERS_TABLE . '
 		SET ' . $db->sql_build_array('UPDATE', $sql_ary) . "
 		WHERE user_id = " . $user->data['user_id'];
 	$db->sql_query($sql);
@@ -342,7 +342,7 @@ function delete_second_reminder()
 	'user_reminder_inactive_still'	=> 0
 	);
 
-	$sql = 'UPDATE ' . USERS_TABLE . '
+	$sql = 'UPDATE ' . PHPBB3_USERS_TABLE . '
 		SET ' . $db->sql_build_array('UPDATE', $sql_ary) . "
 		WHERE user_id = " . $user->data['user_id'];
 	$db->sql_query($sql);

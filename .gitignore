@@ -5,9 +5,9 @@ vendor/*
 /config.php
 /rector.php
 lincludes/log/*
-lincludes/cache/*
+includes/cache/*
 pspbrwse.jbf
 *.pspimage
-uploads
+uploads/*
 
 

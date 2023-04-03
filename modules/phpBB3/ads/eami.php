@@ -26,7 +26,7 @@ class eami
 		global $db;
 
 		//  Get all of the modules and put them in the data arrays
-		$sql = 'SELECT * FROM ' . MODULES_TABLE;
+		$sql = 'SELECT * FROM ' . PHPBB3_MODULES_TABLE;
 		$result = $db->sql_query($sql);
 		while ($row = $db->sql_fetchrow($result))
 		{
@@ -121,11 +121,11 @@ class eami
 		}
 
 		// Update the left and right ID's in the database
-		$db->sql_query('UPDATE ' . MODULES_TABLE . ' SET left_id = left_id + 2 WHERE left_id >= ' . $left_id . ' AND module_class = \'' . $class . '\'');
-		$db->sql_query('UPDATE ' . MODULES_TABLE . ' SET right_id = right_id + 2 WHERE right_id >= ' . $left_id . ' AND module_class = \'' . $class . '\'');
+		$db->sql_query('UPDATE ' . PHPBB3_MODULES_TABLE . ' SET left_id = left_id + 2 WHERE left_id >= ' . $left_id . ' AND module_class = \'' . $class . '\'');
+		$db->sql_query('UPDATE ' . PHPBB3_MODULES_TABLE . ' SET right_id = right_id + 2 WHERE right_id >= ' . $left_id . ' AND module_class = \'' . $class . '\'');
 
 		// Insert the new module into the DB
-		$sql = 'INSERT INTO ' . MODULES_TABLE . ' ' . $db->sql_build_array('INSERT', $data);
+		$sql = 'INSERT INTO ' . PHPBB3_MODULES_TABLE . ' ' . $db->sql_build_array('INSERT', $data);
 		$db->sql_query($sql);
 		$module_id = $db->sql_nextid();
 

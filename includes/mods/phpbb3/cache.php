@@ -34,7 +34,7 @@ class cache extends acm
 		if (($config = $this->get('config')) !== false)
 		{
 			$sql = 'SELECT config_name, config_value
-				FROM ' . CONFIG_TABLE . '
+				FROM ' . PHPBB3_CONFIG_TABLE . '
 				WHERE is_dynamic = 1';
 			$result = $db->sql_query($sql);
 
@@ -49,7 +49,7 @@ class cache extends acm
 			$config = $cached_config = array();
 
 			$sql = 'SELECT config_name, config_value, is_dynamic
-				FROM ' . CONFIG_TABLE;
+				FROM ' . PHPBB3_CONFIG_TABLE;
 			$result = $db->sql_query($sql);
 
 			while ($row = $db->sql_fetchrow($result))
@@ -80,7 +80,7 @@ class cache extends acm
 		if (($censors = $this->get('_word_censors')) === false)
 		{
 			$sql = 'SELECT word, replacement
-				FROM ' . WORDS_TABLE;
+				FROM ' . PHPBB3_WORDS_TABLE;
 			$result = $db->sql_query($sql);
 
 			$censors = array();
@@ -108,7 +108,7 @@ class cache extends acm
 	
 			// Topic icons
 			$sql = 'SELECT *
-				FROM ' . ICONS_TABLE . '
+				FROM ' . PHPBB3_ICONS_TABLE . '
 				ORDER BY icons_order';
 			$result = $db->sql_query($sql);
 
@@ -139,7 +139,7 @@ class cache extends acm
 
 			// Select country flags
 			$sql = 'SELECT *
-				FROM ' . FLAGS_TABLE . '
+				FROM ' . PHPBB3_FLAGS_TABLE . '
 				ORDER BY flag_country';
 			$result = $db->sql_query($sql);
 
@@ -168,7 +168,7 @@ class cache extends acm
 			global $db;
 	
 			$sql = 'SELECT *
-				FROM ' . RANKS_TABLE . '
+				FROM ' . PHPBB3_RANKS_TABLE . '
 				ORDER BY rank_min DESC';
 			$result = $db->sql_query($sql);
 
@@ -219,7 +219,7 @@ class cache extends acm
 
 			// The rule is to only allow those extensions defined. ;)
 			$sql = 'SELECT e.extension, g.*
-				FROM ' . EXTENSIONS_TABLE . ' e, ' . EXTENSION_GROUPS_TABLE . ' g
+				FROM ' . PHPBB3_EXTENSIONS_TABLE . ' e, ' . PHPBB3_EXTENSION_GROUPS_TABLE . ' g
 				WHERE e.group_id = g.group_id
 					AND (g.allow_group = 1 OR g.allow_in_pm = 1)';
 			$result = $db->sql_query($sql);
@@ -322,14 +322,14 @@ class cache extends acm
 				case 'mssql':
 				case 'mssql_odbc':
 					$sql = 'SELECT user_id, bot_agent, bot_ip
-						FROM ' . BOTS_TABLE . '
+						FROM ' . PHPBB3_BOTS_TABLE . '
 						WHERE bot_active = 1
 					ORDER BY LEN(bot_agent) DESC';
 				break;
 
 				case 'firebird':
 					$sql = 'SELECT user_id, bot_agent, bot_ip
-						FROM ' . BOTS_TABLE . '
+						FROM ' . PHPBB3_BOTS_TABLE . '
 						WHERE bot_active = 1
 					ORDER BY CHAR_LENGTH(bot_agent) DESC';
 				break;
@@ -337,7 +337,7 @@ class cache extends acm
 				// LENGTH supported by MySQL, IBM DB2 and Oracle for sure...
 				default:
 					$sql = 'SELECT user_id, bot_agent, bot_ip
-						FROM ' . BOTS_TABLE . '
+						FROM ' . PHPBB3_BOTS_TABLE . '
 						WHERE bot_active = 1
 					ORDER BY LENGTH(bot_agent) DESC';
 				break;
@@ -418,7 +418,7 @@ class cache extends acm
 			global $db;
 
 			$sql = 'SELECT disallow_username
-				FROM ' . DISALLOW_TABLE;
+				FROM ' . PHPBB3_DISALLOW_TABLE;
 			$result = $db->sql_query($sql);
 
 			$usernames = array();
@@ -477,7 +477,7 @@ class cache extends acm
 		if (($albums = $this->get('_albums')) === false)
 		{
 			$sql = 'SELECT album_id, album_name, left_id, right_id, album_user_id
-				FROM ' . GALLERY_ALBUMS_TABLE . '
+				FROM ' . PHPBB3_GALLERY_ALBUMS_TABLE . '
 				ORDER BY album_user_id ASC, left_id ASC';
 			$result = $db->sql_query($sql);
 

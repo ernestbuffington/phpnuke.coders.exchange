@@ -108,7 +108,7 @@ if (!defined('INCLUDES_PRIME_QUICK_REPLY'))
 		$enable_reply	= !$enable_reply ? false : ($auth->acl_get('f_reply', $forum_id));
 		$enable_reply	= !$enable_reply ? false : (!empty($template->_rootref['S_DISPLAY_REPLY_INFO']));
 		$enable_reply	= !$enable_reply ? false : (!$user->data['is_bot']);
-		$enable_reply	= !$enable_reply ? false : (($topic_data['forum_status'] != ITEM_LOCKED && $topic_data['topic_status'] != ITEM_LOCKED) || $auth->acl_get('m_edit', $forum_id));
+		$enable_reply	= !$enable_reply ? false : (($topic_data['forum_status'] != PHPBB3_ITEM_LOCKED && $topic_data['topic_status'] != PHPBB3_ITEM_LOCKED) || $auth->acl_get('m_edit', $forum_id));
 		$enable_reply	= !$enable_reply ? false : ($enable_guests || $user->data['user_id'] != ANONYMOUS);
 		if (!$enable_reply)
 		{
@@ -161,9 +161,9 @@ if (!defined('INCLUDES_PRIME_QUICK_REPLY'))
 		if ($config['enable_post_confirm'] && !$user->data['is_registered'])
 		{
 			// Show confirm image
-			$sql = 'DELETE FROM ' . CONFIRM_TABLE . "
+			$sql = 'DELETE FROM ' . PHPBB3_CONFIRM_TABLE . "
 				WHERE session_id = '" . $db->sql_escape($user->session_id) . "'
-					AND confirm_type = " . CONFIRM_POST;
+					AND confirm_type = " . PHPBB3_CONFIRM_POST;
 			$db->sql_query($sql);
 
 			// Generate code
@@ -174,20 +174,20 @@ if (!defined('INCLUDES_PRIME_QUICK_REPLY'))
 			// compute $seed % 0x7fffffff
 			$seed -= 0x7fffffff * floor($seed / 0x7fffffff);
 
-			$sql = 'INSERT INTO ' . CONFIRM_TABLE . ' ' . $db->sql_build_array('INSERT', array(
+			$sql = 'INSERT INTO ' . PHPBB3_CONFIRM_TABLE . ' ' . $db->sql_build_array('INSERT', array(
 				'confirm_id'	=> (string) $confirm_id,
 				'session_id'	=> (string) $user->session_id,
-				'confirm_type'	=> (int) CONFIRM_POST,
+				'confirm_type'	=> (int) PHPBB3_CONFIRM_POST,
 				'code'			=> (string) $code,
 				'seed'			=> (int) $seed)
 			);
 			$db->sql_query($sql);
 
 			$template->assign_vars(array(
-				'S_CONFIRM_CODE'			=> true,
-				'CONFIRM_ID'				=> $confirm_id,
-				'CONFIRM_IMAGE'				=> '<img src="' . append_sid("{$phpbb_root_path}ucp.$phpEx", 'mode=confirm&amp;id=' . $confirm_id . '&amp;type=' . CONFIRM_POST) . '" alt="" title="" />',
-				'L_POST_CONFIRM_EXPLAIN'	=> sprintf($user->lang['POST_CONFIRM_EXPLAIN'], '<a href="mailto:' . htmlspecialchars($config['board_contact']) . '">', '</a>'),
+				'S_PHPBB3_CONFIRM_CODE'			=> true,
+				'PHPBB3_CONFIRM_ID'				=> $confirm_id,
+				'PHPBB3_CONFIRM_IMAGE'				=> '<img src="' . append_sid("{$phpbb_root_path}ucp.$phpEx", 'mode=confirm&amp;id=' . $confirm_id . '&amp;type=' . PHPBB3_CONFIRM_POST) . '" alt="" title="" />',
+				'L_POST_PHPBB3_CONFIRM_EXPLAIN'	=> sprintf($user->lang['POST_PHPBB3_CONFIRM_EXPLAIN'], '<a href="mailto:' . htmlspecialchars($config['board_contact']) . '">', '</a>'),
 			));
 		}
 
@@ -214,7 +214,7 @@ if (!defined('INCLUDES_PRIME_QUICK_REPLY'))
 		$urls_checked		= !$post_data['enable_urls'];
 		$sig_checked		= $post_data['enable_sig'];
 		$notify_checked		= ($config['allow_topic_notify'] && $user->data['is_registered']);
-		$lock_topic_checked	= (isset($topic_lock) && $topic_lock) ? $topic_lock : (($topic_data['topic_status'] == ITEM_LOCKED) ? 1 : 0);
+		$lock_topic_checked	= (isset($topic_lock) && $topic_lock) ? $topic_lock : (($topic_data['topic_status'] == PHPBB3_ITEM_LOCKED) ? 1 : 0);
 
 		if ($notify_checked)
 		{
@@ -222,7 +222,7 @@ if (!defined('INCLUDES_PRIME_QUICK_REPLY'))
 			if (!($notify_checked = $user->data['user_notify']))
 			{
 				$sql = 'SELECT topic_id
-					FROM ' . TOPICS_WATCH_TABLE . '
+					FROM ' . PHPBB3_TOPICS_WATCH_TABLE . '
 					WHERE topic_id = ' . $topic_id . '
 						AND user_id = ' . $user->data['user_id'];
 				$result = $db->sql_query($sql);
@@ -305,7 +305,7 @@ if (!defined('INCLUDES_PRIME_QUICK_REPLY'))
 			'S_NOTIFY_CHECKED'			=> ($notify_checked) ? ' checked="checked"' : '',
 			'S_LINKS_ALLOWED'			=> $url_status,
 			'S_MAGIC_URL_CHECKED'		=> ($urls_checked) ? ' checked="checked"' : '',
-			'S_LOCK_TOPIC_ALLOWED'		=> (($auth->acl_get('m_lock', $forum_id) || ($auth->acl_get('f_user_lock', $forum_id) && $user->data['is_registered'] && !empty($topic_data['topic_poster']) && $user->data['user_id'] == $topic_data['topic_poster'] && $topic_data['topic_status'] == ITEM_UNLOCKED))) ? true : false,
+			'S_LOCK_TOPIC_ALLOWED'		=> (($auth->acl_get('m_lock', $forum_id) || ($auth->acl_get('f_user_lock', $forum_id) && $user->data['is_registered'] && !empty($topic_data['topic_poster']) && $user->data['user_id'] == $topic_data['topic_poster'] && $topic_data['topic_status'] == PHPBB3_ITEM_UNLOCKED))) ? true : false,
 			'S_LOCK_TOPIC_CHECKED'		=> ($lock_topic_checked) ? ' checked="checked"' : '',
 
 			// For posting_buttons.html

@@ -37,7 +37,7 @@ if (empty($lang) || !is_array($lang))
 
 $lang = array_merge($lang, array(
 	'ATTACHMENT'						=> 'Attachment',
-	'ATTACHMENT_FUNCTIONALITY_DISABLED'	=> 'The attachments feature has been disabled.',
+	'PHPBB3_ATTACHMENT_FUNCTIONALITY_DISABLED'	=> 'The attachments feature has been disabled.',
 
 	'BOOKMARK_ADDED'		=> 'Bookmarked topic successfully.',
 	'BOOKMARK_ERR'			=> 'Bookmarking the topic failed. Please try again.',
@@ -73,7 +73,7 @@ $lang = array_merge($lang, array(
 	'MISSING_INLINE_ATTACHMENT'	=> 'The attachment <strong>%s</strong> is no longer available',
 	'MOVE_TOPIC'				=> 'Move topic',
 
-	'NO_ATTACHMENT_SELECTED'=> 'You haven’t selected an attachment to download or view.',
+	'NO_PHPBB3_ATTACHMENT_SELECTED'=> 'You haven’t selected an attachment to download or view.',
 	'NO_NEWER_TOPICS'		=> 'There are no newer topics in this forum.',
 	'NO_OLDER_TOPICS'		=> 'There are no older topics in this forum.',
 	'NO_UNREAD_POSTS'		=> 'There are no new unread posts for this topic.',

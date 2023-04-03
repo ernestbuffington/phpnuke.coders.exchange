@@ -293,7 +293,7 @@ class template
 			foreach ($ids as $id)
 			{
 				$sql = 'SELECT *
-				FROM ' . STYLES_TEMPLATE_DATA_TABLE . '
+				FROM ' . PHPBB3_STYLES_TEMPLATE_DATA_TABLE . '
 				WHERE template_id = ' . $id . "
 					AND (template_filename = '" . $db->sql_escape($this->filename[$handle]) . "'
 						OR template_included " . $db->sql_like_expression($db->any_char . $this->filename[$handle] . ':' . $db->any_char) . ')';

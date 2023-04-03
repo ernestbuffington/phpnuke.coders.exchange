@@ -48,14 +48,14 @@ class acp_icons
 		switch ($mode)
 		{
 			case 'smilies':
-				$table = SMILIES_TABLE;
+				$table = PHPBB3_SMILIES_TABLE;
 				$lang = 'SMILIES';
 				$fields = 'smiley';
 				$img_path = $config['smilies_path'];
 			break;
 
 			case 'icons':
-				$table = ICONS_TABLE;
+				$table = PHPBB3_ICONS_TABLE;
 				$lang = 'ICONS';
 				$fields = 'icons';
 				$img_path = $config['icons_path'];
@@ -133,7 +133,7 @@ class acp_icons
 				if ($action == 'add' && $mode == 'smilies')
 				{
 					$sql = 'SELECT *
-						FROM ' . SMILIES_TABLE . '
+						FROM ' . PHPBB3_SMILIES_TABLE . '
 						ORDER BY smiley_order';
 					$result = $db->sql_query($sql);
 
@@ -520,8 +520,8 @@ class acp_icons
 
 							case 'icons':
 								// Reset all icon_ids
-								$db->sql_query('UPDATE ' . TOPICS_TABLE . ' SET icon_id = 0');
-								$db->sql_query('UPDATE ' . POSTS_TABLE . ' SET icon_id = 0');
+								$db->sql_query('UPDATE ' . PHPBB3_TOPICS_TABLE . ' SET icon_id = 0');
+								$db->sql_query('UPDATE ' . PHPBB3_POSTS_TABLE . ' SET icon_id = 0');
 							break;
 						}
 					}
@@ -723,11 +723,11 @@ class acp_icons
 
 						case 'icons':
 							// Reset appropriate icon_ids
-							$db->sql_query('UPDATE ' . TOPICS_TABLE . "
+							$db->sql_query('UPDATE ' . PHPBB3_TOPICS_TABLE . "
 								SET icon_id = 0
 								WHERE icon_id = $icon_id");
 
-							$db->sql_query('UPDATE ' . POSTS_TABLE . "
+							$db->sql_query('UPDATE ' . PHPBB3_POSTS_TABLE . "
 								SET icon_id = 0
 								WHERE icon_id = $icon_id");
 						break;
@@ -740,7 +740,7 @@ class acp_icons
 				}
 				else
 				{
-					confirm_box(false, $user->lang['CONFIRM_OPERATION'], build_hidden_fields(array(
+					confirm_box(false, $user->lang['PHPBB3_CONFIRM_OPERATION'], build_hidden_fields(array(
 						'i'			=> $id,
 						'mode'		=> $mode,
 						'id'		=> $icon_id,

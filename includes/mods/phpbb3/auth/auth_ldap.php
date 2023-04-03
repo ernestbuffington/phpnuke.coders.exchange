@@ -104,7 +104,7 @@ function login_ldap(&$username, &$password)
 	if (!$password)
 	{
 		return array(
-			'status'	=> LOGIN_ERROR_PASSWORD,
+			'status'	=> PHPBB3_LOGIN_ERROR_PASSWORD,
 			'error_msg'	=> 'NO_PASSWORD_SUPPLIED',
 			'user_row'	=> array('user_id' => ANONYMOUS),
 		);
@@ -113,8 +113,8 @@ function login_ldap(&$username, &$password)
 	if (!$username)
 	{
 		return array(
-			'status'	=> LOGIN_ERROR_USERNAME,
-			'error_msg'	=> 'LOGIN_ERROR_USERNAME',
+			'status'	=> PHPBB3_LOGIN_ERROR_USERNAME,
+			'error_msg'	=> 'PHPBB3_LOGIN_ERROR_USERNAME',
 			'user_row'	=> array('user_id' => ANONYMOUS),
 		);
 	}
@@ -122,7 +122,7 @@ function login_ldap(&$username, &$password)
 	if (!extension_loaded('ldap'))
 	{
 		return array(
-			'status'		=> LOGIN_ERROR_EXTERNAL_AUTH,
+			'status'		=> PHPBB3_LOGIN_ERROR_EXTERNAL_AUTH,
 			'error_msg'		=> 'LDAP_NO_LDAP_EXTENSION',
 			'user_row'		=> array('user_id' => ANONYMOUS),
 		);
@@ -141,7 +141,7 @@ function login_ldap(&$username, &$password)
 	if (!$ldap)
 	{
 		return array(
-			'status'		=> LOGIN_ERROR_EXTERNAL_AUTH,
+			'status'		=> PHPBB3_LOGIN_ERROR_EXTERNAL_AUTH,
 			'error_msg'		=> 'LDAP_NO_SERVER_CONNECTION',
 			'user_row'		=> array('user_id' => ANONYMOUS),
 		);
@@ -176,7 +176,7 @@ function login_ldap(&$username, &$password)
 			ldap_close($ldap);
 
 			$sql ='SELECT user_id, username, user_password, user_passchg, user_email, user_type
-				FROM ' . USERS_TABLE . "
+				FROM ' . PHPBB3_USERS_TABLE . "
 				WHERE username_clean = '" . $db->sql_escape(utf8_clean_string($username)) . "'";
 			$result = $db->sql_query($sql);
 			$row = $db->sql_fetchrow($result);
@@ -187,10 +187,10 @@ function login_ldap(&$username, &$password)
 				unset($ldap_result);
 
 				// User inactive...
-				if ($row['user_type'] == USER_INACTIVE || $row['user_type'] == USER_IGNORE)
+				if ($row['user_type'] == PHPBB3_USER_INACTIVE || $row['user_type'] == PHPBB3_USER_IGNORE)
 				{
 					return array(
-						'status'		=> LOGIN_ERROR_ACTIVE,
+						'status'		=> PHPBB3_LOGIN_ERROR_ACTIVE,
 						'error_msg'		=> 'ACTIVE_ERROR',
 						'user_row'		=> $row,
 					);
@@ -198,7 +198,7 @@ function login_ldap(&$username, &$password)
 
 				// Successful login... set user_login_attempts to zero...
 				return array(
-					'status'		=> LOGIN_SUCCESS,
+					'status'		=> PHPBB3_LOGIN_SUCCESS,
 					'error_msg'		=> false,
 					'user_row'		=> $row,
 				);
@@ -207,9 +207,9 @@ function login_ldap(&$username, &$password)
 			{
 				// retrieve default group id
 				$sql = 'SELECT group_id
-					FROM ' . GROUPS_TABLE . "
+					FROM ' . PHPBB3_GROUPS_TABLE . "
 					WHERE group_name = '" . $db->sql_escape('REGISTERED') . "'
-						AND group_type = " . GROUP_SPECIAL;
+						AND group_type = " . PHPBB3_GROUP_SPECIAL;
 				$result = $db->sql_query($sql);
 				$row = $db->sql_fetchrow($result);
 				$db->sql_freeresult($result);
@@ -225,7 +225,7 @@ function login_ldap(&$username, &$password)
 					'user_password'	=> phpbb_hash($password),
 					'user_email'	=> (!empty($config['ldap_email'])) ? $ldap_result[0][$config['ldap_email']][0] : '',
 					'group_id'		=> (int) $row['group_id'],
-					'user_type'		=> USER_NORMAL,
+					'user_type'		=> PHPBB3_USER_NORMAL,
 					'user_ip'		=> $user->ip,
 				);
 
@@ -233,7 +233,7 @@ function login_ldap(&$username, &$password)
 
 				// this is the user's first login so create an empty profile
 				return array(
-					'status'		=> LOGIN_SUCCESS_CREATE_PROFILE,
+					'status'		=> PHPBB3_LOGIN_SUCCESS_CREATE_PROFILE,
 					'error_msg'		=> false,
 					'user_row'		=> $ldap_user_row,
 				);
@@ -246,8 +246,8 @@ function login_ldap(&$username, &$password)
 
 			// Give status about wrong password...
 			return array(
-				'status'		=> LOGIN_ERROR_PASSWORD,
-				'error_msg'		=> 'LOGIN_ERROR_PASSWORD',
+				'status'		=> PHPBB3_LOGIN_ERROR_PASSWORD,
+				'error_msg'		=> 'PHPBB3_LOGIN_ERROR_PASSWORD',
 				'user_row'		=> array('user_id' => ANONYMOUS),
 			);
 		}
@@ -256,8 +256,8 @@ function login_ldap(&$username, &$password)
 	ldap_close($ldap);
 
 	return array(
-		'status'	=> LOGIN_ERROR_USERNAME,
-		'error_msg'	=> 'LOGIN_ERROR_USERNAME',
+		'status'	=> PHPBB3_LOGIN_ERROR_USERNAME,
+		'error_msg'	=> 'PHPBB3_LOGIN_ERROR_USERNAME',
 		'user_row'	=> array('user_id' => ANONYMOUS),
 	);
 }

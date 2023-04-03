@@ -82,16 +82,16 @@ function view_folder($id, $mode, $folder_id, $folder)
 
 		// We do the folder moving options here too, for template authors to use...
 		$s_folder_move_options = '';
-		if ($folder_id != PRIVMSGS_NO_BOX && $folder_id != PRIVMSGS_OUTBOX)
+		if ($folder_id != PM_NO_BOX && $folder_id != PM_OUTBOX)
 		{
 			foreach ($folder as $f_id => $folder_ary)
 			{
-				if ($f_id == PRIVMSGS_OUTBOX || $f_id == PRIVMSGS_SENTBOX || $f_id == $folder_id)
+				if ($f_id == PM_OUTBOX || $f_id == PM_SENTBOX || $f_id == $folder_id)
 				{
 					continue;
 				}
 
-				$s_folder_move_options .= '<option' . (($f_id != PRIVMSGS_INBOX) ? ' class="sep"' : '') . ' value="' . $f_id . '">';
+				$s_folder_move_options .= '<option' . (($f_id != PM_INBOX) ? ' class="sep"' : '') . ' value="' . $f_id . '">';
 				$s_folder_move_options .= sprintf($user->lang['MOVE_MARKED_TO_FOLDER'], $folder_ary['folder_name']);
 				$s_folder_move_options .= (($folder_ary['unread_messages']) ? ' [' . $folder_ary['unread_messages'] . '] ' : '') . '</option>';
 			}
@@ -100,7 +100,7 @@ function view_folder($id, $mode, $folder_id, $folder)
 
 		// Get friends and foes
 		$sql = 'SELECT *
-			FROM ' . ZEBRA_TABLE . '
+			FROM ' . PHPBB3_ZEBRA_TABLE . '
 			WHERE user_id = ' . $user->data['user_id'];
 		$result = $db->sql_query($sql);
 
@@ -122,7 +122,7 @@ function view_folder($id, $mode, $folder_id, $folder)
 			$address_list = array();
 
 			// Build Recipient List if in outbox/sentbox - max two additional queries
-			if ($folder_id == PRIVMSGS_OUTBOX || $folder_id == PRIVMSGS_SENTBOX)
+			if ($folder_id == PM_OUTBOX || $folder_id == PM_SENTBOX)
 			{
 				$recipient_list = $address = array();
 
@@ -150,13 +150,13 @@ function view_folder($id, $mode, $folder_id, $folder)
 						if ($ug_type == 'u')
 						{
 							$sql = 'SELECT user_id as id, username as name, user_colour as colour
-								FROM ' . USERS_TABLE . '
+								FROM ' . PHPBB3_USERS_TABLE . '
 								WHERE ';
 						}
 						else
 						{
 							$sql = 'SELECT group_id as id, group_name as name, group_colour as colour, group_type
-								FROM ' . GROUPS_TABLE . '
+								FROM ' . PHPBB3_GROUPS_TABLE . '
 								WHERE ';
 						}
 						$sql .= $db->sql_in_set(($ug_type == 'u') ? 'user_id' : 'group_id', array_map('intval', array_keys($recipient_list[$ug_type])));
@@ -167,7 +167,7 @@ function view_folder($id, $mode, $folder_id, $folder)
 						{
 							if ($ug_type == 'g')
 							{
-								$row['name'] = ($row['group_type'] == GROUP_SPECIAL) ? $user->lang['G_' . $row['name']] : $row['name'];
+								$row['name'] = ($row['group_type'] == PHPBB3_GROUP_SPECIAL) ? $user->lang['G_' . $row['name']] : $row['name'];
 							}
 
 							$recipient_list[$ug_type][$row['id']] = array('name' => $row['name'], 'colour' => $row['colour']);
@@ -250,13 +250,13 @@ function view_folder($id, $mode, $folder_id, $folder)
 
 					'U_VIEW_PM'			=> ($row['pm_deleted']) ? '' : $view_message_url,
 					'U_REMOVE_PM'		=> ($row['pm_deleted']) ? $remove_message_url : '',
-					'RECIPIENTS'		=> ($folder_id == PRIVMSGS_OUTBOX || $folder_id == PRIVMSGS_SENTBOX) ? implode(', ', $address_list[$message_id]) : '')
+					'RECIPIENTS'		=> ($folder_id == PM_OUTBOX || $folder_id == PM_SENTBOX) ? implode(', ', $address_list[$message_id]) : '')
 				);
 			}
 			unset($folder_info['rowset']);
 
 			$template->assign_vars(array(
-				'S_SHOW_RECIPIENTS'		=> ($folder_id == PRIVMSGS_OUTBOX || $folder_id == PRIVMSGS_SENTBOX) ? true : false,
+				'S_SHOW_RECIPIENTS'		=> ($folder_id == PM_OUTBOX || $folder_id == PM_SENTBOX) ? true : false,
 				'S_SHOW_COLOUR_LEGEND'	=> true,
 
 				'S_PM_ICONS'			=> ($config['enable_pm_icons']) ? true : false)
@@ -277,7 +277,7 @@ function view_folder($id, $mode, $folder_id, $folder)
 		{
 			// Build Recipient List if in outbox/sentbox
 			$address = array();
-			if ($folder_id == PRIVMSGS_OUTBOX || $folder_id == PRIVMSGS_SENTBOX)
+			if ($folder_id == PM_OUTBOX || $folder_id == PM_SENTBOX)
 			{
 				foreach ($folder_info['rowset'] as $message_id => $row)
 				{
@@ -292,7 +292,7 @@ function view_folder($id, $mode, $folder_id, $folder)
 				include_once(PHPBB3_INCLUDE_DIR . 'functions_posting.' . $phpEx);
 
 				$sql = 'SELECT p.message_text, p.bbcode_uid
-					FROM ' . PRIVMSGS_TO_TABLE . ' t, ' . PRIVMSGS_TABLE . ' p, ' . USERS_TABLE . ' u
+					FROM ' . PHPBB3_PRIVMSGS_TO_TABLE . ' t, ' . PHPBB3_PRIVMSGS_TABLE . ' p, ' . PHPBB3_USERS_TABLE . ' u
 					WHERE t.user_id = ' . $user->data['user_id'] . "
 						AND p.author_id = u.user_id
 						AND t.folder_id = $folder_id
@@ -310,13 +310,13 @@ function view_folder($id, $mode, $folder_id, $folder)
 						if ($ug_type == 'u')
 						{
 							$sql = 'SELECT user_id as id, username as name
-								FROM ' . USERS_TABLE . '
+								FROM ' . PHPBB3_USERS_TABLE . '
 								WHERE ';
 						}
 						else
 						{
 							$sql = 'SELECT group_id as id, group_name as name
-								FROM ' . GROUPS_TABLE . '
+								FROM ' . PHPBB3_GROUPS_TABLE . '
 								WHERE ';
 						}
 						$sql .= $db->sql_in_set(($ug_type == 'u') ? 'user_id' : 'group_id', array_map('intval', array_keys($address[$message_id][$ug_type])));
@@ -338,7 +338,7 @@ function view_folder($id, $mode, $folder_id, $folder)
 					'subject'	=> censor_text($row['message_subject']),
 					'sender'	=> $row['username'],
 					'date'		=> $user->format_date($row['message_time']),
-					'to'		=> ($folder_id == PRIVMSGS_OUTBOX || $folder_id == PRIVMSGS_SENTBOX) ? $address[$message_id] : '',
+					'to'		=> ($folder_id == PM_OUTBOX || $folder_id == PM_SENTBOX) ? $address[$message_id] : '',
 					'message'	=> $message_row['message_text']
 				);
 			}
@@ -462,7 +462,7 @@ function get_pm_from($folder_id, $folder, $user_id)
 
 	// No sort by Author for sentbox/outbox (already only author available)
 	// Also, sort by msg_id for the time - private messages are not as prone to errors as posts are.
-	if ($folder_id == PRIVMSGS_OUTBOX || $folder_id == PRIVMSGS_SENTBOX)
+	if ($folder_id == PM_OUTBOX || $folder_id == PM_SENTBOX)
 	{
 		$sort_by_text = array('t' => $user->lang['POST_TIME'], 's' => $user->lang['SUBJECT']);
 		$sort_by_sql = array('t' => 'p.msg_id', 's' => 'p.message_subject');
@@ -489,7 +489,7 @@ function get_pm_from($folder_id, $folder, $user_id)
 		}
 
 		$sql = 'SELECT COUNT(t.msg_id) AS pm_count
-			FROM ' . PRIVMSGS_TO_TABLE . ' t, ' . PRIVMSGS_TABLE . " p
+			FROM ' . PHPBB3_PRIVMSGS_TO_TABLE . ' t, ' . PHPBB3_PRIVMSGS_TABLE . " p
 			WHERE $folder_sql
 				AND t.user_id = $user_id
 				AND t.msg_id = p.msg_id
@@ -551,7 +551,7 @@ function get_pm_from($folder_id, $folder, $user_id)
 	}
 
 	$sql = 'SELECT t.*, p.root_level, p.message_time, p.message_subject, p.icon_id, p.to_address, p.message_attachment, p.bcc_address, u.username, u.username_clean, u.user_colour
-		FROM ' . PRIVMSGS_TO_TABLE . ' t, ' . PRIVMSGS_TABLE . ' p, ' . USERS_TABLE . " u
+		FROM ' . PHPBB3_PRIVMSGS_TO_TABLE . ' t, ' . PHPBB3_PRIVMSGS_TABLE . ' p, ' . PHPBB3_USERS_TABLE . " u
 		WHERE t.user_id = $user_id
 			AND p.author_id = u.user_id
 			AND $folder_sql

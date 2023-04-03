@@ -36,10 +36,10 @@
 		<dl>
 			<dt><label for="group_type">{L_GROUP_TYPE}:</label><br /><span>{L_GROUP_TYPE_EXPLAIN}</span></dt>
 			<dd>
-				<label><input name="group_type" type="radio" class="radio" id="group_type" value="{GROUP_TYPE_FREE}"{GROUP_FREE} /> {L_GROUP_OPEN}</label>
-				<label><input name="group_type" type="radio" class="radio" value="{GROUP_TYPE_OPEN}"{GROUP_OPEN} /> {L_GROUP_REQUEST}</label>
-				<label><input name="group_type" type="radio" class="radio" value="{GROUP_TYPE_CLOSED}"{GROUP_CLOSED} /> {L_GROUP_CLOSED}</label>
-				<label><input name="group_type" type="radio" class="radio" value="{GROUP_TYPE_HIDDEN}"{GROUP_HIDDEN} /> {L_GROUP_HIDDEN}</label>
+				<label><input name="group_type" type="radio" class="radio" id="group_type" value="{GROUP_TYPE_FREE}"{PHPBB3_GROUP_FREE} /> {L_PHPBB3_GROUP_OPEN}</label>
+				<label><input name="group_type" type="radio" class="radio" value="{GROUP_TYPE_OPEN}"{PHPBB3_GROUP_OPEN} /> {L_GROUP_REQUEST}</label>
+				<label><input name="group_type" type="radio" class="radio" value="{GROUP_TYPE_CLOSED}"{PHPBB3_GROUP_CLOSED} /> {L_PHPBB3_GROUP_CLOSED}</label>
+				<label><input name="group_type" type="radio" class="radio" value="{GROUP_TYPE_HIDDEN}"{PHPBB3_GROUP_HIDDEN} /> {L_PHPBB3_GROUP_HIDDEN}</label>
 			</dd>
 		</dl>
 	<!-- ELSE -->
@@ -56,7 +56,7 @@
 
 	<fieldset>
 		<legend>{L_GROUP_SETTINGS_SAVE}</legend>
-	<!-- IF S_USER_FOUNDER -->
+	<!-- IF S_PHPBB3_USER_FOUNDER -->
 	<dl>
 		<dt><label for="group_founder_manage">{L_GROUP_FOUNDER_MANAGE}:</label><br /><span>{L_GROUP_FOUNDER_MANAGE_EXPLAIN}</span></dt>
 		<dd><input name="group_founder_manage" type="checkbox" class="radio" id="group_founder_manage"{GROUP_FOUNDER_MANAGE} /></dd>
@@ -95,7 +95,7 @@
 		<dd>{AVATAR_IMAGE}</dd>
 		<dd><label><input type="checkbox" class="radio" name="delete" /> {L_DELETE_AVATAR}</label></dd>
 	</dl>
-	<!-- IF not S_IN_AVATAR_GALLERY -->
+	<!-- IF not S_IN_PHPBB3_AVATAR_GALLERY -->
 		<!-- IF S_CAN_UPLOAD -->
 			<dl> 
 				<dt><label for="uploadfile">{L_UPLOAD_AVATAR_FILE}:</label></dt>
@@ -116,7 +116,7 @@
 		</dl>
 		<!-- IF S_DISPLAY_GALLERY -->
 			<dl> 
-				<dt><label>{L_AVATAR_GALLERY}:</label></dt>
+				<dt><label>{L_PHPBB3_AVATAR_GALLERY}:</label></dt>
 				<dd><input class="button2" type="submit" name="display_gallery" value="{L_DISPLAY_GALLERY}" /></dd>
 			</dl>
 		<!-- ENDIF -->
@@ -124,7 +124,7 @@
 		</fieldset>
 
 		<fieldset>
-			<legend>{L_AVATAR_GALLERY}</legend>
+			<legend>{L_PHPBB3_AVATAR_GALLERY}</legend>
 		<dl>
 			<dt><label for="category">{L_AVATAR_CATEGORY}:</label></dt>
 			<dd><select name="category" id="category">{S_CAT_OPTIONS}</select>&nbsp;<input class="button2" type="submit" value="{L_GO}" name="display_gallery" /></dd>
@@ -338,7 +338,7 @@
 			<td style="text-align: center;">{groups.TOTAL_MEMBERS}</td>
 			<td style="text-align: center;"><a href="{groups.U_EDIT}">{L_SETTINGS}</a></td>
 			<td style="text-align: center;"><a href="{groups.U_LIST}">{L_MEMBERS}</a></td>
-			<td style="text-align: center;"><!-- IF not groups.S_GROUP_SPECIAL and groups.U_DELETE --><a href="{groups.U_DELETE}">{L_DELETE}</a><!-- ELSE -->{L_DELETE}<!-- ENDIF --></td>
+			<td style="text-align: center;"><!-- IF not groups.S_PHPBB3_GROUP_SPECIAL and groups.U_DELETE --><a href="{groups.U_DELETE}">{L_DELETE}</a><!-- ELSE -->{L_DELETE}<!-- ENDIF --></td>
 		</tr>
 		<!-- ENDIF -->
 	<!-- END groups -->

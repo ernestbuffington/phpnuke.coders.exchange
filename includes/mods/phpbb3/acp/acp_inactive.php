@@ -68,7 +68,7 @@ class acp_inactive
 				case 'delete':
 
 					$sql = 'SELECT user_id, username
-						FROM ' . USERS_TABLE . '
+						FROM ' . PHPBB3_USERS_TABLE . '
 						WHERE ' . $db->sql_in_set('user_id', $mark);
 					$result = $db->sql_query($sql);
 				
@@ -81,13 +81,13 @@ class acp_inactive
 
 					if ($action == 'activate')
 					{
-						if ($config['require_activation'] == USER_ACTIVATION_ADMIN)
+						if ($config['require_activation'] == PHPBB3_USER_ACTIVATION_ADMIN)
 						{
 							// Get those 'being activated'...
 							$sql = 'SELECT user_id, username, user_email, user_lang
-								FROM ' . USERS_TABLE . '
+								FROM ' . PHPBB3_USERS_TABLE . '
 								WHERE ' . $db->sql_in_set('user_id', $mark) . '
-									AND user_type = ' . USER_INACTIVE;
+									AND user_type = ' . PHPBB3_USER_INACTIVE;
 							$result = $db->sql_query($sql);
 
 							$inactive_users = array();
@@ -100,7 +100,7 @@ class acp_inactive
 
 						user_active_flip('activate', $mark);
 
-						if ($config['require_activation'] == USER_ACTIVATION_ADMIN && !empty($inactive_users))
+						if ($config['require_activation'] == PHPBB3_USER_ACTIVATION_ADMIN && !empty($inactive_users))
 						{
 							include_once(PHPBB3_INCLUDE_DIR . 'functions_messenger.' . $phpEx);
 
@@ -120,7 +120,7 @@ class acp_inactive
 									'USERNAME'	=> htmlspecialchars_decode($row['username']))
 								);
 
-								$messenger->send(NOTIFY_EMAIL);
+								$messenger->send(PHPBB3_NOTIFY_EMAIL);
 							}
 
 							$messenger->save_queue();
@@ -151,7 +151,7 @@ class acp_inactive
 								'submit'		=> 1,
 								'start'			=> $start,
 							);
-							confirm_box(false, $user->lang['CONFIRM_OPERATION'], build_hidden_fields($s_hidden_fields));
+							confirm_box(false, $user->lang['PHPBB3_CONFIRM_OPERATION'], build_hidden_fields($s_hidden_fields));
 						}
 					}
 
@@ -164,7 +164,7 @@ class acp_inactive
 					}
 
 					$sql = 'SELECT user_id, username, user_email, user_lang, user_jabber, user_notify_type, user_regdate, user_actkey
-						FROM ' . USERS_TABLE . '
+						FROM ' . PHPBB3_USERS_TABLE . '
 						WHERE ' . $db->sql_in_set('user_id', $mark);
 					$result = $db->sql_query($sql);
 
@@ -197,7 +197,7 @@ class acp_inactive
 
 						$messenger->save_queue();
 
-						add_log('admin', 'LOG_INACTIVE_REMIND', implode(', ', $usernames));
+						add_log('admin', 'LOG_PHPBB3_INACTIVE_REMIND', implode(', ', $usernames));
 						unset($usernames);
 					}
 					$db->sql_freeresult($result);

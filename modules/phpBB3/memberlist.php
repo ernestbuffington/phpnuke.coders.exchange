@@ -126,7 +126,7 @@ switch ($mode)
 
 		// Admin group id...
 		$sql = 'SELECT group_id
-			FROM ' . GROUPS_TABLE . "
+			FROM ' . PHPBB3_GROUPS_TABLE . "
 			WHERE group_name = 'ADMINISTRATORS'";
 		$result = $db->sql_query($sql);
 		$admin_group_id = (int) $db->sql_fetchfield('group_id');
@@ -148,7 +148,7 @@ switch ($mode)
 		unset($admin_memberships);
 
 		$sql = 'SELECT forum_id, forum_name
-			FROM ' . FORUMS_TABLE;
+			FROM ' . PHPBB3_FORUMS_TABLE;
 		$result = $db->sql_query($sql);
 
 		$forums = array();
@@ -162,13 +162,13 @@ switch ($mode)
 			'SELECT'	=> 'u.user_id, u.group_id as default_group, u.username, u.username_clean, u.user_colour, u.user_flag, u.user_rank, u.user_posts, u.user_allow_pm, u.user_gender, g.group_id, g.group_name, g.group_colour, g.group_type, ug.user_id as ug_user_id',
 
 			'FROM'		=> array(
-				USERS_TABLE		=> 'u',
-				GROUPS_TABLE	=> 'g'
+				PHPBB3_USERS_TABLE		=> 'u',
+				PHPBB3_GROUPS_TABLE	=> 'g'
 			),
 
 			'LEFT_JOIN'	=> array(
 				array(
-					'FROM'	=> array(USER_GROUP_TABLE => 'ug'),
+					'FROM'	=> array(PHPBB3_USER_GROUP_TABLE => 'ug'),
 					'ON'	=> 'ug.group_id = g.group_id AND ug.user_pending = 0 AND ug.user_id = ' . $user->data['user_id']
 				)
 			),
@@ -233,14 +233,14 @@ switch ($mode)
 			}
 
 			// The person is moderating several "public" forums, therefore the person should be listed, but not giving the real group name if hidden.
-			if ($row['group_type'] == GROUP_HIDDEN && !$auth->acl_gets('a_group', 'a_groupadd', 'a_groupdel') && $row['ug_user_id'] != $user->data['user_id'])
+			if ($row['group_type'] == PHPBB3_GROUP_HIDDEN && !$auth->acl_gets('a_group', 'a_groupadd', 'a_groupdel') && $row['ug_user_id'] != $user->data['user_id'])
 			{
 				$group_name = $user->lang['GROUP_UNDISCLOSED'];
 				$u_group = '';
 			}
 			else
 			{
-				$group_name = ($row['group_type'] == GROUP_SPECIAL) ? $user->lang['G_' . $row['group_name']] : $row['group_name'];
+				$group_name = ($row['group_type'] == PHPBB3_GROUP_SPECIAL) ? $user->lang['G_' . $row['group_name']] : $row['group_name'];
 				$u_group = append_sid("{$phpbb_root_path}memberlist.$phpEx", 'mode=group&amp;g=' . $row['group_id']);
 			}
 			
@@ -325,9 +325,9 @@ switch ($mode)
 
 		// Grab relevant data
 		$sql = "SELECT user_id, username, user_email, user_lang, $sql_field
-			FROM " . USERS_TABLE . "
+			FROM " . PHPBB3_USERS_TABLE . "
 			WHERE user_id = $user_id
-				AND user_type IN (" . USER_NORMAL . ', ' . USER_FOUNDER . ')';
+				AND user_type IN (" . PHPBB3_USER_NORMAL . ', ' . PHPBB3_USER_FOUNDER . ')';
 		$result = $db->sql_query($sql);
 		$row = $db->sql_fetchrow($result);
 		$db->sql_freeresult($result);
@@ -377,7 +377,7 @@ switch ($mode)
 							'MESSAGE'		=> htmlspecialchars_decode($message))
 						);
 
-						$messenger->send(NOTIFY_IM);
+						$messenger->send(PHPBB3_NOTIFY_IM);
 
 						$s_select = 'S_SENT_JABBER';
 					}
@@ -426,7 +426,7 @@ switch ($mode)
 
 		// Get user...
 		$sql = 'SELECT *
-			FROM ' . USERS_TABLE . '
+			FROM ' . PHPBB3_USERS_TABLE . '
 			WHERE ' . (($username) ? "username_clean = '" . $db->sql_escape(utf8_clean_string($username)) . "'" : "user_id = $user_id");
 		$result = $db->sql_query($sql);
 		$member = $db->sql_fetchrow($result);
@@ -439,13 +439,13 @@ switch ($mode)
 
 		// a_user admins and founder are able to view inactive users and bots to be able to manage them more easily
 		// Normal users are able to see at least users having only changed their profile settings but not yet reactivated.
-		if (!$auth->acl_get('a_user') && $user->data['user_type'] != USER_FOUNDER)
+		if (!$auth->acl_get('a_user') && $user->data['user_type'] != PHPBB3_USER_FOUNDER)
 		{
-			if ($member['user_type'] == USER_IGNORE)
+			if ($member['user_type'] == PHPBB3_USER_IGNORE)
 			{
 				trigger_error('NO_USER');
 			}
-			else if ($member['user_type'] == USER_INACTIVE && $member['user_inactive_reason'] != INACTIVE_PROFILE)
+			else if ($member['user_type'] == PHPBB3_USER_INACTIVE && $member['user_inactive_reason'] != PHPBB3_INACTIVE_PROFILE)
 			{
 				trigger_error('NO_USER');
 			}
@@ -455,9 +455,9 @@ switch ($mode)
 
 		// Do the SQL thang
 		$sql = 'SELECT g.group_id, g.group_name, g.group_type
-			FROM ' . GROUPS_TABLE . ' g, ' . USER_GROUP_TABLE . " ug
+			FROM ' . PHPBB3_GROUPS_TABLE . ' g, ' . PHPBB3_USER_GROUP_TABLE . " ug
 			WHERE ug.user_id = $user_id
-				AND g.group_id = ug.group_id" . ((!$auth->acl_gets('a_group', 'a_groupadd', 'a_groupdel')) ? ' AND g.group_type <> ' . GROUP_HIDDEN : '') . '
+				AND g.group_id = ug.group_id" . ((!$auth->acl_gets('a_group', 'a_groupadd', 'a_groupdel')) ? ' AND g.group_type <> ' . PHPBB3_GROUP_HIDDEN : '') . '
 				AND ug.user_pending = 0
 			ORDER BY g.group_type, g.group_name';
 		$result = $db->sql_query($sql);
@@ -465,13 +465,13 @@ switch ($mode)
 		$group_options = '';
 		while ($row = $db->sql_fetchrow($result))
 		{
-			$group_options .= '<option value="' . $row['group_id'] . '"' . (($row['group_id'] == $member['group_id']) ? ' selected="selected"' : '') . '>' . (($row['group_type'] == GROUP_SPECIAL) ? $user->lang['G_' . $row['group_name']] : $row['group_name']) . '</option>';
+			$group_options .= '<option value="' . $row['group_id'] . '"' . (($row['group_id'] == $member['group_id']) ? ' selected="selected"' : '') . '>' . (($row['group_type'] == PHPBB3_GROUP_SPECIAL) ? $user->lang['G_' . $row['group_name']] : $row['group_name']) . '</option>';
 		}
 		$db->sql_freeresult($result);
 
 		// What colour is the zebra
 		$sql = 'SELECT friend, foe
-			FROM ' . ZEBRA_TABLE . "
+			FROM ' . PHPBB3_ZEBRA_TABLE . "
 			WHERE zebra_id = $user_id
 				AND user_id = {$user->data['user_id']}";
 
@@ -484,7 +484,7 @@ switch ($mode)
 		if ($config['load_onlinetrack'])
 		{
 			$sql = 'SELECT MAX(session_time) AS session_time, MIN(session_viewonline) AS session_viewonline
-				FROM ' . SESSIONS_TABLE . "
+				FROM ' . PHPBB3_SESSIONS_TABLE . "
 				WHERE session_user_id = $user_id";
 			$result = $db->sql_query($sql);
 			$row = $db->sql_fetchrow($result);
@@ -624,7 +624,7 @@ switch ($mode)
 		if ($auth->acl_getf_global('m_approve') || $auth->acl_get('a_user'))
 		{
 			$sql = 'SELECT COUNT(post_id) as posts_in_queue
-				FROM ' . POSTS_TABLE . '
+				FROM ' . PHPBB3_POSTS_TABLE . '
 				WHERE poster_id = ' . $user_id . '
 					AND post_approved = 0';
 			$result = $db->sql_query($sql);
@@ -639,7 +639,7 @@ switch ($mode)
 		// Gallery-statistics
 		$member_gallery = array('user_images' => 0, 'personal_album_id' => 0);
 		$sql = 'SELECT *
-			FROM ' . GALLERY_USERS_TABLE . '
+			FROM ' . PHPBB3_GALLERY_USERS_TABLE . '
 			WHERE user_id = ' . $member['user_id'];
 		$result = $db->sql_query($sql);
 
@@ -664,8 +664,8 @@ switch ($mode)
 			'IMAGES_DAY'		=> sprintf($user->lang['IMAGE_DAY'], $images_per_day),
 			'IMAGES_PCT'		=> sprintf($user->lang['IMAGE_PCT'], $percentage_images),
 			'SHOW_PERSONAL_ALBUM_OF'	=> sprintf($user->lang['SHOW_PERSONAL_ALBUM_OF'], $member['username']),
-			'U_GALLERY'			=> ($member['personal_album_id'] && $config['gallery_personal_album_profil']) ? append_sid("{$phpbb_root_path}" . GALLERY_ROOT_PATH . "album.$phpEx", "album_id=" . $member['personal_album_id']) : '',
-			'U_SEARCH_GALLERY'	=> append_sid("{$phpbb_root_path}" . GALLERY_ROOT_PATH . "search.$phpEx", "user_id=" . $member['user_id']),
+			'U_GALLERY'			=> ($member['personal_album_id'] && $config['gallery_personal_album_profil']) ? append_sid("{$phpbb_root_path}" . PHPBB3_GALLERY_ROOT_PATH . "album.$phpEx", "album_id=" . $member['personal_album_id']) : '',
+			'U_SEARCH_GALLERY'	=> append_sid("{$phpbb_root_path}" . PHPBB3_GALLERY_ROOT_PATH . "search.$phpEx", "user_id=" . $member['user_id']),
 
 			'OCCUPATION'	=> (!empty($member['user_occ'])) ? censor_text($member['user_occ']) : '',
 			'INTERESTS'		=> (!empty($member['user_interests'])) ? censor_text($member['user_interests']) : '',
@@ -724,7 +724,7 @@ switch ($mode)
 		}
 
 		// Inactive reason/account?
-		if ($member['user_type'] == USER_INACTIVE)
+		if ($member['user_type'] == PHPBB3_USER_INACTIVE)
 		{
 			$user->add_lang('acp/common');
 
@@ -732,26 +732,26 @@ switch ($mode)
 
 			switch ($member['user_inactive_reason'])
 			{
-				case INACTIVE_REGISTER:
+				case PHPBB3_INACTIVE_REGISTER:
 					$inactive_reason = $user->lang['INACTIVE_REASON_REGISTER'];
 				break;
 
-				case INACTIVE_PROFILE:
+				case PHPBB3_INACTIVE_PROFILE:
 					$inactive_reason = $user->lang['INACTIVE_REASON_PROFILE'];
 				break;
 
-				case INACTIVE_MANUAL:
+				case PHPBB3_INACTIVE_MANUAL:
 					$inactive_reason = $user->lang['INACTIVE_REASON_MANUAL'];
 				break;
 
-				case INACTIVE_REMIND:
+				case PHPBB3_INACTIVE_REMIND:
 					$inactive_reason = $user->lang['INACTIVE_REASON_REMIND'];
 				break;
 			}
 
 			$template->assign_vars(array(
-				'S_USER_INACTIVE'		=> true,
-				'USER_INACTIVE_REASON'	=> $inactive_reason)
+				'S_PHPBB3_USER_INACTIVE'		=> true,
+				'PHPBB3_USER_INACTIVE_REASON'	=> $inactive_reason)
 			);
 		}
 
@@ -799,9 +799,9 @@ switch ($mode)
 
 			// Get the appropriate username, etc.
 			$sql = 'SELECT username, user_email, user_allow_viewemail, user_lang, user_jabber, user_notify_type
-				FROM ' . USERS_TABLE . "
+				FROM ' . PHPBB3_USERS_TABLE . "
 				WHERE user_id = $user_id
-					AND user_type IN (" . USER_NORMAL . ', ' . USER_FOUNDER . ')';
+					AND user_type IN (" . PHPBB3_USER_NORMAL . ', ' . PHPBB3_USER_FOUNDER . ')';
 			$result = $db->sql_query($sql);
 			$row = $db->sql_fetchrow($result);
 			$db->sql_freeresult($result);
@@ -821,7 +821,7 @@ switch ($mode)
 		{
 			// Send topic heads-up to email address
 			$sql = 'SELECT forum_id, topic_title
-				FROM ' . TOPICS_TABLE . "
+				FROM ' . PHPBB3_TOPICS_TABLE . "
 				WHERE topic_id = $topic_id";
 			$result = $db->sql_query($sql);
 			$row = $db->sql_fetchrow($result);
@@ -910,7 +910,7 @@ switch ($mode)
 
 			if (!sizeof($error))
 			{
-				$sql = 'UPDATE ' . USERS_TABLE . '
+				$sql = 'UPDATE ' . PHPBB3_USERS_TABLE . '
 					SET user_emailtime = ' . time() . '
 					WHERE user_id = ' . $user->data['user_id'];
 				$result = $db->sql_query($sql);
@@ -928,7 +928,7 @@ switch ($mode)
 					'username'			=> ($user_id) ? $row['username'] : '',
 					'to_name'			=> $name,
 					'user_jabber'		=> ($user_id) ? $row['user_jabber'] : '',
-					'user_notify_type'	=> ($user_id) ? $row['user_notify_type'] : NOTIFY_EMAIL,
+					'user_notify_type'	=> ($user_id) ? $row['user_notify_type'] : PHPBB3_NOTIFY_EMAIL,
 					'topic_title'		=> (!$user_id) ? $row['topic_title'] : '',
 					'forum_id'			=> (!$user_id) ? $row['forum_id'] : 0,
 				);
@@ -943,7 +943,7 @@ switch ($mode)
 						'username'			=> $user->data['username'],
 						'to_name'			=> $name,
 						'user_jabber'		=> $user->data['user_jabber'],
-						'user_notify_type'	=> ($user_id) ? $user->data['user_notify_type'] : NOTIFY_EMAIL,
+						'user_notify_type'	=> ($user_id) ? $user->data['user_notify_type'] : PHPBB3_NOTIFY_EMAIL,
 						'topic_title'		=> (!$user_id) ? $row['topic_title'] : '',
 						'forum_id'			=> (!$user_id) ? $row['forum_id'] : 0,
 					);
@@ -963,7 +963,7 @@ switch ($mode)
 					}
 					else
 					{
-						$notify_type = NOTIFY_EMAIL;
+						$notify_type = PHPBB3_NOTIFY_EMAIL;
 					}
 
 					$messenger->headers('X-AntiAbuse: Board servername - ' . $config['server_name']);
@@ -1139,7 +1139,7 @@ switch ($mode)
 
 			if ($search_group_id)
 			{
-				$sql_from = ', ' . USER_GROUP_TABLE . ' ug ';
+				$sql_from = ', ' . PHPBB3_USER_GROUP_TABLE . ' ug ';
 			}
 
 			if ($ipdomain && $auth->acl_getf_global('m_info'))
@@ -1172,7 +1172,7 @@ switch ($mode)
 					$ip_forums = array_keys($auth->acl_getf('m_info', true));
 
 					$sql = 'SELECT DISTINCT poster_id
-						FROM ' . POSTS_TABLE . '
+						FROM ' . PHPBB3_POSTS_TABLE . '
 						WHERE poster_ip ' . ((strpos($ips, '%') !== false) ? 'LIKE' : 'IN') . " ($ips)
 							AND forum_id IN (0, " . implode(', ', $ip_forums) . ')';
 					$result = $db->sql_query($sql);
@@ -1220,8 +1220,8 @@ switch ($mode)
 		{
 			// We JOIN here to save a query for determining membership for hidden groups. ;)
 			$sql = 'SELECT g.*, ug.user_id
-				FROM ' . GROUPS_TABLE . ' g
-				LEFT JOIN ' . USER_GROUP_TABLE . ' ug ON (ug.user_pending = 0 AND ug.user_id = ' . $user->data['user_id'] . " AND ug.group_id = $group_id)
+				FROM ' . PHPBB3_GROUPS_TABLE . ' g
+				LEFT JOIN ' . PHPBB3_USER_GROUP_TABLE . ' ug ON (ug.user_pending = 0 AND ug.user_id = ' . $user->data['user_id'] . " AND ug.group_id = $group_id)
 				WHERE g.group_id = $group_id";
 			$result = $db->sql_query($sql);
 			$group_row = $db->sql_fetchrow($result);
@@ -1234,15 +1234,15 @@ switch ($mode)
 
 			switch ($group_row['group_type'])
 			{
-				case GROUP_OPEN:
+				case PHPBB3_GROUP_OPEN:
 					$group_row['l_group_type'] = 'OPEN';
 				break;
 
-				case GROUP_CLOSED:
+				case PHPBB3_GROUP_CLOSED:
 					$group_row['l_group_type'] = 'CLOSED';
 				break;
 
-				case GROUP_HIDDEN:
+				case PHPBB3_GROUP_HIDDEN:
 					$group_row['l_group_type'] = 'HIDDEN';
 
 					// Check for membership or special permissions
@@ -1252,11 +1252,11 @@ switch ($mode)
 					}
 				break;
 
-				case GROUP_SPECIAL:
+				case PHPBB3_GROUP_SPECIAL:
 					$group_row['l_group_type'] = 'SPECIAL';
 				break;
 
-				case GROUP_FREE:
+				case PHPBB3_GROUP_FREE:
 					$group_row['l_group_type'] = 'FREE';
 				break;
 			}
@@ -1283,7 +1283,7 @@ switch ($mode)
 
 			$template->assign_vars(array(
 				'GROUP_DESC'	=> generate_text_for_display($group_row['group_desc'], $group_row['group_desc_uid'], $group_row['group_desc_bitfield'], $group_row['group_desc_options']),
-				'GROUP_NAME'	=> ($group_row['group_type'] == GROUP_SPECIAL) ? $user->lang['G_' . $group_row['group_name']] : $group_row['group_name'],
+				'GROUP_NAME'	=> ($group_row['group_type'] == PHPBB3_GROUP_SPECIAL) ? $user->lang['G_' . $group_row['group_name']] : $group_row['group_name'],
 				'GROUP_COLOR'	=> $group_row['group_colour'],
 				'GROUP_TYPE'	=> $user->lang['GROUP_IS_' . $group_row['l_group_type']],
 				'GROUP_RANK'	=> $rank_title,
@@ -1296,7 +1296,7 @@ switch ($mode)
 			);
 
 			$sql_select = ', ug.group_leader';
-			$sql_from = ', ' . USER_GROUP_TABLE . ' ug ';
+			$sql_from = ', ' . PHPBB3_USER_GROUP_TABLE . ' ug ';
 			$order_by = 'ug.group_leader DESC, ';
 
 			$sql_where .= " AND ug.user_pending = 0 AND u.user_id = ug.user_id AND ug.group_id = $group_id";
@@ -1320,8 +1320,8 @@ switch ($mode)
 		if ($sql_where)
 		{
 			$sql = 'SELECT COUNT(u.user_id) AS total_users
-				FROM ' . USERS_TABLE . " u$sql_from
-				WHERE u.user_type IN (" . USER_NORMAL . ', ' . USER_FOUNDER . ")
+				FROM ' . PHPBB3_USERS_TABLE . " u$sql_from
+				WHERE u.user_type IN (" . PHPBB3_USER_NORMAL . ', ' . PHPBB3_USER_FOUNDER . ")
 				$sql_where";
 			$result = $db->sql_query($sql);
 			$total_users = (int) $db->sql_fetchfield('total_users');
@@ -1412,7 +1412,7 @@ switch ($mode)
 			if ($auth->acl_gets('a_group', 'a_groupadd', 'a_groupdel'))
 			{
 				$sql = 'SELECT group_id, group_name, group_type
-					FROM ' . GROUPS_TABLE;
+					FROM ' . PHPBB3_GROUPS_TABLE;
 
 				if (!$config['coppa_enable'])
 				{
@@ -1424,14 +1424,14 @@ switch ($mode)
 			else
 			{
 				$sql = 'SELECT g.group_id, g.group_name, g.group_type
-					FROM ' . GROUPS_TABLE . ' g
-					LEFT JOIN ' . USER_GROUP_TABLE . ' ug
+					FROM ' . PHPBB3_GROUPS_TABLE . ' g
+					LEFT JOIN ' . PHPBB3_USER_GROUP_TABLE . ' ug
 						ON (
 							g.group_id = ug.group_id
 							AND ug.user_id = ' . $user->data['user_id'] . '
 							AND ug.user_pending = 0
 						)
-					WHERE (g.group_type <> ' . GROUP_HIDDEN . ' OR ug.user_id = ' . $user->data['user_id'] . ')';
+					WHERE (g.group_type <> ' . PHPBB3_GROUP_HIDDEN . ' OR ug.user_id = ' . $user->data['user_id'] . ')';
 
 				if (!$config['coppa_enable'])
 				{
@@ -1445,7 +1445,7 @@ switch ($mode)
 			while ($row = $db->sql_fetchrow($result))
 			{
 				$group_ids[] = $row['group_id'];
-				$s_group_select .= '<option value="' . $row['group_id'] . '"' . (($group_selected == $row['group_id']) ? ' selected="selected"' : '') . '>' . (($row['group_type'] == GROUP_SPECIAL) ? $user->lang['G_' . $row['group_name']] : $row['group_name']) . '</option>';
+				$s_group_select .= '<option value="' . $row['group_id'] . '"' . (($group_selected == $row['group_id']) ? ' selected="selected"' : '') . '>' . (($row['group_type'] == PHPBB3_GROUP_SPECIAL) ? $user->lang['G_' . $row['group_name']] : $row['group_name']) . '</option>';
 			}
 			$db->sql_freeresult($result);
 
@@ -1486,9 +1486,9 @@ switch ($mode)
 
 		// Get us some users :D
 		$sql = "SELECT u.user_id
-			FROM " . USERS_TABLE . " u
+			FROM " . PHPBB3_USERS_TABLE . " u
 				$sql_from
-			WHERE u.user_type IN (" . USER_NORMAL . ', ' . USER_FOUNDER . ")
+			WHERE u.user_type IN (" . PHPBB3_USER_NORMAL . ', ' . PHPBB3_USER_FOUNDER . ")
 				$sql_where
 			ORDER BY $order_by";
 		$result = $db->sql_query_limit($sql, $config['topics_per_page'], $start);
@@ -1505,7 +1505,7 @@ switch ($mode)
 		{
 			// Session time?! Session time...
 			$sql = 'SELECT session_user_id, MAX(session_time) AS session_time
-				FROM ' . SESSIONS_TABLE . '
+				FROM ' . PHPBB3_SESSIONS_TABLE . '
 				WHERE session_time >= ' . (time() - $config['session_length']) . '
 					AND ' . $db->sql_in_set('session_user_id', $user_list) . '
 				GROUP BY session_user_id';
@@ -1523,7 +1523,7 @@ switch ($mode)
 			{
 				$sql = "SELECT u.*
 						$sql_select
-					FROM " . USERS_TABLE . " u
+					FROM " . PHPBB3_USERS_TABLE . " u
 						$sql_from
 					WHERE " . $db->sql_in_set('u.user_id', $user_list) . "
 						$sql_where_data";
@@ -1531,7 +1531,7 @@ switch ($mode)
 			else
 			{
 				$sql = 'SELECT *
-					FROM ' . USERS_TABLE . '
+					FROM ' . PHPBB3_USERS_TABLE . '
 					WHERE ' . $db->sql_in_set('user_id', $user_list);
 			}
 			$result = $db->sql_query($sql);

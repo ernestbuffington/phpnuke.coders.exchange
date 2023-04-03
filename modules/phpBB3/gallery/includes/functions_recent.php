@@ -22,7 +22,7 @@ function recent_gallery_images($rows, $columns, &$display, $modes)
 
 	$user->add_lang('mods/gallery');
 	$recent_image_addon = true;
-	$gallery_root_path = GALLERY_ROOT_PATH;
+	$gallery_root_path = PHPBB3_GALLERY_ROOT_PATH;
 	include_once("{$phpbb_root_path}{$gallery_root_path}includes/common.$phpEx");
 	include_once("{$phpbb_root_path}{$gallery_root_path}includes/permissions.$phpEx");
 	$album_access_array = get_album_access_array();
@@ -57,7 +57,7 @@ function recent_gallery_images($rows, $columns, &$display, $modes)
 		if ($display['album'])
 		{
 			$album_sql1 = ', a.album_name, a.album_id';
-			$album_sql2 = '			LEFT JOIN ' . GALLERY_ALBUMS_TABLE . ' AS a
+			$album_sql2 = '			LEFT JOIN ' . PHPBB3_GALLERY_ALBUMS_TABLE . ' AS a
 				ON i.image_album_id = a.album_id';
 		}
 		else
@@ -69,7 +69,7 @@ function recent_gallery_images($rows, $columns, &$display, $modes)
 		if ($recent)
 		{
 			$sql = "SELECT i.* $album_sql1
-				FROM " . GALLERY_IMAGES_TABLE . " AS i
+				FROM " . PHPBB3_GALLERY_IMAGES_TABLE . " AS i
 				$album_sql2
 				WHERE (" . $db->sql_in_set('i.image_album_id', $view_albums) . '
 						AND i.image_status = 1)' . 
@@ -151,7 +151,7 @@ function recent_gallery_images($rows, $columns, &$display, $modes)
 				break;
 			}
 			$sql = "SELECT i.* $album_sql1
-				FROM " . GALLERY_IMAGES_TABLE . " AS i
+				FROM " . PHPBB3_GALLERY_IMAGES_TABLE . " AS i
 				$album_sql2
 				WHERE (" . $db->sql_in_set('i.image_album_id', $view_albums) . '
 						AND i.image_status = 1)' . 

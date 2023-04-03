@@ -1,6 +1,6 @@
 <!-- IF QUICK_REPLY_ALLOWED -->
 <!-- DEFINE $S_SIGNATURE = TRUE -->
-<!-- IF PRIME_CAPTCHA_TITLE or S_CONFIRM_CODE -->
+<!-- IF PRIME_CAPTCHA_TITLE or S_PHPBB3_CONFIRM_CODE -->
 	<!-- DEFINE $CAN_HIDE_OPTIONS = false -->
 <!-- ELSE -->
 	<!-- DEFINE $CAN_HIDE_OPTIONS = true -->
@@ -92,12 +92,12 @@
 		<td class="row2">{PRIME_CAPTCHA_KEY_PHRASE}<br /><input class="post" tabindex="4" name="{PRIME_CAPTCHA_FIELD_KEY_RESPONSE}" size="30" value="" type="text" />{PRIME_CAPTCHA_HIDDEN_FIELDS}</td>
 	</tr>
 	<!-- ENDIF -->
-	<!-- IF S_CONFIRM_CODE -->
+	<!-- IF S_PHPBB3_CONFIRM_CODE -->
 	<tr>
-		<td class="row1" valign="top"><b class="genmed">{L_CONFIRM_CODE}: </b><center style="margin:0.5em auto;"><input class="post" type="text" name="confirm_code" size="8" maxlength="8" /></center><span class="gensmall">{L_CONFIRM_CODE_EXPLAIN}</span></td>
+		<td class="row1" valign="top"><b class="genmed">{L_PHPBB3_CONFIRM_CODE}: </b><center style="margin:0.5em auto;"><input class="post" type="text" name="confirm_code" size="8" maxlength="8" /></center><span class="gensmall">{L_PHPBB3_CONFIRM_CODE_EXPLAIN}</span></td>
 		<td class="row2" align="left">
-			<input type="hidden" name="confirm_id" value="{CONFIRM_ID}" />
-			{CONFIRM_IMAGE}
+			<input type="hidden" name="confirm_id" value="{PHPBB3_CONFIRM_ID}" />
+			{PHPBB3_CONFIRM_IMAGE}
 		</td>
 	</tr>
 	<!-- ENDIF -->

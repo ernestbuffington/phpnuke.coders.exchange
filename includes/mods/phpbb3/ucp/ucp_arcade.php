@@ -95,7 +95,7 @@ class ucp_arcade
 
 			if (!sizeof($error))
 			{
-				$sql = 'UPDATE ' . USERS_TABLE . '
+				$sql = 'UPDATE ' . PHPBB3_USERS_TABLE . '
 					SET ' . $db->sql_build_array('UPDATE', $data) . '
 					WHERE user_id = ' . $user->data['user_id'];
 				$db->sql_query($sql);

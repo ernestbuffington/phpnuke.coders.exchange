@@ -141,7 +141,7 @@ class acp_board
 						'avatar_min'			=> array('lang' => 'MIN_AVATAR_SIZE',		'validate' => 'int:0',	'type' => 'dimension:3:4', 'explain' => true, 'append' => ' ' . $user->lang['PIXEL']),
 						'avatar_max'			=> array('lang' => 'MAX_AVATAR_SIZE',		'validate' => 'int:0',	'type' => 'dimension:3:4', 'explain' => true, 'append' => ' ' . $user->lang['PIXEL']),
 						'avatar_path'			=> array('lang' => 'AVATAR_STORAGE_PATH',	'validate' => 'rwpath',	'type' => 'text:20:255', 'explain' => true),
-						'avatar_gallery_path'	=> array('lang' => 'AVATAR_GALLERY_PATH',	'validate' => 'rpath',	'type' => 'text:20:255', 'explain' => true)
+						'avatar_gallery_path'	=> array('lang' => 'PHPBB3_AVATAR_GALLERY_PATH',	'validate' => 'rpath',	'type' => 'text:20:255', 'explain' => true)
 					)
 				);
 			break;
@@ -191,7 +191,7 @@ class acp_board
 						'allow_post_links'		=> array('lang' => 'ALLOW_POST_LINKS',		'validate' => 'bool',	'type' => 'radio:yes_no', 'explain' => true),
 						'allow_nocensors'		=> array('lang' => 'ALLOW_NO_CENSORS',		'validate' => 'bool',	'type' => 'radio:yes_no', 'explain' => true),
 						'allow_bookmarks'		=> array('lang' => 'ALLOW_BOOKMARKS',		'validate' => 'bool',	'type' => 'radio:yes_no', 'explain' => true),
-						'enable_post_confirm'	=> array('lang' => 'VISUAL_CONFIRM_POST',	'validate' => 'bool',	'type' => 'radio:yes_no', 'explain' => true),
+						'enable_post_confirm'	=> array('lang' => 'VISUAL_PHPBB3_CONFIRM_POST',	'validate' => 'bool',	'type' => 'radio:yes_no', 'explain' => true),
 
 						'legend2'				=> 'POSTING',
 						'enable_queue_trigger'	=> array('lang' => 'ENABLE_QUEUE_TRIGGER',	'validate' => 'bool',		'type' => 'radio:yes_no', 'explain' => true),
@@ -268,7 +268,7 @@ class acp_board
 						'legend2'				=> 'GENERAL_OPTIONS',
 						'allow_namechange'		=> array('lang' => 'ALLOW_NAME_CHANGE',		'validate' => 'bool',	'type' => 'radio:yes_no', 'explain' => false),
 						'allow_emailreuse'		=> array('lang' => 'ALLOW_EMAIL_REUSE',		'validate' => 'bool',	'type' => 'radio:yes_no', 'explain' => true),
-						'enable_confirm'		=> array('lang' => 'VISUAL_CONFIRM_REG',	'validate' => 'bool',	'type' => 'radio:yes_no', 'explain' => true),
+						'enable_confirm'		=> array('lang' => 'VISUAL_PHPBB3_CONFIRM_REG',	'validate' => 'bool',	'type' => 'radio:yes_no', 'explain' => true),
 						'max_login_attempts'	=> array('lang' => 'MAX_LOGIN_ATTEMPTS',	'validate' => 'int:0',	'type' => 'text:3:3', 'explain' => true),
 						'max_reg_attempts'		=> array('lang' => 'REG_LIMIT',				'validate' => 'int:0',	'type' => 'text:4:4', 'explain' => true),
 
@@ -440,7 +440,7 @@ class acp_board
 						'legend1'					=> 'CONTACT_GENERAL_SETTINGS',
 						'contact_enable'			=> array('lang' => 'CONTACT_ENABLE',			'validate' => 'bool',			'type' => 'radio:yes_no', 'explain' => true),
 						'contact_confirm'			=> array('lang' => 'CONTACT_CONFIRM',			'validate' => 'bool',			'type' => 'radio:yes_no', 'explain' => true),
-						'contact_confirm_guests'	=> array('lang' => 'CONTACT_CONFIRM_GUESTS',	'validate' => 'bool',			'type' => 'radio:yes_no', 'explain' => true),
+						'contact_confirm_guests'	=> array('lang' => 'CONTACT_PHPBB3_CONFIRM_GUESTS',	'validate' => 'bool',			'type' => 'radio:yes_no', 'explain' => true),
 						'contact_max_attempts'		=> array('lang' => 'CONTACT_MAX_ATTEMPTS',		'validate' => 'int',			'type' => 'text:3:3', 'explain' => true),
 						'contact_method'			=> array('lang' => 'CONTACT_METHOD',			'validate' => 'int',			'type' => 'custom', 'method' => 'contact_method_select', 'explain' => false),
 						'contact_reasons'			=> array('lang' => 'CONTACT_REASONS',			'validate' => 'string',			'type' => 'textarea:5:40', 'explain' => true),
@@ -809,10 +809,10 @@ class acp_board
 	{
 		global $user, $config;
 
-		$radio_ary = array(USER_ACTIVATION_DISABLE => 'ACC_DISABLE', USER_ACTIVATION_NONE => 'ACC_NONE');
+		$radio_ary = array(PHPBB3_USER_ACTIVATION_DISABLE => 'ACC_DISABLE', PHPBB3_USER_ACTIVATION_NONE => 'ACC_NONE');
 		if ($config['email_enable'])
 		{
-			$radio_ary += array(USER_ACTIVATION_SELF => 'ACC_USER', USER_ACTIVATION_ADMIN => 'ACC_ADMIN');
+			$radio_ary += array(PHPBB3_USER_ACTIVATION_SELF => 'ACC_USER', PHPBB3_USER_ACTIVATION_ADMIN => 'ACC_ADMIN');
 		}
 
 		return h_radio('config[require_activation]', $radio_ary, $value, $key);

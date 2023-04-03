@@ -91,7 +91,7 @@ class mcp_logs
 				$topic_id = request_var('t', 0);
 
 				$sql = 'SELECT forum_id
-					FROM ' . TOPICS_TABLE . '
+					FROM ' . PHPBB3_TOPICS_TABLE . '
 					WHERE topic_id = ' . $topic_id;
 				$result = $db->sql_query($sql);
 				$forum_id = (int) $db->sql_fetchfield('forum_id');
@@ -113,8 +113,8 @@ class mcp_logs
 			{
 				if ($deletemark && sizeof($marked))
 				{
-					$sql = 'DELETE FROM ' . LOG_TABLE . '
-						WHERE log_type = ' . LOG_MOD . '
+					$sql = 'DELETE FROM ' . PHPBB3_LOG_TABLE . '
+						WHERE log_type = ' . PHPBB3_LOG_MOD . '
 							AND ' . $db->sql_in_set('forum_id', $forum_list) . '
 							AND ' . $db->sql_in_set('log_id', $marked);
 					$db->sql_query($sql);
@@ -123,8 +123,8 @@ class mcp_logs
 				}
 				else if ($deleteall)
 				{
-					$sql = 'DELETE FROM ' . LOG_TABLE . '
-						WHERE log_type = ' . LOG_MOD . '
+					$sql = 'DELETE FROM ' . PHPBB3_LOG_TABLE . '
+						WHERE log_type = ' . PHPBB3_LOG_MOD . '
 							AND ' . $db->sql_in_set('forum_id', $forum_list);
 
 					if ($mode == 'topic_logs')
@@ -138,7 +138,7 @@ class mcp_logs
 			}
 			else
 			{
-				confirm_box(false, $user->lang['CONFIRM_OPERATION'], build_hidden_fields(array(
+				confirm_box(false, $user->lang['PHPBB3_CONFIRM_OPERATION'], build_hidden_fields(array(
 					'f'			=> $forum_id,
 					't'			=> $topic_id,
 					'start'		=> $start,

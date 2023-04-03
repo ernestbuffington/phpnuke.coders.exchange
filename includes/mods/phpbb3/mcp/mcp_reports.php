@@ -81,7 +81,7 @@ class mcp_reports
 				$report_id = request_var('r', 0);
 
 				$sql = 'SELECT r.post_id, r.user_id, r.report_id, r.report_closed, report_time, r.report_text, rr.reason_title, rr.reason_description, u.username, u.username_clean, u.user_colour
-					FROM ' . REPORTS_TABLE . ' r, ' . REPORTS_REASONS_TABLE . ' rr, ' . USERS_TABLE . ' u
+					FROM ' . PHPBB3_REPORTS_TABLE . ' r, ' . PHPBB3_REPORTS_REASONS_TABLE . ' rr, ' . PHPBB3_USERS_TABLE . ' u
 					WHERE ' . (($report_id) ? 'r.report_id = ' . $report_id : "r.post_id = $post_id") . '
 						AND rr.reason_id = r.reason_id
 						AND r.user_id = u.user_id
@@ -160,7 +160,7 @@ class mcp_reports
 					$extensions = $cache->obtain_attach_extensions($post_info['forum_id']);
 
 					$sql = 'SELECT *
-						FROM ' . ATTACHMENTS_TABLE . '
+						FROM ' . PHPBB3_ATTACHMENTS_TABLE . '
 						WHERE post_msg_id = ' . $post_id . '
 							AND in_message = 0
 						ORDER BY filetime DESC, post_msg_id ASC';
@@ -300,7 +300,7 @@ class mcp_reports
 					$global_id = $forum_list[0];
 
 					$sql = 'SELECT SUM(forum_topics) as sum_forum_topics
-						FROM ' . FORUMS_TABLE . '
+						FROM ' . PHPBB3_FORUMS_TABLE . '
 						WHERE ' . $db->sql_in_set('forum_id', $forum_list);
 					$result = $db->sql_query($sql);
 					$forum_info['forum_topics'] = (int) $db->sql_fetchfield('sum_forum_topics');
@@ -349,7 +349,7 @@ class mcp_reports
 				}
 
 				$sql = 'SELECT r.report_id
-					FROM ' . POSTS_TABLE . ' p, ' . TOPICS_TABLE . ' t, ' . REPORTS_TABLE . ' r ' . (($sort_order_sql[0] == 'u') ? ', ' . USERS_TABLE . ' u' : '') . (($sort_order_sql[0] == 'r') ? ', ' . USERS_TABLE . ' ru' : '') . '
+					FROM ' . PHPBB3_POSTS_TABLE . ' p, ' . PHPBB3_TOPICS_TABLE . ' t, ' . PHPBB3_REPORTS_TABLE . ' r ' . (($sort_order_sql[0] == 'u') ? ', ' . PHPBB3_USERS_TABLE . ' u' : '') . (($sort_order_sql[0] == 'r') ? ', ' . PHPBB3_USERS_TABLE . ' ru' : '') . '
 					WHERE ' . $db->sql_in_set('p.forum_id', $forum_list) . "
 						$report_state
 						AND r.post_id = p.post_id
@@ -373,7 +373,7 @@ class mcp_reports
 				if (sizeof($report_ids))
 				{
 					$sql = 'SELECT t.forum_id, t.topic_id, t.topic_title, p.post_id, p.post_subject, p.post_username, p.poster_id, p.post_time, u.username, u.username_clean, u.user_colour, r.user_id as reporter_id, ru.username as reporter_name, ru.user_colour as reporter_colour, r.report_time, r.report_id
-						FROM ' . REPORTS_TABLE . ' r, ' . POSTS_TABLE . ' p, ' . TOPICS_TABLE . ' t, ' . USERS_TABLE . ' u, ' . USERS_TABLE . ' ru
+						FROM ' . PHPBB3_REPORTS_TABLE . ' r, ' . PHPBB3_POSTS_TABLE . ' p, ' . PHPBB3_TOPICS_TABLE . ' t, ' . PHPBB3_USERS_TABLE . ' u, ' . PHPBB3_USERS_TABLE . ' ru
 						WHERE ' . $db->sql_in_set('r.report_id', $report_ids) . '
 							AND t.topic_id = p.topic_id
 							AND r.post_id = p.post_id
@@ -454,7 +454,7 @@ function close_report($report_id_list, $mode, $action)
 	$phpbb_root_path = PHPBB3_ROOT_DIR;
 
 	$sql = 'SELECT r.post_id
-		FROM ' . REPORTS_TABLE . ' r
+		FROM ' . PHPBB3_REPORTS_TABLE . ' r
 		WHERE ' . $db->sql_in_set('r.report_id', $report_id_list);
 	$result = $db->sql_query($sql);
 
@@ -465,7 +465,7 @@ function close_report($report_id_list, $mode, $action)
 	}
 	$post_id_list = array_unique($post_id_list);
 
-	if (!check_ids($post_id_list, POSTS_TABLE, 'post_id', array('m_report')))
+	if (!check_ids($post_id_list, PHPBB3_POSTS_TABLE, 'post_id', array('m_report')))
 	{
 		trigger_error('NOT_AUTHORISED');
 	}
@@ -499,7 +499,7 @@ function close_report($report_id_list, $mode, $action)
 		$post_info = get_post_data($post_id_list, 'm_report');
 
 		$sql = 'SELECT r.report_id, r.post_id, r.report_closed, r.user_id, r.user_notify, u.username, u.username_clean, u.user_email, u.user_jabber, u.user_lang, u.user_notify_type
-			FROM ' . REPORTS_TABLE . ' r, ' . USERS_TABLE . ' u
+			FROM ' . PHPBB3_REPORTS_TABLE . ' r, ' . PHPBB3_USERS_TABLE . ' u
 			WHERE ' . $db->sql_in_set('r.report_id', $report_id_list) . '
 				' . (($action == 'close') ? 'AND r.report_closed = 0' : '') . '
 				AND r.user_id = u.user_id';
@@ -533,7 +533,7 @@ function close_report($report_id_list, $mode, $action)
 			{
 				// Get a list of topics that still contain reported posts
 				$sql = 'SELECT DISTINCT topic_id
-					FROM ' . POSTS_TABLE . '
+					FROM ' . PHPBB3_POSTS_TABLE . '
 					WHERE ' . $db->sql_in_set('topic_id', $close_report_topics) . '
 						AND post_reported = 1
 						AND ' . $db->sql_in_set('post_id', $close_report_posts, true);
@@ -554,13 +554,13 @@ function close_report($report_id_list, $mode, $action)
 
 			if ($action == 'close')
 			{
-				$sql = 'UPDATE ' . REPORTS_TABLE . '
+				$sql = 'UPDATE ' . PHPBB3_REPORTS_TABLE . '
 					SET report_closed = 1
 					WHERE ' . $db->sql_in_set('report_id', $report_id_list);
 			}
 			else
 			{
-				$sql = 'DELETE FROM ' . REPORTS_TABLE . '
+				$sql = 'DELETE FROM ' . PHPBB3_REPORTS_TABLE . '
 					WHERE ' . $db->sql_in_set('report_id', $report_id_list);
 			}
 			$db->sql_query($sql);
@@ -568,14 +568,14 @@ function close_report($report_id_list, $mode, $action)
 
 			if (sizeof($close_report_posts))
 			{
-				$sql = 'UPDATE ' . POSTS_TABLE . '
+				$sql = 'UPDATE ' . PHPBB3_POSTS_TABLE . '
 					SET post_reported = 0
 					WHERE ' . $db->sql_in_set('post_id', $close_report_posts);
 				$db->sql_query($sql);
 
 				if (sizeof($close_report_topics))
 				{
-					$sql = 'UPDATE ' . TOPICS_TABLE . '
+					$sql = 'UPDATE ' . PHPBB3_TOPICS_TABLE . '
 						SET topic_reported = 0
 						WHERE ' . $db->sql_in_set('topic_id', $close_report_topics) . '
 							OR ' . $db->sql_in_set('topic_moved_id', $close_report_topics);

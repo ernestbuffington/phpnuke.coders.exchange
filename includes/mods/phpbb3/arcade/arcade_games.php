@@ -41,7 +41,7 @@ $sql_array = array(
 
 	'LEFT_JOIN'	=> array(
 		array(
-			'FROM'	=> array(USERS_TABLE => 'u'),
+			'FROM'	=> array(PHPBB3_USERS_TABLE => 'u'),
 			'ON'	=> 'g.game_highuser = u.user_id'
 		),
 		array(

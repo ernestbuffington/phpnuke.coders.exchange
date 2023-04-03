@@ -79,14 +79,14 @@ class acp_ranks
 				
 				if ($rank_id)
 				{
-					$sql = 'UPDATE ' . RANKS_TABLE . ' SET ' . $db->sql_build_array('UPDATE', $sql_ary) . " WHERE rank_id = $rank_id";
+					$sql = 'UPDATE ' . PHPBB3_RANKS_TABLE . ' SET ' . $db->sql_build_array('UPDATE', $sql_ary) . " WHERE rank_id = $rank_id";
 					$message = $user->lang['RANK_UPDATED'];
 
 					add_log('admin', 'LOG_RANK_UPDATED', $rank_title);
 				}
 				else
 				{
-					$sql = 'INSERT INTO ' . RANKS_TABLE . ' ' . $db->sql_build_array('INSERT', $sql_ary);
+					$sql = 'INSERT INTO ' . PHPBB3_RANKS_TABLE . ' ' . $db->sql_build_array('INSERT', $sql_ary);
 					$message = $user->lang['RANK_ADDED'];
 
 					add_log('admin', 'LOG_RANK_ADDED', $rank_title);
@@ -109,17 +109,17 @@ class acp_ranks
 				if (confirm_box(true))
 				{
 					$sql = 'SELECT rank_title
-						FROM ' . RANKS_TABLE . '
+						FROM ' . PHPBB3_RANKS_TABLE . '
 						WHERE rank_id = ' . $rank_id;
 					$result = $db->sql_query($sql);
 					$rank_title = (string) $db->sql_fetchfield('rank_title');
 					$db->sql_freeresult($result);
 
-					$sql = 'DELETE FROM ' . RANKS_TABLE . "
+					$sql = 'DELETE FROM ' . PHPBB3_RANKS_TABLE . "
 						WHERE rank_id = $rank_id";
 					$db->sql_query($sql);
 
-					$sql = 'UPDATE ' . USERS_TABLE . "
+					$sql = 'UPDATE ' . PHPBB3_USERS_TABLE . "
 						SET user_rank = 0
 						WHERE user_rank = $rank_id";
 					$db->sql_query($sql);
@@ -130,7 +130,7 @@ class acp_ranks
 				}
 				else
 				{
-					confirm_box(false, $user->lang['CONFIRM_OPERATION'], build_hidden_fields(array(
+					confirm_box(false, $user->lang['PHPBB3_CONFIRM_OPERATION'], build_hidden_fields(array(
 						'i'			=> $id,
 						'mode'		=> $mode,
 						'rank_id'	=> $rank_id,
@@ -146,7 +146,7 @@ class acp_ranks
 				$data = $ranks = $existing_imgs = array();
 				
 				$sql = 'SELECT *
-					FROM ' . RANKS_TABLE . '
+					FROM ' . PHPBB3_RANKS_TABLE . '
 					ORDER BY rank_min ASC, rank_special ASC';
 				$result = $db->sql_query($sql);
 
@@ -221,7 +221,7 @@ class acp_ranks
 		);
 
 		$sql = 'SELECT *
-			FROM ' . RANKS_TABLE . '
+			FROM ' . PHPBB3_RANKS_TABLE . '
 			ORDER BY rank_special DESC, rank_min ASC, rank_title ASC';
 		$result = $db->sql_query($sql);
 

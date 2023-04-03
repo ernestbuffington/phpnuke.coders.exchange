@@ -46,7 +46,7 @@ class ucp_resend
 			}
 
 			$sql = 'SELECT user_id, group_id, username, user_email, user_type, user_lang, user_actkey, user_inactive_reason
-				FROM ' . USERS_TABLE . "
+				FROM ' . PHPBB3_USERS_TABLE . "
 				WHERE user_email = '" . $db->sql_escape($email) . "'
 					AND username_clean = '" . $db->sql_escape(utf8_clean_string($username)) . "'";
 			$result = $db->sql_query($sql);
@@ -58,24 +58,24 @@ class ucp_resend
 				trigger_error('NO_EMAIL_USER');
 			}
 
-			if ($user_row['user_type'] == USER_IGNORE)
+			if ($user_row['user_type'] == PHPBB3_USER_IGNORE)
 			{
 				trigger_error('NO_USER');
 			}
 
-			if (!$user_row['user_actkey'] && $user_row['user_type'] != USER_INACTIVE)
+			if (!$user_row['user_actkey'] && $user_row['user_type'] != PHPBB3_USER_INACTIVE)
 			{
 				trigger_error('ACCOUNT_ALREADY_ACTIVATED');
 			}
 
-			if (!$user_row['user_actkey'] || ($user_row['user_type'] == USER_INACTIVE && $user_row['user_inactive_reason'] == INACTIVE_MANUAL))
+			if (!$user_row['user_actkey'] || ($user_row['user_type'] == PHPBB3_USER_INACTIVE && $user_row['user_inactive_reason'] == PHPBB3_INACTIVE_MANUAL))
 			{
 				trigger_error('ACCOUNT_DEACTIVATED');
 			}
 
 			// Determine coppa status on group (REGISTERED(_COPPA))
 			$sql = 'SELECT group_name, group_type
-				FROM ' . GROUPS_TABLE . '
+				FROM ' . PHPBB3_GROUPS_TABLE . '
 				WHERE group_id = ' . $user_row['group_id'];
 			$result = $db->sql_query($sql);
 			$row = $db->sql_fetchrow($result);
@@ -86,12 +86,12 @@ class ucp_resend
 				trigger_error('NO_GROUP');
 			}
 
-			$coppa = ($row['group_name'] == 'REGISTERED_COPPA' && $row['group_type'] == GROUP_SPECIAL) ? true : false;
+			$coppa = ($row['group_name'] == 'REGISTERED_COPPA' && $row['group_type'] == PHPBB3_GROUP_SPECIAL) ? true : false;
 
 			include_once(PHPBB3_INCLUDE_DIR . 'functions_messenger.' . $phpEx);
 			$messenger = new messenger(false);
 
-			if ($config['require_activation'] == USER_ACTIVATION_SELF || $coppa)
+			if ($config['require_activation'] == PHPBB3_USER_ACTIVATION_SELF || $coppa)
 			{
 				$messenger->template(($coppa) ? 'coppa_resend_inactive' : 'user_resend_inactive', $user_row['user_lang']);
 				$messenger->to($user_row['user_email'], $user_row['username']);
@@ -116,16 +116,16 @@ class ucp_resend
 					);
 				}
 
-				$messenger->send(NOTIFY_EMAIL);
+				$messenger->send(PHPBB3_NOTIFY_EMAIL);
 			}
 
-			if ($config['require_activation'] == USER_ACTIVATION_ADMIN)
+			if ($config['require_activation'] == PHPBB3_USER_ACTIVATION_ADMIN)
 			{
 				// Grab an array of user_id's with a_user permissions ... these users can activate a user
 				$admin_ary = $auth->acl_get_list(false, 'a_user', false);
 
 				$sql = 'SELECT user_id, username, user_email, user_lang, user_jabber, user_notify_type
-					FROM ' . USERS_TABLE . '
+					FROM ' . PHPBB3_USERS_TABLE . '
 					WHERE ' . $db->sql_in_set('user_id', $admin_ary[0]['a_user']);
 				$result = $db->sql_query($sql);
 
@@ -148,7 +148,7 @@ class ucp_resend
 
 			meta_refresh(3, append_sid("{$phpbb_root_path}index.$phpEx"));
 
-			$message = ($config['require_activation'] == USER_ACTIVATION_ADMIN) ? $user->lang['ACIVATION_EMAIL_SENT_ADMIN'] : $user->lang['ACTIVATION_EMAIL_SENT'];
+			$message = ($config['require_activation'] == PHPBB3_USER_ACTIVATION_ADMIN) ? $user->lang['ACIVATION_EMAIL_SENT_ADMIN'] : $user->lang['ACTIVATION_EMAIL_SENT'];
 			$message .= '<br /><br />' . sprintf($user->lang['RETURN_INDEX'], '<a href="' . append_sid("{$phpbb_root_path}index.$phpEx") . '">', '</a>');
 			trigger_error($message);
 		}

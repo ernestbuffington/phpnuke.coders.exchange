@@ -198,7 +198,7 @@ class arcade_admin extends arcade
 			$game_id = array((int) $game_id);
 		}
 		
-		$tables = array(ARCADE_DOWNLOAD_TABLE, ARCADE_ERRORS_TABLE, ARCADE_SCORES_TABLE, ARCADE_GAMES_TABLE, ARCADE_FAVS_TABLE, ARCADE_RATING_TABLE, ARCADE_REPORTS_TABLE, ARCADE_SESSIONS_TABLE);
+		$tables = array(ARCADE_DOWNLOAD_TABLE, ARCADE_ERRORS_TABLE, ARCADE_SCORES_TABLE, ARCADE_GAMES_TABLE, ARCADE_FAVS_TABLE, ARCADE_RATING_TABLE, ARCADE_PHPBB3_REPORTS_TABLE, ARCADE_PHPBB3_SESSIONS_TABLE);
 
 		foreach ($tables as $table)
 		{
@@ -977,7 +977,7 @@ class arcade_admin extends arcade
 						'ON'	=> 'g.game_id = s.game_id'
 					),
 					array(
-						'FROM'	=> array(USERS_TABLE => 'u'),
+						'FROM'	=> array(PHPBB3_USERS_TABLE => 'u'),
 						'ON'	=> 'u.user_id = s.user_id'
 					),
 				),
@@ -1612,7 +1612,7 @@ $game_data = array(
 	        'enable_indexing'   => true,
 	    );
 
-	    submit_post('post', $subject, '', POST_NORMAL, $poll, $data);
+	    submit_post('post', $subject, '', PHPBB3_POST_NORMAL, $poll, $data);
 	}
 
 	/**

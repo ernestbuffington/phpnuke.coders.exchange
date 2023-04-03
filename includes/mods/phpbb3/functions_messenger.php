@@ -31,7 +31,7 @@ class messenger
 	var $vars, $msg, $extra_headers, $replyto, $from, $subject;
 	var $addresses = array();
 
-	var $mail_priority = MAIL_NORMAL_PRIORITY;
+	var $mail_priority = PHPBB3_MAIL_NORMAL_PRIORITY;
 	var $use_queue = true;
 	var $tpl_msg = array();
 
@@ -53,7 +53,7 @@ class messenger
 	{
 		$this->addresses = $this->extra_headers = array();
 		$this->vars = $this->msg = $this->replyto = $this->from = '';
-		$this->mail_priority = MAIL_NORMAL_PRIORITY;
+		$this->mail_priority = PHPBB3_MAIL_NORMAL_PRIORITY;
 	}
 
 	/**
@@ -149,7 +149,7 @@ class messenger
 	/**
 	* Set the email priority
 	*/
-	function set_mail_priority($priority = MAIL_NORMAL_PRIORITY)
+	function set_mail_priority($priority = PHPBB3_MAIL_NORMAL_PRIORITY)
 	{
 		$this->mail_priority = $priority;
 	}
@@ -206,7 +206,7 @@ class messenger
 	/**
 	* Send the mail out to the recipients set previously in var $this->addresses
 	*/
-	function send($method = NOTIFY_EMAIL, $break = false)
+	function send($method = PHPBB3_NOTIFY_EMAIL, $break = false)
 	{
 		$result = null;
         global $config, $user;
@@ -248,15 +248,15 @@ class messenger
 
 		switch ($method)
 		{
-			case NOTIFY_EMAIL:
+			case PHPBB3_NOTIFY_EMAIL:
 				$result = $this->msg_email();
 			break;
 
-			case NOTIFY_IM:
+			case PHPBB3_NOTIFY_IM:
 				$result = $this->msg_jabber();
 			break;
 
-			case NOTIFY_BOTH:
+			case PHPBB3_NOTIFY_BOTH:
 				$result = $this->msg_email();
 				$this->msg_jabber();
 			break;
@@ -342,7 +342,7 @@ class messenger
 		$headers[] = 'Content-Transfer-Encoding: 8bit'; // 7bit
 
 		$headers[] = 'X-Priority: ' . $this->mail_priority;
-		$headers[] = 'X-MSMail-Priority: ' . (($this->mail_priority == MAIL_LOW_PRIORITY) ? 'Low' : (($this->mail_priority == MAIL_NORMAL_PRIORITY) ? 'Normal' : 'High'));
+		$headers[] = 'X-MSMail-Priority: ' . (($this->mail_priority == PHPBB3_MAIL_LOW_PRIORITY) ? 'Low' : (($this->mail_priority == PHPBB3_MAIL_NORMAL_PRIORITY) ? 'Normal' : 'High'));
 		$headers[] = 'X-Mailer: PhpBB3';
 		$headers[] = 'X-MimeOLE: phpBB3';
 		$headers[] = 'X-phpBB-Origin: phpbb://' . str_replace(array('http://', 'https://'), array('', ''), generate_board_url());

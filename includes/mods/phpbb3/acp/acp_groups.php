@@ -64,7 +64,7 @@ class acp_groups
 		if ($group_id)
 		{
 			$sql = 'SELECT *
-				FROM ' . GROUPS_TABLE . "
+				FROM ' . PHPBB3_GROUPS_TABLE . "
 				WHERE group_id = $group_id";
 			$result = $db->sql_query($sql);
 			$group_row = $db->sql_fetchrow($result);
@@ -76,7 +76,7 @@ class acp_groups
 			}
 
 			// Check if the user is allowed to manage this group if set to founder only.
-			if ($user->data['user_type'] != USER_FOUNDER && $group_row['group_founder_manage'])
+			if ($user->data['user_type'] != PHPBB3_USER_FOUNDER && $group_row['group_founder_manage'])
 			{
 				trigger_error($user->lang['NOT_ALLOWED_MANAGE_GROUP'] . adm_back_link($this->u_action), E_USER_WARNING);
 			}
@@ -94,7 +94,7 @@ class acp_groups
 				}
 
 				// Approve, demote or promote
-				$group_name = ($group_row['group_type'] == GROUP_SPECIAL) ? $user->lang['G_' . $group_row['group_name']] : $group_row['group_name'];
+				$group_name = ($group_row['group_type'] == PHPBB3_GROUP_SPECIAL) ? $user->lang['G_' . $group_row['group_name']] : $group_row['group_name'];
 				$error = group_user_attributes($action, $group_id, $mark_ary, false, $group_name);
 
 				if (!$error)
@@ -130,7 +130,7 @@ class acp_groups
 
 				if (confirm_box(true))
 				{
-					$group_name = ($group_row['group_type'] == GROUP_SPECIAL) ? $user->lang['G_' . $group_row['group_name']] : $group_row['group_name'];
+					$group_name = ($group_row['group_type'] == PHPBB3_GROUP_SPECIAL) ? $user->lang['G_' . $group_row['group_name']] : $group_row['group_name'];
 
 					if (!sizeof($mark_ary))
 					{
@@ -139,7 +139,7 @@ class acp_groups
 						do
 						{
 							$sql = 'SELECT user_id
-								FROM ' . USER_GROUP_TABLE . "
+								FROM ' . PHPBB3_USER_GROUP_TABLE . "
 								WHERE group_id = $group_id
 								ORDER BY user_id";
 							$result = $db->sql_query_limit($sql, 200, $start);
@@ -174,7 +174,7 @@ class acp_groups
 				}
 				else
 				{
-					confirm_box(false, $user->lang['CONFIRM_OPERATION'], build_hidden_fields(array(
+					confirm_box(false, $user->lang['PHPBB3_CONFIRM_OPERATION'], build_hidden_fields(array(
 						'mark'		=> $mark_ary,
 						'g'			=> $group_id,
 						'i'			=> $id,
@@ -191,7 +191,7 @@ class acp_groups
 				{
 					trigger_error($user->lang['NO_GROUP'] . adm_back_link($this->u_action), E_USER_WARNING);
 				}
-				else if ($action === 'delete' && $group_row['group_type'] == GROUP_SPECIAL)
+				else if ($action === 'delete' && $group_row['group_type'] == PHPBB3_GROUP_SPECIAL)
 				{
 					trigger_error($user->lang['NO_AUTH_OPERATION'] . adm_back_link($this->u_action), E_USER_WARNING);
 				}
@@ -212,7 +212,7 @@ class acp_groups
 						break;
 
 						case 'deleteusers':
-							$group_name = ($group_row['group_type'] == GROUP_SPECIAL) ? $user->lang['G_' . $group_row['group_name']] : $group_row['group_name'];
+							$group_name = ($group_row['group_type'] == PHPBB3_GROUP_SPECIAL) ? $user->lang['G_' . $group_row['group_name']] : $group_row['group_name'];
 							$error = group_user_del($group_id, $mark_ary, false, $group_name);
 						break;
 					}
@@ -229,7 +229,7 @@ class acp_groups
 				}
 				else
 				{
-					confirm_box(false, $user->lang['CONFIRM_OPERATION'], build_hidden_fields(array(
+					confirm_box(false, $user->lang['PHPBB3_CONFIRM_OPERATION'], build_hidden_fields(array(
 						'mark'		=> $mark_ary,
 						'g'			=> $group_id,
 						'i'			=> $id,
@@ -251,7 +251,7 @@ class acp_groups
 				}
 
 				$name_ary = array_unique(explode("\n", $name_ary));
-				$group_name = ($group_row['group_type'] == GROUP_SPECIAL) ? $user->lang['G_' . $group_row['group_name']] : $group_row['group_name'];
+				$group_name = ($group_row['group_type'] == PHPBB3_GROUP_SPECIAL) ? $user->lang['G_' . $group_row['group_name']] : $group_row['group_name'];
 
 				// Add user/s to group
 				if ($error = group_user_add($group_id, false, $name_ary, $group_name, $default, $leader, 0, $group_row))
@@ -296,7 +296,7 @@ class acp_groups
 
 					$group_name	= utf8_normalize_nfc(request_var('group_name', '', true));
 					$group_desc = utf8_normalize_nfc(request_var('group_desc', '', true));
-					$group_type	= request_var('group_type', GROUP_FREE);
+					$group_type	= request_var('group_type', PHPBB3_GROUP_FREE);
 
 					$allow_desc_bbcode	= request_var('desc_parse_bbcode', false);
 					$allow_desc_urls	= request_var('desc_parse_urls', false);
@@ -318,7 +318,7 @@ class acp_groups
 						'founder_manage'	=> 0,
 					);
 
-					if ($user->data['user_type'] == USER_FOUNDER)
+					if ($user->data['user_type'] == PHPBB3_USER_FOUNDER)
 					{
 						$submit_ary['founder_manage'] = isset($_REQUEST['group_founder_manage']) ? 1 : 0;
 					}
@@ -352,7 +352,7 @@ class acp_groups
 						// check avatar gallery
 						if (is_dir(PHPBB3_ROOT_DIR . $config['avatar_gallery_path'] . '/' . $category))
 						{
-							$submit_ary['avatar_type'] = AVATAR_GALLERY;
+							$submit_ary['avatar_type'] = PHPBB3_AVATAR_GALLERY;
 
 							list($submit_ary['avatar_width'], $submit_ary['avatar_height']) = getimagesize(PHPBB3_ROOT_DIR . $config['avatar_gallery_path'] . '/' . $category . '/' . $avatar_select);
 							$submit_ary['avatar'] = $category . '/' . $avatar_select;
@@ -427,14 +427,14 @@ class acp_groups
 							if ($group_perm_from && $action == 'add' && $auth->acl_get('a_authgroups') && $auth->acl_gets('a_aauth', 'a_fauth', 'a_mauth', 'a_uauth'))
 							{
 								$sql = 'SELECT group_founder_manage
-									FROM ' . GROUPS_TABLE . '
+									FROM ' . PHPBB3_GROUPS_TABLE . '
 									WHERE group_id = ' . $group_perm_from;
 								$result = $db->sql_query($sql);
 								$check_row = $db->sql_fetchrow($result);
 								$db->sql_freeresult($result);
 
 								// Check the group if non-founder
-								if ($check_row && ($user->data['user_type'] == USER_FOUNDER || $check_row['group_founder_manage'] == 0))
+								if ($check_row && ($user->data['user_type'] == PHPBB3_USER_FOUNDER || $check_row['group_founder_manage'] == 0))
 								{
 									// From the mysql documentation:
 									// Prior to MySQL 4.0.14, the target table of the INSERT statement cannot appear in the FROM clause of the SELECT part of the query. This limitation is lifted in 4.0.14.
@@ -442,7 +442,7 @@ class acp_groups
 
 									// Copy permisisons from/to the acl groups table (only group_id gets changed)
 									$sql = 'SELECT forum_id, auth_option_id, auth_role_id, auth_setting
-										FROM ' . ACL_GROUPS_TABLE . '
+										FROM ' . PHPBB3_ACL_PHPBB3_GROUPS_TABLE . '
 										WHERE group_id = ' . $group_perm_from;
 									$result = $db->sql_query($sql);
 
@@ -460,13 +460,13 @@ class acp_groups
 									$db->sql_freeresult($result);
 
 									// Now insert the data
-									$db->sql_multi_insert(ACL_GROUPS_TABLE, $groups_sql_ary);
+									$db->sql_multi_insert(PHPBB3_ACL_PHPBB3_GROUPS_TABLE, $groups_sql_ary);
 
 									$auth->acl_clear_prefetch();
 								}
 							}
 
-							$cache->destroy('sql', GROUPS_TABLE);
+							$cache->destroy('sql', PHPBB3_GROUPS_TABLE);
 
 							$message = ($action == 'edit') ? 'GROUP_UPDATED' : 'GROUP_CREATED';
 							trigger_error($user->lang[$message] . adm_back_link($this->u_action));
@@ -495,7 +495,7 @@ class acp_groups
 						'allow_urls'	=> true
 					);
 					$group_rank = 0;
-					$group_type = GROUP_OPEN;
+					$group_type = PHPBB3_GROUP_OPEN;
 				}
 				else
 				{
@@ -506,7 +506,7 @@ class acp_groups
 				}
 
 				$sql = 'SELECT *
-					FROM ' . RANKS_TABLE . '
+					FROM ' . PHPBB3_RANKS_TABLE . '
 					WHERE rank_special = 1
 					ORDER BY rank_title';
 				$result = $db->sql_query($sql);
@@ -520,10 +520,10 @@ class acp_groups
 				}
 				$db->sql_freeresult($result);
 
-				$type_free		= ($group_type == GROUP_FREE) ? ' checked="checked"' : '';
-				$type_open		= ($group_type == GROUP_OPEN) ? ' checked="checked"' : '';
-				$type_closed	= ($group_type == GROUP_CLOSED) ? ' checked="checked"' : '';
-				$type_hidden	= ($group_type == GROUP_HIDDEN) ? ' checked="checked"' : '';
+				$type_free		= ($group_type == PHPBB3_GROUP_FREE) ? ' checked="checked"' : '';
+				$type_open		= ($group_type == PHPBB3_GROUP_OPEN) ? ' checked="checked"' : '';
+				$type_closed	= ($group_type == PHPBB3_GROUP_CLOSED) ? ' checked="checked"' : '';
+				$type_hidden	= ($group_type == PHPBB3_GROUP_HIDDEN) ? ' checked="checked"' : '';
 
 				$avatar_img = (!empty($group_row['group_avatar'])) ? get_user_avatar($group_row['group_avatar'], $group_row['group_avatar_type'], $group_row['group_avatar_width'], $group_row['group_avatar_height'], 'GROUP_AVATAR') : '<img src="' . $phpbb_admin_path . 'images/no_avatar.gif" alt="" />';
 
@@ -554,13 +554,13 @@ class acp_groups
 					'S_INCLUDE_SWATCH'	=> true,
 					'S_CAN_UPLOAD'		=> $can_upload,
 					'S_ERROR'			=> (sizeof($error)) ? true : false,
-					'S_SPECIAL_GROUP'	=> ($group_type == GROUP_SPECIAL) ? true : false,
+					'S_SPECIAL_GROUP'	=> ($group_type == PHPBB3_GROUP_SPECIAL) ? true : false,
 					'S_DISPLAY_GALLERY'	=> ($config['allow_avatar_local'] && !$display_gallery) ? true : false,
 					'S_IN_GALLERY'		=> ($config['allow_avatar_local'] && $display_gallery) ? true : false,
-					'S_USER_FOUNDER'	=> ($user->data['user_type'] == USER_FOUNDER) ? true : false,
+					'S_PHPBB3_USER_FOUNDER'	=> ($user->data['user_type'] == PHPBB3_USER_FOUNDER) ? true : false,
 
 					'ERROR_MSG'				=> (sizeof($error)) ? implode('<br />', $error) : '',
-					'GROUP_NAME'			=> ($group_type == GROUP_SPECIAL) ? $user->lang['G_' . $group_name] : $group_name,
+					'GROUP_NAME'			=> ($group_type == PHPBB3_GROUP_SPECIAL) ? $user->lang['G_' . $group_name] : $group_name,
 					'GROUP_INTERNAL_NAME'	=> $group_name,
 					'GROUP_DESC'			=> $group_desc_data['text'],
 					'GROUP_RECEIVE_PM'		=> (isset($group_row['group_receive_pm']) && $group_row['group_receive_pm']) ? ' checked="checked"' : '',
@@ -576,23 +576,23 @@ class acp_groups
 					'S_DESC_SMILIES_CHECKED'=> $group_desc_data['allow_smilies'],
 
 					'S_RANK_OPTIONS'		=> $rank_options,
-					'S_GROUP_OPTIONS'		=> group_select_options(false, false, (($user->data['user_type'] == USER_FOUNDER) ? false : 0)),
+					'S_GROUP_OPTIONS'		=> group_select_options(false, false, (($user->data['user_type'] == PHPBB3_USER_FOUNDER) ? false : 0)),
 					'AVATAR'				=> $avatar_img,
 					'AVATAR_IMAGE'			=> $avatar_img,
 					'AVATAR_MAX_FILESIZE'	=> $config['avatar_filesize'],
 					'AVATAR_WIDTH'			=> $group_row['group_avatar_width'] ?? '',
 					'AVATAR_HEIGHT'			=> $group_row['group_avatar_height'] ?? '',
 
-					'GROUP_TYPE_FREE'		=> GROUP_FREE,
-					'GROUP_TYPE_OPEN'		=> GROUP_OPEN,
-					'GROUP_TYPE_CLOSED'		=> GROUP_CLOSED,
-					'GROUP_TYPE_HIDDEN'		=> GROUP_HIDDEN,
-					'GROUP_TYPE_SPECIAL'	=> GROUP_SPECIAL,
+					'GROUP_TYPE_FREE'		=> PHPBB3_GROUP_FREE,
+					'GROUP_TYPE_OPEN'		=> PHPBB3_GROUP_OPEN,
+					'GROUP_TYPE_CLOSED'		=> PHPBB3_GROUP_CLOSED,
+					'GROUP_TYPE_HIDDEN'		=> PHPBB3_GROUP_HIDDEN,
+					'GROUP_TYPE_SPECIAL'	=> PHPBB3_GROUP_SPECIAL,
 
-					'GROUP_FREE'		=> $type_free,
-					'GROUP_OPEN'		=> $type_open,
-					'GROUP_CLOSED'		=> $type_closed,
-					'GROUP_HIDDEN'		=> $type_hidden,
+					'PHPBB3_GROUP_FREE'		=> $type_free,
+					'PHPBB3_GROUP_OPEN'		=> $type_open,
+					'PHPBB3_GROUP_CLOSED'		=> $type_closed,
+					'PHPBB3_GROUP_HIDDEN'		=> $type_hidden,
 
 					'U_BACK'			=> $u_back,
 					'U_SWATCH'			=> append_sid("{$phpbb_admin_path}swatch.$phpEx", 'form=settings&amp;name=group_colour'),
@@ -615,7 +615,7 @@ class acp_groups
 
 				// Grab the leaders - always, on every page...
 				$sql = 'SELECT u.user_id, u.username, u.username_clean, u.user_regdate, u.user_posts, u.group_id, ug.group_leader, ug.user_pending
-					FROM ' . USERS_TABLE . ' u, ' . USER_GROUP_TABLE . " ug
+					FROM ' . PHPBB3_USERS_TABLE . ' u, ' . PHPBB3_USER_GROUP_TABLE . " ug
 					WHERE ug.group_id = $group_id
 						AND u.user_id = ug.user_id
 						AND ug.group_leader = 1
@@ -638,7 +638,7 @@ class acp_groups
 
 				// Total number of group members (non-leaders)
 				$sql = 'SELECT COUNT(user_id) AS total_members
-					FROM ' . USER_GROUP_TABLE . "
+					FROM ' . PHPBB3_USER_GROUP_TABLE . "
 					WHERE group_id = $group_id
 						AND group_leader = 0";
 				$result = $db->sql_query($sql);
@@ -655,12 +655,12 @@ class acp_groups
 
 				$template->assign_vars(array(
 					'S_LIST'			=> true,
-					'S_GROUP_SPECIAL'	=> ($group_row['group_type'] == GROUP_SPECIAL) ? true : false,
+					'S_PHPBB3_GROUP_SPECIAL'	=> ($group_row['group_type'] == PHPBB3_GROUP_SPECIAL) ? true : false,
 					'S_ACTION_OPTIONS'	=> $s_action_options,
 
 					'S_ON_PAGE'		=> on_page($total_members, $config['topics_per_page'], $start),
 					'PAGINATION'	=> generate_pagination($this->u_action . "&amp;action=$action&amp;g=$group_id", $total_members, $config['topics_per_page'], $start, true),
-					'GROUP_NAME'	=> ($group_row['group_type'] == GROUP_SPECIAL) ? $user->lang['G_' . $group_row['group_name']] : $group_row['group_name'],
+					'GROUP_NAME'	=> ($group_row['group_type'] == PHPBB3_GROUP_SPECIAL) ? $user->lang['G_' . $group_row['group_name']] : $group_row['group_name'],
 
 					'U_ACTION'			=> $this->u_action . "&amp;g=$group_id",
 					'U_BACK'			=> $this->u_action,
@@ -670,7 +670,7 @@ class acp_groups
 
 				// Grab the members
 				$sql = 'SELECT u.user_id, u.username, u.username_clean, u.user_regdate, u.user_posts, u.group_id, ug.group_leader, ug.user_pending
-					FROM ' . USERS_TABLE . ' u, ' . USER_GROUP_TABLE . " ug
+					FROM ' . PHPBB3_USERS_TABLE . ' u, ' . PHPBB3_USER_GROUP_TABLE . " ug
 					WHERE ug.group_id = $group_id
 						AND u.user_id = ug.user_id
 						AND ug.group_leader = 0
@@ -713,14 +713,14 @@ class acp_groups
 
 		// Get us all the groups
 		$sql = 'SELECT g.group_id, g.group_name, g.group_type
-			FROM ' . GROUPS_TABLE . ' g
+			FROM ' . PHPBB3_GROUPS_TABLE . ' g
 			ORDER BY g.group_type ASC, g.group_name';
 		$result = $db->sql_query($sql);
 
 		$lookup = $cached_group_data = array();
 		while ($row = $db->sql_fetchrow($result))
 		{
-			$type = ($row['group_type'] == GROUP_SPECIAL) ? 'special' : 'normal';
+			$type = ($row['group_type'] == PHPBB3_GROUP_SPECIAL) ? 'special' : 'normal';
 
 			// used to determine what type a group is
 			$lookup[$row['group_id']] = $type;
@@ -733,7 +733,7 @@ class acp_groups
 
 		// How many people are in which group?
 		$sql = 'SELECT COUNT(ug.user_id) AS total_members, ug.group_id
-			FROM ' . USER_GROUP_TABLE . ' ug
+			FROM ' . PHPBB3_USER_GROUP_TABLE . ' ug
 			WHERE ' . $db->sql_in_set('ug.group_id', array_keys($lookup)) . '
 			GROUP BY ug.group_id';
 		$result = $db->sql_query($sql);
@@ -766,7 +766,7 @@ class acp_groups
 					'U_EDIT'		=> "{$this->u_action}&amp;action=edit&amp;g=$group_id",
 					'U_DELETE'		=> ($auth->acl_get('a_groupdel')) ? "{$this->u_action}&amp;action=delete&amp;g=$group_id" : '',
 
-					'S_GROUP_SPECIAL'	=> ($row['group_type'] == GROUP_SPECIAL) ? true : false,
+					'S_PHPBB3_GROUP_SPECIAL'	=> ($row['group_type'] == PHPBB3_GROUP_SPECIAL) ? true : false,
 
 					'GROUP_NAME'	=> $group_name,
 					'TOTAL_MEMBERS'	=> $row['total_members'],

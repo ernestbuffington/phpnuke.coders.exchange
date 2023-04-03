@@ -116,16 +116,16 @@ $user->setup('viewtopic');
 
 if (!$download_id)
 {
-	trigger_error('NO_ATTACHMENT_SELECTED');
+	trigger_error('NO_PHPBB3_ATTACHMENT_SELECTED');
 }
 
 if (!$config['allow_attachments'] && !$config['allow_pm_attach'])
 {
-	trigger_error('ATTACHMENT_FUNCTIONALITY_DISABLED');
+	trigger_error('PHPBB3_ATTACHMENT_FUNCTIONALITY_DISABLED');
 }
 
 $sql = 'SELECT attach_id, in_message, post_msg_id, extension, is_orphan, poster_id, filetime
-	FROM ' . ATTACHMENTS_TABLE . "
+	FROM ' . PHPBB3_ATTACHMENTS_TABLE . "
 	WHERE attach_id = $download_id";
 $result = $db->sql_query_limit($sql, 1);
 $attachment = $db->sql_fetchrow($result);
@@ -138,7 +138,7 @@ if (!$attachment)
 
 if ((!$attachment['in_message'] && !$config['allow_attachments']) || ($attachment['in_message'] && !$config['allow_pm_attach']))
 {
-	trigger_error('ATTACHMENT_FUNCTIONALITY_DISABLED');
+	trigger_error('PHPBB3_ATTACHMENT_FUNCTIONALITY_DISABLED');
 }
 
 $row = array();
@@ -162,7 +162,7 @@ else
 	{
 		//
 		$sql = 'SELECT p.forum_id, f.forum_password, f.parent_id
-			FROM ' . POSTS_TABLE . ' p, ' . FORUMS_TABLE . ' f
+			FROM ' . PHPBB3_POSTS_TABLE . ' p, ' . PHPBB3_FORUMS_TABLE . ' f
 			WHERE p.post_id = ' . $attachment['post_msg_id'] . '
 				AND p.forum_id = f.forum_id';
 		$result = $db->sql_query_limit($sql, 1);
@@ -196,7 +196,7 @@ else
 
 		// Check if the attachment is within the users scope...
 		$sql = 'SELECT user_id, author_id
-			FROM ' . PRIVMSGS_TO_TABLE . '
+			FROM ' . PHPBB3_PRIVMSGS_TO_TABLE . '
 			WHERE msg_id = ' . $attachment['post_msg_id'];
 		$result = $db->sql_query($sql);
 
@@ -236,7 +236,7 @@ $download_mode = (int) $extensions[$attachment['extension']]['download_mode'];
 
 // Fetching filename here to prevent sniffing of filename
 $sql = 'SELECT attach_id, is_orphan, in_message, post_msg_id, extension, physical_filename, real_filename, mimetype, filetime
-	FROM ' . ATTACHMENTS_TABLE . "
+	FROM ' . PHPBB3_ATTACHMENTS_TABLE . "
 	WHERE attach_id = $download_id";
 $result = $db->sql_query_limit($sql, 1);
 $attachment = $db->sql_fetchrow($result);
@@ -250,37 +250,37 @@ if (!$attachment)
 $attachment['physical_filename'] = basename($attachment['physical_filename']);
 $display_cat = $extensions[$attachment['extension']]['display_cat'];
 
-if (($display_cat == ATTACHMENT_CATEGORY_IMAGE || $display_cat == ATTACHMENT_CATEGORY_THUMB) && !$user->optionget('viewimg'))
+if (($display_cat == PHPBB3_ATTACHMENT_CATEGORY_IMAGE || $display_cat == PHPBB3_ATTACHMENT_CATEGORY_THUMB) && !$user->optionget('viewimg'))
 {
-	$display_cat = ATTACHMENT_CATEGORY_NONE;
+	$display_cat = PHPBB3_ATTACHMENT_CATEGORY_NONE;
 }
 
-if ($display_cat == ATTACHMENT_CATEGORY_FLASH && !$user->optionget('viewflash'))
+if ($display_cat == PHPBB3_ATTACHMENT_CATEGORY_FLASH && !$user->optionget('viewflash'))
 {
-	$display_cat = ATTACHMENT_CATEGORY_NONE;
+	$display_cat = PHPBB3_ATTACHMENT_CATEGORY_NONE;
 }
 
 if ($thumbnail)
 {
 	$attachment['physical_filename'] = 'thumb_' . $attachment['physical_filename'];
 }
-else if (($display_cat == ATTACHMENT_CATEGORY_NONE || $display_cat == ATTACHMENT_CATEGORY_IMAGE) && !$attachment['is_orphan'])
+else if (($display_cat == PHPBB3_ATTACHMENT_CATEGORY_NONE || $display_cat == PHPBB3_ATTACHMENT_CATEGORY_IMAGE) && !$attachment['is_orphan'])
 {
 	// Update download count
-	$sql = 'UPDATE ' . ATTACHMENTS_TABLE . '
+	$sql = 'UPDATE ' . PHPBB3_ATTACHMENTS_TABLE . '
 		SET download_count = download_count + 1
 		WHERE attach_id = ' . $attachment['attach_id'];
 	$db->sql_query($sql);
 }
 
-if ($display_cat == ATTACHMENT_CATEGORY_IMAGE && $mode === 'view' && (strpos($attachment['mimetype'], 'image') === 0) && ((strpos(strtolower($user->browser), 'msie') !== false) && (strpos(strtolower($user->browser), 'msie 8.0') === false)))
+if ($display_cat == PHPBB3_ATTACHMENT_CATEGORY_IMAGE && $mode === 'view' && (strpos($attachment['mimetype'], 'image') === 0) && ((strpos(strtolower($user->browser), 'msie') !== false) && (strpos(strtolower($user->browser), 'msie 8.0') === false)))
 {
 	wrap_img_in_html(append_sid($phpbb_root_path . 'download/file.' . $phpEx, 'id=' . $attachment['attach_id']), $attachment['real_filename']);
 }
 else
 {
 	// Determine the 'presenting'-method
-	if ($download_mode == PHYSICAL_LINK)
+	if ($download_mode == PHPBB3_PHYSICAL_LINK)
 	{
 		// This presenting method should no longer be used
 		if (!@is_dir($phpbb_root_path . $config['upload_path']))
@@ -414,7 +414,7 @@ function send_file_to_browser($attachment, $upload_dir, $category)
 
 	// Correct the mime type - we force application/octetstream for all files, except images
 	// Please do not change this, it is a security precaution
-	if ($category != ATTACHMENT_CATEGORY_IMAGE || strpos($attachment['mimetype'], 'image') !== 0)
+	if ($category != PHPBB3_ATTACHMENT_CATEGORY_IMAGE || strpos($attachment['mimetype'], 'image') !== 0)
 	{
 		$attachment['mimetype'] = (strpos(strtolower($user->browser), 'msie') !== false || strpos(strtolower($user->browser), 'opera') !== false) ? 'application/octetstream' : 'application/octet-stream';
 	}
@@ -593,7 +593,7 @@ function download_allowed()
 	if (!$allowed)
 	{
 		$sql = 'SELECT site_ip, site_hostname, ip_exclude
-			FROM ' . SITELIST_TABLE;
+			FROM ' . PHPBB3_SITELIST_TABLE;
 		$result = $db->sql_query($sql);
 
 		while ($row = $db->sql_fetchrow($result))

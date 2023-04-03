@@ -80,7 +80,7 @@ if ($id)
 	if ($sid)
 	{
 		$sql = 'SELECT u.user_id, u.user_lang
-			FROM ' . SESSIONS_TABLE . ' s, ' . USERS_TABLE . " u
+			FROM ' . PHPBB3_SESSIONS_TABLE . ' s, ' . PHPBB3_USERS_TABLE . " u
 			WHERE s.session_id = '" . $db->sql_escape($sid) . "'
 				AND s.session_user_id = u.user_id";
 		$result = $db->sql_query($sql);
@@ -97,7 +97,7 @@ if ($id)
 	}
 
 	$sql = 'SELECT s.style_id, c.theme_id, c.theme_data, c.theme_path, c.theme_name, c.theme_mtime, i.*, t.template_path
-		FROM ' . STYLES_TABLE . ' s, ' . STYLES_TEMPLATE_TABLE . ' t, ' . STYLES_THEME_TABLE . ' c, ' . STYLES_IMAGESET_TABLE . ' i
+		FROM ' . PHPBB3_STYLES_TABLE . ' s, ' . PHPBB3_STYLES_TEMPLATE_TABLE . ' t, ' . PHPBB3_STYLES_THEME_TABLE . ' c, ' . PHPBB3_STYLES_IMAGESET_TABLE . ' i
 		WHERE s.style_id = ' . $id . '
 			AND t.template_id = s.template_id
 			AND c.theme_id = s.theme_id
@@ -119,7 +119,7 @@ if ($id)
 	$user_image_lang = (file_exists($phpbb_root_path . 'styles/' . $theme['imageset_path'] . '/imageset/' . $user['user_lang'])) ? $user['user_lang'] : $config['default_lang'];
 
 	$sql = 'SELECT *
-		FROM ' . STYLES_IMAGESET_DATA_TABLE . '
+		FROM ' . PHPBB3_STYLES_IMAGESET_DATA_TABLE . '
 		WHERE imageset_id = ' . $theme['imageset_id'] . "
 		AND image_filename <> '' 
 		AND image_lang IN ('" . $db->sql_escape($user_image_lang) . "', '')";
@@ -193,11 +193,11 @@ if ($id)
 			'theme_data'	=> $theme['theme_data']
 		);
 
-		$sql = 'UPDATE ' . STYLES_THEME_TABLE . ' SET ' . $db->sql_build_array('UPDATE', $sql_ary) . "
+		$sql = 'UPDATE ' . PHPBB3_STYLES_THEME_TABLE . ' SET ' . $db->sql_build_array('UPDATE', $sql_ary) . "
 			WHERE theme_id = {$theme['theme_id']}";
 		$db->sql_query($sql);
 
-		$cache->destroy('sql', STYLES_THEME_TABLE);
+		$cache->destroy('sql', PHPBB3_STYLES_THEME_TABLE);
 	}
 
 	// Only set the expire time if the theme changed data is older than 30 minutes - to cope with changes from the ACP

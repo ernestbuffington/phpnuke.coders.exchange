@@ -16,7 +16,7 @@ if (!defined('IN_PHPBB'))
 if ($mode == 'queue_details')
 {
 	$sql = 'SELECT *
-		FROM ' . GALLERY_IMAGES_TABLE . "
+		FROM ' . PHPBB3_GALLERY_IMAGES_TABLE . "
 		WHERE image_id = $option_id
 		LIMIT 1";
 	$result = $db->sql_query($sql);
@@ -29,10 +29,10 @@ if ($mode == 'queue_details')
 if ($mode == 'report_details')
 {
 	$sql = 'SELECT r.*, u.username reporter_name, u.user_colour reporter_colour, i.*
-		FROM ' . GALLERY_REPORTS_TABLE . " r
-		LEFT JOIN " . USERS_TABLE . " u
+		FROM ' . PHPBB3_GALLERY_REPORTS_TABLE . " r
+		LEFT JOIN " . PHPBB3_USERS_TABLE . " u
 			ON r.reporter_id = u.user_id
-		LEFT JOIN " . GALLERY_IMAGES_TABLE . " i
+		LEFT JOIN " . PHPBB3_GALLERY_IMAGES_TABLE . " i
 			ON r.report_image_id = i.image_id
 		WHERE r.report_id = $option_id
 		LIMIT 1";

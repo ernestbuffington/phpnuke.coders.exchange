@@ -54,7 +54,7 @@ $lang = array_merge($lang, array(
 	'CANNOT_REMOVE_YOURSELF'		=> 'You are not allowed to remove your own user account.',
 	'CANNOT_SET_FOUNDER_IGNORED'	=> 'You are not able to promote ignored users to be founders.',
 	'CANNOT_SET_FOUNDER_INACTIVE'	=> 'You need to activate users before you promote them to founders, only activated users are able to be promoted.',
-	'CONFIRM_EMAIL_EXPLAIN'			=> 'You only need to specify this if you are changing the users e-mail address.',
+	'PHPBB3_CONFIRM_EMAIL_EXPLAIN'			=> 'You only need to specify this if you are changing the users e-mail address.',
 
 	'DELETE_POSTS'			=> 'Delete posts',
 	'DELETE_USER'			=> 'Delete user',
@@ -115,7 +115,7 @@ $lang = array_merge($lang, array(
 	'USER_GROUP_ADD'				=> 'Add user to group',
 	'USER_GROUP_NORMAL'				=> 'User defined groups user is a member of',
 	'USER_GROUP_PENDING'			=> 'Groups user is in pending mode',
-	'USER_GROUP_SPECIAL'			=> 'Pre-defined groups user is a member of',
+	'USER_PHPBB3_GROUP_SPECIAL'			=> 'Pre-defined groups user is a member of',
 	'USER_NO_ATTACHMENTS'			=> 'There are no attached files to display.',
 	'USER_OVERVIEW_UPDATED'			=> 'User details updated.',
 	'USER_POSTS_DELETED'			=> 'Successfully removed all posts made by this user.',

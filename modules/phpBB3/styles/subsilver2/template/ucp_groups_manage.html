@@ -34,10 +34,10 @@
 		<tr>
 			<td class="row1" width="35%"><label for="group_type">{L_GROUP_TYPE}:</label><br /><span>{L_GROUP_TYPE_EXPLAIN}</span></td>
 			<td class="row2">
-				<input name="group_type" type="radio" class="radio" id="group_type" value="{GROUP_TYPE_FREE}"{GROUP_FREE} /> {L_GROUP_OPEN} &nbsp;
-				<input name="group_type" type="radio" class="radio" value="{GROUP_TYPE_OPEN}"{GROUP_OPEN} /> {L_GROUP_REQUEST} &nbsp;
-				<input name="group_type" type="radio" class="radio" value="{GROUP_TYPE_CLOSED}"{GROUP_CLOSED} /> {L_GROUP_CLOSED} &nbsp;
-				<input name="group_type" type="radio" class="radio" value="{GROUP_TYPE_HIDDEN}"{GROUP_HIDDEN} /> {L_GROUP_HIDDEN}
+				<input name="group_type" type="radio" class="radio" id="group_type" value="{GROUP_TYPE_FREE}"{PHPBB3_GROUP_FREE} /> {L_PHPBB3_GROUP_OPEN} &nbsp;
+				<input name="group_type" type="radio" class="radio" value="{GROUP_TYPE_OPEN}"{PHPBB3_GROUP_OPEN} /> {L_GROUP_REQUEST} &nbsp;
+				<input name="group_type" type="radio" class="radio" value="{GROUP_TYPE_CLOSED}"{PHPBB3_GROUP_CLOSED} /> {L_PHPBB3_GROUP_CLOSED} &nbsp;
+				<input name="group_type" type="radio" class="radio" value="{GROUP_TYPE_HIDDEN}"{PHPBB3_GROUP_HIDDEN} /> {L_PHPBB3_GROUP_HIDDEN}
 			</td>
 		</tr>
 	<!-- ELSE -->
@@ -62,7 +62,7 @@
 		<td class="row1" width="35%"><label>{L_CURRENT_IMAGE}:</label><br /><span>{L_AVATAR_EXPLAIN}</span></td>
 		<td class="row2">{AVATAR_IMAGE}<br /><br /><input type="checkbox" class="radio" name="delete" />&nbsp;<span>{L_DELETE_AVATAR}</span></td>
 	</tr>
-	<!-- IF not S_IN_AVATAR_GALLERY -->
+	<!-- IF not S_IN_PHPBB3_AVATAR_GALLERY -->
 		<!-- IF S_CAN_UPLOAD -->
 			<tr>
 				<td class="row1" width="35%"><label for="uploadfile">{L_UPLOAD_AVATAR_FILE}:</label></td>
@@ -83,14 +83,14 @@
 		</tr>
 		<!-- IF S_DISPLAY_GALLERY -->
 			<tr>
-				<td class="row1" width="35%"><label>{L_AVATAR_GALLERY}:</label></td>
+				<td class="row1" width="35%"><label>{L_PHPBB3_AVATAR_GALLERY}:</label></td>
 				<td class="row2"><input class="btnmain" type="submit" name="display_gallery" value="{L_DISPLAY_GALLERY}" /></td>
 			</tr>
 		<!-- ENDIF -->
 	<!-- ELSE -->
 
 		<tr>
-			<th colspan="2">{L_AVATAR_GALLERY}</th>
+			<th colspan="2">{L_PHPBB3_AVATAR_GALLERY}</th>
 		</tr>
 		<tr>
 			<td class="row1" width="35%"><label for="category">{L_AVATAR_CATEGORY}:</label></td>

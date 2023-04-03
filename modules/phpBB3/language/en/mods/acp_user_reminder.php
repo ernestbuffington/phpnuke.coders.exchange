@@ -105,9 +105,9 @@ $lang = array_merge($lang, array(
 	'USERS_DELETED'			=> 'User(s) deleted',	
 	'ERROR_USERS_DELETED'	=> 'The following user(s) could not be deleted:<br/> %s',	
 
-	'ERROR_EMAIL_CONFIRM_OPERATION' 	=> 'Please note that there are users in your selection that have already had this action carried out.<br/>',	
-	'ERROR_NOEMAIL_CONFIRM_OPERATION' 	=> 'You selected users that have opted not to receive emails from Administrators. As such they will not receive these reminders.<br/>',	
-	'DELETE_USER_CONFIRM_OPERATION' 	=> 'You have selected to delete users. <strong>Please note that this process is irrevocable once completed.</strong><br/>',	
+	'ERROR_EMAIL_PHPBB3_CONFIRM_OPERATION' 	=> 'Please note that there are users in your selection that have already had this action carried out.<br/>',	
+	'ERROR_NOEMAIL_PHPBB3_CONFIRM_OPERATION' 	=> 'You selected users that have opted not to receive emails from Administrators. As such they will not receive these reminders.<br/>',	
+	'DELETE_USER_PHPBB3_CONFIRM_OPERATION' 	=> 'You have selected to delete users. <strong>Please note that this process is irrevocable once completed.</strong><br/>',	
 	'EMAIL_DELETED_USERS' 				=> 'Send email to deleted members?',	
 
 	'USER_REMINDER_CONFIG_UPDATED'	=> 'User Reminder configuration updated',

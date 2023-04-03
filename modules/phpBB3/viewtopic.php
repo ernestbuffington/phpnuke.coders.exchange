@@ -65,7 +65,7 @@ if ($view && !$post_id)
 	if (!$forum_id)
 	{
 		$sql = 'SELECT forum_id
-			FROM ' . TOPICS_TABLE . "
+			FROM ' . PHPBB3_TOPICS_TABLE . "
 			WHERE topic_id = $topic_id";
 		$result = $db->sql_query($sql);
 		$forum_id = (int) $db->sql_fetchfield('forum_id');
@@ -85,7 +85,7 @@ if ($view && !$post_id)
 		$topic_last_read = (isset($topic_tracking_info[$topic_id])) ? $topic_tracking_info[$topic_id] : 0;
 
 		$sql = 'SELECT post_id, topic_id, forum_id
-			FROM ' . POSTS_TABLE . "
+			FROM ' . PHPBB3_POSTS_TABLE . "
 			WHERE topic_id = $topic_id
 				" . (($auth->acl_get('m_approve', $forum_id)) ? '' : 'AND post_approved = 1') . "
 				AND post_time > $topic_last_read
@@ -97,7 +97,7 @@ if ($view && !$post_id)
 		if (!$row)
 		{
 			$sql = 'SELECT topic_last_post_id as post_id, topic_id, forum_id
-				FROM ' . TOPICS_TABLE . '
+				FROM ' . PHPBB3_TOPICS_TABLE . '
 				WHERE topic_id = ' . $topic_id;
 			$result = $db->sql_query($sql);
 			$row = $db->sql_fetchrow($result);
@@ -121,7 +121,7 @@ if ($view && !$post_id)
 		$sql_ordering = ($view == 'next') ? 'ASC' : 'DESC';
 
 		$sql = 'SELECT forum_id, topic_last_post_time
-			FROM ' . TOPICS_TABLE . '
+			FROM ' . PHPBB3_TOPICS_TABLE . '
 			WHERE topic_id = ' . $topic_id;
 		$result = $db->sql_query($sql);
 		$row = $db->sql_fetchrow($result);
@@ -136,7 +136,7 @@ if ($view && !$post_id)
 		else
 		{
 			$sql = 'SELECT topic_id, forum_id
-				FROM ' . TOPICS_TABLE . '
+				FROM ' . PHPBB3_TOPICS_TABLE . '
 				WHERE forum_id = ' . $row['forum_id'] . "
 					AND topic_moved_id = 0
 					AND topic_last_post_time $sql_condition {$row['topic_last_post_time']}
@@ -185,17 +185,17 @@ if ($view && !$post_id)
 $sql_array = array(
 	'SELECT'	=> 't.*, f.*',
 
-	'FROM'		=> array(FORUMS_TABLE => 'f'),
+	'FROM'		=> array(PHPBB3_FORUMS_TABLE => 'f'),
 );
 
 // The FROM-Order is quite important here, else t.* columns can not be correctly bound.
 if ($post_id)
 {
-	$sql_array['FROM'][POSTS_TABLE] = 'p';
+	$sql_array['FROM'][PHPBB3_POSTS_TABLE] = 'p';
 }
 
 // Topics table need to be the last in the chain
-$sql_array['FROM'][TOPICS_TABLE] = 't';
+$sql_array['FROM'][PHPBB3_TOPICS_TABLE] = 't';
 
 if ($user->data['is_registered'])
 {
@@ -203,7 +203,7 @@ if ($user->data['is_registered'])
 	$sql_array['LEFT_JOIN'] = array();
 
 	$sql_array['LEFT_JOIN'][] = array(
-		'FROM'	=> array(TOPICS_WATCH_TABLE => 'tw'),
+		'FROM'	=> array(PHPBB3_TOPICS_WATCH_TABLE => 'tw'),
 		'ON'	=> 'tw.user_id = ' . $user->data['user_id'] . ' AND t.topic_id = tw.topic_id'
 	);
 
@@ -211,7 +211,7 @@ if ($user->data['is_registered'])
 	{
 		$sql_array['SELECT'] .= ', bm.topic_id as bookmarked';
 		$sql_array['LEFT_JOIN'][] = array(
-			'FROM'	=> array(BOOKMARKS_TABLE => 'bm'),
+			'FROM'	=> array(PHPBB3_BOOKMARKS_TABLE => 'bm'),
 			'ON'	=> 'bm.user_id = ' . $user->data['user_id'] . ' AND t.topic_id = bm.topic_id'
 		);
 	}
@@ -221,12 +221,12 @@ if ($user->data['is_registered'])
 		$sql_array['SELECT'] .= ', tt.mark_time, ft.mark_time as forum_mark_time';
 
 		$sql_array['LEFT_JOIN'][] = array(
-			'FROM'	=> array(TOPICS_TRACK_TABLE => 'tt'),
+			'FROM'	=> array(PHPBB3_TOPICS_TRACK_TABLE => 'tt'),
 			'ON'	=> 'tt.user_id = ' . $user->data['user_id'] . ' AND t.topic_id = tt.topic_id'
 		);
 
 		$sql_array['LEFT_JOIN'][] = array(
-			'FROM'	=> array(FORUMS_TRACK_TABLE => 'ft'),
+			'FROM'	=> array(PHPBB3_FORUMS_TRACK_TABLE => 'ft'),
 			'ON'	=> 'ft.user_id = ' . $user->data['user_id'] . ' AND t.forum_id = ft.forum_id'
 		);
 	}
@@ -246,12 +246,12 @@ $sql_array['WHERE'] .= ' AND (f.forum_id = t.forum_id';
 if (!$forum_id)
 {
 	// If it is a global announcement make sure to set the forum id to a postable forum
-	$sql_array['WHERE'] .= ' OR (t.topic_type = ' . POST_GLOBAL . '
-		AND f.forum_type = ' . FORUM_POST . ')';
+	$sql_array['WHERE'] .= ' OR (t.topic_type = ' . PHPBB3_POST_GLOBAL . '
+		AND f.forum_type = ' . PHPBB3_FORUM_POST . ')';
 }
 else
 {
-	$sql_array['WHERE'] .= ' OR (t.topic_type = ' . POST_GLOBAL . "
+	$sql_array['WHERE'] .= ' OR (t.topic_type = ' . PHPBB3_POST_GLOBAL . "
 		AND f.forum_id = $forum_id)";
 }
 
@@ -296,7 +296,7 @@ if ($post_id)
 	else
 	{
 		$sql = 'SELECT COUNT(p1.post_id) AS prev_posts
-			FROM ' . POSTS_TABLE . ' p1, ' . POSTS_TABLE . " p2
+			FROM ' . PHPBB3_POSTS_TABLE . ' p1, ' . PHPBB3_POSTS_TABLE . " p2
 			WHERE p1.topic_id = {$topic_data['topic_id']}
 				AND p2.post_id = {$post_id}
 				" . ((!$auth->acl_get('m_approve', $forum_id)) ? 'AND p1.post_approved = 1' : '') . '
@@ -317,14 +317,14 @@ $topic_id = (int) $topic_data['topic_id'];
 $topic_replies = ($auth->acl_get('m_approve', $forum_id)) ? $topic_data['topic_replies_real'] : $topic_data['topic_replies'];
 
 // Check sticky/announcement time limit
-if (($topic_data['topic_type'] == POST_STICKY || $topic_data['topic_type'] == POST_ANNOUNCE) && $topic_data['topic_time_limit'] && ($topic_data['topic_time'] + $topic_data['topic_time_limit']) < time())
+if (($topic_data['topic_type'] == PHPBB3_POST_STICKY || $topic_data['topic_type'] == PHPBB3_POST_ANNOUNCE) && $topic_data['topic_time_limit'] && ($topic_data['topic_time'] + $topic_data['topic_time_limit']) < time())
 {
-	$sql = 'UPDATE ' . TOPICS_TABLE . '
-		SET topic_type = ' . POST_NORMAL . ', topic_time_limit = 0
+	$sql = 'UPDATE ' . PHPBB3_TOPICS_TABLE . '
+		SET topic_type = ' . PHPBB3_POST_NORMAL . ', topic_time_limit = 0
 		WHERE topic_id = ' . $topic_id;
 	$db->sql_query($sql);
 
-	$topic_data['topic_type'] = POST_NORMAL;
+	$topic_data['topic_type'] = PHPBB3_POST_NORMAL;
 	$topic_data['topic_time_limit'] = 0;
 }
 
@@ -414,7 +414,7 @@ if ($sort_days)
 	$min_post_time = time() - ($sort_days * 86400);
 
 	$sql = 'SELECT COUNT(post_id) AS num_posts
-		FROM ' . POSTS_TABLE . "
+		FROM ' . PHPBB3_POSTS_TABLE . "
 		WHERE topic_id = $topic_id
 			AND post_time >= $min_post_time
 		" . (($auth->acl_get('m_approve', $forum_id)) ? '' : 'AND post_approved = 1');
@@ -487,7 +487,7 @@ if ($config['allow_bookmarks'] && $user->data['is_registered'] && request_var('b
 	{
 		if (!$topic_data['bookmarked'])
 		{
-			$sql = 'INSERT INTO ' . BOOKMARKS_TABLE . ' ' . $db->sql_build_array('INSERT', array(
+			$sql = 'INSERT INTO ' . PHPBB3_BOOKMARKS_TABLE . ' ' . $db->sql_build_array('INSERT', array(
 				'user_id'	=> $user->data['user_id'],
 				'topic_id'	=> $topic_id,
 			));
@@ -495,7 +495,7 @@ if ($config['allow_bookmarks'] && $user->data['is_registered'] && request_var('b
 		}
 		else
 		{
-			$sql = 'DELETE FROM ' . BOOKMARKS_TABLE . "
+			$sql = 'DELETE FROM ' . PHPBB3_BOOKMARKS_TABLE . "
 				WHERE user_id = {$user->data['user_id']}
 					AND topic_id = $topic_id";
 			$db->sql_query($sql);
@@ -535,17 +535,17 @@ gen_forum_auth_level('topic', $forum_id, $topic_data['forum_status']);
 $allow_change_type = ($auth->acl_get('m_', $forum_id) || ($user->data['is_registered'] && $user->data['user_id'] == $topic_data['topic_poster'])) ? true : false;
 
 $topic_mod = '';
-$topic_mod .= ($auth->acl_get('m_lock', $forum_id) || ($auth->acl_get('f_user_lock', $forum_id) && $user->data['is_registered'] && $user->data['user_id'] == $topic_data['topic_poster'] && $topic_data['topic_status'] == ITEM_UNLOCKED)) ? (($topic_data['topic_status'] == ITEM_UNLOCKED) ? '<option value="lock">' . $user->lang['LOCK_TOPIC'] . '</option>' : '<option value="unlock">' . $user->lang['UNLOCK_TOPIC'] . '</option>') : '';
+$topic_mod .= ($auth->acl_get('m_lock', $forum_id) || ($auth->acl_get('f_user_lock', $forum_id) && $user->data['is_registered'] && $user->data['user_id'] == $topic_data['topic_poster'] && $topic_data['topic_status'] == PHPBB3_ITEM_UNLOCKED)) ? (($topic_data['topic_status'] == PHPBB3_ITEM_UNLOCKED) ? '<option value="lock">' . $user->lang['LOCK_TOPIC'] . '</option>' : '<option value="unlock">' . $user->lang['UNLOCK_TOPIC'] . '</option>') : '';
 $topic_mod .= ($auth->acl_get('m_delete', $forum_id)) ? '<option value="delete_topic">' . $user->lang['DELETE_TOPIC'] . '</option>' : '';
-$topic_mod .= ($auth->acl_get('m_move', $forum_id) && $topic_data['topic_status'] != ITEM_MOVED) ? '<option value="move">' . $user->lang['MOVE_TOPIC'] . '</option>' : '';
+$topic_mod .= ($auth->acl_get('m_move', $forum_id) && $topic_data['topic_status'] != PHPBB3_ITEM_MOVED) ? '<option value="move">' . $user->lang['MOVE_TOPIC'] . '</option>' : '';
 $topic_mod .= ($auth->acl_get('m_split', $forum_id)) ? '<option value="split">' . $user->lang['SPLIT_TOPIC'] . '</option>' : '';
 $topic_mod .= ($auth->acl_get('m_merge', $forum_id)) ? '<option value="merge">' . $user->lang['MERGE_POSTS'] . '</option>' : '';
 $topic_mod .= ($auth->acl_get('m_merge', $forum_id)) ? '<option value="merge_topic">' . $user->lang['MERGE_TOPIC'] . '</option>' : '';
 $topic_mod .= ($auth->acl_get('m_move', $forum_id)) ? '<option value="fork">' . $user->lang['FORK_TOPIC'] . '</option>' : '';
-$topic_mod .= ($allow_change_type && $auth->acl_gets('f_sticky', 'f_announce', $forum_id) && $topic_data['topic_type'] != POST_NORMAL) ? '<option value="make_normal">' . $user->lang['MAKE_NORMAL'] . '</option>' : '';
-$topic_mod .= ($allow_change_type && $auth->acl_get('f_sticky', $forum_id) && $topic_data['topic_type'] != POST_STICKY) ? '<option value="make_sticky">' . $user->lang['MAKE_STICKY'] . '</option>' : '';
-$topic_mod .= ($allow_change_type && $auth->acl_get('f_announce', $forum_id) && $topic_data['topic_type'] != POST_ANNOUNCE) ? '<option value="make_announce">' . $user->lang['MAKE_ANNOUNCE'] . '</option>' : '';
-$topic_mod .= ($allow_change_type && $auth->acl_get('f_announce', $forum_id) && $topic_data['topic_type'] != POST_GLOBAL) ? '<option value="make_global">' . $user->lang['MAKE_GLOBAL'] . '</option>' : '';
+$topic_mod .= ($allow_change_type && $auth->acl_gets('f_sticky', 'f_announce', $forum_id) && $topic_data['topic_type'] != PHPBB3_POST_NORMAL) ? '<option value="make_normal">' . $user->lang['MAKE_NORMAL'] . '</option>' : '';
+$topic_mod .= ($allow_change_type && $auth->acl_get('f_sticky', $forum_id) && $topic_data['topic_type'] != PHPBB3_POST_STICKY) ? '<option value="make_sticky">' . $user->lang['MAKE_STICKY'] . '</option>' : '';
+$topic_mod .= ($allow_change_type && $auth->acl_get('f_announce', $forum_id) && $topic_data['topic_type'] != PHPBB3_POST_ANNOUNCE) ? '<option value="make_announce">' . $user->lang['MAKE_ANNOUNCE'] . '</option>' : '';
+$topic_mod .= ($allow_change_type && $auth->acl_get('f_announce', $forum_id) && $topic_data['topic_type'] != PHPBB3_POST_GLOBAL) ? '<option value="make_global">' . $user->lang['MAKE_GLOBAL'] . '</option>' : '';
 $topic_mod .= ($auth->acl_get('m_', $forum_id)) ? '<option value="topic_logs">' . $user->lang['VIEW_TOPIC_LOGS'] . '</option>' : '';
 
 // If we've got a hightlight set pass it on to pagination.
@@ -586,9 +586,9 @@ $template->assign_vars(array(
 	'U_MCP' 		=> ($auth->acl_get('m_', $forum_id)) ? append_sid("{$phpbb_root_path}mcp.$phpEx", "i=main&amp;mode=topic_view&amp;f=$forum_id&amp;t=$topic_id&amp;start=$start" . ((strlen($u_sort_param)) ? "&amp;$u_sort_param" : ''), true, $user->session_id) : '',
 	'MODERATORS'	=> (isset($forum_moderators[$forum_id]) && sizeof($forum_moderators[$forum_id])) ? implode(', ', $forum_moderators[$forum_id]) : '',
 
-	'POST_IMG' 			=> ($topic_data['forum_status'] == ITEM_LOCKED) ? $user->img('button_topic_locked', 'FORUM_LOCKED') : $user->img('button_topic_new', 'POST_NEW_TOPIC'),
+	'POST_IMG' 			=> ($topic_data['forum_status'] == PHPBB3_ITEM_LOCKED) ? $user->img('button_topic_locked', 'FORUM_LOCKED') : $user->img('button_topic_new', 'POST_NEW_TOPIC'),
 	'QUOTE_IMG' 		=> $user->img('icon_post_quote', 'REPLY_WITH_QUOTE'),
-	'REPLY_IMG'			=> ($topic_data['forum_status'] == ITEM_LOCKED || $topic_data['topic_status'] == ITEM_LOCKED) ? $user->img('button_topic_locked', 'TOPIC_LOCKED') : $user->img('button_topic_reply', 'REPLY_TO_TOPIC'),
+	'REPLY_IMG'			=> ($topic_data['forum_status'] == PHPBB3_ITEM_LOCKED || $topic_data['topic_status'] == PHPBB3_ITEM_LOCKED) ? $user->img('button_topic_locked', 'TOPIC_LOCKED') : $user->img('button_topic_reply', 'REPLY_TO_TOPIC'),
 	'EDIT_IMG' 			=> $user->img('icon_post_edit', 'EDIT_POST'),
 	'DELETE_IMG' 		=> $user->img('icon_post_delete', 'DELETE_POST'),
 	'INFO_IMG' 			=> $user->img('icon_post_info', 'VIEW_INFO'),
@@ -608,7 +608,7 @@ $template->assign_vars(array(
 	'UNAPPROVED_IMG'	=> $user->img('icon_topic_unapproved', 'POST_UNAPPROVED'),
 	'WARN_IMG'			=> $user->img('icon_user_warn', 'WARN_USER'),
 
-	'S_IS_LOCKED'			=>($topic_data['topic_status'] == ITEM_UNLOCKED) ? false : true,
+	'S_IS_LOCKED'			=>($topic_data['topic_status'] == PHPBB3_ITEM_UNLOCKED) ? false : true,
 	'S_SELECT_SORT_DIR' 	=> $s_sort_dir,
 	'S_SELECT_SORT_KEY' 	=> $s_sort_key,
 	'S_SELECT_SORT_DAYS' 	=> $s_limit_days,
@@ -621,8 +621,8 @@ $template->assign_vars(array(
 	'S_DISPLAY_SEARCHBOX'	=> ($auth->acl_get('u_search') && $auth->acl_get('f_search', $forum_id) && $config['load_search']) ? true : false,
 	'S_SEARCHBOX_ACTION'	=> append_sid("{$phpbb_root_path}search.$phpEx", 't=' . $topic_id),
 
-	'S_DISPLAY_POST_INFO'	=> ($topic_data['forum_type'] == FORUM_POST && ($auth->acl_get('f_post', $forum_id) || $user->data['user_id'] == ANONYMOUS)) ? true : false,
-	'S_DISPLAY_REPLY_INFO'	=> ($topic_data['forum_type'] == FORUM_POST && ($auth->acl_get('f_reply', $forum_id) || $user->data['user_id'] == ANONYMOUS)) ? true : false,
+	'S_DISPLAY_POST_INFO'	=> ($topic_data['forum_type'] == PHPBB3_FORUM_POST && ($auth->acl_get('f_post', $forum_id) || $user->data['user_id'] == ANONYMOUS)) ? true : false,
+	'S_DISPLAY_REPLY_INFO'	=> ($topic_data['forum_type'] == PHPBB3_FORUM_POST && ($auth->acl_get('f_reply', $forum_id) || $user->data['user_id'] == ANONYMOUS)) ? true : false,
 
 	'U_TOPIC'				=> "{$server_path}viewtopic.$phpEx?f=$forum_id&amp;t=$topic_id",
 	'U_FORUM'				=> $server_path,
@@ -649,7 +649,7 @@ $template->assign_vars(array(
 if (!empty($topic_data['poll_start']))
 {
 	$sql = 'SELECT o.*, p.bbcode_bitfield, p.bbcode_uid
-		FROM ' . POLL_OPTIONS_TABLE . ' o, ' . POSTS_TABLE . " p
+		FROM ' . PHPBB3_POLL_OPTIONS_TABLE . ' o, ' . PHPBB3_POSTS_TABLE . " p
 		WHERE o.topic_id = $topic_id
 			AND p.post_id = {$topic_data['topic_first_post_id']}
 			AND p.topic_id = o.topic_id
@@ -667,7 +667,7 @@ if (!empty($topic_data['poll_start']))
 	if ($user->data['is_registered'])
 	{
 		$sql = 'SELECT poll_option_id
-			FROM ' . POLL_VOTES_TABLE . '
+			FROM ' . PHPBB3_POLL_VOTES_TABLE . '
 			WHERE topic_id = ' . $topic_id . '
 				AND vote_user_id = ' . $user->data['user_id'];
 		$result = $db->sql_query($sql);
@@ -693,8 +693,8 @@ if (!empty($topic_data['poll_start']))
 	$s_can_vote = (((!sizeof($cur_voted_id) && $auth->acl_get('f_vote', $forum_id)) ||
 		($auth->acl_get('f_votechg', $forum_id) && $topic_data['poll_vote_change'])) &&
 		(($topic_data['poll_length'] != 0 && $topic_data['poll_start'] + $topic_data['poll_length'] > time()) || $topic_data['poll_length'] == 0) &&
-		$topic_data['topic_status'] != ITEM_LOCKED &&
-		$topic_data['forum_status'] != ITEM_LOCKED) ? true : false;
+		$topic_data['topic_status'] != PHPBB3_ITEM_LOCKED &&
+		$topic_data['forum_status'] != PHPBB3_ITEM_LOCKED) ? true : false;
 	$s_display_results = (!$s_can_vote || ($s_can_vote && sizeof($cur_voted_id)) || $view == 'viewpoll') ? true : false;
 
 	if ($update && $s_can_vote)
@@ -729,7 +729,7 @@ if (!empty($topic_data['poll_start']))
 				continue;
 			}
 
-			$sql = 'UPDATE ' . POLL_OPTIONS_TABLE . '
+			$sql = 'UPDATE ' . PHPBB3_POLL_OPTIONS_TABLE . '
 				SET poll_option_total = poll_option_total + 1
 				WHERE poll_option_id = ' . (int) $option . '
 					AND topic_id = ' . (int) $topic_id;
@@ -744,7 +744,7 @@ if (!empty($topic_data['poll_start']))
 					'vote_user_ip'		=> (string) $user->ip,
 				);
 
-				$sql = 'INSERT INTO ' . POLL_VOTES_TABLE . ' ' . $db->sql_build_array('INSERT', $sql_ary);
+				$sql = 'INSERT INTO ' . PHPBB3_POLL_VOTES_TABLE . ' ' . $db->sql_build_array('INSERT', $sql_ary);
 				$db->sql_query($sql);
 			}
 		}
@@ -753,7 +753,7 @@ if (!empty($topic_data['poll_start']))
 		{
 			if (!in_array($option, $voted_id))
 			{
-				$sql = 'UPDATE ' . POLL_OPTIONS_TABLE . '
+				$sql = 'UPDATE ' . PHPBB3_POLL_OPTIONS_TABLE . '
 					SET poll_option_total = poll_option_total - 1
 					WHERE poll_option_id = ' . (int) $option . '
 						AND topic_id = ' . (int) $topic_id;
@@ -761,7 +761,7 @@ if (!empty($topic_data['poll_start']))
 
 				if ($user->data['is_registered'])
 				{
-					$sql = 'DELETE FROM ' . POLL_VOTES_TABLE . '
+					$sql = 'DELETE FROM ' . PHPBB3_POLL_VOTES_TABLE . '
 						WHERE topic_id = ' . (int) $topic_id . '
 							AND poll_option_id = ' . (int) $option . '
 							AND vote_user_id = ' . (int) $user->data['user_id'];
@@ -775,7 +775,7 @@ if (!empty($topic_data['poll_start']))
 			$user->set_cookie('poll_' . $topic_id, implode(',', $voted_id), time() + 31536000);
 		}
 
-		$sql = 'UPDATE ' . TOPICS_TABLE . '
+		$sql = 'UPDATE ' . PHPBB3_TOPICS_TABLE . '
 			SET poll_last_vote = ' . time() . "
 			WHERE topic_id = $topic_id";
 		//, topic_last_post_time = ' . time() . " -- for bumping topics with new votes, ignore for now
@@ -898,7 +898,7 @@ $i = $i_total = 0;
 
 // Go ahead and pull all data for this topic
 $sql = 'SELECT p.post_id
-	FROM ' . POSTS_TABLE . ' p' . (($sort_by_sql[$sort_key][0] == 'u') ? ', ' . USERS_TABLE . ' u': '') . "
+	FROM ' . PHPBB3_POSTS_TABLE . ' p' . (($sort_by_sql[$sort_key][0] == 'u') ? ', ' . PHPBB3_USERS_TABLE . ' u': '') . "
 	WHERE p.topic_id = $topic_id
 		" . ((!$auth->acl_get('m_approve', $forum_id)) ? 'AND p.post_approved = 1' : '') . "
 		" . (($sort_by_sql[$sort_key][0] == 'u') ? 'AND u.user_id = p.poster_id': '') . "
@@ -934,17 +934,17 @@ $sql = $db->sql_build_query('SELECT', array(
 	'SELECT'	=> 'u.*, z.friend, z.foe, p.*, gu.personal_album_id',
 
 	'FROM'		=> array(
-		USERS_TABLE		=> 'u',
-		POSTS_TABLE		=> 'p',
+		PHPBB3_USERS_TABLE		=> 'u',
+		PHPBB3_POSTS_TABLE		=> 'p',
 	),
 
 	'LEFT_JOIN'	=> array(
 		array(
-			'FROM'	=> array(ZEBRA_TABLE => 'z'),
+			'FROM'	=> array(PHPBB3_ZEBRA_TABLE => 'z'),
 			'ON'	=> 'z.user_id = ' . $user->data['user_id'] . ' AND z.zebra_id = p.poster_id'
 		)
 		, array(
-			'FROM'	=> array(GALLERY_USERS_TABLE => 'gu'),
+			'FROM'	=> array(PHPBB3_GALLERY_USERS_TABLE => 'gu'),
 			'ON'	=> 'gu.user_id = p.poster_id'
 		)
 	),
@@ -1125,7 +1125,7 @@ while ($row = $db->sql_fetchrow($result))
 				'msn'			=> ($row['user_msnm'] && $auth->acl_get('u_sendim')) ? append_sid("{$phpbb_root_path}memberlist.$phpEx", "mode=contact&amp;action=msnm&amp;u=$poster_id") : '',
 				'yim'			=> ($row['user_yim']) ? 'http://edit.yahoo.com/config/send_webmesg?.target=' . urlencode($row['user_yim']) . '&amp;.src=pg' : '',
 				'jabber'		=> ($row['user_jabber'] && $auth->acl_get('u_sendim')) ? append_sid("{$phpbb_root_path}memberlist.$phpEx", "mode=contact&amp;action=jabber&amp;u=$poster_id") : '',
-				'gallery_album'	=> ($row['personal_album_id']) ? append_sid("{$phpbb_root_path}" . GALLERY_ROOT_PATH . "album.$phpEx", "album_id=" . $row['personal_album_id']) : '',
+				'gallery_album'	=> ($row['personal_album_id']) ? append_sid("{$phpbb_root_path}" . PHPBB3_GALLERY_ROOT_PATH . "album.$phpEx", "album_id=" . $row['personal_album_id']) : '',
 				'search'		=> ($auth->acl_get('u_search')) ? append_sid("{$phpbb_root_path}search.$phpEx", 'search_author=' . urlencode($row['username']) .'&amp;sr=posts') : '',
 			);
 			
@@ -1191,7 +1191,7 @@ if ($config['load_cpf_viewtopic'])
 if ($config['load_onlinetrack'] && sizeof($id_cache))
 {
 	$sql = 'SELECT session_user_id, MAX(session_time) as online_time, MIN(session_viewonline) AS viewonline
-		FROM ' . SESSIONS_TABLE . '
+		FROM ' . PHPBB3_SESSIONS_TABLE . '
 		WHERE ' . $db->sql_in_set('session_user_id', $id_cache) . '
 		GROUP BY session_user_id';
 	$result = $db->sql_query($sql);
@@ -1211,7 +1211,7 @@ if (sizeof($attach_list))
 	if ($auth->acl_get('u_download') && $auth->acl_get('f_download', $forum_id))
 	{
 		$sql = 'SELECT *
-			FROM ' . ATTACHMENTS_TABLE . '
+			FROM ' . PHPBB3_ATTACHMENTS_TABLE . '
 			WHERE ' . $db->sql_in_set('post_msg_id', $attach_list) . '
 				AND in_message = 0
 			ORDER BY filetime DESC, post_msg_id ASC';
@@ -1226,7 +1226,7 @@ if (sizeof($attach_list))
 		// No attachments exist, but post table thinks they do so go ahead and reset post_attach flags
 		if (!sizeof($attachments))
 		{
-			$sql = 'UPDATE ' . POSTS_TABLE . '
+			$sql = 'UPDATE ' . PHPBB3_POSTS_TABLE . '
 				SET post_attachment = 0
 				WHERE ' . $db->sql_in_set('post_id', $attach_list);
 			$db->sql_query($sql);
@@ -1236,7 +1236,7 @@ if (sizeof($attach_list))
 			{
 				// Not all posts are displayed so we query the db to find if there's any attachment for this topic
 				$sql = 'SELECT a.post_msg_id as post_id
-					FROM ' . ATTACHMENTS_TABLE . ' a, ' . POSTS_TABLE . " p
+					FROM ' . PHPBB3_ATTACHMENTS_TABLE . ' a, ' . PHPBB3_POSTS_TABLE . " p
 					WHERE p.topic_id = $topic_id
 						AND p.post_approved = 1
 						AND p.topic_id = a.topic_id";
@@ -1246,7 +1246,7 @@ if (sizeof($attach_list))
 
 				if (!$row)
 				{
-					$sql = 'UPDATE ' . TOPICS_TABLE . "
+					$sql = 'UPDATE ' . PHPBB3_TOPICS_TABLE . "
 						SET topic_attachment = 0
 						WHERE topic_id = $topic_id";
 					$db->sql_query($sql);
@@ -1254,7 +1254,7 @@ if (sizeof($attach_list))
 			}
 			else
 			{
-				$sql = 'UPDATE ' . TOPICS_TABLE . "
+				$sql = 'UPDATE ' . PHPBB3_TOPICS_TABLE . "
 					SET topic_attachment = 0
 					WHERE topic_id = $topic_id";
 				$db->sql_query($sql);
@@ -1263,7 +1263,7 @@ if (sizeof($attach_list))
 		else if ($has_attachments && !$topic_data['topic_attachment'])
 		{
 			// Topic has approved attachments but its flag is wrong
-			$sql = 'UPDATE ' . TOPICS_TABLE . "
+			$sql = 'UPDATE ' . PHPBB3_TOPICS_TABLE . "
 				SET topic_attachment = 1
 				WHERE topic_id = $topic_id";
 			$db->sql_query($sql);
@@ -1367,7 +1367,7 @@ for ($i = 0, $end = sizeof($post_list); $i < $end; ++$i)
 			$post_storage_list = (!$store_reverse) ? array_slice($post_list, $i) : array_slice(array_reverse($post_list), $i);
 
 			$sql = 'SELECT DISTINCT u.user_id, u.username, u.user_colour
-				FROM ' . POSTS_TABLE . ' p, ' . USERS_TABLE . ' u
+				FROM ' . PHPBB3_POSTS_TABLE . ' p, ' . PHPBB3_USERS_TABLE . ' u
 				WHERE ' . $db->sql_in_set('p.post_id', $post_storage_list) . '
 					AND p.post_edit_count <> 0
 					AND p.post_edit_user <> 0
@@ -1514,7 +1514,7 @@ for ($i = 0, $end = sizeof($post_list); $i < $end; ++$i)
 		'U_REPORT'			=> ($auth->acl_get('f_report', $forum_id)) ? append_sid("{$phpbb_root_path}report.$phpEx", 'f=' . $forum_id . '&amp;p=' . $row['post_id']) : '',
 		'U_MCP_REPORT'		=> ($auth->acl_get('m_report', $forum_id)) ? append_sid("{$phpbb_root_path}mcp.$phpEx", 'i=reports&amp;mode=report_details&amp;f=' . $forum_id . '&amp;p=' . $row['post_id'], true, $user->session_id) : '',
 		'U_MCP_APPROVE'		=> ($auth->acl_get('m_approve', $forum_id)) ? append_sid("{$phpbb_root_path}mcp.$phpEx", 'i=queue&amp;mode=approve_details&amp;f=' . $forum_id . '&amp;p=' . $row['post_id'], true, $user->session_id) : '',
-		'U_MINI_POST'		=> append_sid("{$phpbb_root_path}viewtopic.$phpEx", 'p=' . $row['post_id']) . (($topic_data['topic_type'] == POST_GLOBAL) ? '&amp;f=' . $forum_id : '') . '#p' . $row['post_id'],
+		'U_MINI_POST'		=> append_sid("{$phpbb_root_path}viewtopic.$phpEx", 'p=' . $row['post_id']) . (($topic_data['topic_type'] == PHPBB3_POST_GLOBAL) ? '&amp;f=' . $forum_id : '') . '#p' . $row['post_id'],
 		'U_NEXT_POST_ID'	=> ($i < $i_total && isset($rowset[$post_list[$i + 1]])) ? $rowset[$post_list[$i + 1]]['post_id'] : '',
 		'U_PREV_POST_ID'	=> $prev_post_id,
 		'U_NOTES'			=> ($auth->acl_getf_global('m_')) ? append_sid("{$phpbb_root_path}mcp.$phpEx", 'i=notes&amp;mode=user_notes&amp;u=' . $poster_id, true, $user->session_id) : '',
@@ -1597,7 +1597,7 @@ unset($rowset, $user_cache);
 // Update topic view and if necessary attachment view counters ... but only for humans and if this is the first 'page view'
 if (isset($user->data['session_page']) && !$user->data['is_bot'] && strpos($user->data['session_page'], '&t=' . $topic_id) === false)
 {
-	$sql = 'UPDATE ' . TOPICS_TABLE . '
+	$sql = 'UPDATE ' . PHPBB3_TOPICS_TABLE . '
 		SET topic_views = topic_views + 1, topic_last_view_time = ' . time() . "
 		WHERE topic_id = $topic_id";
 	$db->sql_query($sql);
@@ -1605,7 +1605,7 @@ if (isset($user->data['session_page']) && !$user->data['is_bot'] && strpos($user
 	// Update the attachment download counts
 	if (sizeof($update_count))
 	{
-		$sql = 'UPDATE ' . ATTACHMENTS_TABLE . '
+		$sql = 'UPDATE ' . PHPBB3_ATTACHMENTS_TABLE . '
 			SET download_count = download_count + 1
 			WHERE ' . $db->sql_in_set('attach_id', array_unique($update_count));
 		$db->sql_query($sql);

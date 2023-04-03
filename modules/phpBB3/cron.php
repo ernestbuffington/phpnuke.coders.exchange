@@ -55,7 +55,7 @@ if ($config['cron_lock'])
 
 define('CRON_ID', time() . ' ' . unique_id());
 
-$sql = 'UPDATE ' . CONFIG_TABLE . "
+$sql = 'UPDATE ' . PHPBB3_CONFIG_TABLE . "
 	SET config_value = '" . $db->sql_escape(CRON_ID) . "'
 	WHERE config_name = 'cron_lock' AND config_value = '" . $db->sql_escape($config['cron_lock']) . "'";
 $db->sql_query($sql);
@@ -212,7 +212,7 @@ switch ($cron_type)
 		$forum_id = request_var('f', 0);
 
 		$sql = 'SELECT forum_id, prune_next, enable_prune, prune_days, prune_viewed, forum_flags, prune_freq
-			FROM ' . FORUMS_TABLE . "
+			FROM ' . PHPBB3_FORUMS_TABLE . "
 			WHERE forum_id = $forum_id";
 		$result = $db->sql_query($sql);
 		$row = $db->sql_fetchrow($result);
@@ -278,7 +278,7 @@ function unlock_cron()
 {
 	global $db;
 
-	$sql = 'UPDATE ' . CONFIG_TABLE . "
+	$sql = 'UPDATE ' . PHPBB3_CONFIG_TABLE . "
 		SET config_value = '0'
 		WHERE config_name = 'cron_lock' AND config_value = '" . $db->sql_escape(CRON_ID) . "'";
 	$db->sql_query($sql);

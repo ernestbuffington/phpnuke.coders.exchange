@@ -53,7 +53,7 @@ class acp_email
 			// Error checking needs to go here ... if no subject and/or no message then skip
 			// over the send and return to the form
 			$use_queue		= (isset($_POST['send_immediately'])) ? false : true;
-			$priority		= request_var('mail_priority_flag', MAIL_NORMAL_PRIORITY);
+			$priority		= request_var('mail_priority_flag', PHPBB3_MAIL_NORMAL_PRIORITY);
 
 			if (!check_form_key($form_key))
 			{
@@ -76,7 +76,7 @@ class acp_email
 				{
 					// If giving usernames the admin is able to email inactive users too...
 					$sql = 'SELECT username, user_email, user_jabber, user_notify_type, user_lang
-						FROM ' . USERS_TABLE . '
+						FROM ' . PHPBB3_USERS_TABLE . '
 						WHERE ' . $db->sql_in_set('username_clean', array_map('utf8_clean_string', explode("\n", $usernames))) . '
 							AND user_allow_massemail = 1
 						ORDER BY user_lang, user_notify_type'; // , SUBSTRING(user_email FROM INSTR(user_email, '@'))
@@ -86,20 +86,20 @@ class acp_email
 					if ($group_id)
 					{
 						$sql = 'SELECT u.user_email, u.username, u.username_clean, u.user_lang, u.user_jabber, u.user_notify_type
-							FROM ' . USERS_TABLE . ' u, ' . USER_GROUP_TABLE . ' ug
+							FROM ' . PHPBB3_USERS_TABLE . ' u, ' . PHPBB3_USER_GROUP_TABLE . ' ug
 							WHERE ug.group_id = ' . $group_id . '
 								AND ug.user_pending = 0
 								AND u.user_id = ug.user_id
 								AND u.user_allow_massemail = 1
-								AND u.user_type IN (' . USER_NORMAL . ', ' . USER_FOUNDER . ')
+								AND u.user_type IN (' . PHPBB3_USER_NORMAL . ', ' . PHPBB3_USER_FOUNDER . ')
 							ORDER BY u.user_lang, u.user_notify_type';
 					}
 					else
 					{
 						$sql = 'SELECT username, username_clean, user_email, user_jabber, user_notify_type, user_lang
-							FROM ' . USERS_TABLE . '
+							FROM ' . PHPBB3_USERS_TABLE . '
 							WHERE user_allow_massemail = 1
-								AND user_type IN (' . USER_NORMAL . ', ' . USER_FOUNDER . ')
+								AND user_type IN (' . PHPBB3_USER_NORMAL . ', ' . PHPBB3_USER_FOUNDER . ')
 							ORDER BY user_lang, user_notify_type';
 					}
 				}
@@ -122,9 +122,9 @@ class acp_email
 
 				do
 				{
-					if (($row['user_notify_type'] == NOTIFY_EMAIL && $row['user_email']) ||
-						($row['user_notify_type'] == NOTIFY_IM && $row['user_jabber']) ||
-						($row['user_notify_type'] == NOTIFY_BOTH && $row['user_email'] && $row['user_jabber']))
+					if (($row['user_notify_type'] == PHPBB3_NOTIFY_EMAIL && $row['user_email']) ||
+						($row['user_notify_type'] == PHPBB3_NOTIFY_IM && $row['user_jabber']) ||
+						($row['user_notify_type'] == PHPBB3_NOTIFY_BOTH && $row['user_email'] && $row['user_jabber']))
 					{
 						if ($i == $max_chunk_size || $row['user_lang'] != $old_lang || $row['user_notify_type'] != $old_notify_type)
 						{
@@ -229,7 +229,7 @@ class acp_email
 
 		// Exclude bots and guests...
 		$sql = 'SELECT group_id
-			FROM ' . GROUPS_TABLE . "
+			FROM ' . PHPBB3_GROUPS_TABLE . "
 			WHERE group_name IN ('BOTS', 'GUESTS')";
 		$result = $db->sql_query($sql);
 
@@ -243,9 +243,9 @@ class acp_email
 		$select_list = '<option value="0"' . ((!$group_id) ? ' selected="selected"' : '') . '>' . $user->lang['ALL_USERS'] . '</option>';
 		$select_list .= group_select_options($group_id, $exclude);
 		
-		$s_priority_options = '<option value="' . MAIL_LOW_PRIORITY . '">' . $user->lang['MAIL_LOW_PRIORITY'] . '</option>';
-		$s_priority_options .= '<option value="' . MAIL_NORMAL_PRIORITY . '" selected="selected">' . $user->lang['MAIL_NORMAL_PRIORITY'] . '</option>';
-		$s_priority_options .= '<option value="' . MAIL_HIGH_PRIORITY . '">' . $user->lang['MAIL_HIGH_PRIORITY'] . '</option>';
+		$s_priority_options = '<option value="' . PHPBB3_MAIL_LOW_PRIORITY . '">' . $user->lang['PHPBB3_MAIL_LOW_PRIORITY'] . '</option>';
+		$s_priority_options .= '<option value="' . PHPBB3_MAIL_NORMAL_PRIORITY . '" selected="selected">' . $user->lang['PHPBB3_MAIL_NORMAL_PRIORITY'] . '</option>';
+		$s_priority_options .= '<option value="' . PHPBB3_MAIL_HIGH_PRIORITY . '">' . $user->lang['PHPBB3_MAIL_HIGH_PRIORITY'] . '</option>';
 
 		$template->assign_vars(array(
 			'S_WARNING'				=> (sizeof($error)) ? true : false,

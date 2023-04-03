@@ -7,7 +7,7 @@
 		<dd>{AVATAR_IMAGE}</dd>
 		<dd><label><input type="checkbox" class="radio" name="delete" /> {L_DELETE_AVATAR}</label></dd>
 	</dl>
-	<!-- IF not S_IN_AVATAR_GALLERY -->
+	<!-- IF not S_IN_PHPBB3_AVATAR_GALLERY -->
 		<!-- IF S_CAN_UPLOAD -->
 			<dl> 
 				<dt><label for="uploadfile">{L_UPLOAD_AVATAR_FILE}:</label></dt>
@@ -30,7 +30,7 @@
 		<!-- ENDIF -->
 		<!-- IF S_DISPLAY_GALLERY -->
 			<dl> 
-				<dt><label>{L_AVATAR_GALLERY}:</label></dt>
+				<dt><label>{L_PHPBB3_AVATAR_GALLERY}:</label></dt>
 				<dd><input class="button2" type="submit" name="display_gallery" value="{L_DISPLAY_GALLERY}" /></dd>
 			</dl>
 		<!-- ENDIF -->
@@ -38,7 +38,7 @@
 		</fieldset>
 
 		<fieldset>
-			<legend>{L_AVATAR_GALLERY}</legend>
+			<legend>{L_PHPBB3_AVATAR_GALLERY}</legend>
 		<dl>
 			<dt><label for="category">{L_AVATAR_CATEGORY}:</label></dt>
 			<dd><select name="category" id="category">{S_CAT_OPTIONS}</select>&nbsp;<input class="button2" type="submit" value="{L_GO}" name="display_gallery" /></dd>

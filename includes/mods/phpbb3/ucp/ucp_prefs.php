@@ -56,10 +56,10 @@ class ucp_prefs
 					'allowpm'		=> request_var('allowpm', (bool) $user->data['user_allow_pm']),
 				);
 
-				if ($data['notifymethod'] == NOTIFY_IM && (!$config['jab_enable'] || !$user->data['user_jabber'] || !extension_loaded('xml')))
+				if ($data['notifymethod'] == PHPBB3_NOTIFY_IM && (!$config['jab_enable'] || !$user->data['user_jabber'] || !extension_loaded('xml')))
 				{
 					// Jabber isnt enabled, or no jabber field filled in. Update the users table to be sure its correct.
-					$data['notifymethod'] = NOTIFY_BOTH;
+					$data['notifymethod'] = PHPBB3_NOTIFY_BOTH;
 				}
 
 				if ($submit)
@@ -97,7 +97,7 @@ class ucp_prefs
 							'user_style'			=> $data['style'],
 						);
 
-						$sql = 'UPDATE ' . USERS_TABLE . '
+						$sql = 'UPDATE ' . PHPBB3_USERS_TABLE . '
 							SET ' . $db->sql_build_array('UPDATE', $sql_ary) . '
 							WHERE user_id = ' . $user->data['user_id'];
 						$db->sql_query($sql);
@@ -133,9 +133,9 @@ class ucp_prefs
 				$template->assign_vars(array(
 					'ERROR'				=> (sizeof($error)) ? implode('<br />', $error) : '',
 
-					'S_NOTIFY_EMAIL'	=> ($data['notifymethod'] == NOTIFY_EMAIL) ? true : false,
-					'S_NOTIFY_IM'		=> ($data['notifymethod'] == NOTIFY_IM) ? true : false,
-					'S_NOTIFY_BOTH'		=> ($data['notifymethod'] == NOTIFY_BOTH) ? true : false,
+					'S_PHPBB3_NOTIFY_EMAIL'	=> ($data['notifymethod'] == PHPBB3_NOTIFY_EMAIL) ? true : false,
+					'S_PHPBB3_NOTIFY_IM'		=> ($data['notifymethod'] == PHPBB3_NOTIFY_IM) ? true : false,
+					'S_PHPBB3_NOTIFY_BOTH'		=> ($data['notifymethod'] == PHPBB3_NOTIFY_BOTH) ? true : false,
 					'S_VIEW_EMAIL'		=> $data['viewemail'],
 					'S_MASS_EMAIL'		=> $data['massemail'],
 					'S_ALLOW_PM'		=> $data['allowpm'],
@@ -219,7 +219,7 @@ class ucp_prefs
 							'user_post_show_days'	=> $data['post_st'],
 						);
 
-						$sql = 'UPDATE ' . USERS_TABLE . '
+						$sql = 'UPDATE ' . PHPBB3_USERS_TABLE . '
 							SET ' . $db->sql_build_array('UPDATE', $sql_ary) . '
 							WHERE user_id = ' . $user->data['user_id'];
 						$db->sql_query($sql);
@@ -320,7 +320,7 @@ class ucp_prefs
 							'user_notify'	=> $data['notify'],
 						);
 
-						$sql = 'UPDATE ' . USERS_TABLE . '
+						$sql = 'UPDATE ' . PHPBB3_USERS_TABLE . '
 							SET ' . $db->sql_build_array('UPDATE', $sql_ary) . '
 							WHERE user_id = ' . $user->data['user_id'];
 						$db->sql_query($sql);

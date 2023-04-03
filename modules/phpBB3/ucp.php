@@ -180,7 +180,7 @@ switch ($mode)
 		$user_id = request_var('u', 0);
 
 		$sql = 'SELECT *
-			FROM ' . USERS_TABLE . '
+			FROM ' . PHPBB3_USERS_TABLE . '
 			WHERE user_id = ' . (int) $user_id;
 		$result = $db->sql_query($sql);
 		$user_row = $db->sql_fetchrow($result);
@@ -210,7 +210,7 @@ switch ($mode)
 			redirect(append_sid("{$phpbb_root_path}index.$phpEx"));
 		}
 
-		add_log('admin', 'LOG_ACL_TRANSFER_PERMISSIONS', $user_row['username']);
+		add_log('admin', 'LOG_PHPBB3_ACL_TRANSFER_PERMISSIONS', $user_row['username']);
 
 		$message = sprintf($user->lang['PERMISSIONS_TRANSFERRED'], $user_row['username']) . '<br /><br />' . sprintf($user->lang['RETURN_INDEX'], '<a href="' . append_sid("{$phpbb_root_path}index.$phpEx") . '">', '</a>');
 		trigger_error($message);
@@ -226,13 +226,13 @@ switch ($mode)
 
 		$auth->acl_cache($user->data);
 
-		$sql = 'UPDATE ' . USERS_TABLE . "
+		$sql = 'UPDATE ' . PHPBB3_USERS_TABLE . "
 			SET user_perm_from = 0
 			WHERE user_id = " . $user->data['user_id'];
 		$db->sql_query($sql);
 
 		$sql = 'SELECT username
-			FROM ' . USERS_TABLE . '
+			FROM ' . PHPBB3_USERS_TABLE . '
 			WHERE user_id = ' . $user->data['user_perm_from'];
 		$result = $db->sql_query($sql);
 		$username = $db->sql_fetchfield('username');
@@ -242,12 +242,12 @@ switch ($mode)
 		$auth_arcade->acl($user->data);
 		$auth_arcade->acl_cache($user->data);
 
-		$sql = 'UPDATE ' . USERS_TABLE . "
+		$sql = 'UPDATE ' . PHPBB3_USERS_TABLE . "
 			SET user_arcade_perm_from = 0
 			WHERE user_id = " . $user->data['user_id'];
 		$db->sql_query($sql);
 
-		add_log('admin', 'LOG_ACL_RESTORE_PERMISSIONS', $username);
+		add_log('admin', 'LOG_PHPBB3_ACL_RESTORE_PERMISSIONS', $username);
 
 		$message = $user->lang['PERMISSIONS_RESTORED'] . '<br /><br />' . sprintf($user->lang['RETURN_INDEX'], '<a href="' . append_sid("{$phpbb_root_path}index.$phpEx") . '">', '</a>');
 		trigger_error($message);
@@ -289,13 +289,13 @@ if ($module->is_active('zebra', 'friends'))
 		'SELECT'	=> 'u.user_id, u.username, u.username_clean, u.user_colour, MAX(s.session_time) as online_time, MIN(s.session_viewonline) AS viewonline',
 
 		'FROM'		=> array(
-			USERS_TABLE		=> 'u',
-			ZEBRA_TABLE		=> 'z'
+			PHPBB3_USERS_TABLE		=> 'u',
+			PHPBB3_ZEBRA_TABLE		=> 'z'
 		),
 
 		'LEFT_JOIN'	=> array(
 			array(
-				'FROM'	=> array(SESSIONS_TABLE => 's'),
+				'FROM'	=> array(PHPBB3_SESSIONS_TABLE => 's'),
 				'ON'	=> 's.session_user_id = z.zebra_id'
 			)
 		),

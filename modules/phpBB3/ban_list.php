@@ -50,8 +50,8 @@ if(!$allow)
 
 // grab all user notes first
 $sql = 'SELECT reportee_id
-	FROM ' . LOG_TABLE . '
-	WHERE log_type=' . LOG_USERS . '
+	FROM ' . PHPBB3_LOG_TABLE . '
+	WHERE log_type=' . PHPBB3_LOG_USERS . '
 	ORDER BY reportee_id';
 $result = $db->sql_query($sql);
 
@@ -156,7 +156,7 @@ $template->assign_vars(array(
 
 // grab some naughty users
 $sql = 'SELECT b.*, u.user_id, u.username, u.username_clean, u.user_colour, u.user_warnings
-	FROM ' . BANLIST_TABLE . ' b, ' . USERS_TABLE . ' u
+	FROM ' . PHPBB3_BANLIST_TABLE . ' b, ' . PHPBB3_USERS_TABLE . ' u
 	WHERE (b.ban_end >= ' . time() . '
 		OR b.ban_end = 0)
 		' . $sql_where . '

@@ -63,7 +63,7 @@ class ucp_zebra
 						// the other (by removing the existing one) ... but I have a feeling this
 						// may lead to complaints
 						$sql = 'SELECT z.*, u.username, u.username_clean
-							FROM ' . ZEBRA_TABLE . ' z, ' . USERS_TABLE . ' u
+							FROM ' . PHPBB3_ZEBRA_TABLE . ' z, ' . PHPBB3_USERS_TABLE . ' u
 							WHERE z.user_id = ' . $user->data['user_id'] . '
 								AND u.user_id = z.zebra_id';
 						$result = $db->sql_query($sql);
@@ -114,15 +114,15 @@ class ucp_zebra
 						if (sizeof($data['add']))
 						{
 							$sql = 'SELECT user_id, user_type
-								FROM ' . USERS_TABLE . '
+								FROM ' . PHPBB3_USERS_TABLE . '
 								WHERE ' . $db->sql_in_set('username_clean', $data['add']) . '
-									AND user_type <> ' . USER_INACTIVE;
+									AND user_type <> ' . PHPBB3_USER_INACTIVE;
 							$result = $db->sql_query($sql);
 
 							$user_id_ary = array();
 							while ($row = $db->sql_fetchrow($result))
 							{
-								if ($row['user_id'] != ANONYMOUS && $row['user_type'] != USER_IGNORE)
+								if ($row['user_id'] != ANONYMOUS && $row['user_type'] != PHPBB3_USER_IGNORE)
 								{
 									$user_id_ary[] = $row['user_id'];
 								}
@@ -173,7 +173,7 @@ class ucp_zebra
 										);
 									}
 
-									$db->sql_multi_insert(ZEBRA_TABLE, $sql_ary);
+									$db->sql_multi_insert(PHPBB3_ZEBRA_TABLE, $sql_ary);
 
 									$updated = true;
 								}
@@ -190,7 +190,7 @@ class ucp_zebra
 						// Force integer values
 						$data['usernames'] = array_map('intval', $data['usernames']);
 
-						$sql = 'DELETE FROM ' . ZEBRA_TABLE . '
+						$sql = 'DELETE FROM ' . PHPBB3_ZEBRA_TABLE . '
 							WHERE user_id = ' . $user->data['user_id'] . '
 								AND ' . $db->sql_in_set('zebra_id', $data['usernames']);
 						$db->sql_query($sql);
@@ -211,7 +211,7 @@ class ucp_zebra
 				}
 				else
 				{
-					confirm_box(false, $user->lang['CONFIRM_OPERATION'], build_hidden_fields(array(
+					confirm_box(false, $user->lang['PHPBB3_CONFIRM_OPERATION'], build_hidden_fields(array(
 						'mode'		=> $mode,
 						'submit'	=> true,
 						'usernames'	=> $data['usernames'],
@@ -223,7 +223,7 @@ class ucp_zebra
 
 		$sql_and = ($mode == 'friends') ? 'z.friend = 1' : 'z.foe = 1';
 		$sql = 'SELECT z.*, u.username, u.username_clean
-			FROM ' . ZEBRA_TABLE . ' z, ' . USERS_TABLE . ' u
+			FROM ' . PHPBB3_ZEBRA_TABLE . ' z, ' . PHPBB3_USERS_TABLE . ' u
 			WHERE z.user_id = ' . $user->data['user_id'] . "
 				AND $sql_and
 				AND u.user_id = z.zebra_id

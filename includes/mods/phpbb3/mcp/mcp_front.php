@@ -40,7 +40,7 @@ function mcp_front_view($id, $mode, $action)
 		if (!empty($forum_list))
 		{
 			$sql = 'SELECT COUNT(post_id) AS total
-				FROM ' . POSTS_TABLE . '
+				FROM ' . PHPBB3_POSTS_TABLE . '
 				WHERE forum_id IN (0, ' . implode(', ', $forum_list) . ')
 					AND post_approved = 0';
 			$result = $db->sql_query($sql);
@@ -52,7 +52,7 @@ function mcp_front_view($id, $mode, $action)
 				$global_id = $forum_list[0];
 
 				$sql = 'SELECT forum_id, forum_name
-					FROM ' . FORUMS_TABLE . '
+					FROM ' . PHPBB3_FORUMS_TABLE . '
 					WHERE ' . $db->sql_in_set('forum_id', $forum_list);
 				$result = $db->sql_query($sql);
 
@@ -63,7 +63,7 @@ function mcp_front_view($id, $mode, $action)
 				$db->sql_freeresult($result);
 
 				$sql = 'SELECT post_id
-					FROM ' . POSTS_TABLE . '
+					FROM ' . PHPBB3_POSTS_TABLE . '
 					WHERE forum_id IN (0, ' . implode(', ', $forum_list) . ')
 						AND post_approved = 0
 					ORDER BY post_time DESC';
@@ -84,7 +84,7 @@ function mcp_front_view($id, $mode, $action)
 			if ($total)
 			{
 				$sql = 'SELECT p.post_id, p.post_subject, p.post_time, p.poster_id, p.post_username, u.username, u.username_clean, u.user_colour, t.topic_id, t.topic_title, t.topic_first_post_id, p.forum_id
-					FROM ' . POSTS_TABLE . ' p, ' . TOPICS_TABLE . ' t, ' . USERS_TABLE . ' u
+					FROM ' . PHPBB3_POSTS_TABLE . ' p, ' . PHPBB3_TOPICS_TABLE . ' t, ' . PHPBB3_USERS_TABLE . ' u
 					WHERE ' . $db->sql_in_set('p.post_id', $post_list) . '
 						AND t.topic_id = p.topic_id
 						AND p.poster_id = u.user_id
@@ -152,7 +152,7 @@ function mcp_front_view($id, $mode, $action)
 		if (!empty($forum_list))
 		{
 			$sql = 'SELECT COUNT(r.report_id) AS total
-				FROM ' . REPORTS_TABLE . ' r, ' . POSTS_TABLE . ' p
+				FROM ' . PHPBB3_REPORTS_TABLE . ' r, ' . PHPBB3_POSTS_TABLE . ' p
 				WHERE r.post_id = p.post_id
 					AND r.report_closed = 0
 					AND p.forum_id IN (0, ' . implode(', ', $forum_list) . ')';
@@ -168,16 +168,16 @@ function mcp_front_view($id, $mode, $action)
 					'SELECT'	=> 'r.report_time, p.post_id, p.post_subject, p.post_time, u.username, u.username_clean, u.user_colour, u.user_id, u2.username as author_name, u2.username_clean as author_name_clean, u2.user_colour as author_colour, u2.user_id as author_id, t.topic_id, t.topic_title, f.forum_id, f.forum_name',
 
 					'FROM'		=> array(
-						REPORTS_TABLE			=> 'r',
-						REPORTS_REASONS_TABLE	=> 'rr',
-						TOPICS_TABLE			=> 't',
-						USERS_TABLE				=> array('u', 'u2'),
-						POSTS_TABLE				=> 'p'
+						PHPBB3_REPORTS_TABLE			=> 'r',
+						PHPBB3_REPORTS_REASONS_TABLE	=> 'rr',
+						PHPBB3_TOPICS_TABLE			=> 't',
+						PHPBB3_USERS_TABLE				=> array('u', 'u2'),
+						PHPBB3_POSTS_TABLE				=> 'p'
 					),
 
 					'LEFT_JOIN'	=> array(
 						array(
-							'FROM'	=> array(FORUMS_TABLE => 'f'),
+							'FROM'	=> array(PHPBB3_FORUMS_TABLE => 'f'),
 							'ON'	=> 'f.forum_id = p.forum_id'
 						)
 					),

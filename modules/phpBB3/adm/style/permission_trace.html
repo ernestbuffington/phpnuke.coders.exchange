@@ -12,7 +12,7 @@
 	<thead>
 	<tr>
 		<th>{L_TRACE_WHO}</th>
-		<th style="width: 50px;">{L_ACL_SETTING}</th>
+		<th style="width: 50px;">{L_PHPBB3_ACL_SETTING}</th>
 		<th style="width: 50px;">{L_TRACE_TOTAL}</th>
 		<th>{L_INFORMATION}</th>
 	</tr>
@@ -23,19 +23,19 @@
 		<td style="white-space: nowrap;"><strong>{trace.WHO}</strong></td>
 
 		<!-- IF trace.S_SETTING_NEVER -->
-			<td class="never">{L_ACL_NEVER}</td>
+			<td class="never">{L_PHPBB3_PHPBB3_ACL_NEVER}</td>
 		<!-- ELSEIF trace.S_SETTING_YES -->
-			<td class="yes">{L_ACL_YES}</td>
+			<td class="yes">{L_PHPBB3_PHPBB3_ACL_YES}</td>
 		<!-- ELSE -->
-			<td class="no">{L_ACL_NO}</td>
+			<td class="no">{L_PHPBB3_PHPBB3_ACL_NO}</td>
 		<!-- ENDIF -->
 
 		<!-- IF trace.S_TOTAL_NEVER -->
-			<td class="never">{L_ACL_NEVER}</td>
+			<td class="never">{L_PHPBB3_PHPBB3_ACL_NEVER}</td>
 		<!-- ELSEIF trace.S_TOTAL_YES -->
-			<td class="yes">{L_ACL_YES}</td>
+			<td class="yes">{L_PHPBB3_PHPBB3_ACL_YES}</td>
 		<!-- ELSE -->
-			<td class="no">{L_ACL_NO}</td>
+			<td class="no">{L_PHPBB3_PHPBB3_ACL_NO}</td>
 		<!-- ENDIF -->
 
 		<td>{trace.INFORMATION}</td>
@@ -44,7 +44,7 @@
 	<tr class="row2">
 		<td style="white-space: nowrap;"><strong>{L_TRACE_RESULT}</strong></td>
 		<td colspan="2" style="text-align: center;" class="<!-- IF S_RESULT_NEVER -->never<!-- ELSEIF S_RESULT_YES -->yes<!-- ELSE -->no<!-- ENDIF -->">
-		<!-- IF S_RESULT_NEVER -->{L_ACL_NEVER}<!-- ELSEIF S_RESULT_YES -->{L_ACL_YES}<!-- ELSE -->{L_ACL_NO}<!-- ENDIF -->
+		<!-- IF S_RESULT_NEVER -->{L_PHPBB3_PHPBB3_ACL_NEVER}<!-- ELSEIF S_RESULT_YES -->{L_PHPBB3_PHPBB3_ACL_YES}<!-- ELSE -->{L_PHPBB3_PHPBB3_ACL_NO}<!-- ENDIF -->
 		</td>
 		<td>{L_RESULTING_PERMISSION}</td>
 	</tr>

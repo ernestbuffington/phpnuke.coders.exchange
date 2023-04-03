@@ -31,7 +31,7 @@ function who_posted($topic_id)
 	
 	// make sure the topic exists
 	$sql = 'SELECT topic_id, topic_approved, forum_id
-		FROM ' . TOPICS_TABLE . '
+		FROM ' . PHPBB3_TOPICS_TABLE . '
 		WHERE topic_id = ' . (int) $topic_id;
 	$result = $db->sql_query_limit($sql, 1);
 	$row = $db->sql_fetchrow($result);
@@ -49,7 +49,7 @@ function who_posted($topic_id)
 	{
 		// get style data
 		$sql = 'SELECT forum_id, forum_style
-			FROM ' . FORUMS_TABLE . "
+			FROM ' . PHPBB3_FORUMS_TABLE . "
 			WHERE forum_id = $forum_id";
 		$result = $db->sql_query_limit($sql, 1);
 		$style_row = $db->sql_fetchrow($result);
@@ -104,8 +104,8 @@ function who_posted($topic_id)
 	$sql_ary = array(
 		'SELECT'	=> 'u.username, u.user_id, u.user_colour, COUNT(DISTINCT p.post_id) as posts, p.post_username',
 		'FROM'		=> array(
-			POSTS_TABLE	=> 'p',
-			USERS_TABLE	=> 'u',
+			PHPBB3_POSTS_TABLE	=> 'p',
+			PHPBB3_USERS_TABLE	=> 'u',
 		),
 		'WHERE'		=> "p.topic_id = $topic_id AND u.user_id = p.poster_id",
 		'GROUP_BY'	=> 'u.username, p.post_username',

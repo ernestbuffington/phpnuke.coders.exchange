@@ -81,7 +81,7 @@ function mcp_post_details($id, $mode, $action)
 			}
 
 			$sql = 'SELECT *
-				FROM ' . USERS_TABLE . '
+				FROM ' . PHPBB3_USERS_TABLE . '
 				WHERE ' . $sql_where;
 			$result = $db->sql_query($sql);
 			$row = $db->sql_fetchrow($result);
@@ -145,7 +145,7 @@ function mcp_post_details($id, $mode, $action)
 		$extensions = $cache->obtain_attach_extensions($post_info['forum_id']);
 
 		$sql = 'SELECT *
-			FROM ' . ATTACHMENTS_TABLE . '
+			FROM ' . PHPBB3_ATTACHMENTS_TABLE . '
 			WHERE post_msg_id = ' . $post_id . '
 				AND in_message = 0
 			ORDER BY filetime DESC, post_msg_id ASC';
@@ -251,7 +251,7 @@ function mcp_post_details($id, $mode, $action)
 	if ($auth->acl_get('m_', $post_info['forum_id']))
 	{
 		$sql = 'SELECT r.*, re.*, u.user_id, u.username
-			FROM ' . REPORTS_TABLE . ' r, ' . USERS_TABLE . ' u, ' . REPORTS_REASONS_TABLE . " re
+			FROM ' . PHPBB3_REPORTS_TABLE . ' r, ' . PHPBB3_USERS_TABLE . ' u, ' . PHPBB3_REPORTS_REASONS_TABLE . " re
 			WHERE r.post_id = $post_id
 				AND r.reason_id = re.reason_id
 				AND u.user_id = r.user_id
@@ -301,7 +301,7 @@ function mcp_post_details($id, $mode, $action)
 
 		// Get other users who've posted under this IP
 		$sql = 'SELECT poster_id, COUNT(poster_id) as postings
-			FROM ' . POSTS_TABLE . "
+			FROM ' . PHPBB3_POSTS_TABLE . "
 			WHERE poster_ip = '" . $db->sql_escape($post_info['poster_ip']) . "'
 			GROUP BY poster_id
 			ORDER BY postings DESC";
@@ -321,7 +321,7 @@ function mcp_post_details($id, $mode, $action)
 		{
 			// Get the usernames
 			$sql = 'SELECT user_id, username
-				FROM ' . USERS_TABLE . '
+				FROM ' . PHPBB3_USERS_TABLE . '
 				WHERE ' . $db->sql_in_set('user_id', array_keys($users_ary));
 			$result = $db->sql_query($sql);
 
@@ -352,7 +352,7 @@ function mcp_post_details($id, $mode, $action)
 		// This is better left to the really really big forums.
 
 		$sql = 'SELECT poster_ip, COUNT(poster_ip) AS postings
-			FROM ' . POSTS_TABLE . '
+			FROM ' . PHPBB3_POSTS_TABLE . '
 			WHERE poster_id = ' . $post_info['poster_id'] . "
 			GROUP BY poster_ip
 			ORDER BY postings DESC";
@@ -408,7 +408,7 @@ function change_poster(&$post_info, $userdata)
 
 	$post_id = $post_info['post_id'];
 
-	$sql = 'UPDATE ' . POSTS_TABLE . "
+	$sql = 'UPDATE ' . PHPBB3_POSTS_TABLE . "
 		SET poster_id = {$userdata['user_id']}
 		WHERE post_id = $post_id";
 	$db->sql_query($sql);
@@ -423,13 +423,13 @@ function change_poster(&$post_info, $userdata)
 	// Adjust post counts... only if the post is approved (else, it was not added the users post count anyway)
 	if ($post_info['post_postcount'] && $post_info['post_approved'])
 	{
-		$sql = 'UPDATE ' . USERS_TABLE . '
+		$sql = 'UPDATE ' . PHPBB3_USERS_TABLE . '
 			SET user_posts = user_posts - 1
 			WHERE user_id = ' . $post_info['user_id'] .'
 			AND user_posts > 0';
 		$db->sql_query($sql);
 
-		$sql = 'UPDATE ' . USERS_TABLE . '
+		$sql = 'UPDATE ' . PHPBB3_USERS_TABLE . '
 			SET user_posts = user_posts + 1
 			WHERE user_id = ' . $userdata['user_id'];
 		$db->sql_query($sql);
@@ -442,7 +442,7 @@ function change_poster(&$post_info, $userdata)
 	if ($config['load_db_track'] && $post_info['user_id'] != ANONYMOUS)
 	{
 		$sql = 'SELECT topic_id
-			FROM ' . POSTS_TABLE . '
+			FROM ' . PHPBB3_POSTS_TABLE . '
 			WHERE topic_id = ' . $post_info['topic_id'] . '
 				AND poster_id = ' . $post_info['user_id'];
 		$result = $db->sql_query_limit($sql, 1);
@@ -451,7 +451,7 @@ function change_poster(&$post_info, $userdata)
 
 		if (!$topic_id)
 		{
-			$sql = 'DELETE FROM ' . TOPICS_POSTED_TABLE . '
+			$sql = 'DELETE FROM ' . PHPBB3_TOPICS_POSTED_TABLE . '
 				WHERE user_id = ' . $post_info['user_id'] . '
 					AND topic_id = ' . $post_info['topic_id'];
 			$db->sql_query($sql);
@@ -461,7 +461,7 @@ function change_poster(&$post_info, $userdata)
 	// change the poster_id within the attachments table, else the data becomes out of sync and errors displayed because of wrong ownership
 	if ($post_info['post_attachment'])
 	{
-		$sql = 'UPDATE ' . ATTACHMENTS_TABLE . '
+		$sql = 'UPDATE ' . PHPBB3_ATTACHMENTS_TABLE . '
 			SET poster_id = ' . $userdata['user_id'] . '
 			WHERE poster_id = ' . $post_info['user_id'] . '
 				AND post_msg_id = ' . $post_info['post_id'] . '

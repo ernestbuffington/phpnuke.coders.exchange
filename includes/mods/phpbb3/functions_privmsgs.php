@@ -128,9 +128,9 @@ function get_folder($user_id, $folder_id = false)
 
 	// Get folder information
 	$sql = 'SELECT folder_id, COUNT(msg_id) as num_messages, SUM(pm_unread) as num_unread
-		FROM ' . PRIVMSGS_TO_TABLE . "
+		FROM ' . PHPBB3_PRIVMSGS_TO_TABLE . "
 		WHERE user_id = $user_id
-			AND folder_id <> " . PRIVMSGS_NO_BOX . '
+			AND folder_id <> " . PM_NO_BOX . '
 		GROUP BY folder_id';
 	$result = $db->sql_query($sql);
 
@@ -143,7 +143,7 @@ function get_folder($user_id, $folder_id = false)
 	$db->sql_freeresult($result);
 
 	// Make sure the default boxes are defined
-	$available_folder = array(PRIVMSGS_INBOX, PRIVMSGS_OUTBOX, PRIVMSGS_SENTBOX);
+	$available_folder = array(PM_INBOX, PM_OUTBOX, PM_SENTBOX);
 
 	foreach ($available_folder as $default_folder)
 	{
@@ -159,17 +159,17 @@ function get_folder($user_id, $folder_id = false)
 	}
 
 	// Adjust unread status for outbox
-	$num_unread[PRIVMSGS_OUTBOX] = $num_messages[PRIVMSGS_OUTBOX];
+	$num_unread[PM_OUTBOX] = $num_messages[PM_OUTBOX];
 
-	$folder[PRIVMSGS_INBOX] = array(
+	$folder[PM_INBOX] = array(
 		'folder_name'		=> $user->lang['PM_INBOX'],
-		'num_messages'		=> $num_messages[PRIVMSGS_INBOX],
-		'unread_messages'	=> $num_unread[PRIVMSGS_INBOX]
+		'num_messages'		=> $num_messages[PM_INBOX],
+		'unread_messages'	=> $num_unread[PM_INBOX]
 	);
 
 	// Custom Folder
 	$sql = 'SELECT folder_id, folder_name, pm_count
-		FROM ' . PRIVMSGS_FOLDER_TABLE . "
+		FROM ' . PHPBB3_PRIVMSGS_FOLDER_TABLE . "
 			WHERE user_id = $user_id";
 	$result = $db->sql_query($sql);
 
@@ -183,22 +183,22 @@ function get_folder($user_id, $folder_id = false)
 	}
 	$db->sql_freeresult($result);
 
-	$folder[PRIVMSGS_OUTBOX] = array(
+	$folder[PM_OUTBOX] = array(
 		'folder_name'		=> $user->lang['PM_OUTBOX'],
-		'num_messages'		=> $num_messages[PRIVMSGS_OUTBOX],
-		'unread_messages'	=> $num_unread[PRIVMSGS_OUTBOX]
+		'num_messages'		=> $num_messages[PM_OUTBOX],
+		'unread_messages'	=> $num_unread[PM_OUTBOX]
 	);
 
-	$folder[PRIVMSGS_SENTBOX] = array(
+	$folder[PM_SENTBOX] = array(
 		'folder_name'		=> $user->lang['PM_SENTBOX'],
-		'num_messages'		=> $num_messages[PRIVMSGS_SENTBOX],
-		'unread_messages'	=> $num_unread[PRIVMSGS_SENTBOX]
+		'num_messages'		=> $num_messages[PM_SENTBOX],
+		'unread_messages'	=> $num_unread[PM_SENTBOX]
 	);
 
 	// Define Folder Array for template designers (and for making custom folders usable by the template too)
 	foreach ($folder as $f_id => $folder_ary)
 	{
-		$folder_id_name = ($f_id == PRIVMSGS_INBOX) ? 'inbox' : (($f_id == PRIVMSGS_OUTBOX) ? 'outbox' : 'sentbox');
+		$folder_id_name = ($f_id == PM_INBOX) ? 'inbox' : (($f_id == PM_OUTBOX) ? 'outbox' : 'sentbox');
 
 		$template->assign_block_vars('folder', array(
 			'FOLDER_ID'			=> $f_id,
@@ -234,10 +234,10 @@ function clean_sentbox($num_sentbox_messages)
 	{
 		// Delete old messages
 		$sql = 'SELECT t.msg_id
-			FROM ' . PRIVMSGS_TO_TABLE . ' t, ' . PRIVMSGS_TABLE . ' p
+			FROM ' . PHPBB3_PRIVMSGS_TO_TABLE . ' t, ' . PHPBB3_PRIVMSGS_TABLE . ' p
 			WHERE t.msg_id = p.msg_id
 				AND t.user_id = ' . $user->data['user_id'] . '
-				AND t.folder_id = ' . PRIVMSGS_SENTBOX . '
+				AND t.folder_id = ' . PM_SENTBOX . '
 			ORDER BY p.message_time ASC';
 		$result = $db->sql_query_limit($sql, ($num_sentbox_messages - $user->data['message_limit']));
 
@@ -247,7 +247,7 @@ function clean_sentbox($num_sentbox_messages)
 			$delete_ids[] = $row['msg_id'];
 		}
 		$db->sql_freeresult($result);
-		delete_pm($user->data['user_id'], $delete_ids, PRIVMSGS_SENTBOX);
+		delete_pm($user->data['user_id'], $delete_ids, PM_SENTBOX);
 	}
 }
 
@@ -298,7 +298,7 @@ function check_rule(&$rules, &$rule_row, &$message_row, $user_id)
 			// Check for admins/mods - users are not allowed to remove those messages...
 			// We do the check here to make sure the data we use is consistent
 			$sql = 'SELECT user_id, user_type, user_permissions
-				FROM ' . USERS_TABLE . '
+				FROM ' . PHPBB3_USERS_TABLE . '
 				WHERE user_id = ' . (int) $message_row['author_id'];
 			$result = $db->sql_query($sql);
 			$userdata = $db->sql_fetchrow($result);
@@ -331,9 +331,9 @@ function update_pm_counts()
 
 	// Update unread count
 	$sql = 'SELECT COUNT(msg_id) as num_messages
-		FROM ' . PRIVMSGS_TO_TABLE . '
+		FROM ' . PHPBB3_PRIVMSGS_TO_TABLE . '
 		WHERE pm_unread = 1
-			AND folder_id <> ' . PRIVMSGS_OUTBOX . '
+			AND folder_id <> ' . PM_OUTBOX . '
 			AND user_id = ' . $user->data['user_id'];
 	$result = $db->sql_query($sql);
 	$user->data['user_unread_privmsg'] = (int) $db->sql_fetchfield('num_messages');
@@ -341,15 +341,15 @@ function update_pm_counts()
 
 	// Update new pm count
 	$sql = 'SELECT COUNT(msg_id) as num_messages
-		FROM ' . PRIVMSGS_TO_TABLE . '
+		FROM ' . PHPBB3_PRIVMSGS_TO_TABLE . '
 		WHERE pm_new = 1
-			AND folder_id IN (' . PRIVMSGS_NO_BOX . ', ' . PRIVMSGS_HOLD_BOX . ')
+			AND folder_id IN (' . PM_NO_BOX . ', ' . PM_HOLD_BOX . ')
 			AND user_id = ' . $user->data['user_id'];
 	$result = $db->sql_query($sql);
 	$user->data['user_new_privmsg'] = (int) $db->sql_fetchfield('num_messages');
 	$db->sql_freeresult($result);
 
-	$db->sql_query('UPDATE ' . USERS_TABLE . ' SET ' . $db->sql_build_array('UPDATE', array(
+	$db->sql_query('UPDATE ' . PHPBB3_USERS_TABLE . ' SET ' . $db->sql_build_array('UPDATE', array(
 		'user_unread_privmsg'	=> (int) $user->data['user_unread_privmsg'],
 		'user_new_privmsg'		=> (int) $user->data['user_new_privmsg'],
 	)) . ' WHERE user_id = ' . $user->data['user_id']);
@@ -357,10 +357,10 @@ function update_pm_counts()
 	// Ok, here we need to repair something, other boxes than privmsgs_no_box and privmsgs_hold_box should not carry the pm_new flag.
 	if (!$user->data['user_new_privmsg'])
 	{
-		$sql = 'UPDATE ' . PRIVMSGS_TO_TABLE . '
+		$sql = 'UPDATE ' . PHPBB3_PRIVMSGS_TO_TABLE . '
 			SET pm_new = 0
 			WHERE pm_new = 1
-				AND folder_id NOT IN (' . PRIVMSGS_NO_BOX . ', ' . PRIVMSGS_HOLD_BOX . ')
+				AND folder_id NOT IN (' . PM_NO_BOX . ', ' . PM_HOLD_BOX . ')
 				AND user_id = ' . $user->data['user_id'];
 		$db->sql_query($sql);
 	}
@@ -387,19 +387,19 @@ function place_pm_into_folder(&$global_privmsgs_rules, $release = false)
 	// Newly processing on-hold messages
 	if ($release)
 	{
-		$sql = 'UPDATE ' . PRIVMSGS_TO_TABLE . '
-			SET folder_id = ' . PRIVMSGS_NO_BOX . '
-			WHERE folder_id = ' . PRIVMSGS_HOLD_BOX . "
+		$sql = 'UPDATE ' . PHPBB3_PRIVMSGS_TO_TABLE . '
+			SET folder_id = ' . PM_NO_BOX . '
+			WHERE folder_id = ' . PM_HOLD_BOX . "
 				AND user_id = $user_id";
 		$db->sql_query($sql);
 	}
 
 	// Get those messages not yet placed into any box
 	$retrieve_sql = 'SELECT t.*, p.*, u.username, u.user_id, u.group_id
-		FROM ' . PRIVMSGS_TO_TABLE . ' t, ' . PRIVMSGS_TABLE . ' p, ' . USERS_TABLE . " u
+		FROM ' . PHPBB3_PRIVMSGS_TO_TABLE . ' t, ' . PHPBB3_PRIVMSGS_TABLE . ' p, ' . PHPBB3_USERS_TABLE . " u
 		WHERE t.user_id = $user_id
 			AND p.author_id = u.user_id
-			AND t.folder_id = " . PRIVMSGS_NO_BOX . '
+			AND t.folder_id = " . PM_NO_BOX . '
 			AND t.msg_id = p.msg_id';
 
 	// Just place into the appropriate arrays if no rules need to be checked
@@ -420,7 +420,7 @@ function place_pm_into_folder(&$global_privmsgs_rules, $release = false)
 
 		// First of all, grab all rules and retrieve friends/foes
 		$sql = 'SELECT *
-			FROM ' . PRIVMSGS_RULES_TABLE . "
+			FROM ' . PHPBB3_PRIVMSGS_RULES_TABLE . "
 			WHERE user_id = $user_id";
 		$result = $db->sql_query($sql);
 		$user_rules = $db->sql_fetchrowset($result);
@@ -429,7 +429,7 @@ function place_pm_into_folder(&$global_privmsgs_rules, $release = false)
 		if (sizeof($user_rules))
 		{
 			$sql = 'SELECT zebra_id, friend, foe
-				FROM ' . ZEBRA_TABLE . "
+				FROM ' . PHPBB3_ZEBRA_TABLE . "
 				WHERE user_id = $user_id";
 			$result = $db->sql_query($sql);
 
@@ -462,7 +462,7 @@ function place_pm_into_folder(&$global_privmsgs_rules, $release = false)
 		if (sizeof($user_ids))
 		{
 			$sql = 'SELECT *
-				FROM ' . USER_GROUP_TABLE . '
+				FROM ' . PHPBB3_USER_GROUP_TABLE . '
 				WHERE ' . $db->sql_in_set('user_id', $user_ids) . '
 					AND user_pending = 0';
 			$result = $db->sql_query($sql);
@@ -551,7 +551,7 @@ function place_pm_into_folder(&$global_privmsgs_rules, $release = false)
 		// folder. Here we simply move the message into the INBOX if it gets not removed and also not put into a custom folder.
 		if (!$folder_action && !$message_removed)
 		{
-			$move_into_folder[PRIVMSGS_INBOX][] = $msg_id;
+			$move_into_folder[PM_INBOX][] = $msg_id;
 		}
 	}
 
@@ -563,26 +563,26 @@ function place_pm_into_folder(&$global_privmsgs_rules, $release = false)
 	if (sizeof($delete_ids))
 	{
 		$num_removed += sizeof($delete_ids);
-		delete_pm($user_id, $delete_ids, PRIVMSGS_NO_BOX);
+		delete_pm($user_id, $delete_ids, PM_NO_BOX);
 	}
 
 	// Set messages to Unread
 	if (sizeof($unread_ids))
 	{
-		$sql = 'UPDATE ' . PRIVMSGS_TO_TABLE . '
+		$sql = 'UPDATE ' . PHPBB3_PRIVMSGS_TO_TABLE . '
 			SET pm_unread = 0
 			WHERE ' . $db->sql_in_set('msg_id', $unread_ids) . "
 				AND user_id = $user_id
-				AND folder_id = " . PRIVMSGS_NO_BOX;
+				AND folder_id = " . PM_NO_BOX;
 		$db->sql_query($sql);
 	}
 
 	// mark messages as important
 	if (sizeof($important_ids))
 	{
-		$sql = 'UPDATE ' . PRIVMSGS_TO_TABLE . '
+		$sql = 'UPDATE ' . PHPBB3_PRIVMSGS_TO_TABLE . '
 			SET pm_marked = 1 - pm_marked
-			WHERE folder_id = ' . PRIVMSGS_NO_BOX . "
+			WHERE folder_id = ' . PM_NO_BOX . "
 				AND user_id = $user_id
 				AND " . $db->sql_in_set('msg_id', $important_ids);
 		$db->sql_query($sql);
@@ -594,7 +594,7 @@ function place_pm_into_folder(&$global_privmsgs_rules, $release = false)
 	if (sizeof($move_into_folder))
 	{
 		// Determine Full Folder Action - we need the move to folder id later eventually
-		$full_folder_action = ($user->data['user_full_folder'] == FULL_FOLDER_NONE) ? ($config['full_folder_action'] - (FULL_FOLDER_NONE*(-1))) : $user->data['user_full_folder'];
+		$full_folder_action = ($user->data['user_full_folder'] == PHPBB3_FULL_FOLDER_NONE) ? ($config['full_folder_action'] - (PHPBB3_FULL_FOLDER_NONE*(-1))) : $user->data['user_full_folder'];
 
 		$sql_folder = array_keys($move_into_folder);
 		if ($full_folder_action >= 0)
@@ -603,7 +603,7 @@ function place_pm_into_folder(&$global_privmsgs_rules, $release = false)
 		}
 
 		$sql = 'SELECT folder_id, pm_count
-			FROM ' . PRIVMSGS_FOLDER_TABLE . '
+			FROM ' . PHPBB3_PRIVMSGS_FOLDER_TABLE . '
 			WHERE ' . $db->sql_in_set('folder_id', $sql_folder) . "
 				AND user_id = $user_id";
 		$result = $db->sql_query($sql);
@@ -616,14 +616,14 @@ function place_pm_into_folder(&$global_privmsgs_rules, $release = false)
 
 		unset($sql_folder);
 
-		if (isset($move_into_folder[PRIVMSGS_INBOX]))
+		if (isset($move_into_folder[PM_INBOX]))
 		{
 			$sql = 'SELECT COUNT(msg_id) as num_messages
-				FROM ' . PRIVMSGS_TO_TABLE . "
+				FROM ' . PHPBB3_PRIVMSGS_TO_TABLE . "
 				WHERE user_id = $user_id
-					AND folder_id = " . PRIVMSGS_INBOX;
+					AND folder_id = " . PM_INBOX;
 			$result = $db->sql_query($sql);
-			$folder[PRIVMSGS_INBOX] = (int) $db->sql_fetchfield('num_messages');
+			$folder[PM_INBOX] = (int) $db->sql_fetchfield('num_messages');
 			$db->sql_freeresult($result);
 		}
 	}
@@ -632,18 +632,18 @@ function place_pm_into_folder(&$global_privmsgs_rules, $release = false)
 	foreach ($move_into_folder as $folder_id => $msg_ary)
 	{
 		$dest_folder = $folder_id;
-		$full_folder_action = FULL_FOLDER_NONE;
+		$full_folder_action = PHPBB3_FULL_FOLDER_NONE;
 
 		// Check Message Limit - we calculate with the complete array, most of the time it is one message
 		// But we are making sure that the other way around works too (more messages in queue than allowed to be stored)
 		if ($user->data['message_limit'] && $folder[$folder_id] && ($folder[$folder_id] + sizeof($msg_ary)) > $user->data['message_limit'])
 		{
-			$full_folder_action = ($user->data['user_full_folder'] == FULL_FOLDER_NONE) ? ($config['full_folder_action'] - (FULL_FOLDER_NONE*(-1))) : $user->data['user_full_folder'];
+			$full_folder_action = ($user->data['user_full_folder'] == PHPBB3_FULL_FOLDER_NONE) ? ($config['full_folder_action'] - (PHPBB3_FULL_FOLDER_NONE*(-1))) : $user->data['user_full_folder'];
 
 			// If destination folder itself is full...
 			if ($full_folder_action >= 0 && ($folder[$full_folder_action] + sizeof($msg_ary)) > $user->data['message_limit'])
 			{
-				$full_folder_action = $config['full_folder_action'] - (FULL_FOLDER_NONE*(-1));
+				$full_folder_action = $config['full_folder_action'] - (PHPBB3_FULL_FOLDER_NONE*(-1));
 			}
 
 			// If Full Folder Action is to move to another folder, we simply adjust the destination folder
@@ -651,11 +651,11 @@ function place_pm_into_folder(&$global_privmsgs_rules, $release = false)
 			{
 				$dest_folder = $full_folder_action;
 			}
-			else if ($full_folder_action == FULL_FOLDER_DELETE)
+			else if ($full_folder_action == PHPBB3_FULL_FOLDER_DELETE)
 			{
 				// Delete some messages. NOTE: Ordered by msg_id here instead of message_time!
 				$sql = 'SELECT msg_id
-					FROM ' . PRIVMSGS_TO_TABLE . "
+					FROM ' . PHPBB3_PRIVMSGS_TO_TABLE . "
 					WHERE user_id = $user_id
 						AND folder_id = $dest_folder
 					ORDER BY msg_id ASC";
@@ -674,28 +674,28 @@ function place_pm_into_folder(&$global_privmsgs_rules, $release = false)
 		}
 
 		//
-		if ($full_folder_action == FULL_FOLDER_HOLD)
+		if ($full_folder_action == PHPBB3_FULL_FOLDER_HOLD)
 		{
-			$sql = 'UPDATE ' . PRIVMSGS_TO_TABLE . '
-				SET folder_id = ' . PRIVMSGS_HOLD_BOX . '
-				WHERE folder_id = ' . PRIVMSGS_NO_BOX . "
+			$sql = 'UPDATE ' . PHPBB3_PRIVMSGS_TO_TABLE . '
+				SET folder_id = ' . PM_HOLD_BOX . '
+				WHERE folder_id = ' . PM_NO_BOX . "
 					AND user_id = $user_id
 					AND " . $db->sql_in_set('msg_id', $msg_ary);
 			$db->sql_query($sql);
 		}
 		else
 		{
-			$sql = 'UPDATE ' . PRIVMSGS_TO_TABLE . "
+			$sql = 'UPDATE ' . PHPBB3_PRIVMSGS_TO_TABLE . "
 				SET folder_id = $dest_folder, pm_new = 0
-				WHERE folder_id = " . PRIVMSGS_NO_BOX . "
+				WHERE folder_id = " . PM_NO_BOX . "
 					AND user_id = $user_id
 					AND pm_new = 1
 					AND " . $db->sql_in_set('msg_id', $msg_ary);
 			$db->sql_query($sql);
 
-			if ($dest_folder != PRIVMSGS_INBOX)
+			if ($dest_folder != PM_INBOX)
 			{
-				$sql = 'UPDATE ' . PRIVMSGS_FOLDER_TABLE . '
+				$sql = 'UPDATE ' . PHPBB3_PRIVMSGS_FOLDER_TABLE . '
 					SET pm_count = pm_count + ' . (int) $db->sql_affectedrows() . "
 					WHERE folder_id = $dest_folder
 						AND user_id = $user_id";
@@ -708,9 +708,9 @@ function place_pm_into_folder(&$global_privmsgs_rules, $release = false)
 	{
 		// Move from OUTBOX to SENTBOX
 		// We are not checking any full folder status here... SENTBOX is a special treatment (old messages get deleted)
-		$sql = 'UPDATE ' . PRIVMSGS_TO_TABLE . '
-			SET folder_id = ' . PRIVMSGS_SENTBOX . '
-			WHERE folder_id = ' . PRIVMSGS_OUTBOX . '
+		$sql = 'UPDATE ' . PHPBB3_PRIVMSGS_TO_TABLE . '
+			SET folder_id = ' . PM_SENTBOX . '
+			WHERE folder_id = ' . PM_OUTBOX . '
 				AND ' . $db->sql_in_set('msg_id', array_keys($action_ary));
 		$db->sql_query($sql);
 	}
@@ -720,9 +720,9 @@ function place_pm_into_folder(&$global_privmsgs_rules, $release = false)
 
 	// Now check how many messages got not moved...
 	$sql = 'SELECT COUNT(msg_id) as num_messages
-		FROM ' . PRIVMSGS_TO_TABLE . "
+		FROM ' . PHPBB3_PRIVMSGS_TO_TABLE . "
 		WHERE user_id = $user_id
-			AND folder_id = " . PRIVMSGS_HOLD_BOX;
+			AND folder_id = " . PM_HOLD_BOX;
 	$result = $db->sql_query($sql);
 	$num_not_moved = (int) $db->sql_fetchfield('num_messages');
 	$db->sql_freeresult($result);
@@ -747,14 +747,14 @@ function move_pm($user_id, $message_limit, $move_msg_ids, $dest_folder, $cur_fol
 		$move_msg_ids = array($move_msg_ids);
 	}
 
-	if (sizeof($move_msg_ids) && !in_array($dest_folder, array(PRIVMSGS_NO_BOX, PRIVMSGS_OUTBOX, PRIVMSGS_SENTBOX)) &&
-		!in_array($cur_folder_id, array(PRIVMSGS_NO_BOX, PRIVMSGS_OUTBOX)) && $cur_folder_id != $dest_folder)
+	if (sizeof($move_msg_ids) && !in_array($dest_folder, array(PM_NO_BOX, PM_OUTBOX, PM_SENTBOX)) &&
+		!in_array($cur_folder_id, array(PM_NO_BOX, PM_OUTBOX)) && $cur_folder_id != $dest_folder)
 	{
 		// We have to check the destination folder ;)
-		if ($dest_folder != PRIVMSGS_INBOX)
+		if ($dest_folder != PM_INBOX)
 		{
 			$sql = 'SELECT folder_id, folder_name, pm_count
-				FROM ' . PRIVMSGS_FOLDER_TABLE . "
+				FROM ' . PHPBB3_PRIVMSGS_FOLDER_TABLE . "
 				WHERE folder_id = $dest_folder
 					AND user_id = $user_id";
 			$result = $db->sql_query($sql);
@@ -776,8 +776,8 @@ function move_pm($user_id, $message_limit, $move_msg_ids, $dest_folder, $cur_fol
 		else
 		{
 			$sql = 'SELECT COUNT(msg_id) as num_messages
-				FROM ' . PRIVMSGS_TO_TABLE . '
-				WHERE folder_id = ' . PRIVMSGS_INBOX . "
+				FROM ' . PHPBB3_PRIVMSGS_TO_TABLE . '
+				WHERE folder_id = ' . PM_INBOX . "
 					AND user_id = $user_id";
 			$result = $db->sql_query($sql);
 			$num_messages = (int) $db->sql_fetchfield('num_messages');
@@ -791,7 +791,7 @@ function move_pm($user_id, $message_limit, $move_msg_ids, $dest_folder, $cur_fol
 			}
 		}
 
-		$sql = 'UPDATE ' . PRIVMSGS_TO_TABLE . "
+		$sql = 'UPDATE ' . PHPBB3_PRIVMSGS_TO_TABLE . "
 			SET folder_id = $dest_folder
 			WHERE folder_id = $cur_folder_id
 				AND user_id = $user_id
@@ -802,18 +802,18 @@ function move_pm($user_id, $message_limit, $move_msg_ids, $dest_folder, $cur_fol
 		// Update pm counts
 		if ($num_moved)
 		{
-			if (!in_array($cur_folder_id, array(PRIVMSGS_INBOX, PRIVMSGS_OUTBOX, PRIVMSGS_SENTBOX)))
+			if (!in_array($cur_folder_id, array(PM_INBOX, PM_OUTBOX, PM_SENTBOX)))
 			{
-				$sql = 'UPDATE ' . PRIVMSGS_FOLDER_TABLE . "
+				$sql = 'UPDATE ' . PHPBB3_PRIVMSGS_FOLDER_TABLE . "
 					SET pm_count = pm_count - $num_moved
 					WHERE folder_id = $cur_folder_id
 						AND user_id = $user_id";
 				$db->sql_query($sql);
 			}
 
-			if ($dest_folder != PRIVMSGS_INBOX)
+			if ($dest_folder != PM_INBOX)
 			{
-				$sql = 'UPDATE ' . PRIVMSGS_FOLDER_TABLE . "
+				$sql = 'UPDATE ' . PHPBB3_PRIVMSGS_FOLDER_TABLE . "
 					SET pm_count = pm_count + $num_moved
 					WHERE folder_id = $dest_folder
 						AND user_id = $user_id";
@@ -821,7 +821,7 @@ function move_pm($user_id, $message_limit, $move_msg_ids, $dest_folder, $cur_fol
 			}
 		}
 	}
-	else if (in_array($cur_folder_id, array(PRIVMSGS_NO_BOX, PRIVMSGS_OUTBOX)))
+	else if (in_array($cur_folder_id, array(PM_NO_BOX, PM_OUTBOX)))
 	{
 		trigger_error('CANNOT_MOVE_SPECIAL');
 	}
@@ -841,14 +841,14 @@ function update_unread_status($unread, $msg_id, $user_id, $folder_id)
 
 	global $db, $user;
 
-	$sql = 'UPDATE ' . PRIVMSGS_TO_TABLE . "
+	$sql = 'UPDATE ' . PHPBB3_PRIVMSGS_TO_TABLE . "
 		SET pm_unread = 0
 		WHERE msg_id = $msg_id
 			AND user_id = $user_id
 			AND folder_id = $folder_id";
 	$db->sql_query($sql);
 
-	$sql = 'UPDATE ' . USERS_TABLE . "
+	$sql = 'UPDATE ' . PHPBB3_USERS_TABLE . "
 		SET user_unread_privmsg = user_unread_privmsg - 1
 		WHERE user_id = $user_id";
 	$db->sql_query($sql);
@@ -860,7 +860,7 @@ function update_unread_status($unread, $msg_id, $user_id, $folder_id)
 		// Try to cope with previous wrong conversions...
 		if ($user->data['user_unread_privmsg'] < 0)
 		{
-			$sql = 'UPDATE ' . USERS_TABLE . "
+			$sql = 'UPDATE ' . PHPBB3_USERS_TABLE . "
 				SET user_unread_privmsg = 0
 				WHERE user_id = $user_id";
 			$db->sql_query($sql);
@@ -880,7 +880,7 @@ function handle_mark_actions($user_id, $mark_action)
 	$phpbb_root_path = PHPBB3_ROOT_DIR;
 
 	$msg_ids		= request_var('marked_msg_id', array(0));
-	$cur_folder_id	= request_var('cur_folder_id', PRIVMSGS_NO_BOX);
+	$cur_folder_id	= request_var('cur_folder_id', PM_NO_BOX);
 	$confirm		= (isset($_POST['confirm'])) ? true : false;
 
 	if (!sizeof($msg_ids))
@@ -892,7 +892,7 @@ function handle_mark_actions($user_id, $mark_action)
 	{
 		case 'mark_important':
 
-			$sql = 'UPDATE ' . PRIVMSGS_TO_TABLE . "
+			$sql = 'UPDATE ' . PHPBB3_PRIVMSGS_TO_TABLE . "
 				SET pm_marked = 1 - pm_marked
 				WHERE folder_id = $cur_folder_id
 					AND user_id = $user_id
@@ -967,7 +967,7 @@ function delete_pm($user_id, $msg_ids, $folder_id)
 
 	// Get PM Information for later deleting
 	$sql = 'SELECT msg_id, pm_unread, pm_new
-		FROM ' . PRIVMSGS_TO_TABLE . '
+		FROM ' . PHPBB3_PRIVMSGS_TO_TABLE . '
 		WHERE ' . $db->sql_in_set('msg_id', array_map('intval', $msg_ids)) . "
 			AND folder_id = $folder_id
 			AND user_id = $user_id";
@@ -994,22 +994,22 @@ function delete_pm($user_id, $msg_ids, $folder_id)
 
 	// if no one has read the message yet (meaning it is in users outbox)
 	// then mark the message as deleted...
-	if ($folder_id == PRIVMSGS_OUTBOX)
+	if ($folder_id == PM_OUTBOX)
 	{
 		// Remove PM from Outbox
-		$sql = 'DELETE FROM ' . PRIVMSGS_TO_TABLE . "
-			WHERE user_id = $user_id AND folder_id = " . PRIVMSGS_OUTBOX . '
+		$sql = 'DELETE FROM ' . PHPBB3_PRIVMSGS_TO_TABLE . "
+			WHERE user_id = $user_id AND folder_id = " . PM_OUTBOX . '
 				AND ' . $db->sql_in_set('msg_id', array_keys($delete_rows));
 		$db->sql_query($sql);
 
 		// Update PM Information for safety
-		$sql = 'UPDATE ' . PRIVMSGS_TABLE . " SET message_text = ''
+		$sql = 'UPDATE ' . PHPBB3_PRIVMSGS_TABLE . " SET message_text = ''
 			WHERE " . $db->sql_in_set('msg_id', array_keys($delete_rows));
 		$db->sql_query($sql);
 
 		// Set delete flag for those intended to receive the PM
 		// We do not remove the message actually, to retain some basic information (sent time for example)
-		$sql = 'UPDATE ' . PRIVMSGS_TO_TABLE . '
+		$sql = 'UPDATE ' . PHPBB3_PRIVMSGS_TO_TABLE . '
 			SET pm_deleted = 1
 			WHERE ' . $db->sql_in_set('msg_id', array_keys($delete_rows));
 		$db->sql_query($sql);
@@ -1019,7 +1019,7 @@ function delete_pm($user_id, $msg_ids, $folder_id)
 	else
 	{
 		// Delete private message data
-		$sql = 'DELETE FROM ' . PRIVMSGS_TO_TABLE . "
+		$sql = 'DELETE FROM ' . PHPBB3_PRIVMSGS_TO_TABLE . "
 			WHERE user_id = $user_id
 				AND folder_id = $folder_id
 				AND " . $db->sql_in_set('msg_id', array_keys($delete_rows));
@@ -1028,9 +1028,9 @@ function delete_pm($user_id, $msg_ids, $folder_id)
 	}
 
 	// if folder id is user defined folder then decrease pm_count
-	if (!in_array($folder_id, array(PRIVMSGS_INBOX, PRIVMSGS_OUTBOX, PRIVMSGS_SENTBOX, PRIVMSGS_NO_BOX)))
+	if (!in_array($folder_id, array(PM_INBOX, PM_OUTBOX, PM_SENTBOX, PM_NO_BOX)))
 	{
-		$sql = 'UPDATE ' . PRIVMSGS_FOLDER_TABLE . "
+		$sql = 'UPDATE ' . PHPBB3_PRIVMSGS_FOLDER_TABLE . "
 			SET pm_count = pm_count - $num_deleted
 			WHERE folder_id = $folder_id";
 		$db->sql_query($sql);
@@ -1047,7 +1047,7 @@ function delete_pm($user_id, $msg_ids, $folder_id)
 			$set_sql .= 'user_new_privmsg = user_new_privmsg - ' . $num_new;
 		}
 
-		$db->sql_query('UPDATE ' . USERS_TABLE . " SET $set_sql WHERE user_id = $user_id");
+		$db->sql_query('UPDATE ' . PHPBB3_USERS_TABLE . " SET $set_sql WHERE user_id = $user_id");
 
 		$user->data['user_new_privmsg'] -= $num_new;
 		$user->data['user_unread_privmsg'] -= $num_unread;
@@ -1055,7 +1055,7 @@ function delete_pm($user_id, $msg_ids, $folder_id)
 
 	// Now we have to check which messages we can delete completely
 	$sql = 'SELECT msg_id
-		FROM ' . PRIVMSGS_TO_TABLE . '
+		FROM ' . PHPBB3_PRIVMSGS_TO_TABLE . '
 		WHERE ' . $db->sql_in_set('msg_id', array_keys($delete_rows));
 	$result = $db->sql_query($sql);
 
@@ -1077,7 +1077,7 @@ function delete_pm($user_id, $msg_ids, $folder_id)
 
 		delete_attachments('message', $delete_ids, false);
 
-		$sql = 'DELETE FROM ' . PRIVMSGS_TABLE . '
+		$sql = 'DELETE FROM ' . PHPBB3_PRIVMSGS_TABLE . '
 			WHERE ' . $db->sql_in_set('msg_id', $delete_ids);
 		$db->sql_query($sql);
 	}
@@ -1157,9 +1157,9 @@ function write_pm_addresses($check_ary, $author_id, $plaintext = false)
 		if (sizeof($u))
 		{
 			$sql = 'SELECT user_id, username, user_colour
-				FROM ' . USERS_TABLE . '
+				FROM ' . PHPBB3_USERS_TABLE . '
 				WHERE ' . $db->sql_in_set('user_id', $u) . '
-					AND user_type IN (' . USER_NORMAL . ', ' . USER_FOUNDER . ')';
+					AND user_type IN (' . PHPBB3_USER_NORMAL . ', ' . PHPBB3_USER_FOUNDER . ')';
 			$result = $db->sql_query($sql);
 
 			while ($row = $db->sql_fetchrow($result))
@@ -1184,7 +1184,7 @@ function write_pm_addresses($check_ary, $author_id, $plaintext = false)
 			if ($plaintext)
 			{
 				$sql = 'SELECT group_name, group_type
-					FROM ' . GROUPS_TABLE . '
+					FROM ' . PHPBB3_GROUPS_TABLE . '
 						WHERE ' . $db->sql_in_set('group_id', $g);
 				$result = $db->sql_query($sql);
 
@@ -1192,7 +1192,7 @@ function write_pm_addresses($check_ary, $author_id, $plaintext = false)
 				{
 					if ($check_type == 'to' || $author_id == $user->data['user_id'] || $row['user_id'] == $user->data['user_id'])
 					{
-						$address[] = ($row['group_type'] == GROUP_SPECIAL) ? $user->lang['G_' . $row['group_name']] : $row['group_name'];
+						$address[] = ($row['group_type'] == PHPBB3_GROUP_SPECIAL) ? $user->lang['G_' . $row['group_name']] : $row['group_name'];
 					}
 				}
 				$db->sql_freeresult($result);
@@ -1200,7 +1200,7 @@ function write_pm_addresses($check_ary, $author_id, $plaintext = false)
 			else
 			{
 				$sql = 'SELECT g.group_id, g.group_name, g.group_colour, g.group_type, ug.user_id
-					FROM ' . GROUPS_TABLE . ' g, ' . USER_GROUP_TABLE . ' ug
+					FROM ' . PHPBB3_GROUPS_TABLE . ' g, ' . PHPBB3_USER_GROUP_TABLE . ' ug
 						WHERE ' . $db->sql_in_set('g.group_id', $g) . '
 						AND g.group_id = ug.group_id
 						AND ug.user_pending = 0';
@@ -1212,7 +1212,7 @@ function write_pm_addresses($check_ary, $author_id, $plaintext = false)
 					{
 						if ($check_type == 'to' || $author_id == $user->data['user_id'] || $row['user_id'] == $user->data['user_id'])
 						{
-							$row['group_name'] = ($row['group_type'] == GROUP_SPECIAL) ? $user->lang['G_' . $row['group_name']] : $row['group_name'];
+							$row['group_name'] = ($row['group_type'] == PHPBB3_GROUP_SPECIAL) ? $user->lang['G_' . $row['group_name']] : $row['group_name'];
 							$address['group'][$row['group_id']] = array('name' => $row['group_name'], 'colour' => $row['group_colour']);
 						}
 					}
@@ -1361,11 +1361,11 @@ function submit_pm($mode, $subject, &$data, $put_in_outbox = true)
 			$sql_allow_pm = (!$auth->acl_gets('a_', 'm_') && !$auth->acl_getf_global('m_')) ? ' AND u.user_allow_pm = 1' : '';
 
 			$sql = 'SELECT u.user_type, ug.group_id, ug.user_id
-				FROM ' . USERS_TABLE . ' u, ' . USER_GROUP_TABLE . ' ug
+				FROM ' . PHPBB3_USERS_TABLE . ' u, ' . PHPBB3_USER_GROUP_TABLE . ' ug
 				WHERE ' . $db->sql_in_set('ug.group_id', array_keys($data['address_list']['g'])) . '
 					AND ug.user_pending = 0
 					AND u.user_id = ug.user_id
-					AND u.user_type IN (' . USER_NORMAL . ', ' . USER_FOUNDER . ')' . 
+					AND u.user_type IN (' . PHPBB3_USER_NORMAL . ', ' . PHPBB3_USER_FOUNDER . ')' . 
 					$sql_allow_pm;
 			$result = $db->sql_query($sql);
 
@@ -1394,7 +1394,7 @@ function submit_pm($mode, $subject, &$data, $put_in_outbox = true)
 			$root_level = ($data['reply_from_root_level']) ? $data['reply_from_root_level'] : $data['reply_from_msg_id'];
 
 			// Set message_replied switch for this user
-			$sql = 'UPDATE ' . PRIVMSGS_TO_TABLE . '
+			$sql = 'UPDATE ' . PHPBB3_PRIVMSGS_TO_TABLE . '
 				SET pm_replied = 1
 				WHERE user_id = ' . $data['from_user_id'] . '
 					AND msg_id = ' . $data['reply_from_msg_id'];
@@ -1447,12 +1447,12 @@ function submit_pm($mode, $subject, &$data, $put_in_outbox = true)
 
 		if ($mode == 'post' || $mode == 'reply' || $mode == 'quote' || $mode == 'quotepost' || $mode == 'forward')
 		{
-			$db->sql_query('INSERT INTO ' . PRIVMSGS_TABLE . ' ' . $db->sql_build_array('INSERT', $sql_data));
+			$db->sql_query('INSERT INTO ' . PHPBB3_PRIVMSGS_TABLE . ' ' . $db->sql_build_array('INSERT', $sql_data));
 			$data['msg_id'] = $db->sql_nextid();
 		}
 		else if ($mode == 'edit')
 		{
-			$sql = 'UPDATE ' . PRIVMSGS_TABLE . '
+			$sql = 'UPDATE ' . PHPBB3_PRIVMSGS_TABLE . '
 				SET message_edit_count = message_edit_count + 1, ' . $db->sql_build_array('UPDATE', $sql_data) . '
 				WHERE msg_id = ' . $data['msg_id'];
 			$db->sql_query($sql);
@@ -1474,16 +1474,16 @@ function submit_pm($mode, $subject, &$data, $put_in_outbox = true)
 				'msg_id'		=> (int) $data['msg_id'],
 				'user_id'		=> (int) $user_id,
 				'author_id'		=> (int) $data['from_user_id'],
-				'folder_id'		=> PRIVMSGS_NO_BOX,
+				'folder_id'		=> PM_NO_BOX,
 				'pm_new'		=> 1,
 				'pm_unread'		=> 1,
 				'pm_forwarded'	=> ($mode == 'forward') ? 1 : 0
 			);
 		}
 
-		$db->sql_multi_insert(PRIVMSGS_TO_TABLE, $sql_ary);
+		$db->sql_multi_insert(PHPBB3_PRIVMSGS_TO_TABLE, $sql_ary);
 
-		$sql = 'UPDATE ' . USERS_TABLE . '
+		$sql = 'UPDATE ' . PHPBB3_USERS_TABLE . '
 			SET user_new_privmsg = user_new_privmsg + 1, user_unread_privmsg = user_unread_privmsg + 1, user_last_privmsg = ' . time() . '
 			WHERE ' . $db->sql_in_set('user_id', array_keys($recipients));
 		$db->sql_query($sql);
@@ -1491,11 +1491,11 @@ function submit_pm($mode, $subject, &$data, $put_in_outbox = true)
 		// Put PM into outbox
 		if ($put_in_outbox)
 		{
-			$db->sql_query('INSERT INTO ' . PRIVMSGS_TO_TABLE . ' ' . $db->sql_build_array('INSERT', array(
+			$db->sql_query('INSERT INTO ' . PHPBB3_PRIVMSGS_TO_TABLE . ' ' . $db->sql_build_array('INSERT', array(
 				'msg_id'		=> (int) $data['msg_id'],
 				'user_id'		=> (int) $data['from_user_id'],
 				'author_id'		=> (int) $data['from_user_id'],
-				'folder_id'		=> PRIVMSGS_OUTBOX,
+				'folder_id'		=> PM_OUTBOX,
 				'pm_new'		=> 0,
 				'pm_unread'		=> 0,
 				'pm_forwarded'	=> ($mode == 'forward') ? 1 : 0))
@@ -1506,7 +1506,7 @@ function submit_pm($mode, $subject, &$data, $put_in_outbox = true)
 	// Set user last post time
 	if ($mode == 'reply' || $mode == 'quote' || $mode == 'quotepost' || $mode == 'forward' || $mode == 'post')
 	{
-		$sql = 'UPDATE ' . USERS_TABLE . "
+		$sql = 'UPDATE ' . PHPBB3_USERS_TABLE . "
 			SET user_lastpost_time = $current_time
 			WHERE user_id = " . $data['from_user_id'];
 		$db->sql_query($sql);
@@ -1526,7 +1526,7 @@ function submit_pm($mode, $subject, &$data, $put_in_outbox = true)
 		if (sizeof($orphan_rows))
 		{
 			$sql = 'SELECT attach_id, filesize, physical_filename
-				FROM ' . ATTACHMENTS_TABLE . '
+				FROM ' . PHPBB3_ATTACHMENTS_TABLE . '
 				WHERE ' . $db->sql_in_set('attach_id', array_keys($orphan_rows)) . '
 					AND in_message = 1
 					AND is_orphan = 1
@@ -1551,7 +1551,7 @@ function submit_pm($mode, $subject, &$data, $put_in_outbox = true)
 			if (!$attach_row['is_orphan'])
 			{
 				// update entry in db if attachment already stored in db and filespace
-				$sql = 'UPDATE ' . ATTACHMENTS_TABLE . "
+				$sql = 'UPDATE ' . PHPBB3_ATTACHMENTS_TABLE . "
 					SET attach_comment = '" . $db->sql_escape($attach_row['attach_comment']) . "'
 					WHERE attach_id = " . (int) $attach_row['attach_id'] . '
 						AND is_orphan = 0';
@@ -1576,7 +1576,7 @@ function submit_pm($mode, $subject, &$data, $put_in_outbox = true)
 					'attach_comment'	=> $attach_row['attach_comment'],
 				);
 
-				$sql = 'UPDATE ' . ATTACHMENTS_TABLE . ' SET ' . $db->sql_build_array('UPDATE', $attach_sql) . '
+				$sql = 'UPDATE ' . PHPBB3_ATTACHMENTS_TABLE . ' SET ' . $db->sql_build_array('UPDATE', $attach_sql) . '
 					WHERE attach_id = ' . $attach_row['attach_id'] . '
 						AND is_orphan = 1
 						AND poster_id = ' . $user->data['user_id'];
@@ -1595,7 +1595,7 @@ function submit_pm($mode, $subject, &$data, $put_in_outbox = true)
 	$draft_id = request_var('draft_loaded', 0);
 	if ($draft_id)
 	{
-		$sql = 'DELETE FROM ' . DRAFTS_TABLE . "
+		$sql = 'DELETE FROM ' . PHPBB3_DRAFTS_TABLE . "
 			WHERE draft_id = $draft_id
 				AND user_id = " . $data['from_user_id'];
 		$db->sql_query($sql);
@@ -1632,7 +1632,7 @@ function pm_notification($mode, $author, $recipients, $subject, $message)
 
 	// Get banned User ID's
 	$sql = 'SELECT ban_userid
-		FROM ' . BANLIST_TABLE . '
+		FROM ' . PHPBB3_BANLIST_TABLE . '
 		WHERE ' . $db->sql_in_set('ban_userid', array_map('intval', array_keys($recipients))) . '
 			AND ban_exclude = 0';
 	$result = $db->sql_query($sql);
@@ -1649,7 +1649,7 @@ function pm_notification($mode, $author, $recipients, $subject, $message)
 	}
 
 	$sql = 'SELECT user_id, username, user_email, user_lang, user_notify_pm, user_notify_type, user_jabber
-		FROM ' . USERS_TABLE . '
+		FROM ' . PHPBB3_USERS_TABLE . '
 		WHERE ' . $db->sql_in_set('user_id', array_map('intval', array_keys($recipients)));
 	$result = $db->sql_query($sql);
 
@@ -1739,10 +1739,10 @@ function message_history($msg_id, $user_id, $message_row, $folder, $in_post_mode
 
 	// Get History Messages (could be newer)
 	$sql = 'SELECT t.*, p.*, u.*
-		FROM ' . PRIVMSGS_TABLE . ' p, ' . PRIVMSGS_TO_TABLE . ' t, ' . USERS_TABLE . ' u
+		FROM ' . PHPBB3_PRIVMSGS_TABLE . ' p, ' . PHPBB3_PRIVMSGS_TO_TABLE . ' t, ' . PHPBB3_USERS_TABLE . ' u
 		WHERE t.msg_id = p.msg_id
 			AND p.author_id = u.user_id
-			AND t.folder_id NOT IN (' . PRIVMSGS_NO_BOX . ', ' . PRIVMSGS_HOLD_BOX . ")
+			AND t.folder_id NOT IN (' . PM_NO_BOX . ', ' . PM_HOLD_BOX . ")
 			AND t.user_id = $user_id";
 
 	if (!$message_row['root_level'])
@@ -1893,7 +1893,7 @@ function set_user_message_limit()
 
 	// Get maximum about from user memberships - if it is 0, there is no limit set and we use the maximum value within the config.
 	$sql = 'SELECT MAX(g.group_message_limit) as max_message_limit
-		FROM ' . GROUPS_TABLE . ' g, ' . USER_GROUP_TABLE . ' ug
+		FROM ' . PHPBB3_GROUPS_TABLE . ' g, ' . PHPBB3_USER_GROUP_TABLE . ' ug
 		WHERE ug.user_id = ' . $user->data['user_id'] . '
 			AND ug.user_pending = 0
 			AND ug.group_id = g.group_id';

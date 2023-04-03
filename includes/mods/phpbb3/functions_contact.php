@@ -16,7 +16,7 @@ function install_contact($contact_version)
 	
 	$phpbb_root_path = PHPBB3_ROOT_DIR;
 	
-	if ($user->data['user_type'] != USER_FOUNDER)
+	if ($user->data['user_type'] != PHPBB3_USER_FOUNDER)
 	{
 		trigger_error('PASTEBIN_OUTDATED');
 	}
@@ -54,7 +54,7 @@ function update_contact($contact_version)
 	
 	$phpbb_root_path = PHPBB3_ROOT_DIR;
 	
-	if ($user->data['user_type'] != USER_FOUNDER)
+	if ($user->data['user_type'] != PHPBB3_USER_FOUNDER)
 	{
 		trigger_error('PASTEBIN_OUTDATED');
 	}
@@ -82,7 +82,7 @@ function uninstall_contact()
 	global $db, $user, $cache;
 	
 	$sql = array();
-	$sql[] = 'DELETE FROM '.CONFIG_TABLE.' WHERE '.$db->sql_in_set('config_name',array('contact_enable',
+	$sql[] = 'DELETE FROM '.PHPBB3_CONFIG_TABLE.' WHERE '.$db->sql_in_set('config_name',array('contact_enable',
 	                                                                                  'contact_confirm',
 																			   'contact_confirm_guests',
 																			     'contact_max_attempts',

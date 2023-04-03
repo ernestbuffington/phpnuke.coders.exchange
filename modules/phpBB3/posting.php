@@ -63,7 +63,7 @@ switch ($mode)
 {
 	case 'post':
 		$sql = 'SELECT *
-			FROM ' . FORUMS_TABLE . "
+			FROM ' . PHPBB3_FORUMS_TABLE . "
 			WHERE forum_id = $forum_id";
 	break;
 
@@ -75,7 +75,7 @@ switch ($mode)
 		}
 
 		$sql = 'SELECT f.*, t.*
-			FROM ' . TOPICS_TABLE . ' t, ' . FORUMS_TABLE . " f
+			FROM ' . PHPBB3_TOPICS_TABLE . ' t, ' . PHPBB3_FORUMS_TABLE . " f
 			WHERE t.topic_id = $topic_id
 				AND (f.forum_id = t.forum_id
 					OR f.forum_id = $forum_id)";
@@ -91,7 +91,7 @@ switch ($mode)
 		}
 
 		$sql = 'SELECT f.*, t.*, p.*, u.username, u.username_clean, u.user_sig, u.user_sig_bbcode_uid, u.user_sig_bbcode_bitfield
-			FROM ' . POSTS_TABLE . ' p, ' . TOPICS_TABLE . ' t, ' . FORUMS_TABLE . ' f, ' . USERS_TABLE . " u
+			FROM ' . PHPBB3_POSTS_TABLE . ' p, ' . PHPBB3_TOPICS_TABLE . ' t, ' . PHPBB3_FORUMS_TABLE . ' f, ' . PHPBB3_USERS_TABLE . " u
 			WHERE p.post_id = $post_id
 				AND t.topic_id = p.topic_id
 				AND u.user_id = p.poster_id
@@ -113,7 +113,7 @@ switch ($mode)
 		if ($forum_id)
 		{
 			$sql = 'SELECT forum_style
-				FROM ' . FORUMS_TABLE . '
+				FROM ' . PHPBB3_FORUMS_TABLE . '
 				WHERE forum_id = ' . $forum_id;
 		}
 		else
@@ -254,15 +254,15 @@ if (!$is_authed)
 }
 
 // Is the user able to post within this forum?
-if ($post_data['forum_type'] != FORUM_POST && in_array($mode, array('post', 'bump', 'quote', 'reply')))
+if ($post_data['forum_type'] != PHPBB3_FORUM_POST && in_array($mode, array('post', 'bump', 'quote', 'reply')))
 {
-	trigger_error('USER_CANNOT_FORUM_POST');
+	trigger_error('USER_CANNOT_PHPBB3_FORUM_POST');
 }
 
 // Forum/Topic locked?
-if (($post_data['forum_status'] == ITEM_LOCKED || (isset($post_data['topic_status']) && $post_data['topic_status'] == ITEM_LOCKED)) && !$auth->acl_get('m_edit', $forum_id))
+if (($post_data['forum_status'] == PHPBB3_ITEM_LOCKED || (isset($post_data['topic_status']) && $post_data['topic_status'] == PHPBB3_ITEM_LOCKED)) && !$auth->acl_get('m_edit', $forum_id))
 {
-	trigger_error(($post_data['forum_status'] == ITEM_LOCKED) ? 'FORUM_LOCKED' : 'TOPIC_LOCKED');
+	trigger_error(($post_data['forum_status'] == PHPBB3_ITEM_LOCKED) ? 'FORUM_LOCKED' : 'TOPIC_LOCKED');
 }
 
 // Can we edit this post ... if we're a moderator with rights then always yes
@@ -300,13 +300,13 @@ if ($mode == 'bump')
 	{
 		$db->sql_transaction('begin');
 
-		$sql = 'UPDATE ' . POSTS_TABLE . "
+		$sql = 'UPDATE ' . PHPBB3_POSTS_TABLE . "
 			SET post_time = $current_time
 			WHERE post_id = {$post_data['topic_last_post_id']}
 				AND topic_id = $topic_id";
 		$db->sql_query($sql);
 
-		$sql = 'UPDATE ' . TOPICS_TABLE . "
+		$sql = 'UPDATE ' . PHPBB3_TOPICS_TABLE . "
 			SET topic_last_post_time = $current_time,
 				topic_bumped = 1,
 				topic_bumper = " . $user->data['user_id'] . "
@@ -315,7 +315,7 @@ if ($mode == 'bump')
 
 		update_post_information('forum', $forum_id);
 
-		$sql = 'UPDATE ' . USERS_TABLE . "
+		$sql = 'UPDATE ' . PHPBB3_USERS_TABLE . "
 			SET user_lastpost_time = $current_time
 			WHERE user_id = " . $user->data['user_id'];
 		$db->sql_query($sql);
@@ -366,7 +366,7 @@ $post_data['poll_options']		= array();
 if ($post_data['poll_start'])
 {
 	$sql = 'SELECT poll_option_text
-		FROM ' . POLL_OPTIONS_TABLE . "
+		FROM ' . PHPBB3_POLL_OPTIONS_TABLE . "
 		WHERE topic_id = $topic_id
 		ORDER BY poll_option_id";
 	$result = $db->sql_query($sql);
@@ -389,7 +389,7 @@ if (isset($post_data['post_text']))
 }
 
 // Set some default variables
-$uninit = array('post_attachment' => 0, 'poster_id' => $user->data['user_id'], 'enable_magic_url' => 0, 'topic_status' => 0, 'topic_type' => POST_NORMAL, 'post_subject' => '', 'topic_title' => '', 'post_time' => 0, 'post_edit_reason' => '', 'notify_set' => 0);
+$uninit = array('post_attachment' => 0, 'poster_id' => $user->data['user_id'], 'enable_magic_url' => 0, 'topic_status' => 0, 'topic_type' => PHPBB3_POST_NORMAL, 'post_subject' => '', 'topic_title' => '', 'post_time' => 0, 'post_edit_reason' => '', 'notify_set' => 0);
 
 foreach ($uninit as $var_name => $default_value)
 {
@@ -408,7 +408,7 @@ if ($post_data['post_attachment'] && !$submit && !$refresh && !$preview && $mode
 {
 	// Do not change to SELECT *
 	$sql = 'SELECT attach_id, is_orphan, attach_comment, real_filename
-		FROM ' . ATTACHMENTS_TABLE . "
+		FROM ' . PHPBB3_ATTACHMENTS_TABLE . "
 		WHERE post_msg_id = $post_id
 			AND in_message = 0
 			AND is_orphan = 0
@@ -443,7 +443,7 @@ $post_data['enable_magic_url'] = $post_data['drafts'] = false;
 if ($user->data['is_registered'] && $auth->acl_get('u_savedrafts') && ($mode == 'reply' || $mode == 'post' || $mode == 'quote'))
 {
 	$sql = 'SELECT draft_id
-		FROM ' . DRAFTS_TABLE . '
+		FROM ' . PHPBB3_DRAFTS_TABLE . '
 		WHERE user_id = ' . $user->data['user_id'] .
 			(($forum_id) ? ' AND forum_id = ' . (int) $forum_id : '') .
 			(($topic_id) ? ' AND topic_id = ' . (int) $topic_id : '') .
@@ -463,7 +463,7 @@ $check_value = (($post_data['enable_bbcode']+1) << 8) + (($post_data['enable_smi
 if ($mode != 'post' && $config['allow_topic_notify'] && $user->data['is_registered'])
 {
 	$sql = 'SELECT topic_id
-		FROM ' . TOPICS_WATCH_TABLE . '
+		FROM ' . PHPBB3_TOPICS_WATCH_TABLE . '
 		WHERE topic_id = ' . $topic_id . '
 			AND user_id = ' . $user->data['user_id'];
 	$result = $db->sql_query($sql);
@@ -496,7 +496,7 @@ if ($save && $user->data['is_registered'] && $auth->acl_get('u_savedrafts') && (
 	{
 		if (confirm_box(true))
 		{
-			$sql = 'INSERT INTO ' . DRAFTS_TABLE . ' ' . $db->sql_build_array('INSERT', array(
+			$sql = 'INSERT INTO ' . PHPBB3_DRAFTS_TABLE . ' ' . $db->sql_build_array('INSERT', array(
 				'user_id'		=> (int) $user->data['user_id'],
 				'topic_id'		=> (int) $topic_id,
 				'forum_id'		=> (int) $forum_id,
@@ -551,7 +551,7 @@ if ($save && $user->data['is_registered'] && $auth->acl_get('u_savedrafts') && (
 if ($draft_id && ($mode == 'reply' || $mode == 'quote' || $mode == 'post') && $user->data['is_registered'] && $auth->acl_get('u_savedrafts'))
 {
 	$sql = 'SELECT draft_subject, draft_message
-		FROM ' . DRAFTS_TABLE . "
+		FROM ' . PHPBB3_DRAFTS_TABLE . "
 		WHERE draft_id = $draft_id
 			AND user_id = " . $user->data['user_id'];
 	$result = $db->sql_query_limit($sql, 1);
@@ -589,7 +589,7 @@ if ($submit || $preview || $refresh)
 	$post_data['post_edit_reason']	= (!empty($_POST['edit_reason']) && $mode == 'edit' && $auth->acl_get('m_edit', $forum_id)) ? utf8_normalize_nfc(request_var('edit_reason', '', true)) : '';
 
 	$post_data['orig_topic_type']	= $post_data['topic_type'];
-	$post_data['topic_type']		= request_var('topic_type', (($mode != 'post') ? (int) $post_data['topic_type'] : POST_NORMAL));
+	$post_data['topic_type']		= request_var('topic_type', (($mode != 'post') ? (int) $post_data['topic_type'] : PHPBB3_POST_NORMAL));
 	$post_data['topic_time_limit']	= request_var('topic_time_limit', (($mode != 'post') ? (int) $post_data['topic_time_limit'] : 0));
 	$post_data['icon_id']			= request_var('icon', 0);
 
@@ -627,11 +627,11 @@ if ($submit || $preview || $refresh)
 	{
 		if ($submit && check_form_key('posting'))
 		{
-			$sql = 'DELETE FROM ' . POLL_OPTIONS_TABLE . "
+			$sql = 'DELETE FROM ' . PHPBB3_POLL_OPTIONS_TABLE . "
 				WHERE topic_id = $topic_id";
 			$db->sql_query($sql);
 
-			$sql = 'DELETE FROM ' . POLL_VOTES_TABLE . "
+			$sql = 'DELETE FROM ' . PHPBB3_POLL_VOTES_TABLE . "
 				WHERE topic_id = $topic_id";
 			$db->sql_query($sql);
 
@@ -644,7 +644,7 @@ if ($submit || $preview || $refresh)
 				'poll_vote_change'	=> 0
 			);
 
-			$sql = 'UPDATE ' . TOPICS_TABLE . '
+			$sql = 'UPDATE ' . PHPBB3_TOPICS_TABLE . '
 				SET ' . $db->sql_build_array('UPDATE', $topic_sql) . "
 				WHERE topic_id = $topic_id";
 			$db->sql_query($sql);
@@ -668,7 +668,7 @@ if ($submit || $preview || $refresh)
 	if (($mode == 'reply' || $mode == 'quote') && $post_data['topic_cur_post_id'] && $post_data['topic_cur_post_id'] != $post_data['topic_last_post_id'])
 	{
 		// Only do so if it is allowed forum-wide
-		if ($post_data['forum_flags'] & FORUM_FLAG_POST_REVIEW)
+		if ($post_data['forum_flags'] & PHPBB3_FORUM_FLAG_POST_REVIEW)
 		{
 			if (topic_review($topic_id, $forum_id, 'post_review', $post_data['topic_cur_post_id']))
 			{
@@ -723,7 +723,7 @@ if ($submit || $preview || $refresh)
 		else
 		{
 			$sql = 'SELECT post_time AS last_post_time
-				FROM ' . POSTS_TABLE . "
+				FROM ' . PHPBB3_POSTS_TABLE . "
 				WHERE poster_ip = '" . $user->ip . "'
 					AND post_time > " . ($current_time - $config['flood_interval']);
 			$result = $db->sql_query_limit($sql, 1);
@@ -758,17 +758,17 @@ if ($submit || $preview || $refresh)
 		$confirm_code = request_var('confirm_code', '');
 
 		$sql = 'SELECT code
-			FROM ' . CONFIRM_TABLE . "
+			FROM ' . PHPBB3_CONFIRM_TABLE . "
 			WHERE confirm_id = '" . $db->sql_escape($confirm_id) . "'
 				AND session_id = '" . $db->sql_escape($user->session_id) . "'
-				AND confirm_type = " . CONFIRM_POST;
+				AND confirm_type = " . PHPBB3_CONFIRM_POST;
 		$result = $db->sql_query($sql);
 		$confirm_row = $db->sql_fetchrow($result);
 		$db->sql_freeresult($result);
 
 		if (empty($confirm_row['code']) || strcasecmp($confirm_row['code'], $confirm_code) !== 0)
 		{
-			$error[] = $user->lang['CONFIRM_CODE_WRONG'];
+			$error[] = $user->lang['PHPBB3_CONFIRM_CODE_WRONG'];
 		}
 		else
 		{
@@ -825,16 +825,16 @@ if ($submit || $preview || $refresh)
 	}
 
 	// Check topic type
-	if ($post_data['topic_type'] != POST_NORMAL && ($mode == 'post' || ($mode == 'edit' && $post_data['topic_first_post_id'] == $post_id)))
+	if ($post_data['topic_type'] != PHPBB3_POST_NORMAL && ($mode == 'post' || ($mode == 'edit' && $post_data['topic_first_post_id'] == $post_id)))
 	{
 		switch ($post_data['topic_type'])
 		{
-			case POST_GLOBAL:
-			case POST_ANNOUNCE:
+			case PHPBB3_POST_GLOBAL:
+			case PHPBB3_POST_ANNOUNCE:
 				$auth_option = 'f_announce';
 			break;
 
-			case POST_STICKY:
+			case PHPBB3_POST_STICKY:
 				$auth_option = 'f_sticky';
 			break;
 
@@ -877,29 +877,29 @@ if ($submit || $preview || $refresh)
 	if (!sizeof($error) && $submit)
 	{
 		// Check if we want to de-globalize the topic... and ask for new forum
-		if ($post_data['topic_type'] != POST_GLOBAL)
+		if ($post_data['topic_type'] != PHPBB3_POST_GLOBAL)
 		{
 			$sql = 'SELECT topic_type, forum_id
-				FROM ' . TOPICS_TABLE . "
+				FROM ' . PHPBB3_TOPICS_TABLE . "
 				WHERE topic_id = $topic_id";
 			$result = $db->sql_query($sql);
 			$row = $db->sql_fetchrow($result);
 			$db->sql_freeresult($result);
 
-			if ($row && !$row['forum_id'] && $row['topic_type'] == POST_GLOBAL)
+			if ($row && !$row['forum_id'] && $row['topic_type'] == PHPBB3_POST_GLOBAL)
 			{
 				$to_forum_id = request_var('to_forum_id', 0);
 
 				if ($to_forum_id)
 				{
 					$sql = 'SELECT forum_type
-						FROM ' . FORUMS_TABLE . '
+						FROM ' . PHPBB3_FORUMS_TABLE . '
 						WHERE forum_id = ' . $to_forum_id;
 					$result = $db->sql_query($sql);
 					$forum_type = (int) $db->sql_fetchfield('forum_type');
 					$db->sql_freeresult($result);
 
-					if ($forum_type != FORUM_POST || !$auth->acl_get('f_post', $to_forum_id))
+					if ($forum_type != PHPBB3_FORUM_POST || !$auth->acl_get('f_post', $to_forum_id))
 					{
 						$to_forum_id = 0;
 					}
@@ -934,20 +934,20 @@ if ($submit || $preview || $refresh)
 		{
 			// Lock/Unlock Topic
 			$change_topic_status = $post_data['topic_status'];
-			$perm_lock_unlock = ($auth->acl_get('m_lock', $forum_id) || ($auth->acl_get('f_user_lock', $forum_id) && $user->data['is_registered'] && !empty($post_data['topic_poster']) && $user->data['user_id'] == $post_data['topic_poster'] && $post_data['topic_status'] == ITEM_UNLOCKED)) ? true : false;
+			$perm_lock_unlock = ($auth->acl_get('m_lock', $forum_id) || ($auth->acl_get('f_user_lock', $forum_id) && $user->data['is_registered'] && !empty($post_data['topic_poster']) && $user->data['user_id'] == $post_data['topic_poster'] && $post_data['topic_status'] == PHPBB3_ITEM_UNLOCKED)) ? true : false;
 
-			if ($post_data['topic_status'] == ITEM_LOCKED && !$topic_lock && $perm_lock_unlock)
+			if ($post_data['topic_status'] == PHPBB3_ITEM_LOCKED && !$topic_lock && $perm_lock_unlock)
 			{
-				$change_topic_status = ITEM_UNLOCKED;
+				$change_topic_status = PHPBB3_ITEM_UNLOCKED;
 			}
-			else if ($post_data['topic_status'] == ITEM_UNLOCKED && $topic_lock && $perm_lock_unlock)
+			else if ($post_data['topic_status'] == PHPBB3_ITEM_UNLOCKED && $topic_lock && $perm_lock_unlock)
 			{
-				$change_topic_status = ITEM_LOCKED;
+				$change_topic_status = PHPBB3_ITEM_LOCKED;
 			}
 
 			if ($change_topic_status != $post_data['topic_status'])
 			{
-				$sql = 'UPDATE ' . TOPICS_TABLE . "
+				$sql = 'UPDATE ' . PHPBB3_TOPICS_TABLE . "
 					SET topic_status = $change_topic_status
 					WHERE topic_id = $topic_id
 						AND topic_moved_id = 0";
@@ -955,17 +955,17 @@ if ($submit || $preview || $refresh)
 
 				$user_lock = ($auth->acl_get('f_user_lock', $forum_id) && $user->data['is_registered'] && $user->data['user_id'] == $post_data['topic_poster']) ? 'USER_' : '';
 
-				add_log('mod', $forum_id, $topic_id, 'LOG_' . $user_lock . (($change_topic_status == ITEM_LOCKED) ? 'LOCK' : 'UNLOCK'), $post_data['topic_title']);
+				add_log('mod', $forum_id, $topic_id, 'LOG_' . $user_lock . (($change_topic_status == PHPBB3_ITEM_LOCKED) ? 'LOCK' : 'UNLOCK'), $post_data['topic_title']);
 			}
 
 			// Lock/Unlock Post Edit
-			if ($mode == 'edit' && $post_data['post_edit_locked'] == ITEM_LOCKED && !$post_lock && $auth->acl_get('m_edit', $forum_id))
+			if ($mode == 'edit' && $post_data['post_edit_locked'] == PHPBB3_ITEM_LOCKED && !$post_lock && $auth->acl_get('m_edit', $forum_id))
 			{
-				$post_data['post_edit_locked'] = ITEM_UNLOCKED;
+				$post_data['post_edit_locked'] = PHPBB3_ITEM_UNLOCKED;
 			}
-			else if ($mode == 'edit' && $post_data['post_edit_locked'] == ITEM_UNLOCKED && $post_lock && $auth->acl_get('m_edit', $forum_id))
+			else if ($mode == 'edit' && $post_data['post_edit_locked'] == PHPBB3_ITEM_UNLOCKED && $post_lock && $auth->acl_get('m_edit', $forum_id))
 			{
-				$post_data['post_edit_locked'] = ITEM_LOCKED;
+				$post_data['post_edit_locked'] = PHPBB3_ITEM_LOCKED;
 			}
 
 			$data = array(
@@ -1196,7 +1196,7 @@ $bbcode_checked		= (isset($post_data['enable_bbcode'])) ? !$post_data['enable_bb
 $smilies_checked	= (isset($post_data['enable_smilies'])) ? !$post_data['enable_smilies'] : (($config['allow_smilies']) ? !$user->optionget('smilies') : 1);
 $urls_checked		= (isset($post_data['enable_urls'])) ? !$post_data['enable_urls'] : 0;
 $sig_checked		= $post_data['enable_sig'];
-$lock_topic_checked	= (isset($topic_lock) && $topic_lock) ? $topic_lock : (($post_data['topic_status'] == ITEM_LOCKED) ? 1 : 0);
+$lock_topic_checked	= (isset($topic_lock) && $topic_lock) ? $topic_lock : (($post_data['topic_status'] == PHPBB3_ITEM_LOCKED) ? 1 : 0);
 $lock_post_checked	= (isset($post_lock)) ? $post_lock : $post_data['post_edit_locked'];
 
 // If the user is replying or posting and not already watching this topic but set to always being notified we need to overwrite this setting
@@ -1234,9 +1234,9 @@ generate_forum_rules($post_data);
 if ($config['enable_post_confirm'] && !$user->data['is_registered'] && $solved_captcha === false && ($mode == 'post' || $mode == 'reply' || $mode == 'quote'))
 {
 	// Show confirm image
-	$sql = 'DELETE FROM ' . CONFIRM_TABLE . "
+	$sql = 'DELETE FROM ' . PHPBB3_CONFIRM_TABLE . "
 		WHERE session_id = '" . $db->sql_escape($user->session_id) . "'
-			AND confirm_type = " . CONFIRM_POST;
+			AND confirm_type = " . PHPBB3_CONFIRM_POST;
 	$db->sql_query($sql);
 
 	// Generate code
@@ -1247,20 +1247,20 @@ if ($config['enable_post_confirm'] && !$user->data['is_registered'] && $solved_c
 	// compute $seed % 0x7fffffff
 	$seed -= 0x7fffffff * floor($seed / 0x7fffffff);
 
-	$sql = 'INSERT INTO ' . CONFIRM_TABLE . ' ' . $db->sql_build_array('INSERT', array(
+	$sql = 'INSERT INTO ' . PHPBB3_CONFIRM_TABLE . ' ' . $db->sql_build_array('INSERT', array(
 		'confirm_id'	=> (string) $confirm_id,
 		'session_id'	=> (string) $user->session_id,
-		'confirm_type'	=> (int) CONFIRM_POST,
+		'confirm_type'	=> (int) PHPBB3_CONFIRM_POST,
 		'code'			=> (string) $code,
 		'seed'			=> (int) $seed)
 	);
 	$db->sql_query($sql);
 
 	$template->assign_vars(array(
-		'S_CONFIRM_CODE'			=> true,
-		'CONFIRM_ID'				=> $confirm_id,
-		'CONFIRM_IMAGE'				=> '<img src="' . append_sid("{$phpbb_root_path}ucp.$phpEx", 'mode=confirm&amp;id=' . $confirm_id . '&amp;type=' . CONFIRM_POST) . '" alt="" title="" />',
-		'L_POST_CONFIRM_EXPLAIN'	=> sprintf($user->lang['POST_CONFIRM_EXPLAIN'], '<a href="mailto:' . htmlspecialchars($config['board_contact']) . '">', '</a>'),
+		'S_PHPBB3_CONFIRM_CODE'			=> true,
+		'PHPBB3_CONFIRM_ID'				=> $confirm_id,
+		'PHPBB3_CONFIRM_IMAGE'				=> '<img src="' . append_sid("{$phpbb_root_path}ucp.$phpEx", 'mode=confirm&amp;id=' . $confirm_id . '&amp;type=' . PHPBB3_CONFIRM_POST) . '" alt="" title="" />',
+		'L_POST_PHPBB3_CONFIRM_EXPLAIN'	=> sprintf($user->lang['POST_PHPBB3_CONFIRM_EXPLAIN'], '<a href="mailto:' . htmlspecialchars($config['board_contact']) . '">', '</a>'),
 	));
 }
 
@@ -1324,7 +1324,7 @@ $template->assign_vars(array(
 	'S_SIGNATURE_CHECKED'		=> ($sig_checked) ? ' checked="checked"' : '',
 	'S_NOTIFY_ALLOWED'			=> (!$user->data['is_registered'] || ($mode == 'edit' && $user->data['user_id'] != $post_data['poster_id']) || !$config['allow_topic_notify'] || !$config['email_enable']) ? false : true,
 	'S_NOTIFY_CHECKED'			=> ($notify_checked) ? ' checked="checked"' : '',
-	'S_LOCK_TOPIC_ALLOWED'		=> (($mode == 'edit' || $mode == 'reply' || $mode == 'quote') && ($auth->acl_get('m_lock', $forum_id) || ($auth->acl_get('f_user_lock', $forum_id) && $user->data['is_registered'] && !empty($post_data['topic_poster']) && $user->data['user_id'] == $post_data['topic_poster'] && $post_data['topic_status'] == ITEM_UNLOCKED))) ? true : false,
+	'S_LOCK_TOPIC_ALLOWED'		=> (($mode == 'edit' || $mode == 'reply' || $mode == 'quote') && ($auth->acl_get('m_lock', $forum_id) || ($auth->acl_get('f_user_lock', $forum_id) && $user->data['is_registered'] && !empty($post_data['topic_poster']) && $user->data['user_id'] == $post_data['topic_poster'] && $post_data['topic_status'] == PHPBB3_ITEM_UNLOCKED))) ? true : false,
 	'S_LOCK_TOPIC_CHECKED'		=> ($lock_topic_checked) ? ' checked="checked"' : '',
 	'S_LOCK_POST_ALLOWED'		=> ($mode == 'edit' && $auth->acl_get('m_edit', $forum_id)) ? true : false,
 	'S_LOCK_POST_CHECKED'		=> ($lock_post_checked) ? ' checked="checked"' : '',

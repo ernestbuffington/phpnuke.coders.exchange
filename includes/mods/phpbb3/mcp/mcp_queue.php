@@ -152,7 +152,7 @@ class mcp_queue
 					$extensions = $cache->obtain_attach_extensions($post_info['forum_id']);
 
 					$sql = 'SELECT *
-						FROM ' . ATTACHMENTS_TABLE . '
+						FROM ' . PHPBB3_ATTACHMENTS_TABLE . '
 						WHERE post_msg_id = ' . $post_id . '
 							AND in_message = 0
 						ORDER BY filetime DESC, post_msg_id ASC';
@@ -281,7 +281,7 @@ class mcp_queue
 					$forum_list = implode(', ', $forum_list);
 
 					$sql = 'SELECT SUM(forum_topics) as sum_forum_topics
-						FROM ' . FORUMS_TABLE . "
+						FROM ' . PHPBB3_FORUMS_TABLE . "
 						WHERE forum_id IN (0, $forum_list)";
 					$result = $db->sql_query($sql);
 					$forum_info['forum_topics'] = (int) $db->sql_fetchfield('sum_forum_topics');
@@ -320,7 +320,7 @@ class mcp_queue
 				if ($mode == 'unapproved_posts')
 				{
 					$sql = 'SELECT p.post_id
-						FROM ' . POSTS_TABLE . ' p, ' . TOPICS_TABLE . ' t' . (($sort_order_sql[0] == 'u') ? ', ' . USERS_TABLE . ' u' : '') . "
+						FROM ' . PHPBB3_POSTS_TABLE . ' p, ' . PHPBB3_TOPICS_TABLE . ' t' . (($sort_order_sql[0] == 'u') ? ', ' . PHPBB3_USERS_TABLE . ' u' : '') . "
 						WHERE p.forum_id IN (0, $forum_list)
 							AND p.post_approved = 0
 							" . (($sort_order_sql[0] == 'u') ? 'AND u.user_id = p.poster_id' : '') . '
@@ -343,7 +343,7 @@ class mcp_queue
 					if (sizeof($post_ids))
 					{
 						$sql = 'SELECT t.topic_id, t.topic_title, t.forum_id, p.post_id, p.post_subject, p.post_username, p.poster_id, p.post_time, u.username, u.username_clean, u.user_colour
-							FROM ' . POSTS_TABLE . ' p, ' . TOPICS_TABLE . ' t, ' . USERS_TABLE . ' u
+							FROM ' . PHPBB3_POSTS_TABLE . ' p, ' . PHPBB3_TOPICS_TABLE . ' t, ' . PHPBB3_USERS_TABLE . ' u
 							WHERE ' . $db->sql_in_set('p.post_id', $post_ids) . '
 								AND t.topic_id = p.topic_id
 								AND u.user_id = p.poster_id
@@ -375,7 +375,7 @@ class mcp_queue
 				else
 				{
 					$sql = 'SELECT t.forum_id, t.topic_id, t.topic_title, t.topic_title AS post_subject, t.topic_time AS post_time, t.topic_poster AS poster_id, t.topic_first_post_id AS post_id, t.topic_first_poster_name AS username, t.topic_first_poster_colour AS user_colour
-						FROM ' . TOPICS_TABLE . " t
+						FROM ' . PHPBB3_TOPICS_TABLE . " t
 						WHERE forum_id IN (0, $forum_list)
 							AND topic_approved = 0
 							$limit_time_sql
@@ -398,7 +398,7 @@ class mcp_queue
 				{
 					// Select the names for the forum_ids
 					$sql = 'SELECT forum_id, forum_name
-						FROM ' . FORUMS_TABLE . '
+						FROM ' . PHPBB3_FORUMS_TABLE . '
 						WHERE ' . $db->sql_in_set('forum_id', $forum_names);
 					$result = $db->sql_query($sql, 3600);
 
@@ -476,7 +476,7 @@ function approve_post($post_id_list, $id, $mode)
 	
 	$phpbb_root_path = PHPBB3_ROOT_DIR;
 
-	if (!check_ids($post_id_list, POSTS_TABLE, 'post_id', array('m_approve')))
+	if (!check_ids($post_id_list, PHPBB3_POSTS_TABLE, 'post_id', array('m_approve')))
 	{
 		trigger_error('NOT_AUTHORISED');
 	}
@@ -597,7 +597,7 @@ function approve_post($post_id_list, $id, $mode)
 
 		if (sizeof($topic_approve_sql))
 		{
-			$sql = 'UPDATE ' . TOPICS_TABLE . '
+			$sql = 'UPDATE ' . PHPBB3_TOPICS_TABLE . '
 				SET topic_approved = 1
 				WHERE ' . $db->sql_in_set('topic_id', $topic_approve_sql);
 			$db->sql_query($sql);
@@ -605,7 +605,7 @@ function approve_post($post_id_list, $id, $mode)
 
 		if (sizeof($post_approve_sql))
 		{
-			$sql = 'UPDATE ' . POSTS_TABLE . '
+			$sql = 'UPDATE ' . PHPBB3_POSTS_TABLE . '
 				SET post_approved = 1
 				WHERE ' . $db->sql_in_set('post_id', $post_approve_sql);
 			$db->sql_query($sql);
@@ -620,7 +620,7 @@ function approve_post($post_id_list, $id, $mode)
 		{
 			foreach ($topic_replies_sql as $topic_id => $num_replies)
 			{
-				$sql = 'UPDATE ' . TOPICS_TABLE . "
+				$sql = 'UPDATE ' . PHPBB3_TOPICS_TABLE . "
 					SET topic_replies = topic_replies + $num_replies
 					WHERE topic_id = $topic_id";
 				$db->sql_query($sql);
@@ -631,7 +631,7 @@ function approve_post($post_id_list, $id, $mode)
 		{
 			foreach ($forum_topics_posts as $forum_id => $row)
 			{
-				$sql = 'UPDATE ' . FORUMS_TABLE . '
+				$sql = 'UPDATE ' . PHPBB3_FORUMS_TABLE . '
 					SET ';
 				$sql .= ($row['forum_topics']) ? "forum_topics = forum_topics + {$row['forum_topics']}" : '';
 				$sql .= ($row['forum_topics'] && $row['forum_posts']) ? ', ' : '';
@@ -654,7 +654,7 @@ function approve_post($post_id_list, $id, $mode)
 
 			foreach ($user_posts_update as $user_posts => $user_id_ary)
 			{
-				$sql = 'UPDATE ' . USERS_TABLE . '
+				$sql = 'UPDATE ' . PHPBB3_USERS_TABLE . '
 					SET user_posts = user_posts + ' . $user_posts . '
 					WHERE ' . $db->sql_in_set('user_id', $user_id_ary);
 				$db->sql_query($sql);
@@ -804,7 +804,7 @@ function disapprove_post($post_id_list, $id, $mode)
 	
 	$phpbb_root_path = PHPBB3_ROOT_DIR;
 
-	if (!check_ids($post_id_list, POSTS_TABLE, 'post_id', array('m_approve')))
+	if (!check_ids($post_id_list, PHPBB3_POSTS_TABLE, 'post_id', array('m_approve')))
 	{
 		trigger_error('NOT_AUTHORISED');
 	}
@@ -828,7 +828,7 @@ function disapprove_post($post_id_list, $id, $mode)
 	if ($reason_id)
 	{
 		$sql = 'SELECT reason_title, reason_description
-			FROM ' . REPORTS_REASONS_TABLE . "
+			FROM ' . PHPBB3_REPORTS_REASONS_TABLE . "
 			WHERE reason_id = $reason_id";
 		$result = $db->sql_query($sql);
 		$row = $db->sql_fetchrow($result);
@@ -922,7 +922,7 @@ function disapprove_post($post_id_list, $id, $mode)
 		{
 			foreach ($forum_topics_real as $forum_id => $topics_real)
 			{
-				$sql = 'UPDATE ' . FORUMS_TABLE . "
+				$sql = 'UPDATE ' . PHPBB3_FORUMS_TABLE . "
 					SET forum_topics_real = forum_topics_real - $topics_real
 					WHERE forum_id = $forum_id";
 				$db->sql_query($sql);
@@ -933,7 +933,7 @@ function disapprove_post($post_id_list, $id, $mode)
 		{
 			foreach ($topic_replies_real_sql as $topic_id => $num_replies)
 			{
-				$sql = 'UPDATE ' . TOPICS_TABLE . "
+				$sql = 'UPDATE ' . PHPBB3_TOPICS_TABLE . "
 					SET topic_replies_real = topic_replies_real - $num_replies
 					WHERE topic_id = $topic_id";
 				$db->sql_query($sql);

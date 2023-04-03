@@ -21,8 +21,8 @@ $images_per_page	= $config['topics_per_page'];
 $count_images		= $album_data['album_images_real'];
 
 $sql = 'SELECT i.*, r.report_status, r.report_id
-	FROM ' . GALLERY_IMAGES_TABLE . " i
-	LEFT JOIN " . GALLERY_REPORTS_TABLE . " r
+	FROM ' . PHPBB3_GALLERY_IMAGES_TABLE . " i
+	LEFT JOIN " . PHPBB3_GALLERY_REPORTS_TABLE . " r
 		ON r.report_image_id = i.image_id
 	WHERE image_album_id = $album_id
 	ORDER BY i.$sort_key $sort_dir

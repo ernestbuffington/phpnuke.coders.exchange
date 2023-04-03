@@ -173,7 +173,7 @@ class acp_search
 					}
 					else
 					{
-						confirm_box(false, $user->lang['CONFIRM_SEARCH_BACKEND'], build_hidden_fields(array(
+						confirm_box(false, $user->lang['PHPBB3_CONFIRM_SEARCH_BACKEND'], build_hidden_fields(array(
 							'i'			=> $id,
 							'mode'		=> $mode,
 							'submit'	=> true,
@@ -320,7 +320,7 @@ class acp_search
 						while (still_on_time() && $post_counter <= $this->max_post_id)
 						{
 							$sql = 'SELECT post_id, poster_id, forum_id
-								FROM ' . POSTS_TABLE . '
+								FROM ' . PHPBB3_POSTS_TABLE . '
 								WHERE post_id >= ' . (int) ($post_counter + 1) . '
 									AND post_id <= ' . (int) ($post_counter + $this->batch_size);
 							$result = $db->sql_query($sql);
@@ -378,7 +378,7 @@ class acp_search
 					else
 					{
 						$sql = 'SELECT forum_id, enable_indexing
-							FROM ' . FORUMS_TABLE;
+							FROM ' . PHPBB3_FORUMS_TABLE;
 						$result = $db->sql_query($sql, 3600);
 
 						while ($row = $db->sql_fetchrow($result))
@@ -393,7 +393,7 @@ class acp_search
 						while (still_on_time() && $post_counter <= $this->max_post_id)
 						{
 							$sql = 'SELECT post_id, post_subject, post_text, poster_id, forum_id
-								FROM ' . POSTS_TABLE . '
+								FROM ' . PHPBB3_POSTS_TABLE . '
 								WHERE post_id >= ' . (int) ($post_counter + 1) . '
 									AND post_id <= ' . (int) ($post_counter + $this->batch_size);
 							$result = $db->sql_query($sql);
@@ -582,7 +582,7 @@ class acp_search
 		global $db;
 
 		$sql = 'SELECT MAX(post_id) as max_post_id
-			FROM '. POSTS_TABLE;
+			FROM '. PHPBB3_POSTS_TABLE;
 		$result = $db->sql_query($sql);
 		$max_post_id = (int) $db->sql_fetchfield('max_post_id');
 		$db->sql_freeresult($result);

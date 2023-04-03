@@ -84,7 +84,7 @@ if ($post_id)
 {
 	// We determine the topic and forum id here, to make sure the moderator really has moderative rights on this post
 	$sql = 'SELECT topic_id, forum_id
-		FROM ' . POSTS_TABLE . "
+		FROM ' . PHPBB3_POSTS_TABLE . "
 		WHERE post_id = $post_id";
 	$result = $db->sql_query($sql);
 	$row = $db->sql_fetchrow($result);
@@ -96,7 +96,7 @@ if ($post_id)
 else if ($topic_id)
 {
 	$sql = 'SELECT forum_id
-		FROM ' . TOPICS_TABLE . "
+		FROM ' . PHPBB3_TOPICS_TABLE . "
 		WHERE topic_id = $topic_id";
 	$result = $db->sql_query($sql);
 	$row = $db->sql_fetchrow($result);
@@ -361,12 +361,12 @@ function get_topic_data($topic_ids, $acl_list = false, $read_tracking = false)
 			'SELECT'	=> 't.*, f.*',
 
 			'FROM'		=> array(
-				TOPICS_TABLE	=> 't',
+				PHPBB3_TOPICS_TABLE	=> 't',
 			),
 
 			'LEFT_JOIN'	=> array(
 				array(
-					'FROM'	=> array(FORUMS_TABLE => 'f'),
+					'FROM'	=> array(PHPBB3_FORUMS_TABLE => 'f'),
 					'ON'	=> 'f.forum_id = t.forum_id'
 				)
 			),
@@ -379,12 +379,12 @@ function get_topic_data($topic_ids, $acl_list = false, $read_tracking = false)
 			$sql_array['SELECT'] .= ', tt.mark_time, ft.mark_time as forum_mark_time';
 
 			$sql_array['LEFT_JOIN'][] = array(
-				'FROM'	=> array(TOPICS_TRACK_TABLE => 'tt'),
+				'FROM'	=> array(PHPBB3_TOPICS_TRACK_TABLE => 'tt'),
 				'ON'	=> 'tt.user_id = ' . $user->data['user_id'] . ' AND t.topic_id = tt.topic_id'
 			);
 
 			$sql_array['LEFT_JOIN'][] = array(
-				'FROM'	=> array(FORUMS_TRACK_TABLE => 'ft'),
+				'FROM'	=> array(PHPBB3_FORUMS_TRACK_TABLE => 'ft'),
 				'ON'	=> 'ft.user_id = ' . $user->data['user_id'] . ' AND t.forum_id = ft.forum_id'
 			);
 		}
@@ -441,14 +441,14 @@ function get_post_data($post_ids, $acl_list = false, $read_tracking = false)
 		'SELECT'	=> 'p.*, u.*, t.*, f.*',
 
 		'FROM'		=> array(
-			USERS_TABLE		=> 'u',
-			POSTS_TABLE		=> 'p',
-			TOPICS_TABLE	=> 't',
+			PHPBB3_USERS_TABLE		=> 'u',
+			PHPBB3_POSTS_TABLE		=> 'p',
+			PHPBB3_TOPICS_TABLE	=> 't',
 		),
 
 		'LEFT_JOIN'	=> array(
 			array(
-				'FROM'	=> array(FORUMS_TABLE => 'f'),
+				'FROM'	=> array(PHPBB3_FORUMS_TABLE => 'f'),
 				'ON'	=> 'f.forum_id = t.forum_id'
 			)
 		),
@@ -463,12 +463,12 @@ function get_post_data($post_ids, $acl_list = false, $read_tracking = false)
 		$sql_array['SELECT'] .= ', tt.mark_time, ft.mark_time as forum_mark_time';
 
 		$sql_array['LEFT_JOIN'][] = array(
-			'FROM'	=> array(TOPICS_TRACK_TABLE => 'tt'),
+			'FROM'	=> array(PHPBB3_TOPICS_TRACK_TABLE => 'tt'),
 			'ON'	=> 'tt.user_id = ' . $user->data['user_id'] . ' AND t.topic_id = tt.topic_id'
 		);
 
 		$sql_array['LEFT_JOIN'][] = array(
-			'FROM'	=> array(FORUMS_TRACK_TABLE => 'ft'),
+			'FROM'	=> array(PHPBB3_FORUMS_TRACK_TABLE => 'ft'),
 			'ON'	=> 'ft.user_id = ' . $user->data['user_id'] . ' AND t.forum_id = ft.forum_id'
 		);
 	}
@@ -524,7 +524,7 @@ function get_forum_data($forum_id, $acl_list = 'f_list', $read_tracking = false)
 
 	if ($read_tracking && $config['load_db_lastread'])
 	{
-		$read_tracking_join = ' LEFT JOIN ' . FORUMS_TRACK_TABLE . ' ft ON (ft.user_id = ' . $user->data['user_id'] . '
+		$read_tracking_join = ' LEFT JOIN ' . PHPBB3_FORUMS_TRACK_TABLE . ' ft ON (ft.user_id = ' . $user->data['user_id'] . '
 			AND ft.forum_id = f.forum_id)';
 		$read_tracking_select = ', ft.mark_time';
 	}
@@ -534,7 +534,7 @@ function get_forum_data($forum_id, $acl_list = 'f_list', $read_tracking = false)
 	}
 
 	$sql = "SELECT f.* $read_tracking_select
-		FROM " . FORUMS_TABLE . " f$read_tracking_join
+		FROM " . PHPBB3_FORUMS_TABLE . " f$read_tracking_join
 		WHERE " . $db->sql_in_set('f.forum_id', $forum_id);
 	$result = $db->sql_query($sql);
 
@@ -577,9 +577,9 @@ function mcp_sorting($mode, &$sort_days, &$sort_key, &$sort_dir, &$sort_by_sql, 
 			$default_dir = 'd';
 
 			$sql = 'SELECT COUNT(topic_id) AS total
-				FROM ' . TOPICS_TABLE . "
+				FROM ' . PHPBB3_TOPICS_TABLE . "
 				$where_sql forum_id = $forum_id
-					AND topic_type NOT IN (" . POST_ANNOUNCE . ', ' . POST_GLOBAL . ")
+					AND topic_type NOT IN (" . PHPBB3_POST_ANNOUNCE . ', ' . PHPBB3_POST_GLOBAL . ")
 					AND topic_last_post_time >= $min_time";
 
 			if (!$auth->acl_get('m_approve', $forum_id))
@@ -594,7 +594,7 @@ function mcp_sorting($mode, &$sort_days, &$sort_key, &$sort_dir, &$sort_by_sql, 
 			$default_dir = 'a';
 
 			$sql = 'SELECT COUNT(post_id) AS total
-				FROM ' . POSTS_TABLE . "
+				FROM ' . PHPBB3_POSTS_TABLE . "
 				$where_sql topic_id = $topic_id
 					AND post_time >= $min_time";
 
@@ -611,7 +611,7 @@ function mcp_sorting($mode, &$sort_days, &$sort_key, &$sort_dir, &$sort_by_sql, 
 			$where_sql .= ($topic_id) ? ' topic_id = ' . $topic_id . ' AND' : '';
 
 			$sql = 'SELECT COUNT(post_id) AS total
-				FROM ' . POSTS_TABLE . "
+				FROM ' . PHPBB3_POSTS_TABLE . "
 				$where_sql " . $db->sql_in_set('forum_id', ($forum_id) ? array($forum_id) : array_intersect(get_forum_list('f_read'), get_forum_list('m_approve'))) . '
 					AND post_approved = 0';
 
@@ -627,7 +627,7 @@ function mcp_sorting($mode, &$sort_days, &$sort_key, &$sort_dir, &$sort_by_sql, 
 			$default_dir = 'd';
 
 			$sql = 'SELECT COUNT(topic_id) AS total
-				FROM ' . TOPICS_TABLE . "
+				FROM ' . PHPBB3_TOPICS_TABLE . "
 				$where_sql " . $db->sql_in_set('forum_id', ($forum_id) ? array($forum_id) : array_intersect(get_forum_list('f_read'), get_forum_list('m_approve'))) . '
 					AND topic_approved = 0';
 
@@ -667,7 +667,7 @@ function mcp_sorting($mode, &$sort_days, &$sort_key, &$sort_dir, &$sort_by_sql, 
 			}
 
 			$sql = 'SELECT COUNT(r.report_id) AS total
-				FROM ' . REPORTS_TABLE . ' r, ' . POSTS_TABLE . " p
+				FROM ' . PHPBB3_REPORTS_TABLE . ' r, ' . PHPBB3_POSTS_TABLE . " p
 				$where_sql
 					AND p.post_id = r.post_id
 					$limit_time_sql";
@@ -679,10 +679,10 @@ function mcp_sorting($mode, &$sort_days, &$sort_key, &$sort_dir, &$sort_by_sql, 
 			$default_dir = 'd';
 
 			$sql = 'SELECT COUNT(log_id) AS total
-				FROM ' . LOG_TABLE . "
+				FROM ' . PHPBB3_LOG_TABLE . "
 				$where_sql " . $db->sql_in_set('forum_id', ($forum_id) ? array($forum_id) : array_intersect(get_forum_list('f_read'), get_forum_list('m_'))) . '
 					AND log_time >= ' . $min_time . '
-					AND log_type = ' . LOG_MOD;
+					AND log_type = ' . PHPBB3_LOG_MOD;
 		break;
 	}
 

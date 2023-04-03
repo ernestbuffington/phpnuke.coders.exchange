@@ -36,7 +36,7 @@ function group_select_options_selected($group_ids, $exclude_ids = false, $manage
 	$sql_founder = ($manage_founder !== false) ? (($exclude_sql || $sql_and) ? ' AND ' : ' WHERE ') . 'group_founder_manage = ' . (int) $manage_founder : '';
 
 	$sql = 'SELECT group_id, group_name, group_type
-		FROM ' . GROUPS_TABLE . "
+		FROM ' . PHPBB3_GROUPS_TABLE . "
 		$exclude_sql
 		$sql_and
 		$sql_founder
@@ -48,7 +48,7 @@ function group_select_options_selected($group_ids, $exclude_ids = false, $manage
 	{
 			
 		$selected = (in_array($row['group_id'], $group_ids, true)) ? ' selected="selected"' : '';
-		$s_group_options .= '<option' . (($row['group_type'] == GROUP_SPECIAL) ? ' class="sep"' : '') . ' value="' . $row['group_id'] . '"' . $selected . '>' . (($row['group_type'] == GROUP_SPECIAL) ? $user->lang['G_' . $row['group_name']] : $row['group_name']) . '</option>';
+		$s_group_options .= '<option' . (($row['group_type'] == PHPBB3_GROUP_SPECIAL) ? ' class="sep"' : '') . ' value="' . $row['group_id'] . '"' . $selected . '>' . (($row['group_type'] == PHPBB3_GROUP_SPECIAL) ? $user->lang['G_' . $row['group_name']] : $row['group_name']) . '</option>';
 	}
 	$db->sql_freeresult($result);
 
@@ -66,7 +66,7 @@ function get_announcement_data($birthday_list)
 
 	// Generate the announcement data
 	$sql = 'SELECT * 
-		FROM ' . ANNOUNCEMENTS_CENTRE_TABLE;
+		FROM ' . PHPBB3_ANNOUNCEMENTS_CENTRE_TABLE;
 	$result = $db->sql_query($sql);
 	$announcement = $db->sql_fetchrow($result);
 	$db->sql_freeresult($result);
@@ -75,7 +75,7 @@ function get_announcement_data($birthday_list)
 	$selected_groups = explode(",", $announcement['announcement_show_group']);
 
 	$sql = 'SELECT *
-		FROM ' . USER_GROUP_TABLE . '
+		FROM ' . PHPBB3_USER_GROUP_TABLE . '
 		WHERE ' . $db->sql_in_set('group_id', $selected_groups) . '
 			AND user_id = ' . $user->data['user_id'];
 	$db->sql_query($sql);

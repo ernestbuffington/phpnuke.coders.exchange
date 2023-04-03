@@ -178,7 +178,7 @@ function write_main()
 		posting_box.id = 'chat_form';
 
 		<?php
-		if ($user->data['user_type'] != USER_IGNORE)
+		if ($user->data['user_type'] != PHPBB3_USER_IGNORE)
 		{ 
 		?>
 		
@@ -847,7 +847,7 @@ function reload_post()
 						if (start == true)
 						{
 							<?php
-							if ($user->data['user_type'] != USER_IGNORE)
+							if ($user->data['user_type'] != PHPBB3_USER_IGNORE)
 							{
 							// Only do this when user is logged in!
 							?>
@@ -896,7 +896,7 @@ function reload_post()
 											if (tmp.length == 0)
 											{
 												<?php
-												if ($user->data['user_type'] != USER_IGNORE)
+												if ($user->data['user_type'] != PHPBB3_USER_IGNORE)
 												{
 												// Only do this when user is logged in!
 												?>
@@ -1043,7 +1043,7 @@ function reload_post()
 											}
 
 											<?php
-											if ($user->data['user_type'] != USER_IGNORE)
+											if ($user->data['user_type'] != PHPBB3_USER_IGNORE)
 											{
 											// Only do this when user is logged in!
 											?>

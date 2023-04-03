@@ -16,7 +16,7 @@ function send_wpm($user_id)
 	include_once(PHPBB3_INCLUDE_DIR . 'functions_privmsgs.' . $phpEx);
 
 	$sql = 'SELECT username, user_regdate, user_email
-		FROM ' . USERS_TABLE . '
+		FROM ' . PHPBB3_USERS_TABLE . '
 		WHERE user_id = ' . $user_id;
 	$result = $db->sql_query($sql);
 	$row = $db->sql_fetchrow($result);
@@ -34,7 +34,7 @@ function send_wpm($user_id)
 	);
 
 	$sql = 'SELECT username, user_colour
-		FROM ' . USERS_TABLE . '
+		FROM ' . PHPBB3_USERS_TABLE . '
 		WHERE user_id = ' . (int) $config['wpm_send_id'];
 	$result	= $db->sql_query($sql);
 	$row	= $db->sql_fetchrow($result);

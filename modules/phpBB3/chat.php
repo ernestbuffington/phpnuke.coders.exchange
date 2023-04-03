@@ -22,7 +22,7 @@ $auth->acl($user->data);
 $user->setup('chat');
 
 define('CHAT_TABLE', $prefix_phpbb3 . 'chat');
-define('CHAT_SESSIONS_TABLE', $prefix_phpbb3 . 'chat_sessions');
+define('CHAT_PHPBB3_SESSIONS_TABLE', $prefix_phpbb3 . 'chat_sessions');
 
 /******************************************/
 /* EDIT these for custom online settings */
@@ -75,9 +75,9 @@ switch ($mode)
 		}
 		$db->sql_freeresult($result);
 
-		if ($user->data['user_type'] == USER_FOUNDER || $user->data['user_type'] == USER_NORMAL)
+		if ($user->data['user_type'] == PHPBB3_USER_FOUNDER || $user->data['user_type'] == PHPBB3_USER_NORMAL)
 		{
-			$sql = 'SELECT * FROM ' . CHAT_SESSIONS_TABLE . " WHERE user_id = {$user->data['user_id']}";
+			$sql = 'SELECT * FROM ' . CHAT_PHPBB3_SESSIONS_TABLE . " WHERE user_id = {$user->data['user_id']}";
 			$result = $db->sql_query($sql);
 			$row = $db->sql_fetchrow($result);
 			$db->sql_freeresult($result);
@@ -91,7 +91,7 @@ switch ($mode)
 					'user_login'		=> time(),
 					'user_lastupdate'	=> time(),
 				);
-				$sql = 'INSERT INTO ' . CHAT_SESSIONS_TABLE . ' ' . $db->sql_build_array('INSERT', $sql_ary);
+				$sql = 'INSERT INTO ' . CHAT_PHPBB3_SESSIONS_TABLE . ' ' . $db->sql_build_array('INSERT', $sql_ary);
 				$db->sql_query($sql);
 			}
 			else
@@ -102,7 +102,7 @@ switch ($mode)
 					'user_login'		=> time(),
 					'user_lastupdate'	=> time(),
 				);
-				$sql = 'UPDATE ' . CHAT_SESSIONS_TABLE . ' SET ' . $db->sql_build_array('UPDATE', $sql_ary) . " WHERE user_id = {$user->data['user_id']}";
+				$sql = 'UPDATE ' . CHAT_PHPBB3_SESSIONS_TABLE . ' SET ' . $db->sql_build_array('UPDATE', $sql_ary) . " WHERE user_id = {$user->data['user_id']}";
 				$db->sql_query($sql);
 			}
 		}
@@ -144,7 +144,7 @@ switch ($mode)
 				'user_colour'		=> $user->data['user_colour'],
 				'user_lastupdate'	=> time(),
 			);
-			$sql = 'UPDATE ' . CHAT_SESSIONS_TABLE . '
+			$sql = 'UPDATE ' . CHAT_PHPBB3_SESSIONS_TABLE . '
 				SET ' . $db->sql_build_array('UPDATE', $sql_ary) . "
 				WHERE user_id = {$user->data['user_id']}";
 			$result = $db->sql_query($sql);
@@ -152,7 +152,7 @@ switch ($mode)
 		$get = true;
 	break;
 	case 'add':
-		if (!$user->data['is_registered'] || $user->data['user_type'] == USER_INACTIVE || $user->data['user_type'] == USER_IGNORE)
+		if (!$user->data['is_registered'] || $user->data['user_type'] == PHPBB3_USER_INACTIVE || $user->data['user_type'] == PHPBB3_USER_IGNORE)
 		{
 			redirect(append_sid("{$phpbb_root_path}ucp.$phpEx", 'mode=login'));
 		}
@@ -190,7 +190,7 @@ switch ($mode)
 			'user_lastpost'		=> time(),
 			'user_lastupdate'	=> time(),
 		);
-		$sql = 'UPDATE ' . CHAT_SESSIONS_TABLE . ' SET ' . $db->sql_build_array('UPDATE', $sql_ary) . " WHERE user_id = {$user->data['user_id']}";
+		$sql = 'UPDATE ' . CHAT_PHPBB3_SESSIONS_TABLE . ' SET ' . $db->sql_build_array('UPDATE', $sql_ary) . " WHERE user_id = {$user->data['user_id']}";
 		$result = $db->sql_query($sql);
 
 
@@ -270,14 +270,14 @@ function whois_online()
 		'user_colour'		=> $user->data['user_colour'],
 		'user_lastupdate'	=> time(),
 	);
-	$sql = 'UPDATE ' . CHAT_SESSIONS_TABLE . ' SET ' . $db->sql_build_array('UPDATE', $sql_ary) . " WHERE user_id = {$user->data['user_id']}";
+	$sql = 'UPDATE ' . CHAT_PHPBB3_SESSIONS_TABLE . ' SET ' . $db->sql_build_array('UPDATE', $sql_ary) . " WHERE user_id = {$user->data['user_id']}";
 	$db->sql_query($sql);
 
-	$sql = 'DELETE FROM ' . CHAT_SESSIONS_TABLE . " WHERE user_lastupdate < $check_time";
+	$sql = 'DELETE FROM ' . CHAT_PHPBB3_SESSIONS_TABLE . " WHERE user_lastupdate < $check_time";
 	$db->sql_query($sql);
 
 	$sql = 'SELECT *
-		FROM ' . CHAT_SESSIONS_TABLE . "
+		FROM ' . CHAT_PHPBB3_SESSIONS_TABLE . "
 		WHERE user_lastupdate > $check_time
 		ORDER BY username ASC";
 	$result = $db->sql_query($sql);

@@ -53,7 +53,7 @@ switch ($mode)
 	case 'smilies':
 
 		$sql = 'SELECT *
-			FROM ' . SMILIES_TABLE .
+			FROM ' . PHPBB3_SMILIES_TABLE .
 				' WHERE display_on_posting = 1
 			ORDER BY smiley_order';
 		$result = $db->sql_query($sql);
@@ -101,7 +101,7 @@ switch ($mode)
 		else
 		{
 			// Lets delete this post :D
-			$sql = 'DELETE FROM ' . SHOUTBOX_TABLE . ' WHERE shout_id = ' . $id;
+			$sql = 'DELETE FROM ' . PHPBB3_SHOUTBOX_TABLE . ' WHERE shout_id = ' . $id;
 			if (!$db->sql_query($sql))
 			{
 				sql_error($sql, __LINE__, __FILE__);
@@ -115,7 +115,7 @@ switch ($mode)
 	break;
 	
 	case 'add':
-		if ($user->data['user_type'] == USER_IGNORE )
+		if ($user->data['user_type'] == PHPBB3_USER_IGNORE )
 		{
 			echo '<error>' . $user->lang['NO_POST_GUEST'] . '</error></xml>';
 			exit;
@@ -126,7 +126,7 @@ switch ($mode)
 			// Config option be a good thing for this?
 			$time = time() - (3600 * 24 * 14);//3600 seconds in 1 hour, 24 hours in a day, 14 days in 2 weeks.
 
-			$sql = 'DELETE FROM  ' . SHOUTBOX_TABLE . " WHERE shout_time < $time";
+			$sql = 'DELETE FROM  ' . PHPBB3_SHOUTBOX_TABLE . " WHERE shout_time < $time";
 			if (!$db->sql_query($sql))
 			{
 				sql_error($sql, __LINE__, __FILE__);
@@ -139,7 +139,7 @@ switch ($mode)
 			if (!($auth->acl_get('a_') || $auth->acl_getf_global('m_')))
 			{
 				$sql = 'SELECT MAX(shout_time) AS last_post_time
-					FROM ' . SHOUTBOX_TABLE . '
+					FROM ' . PHPBB3_SHOUTBOX_TABLE . '
 					WHERE shout_user_id = ' . $user->data['user_id'];
 				if ($result = $db->sql_query($sql))
 				{
@@ -186,7 +186,7 @@ switch ($mode)
 						'shout_ip'					=> $user->ip,
 				);
 				
-				$sql = 'INSERT INTO ' . SHOUTBOX_TABLE . ' ' . $db->sql_build_array('INSERT', $sql_ary);								
+				$sql = 'INSERT INTO ' . PHPBB3_SHOUTBOX_TABLE . ' ' . $db->sql_build_array('INSERT', $sql_ary);								
         
 				if (!$db->sql_query($sql)) 
 				{
@@ -200,7 +200,7 @@ switch ($mode)
 	
 	case 'check':
 		$last = request_var('last', 1);
-		$sql = 'SELECT shout_time AS s FROM ' . SHOUTBOX_TABLE . '
+		$sql = 'SELECT shout_time AS s FROM ' . PHPBB3_SHOUTBOX_TABLE . '
 		ORDER BY shout_time DESC';		
 		$result = $db->sql_query_limit($sql, 1);
 		if (!$result)
@@ -217,7 +217,7 @@ switch ($mode)
 	break;
 	
 	case 'number':
-		$sql = 'SELECT COUNT(shout_id) as nr FROM ' . SHOUTBOX_TABLE;
+		$sql = 'SELECT COUNT(shout_id) as nr FROM ' . PHPBB3_SHOUTBOX_TABLE;
 		$result = $db->sql_query($sql);
 		if (!$result)
 		{
@@ -258,7 +258,7 @@ switch ($mode)
 		$start = request_var('start', 0);
 		$start = ($start < 0) ? 0 : $start;
 		
-		$sql = 'SELECT s.*, u.user_colour, u.username, u.user_id FROM ' . SHOUTBOX_TABLE . ' s, ' . USERS_TABLE . ' u
+		$sql = 'SELECT s.*, u.user_colour, u.username, u.user_id FROM ' . PHPBB3_SHOUTBOX_TABLE . ' s, ' . PHPBB3_USERS_TABLE . ' u
 			WHERE 
 				s.shout_user_id = u.user_id 
 				ORDER BY s.shout_time DESC';

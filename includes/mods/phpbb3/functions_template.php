@@ -87,7 +87,7 @@ class template_compile
 				'template_data'			=> trim(file_get_contents($this->template->files[$handle])),
 			);
 
-			$sql = 'INSERT INTO ' . STYLES_TEMPLATE_DATA_TABLE . ' ' . $db->sql_build_array('INSERT', $sql_ary);
+			$sql = 'INSERT INTO ' . PHPBB3_STYLES_TEMPLATE_DATA_TABLE . ' ' . $db->sql_build_array('INSERT', $sql_ary);
 			$db->sql_query($sql);
 		}
 	}

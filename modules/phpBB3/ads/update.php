@@ -66,7 +66,7 @@ if (!isset($config['ads_version']))
 	$positions = array('ABOVE_HEADER', 'BELOW_HEADER', 'ABOVE_POSTS', 'BELOW_POSTS', 'AFTER_FIRST_POST', 'AFTER_EVERY_POST', 'ABOVE_FOOTER', 'BELOW_FOOTER');
 	foreach ($positions as $position)
 	{
-		$db->sql_query('INSERT INTO ' . ADS_POSITIONS_TABLE . ' ' . $db->sql_build_array('INSERT', array('lang_key' => $position)));
+		$db->sql_query('INSERT INTO ' . PHPBB3_ADS_POSITIONS_TABLE . ' ' . $db->sql_build_array('INSERT', array('lang_key' => $position)));
 	}
 
 	// Add the config settings
@@ -81,16 +81,16 @@ switch ($config['ads_version'])
 {
 	case '0.7.0' :
 	case '1.0.0' :
-		$db_tool->sql_column_add(ADS_TABLE, 'ad_clicks', array('UINT', 0));
+		$db_tool->sql_column_add(PHPBB3_ADS_TABLE, 'ad_clicks', array('UINT', 0));
 		set_config('ads_count_clicks', 1);
 		set_config('ads_count_views', 1);
 		set_config('ads_accurate_views', 0);
 	case '1.0.1' :
 	case '1.0.2' :
 	case '1.0.3' :
-		$db_tool->sql_column_add(ADS_TABLE, 'ad_note', array('MTEXT_UNI', ''));
-		$db_tool->sql_column_add(ADS_TABLE, 'ad_time', array('TIMESTAMP', 0));
-		$db_tool->sql_column_add(ADS_TABLE, 'ad_time_end', array('TIMESTAMP', 0));
+		$db_tool->sql_column_add(PHPBB3_ADS_TABLE, 'ad_note', array('MTEXT_UNI', ''));
+		$db_tool->sql_column_add(PHPBB3_ADS_TABLE, 'ad_time', array('TIMESTAMP', 0));
+		$db_tool->sql_column_add(PHPBB3_ADS_TABLE, 'ad_time_end', array('TIMESTAMP', 0));
 		set_config('ads_last_cron', 0, true);
 	case '1.0.4' :
 	case '1.0.5' :

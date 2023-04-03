@@ -13,7 +13,7 @@ define('IN_PHPBB', true);
 $phpbb_root_path = (defined('PHPBB_ROOT_PATH')) ? PHPBB_ROOT_PATH : '../';
 $phpEx = substr(strrchr(__FILE__, '.'), 1);
 include($phpbb_root_path . 'common.' . $phpEx);
-$gallery_root_path = GALLERY_ROOT_PATH;
+$gallery_root_path = PHPBB3_GALLERY_ROOT_PATH;
 include($phpbb_root_path . 'includes/functions_display.' . $phpEx);
 
 // Start session management
@@ -42,7 +42,7 @@ if (!$image_id)
 // ------------------------------------
 
 $sql = 'SELECT *
-	FROM ' . GALLERY_IMAGES_TABLE . '
+	FROM ' . PHPBB3_GALLERY_IMAGES_TABLE . '
 	WHERE image_id = ' . $image_id . '
 	LIMIT 1';
 $result = $db->sql_query($sql);
@@ -55,14 +55,14 @@ $user_id = $image_data['image_user_id'];
 $image_filetype = utf8_substr($image_data['image_filename'], strlen($image_data['image_filename']) - 4, 4);
 if (empty($image_data) || !file_exists($phpbb_root_path . GALLERY_UPLOAD_PATH . $image_data['image_filename']) )
 {
-	$sql = 'UPDATE ' . GALLERY_IMAGES_TABLE . ' 
+	$sql = 'UPDATE ' . PHPBB3_GALLERY_IMAGES_TABLE . ' 
 		SET image_filemissing = 1
 		WHERE image_id = ' . $image_id;
 	$db->sql_query($sql);
 	trigger_error('IMAGE_NOT_EXIST');
 }
 $sql = 'SELECT *
-	FROM ' . GALLERY_ALBUMS_TABLE . '
+	FROM ' . PHPBB3_GALLERY_ALBUMS_TABLE . '
 	WHERE album_id = ' . $album_id . '
 	LIMIT 1';
 $result = $db->sql_query($sql);
@@ -131,7 +131,7 @@ if ($album_config['hotlink_prevent'] && isset($HTTP_SERVER_VARS['HTTP_REFERER'])
 // Increase view counter
 // ------------------------------------
 
-$sql = 'UPDATE ' . GALLERY_IMAGES_TABLE . '
+$sql = 'UPDATE ' . PHPBB3_GALLERY_IMAGES_TABLE . '
 	SET image_view_count = image_view_count + 1
 	WHERE image_id = ' . $image_id . '
 	LIMIT 1';

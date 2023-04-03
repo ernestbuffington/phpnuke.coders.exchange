@@ -147,7 +147,7 @@ class bbcode_firstpass extends bbcode
 			$rowset = array();
 
 			$sql = 'SELECT *
-				FROM ' . BBCODES_TABLE;
+				FROM ' . PHPBB3_BBCODES_TABLE;
 			$result = $db->sql_query($sql);
 
 			while ($row = $db->sql_fetchrow($result))
@@ -1279,20 +1279,20 @@ class parse_message extends bbcode_firstpass
 				case 'mssql':
 				case 'mssql_odbc':
 					$sql = 'SELECT *
-						FROM ' . SMILIES_TABLE . '
+						FROM ' . PHPBB3_SMILIES_TABLE . '
 						ORDER BY LEN(code) DESC';
 				break;
 
 				case 'firebird':
 					$sql = 'SELECT *
-						FROM ' . SMILIES_TABLE . '
+						FROM ' . PHPBB3_SMILIES_TABLE . '
 						ORDER BY CHAR_LENGTH(code) DESC';
 				break;
 
 				// LENGTH supported by MySQL, IBM DB2, Oracle and Access for sure...
 				default:
 					$sql = 'SELECT *
-						FROM ' . SMILIES_TABLE . '
+						FROM ' . PHPBB3_SMILIES_TABLE . '
 						ORDER BY LENGTH(code) DESC';
 				break;
 			}
@@ -1390,7 +1390,7 @@ class parse_message extends bbcode_firstpass
 						'poster_id'			=> $user->data['user_id'],
 					);
 
-					$db->sql_query('INSERT INTO ' . ATTACHMENTS_TABLE . ' ' . $db->sql_build_array('INSERT', $sql_ary));
+					$db->sql_query('INSERT INTO ' . PHPBB3_ATTACHMENTS_TABLE . ' ' . $db->sql_build_array('INSERT', $sql_ary));
 
 					$new_entry = array(
 						'attach_id'		=> $db->sql_nextid(),
@@ -1437,7 +1437,7 @@ class parse_message extends bbcode_firstpass
 					if ($this->attachment_data[$index]['is_orphan'])
 					{
 						$sql = 'SELECT attach_id, physical_filename, thumbnail
-							FROM ' . ATTACHMENTS_TABLE . '
+							FROM ' . PHPBB3_ATTACHMENTS_TABLE . '
 							WHERE attach_id = ' . (int) $this->attachment_data[$index]['attach_id'] . '
 								AND is_orphan = 1
 								AND poster_id = ' . $user->data['user_id'];
@@ -1454,7 +1454,7 @@ class parse_message extends bbcode_firstpass
 								phpbb_unlink($row['physical_filename'], 'thumbnail');
 							}
 
-							$db->sql_query('DELETE FROM ' . ATTACHMENTS_TABLE . ' WHERE attach_id = ' . (int) $this->attachment_data[$index]['attach_id']);
+							$db->sql_query('DELETE FROM ' . PHPBB3_ATTACHMENTS_TABLE . ' WHERE attach_id = ' . (int) $this->attachment_data[$index]['attach_id']);
 						}
 					}
 					else
@@ -1492,7 +1492,7 @@ class parse_message extends bbcode_firstpass
 							'poster_id'			=> $user->data['user_id'],
 						);
 
-						$db->sql_query('INSERT INTO ' . ATTACHMENTS_TABLE . ' ' . $db->sql_build_array('INSERT', $sql_ary));
+						$db->sql_query('INSERT INTO ' . PHPBB3_ATTACHMENTS_TABLE . ' ' . $db->sql_build_array('INSERT', $sql_ary));
 
 						$new_entry = array(
 							'attach_id'		=> $db->sql_nextid(),
@@ -1556,7 +1556,7 @@ class parse_message extends bbcode_firstpass
 		{
 			// Get the attachment data, based on the poster id...
 			$sql = 'SELECT attach_id, is_orphan, real_filename, attach_comment
-				FROM ' . ATTACHMENTS_TABLE . '
+				FROM ' . PHPBB3_ATTACHMENTS_TABLE . '
 				WHERE ' . $db->sql_in_set('attach_id', array_keys($not_orphan)) . '
 					AND poster_id = ' . $check_user_id;
 			$result = $db->sql_query($sql);
@@ -1581,7 +1581,7 @@ class parse_message extends bbcode_firstpass
 		if (sizeof($orphan))
 		{
 			$sql = 'SELECT attach_id, is_orphan, real_filename, attach_comment
-				FROM ' . ATTACHMENTS_TABLE . '
+				FROM ' . PHPBB3_ATTACHMENTS_TABLE . '
 				WHERE ' . $db->sql_in_set('attach_id', array_keys($orphan)) . '
 					AND poster_id = ' . $user->data['user_id'] . '
 					AND is_orphan = 1';

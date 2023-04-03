@@ -50,7 +50,7 @@ class acp_bbcodes
 
 			case 'edit':
 				$sql = 'SELECT bbcode_match, bbcode_tpl, display_on_posting, bbcode_helpline
-					FROM ' . BBCODES_TABLE . '
+					FROM ' . PHPBB3_BBCODES_TABLE . '
 					WHERE bbcode_id = ' . $bbcode_id;
 				$result = $db->sql_query($sql);
 				$row = $db->sql_fetchrow($result);
@@ -69,7 +69,7 @@ class acp_bbcodes
 
 			case 'modify':
 				$sql = 'SELECT bbcode_id, bbcode_tag
-					FROM ' . BBCODES_TABLE . '
+					FROM ' . PHPBB3_BBCODES_TABLE . '
 					WHERE bbcode_id = ' . $bbcode_id;
 				$result = $db->sql_query($sql);
 				$row = $db->sql_fetchrow($result);
@@ -132,7 +132,7 @@ class acp_bbcodes
 				if (($action == 'modify' && strtolower($data['bbcode_tag']) !== strtolower($row['bbcode_tag'])) || ($action == 'create'))
 				{
 					$sql = 'SELECT 1 as test
-						FROM ' . BBCODES_TABLE . "
+						FROM ' . PHPBB3_BBCODES_TABLE . "
 						WHERE LOWER(bbcode_tag) = '" . $db->sql_escape(strtolower($data['bbcode_tag'])) . "'";
 					$result = $db->sql_query($sql);
 					$info = $db->sql_fetchrow($result);
@@ -190,7 +190,7 @@ class acp_bbcodes
 				if ($action == 'create')
 				{
 					$sql = 'SELECT MAX(bbcode_id) as max_bbcode_id
-						FROM ' . BBCODES_TABLE;
+						FROM ' . PHPBB3_BBCODES_TABLE;
 					$result = $db->sql_query($sql);
 					$row = $db->sql_fetchrow($result);
 					$db->sql_freeresult($result);
@@ -217,19 +217,19 @@ class acp_bbcodes
 
 					$sql_ary['bbcode_id'] = (int) $bbcode_id;
 
-					$db->sql_query('INSERT INTO ' . BBCODES_TABLE . $db->sql_build_array('INSERT', $sql_ary));
-					$cache->destroy('sql', BBCODES_TABLE);
+					$db->sql_query('INSERT INTO ' . PHPBB3_BBCODES_TABLE . $db->sql_build_array('INSERT', $sql_ary));
+					$cache->destroy('sql', PHPBB3_BBCODES_TABLE);
 
 					$lang = 'BBCODE_ADDED';
 					$log_action = 'LOG_BBCODE_ADD';
 				}
 				else
 				{
-					$sql = 'UPDATE ' . BBCODES_TABLE . '
+					$sql = 'UPDATE ' . PHPBB3_BBCODES_TABLE . '
 						SET ' . $db->sql_build_array('UPDATE', $sql_ary) . '
 						WHERE bbcode_id = ' . $bbcode_id;
 					$db->sql_query($sql);
-					$cache->destroy('sql', BBCODES_TABLE);
+					$cache->destroy('sql', PHPBB3_BBCODES_TABLE);
 
 					$lang = 'BBCODE_EDITED';
 					$log_action = 'LOG_BBCODE_EDIT';
@@ -244,7 +244,7 @@ class acp_bbcodes
 			case 'delete':
 
 				$sql = 'SELECT bbcode_tag
-					FROM ' . BBCODES_TABLE . "
+					FROM ' . PHPBB3_BBCODES_TABLE . "
 					WHERE bbcode_id = $bbcode_id";
 				$result = $db->sql_query($sql);
 				$row = $db->sql_fetchrow($result);
@@ -254,13 +254,13 @@ class acp_bbcodes
 				{
 					if (confirm_box(true))
 					{
-						$db->sql_query('DELETE FROM ' . BBCODES_TABLE . " WHERE bbcode_id = $bbcode_id");
-						$cache->destroy('sql', BBCODES_TABLE);
+						$db->sql_query('DELETE FROM ' . PHPBB3_BBCODES_TABLE . " WHERE bbcode_id = $bbcode_id");
+						$cache->destroy('sql', PHPBB3_BBCODES_TABLE);
 						add_log('admin', 'LOG_BBCODE_DELETE', $row['bbcode_tag']);
 					}
 					else
 					{
-						confirm_box(false, $user->lang['CONFIRM_OPERATION'], build_hidden_fields(array(
+						confirm_box(false, $user->lang['PHPBB3_CONFIRM_OPERATION'], build_hidden_fields(array(
 							'bbcode'	=> $bbcode_id,
 							'i'			=> $id,
 							'mode'		=> $mode,
@@ -277,7 +277,7 @@ class acp_bbcodes
 		);
 
 		$sql = 'SELECT *
-			FROM ' . BBCODES_TABLE . '
+			FROM ' . PHPBB3_BBCODES_TABLE . '
 			ORDER BY bbcode_tag';
 		$result = $db->sql_query($sql);
 

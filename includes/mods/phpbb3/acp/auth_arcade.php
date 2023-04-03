@@ -40,7 +40,7 @@ class auth_arcade_admin extends auth_arcade
 		if (($this->acl_options = $cache->get('_acl_arcade_options')) === false)
 		{
 			$sql = 'SELECT auth_option_id, auth_option, is_global, is_local
-				FROM ' . ACL_ARCADE_OPTIONS_TABLE . '
+				FROM ' . PHPBB3_ACL_ARCADE_OPTIONS_TABLE . '
 				ORDER BY auth_option_id';
 			$result = $db->sql_query($sql);
 
@@ -77,9 +77,9 @@ class auth_arcade_admin extends auth_arcade
 	* @param mixed $cat_id cat_ids to search for. Defining a category id also means getting local settings
 	* @param string $auth_option the auth_option defines the permission setting to look for (a_ for example)
 	* @param local|global $scope the scope defines the permission scope. If local, a cat_id is additionally required
-	* @param ACL_NEVER|ACL_NO|ACL_YES $acl_fill defines the mode those permissions not set are getting filled with
+	* @param PHPBB3_PHPBB3_ACL_NEVER|PHPBB3_PHPBB3_ACL_NO|PHPBB3_PHPBB3_ACL_YES $acl_fill defines the mode those permissions not set are getting filled with
 	*/
-	function get_mask($mode, $user_id = false, $group_id = false, $cat_id = false, $auth_option = false, $scope = false, $acl_fill = ACL_NEVER)
+	function get_mask($mode, $user_id = false, $group_id = false, $cat_id = false, $auth_option = false, $scope = false, $acl_fill = PHPBB3_PHPBB3_ACL_NEVER)
 	{
 		global $db, $user;
 
@@ -131,7 +131,7 @@ class auth_arcade_admin extends auth_arcade
 			$auth2 = null;
 
 			$sql = 'SELECT user_id, user_arcade_permissions, user_type
-				FROM ' . USERS_TABLE . '
+				FROM ' . PHPBB3_USERS_TABLE . '
 				WHERE ' . $db->sql_in_set('user_id', $ug_id);
 			$result = $db->sql_query($sql);
 
@@ -238,7 +238,7 @@ class auth_arcade_admin extends auth_arcade
 
 		// Get users having this role set...
 		$sql = 'SELECT user_id, cat_id
-			FROM ' . ACL_ARCADE_USERS_TABLE . '
+			FROM ' . PHPBB3_ACL_ARCADE_PHPBB3_USERS_TABLE . '
 			WHERE auth_role_id = ' . $role_id . '
 			ORDER BY cat_id';
 		$result = $db->sql_query($sql);
@@ -251,7 +251,7 @@ class auth_arcade_admin extends auth_arcade
 
 		// Now grab groups...
 		$sql = 'SELECT group_id, cat_id
-			FROM ' . ACL_ARCADE_GROUPS_TABLE . '
+			FROM ' . PHPBB3_ACL_ARCADE_PHPBB3_GROUPS_TABLE . '
 			WHERE auth_role_id = ' . $role_id . '
 			ORDER BY cat_id';
 		$result = $db->sql_query($sql);
@@ -278,7 +278,7 @@ class auth_arcade_admin extends auth_arcade
 		$tpl_category = 'category';
 		$tpl_mask = 'mask';
 
-		$l_acl_type = $user->lang['ACL_TYPE_' . (($local) ? 'LOCAL' : 'GLOBAL') . '_' . strtoupper($permission_type)] ?? 'ACL_TYPE_' . (($local) ? 'LOCAL' : 'GLOBAL') . '_' . strtoupper($permission_type);
+		$l_acl_type = $user->lang['PHPBB3_ACL_TYPE_' . (($local) ? 'LOCAL' : 'GLOBAL') . '_' . strtoupper($permission_type)] ?? 'PHPBB3_ACL_TYPE_' . (($local) ? 'LOCAL' : 'GLOBAL') . '_' . strtoupper($permission_type);
 
 		// Allow trace for viewing permissions and in user mode
 		$show_trace = ($mode == 'view' && $user_mode == 'user') ? true : false;
@@ -287,14 +287,14 @@ class auth_arcade_admin extends auth_arcade
 		if ($user_mode == 'user')
 		{
 			$sql = 'SELECT user_id as ug_id, username as ug_name
-				FROM ' . USERS_TABLE . '
+				FROM ' . PHPBB3_USERS_TABLE . '
 				WHERE ' . $db->sql_in_set('user_id', array_keys($hold_ary)) . '
 				ORDER BY username_clean ASC';
 		}
 		else
 		{
 			$sql = 'SELECT group_id as ug_id, group_name as ug_name, group_type
-				FROM ' . GROUPS_TABLE . '
+				FROM ' . PHPBB3_GROUPS_TABLE . '
 				WHERE ' . $db->sql_in_set('group_id', array_keys($hold_ary)) . '
 				ORDER BY group_type DESC, group_name ASC';
 		}
@@ -303,7 +303,7 @@ class auth_arcade_admin extends auth_arcade
 		$ug_names_ary = array();
 		while ($row = $db->sql_fetchrow($result))
 		{
-			$ug_names_ary[$row['ug_id']] = ($user_mode == 'user') ? $row['ug_name'] : (($row['group_type'] == GROUP_SPECIAL) ? $user->lang['G_' . $row['ug_name']] : $row['ug_name']);
+			$ug_names_ary[$row['ug_id']] = ($user_mode == 'user') ? $row['ug_name'] : (($row['group_type'] == PHPBB3_GROUP_SPECIAL) ? $user->lang['G_' . $row['ug_name']] : $row['ug_name']);
 		}
 		$db->sql_freeresult($result);
 
@@ -337,7 +337,7 @@ class auth_arcade_admin extends auth_arcade
 
 		// Get available roles
 		$sql = 'SELECT *
-			FROM ' . ACL_ARCADE_ROLES_TABLE . "
+			FROM ' . PHPBB3_ACL_ARCADE_ROLES_TABLE . "
 			WHERE role_type = '" . $db->sql_escape($permission_type) . "'
 			ORDER BY role_order ASC";
 		$result = $db->sql_query($sql);
@@ -365,7 +365,7 @@ class auth_arcade_admin extends auth_arcade
 			}
 
 			$sql = 'SELECT r.role_id, o.auth_option, r.auth_setting
-				FROM ' . ACL_ARCADE_ROLES_DATA_TABLE . ' r, ' . ACL_ARCADE_OPTIONS_TABLE . ' o
+				FROM ' . PHPBB3_ACL_ARCADE_ROLES_DATA_TABLE . ' r, ' . PHPBB3_ACL_ARCADE_OPTIONS_TABLE . ' o
 				WHERE o.auth_option_id = r.auth_option_id
 					AND ' . $db->sql_in_set('r.role_id', array_keys($roles));
 			$result = $db->sql_query($sql);
@@ -393,7 +393,7 @@ class auth_arcade_admin extends auth_arcade
 		if ($user_mode == 'user' && $group_display)
 		{
 			$sql = 'SELECT group_id, group_name, group_type
-				FROM ' . GROUPS_TABLE . '
+				FROM ' . PHPBB3_GROUPS_TABLE . '
 				ORDER BY group_type DESC, group_name ASC';
 			$result = $db->sql_query($sql);
 
@@ -411,7 +411,7 @@ class auth_arcade_admin extends auth_arcade
 			{
 				foreach ($memberships as $row)
 				{
-					if ($groups[$row['group_id']]['group_type'] == GROUP_SPECIAL)
+					if ($groups[$row['group_id']]['group_type'] == PHPBB3_GROUP_SPECIAL)
 					{
 						$user_groups_default[$row['user_id']][] = $user->lang['G_' . $groups[$row['group_id']]['group_name']];
 					}
@@ -454,7 +454,7 @@ class auth_arcade_admin extends auth_arcade
 
 					'CATEGORIES'	=> implode('</th><th>', $categories),
 
-					'L_ACL_TYPE'	=> $l_acl_type,
+					'L_PHPBB3_ACL_TYPE'	=> $l_acl_type,
 
 					'S_LOCAL'		=> ($local) ? true : false,
 					'S_GLOBAL'		=> (!$local) ? true : false,
@@ -530,7 +530,7 @@ class auth_arcade_admin extends auth_arcade
 
 					'USER_GROUPS_DEFAULT'	=> ($user_mode == 'user' && isset($user_groups_default[$ug_id]) && sizeof($user_groups_default[$ug_id])) ? implode(', ', $user_groups_default[$ug_id]) : '',
 					'USER_GROUPS_CUSTOM'	=> ($user_mode == 'user' && isset($user_groups_custom[$ug_id]) && sizeof($user_groups_custom[$ug_id])) ? implode(', ', $user_groups_custom[$ug_id]) : '',
-					'L_ACL_TYPE'			=> $l_acl_type,
+					'L_PHPBB3_ACL_TYPE'			=> $l_acl_type,
 
 					'S_LOCAL'		=> ($local) ? true : false,
 					'S_GLOBAL'		=> (!$local) ? true : false,
@@ -629,7 +629,7 @@ class auth_arcade_admin extends auth_arcade
 			if (isset($auth_ary['users']) && sizeof($auth_ary['users']))
 			{
 				$sql = 'SELECT user_id, username
-					FROM ' . USERS_TABLE . '
+					FROM ' . PHPBB3_USERS_TABLE . '
 					WHERE ' . $db->sql_in_set('user_id', $auth_ary['users']) . '
 					ORDER BY username_clean ASC';
 				$result = $db->sql_query($sql);
@@ -648,7 +648,7 @@ class auth_arcade_admin extends auth_arcade
 			if (isset($auth_ary['groups']) && sizeof($auth_ary['groups']))
 			{
 				$sql = 'SELECT group_id, group_name, group_type
-					FROM ' . GROUPS_TABLE . '
+					FROM ' . PHPBB3_GROUPS_TABLE . '
 					WHERE ' . $db->sql_in_set('group_id', $auth_ary['groups']) . '
 					ORDER BY group_type ASC, group_name';
 				$result = $db->sql_query($sql);
@@ -657,7 +657,7 @@ class auth_arcade_admin extends auth_arcade
 				{
 					$template->assign_block_vars('role_mask.groups', array(
 						'GROUP_ID'		=> $row['group_id'],
-						'GROUP_NAME'	=> ($row['group_type'] == GROUP_SPECIAL) ? $user->lang['G_' . $row['group_name']] : $row['group_name'],
+						'GROUP_NAME'	=> ($row['group_type'] == PHPBB3_GROUP_SPECIAL) ? $user->lang['G_' . $row['group_name']] : $row['group_name'],
 						'U_PROFILE'		=> append_sid("{$phpbb_root_path}memberlist.$phpEx", "mode=group&amp;g={$row['group_id']}"))
 					);
 				}
@@ -686,7 +686,7 @@ class auth_arcade_admin extends auth_arcade
 		$cur_options = array();
 
 		$sql = 'SELECT auth_option, is_global, is_local
-			FROM ' . ACL_ARCADE_OPTIONS_TABLE . '
+			FROM ' . PHPBB3_ACL_ARCADE_OPTIONS_TABLE . '
 			ORDER BY auth_option_id';
 		$result = $db->sql_query($sql);
 
@@ -749,7 +749,7 @@ class auth_arcade_admin extends auth_arcade
 			}
 		}
 
-		$db->sql_multi_insert(ACL_ARCADE_OPTIONS_TABLE, $sql_ary);
+		$db->sql_multi_insert(PHPBB3_ACL_ARCADE_OPTIONS_TABLE, $sql_ary);
 
 		$cache->destroy('_acl_arcade_options');
 		$this->acl_clear_prefetch();
@@ -784,7 +784,7 @@ class auth_arcade_admin extends auth_arcade
 		$cat_sql = $db->sql_in_set('cat_id', array_map('intval', $cat_id));
 
 		// Instead of updating, inserting, removing we just remove all current settings and re-set everything...
-		$table = ($ug_type == 'user') ? ACL_ARCADE_USERS_TABLE : ACL_ARCADE_GROUPS_TABLE;
+		$table = ($ug_type == 'user') ? PHPBB3_ACL_ARCADE_PHPBB3_USERS_TABLE : PHPBB3_ACL_ARCADE_PHPBB3_GROUPS_TABLE;
 		$id_field = $ug_type . '_id';
 		$flag = array_key_first($auth);
 		$flag = substr($flag, 0, strpos($flag, '_') + 1);
@@ -813,7 +813,7 @@ class auth_arcade_admin extends auth_arcade
 
 		// Remove those having a role assigned... the correct type of course...
 		$sql = 'SELECT role_id
-			FROM ' . ACL_ARCADE_ROLES_TABLE . "
+			FROM ' . PHPBB3_ACL_ARCADE_ROLES_TABLE . "
 			WHERE role_type = '" . $db->sql_escape($flag) . "'";
 		$result = $db->sql_query($sql);
 
@@ -837,9 +837,9 @@ class auth_arcade_admin extends auth_arcade
 		// Ok, include the any-flag if one or more auth options are set to yes...
 		foreach ($auth as $auth_option => $setting)
 		{
-			if ($setting == ACL_YES && (!isset($auth[$flag]) || $auth[$flag] == ACL_NEVER))
+			if ($setting == PHPBB3_PHPBB3_ACL_YES && (!isset($auth[$flag]) || $auth[$flag] == PHPBB3_PHPBB3_ACL_NEVER))
 			{
-				$auth[$flag] = ACL_YES;
+				$auth[$flag] = PHPBB3_PHPBB3_ACL_YES;
 			}
 		}
 
@@ -867,7 +867,7 @@ class auth_arcade_admin extends auth_arcade
 				{
 					$auth_option_id = (int) $this->acl_options['id'][$auth_option];
 
-					if ($setting != ACL_NO)
+					if ($setting != PHPBB3_PHPBB3_ACL_NO)
 					{
 						foreach ($ug_id as $id)
 						{
@@ -909,9 +909,9 @@ class auth_arcade_admin extends auth_arcade
 		// Re-set any flag...
 		foreach ($auth as $auth_option => $setting)
 		{
-			if ($setting == ACL_YES && (!isset($auth[$flag]) || $auth[$flag] == ACL_NEVER))
+			if ($setting == PHPBB3_PHPBB3_ACL_YES && (!isset($auth[$flag]) || $auth[$flag] == PHPBB3_PHPBB3_ACL_NEVER))
 			{
-				$auth[$flag] = ACL_YES;
+				$auth[$flag] = PHPBB3_PHPBB3_ACL_YES;
 			}
 		}
 
@@ -920,7 +920,7 @@ class auth_arcade_admin extends auth_arcade
 		{
 			$auth_option_id = (int) $this->acl_options['id'][$auth_option];
 
-			if ($setting != ACL_NO)
+			if ($setting != PHPBB3_PHPBB3_ACL_NO)
 			{
 				$sql_ary[] = array(
 					'role_id'			=> (int) $role_id,
@@ -930,23 +930,23 @@ class auth_arcade_admin extends auth_arcade
 			}
 		}
 
-		// If no data is there, we set the any-flag to ACL_NEVER...
+		// If no data is there, we set the any-flag to PHPBB3_PHPBB3_ACL_NEVER...
 		if (!sizeof($sql_ary))
 		{
 			$sql_ary[] = array(
 				'role_id'			=> (int) $role_id,
 				'auth_option_id'	=> (int) $this->acl_options['id'][$flag],
-				'auth_setting'		=> ACL_NEVER
+				'auth_setting'		=> PHPBB3_PHPBB3_ACL_NEVER
 			);
 		}
 
 		// Remove current auth options...
-		$sql = 'DELETE FROM ' . ACL_ARCADE_ROLES_DATA_TABLE . '
+		$sql = 'DELETE FROM ' . PHPBB3_ACL_ARCADE_ROLES_DATA_TABLE . '
 			WHERE role_id = ' . $role_id;
 		$db->sql_query($sql);
 
 		// Now insert the new values
-		$db->sql_multi_insert(ACL_ARCADE_ROLES_DATA_TABLE, $sql_ary);
+		$db->sql_multi_insert(PHPBB3_ACL_ARCADE_ROLES_DATA_TABLE, $sql_ary);
 
 		$this->acl_clear_prefetch();
 	}
@@ -964,7 +964,7 @@ class auth_arcade_admin extends auth_arcade
 		}
 
 		$option_id_ary = array();
-		$table = ($mode == 'user') ? ACL_ARCADE_USERS_TABLE : ACL_ARCADE_GROUPS_TABLE;
+		$table = ($mode == 'user') ? PHPBB3_ACL_ARCADE_PHPBB3_USERS_TABLE : PHPBB3_ACL_ARCADE_PHPBB3_GROUPS_TABLE;
 		$id_field = $mode . '_id';
 
 		$where_sql = array();
@@ -984,7 +984,7 @@ class auth_arcade_admin extends auth_arcade
 		{
 			// Get permission type
 			$sql = 'SELECT auth_option, auth_option_id
-				FROM ' . ACL_ARCADE_OPTIONS_TABLE . "
+				FROM ' . PHPBB3_ACL_ARCADE_OPTIONS_TABLE . "
 				WHERE auth_option " . $db->sql_like_expression($permission_type . $db->any_char);
 			$result = $db->sql_query($sql);
 
@@ -992,13 +992,13 @@ class auth_arcade_admin extends auth_arcade
 			while ($row = $db->sql_fetchrow($result))
 			{
 				$option_id_ary[] = $row['auth_option_id'];
-				$auth_id_ary[$row['auth_option']] = ACL_NO;
+				$auth_id_ary[$row['auth_option']] = PHPBB3_PHPBB3_ACL_NO;
 			}
 			$db->sql_freeresult($result);
 
 			// First of all, lets grab the items having roles with the specified auth options assigned
 			$sql = "SELECT auth_role_id, $id_field, cat_id
-				FROM $table, " . ACL_ARCADE_ROLES_TABLE . " r
+				FROM $table, " . PHPBB3_ACL_ARCADE_ROLES_TABLE . " r
 				WHERE auth_role_id <> 0
 					AND auth_role_id = r.role_id
 					AND r.role_type = '{$permission_type}'
@@ -1017,7 +1017,7 @@ class auth_arcade_admin extends auth_arcade
 			if (sizeof($cur_role_auth))
 			{
 				$sql = 'SELECT ao.auth_option, rd.role_id, rd.auth_setting
-					FROM ' . ACL_ARCADE_OPTIONS_TABLE . ' ao, ' . ACL_ARCADE_ROLES_DATA_TABLE . ' rd
+					FROM ' . PHPBB3_ACL_ARCADE_OPTIONS_TABLE . ' ao, ' . PHPBB3_ACL_ARCADE_ROLES_DATA_TABLE . ' rd
 					WHERE ao.auth_option_id = rd.auth_option_id
 						AND ' . $db->sql_in_set('rd.role_id', array_keys($cur_role_auth));
 				$result = $db->sql_query($sql);
@@ -1095,8 +1095,8 @@ class auth_arcade_admin extends auth_arcade
           if ($s_view)
       				{
       					$template->assign_block_vars($tpl_cat . '.' . $tpl_mask, array(
-      						'S_YES'		=> ($allowed == ACL_YES) ? true : false,
-      						'S_NEVER'	=> ($allowed == ACL_NEVER) ? true : false,
+      						'S_YES'		=> ($allowed == PHPBB3_PHPBB3_ACL_YES) ? true : false,
+      						'S_NEVER'	=> ($allowed == PHPBB3_PHPBB3_ACL_NEVER) ? true : false,
       
       						'UG_ID'			=> $ug_id,
       						'FORUM_ID'		=> $cat_id,
@@ -1112,9 +1112,9 @@ class auth_arcade_admin extends auth_arcade
       				else
       				{
       					$template->assign_block_vars($tpl_cat . '.' . $tpl_mask, array(
-      						'S_YES'		=> ($allowed == ACL_YES) ? true : false,
-      						'S_NEVER'	=> ($allowed == ACL_NEVER) ? true : false,
-      						'S_NO'		=> ($allowed == ACL_NO) ? true : false,
+      						'S_YES'		=> ($allowed == PHPBB3_PHPBB3_ACL_YES) ? true : false,
+      						'S_NEVER'	=> ($allowed == PHPBB3_PHPBB3_ACL_NEVER) ? true : false,
+      						'S_NO'		=> ($allowed == PHPBB3_PHPBB3_ACL_NO) ? true : false,
       
       						'UG_ID'			=> $ug_id,
       						'FORUM_ID'		=> $cat_id,
@@ -1178,9 +1178,9 @@ class auth_arcade_admin extends auth_arcade
    						'permissions'	=> array(),
    					);
    				}
-       $content_array[$cat_id][$cat]['S_YES'] |= ($auth_setting == ACL_YES) ? true : false;
-       $content_array[$cat_id][$cat]['S_NEVER'] |= ($auth_setting == ACL_NEVER) ? true : false;
-       $content_array[$cat_id][$cat]['S_NO'] |= ($auth_setting == ACL_NO) ? true : false;
+       $content_array[$cat_id][$cat]['S_YES'] |= ($auth_setting == PHPBB3_PHPBB3_ACL_YES) ? true : false;
+       $content_array[$cat_id][$cat]['S_NEVER'] |= ($auth_setting == PHPBB3_PHPBB3_ACL_NEVER) ? true : false;
+       $content_array[$cat_id][$cat]['S_NO'] |= ($auth_setting == PHPBB3_PHPBB3_ACL_NO) ? true : false;
        $content_array[$cat_id][$cat]['permissions'][$permission] = $auth_setting;
    }
 		}
@@ -1212,12 +1212,12 @@ class auth_arcade_admin extends auth_arcade
 		{
 			if (strpos($opt, 'a_') === 0)
 			{
-				$hold_ary[0][$this->acl_options['id'][$opt]] = ACL_NEVER;
+				$hold_ary[0][$this->acl_options['id'][$opt]] = PHPBB3_PHPBB3_ACL_NEVER;
 			}
 		}
 
 		// Force a_switchperm to be allowed
-		$hold_ary[0][$this->acl_options['id']['a_switchperm']] = ACL_YES;*/
+		$hold_ary[0][$this->acl_options['id']['a_switchperm']] = PHPBB3_PHPBB3_ACL_YES;*/
 
 		$user_arcade_permissions = $this->build_bitstring($hold_ary);
 
@@ -1226,7 +1226,7 @@ class auth_arcade_admin extends auth_arcade
 			return false;
 		}
 
-		$sql = 'UPDATE ' . USERS_TABLE . "
+		$sql = 'UPDATE ' . PHPBB3_USERS_TABLE . "
 			SET user_arcade_permissions = '" . $db->sql_escape($user_arcade_permissions) . "',
 				user_arcade_perm_from = $from_user_id
 			WHERE user_id = " . $to_user_id;

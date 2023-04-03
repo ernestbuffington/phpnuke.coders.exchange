@@ -76,7 +76,7 @@ class fulltext_mysql extends search_backend
 			return $user->lang['FULLTEXT_MYSQL_INCOMPATIBLE_VERSION'];
 		}
 
-		$result = $db->sql_query('SHOW TABLE STATUS LIKE \'' . POSTS_TABLE . '\'');
+		$result = $db->sql_query('SHOW TABLE STATUS LIKE \'' . PHPBB3_POSTS_TABLE . '\'');
 		$info = $db->sql_fetchrow($result);
 		$db->sql_freeresult($result);
 
@@ -381,7 +381,7 @@ class fulltext_mysql extends search_backend
 		switch ($sql_sort[0])
 		{
 			case 'u':
-				$sql_sort_table	= USERS_TABLE . ' u, ';
+				$sql_sort_table	= PHPBB3_USERS_TABLE . ' u, ';
 				$sql_sort_join	= ($type == 'posts') ? ' AND u.user_id = p.poster_id ' : ' AND u.user_id = t.topic_poster ';
 			break;
 
@@ -390,7 +390,7 @@ class fulltext_mysql extends search_backend
 			break;
 
 			case 'f':
-				$sql_sort_table	= FORUMS_TABLE . ' f, ';
+				$sql_sort_table	= PHPBB3_FORUMS_TABLE . ' f, ';
 				$sql_sort_join	= ' AND f.forum_id = p.forum_id ';
 			break;
 		}
@@ -436,7 +436,7 @@ class fulltext_mysql extends search_backend
 
 		$sql_select			= (!$result_count) ? 'SQL_CALC_FOUND_ROWS ' : '';
 		$sql_select			= ($type == 'posts') ? $sql_select . 'p.post_id' : 'DISTINCT ' . $sql_select . 't.topic_id';
-		$sql_from			= ($join_topic) ? TOPICS_TABLE . ' t, ' : '';
+		$sql_from			= ($join_topic) ? PHPBB3_TOPICS_TABLE . ' t, ' : '';
 		$field				= ($type == 'posts') ? 'post_id' : 'topic_id';
 		$sql_author			= (sizeof($author_ary) == 1) ? ' = ' . $author_ary[0] : 'IN (' . implode(', ', $author_ary) . ')';
 
@@ -450,7 +450,7 @@ class fulltext_mysql extends search_backend
 		$sql_where_options .= $sql_match_where;
 
 		$sql = "SELECT $sql_select
-			FROM $sql_from$sql_sort_table" . POSTS_TABLE . " p
+			FROM $sql_from$sql_sort_table" . PHPBB3_POSTS_TABLE . " p
 			WHERE MATCH ($sql_match) AGAINST ('" . $db->sql_escape(htmlspecialchars_decode($this->search_query)) . "' IN BOOLEAN MODE)
 				$sql_where_options
 			ORDER BY $sql_sort";
@@ -545,17 +545,17 @@ class fulltext_mysql extends search_backend
 		switch ($sql_sort[0])
 		{
 			case 'u':
-				$sql_sort_table	= USERS_TABLE . ' u, ';
+				$sql_sort_table	= PHPBB3_USERS_TABLE . ' u, ';
 				$sql_sort_join	= ($type == 'posts') ? ' AND u.user_id = p.poster_id ' : ' AND u.user_id = t.topic_poster ';
 			break;
 
 			case 't':
-				$sql_sort_table	= ($type == 'posts' && !$firstpost_only) ? TOPICS_TABLE . ' t, ' : '';
+				$sql_sort_table	= ($type == 'posts' && !$firstpost_only) ? PHPBB3_TOPICS_TABLE . ' t, ' : '';
 				$sql_sort_join	= ($type == 'posts' && !$firstpost_only) ? ' AND t.topic_id = p.topic_id ' : '';
 			break;
 
 			case 'f':
-				$sql_sort_table	= FORUMS_TABLE . ' f, ';
+				$sql_sort_table	= PHPBB3_FORUMS_TABLE . ' f, ';
 				$sql_sort_join	= ' AND f.forum_id = p.forum_id ';
 			break;
 		}
@@ -580,7 +580,7 @@ class fulltext_mysql extends search_backend
 		if ($type == 'posts')
 		{
 			$sql = "SELECT {$calc_results}p.post_id
-				FROM " . $sql_sort_table . POSTS_TABLE . ' p' . (($firstpost_only) ? ', ' . TOPICS_TABLE . ' t ' : ' ') . "
+				FROM " . $sql_sort_table . PHPBB3_POSTS_TABLE . ' p' . (($firstpost_only) ? ', ' . PHPBB3_TOPICS_TABLE . ' t ' : ' ') . "
 				WHERE $sql_author
 					$sql_topic_id
 					$sql_firstpost
@@ -594,7 +594,7 @@ class fulltext_mysql extends search_backend
 		else
 		{
 			$sql = "SELECT {$calc_results}t.topic_id
-				FROM " . $sql_sort_table . TOPICS_TABLE . ' t, ' . POSTS_TABLE . " p
+				FROM " . $sql_sort_table . PHPBB3_TOPICS_TABLE . ' t, ' . PHPBB3_POSTS_TABLE . " p
 				WHERE $sql_author
 					$sql_topic_id
 					$sql_firstpost
@@ -739,10 +739,10 @@ class fulltext_mysql extends search_backend
 
 		if (sizeof($alter))
 		{
-			$db->sql_query('ALTER TABLE ' . POSTS_TABLE . ' ' . implode(', ', $alter));
+			$db->sql_query('ALTER TABLE ' . PHPBB3_POSTS_TABLE . ' ' . implode(', ', $alter));
 		}
 
-		$db->sql_query('TRUNCATE TABLE ' . SEARCH_RESULTS_TABLE);
+		$db->sql_query('TRUNCATE TABLE ' . PHPBB3_SEARCH_RESULTS_TABLE);
 
 		return false;
 	}
@@ -784,10 +784,10 @@ class fulltext_mysql extends search_backend
 
 		if (sizeof($alter))
 		{
-			$db->sql_query('ALTER TABLE ' . POSTS_TABLE . ' ' . implode(', ', $alter));
+			$db->sql_query('ALTER TABLE ' . PHPBB3_POSTS_TABLE . ' ' . implode(', ', $alter));
 		}
 
-		$db->sql_query('TRUNCATE TABLE ' . SEARCH_RESULTS_TABLE);
+		$db->sql_query('TRUNCATE TABLE ' . PHPBB3_SEARCH_RESULTS_TABLE);
 
 		return false;
 	}
@@ -833,7 +833,7 @@ class fulltext_mysql extends search_backend
 		}
 
 		$sql = 'SHOW INDEX
-			FROM ' . POSTS_TABLE;
+			FROM ' . PHPBB3_POSTS_TABLE;
 		$result = $db->sql_query($sql);
 
 		while ($row = $db->sql_fetchrow($result))
@@ -860,7 +860,7 @@ class fulltext_mysql extends search_backend
 		$db->sql_freeresult($result);
 
 		$sql = 'SELECT COUNT(post_id) as total_posts
-			FROM ' . POSTS_TABLE;
+			FROM ' . PHPBB3_POSTS_TABLE;
 		$result = $db->sql_query($sql);
 		$this->stats['total_posts'] = (int) $db->sql_fetchfield('total_posts');
 		$db->sql_freeresult($result);

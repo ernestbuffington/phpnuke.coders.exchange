@@ -62,7 +62,7 @@ class acp_bots
 				{
 					$sql_id = ($bot_id) ? " = $bot_id" : ' IN (' . implode(', ', $mark) . ')';
 
-					$sql = 'UPDATE ' . BOTS_TABLE . "
+					$sql = 'UPDATE ' . PHPBB3_BOTS_TABLE . "
 						SET bot_active = 1
 						WHERE bot_id $sql_id";
 					$db->sql_query($sql);
@@ -76,7 +76,7 @@ class acp_bots
 				{
 					$sql_id = ($bot_id) ? " = $bot_id" : ' IN (' . implode(', ', $mark) . ')';
 
-					$sql = 'UPDATE ' . BOTS_TABLE . "
+					$sql = 'UPDATE ' . PHPBB3_BOTS_TABLE . "
 						SET bot_active = 0
 						WHERE bot_id $sql_id";
 					$db->sql_query($sql);
@@ -94,7 +94,7 @@ class acp_bots
 						$sql_id = ($bot_id) ? " = $bot_id" : ' IN (' . implode(', ', $mark) . ')';
 
 						$sql = 'SELECT bot_name, user_id
-							FROM ' . BOTS_TABLE . "
+							FROM ' . PHPBB3_BOTS_TABLE . "
 							WHERE bot_id $sql_id";
 						$result = $db->sql_query($sql);
 
@@ -108,13 +108,13 @@ class acp_bots
 
 						$db->sql_transaction('begin');
 
-						$sql = 'DELETE FROM ' . BOTS_TABLE . "
+						$sql = 'DELETE FROM ' . PHPBB3_BOTS_TABLE . "
 							WHERE bot_id $sql_id";
 						$db->sql_query($sql);
 
 						if (sizeof($user_id_ary))
 						{
-							$_tables = array(USERS_TABLE, USER_GROUP_TABLE);
+							$_tables = array(PHPBB3_USERS_TABLE, PHPBB3_USER_GROUP_TABLE);
 							foreach ($_tables as $table)
 							{
 								$sql = "DELETE FROM $table
@@ -132,7 +132,7 @@ class acp_bots
 					}
 					else
 					{
-						confirm_box(false, $user->lang['CONFIRM_OPERATION'], build_hidden_fields(array(
+						confirm_box(false, $user->lang['PHPBB3_CONFIRM_OPERATION'], build_hidden_fields(array(
 							'mark'		=> $mark,
 							'id'		=> $bot_id,
 							'mode'		=> $mode,
@@ -185,7 +185,7 @@ class acp_bots
 					if ($bot_id)
 					{
 						$sql = 'SELECT u.username_clean
-							FROM ' . BOTS_TABLE . ' b, ' . USERS_TABLE . " u
+							FROM ' . PHPBB3_BOTS_TABLE . ' b, ' . PHPBB3_USERS_TABLE . " u
 							WHERE b.bot_id = $bot_id
 								AND u.user_id = b.user_id";
 						$result = $db->sql_query($sql);
@@ -212,9 +212,9 @@ class acp_bots
 						if ($action == 'add')
 						{
 							$sql = 'SELECT group_id, group_colour
-								FROM ' . GROUPS_TABLE . "
+								FROM ' . PHPBB3_GROUPS_TABLE . "
 								WHERE group_name = 'BOTS'
-									AND group_type = " . GROUP_SPECIAL;
+									AND group_type = " . PHPBB3_GROUP_SPECIAL;
 							$result = $db->sql_query($sql);
 							$group_row = $db->sql_fetchrow($result);
 							$db->sql_freeresult($result);
@@ -226,7 +226,7 @@ class acp_bots
 						
 
 							$user_id = user_add(array(
-								'user_type'				=> (int) USER_IGNORE,
+								'user_type'				=> (int) PHPBB3_USER_IGNORE,
 								'group_id'				=> (int) $group_row['group_id'],
 								'username'				=> (string) $bot_row['bot_name'],
 								'user_regdate'			=> time(),
@@ -238,7 +238,7 @@ class acp_bots
 								'user_allow_massemail'	=> 0,
 							));
 	
-							$sql = 'INSERT INTO ' . BOTS_TABLE . ' ' . $db->sql_build_array('INSERT', array(
+							$sql = 'INSERT INTO ' . PHPBB3_BOTS_TABLE . ' ' . $db->sql_build_array('INSERT', array(
 								'user_id'		=> (int) $user_id,
 								'bot_name'		=> (string) $bot_row['bot_name'],
 								'bot_active'	=> (int) $bot_row['bot_active'],
@@ -252,7 +252,7 @@ class acp_bots
 						else if ($bot_id)
 						{
 							$sql = 'SELECT user_id, bot_name
-								FROM ' . BOTS_TABLE . "
+								FROM ' . PHPBB3_BOTS_TABLE . "
 								WHERE bot_id = $bot_id";
 							$result = $db->sql_query($sql);
 							$row = $db->sql_fetchrow($result);
@@ -274,10 +274,10 @@ class acp_bots
 								$sql_ary['username_clean'] = (string) utf8_clean_string($bot_row['bot_name']);
 							}
 
-							$sql = 'UPDATE ' . USERS_TABLE . ' SET ' . $db->sql_build_array('UPDATE', $sql_ary) . " WHERE user_id = {$row['user_id']}";
+							$sql = 'UPDATE ' . PHPBB3_USERS_TABLE . ' SET ' . $db->sql_build_array('UPDATE', $sql_ary) . " WHERE user_id = {$row['user_id']}";
 							$db->sql_query($sql);
 
-							$sql = 'UPDATE ' . BOTS_TABLE . ' SET ' . $db->sql_build_array('UPDATE', array(
+							$sql = 'UPDATE ' . PHPBB3_BOTS_TABLE . ' SET ' . $db->sql_build_array('UPDATE', array(
 								'bot_name'		=> (string) $bot_row['bot_name'],
 								'bot_active'	=> (int) $bot_row['bot_active'],
 								'bot_agent'		=> (string) $bot_row['bot_agent'],
@@ -304,7 +304,7 @@ class acp_bots
 				else if ($bot_id)
 				{
 					$sql = 'SELECT b.*, u.user_lang, u.user_style
-						FROM ' . BOTS_TABLE . ' b, ' . USERS_TABLE . " u
+						FROM ' . PHPBB3_BOTS_TABLE . ' b, ' . PHPBB3_USERS_TABLE . " u
 						WHERE b.bot_id = $bot_id
 							AND u.user_id = b.user_id";
 					$result = $db->sql_query($sql);
@@ -370,7 +370,7 @@ class acp_bots
 		);
 
 		$sql = 'SELECT b.bot_id, b.bot_name, b.bot_active, u.user_lastvisit
-			FROM ' . BOTS_TABLE . ' b, ' . USERS_TABLE . ' u
+			FROM ' . PHPBB3_BOTS_TABLE . ' b, ' . PHPBB3_USERS_TABLE . ' u
 			WHERE u.user_id = b.user_id
 			ORDER BY u.user_lastvisit DESC, b.bot_name ASC';
 		$result = $db->sql_query($sql);
@@ -408,7 +408,7 @@ class acp_bots
 
 		// Admins might want to use names otherwise forbidden, thus we only check for duplicates.
 		$sql = 'SELECT username
-			FROM ' . USERS_TABLE . "
+			FROM ' . PHPBB3_USERS_TABLE . "
 			WHERE username_clean = '" . $db->sql_escape(utf8_clean_string($newname)) . "'";
 		$result = $db->sql_query($sql);
 		$row = $db->sql_fetchrow($result);

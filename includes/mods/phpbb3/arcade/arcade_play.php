@@ -42,7 +42,7 @@ if ($mode == 'popup')
 {
 	$popup = true;
 	$sql_array['SELECT'] .= ', g.game_highscore, u.username';
-	$sql_array['LEFT_JOIN'][] = array('FROM' => array(USERS_TABLE => 'u'),	'ON' => 'g.game_highuser = u.user_id');
+	$sql_array['LEFT_JOIN'][] = array('FROM' => array(PHPBB3_USERS_TABLE => 'u'),	'ON' => 'g.game_highuser = u.user_id');
 }
 
 $sql = $db->sql_build_query('SELECT', $sql_array);
@@ -61,7 +61,7 @@ if (!$auth_arcade->acl_get('c_play', $row['cat_id']))
 	trigger_error('NO_PERMISSION_ARCADE_PLAY');
 }
 
-if ($row['cat_status'] == ITEM_LOCKED)
+if ($row['cat_status'] == PHPBB3_ITEM_LOCKED)
 {
 	trigger_error('ARCADE_CAT_LOCKED_ERROR');
 }
@@ -182,7 +182,7 @@ switch($mode)
 
 			'LEFT_JOIN'	=> array(
 				array(
-					'FROM'	=> array(USERS_TABLE => 'u'),
+					'FROM'	=> array(PHPBB3_USERS_TABLE => 'u'),
 					'ON'	=> 's.user_id = u.user_id'
 				),
 			),

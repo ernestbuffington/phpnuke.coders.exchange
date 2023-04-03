@@ -78,22 +78,22 @@ $l_total_image_s = ($total_images == 0) ? 'TOTAL_IMAGES_ZERO' : 'TOTAL_IMAGES_OT
 if ($auth->acl_gets('a_group', 'a_groupadd', 'a_groupdel'))
 {
 	$sql = 'SELECT group_id, group_name, group_colour, group_type
-		FROM ' . GROUPS_TABLE . '
+		FROM ' . PHPBB3_GROUPS_TABLE . '
 		WHERE group_legend = 1
 		ORDER BY group_name ASC';
 }
 else
 {
 	$sql = 'SELECT g.group_id, g.group_name, g.group_colour, g.group_type
-		FROM ' . GROUPS_TABLE . ' g
-		LEFT JOIN ' . USER_GROUP_TABLE . ' ug
+		FROM ' . PHPBB3_GROUPS_TABLE . ' g
+		LEFT JOIN ' . PHPBB3_USER_GROUP_TABLE . ' ug
 			ON (
 				g.group_id = ug.group_id
 				AND ug.user_id = ' . $user->data['user_id'] . '
 				AND ug.user_pending = 0
 			)
 		WHERE g.group_legend = 1
-			AND (g.group_type <> ' . GROUP_HIDDEN . ' OR ug.user_id = ' . $user->data['user_id'] . ')
+			AND (g.group_type <> ' . PHPBB3_GROUP_HIDDEN . ' OR ug.user_id = ' . $user->data['user_id'] . ')
 		ORDER BY g.group_name ASC';
 }
 $result = $db->sql_query($sql);
@@ -102,7 +102,7 @@ $legend = array();
 while ($row = $db->sql_fetchrow($result))
 {
 	$colour_text = ($row['group_colour']) ? ' style="color:#' . $row['group_colour'] . '"' : '';
-	$group_name = ($row['group_type'] == GROUP_SPECIAL) ? $user->lang['G_' . $row['group_name']] : $row['group_name'];
+	$group_name = ($row['group_type'] == PHPBB3_GROUP_SPECIAL) ? $user->lang['G_' . $row['group_name']] : $row['group_name'];
 
 	if ($row['group_name'] == 'BOTS' || ($user->data['user_id'] != ANONYMOUS && !$auth->acl_get('u_viewprofile')))
 	{
@@ -124,9 +124,9 @@ if ($config['load_birthdays'] && $config['allow_birthdays'])
 {
 	$now = getdate(time() + $user->timezone + $user->dst - date('Z'));
 	$sql = 'SELECT user_id, username, user_colour, user_birthday, user_email, user_lang,user_notify_type, user_jabber, user_avatar, user_avatar_type, user_avatar_width, user_avatar_height
-		FROM ' . USERS_TABLE . "
+		FROM ' . PHPBB3_USERS_TABLE . "
 		WHERE user_birthday LIKE '" . $db->sql_escape(sprintf('%2d-%2d-', $now['mday'], $now['mon'])) . "%'
-			AND user_type IN (" . USER_NORMAL . ', ' . USER_FOUNDER . ')';
+			AND user_type IN (" . PHPBB3_USER_NORMAL . ', ' . PHPBB3_USER_FOUNDER . ')';
 	$result = $db->sql_query($sql);
 
 	while ($row = $db->sql_fetchrow($result))

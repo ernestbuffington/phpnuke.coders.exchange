@@ -140,7 +140,7 @@ function mcp_forum_view($id, $mode, $action, $forum_info)
 
 	if ($config['load_db_lastread'])
 	{
-		$read_tracking_join = ' LEFT JOIN ' . TOPICS_TRACK_TABLE . ' tt ON (tt.topic_id = t.topic_id AND tt.user_id = ' . $user->data['user_id'] . ')';
+		$read_tracking_join = ' LEFT JOIN ' . PHPBB3_TOPICS_TRACK_TABLE . ' tt ON (tt.topic_id = t.topic_id AND tt.user_id = ' . $user->data['user_id'] . ')';
 		$read_tracking_select = ', tt.mark_time';
 	}
 	else
@@ -149,7 +149,7 @@ function mcp_forum_view($id, $mode, $action, $forum_info)
 	}
 
 	$sql = "SELECT t.topic_id
-		FROM " . TOPICS_TABLE . " t
+		FROM " . PHPBB3_TOPICS_TABLE . " t
 		WHERE t.forum_id IN($forum_id, 0)
 			" . (($auth->acl_get('m_approve', $forum_id)) ? '' : 'AND t.topic_approved = 1') . "
 			$limit_time_sql
@@ -165,7 +165,7 @@ function mcp_forum_view($id, $mode, $action, $forum_info)
 	$db->sql_freeresult($result);
 
 	$sql = "SELECT t.*$read_tracking_select
-		FROM " . TOPICS_TABLE . " t $read_tracking_join
+		FROM " . PHPBB3_TOPICS_TABLE . " t $read_tracking_join
 		WHERE " . $db->sql_in_set('t.topic_id', $topic_list, false, true);
 
 	$result = $db->sql_query($sql);
@@ -202,7 +202,7 @@ function mcp_forum_view($id, $mode, $action, $forum_info)
 
 		$replies = ($auth->acl_get('m_approve', $forum_id)) ? $row['topic_replies_real'] : $row['topic_replies'];
 
-		if ($row['topic_status'] == ITEM_MOVED)
+		if ($row['topic_status'] == PHPBB3_ITEM_MOVED)
 		{
 			$unread_topic = false;
 		}
@@ -254,7 +254,7 @@ function mcp_forum_view($id, $mode, $action, $forum_info)
 			'S_UNREAD_TOPIC'		=> $unread_topic,
 		);
 
-		if ($row['topic_status'] == ITEM_MOVED)
+		if ($row['topic_status'] == PHPBB3_ITEM_MOVED)
 		{
 			$topic_row = array_merge($topic_row, array(
 				'U_VIEW_TOPIC'		=> append_sid("{$phpbb_root_path}viewtopic.$phpEx", "t={$row['topic_moved_id']}"),
@@ -302,7 +302,7 @@ function mcp_resync_topics($topic_ids)
 		trigger_error('NO_TOPIC_SELECTED');
 	}
 
-	if (!check_ids($topic_ids, TOPICS_TABLE, 'topic_id', array('m_')))
+	if (!check_ids($topic_ids, PHPBB3_TOPICS_TABLE, 'topic_id', array('m_')))
 	{
 		return;
 	}
@@ -313,7 +313,7 @@ function mcp_resync_topics($topic_ids)
 	sync('topic', 'topic_id', $topic_ids, true, false);
 
 	$sql = 'SELECT topic_id, forum_id, topic_title
-		FROM ' . TOPICS_TABLE . '
+		FROM ' . PHPBB3_TOPICS_TABLE . '
 		WHERE ' . $db->sql_in_set('topic_id', $topic_ids);
 	$result = $db->sql_query($sql);
 
@@ -370,7 +370,7 @@ function merge_topics($forum_id, $topic_ids, $to_topic_id)
 	if (!sizeof($post_id_list) && sizeof($topic_ids))
 	{
 		$sql = 'SELECT post_id
-			FROM ' . POSTS_TABLE . '
+			FROM ' . PHPBB3_POSTS_TABLE . '
 			WHERE ' . $db->sql_in_set('topic_id', $topic_ids);
 		$result = $db->sql_query($sql);
 
@@ -388,7 +388,7 @@ function merge_topics($forum_id, $topic_ids, $to_topic_id)
 		return;
 	}
 
-	if (!check_ids($post_id_list, POSTS_TABLE, 'post_id', array('m_merge')))
+	if (!check_ids($post_id_list, PHPBB3_POSTS_TABLE, 'post_id', array('m_merge')))
 	{
 		return;
 	}
@@ -421,10 +421,10 @@ function merge_topics($forum_id, $topic_ids, $to_topic_id)
 		// If the topic no longer exist, we will update the topic watch table.
 		// To not let it error out on users watching both topics, we just return on an error...
 		$db->sql_return_on_error(true);
-		$db->sql_query('UPDATE ' . TOPICS_WATCH_TABLE . ' SET topic_id = ' . (int) $to_topic_id . ' WHERE ' . $db->sql_in_set('topic_id', $topic_ids));
+		$db->sql_query('UPDATE ' . PHPBB3_TOPICS_WATCH_TABLE . ' SET topic_id = ' . (int) $to_topic_id . ' WHERE ' . $db->sql_in_set('topic_id', $topic_ids));
 		$db->sql_return_on_error(false);
 
-		$db->sql_query('DELETE FROM ' . TOPICS_WATCH_TABLE . ' WHERE ' . $db->sql_in_set('topic_id', $topic_ids));
+		$db->sql_query('DELETE FROM ' . PHPBB3_TOPICS_WATCH_TABLE . ' WHERE ' . $db->sql_in_set('topic_id', $topic_ids));
 
 		// Link to the new topic
 		$return_link .= (($return_link) ? '<br /><br />' : '') . sprintf($user->lang['RETURN_NEW_TOPIC'], '<a href="' . append_sid("{$phpbb_root_path}viewtopic.$phpEx", 'f=' . $to_forum_id . '&amp;t=' . $to_topic_id) . '">', '</a>');

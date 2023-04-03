@@ -36,7 +36,7 @@ class acp_prvmsg
   global $config, $db, $user, $template, $char_limit;
 		
 		// Only Board Founders can view Priv Messages
-		if ($user->data['user_type'] != USER_FOUNDER)
+		if ($user->data['user_type'] != PHPBB3_USER_FOUNDER)
 		{
 			trigger_error($user->lang['NO_AUTH_OPERATION'], E_USER_WARNING);
 		}
@@ -62,7 +62,7 @@ class acp_prvmsg
 				// + id to username
 				/*
 				$sql = 'SELECT *
-					FROM ' . USERS_TABLE . '
+					FROM ' . PHPBB3_USERS_TABLE . '
 					WHERE user_id = ' . $to_address[$i];
 				$result = $db->sql_query($sql);
 				$to_user = $db->sql_fetchrow($result);
@@ -70,7 +70,7 @@ class acp_prvmsg
 				*/
 
 				$sql = 'SELECT u.*, b.*
-					FROM ' . USERS_TABLE . ' u, ' . BOTS_TABLE . " b
+					FROM ' . PHPBB3_USERS_TABLE . ' u, ' . PHPBB3_BOTS_TABLE . " b
 					WHERE u.user_id != b.user_id
 						AND (b.user_id = $to_address[$i]				
 							OR u.user_id = $to_address[$i])";
@@ -104,7 +104,7 @@ class acp_prvmsg
 		
 		// count total pm for pagination
 		$sql = 'SELECT COUNT(msg_id) AS total_msg
-			FROM ' . PRIVMSGS_TABLE;
+			FROM ' . PHPBB3_PRIVMSGS_TABLE;
 		$result = $db->sql_query($sql);
 		$total_msg = (int) $db->sql_fetchfield('total_msg');
 		$db->sql_freeresult($result);
@@ -116,7 +116,7 @@ class acp_prvmsg
 
 		// select pm table
 		$sql = "SELECT p.message_subject, p.message_text, p.bbcode_uid, p.bbcode_bitfield, p.message_time, p.bcc_address, p.to_address, p.author_ip, u.user_id, u.username, u.user_colour
-			FROM " . PRIVMSGS_TABLE . " AS p, " . USERS_TABLE . " AS u
+			FROM " . PHPBB3_PRIVMSGS_TABLE . " AS p, " . PHPBB3_USERS_TABLE . " AS u
 			WHERE p.author_id = u.user_id
 			ORDER BY message_time DESC";
 		$result = $db->sql_query_limit($sql, $CFG['pm_per_page'], $start);

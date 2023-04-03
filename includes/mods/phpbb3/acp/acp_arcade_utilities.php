@@ -543,7 +543,7 @@ class acp_arcade_utilities
 
 				$user_id = request_var('u', 0);
 				$sql = 'SELECT username, user_id, user_colour
-					FROM ' . USERS_TABLE . '
+					FROM ' . PHPBB3_USERS_TABLE . '
 					WHERE user_id = ' . $user_id;
 				$result = $db->sql_query($sql);
 				$user_data = $db->sql_fetchrow($result);
@@ -641,7 +641,7 @@ class acp_arcade_utilities
 
 					'LEFT_JOIN'	=> array(
 						array(
-							'FROM'	=> array(USERS_TABLE => 'u'),
+							'FROM'	=> array(PHPBB3_USERS_TABLE => 'u'),
 							'ON'	=> 'd.user_id = u.user_id'
 						),
 					),
@@ -756,7 +756,7 @@ class acp_arcade_utilities
 
 				if ($where_sql || $deleteall)
 				{
-					$sql = 'DELETE FROM ' . ARCADE_REPORTS_TABLE;
+					$sql = 'DELETE FROM ' . ARCADE_PHPBB3_REPORTS_TABLE;
 					if ($where_sql)
 					{
 						$sql .= " WHERE $where_sql";
@@ -767,7 +767,7 @@ class acp_arcade_utilities
 			}
 			else
 			{
-				confirm_box(false, $user->lang['CONFIRM_OPERATION'], build_hidden_fields(array(
+				confirm_box(false, $user->lang['PHPBB3_CONFIRM_OPERATION'], build_hidden_fields(array(
 					'start'		=> $start,
 					'delmarked'	=> $deletemark,
 					'delall'	=> $deleteall,
@@ -777,7 +777,7 @@ class acp_arcade_utilities
 			}
 		}
 
-		$sql = 'SELECT COUNT(*) as total FROM ' . ARCADE_REPORTS_TABLE;
+		$sql = 'SELECT COUNT(*) as total FROM ' . ARCADE_PHPBB3_REPORTS_TABLE;
 		$result = $db->sql_query($sql);
 		$row = $db->sql_fetchrow($result);
 		$db->sql_freeresult($result);
@@ -800,12 +800,12 @@ class acp_arcade_utilities
 			'SELECT'	=> 'r.*, u.username, u.user_colour, u.user_id, g.game_name, g.game_image',
 
 			'FROM'		=> array(
-				ARCADE_REPORTS_TABLE	=> 'r',
+				ARCADE_PHPBB3_REPORTS_TABLE	=> 'r',
 			),
 
 			'LEFT_JOIN'	=> array(
 				array(
-					'FROM'	=> array(USERS_TABLE => 'u'),
+					'FROM'	=> array(PHPBB3_USERS_TABLE => 'u'),
 					'ON'	=> 'r.user_id = u.user_id'
 				),
 				array(
@@ -939,7 +939,7 @@ class acp_arcade_utilities
 			}
 			else
 			{
-				confirm_box(false, $user->lang['CONFIRM_OPERATION'], build_hidden_fields(array(
+				confirm_box(false, $user->lang['PHPBB3_CONFIRM_OPERATION'], build_hidden_fields(array(
 					'start'		=> $start,
 					'delmarked'	=> $deletemark,
 					'delall'	=> $deleteall,
@@ -977,7 +977,7 @@ class acp_arcade_utilities
 
 			'LEFT_JOIN'	=> array(
 				array(
-					'FROM'	=> array(USERS_TABLE => 'u'),
+					'FROM'	=> array(PHPBB3_USERS_TABLE => 'u'),
 					'ON'	=> 'e.user_id = u.user_id'
 				),
 				array(

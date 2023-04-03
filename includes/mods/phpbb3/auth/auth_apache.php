@@ -48,7 +48,7 @@ function login_apache(&$username, &$password)
 	if (!$password)
 	{
 		return array(
-			'status'	=> LOGIN_ERROR_PASSWORD,
+			'status'	=> PHPBB3_LOGIN_ERROR_PASSWORD,
 			'error_msg'	=> 'NO_PASSWORD_SUPPLIED',
 			'user_row'	=> array('user_id' => ANONYMOUS),
 		);
@@ -57,8 +57,8 @@ function login_apache(&$username, &$password)
 	if (!$username)
 	{
 		return array(
-			'status'	=> LOGIN_ERROR_USERNAME,
-			'error_msg'	=> 'LOGIN_ERROR_USERNAME',
+			'status'	=> PHPBB3_LOGIN_ERROR_USERNAME,
+			'error_msg'	=> 'PHPBB3_LOGIN_ERROR_USERNAME',
 			'user_row'	=> array('user_id' => ANONYMOUS),
 		);
 	}
@@ -66,8 +66,8 @@ function login_apache(&$username, &$password)
 	if (!isset($_SERVER['PHP_AUTH_USER']))
 	{
 		return array(
-			'status'		=> LOGIN_ERROR_EXTERNAL_AUTH,
-			'error_msg'		=> 'LOGIN_ERROR_EXTERNAL_AUTH_APACHE',
+			'status'		=> PHPBB3_LOGIN_ERROR_EXTERNAL_AUTH,
+			'error_msg'		=> 'PHPBB3_LOGIN_ERROR_EXTERNAL_AUTH_APACHE',
 			'user_row'		=> array('user_id' => ANONYMOUS),
 		);
 	}
@@ -80,14 +80,14 @@ function login_apache(&$username, &$password)
 		if ($php_auth_user !== $username)
 		{
 			return array(
-				'status'	=> LOGIN_ERROR_USERNAME,
-				'error_msg'	=> 'LOGIN_ERROR_USERNAME',
+				'status'	=> PHPBB3_LOGIN_ERROR_USERNAME,
+				'error_msg'	=> 'PHPBB3_LOGIN_ERROR_USERNAME',
 				'user_row'	=> array('user_id' => ANONYMOUS),
 			);
 		}
 
 		$sql = 'SELECT user_id, username, user_password, user_passchg, user_email, user_type
-			FROM ' . USERS_TABLE . "
+			FROM ' . PHPBB3_USERS_TABLE . "
 			WHERE username = '" . $db->sql_escape($php_auth_user) . "'";
 		$result = $db->sql_query($sql);
 		$row = $db->sql_fetchrow($result);
@@ -96,10 +96,10 @@ function login_apache(&$username, &$password)
 		if ($row)
 		{
 			// User inactive...
-			if ($row['user_type'] == USER_INACTIVE || $row['user_type'] == USER_IGNORE)
+			if ($row['user_type'] == PHPBB3_USER_INACTIVE || $row['user_type'] == PHPBB3_USER_IGNORE)
 			{
 				return array(
-					'status'		=> LOGIN_ERROR_ACTIVE,
+					'status'		=> PHPBB3_LOGIN_ERROR_ACTIVE,
 					'error_msg'		=> 'ACTIVE_ERROR',
 					'user_row'		=> $row,
 				);
@@ -107,7 +107,7 @@ function login_apache(&$username, &$password)
 	
 			// Successful login...
 			return array(
-				'status'		=> LOGIN_SUCCESS,
+				'status'		=> PHPBB3_LOGIN_SUCCESS,
 				'error_msg'		=> false,
 				'user_row'		=> $row,
 			);
@@ -115,7 +115,7 @@ function login_apache(&$username, &$password)
 
 		// this is the user's first login so create an empty profile
 		return array(
-			'status'		=> LOGIN_SUCCESS_CREATE_PROFILE,
+			'status'		=> PHPBB3_LOGIN_SUCCESS_CREATE_PROFILE,
 			'error_msg'		=> false,
 			'user_row'		=> user_row_apache($php_auth_user, $php_auth_pw),
 		);
@@ -123,8 +123,8 @@ function login_apache(&$username, &$password)
 
 	// Not logged into apache
 	return array(
-		'status'		=> LOGIN_ERROR_EXTERNAL_AUTH,
-		'error_msg'		=> 'LOGIN_ERROR_EXTERNAL_AUTH_APACHE',
+		'status'		=> PHPBB3_LOGIN_ERROR_EXTERNAL_AUTH,
+		'error_msg'		=> 'PHPBB3_LOGIN_ERROR_EXTERNAL_AUTH_APACHE',
 		'user_row'		=> array('user_id' => ANONYMOUS),
 	);
 }
@@ -152,7 +152,7 @@ function autologin_apache()
 		set_var($php_auth_pw, $php_auth_pw, 'string', true);
 
 		$sql = 'SELECT *
-			FROM ' . USERS_TABLE . "
+			FROM ' . PHPBB3_USERS_TABLE . "
 			WHERE username = '" . $db->sql_escape($php_auth_user) . "'";
 		$result = $db->sql_query($sql);
 		$row = $db->sql_fetchrow($result);
@@ -160,7 +160,7 @@ function autologin_apache()
 
 		if ($row)
 		{
-			return ($row['user_type'] == USER_INACTIVE || $row['user_type'] == USER_IGNORE) ? array() : $row;
+			return ($row['user_type'] == PHPBB3_USER_INACTIVE || $row['user_type'] == PHPBB3_USER_IGNORE) ? array() : $row;
 		}
 
 		if (!function_exists('user_add'))
@@ -174,7 +174,7 @@ function autologin_apache()
 		user_add(user_row_apache($php_auth_user, $php_auth_pw));
 
 		$sql = 'SELECT *
-			FROM ' . USERS_TABLE . "
+			FROM ' . PHPBB3_USERS_TABLE . "
 			WHERE username_clean = '" . $db->sql_escape(utf8_clean_string($php_auth_user)) . "'";
 		$result = $db->sql_query($sql);
 		$row = $db->sql_fetchrow($result);
@@ -197,9 +197,9 @@ function user_row_apache($username, $password)
 	global $db, $config, $user;
 	// first retrieve default group id
 	$sql = 'SELECT group_id
-		FROM ' . GROUPS_TABLE . "
+		FROM ' . PHPBB3_GROUPS_TABLE . "
 		WHERE group_name = '" . $db->sql_escape('REGISTERED') . "'
-			AND group_type = " . GROUP_SPECIAL;
+			AND group_type = " . PHPBB3_GROUP_SPECIAL;
 	$result = $db->sql_query($sql);
 	$row = $db->sql_fetchrow($result);
 	$db->sql_freeresult($result);
@@ -215,7 +215,7 @@ function user_row_apache($username, $password)
 		'user_password'	=> phpbb_hash($password),
 		'user_email'	=> '',
 		'group_id'		=> (int) $row['group_id'],
-		'user_type'		=> USER_NORMAL,
+		'user_type'		=> PHPBB3_USER_NORMAL,
 		'user_ip'		=> $user->ip,
 	);
 }

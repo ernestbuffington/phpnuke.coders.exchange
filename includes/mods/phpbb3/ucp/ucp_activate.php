@@ -36,7 +36,7 @@ class ucp_activate
 		$key = request_var('k', '');
 
 		$sql = 'SELECT user_id, username, user_type, user_email, user_newpasswd, user_lang, user_notify_type, user_actkey, user_inactive_reason
-			FROM ' . USERS_TABLE . "
+			FROM ' . PHPBB3_USERS_TABLE . "
 			WHERE user_id = $user_id";
 		$result = $db->sql_query($sql);
 		$user_row = $db->sql_fetchrow($result);
@@ -47,13 +47,13 @@ class ucp_activate
 			trigger_error('NO_USER');
 		}
 
-		if ($user_row['user_type'] <> USER_INACTIVE && !$user_row['user_newpasswd'])
+		if ($user_row['user_type'] <> PHPBB3_USER_INACTIVE && !$user_row['user_newpasswd'])
 		{
 			meta_refresh(3, append_sid("{$phpbb_root_path}index.$phpEx"));
 			trigger_error('ALREADY_ACTIVATED');
 		}
 
-		if (($user_row['user_inactive_reason'] ==  INACTIVE_MANUAL) || $user_row['user_actkey'] != $key)
+		if (($user_row['user_inactive_reason'] ==  PHPBB3_INACTIVE_MANUAL) || $user_row['user_actkey'] != $key)
 		{
 			trigger_error('WRONG_ACTIVATION');
 		}
@@ -70,7 +70,7 @@ class ucp_activate
 				'user_login_attempts'	=> 0,
 			);
 
-			$sql = 'UPDATE ' . USERS_TABLE . '
+			$sql = 'UPDATE ' . PHPBB3_USERS_TABLE . '
 				SET ' . $db->sql_build_array('UPDATE', $sql_ary) . '
 				WHERE user_id = ' . $user_row['user_id'];
 			$db->sql_query($sql);
@@ -82,13 +82,13 @@ class ucp_activate
 
 			user_active_flip('activate', $user_row['user_id']);
 
-			$sql = 'UPDATE ' . USERS_TABLE . "
+			$sql = 'UPDATE ' . PHPBB3_USERS_TABLE . "
 				SET user_actkey = ''
 				WHERE user_id = {$user_row['user_id']}";
 			$db->sql_query($sql);
 		}
 
-		if ($config['require_activation'] == USER_ACTIVATION_ADMIN && !$update_password)
+		if ($config['require_activation'] == PHPBB3_USER_ACTIVATION_ADMIN && !$update_password)
 		{
 			include_once(PHPBB3_INCLUDE_DIR . 'functions_messenger.' . $phpEx);
 
@@ -115,7 +115,7 @@ class ucp_activate
 		{
 			if (!$update_password)
 			{
-				$message = ($user_row['user_inactive_reason'] == INACTIVE_PROFILE) ? 'ACCOUNT_ACTIVE_PROFILE' : 'ACCOUNT_ACTIVE';
+				$message = ($user_row['user_inactive_reason'] == PHPBB3_INACTIVE_PROFILE) ? 'ACCOUNT_ACTIVE_PROFILE' : 'ACCOUNT_ACTIVE';
 			}
 			else
 			{

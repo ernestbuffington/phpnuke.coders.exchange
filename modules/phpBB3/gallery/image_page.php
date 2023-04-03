@@ -13,7 +13,7 @@ define('IN_PHPBB', true);
 $phpbb_root_path = (defined('PHPBB_ROOT_PATH')) ? PHPBB_ROOT_PATH : '../';
 $phpEx = substr(strrchr(__FILE__, '.'), 1);
 include($phpbb_root_path . 'common.' . $phpEx);
-$gallery_root_path = GALLERY_ROOT_PATH;
+$gallery_root_path = PHPBB3_GALLERY_ROOT_PATH;
 include($phpbb_root_path . 'includes/functions_display.' . $phpEx);
 
 // Start session management
@@ -80,7 +80,7 @@ $already_rated = false;
 if (($album_config['rate'] <> 0) && $user->data['is_registered'])
 {
 	$sql = 'SELECT *
-		FROM ' . GALLERY_RATES_TABLE . '
+		FROM ' . PHPBB3_GALLERY_RATES_TABLE . '
 		WHERE rate_image_id = ' . $image_id . '
 			AND rate_user_id = ' . $user->data['user_id'] . '
 		LIMIT 1';
@@ -141,15 +141,15 @@ if (isset($_POST['rate']))
 			'rate_user_ip'	=> $rate_user_ip,
 			'rate_point'	=> $rate_point,
 		);
-		$db->sql_query('INSERT INTO ' . GALLERY_RATES_TABLE . ' ' . $db->sql_build_array('INSERT', $sql_ary));
+		$db->sql_query('INSERT INTO ' . PHPBB3_GALLERY_RATES_TABLE . ' ' . $db->sql_build_array('INSERT', $sql_ary));
 		$sql = 'SELECT rate_image_id, COUNT(rate_user_ip) image_rates, AVG(rate_point) image_rate_avg, SUM(rate_point) image_rate_points
-			FROM ' . GALLERY_RATES_TABLE . "
+			FROM ' . PHPBB3_GALLERY_RATES_TABLE . "
 			WHERE rate_image_id = $image_id
 			GROUP BY rate_image_id";
 		$result = $db->sql_query($sql);
 		while ($row = $db->sql_fetchrow($result))
 		{
-			$sql = 'UPDATE ' . GALLERY_IMAGES_TABLE . '
+			$sql = 'UPDATE ' . PHPBB3_GALLERY_IMAGES_TABLE . '
 				SET image_rates = ' . $row['image_rates'] . ',
 					image_rate_points = ' . $row['image_rate_points'] . ',
 					image_rate_avg = ' . round($row['image_rate_avg'], 2) * 100 . '
@@ -188,7 +188,7 @@ if (gallery_acl_check('a_moderate', $album_id))
 	$image_approval_sql = '';
 }
 $sql = 'SELECT *
-	FROM ' . GALLERY_IMAGES_TABLE . '
+	FROM ' . PHPBB3_GALLERY_IMAGES_TABLE . '
 	WHERE image_album_id = ' . $album_id . $image_approval_sql . '
 	ORDER BY ' . $sort_method . ' ' . $sort_order;
 $result = $db->sql_query($sql);
@@ -326,7 +326,7 @@ if ($album_config['exif_data'] && ($image_data['image_has_exif'] > 0) && (substr
 
 		if ($image_data['image_has_exif'] == 2)
 		{
-			$sql = 'UPDATE ' . GALLERY_IMAGES_TABLE . '
+			$sql = 'UPDATE ' . PHPBB3_GALLERY_IMAGES_TABLE . '
 				SET image_has_exif = 1
 				WHERE image_id = ' . $image_id;
 			$db->sql_query($sql);
@@ -334,7 +334,7 @@ if ($album_config['exif_data'] && ($image_data['image_has_exif'] > 0) && (substr
 	}
 	else
 	{
-		$sql = 'UPDATE ' . GALLERY_IMAGES_TABLE . '
+		$sql = 'UPDATE ' . PHPBB3_GALLERY_IMAGES_TABLE . '
 			SET image_has_exif = 0
 			WHERE image_id = ' . $image_id;
 		$db->sql_query($sql);
@@ -415,8 +415,8 @@ if ($album_config['comment'])
 		$limit_sql = ($start == 0) ? $comments_per_page : $start .','. $comments_per_page;
 
 		$sql = 'SELECT c.*, u.user_id, u.username, u.user_colour
-			FROM ' . GALLERY_COMMENTS_TABLE . ' AS c
-			LEFT JOIN ' . USERS_TABLE . ' AS u
+			FROM ' . PHPBB3_GALLERY_COMMENTS_TABLE . ' AS c
+			LEFT JOIN ' . PHPBB3_USERS_TABLE . ' AS u
 				ON c.comment_user_id = u.user_id
 			WHERE c.comment_image_id = ' . $image_id . '
 			ORDER BY c.comment_id ' . $sort_order . '
@@ -447,8 +447,8 @@ if ($album_config['comment'])
 			if ($commentrow[$i]['comment_edit_count'] > 0)
 			{
 				$sql = 'SELECT c.comment_id, c.comment_edit_user_id, u.user_id, u.username, u.user_colour
-					FROM ' . GALLERY_COMMENTS_TABLE . ' AS c
-					LEFT JOIN ' . USERS_TABLE . ' AS u
+					FROM ' . PHPBB3_GALLERY_COMMENTS_TABLE . ' AS c
+					LEFT JOIN ' . PHPBB3_USERS_TABLE . ' AS u
 						ON c.comment_edit_user_id = u.user_id
 					WHERE c.comment_id = ' . $commentrow[$i]['comment_id']. '
 					LIMIT 1';
@@ -470,7 +470,7 @@ if ($album_config['comment'])
 				'ID'			=> $commentrow[$i]['comment_id'],
 				'POSTER'		=> get_username_string('full', $commentrow[$i]['user_id'], ($commentrow[$i]['user_id'] <> ANONYMOUS) ? $commentrow[$i]['username'] : ($user->lang['GUEST'] . ': ' . $commentrow[$i]['comment_username']), $commentrow[$i]['user_colour']),
 				'TIME'			=> $user->format_date($commentrow[$i]['comment_time']),
-				'IP'			=> ($user->data['user_type'] == USER_FOUNDER) ? '<br />' . $user->lang['IP'] . ': <a href="http://www.nic.com/cgi-bin/whois.cgi?query=' . $commentrow[$i]['comment_user_ip'] . '">' . $commentrow[$i]['comment_user_ip'] .'</a><br />' : '',
+				'IP'			=> ($user->data['user_type'] == PHPBB3_USER_FOUNDER) ? '<br />' . $user->lang['IP'] . ': <a href="http://www.nic.com/cgi-bin/whois.cgi?query=' . $commentrow[$i]['comment_user_ip'] . '">' . $commentrow[$i]['comment_user_ip'] .'</a><br />' : '',
 				'TEXT'			=> generate_text_for_display($commentrow[$i]['comment'], $commentrow[$i]['comment_uid'], $commentrow[$i]['comment_bitfield'], 7),
 				'EDIT_INFO'		=> $edit_info,
 				'EDIT'			=> (gallery_acl_check('a_moderate', $album_id) || (gallery_acl_check('c_edit', $album_id) && ($commentrow[$i]['comment_user_id'] == $user->data['user_id']) && $user->data['is_registered'])) ? append_sid("{$phpbb_root_path}{$gallery_root_path}posting.$phpEx", "album_id=$album_id&amp;image_id=$image_id&amp;mode=comment&amp;submode=edit&amp;comment_id=" . $commentrow[$i]['comment_id']) : '',

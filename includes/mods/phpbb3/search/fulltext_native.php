@@ -197,7 +197,7 @@ class fulltext_native extends search_backend
 		if (sizeof($exact_words))
 		{
 			$sql = 'SELECT word_id, word_text, word_common
-				FROM ' . SEARCH_WORDLIST_TABLE . '
+				FROM ' . PHPBB3_SEARCH_WORDLIST_TABLE . '
 				WHERE ' . $db->sql_in_set('word_text', $exact_words);
 			$result = $db->sql_query($sql);
 
@@ -448,11 +448,11 @@ class fulltext_native extends search_backend
 		$sql_array = array(
 			'SELECT'	=> ($type == 'posts') ? 'p.post_id' : 'p.topic_id',
 			'FROM'		=> array(
-				SEARCH_WORDMATCH_TABLE	=> array(),
-				SEARCH_WORDLIST_TABLE	=> array(),
+				PHPBB3_SEARCH_WORDMATCH_TABLE	=> array(),
+				PHPBB3_SEARCH_WORDLIST_TABLE	=> array(),
 			),
 			'LEFT_JOIN' => array(array(
-				'FROM'	=> array(POSTS_TABLE => 'p'),
+				'FROM'	=> array(PHPBB3_POSTS_TABLE => 'p'),
 				'ON'	=> 'm0.post_id = p.post_id',
 			)),
 		);
@@ -501,7 +501,7 @@ class fulltext_native extends search_backend
 					if (is_string($id))
 					{
 						$sql_array['LEFT_JOIN'][] = array(
-							'FROM'	=> array(SEARCH_WORDLIST_TABLE => 'w' . $w_num),
+							'FROM'	=> array(PHPBB3_SEARCH_WORDLIST_TABLE => 'w' . $w_num),
 							'ON'	=> "w$w_num.word_text LIKE $id"
 						);
 						$word_ids[] = "w$w_num.word_id";
@@ -521,7 +521,7 @@ class fulltext_native extends search_backend
 			}
 			else if (is_string($subquery))
 			{
-				$sql_array['FROM'][SEARCH_WORDLIST_TABLE][] = 'w' . $w_num;
+				$sql_array['FROM'][PHPBB3_SEARCH_WORDLIST_TABLE][] = 'w' . $w_num;
 
 				$sql_where[] = "w$w_num.word_text LIKE $subquery";
 				$sql_where[] = "m$m_num.word_id = w$w_num.word_id";
@@ -534,7 +534,7 @@ class fulltext_native extends search_backend
 				$sql_where[] = "m$m_num.word_id = $subquery";
 			}
 
-			$sql_array['FROM'][SEARCH_WORDMATCH_TABLE][] = 'm' . $m_num;
+			$sql_array['FROM'][PHPBB3_SEARCH_WORDMATCH_TABLE][] = 'm' . $m_num;
 
 			if ($title_match)
 			{
@@ -553,7 +553,7 @@ class fulltext_native extends search_backend
 			if (is_string($subquery))
 			{
 				$sql_array['LEFT_JOIN'][] = array(
-					'FROM'	=> array(SEARCH_WORDLIST_TABLE => 'w' . $w_num),
+					'FROM'	=> array(PHPBB3_SEARCH_WORDLIST_TABLE => 'w' . $w_num),
 					'ON'	=> "w$w_num.word_text LIKE $subquery"
 				);
 
@@ -567,7 +567,7 @@ class fulltext_native extends search_backend
 		if (sizeof($this->must_not_contain_ids))
 		{
 			$sql_array['LEFT_JOIN'][] = array(
-				'FROM'	=> array(SEARCH_WORDMATCH_TABLE => 'm' . $m_num),
+				'FROM'	=> array(PHPBB3_SEARCH_WORDMATCH_TABLE => 'm' . $m_num),
 				'ON'	=> $db->sql_in_set("m$m_num.word_id", $this->must_not_contain_ids) . (($title_match) ? " AND m$m_num.$title_match" : '') . " AND m$m_num.post_id = m0.post_id"
 			);
 
@@ -583,7 +583,7 @@ class fulltext_native extends search_backend
 				if (is_string($id))
 				{
 					$sql_array['LEFT_JOIN'][] = array(
-						'FROM'	=> array(SEARCH_WORDLIST_TABLE => 'w' . $w_num),
+						'FROM'	=> array(PHPBB3_SEARCH_WORDLIST_TABLE => 'w' . $w_num),
 						'ON'	=> "w$w_num.word_text LIKE $id"
 					);
 					$id = "w$w_num.word_id";
@@ -593,7 +593,7 @@ class fulltext_native extends search_backend
 				}
 
 				$sql_array['LEFT_JOIN'][] = array(
-					'FROM'	=> array(SEARCH_WORDMATCH_TABLE => 'm' . $m_num),
+					'FROM'	=> array(PHPBB3_SEARCH_WORDMATCH_TABLE => 'm' . $m_num),
 					'ON'	=> "m$m_num.word_id = $id AND m$m_num.post_id = m0.post_id" . (($title_match) ? " AND m$m_num.$title_match" : '')
 				);
 				$is_null_joins[] = "m$m_num.word_id IS NULL";
@@ -683,7 +683,7 @@ class fulltext_native extends search_backend
 		switch ($sql_sort[0])
 		{
 			case 'u':
-				$sql_array['FROM'][USERS_TABLE] = 'u';
+				$sql_array['FROM'][PHPBB3_USERS_TABLE] = 'u';
 				$sql_where[] = 'u.user_id = p.poster_id ';
 			break;
 
@@ -692,7 +692,7 @@ class fulltext_native extends search_backend
 			break;
 
 			case 'f':
-				$sql_array['FROM'][FORUMS_TABLE] = 'f';
+				$sql_array['FROM'][PHPBB3_FORUMS_TABLE] = 'f';
 				$sql_where[] = 'f.forum_id = p.forum_id';
 			break;
 		}
@@ -700,7 +700,7 @@ class fulltext_native extends search_backend
 		if ($left_join_topics)
 		{
 			$sql_array['LEFT_JOIN'][$left_join_topics] = array(
-				'FROM'	=> array(TOPICS_TABLE => 't'),
+				'FROM'	=> array(PHPBB3_TOPICS_TABLE => 't'),
 				'ON'	=> 'p.topic_id = t.topic_id'
 			);
 		}
@@ -813,17 +813,17 @@ class fulltext_native extends search_backend
 		switch ($sql_sort[0])
 		{
 			case 'u':
-				$sql_sort_table	= USERS_TABLE . ' u, ';
+				$sql_sort_table	= PHPBB3_USERS_TABLE . ' u, ';
 				$sql_sort_join	= ' AND u.user_id = p.poster_id ';
 			break;
 
 			case 't':
-				$sql_sort_table	= ($type == 'posts' && !$firstpost_only) ? TOPICS_TABLE . ' t, ' : '';
+				$sql_sort_table	= ($type == 'posts' && !$firstpost_only) ? PHPBB3_TOPICS_TABLE . ' t, ' : '';
 				$sql_sort_join	= ($type == 'posts' && !$firstpost_only) ? ' AND t.topic_id = p.topic_id ' : '';
 			break;
 
 			case 'f':
-				$sql_sort_table	= FORUMS_TABLE . ' f, ';
+				$sql_sort_table	= PHPBB3_FORUMS_TABLE . ' f, ';
 				$sql_sort_join	= ' AND f.forum_id = p.forum_id ';
 			break;
 		}
@@ -859,7 +859,7 @@ class fulltext_native extends search_backend
 					if ($type == 'posts')
 					{
 						$sql = 'SELECT COUNT(p.post_id) as total_results
-							FROM ' . POSTS_TABLE . ' p' . (($firstpost_only) ? ', ' . TOPICS_TABLE . ' t ' : ' ') . "
+							FROM ' . PHPBB3_POSTS_TABLE . ' p' . (($firstpost_only) ? ', ' . PHPBB3_TOPICS_TABLE . ' t ' : ' ') . "
 							WHERE $sql_author
 								$sql_topic_id
 								$sql_firstpost
@@ -879,7 +879,7 @@ class fulltext_native extends search_backend
 							$sql = 'SELECT COUNT(DISTINCT t.topic_id) as total_results';
 						}
 
-						$sql .= ' FROM ' . TOPICS_TABLE . ' t, ' . POSTS_TABLE . " p
+						$sql .= ' FROM ' . PHPBB3_TOPICS_TABLE . ' t, ' . PHPBB3_POSTS_TABLE . " p
 							WHERE $sql_author
 								$sql_topic_id
 								$sql_firstpost
@@ -905,7 +905,7 @@ class fulltext_native extends search_backend
 		if ($type == 'posts')
 		{
 			$sql = "SELECT $select
-				FROM " . $sql_sort_table . POSTS_TABLE . ' p' . (($firstpost_only) ? ', ' . TOPICS_TABLE . ' t' : '') . "
+				FROM " . $sql_sort_table . PHPBB3_POSTS_TABLE . ' p' . (($firstpost_only) ? ', ' . PHPBB3_TOPICS_TABLE . ' t' : '') . "
 				WHERE $sql_author
 					$sql_topic_id
 					$sql_firstpost
@@ -919,7 +919,7 @@ class fulltext_native extends search_backend
 		else
 		{
 			$sql = "SELECT $select
-				FROM " . $sql_sort_table . TOPICS_TABLE . ' t, ' . POSTS_TABLE . " p
+				FROM " . $sql_sort_table . PHPBB3_TOPICS_TABLE . ' t, ' . PHPBB3_POSTS_TABLE . " p
 				WHERE $sql_author
 					$sql_topic_id
 					$sql_firstpost
@@ -1084,7 +1084,7 @@ class fulltext_native extends search_backend
 			$words['del']['title'] = array();
 
 			$sql = 'SELECT w.word_id, w.word_text, m.title_match
-				FROM ' . SEARCH_WORDLIST_TABLE . ' w, ' . SEARCH_WORDMATCH_TABLE . " m
+				FROM ' . PHPBB3_SEARCH_WORDLIST_TABLE . ' w, ' . PHPBB3_SEARCH_WORDMATCH_TABLE . " m
 				WHERE m.post_id = $post_id
 					AND w.word_id = m.word_id";
 			$result = $db->sql_query($sql);
@@ -1121,7 +1121,7 @@ class fulltext_native extends search_backend
 		if (sizeof($unique_add_words))
 		{
 			$sql = 'SELECT word_id, word_text
-				FROM ' . SEARCH_WORDLIST_TABLE . '
+				FROM ' . PHPBB3_SEARCH_WORDLIST_TABLE . '
 				WHERE ' . $db->sql_in_set('word_text', $unique_add_words);
 			$result = $db->sql_query($sql);
 
@@ -1143,7 +1143,7 @@ class fulltext_native extends search_backend
 					$sql_ary[] = array('word_text' => (string) $word, 'word_count' => 0);
 				}
 				$db->sql_return_on_error(true);
-				$db->sql_multi_insert(SEARCH_WORDLIST_TABLE, $sql_ary);
+				$db->sql_multi_insert(PHPBB3_SEARCH_WORDLIST_TABLE, $sql_ary);
 				$db->sql_return_on_error(false);
 			}
 			unset($new_words, $sql_ary);
@@ -1166,13 +1166,13 @@ class fulltext_native extends search_backend
 					$sql_in[] = $cur_words[$word_in][$word];
 				}
 
-				$sql = 'DELETE FROM ' . SEARCH_WORDMATCH_TABLE . '
+				$sql = 'DELETE FROM ' . PHPBB3_SEARCH_WORDMATCH_TABLE . '
 					WHERE ' . $db->sql_in_set('word_id', $sql_in) . '
 						AND post_id = ' . intval($post_id) . "
 						AND title_match = $title_match";
 				$db->sql_query($sql);
 
-				$sql = 'UPDATE ' . SEARCH_WORDLIST_TABLE . '
+				$sql = 'UPDATE ' . PHPBB3_SEARCH_WORDLIST_TABLE . '
 					SET word_count = word_count - 1
 					WHERE ' . $db->sql_in_set('word_id', $sql_in) . '
 						AND word_count > 0';
@@ -1189,13 +1189,13 @@ class fulltext_native extends search_backend
 
 			if (sizeof($word_ary))
 			{
-				$sql = 'INSERT INTO ' . SEARCH_WORDMATCH_TABLE . ' (post_id, word_id, title_match)
+				$sql = 'INSERT INTO ' . PHPBB3_SEARCH_WORDMATCH_TABLE . ' (post_id, word_id, title_match)
 					SELECT ' . (int) $post_id . ', word_id, ' . (int) $title_match . '
-					FROM ' . SEARCH_WORDLIST_TABLE . '
+					FROM ' . PHPBB3_SEARCH_WORDLIST_TABLE . '
 					WHERE ' . $db->sql_in_set('word_text', $word_ary);
 				$db->sql_query($sql);
 
-				$sql = 'UPDATE ' . SEARCH_WORDLIST_TABLE . '
+				$sql = 'UPDATE ' . PHPBB3_SEARCH_WORDLIST_TABLE . '
 					SET word_count = word_count + 1
 					WHERE ' . $db->sql_in_set('word_text', $word_ary);
 				$db->sql_query($sql);
@@ -1225,7 +1225,7 @@ class fulltext_native extends search_backend
 		if (sizeof($post_ids))
 		{
 			$sql = 'SELECT w.word_id, w.word_text, m.title_match
-				FROM ' . SEARCH_WORDMATCH_TABLE . ' m, ' . SEARCH_WORDLIST_TABLE . ' w
+				FROM ' . PHPBB3_SEARCH_WORDMATCH_TABLE . ' m, ' . PHPBB3_SEARCH_WORDLIST_TABLE . ' w
 				WHERE ' . $db->sql_in_set('m.post_id', $post_ids) . '
 					AND w.word_id = m.word_id';
 			$result = $db->sql_query($sql);
@@ -1247,7 +1247,7 @@ class fulltext_native extends search_backend
 
 			if (sizeof($title_word_ids))
 			{
-				$sql = 'UPDATE ' . SEARCH_WORDLIST_TABLE . '
+				$sql = 'UPDATE ' . PHPBB3_SEARCH_WORDLIST_TABLE . '
 					SET word_count = word_count - 1
 					WHERE ' . $db->sql_in_set('word_id', $title_word_ids) . '
 						AND word_count > 0';
@@ -1256,7 +1256,7 @@ class fulltext_native extends search_backend
 
 			if (sizeof($message_word_ids))
 			{
-				$sql = 'UPDATE ' . SEARCH_WORDLIST_TABLE . '
+				$sql = 'UPDATE ' . PHPBB3_SEARCH_WORDLIST_TABLE . '
 					SET word_count = word_count - 1
 					WHERE ' . $db->sql_in_set('word_id', $message_word_ids) . '
 						AND word_count > 0';
@@ -1266,7 +1266,7 @@ class fulltext_native extends search_backend
 			unset($title_word_ids);
 			unset($message_word_ids);
 
-			$sql = 'DELETE FROM ' . SEARCH_WORDMATCH_TABLE . '
+			$sql = 'DELETE FROM ' . PHPBB3_SEARCH_WORDMATCH_TABLE . '
 				WHERE ' . $db->sql_in_set('post_id', $post_ids);
 			$db->sql_query($sql);
 		}
@@ -1298,7 +1298,7 @@ class fulltext_native extends search_backend
 			$common_threshold = ((double) $config['fulltext_native_common_thres']) / 100.0;
 			// First, get the IDs of common words
 			$sql = 'SELECT word_id, word_text
-				FROM ' . SEARCH_WORDLIST_TABLE . '
+				FROM ' . PHPBB3_SEARCH_WORDLIST_TABLE . '
 				WHERE word_count > ' . floor($config['num_posts'] * $common_threshold) . '
 					OR word_common = 1';
 			$result = $db->sql_query($sql);
@@ -1314,7 +1314,7 @@ class fulltext_native extends search_backend
 			if (sizeof($sql_in))
 			{
 				// Flag the words
-				$sql = 'UPDATE ' . SEARCH_WORDLIST_TABLE . '
+				$sql = 'UPDATE ' . PHPBB3_SEARCH_WORDLIST_TABLE . '
 					SET word_common = 1
 					WHERE ' . $db->sql_in_set('word_id', $sql_in);
 				$db->sql_query($sql);
@@ -1324,7 +1324,7 @@ class fulltext_native extends search_backend
 				set_config('search_last_gc', time(), true);
 
 				// Delete the matches
-				$sql = 'DELETE FROM ' . SEARCH_WORDMATCH_TABLE . '
+				$sql = 'DELETE FROM ' . PHPBB3_SEARCH_WORDMATCH_TABLE . '
 					WHERE ' . $db->sql_in_set('word_id', $sql_in);
 				$db->sql_query($sql);
 			}
@@ -1351,15 +1351,15 @@ class fulltext_native extends search_backend
 		{
 			case 'sqlite':
 			case 'firebird':
-				$db->sql_query('DELETE FROM ' . SEARCH_WORDLIST_TABLE);
-				$db->sql_query('DELETE FROM ' . SEARCH_WORDMATCH_TABLE);
-				$db->sql_query('DELETE FROM ' . SEARCH_RESULTS_TABLE);
+				$db->sql_query('DELETE FROM ' . PHPBB3_SEARCH_WORDLIST_TABLE);
+				$db->sql_query('DELETE FROM ' . PHPBB3_SEARCH_WORDMATCH_TABLE);
+				$db->sql_query('DELETE FROM ' . PHPBB3_SEARCH_RESULTS_TABLE);
 			break;
 
 			default:
-				$db->sql_query('TRUNCATE TABLE ' . SEARCH_WORDLIST_TABLE);
-				$db->sql_query('TRUNCATE TABLE ' . SEARCH_WORDMATCH_TABLE);
-				$db->sql_query('TRUNCATE TABLE ' . SEARCH_RESULTS_TABLE);
+				$db->sql_query('TRUNCATE TABLE ' . PHPBB3_SEARCH_WORDLIST_TABLE);
+				$db->sql_query('TRUNCATE TABLE ' . PHPBB3_SEARCH_WORDMATCH_TABLE);
+				$db->sql_query('TRUNCATE TABLE ' . PHPBB3_SEARCH_RESULTS_TABLE);
 			break;
 		}
 	}
@@ -1399,13 +1399,13 @@ class fulltext_native extends search_backend
 		global $db;
 
 		$sql = 'SELECT COUNT(*) as total_words
-			FROM ' . SEARCH_WORDLIST_TABLE;
+			FROM ' . PHPBB3_SEARCH_WORDLIST_TABLE;
 		$result = $db->sql_query($sql);
 		$this->stats['total_words'] = (int) $db->sql_fetchfield('total_words');
 		$db->sql_freeresult($result);
 
 		$sql = 'SELECT COUNT(*) as total_matches
-			FROM ' . SEARCH_WORDMATCH_TABLE;
+			FROM ' . PHPBB3_SEARCH_WORDMATCH_TABLE;
 		$result = $db->sql_query($sql);
 		$this->stats['total_matches'] = (int) $db->sql_fetchfield('total_matches');
 		$db->sql_freeresult($result);

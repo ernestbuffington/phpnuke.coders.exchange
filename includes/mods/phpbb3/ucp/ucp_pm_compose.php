@@ -112,17 +112,17 @@ function compose_pm($id, $mode, $action)
 		if ($config['allow_mass_pm'] && $auth->acl_get('u_masspm_group'))
 		{
 			$sql = 'SELECT g.group_id, g.group_name, g.group_type
-				FROM ' . GROUPS_TABLE . ' g';
+				FROM ' . PHPBB3_GROUPS_TABLE . ' g';
 
 			if (!$auth->acl_gets('a_group', 'a_groupadd', 'a_groupdel'))
 			{
-				$sql .= ' LEFT JOIN ' . USER_GROUP_TABLE . ' ug
+				$sql .= ' LEFT JOIN ' . PHPBB3_USER_GROUP_TABLE . ' ug
 					ON (
 						g.group_id = ug.group_id
 						AND ug.user_id = ' . $user->data['user_id'] . '
 						AND ug.user_pending = 0
 					)
-					WHERE (g.group_type <> ' . GROUP_HIDDEN . ' OR ug.user_id = ' . $user->data['user_id'] . ')';
+					WHERE (g.group_type <> ' . PHPBB3_GROUP_HIDDEN . ' OR ug.user_id = ' . $user->data['user_id'] . ')';
 			}
 
 			$sql .= ($auth->acl_gets('a_group', 'a_groupadd', 'a_groupdel')) ? ' WHERE ' : ' AND ';
@@ -134,7 +134,7 @@ function compose_pm($id, $mode, $action)
 			$group_options = '';
 			while ($row = $db->sql_fetchrow($result))
 			{
-				$group_options .= '<option' . (($row['group_type'] == GROUP_SPECIAL) ? ' class="sep"' : '') . ' value="' . $row['group_id'] . '">' . (($row['group_type'] == GROUP_SPECIAL) ? $user->lang['G_' . $row['group_name']] : $row['group_name']) . '</option>';
+				$group_options .= '<option' . (($row['group_type'] == PHPBB3_GROUP_SPECIAL) ? ' class="sep"' : '') . ' value="' . $row['group_id'] . '">' . (($row['group_type'] == PHPBB3_GROUP_SPECIAL) ? $user->lang['G_' . $row['group_name']] : $row['group_name']) . '</option>';
 			}
 			$db->sql_freeresult($result);
 		}
@@ -177,7 +177,7 @@ function compose_pm($id, $mode, $action)
 			if ($action == 'quotepost')
 			{
 				$sql = 'SELECT p.post_id as msg_id, p.forum_id, p.post_text as message_text, p.poster_id as author_id, p.post_time as message_time, p.bbcode_bitfield, p.bbcode_uid, p.enable_sig, p.enable_smilies, p.enable_magic_url, t.topic_title as message_subject, u.username as quote_username
-					FROM ' . POSTS_TABLE . ' p, ' . TOPICS_TABLE . ' t, ' . USERS_TABLE . " u
+					FROM ' . PHPBB3_POSTS_TABLE . ' p, ' . PHPBB3_TOPICS_TABLE . ' t, ' . PHPBB3_USERS_TABLE . " u
 					WHERE p.post_id = $msg_id
 						AND t.topic_id = p.topic_id
 						AND u.user_id = p.poster_id";
@@ -185,7 +185,7 @@ function compose_pm($id, $mode, $action)
 			else
 			{
 				$sql = 'SELECT t.folder_id, p.*, u.username as quote_username
-					FROM ' . PRIVMSGS_TO_TABLE . ' t, ' . PRIVMSGS_TABLE . ' p, ' . USERS_TABLE . ' u
+					FROM ' . PHPBB3_PRIVMSGS_TO_TABLE . ' t, ' . PHPBB3_PRIVMSGS_TABLE . ' p, ' . PHPBB3_USERS_TABLE . ' u
 					WHERE t.user_id = ' . $user->data['user_id'] . "
 						AND p.author_id = u.user_id
 						AND t.msg_id = p.msg_id
@@ -201,9 +201,9 @@ function compose_pm($id, $mode, $action)
 
 			// check for outbox (not read) status, we do not allow editing if one user already having the message
 			$sql = 'SELECT p.*, t.folder_id
-				FROM ' . PRIVMSGS_TO_TABLE . ' t, ' . PRIVMSGS_TABLE . ' p
+				FROM ' . PHPBB3_PRIVMSGS_TO_TABLE . ' t, ' . PHPBB3_PRIVMSGS_TABLE . ' p
 				WHERE t.user_id = ' . $user->data['user_id'] . '
-					AND t.folder_id = ' . PRIVMSGS_OUTBOX . "
+					AND t.folder_id = ' . PM_OUTBOX . "
 					AND t.msg_id = $msg_id
 					AND t.msg_id = p.msg_id";
 		break;
@@ -220,7 +220,7 @@ function compose_pm($id, $mode, $action)
 			}
 
 			$sql = 'SELECT msg_id, pm_unread, pm_new, author_id, folder_id
-				FROM ' . PRIVMSGS_TO_TABLE . '
+				FROM ' . PHPBB3_PRIVMSGS_TO_TABLE . '
 				WHERE user_id = ' . $user->data['user_id'] . "
 					AND msg_id = $msg_id";
 		break;
@@ -256,7 +256,7 @@ function compose_pm($id, $mode, $action)
 			if ($action == 'edit')
 			{
 				$sql = 'SELECT p.*, t.folder_id
-					FROM ' . PRIVMSGS_TO_TABLE . ' t, ' . PRIVMSGS_TABLE . ' p
+					FROM ' . PHPBB3_PRIVMSGS_TO_TABLE . ' t, ' . PHPBB3_PRIVMSGS_TABLE . ' p
 					WHERE t.user_id = ' . $user->data['user_id'] . "
 						AND t.msg_id = $msg_id
 						AND t.msg_id = p.msg_id";
@@ -284,7 +284,7 @@ function compose_pm($id, $mode, $action)
 			if ($post['forum_id'])
 			{
 				$sql = 'SELECT forum_password
-					FROM ' . FORUMS_TABLE . '
+					FROM ' . PHPBB3_FORUMS_TABLE . '
 					WHERE forum_id = ' . (int) $post['forum_id'];
 				$result = $db->sql_query($sql);
 				$forum_password = (string) $db->sql_fetchfield('forum_password');
@@ -416,7 +416,7 @@ function compose_pm($id, $mode, $action)
 	if ($action == 'delete')
 	{
 		// Folder id has been determined by the SQL Statement
-		// $folder_id = request_var('f', PRIVMSGS_NO_BOX);
+		// $folder_id = request_var('f', PM_NO_BOX);
 
 		// Do we need to confirm ?
 		if (confirm_box(true))
@@ -448,7 +448,7 @@ function compose_pm($id, $mode, $action)
 
 	// Get maximum number of allowed recipients
 	$sql = 'SELECT MAX(g.group_max_recipients) as max_recipients
-		FROM ' . GROUPS_TABLE . ' g, ' . USER_GROUP_TABLE . ' ug
+		FROM ' . PHPBB3_GROUPS_TABLE . ' g, ' . PHPBB3_USER_GROUP_TABLE . ' ug
 		WHERE ug.user_id = ' . $user->data['user_id'] . '
 			AND ug.user_pending = 0
 			AND ug.group_id = g.group_id';
@@ -510,7 +510,7 @@ function compose_pm($id, $mode, $action)
 	{
 		// Do not change to SELECT *
 		$sql = 'SELECT attach_id, is_orphan, attach_comment, real_filename
-			FROM ' . ATTACHMENTS_TABLE . "
+			FROM ' . PHPBB3_ATTACHMENTS_TABLE . "
 			WHERE post_msg_id = $msg_id
 				AND in_message = 1
 				AND is_orphan = 0
@@ -534,7 +534,7 @@ function compose_pm($id, $mode, $action)
 	if ($auth->acl_get('u_savedrafts') && $action != 'delete')
 	{
 		$sql = 'SELECT draft_id
-			FROM ' . DRAFTS_TABLE . '
+			FROM ' . PHPBB3_DRAFTS_TABLE . '
 			WHERE forum_id = 0
 				AND topic_id = 0
 				AND user_id = ' . $user->data['user_id'] .
@@ -571,7 +571,7 @@ function compose_pm($id, $mode, $action)
 		{
 			if (confirm_box(true))
 			{
-				$sql = 'INSERT INTO ' . DRAFTS_TABLE . ' ' . $db->sql_build_array('INSERT', array(
+				$sql = 'INSERT INTO ' . PHPBB3_DRAFTS_TABLE . ' ' . $db->sql_build_array('INSERT', array(
 					'user_id'		=> $user->data['user_id'],
 					'topic_id'		=> 0,
 					'forum_id'		=> 0,
@@ -627,7 +627,7 @@ function compose_pm($id, $mode, $action)
 	if ($draft_id && $auth->acl_get('u_savedrafts'))
 	{
 		$sql = 'SELECT draft_subject, draft_message
-			FROM ' . DRAFTS_TABLE . "
+			FROM ' . PHPBB3_DRAFTS_TABLE . "
 			WHERE draft_id = $draft_id
 				AND topic_id = 0
 				AND forum_id = 0
@@ -906,7 +906,7 @@ function compose_pm($id, $mode, $action)
 		if (!empty($address_list['u']))
 		{
 			$sql = 'SELECT user_id as id, username as name, user_colour as colour
-				FROM ' . USERS_TABLE . '
+				FROM ' . PHPBB3_USERS_TABLE . '
 				WHERE ' . $db->sql_in_set('user_id', array_map('intval', array_keys($address_list['u']))) . '
 				ORDER BY username_clean ASC';
 			$result['u'] = $db->sql_query($sql);
@@ -915,17 +915,17 @@ function compose_pm($id, $mode, $action)
 		if (!empty($address_list['g']))
 		{
 			$sql = 'SELECT g.group_id AS id, g.group_name AS name, g.group_colour AS colour, g.group_type
-				FROM ' . GROUPS_TABLE . ' g';
+				FROM ' . PHPBB3_GROUPS_TABLE . ' g';
 
 			if (!$auth->acl_gets('a_group', 'a_groupadd', 'a_groupdel'))
 			{
-				$sql .= ' LEFT JOIN ' . USER_GROUP_TABLE . ' ug
+				$sql .= ' LEFT JOIN ' . PHPBB3_USER_GROUP_TABLE . ' ug
 					ON (
 						g.group_id = ug.group_id
 						AND ug.user_id = ' . $user->data['user_id'] . '
 						AND ug.user_pending = 0
 					)
-					WHERE (g.group_type <> ' . GROUP_HIDDEN . ' OR ug.user_id = ' . $user->data['user_id'] . ')';
+					WHERE (g.group_type <> ' . PHPBB3_GROUP_HIDDEN . ' OR ug.user_id = ' . $user->data['user_id'] . ')';
 			}
 
 			$sql .= ($auth->acl_gets('a_group', 'a_groupadd', 'a_groupdel')) ? ' WHERE ' : ' AND ';
@@ -947,7 +947,7 @@ function compose_pm($id, $mode, $action)
 				{
 					if ($type == 'g')
 					{
-						$row['name'] = ($row['group_type'] == GROUP_SPECIAL) ? $user->lang['G_' . $row['name']] : $row['name'];
+						$row['name'] = ($row['group_type'] == PHPBB3_GROUP_SPECIAL) ? $user->lang['G_' . $row['name']] : $row['name'];
 					}
 
 					${$type}[$row['id']] = array('name' => $row['name'], 'colour' => $row['colour']);
@@ -1180,7 +1180,7 @@ function handle_message_list_actions(&$address_list, &$error, $remove_u, $remove
 		if (sizeof($usernames))
 		{
 			$user_id_ary = array();
-			user_get_id_name($user_id_ary, $usernames, array(USER_NORMAL, USER_FOUNDER, USER_INACTIVE));
+			user_get_id_name($user_id_ary, $usernames, array(PHPBB3_USER_NORMAL, PHPBB3_USER_FOUNDER, PHPBB3_USER_INACTIVE));
 
 			// If there are users not existing, we will at least print a notice...
 			if (!sizeof($user_id_ary))
@@ -1212,7 +1212,7 @@ function handle_message_list_actions(&$address_list, &$error, $remove_u, $remove
 		if (!$auth->acl_gets('a_', 'm_') && !$auth->acl_getf_global('m_'))
 		{
 			$sql = 'SELECT user_id
-				FROM ' . USERS_TABLE . '
+				FROM ' . PHPBB3_USERS_TABLE . '
 				WHERE ' . $db->sql_in_set('user_id', array_keys($address_list['u'])) . '
 					AND user_allow_pm = 0';
 			$result = $db->sql_query($sql);

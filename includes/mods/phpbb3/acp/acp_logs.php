@@ -66,7 +66,7 @@ class acp_logs
 
 				if ($where_sql || $deleteall)
 				{
-					$sql = 'DELETE FROM ' . LOG_TABLE . "
+					$sql = 'DELETE FROM ' . PHPBB3_LOG_TABLE . "
 						WHERE log_type = {$this->log_type}
 						$where_sql";
 					$db->sql_query($sql);
@@ -76,7 +76,7 @@ class acp_logs
 			}
 			else
 			{
-				confirm_box(false, $user->lang['CONFIRM_OPERATION'], build_hidden_fields(array(
+				confirm_box(false, $user->lang['PHPBB3_CONFIRM_OPERATION'], build_hidden_fields(array(
 					'f'			=> $forum_id,
 					'start'		=> $start,
 					'delmarked'	=> $deletemark,

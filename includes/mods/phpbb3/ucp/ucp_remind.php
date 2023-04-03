@@ -39,7 +39,7 @@ class ucp_remind
 		if ($submit)
 		{
 			$sql = 'SELECT user_id, username, user_permissions, user_email, user_jabber, user_notify_type, user_type, user_lang, user_inactive_reason
-				FROM ' . USERS_TABLE . "
+				FROM ' . PHPBB3_USERS_TABLE . "
 				WHERE user_email = '" . $db->sql_escape($email) . "'
 					AND username_clean = '" . $db->sql_escape(utf8_clean_string($username)) . "'";
 			$result = $db->sql_query($sql);
@@ -51,14 +51,14 @@ class ucp_remind
 				trigger_error('NO_EMAIL_USER');
 			}
 
-			if ($user_row['user_type'] == USER_IGNORE)
+			if ($user_row['user_type'] == PHPBB3_USER_IGNORE)
 			{
 				trigger_error('NO_USER');
 			}
 
-			if ($user_row['user_type'] == USER_INACTIVE)
+			if ($user_row['user_type'] == PHPBB3_USER_INACTIVE)
 			{
-				if ($user_row['user_inactive_reason'] == INACTIVE_MANUAL)
+				if ($user_row['user_inactive_reason'] == PHPBB3_INACTIVE_MANUAL)
 				{
 					trigger_error('ACCOUNT_DEACTIVATED');
 				}
@@ -85,7 +85,7 @@ class ucp_remind
 			$user_actkey = substr(gen_rand_string(10), 0, $key_len);
 			$user_password = gen_rand_string(8);
 
-			$sql = 'UPDATE ' . USERS_TABLE . "
+			$sql = 'UPDATE ' . PHPBB3_USERS_TABLE . "
 				SET user_newpasswd = '" . $db->sql_escape(phpbb_hash($user_password)) . "', user_actkey = '" . $db->sql_escape($user_actkey) . "'
 				WHERE user_id = " . $user_row['user_id'];
 			$db->sql_query($sql);

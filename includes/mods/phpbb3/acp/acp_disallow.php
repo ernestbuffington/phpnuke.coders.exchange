@@ -56,7 +56,7 @@ class acp_disallow
 				trigger_error($user->lang['NO_USERNAME_SPECIFIED'] . adm_back_link($this->u_action), E_USER_WARNING);
 			}
 
-			$sql = 'INSERT INTO ' . DISALLOW_TABLE . ' ' . $db->sql_build_array('INSERT', array('disallow_username' => $disallowed_user));
+			$sql = 'INSERT INTO ' . PHPBB3_DISALLOW_TABLE . ' ' . $db->sql_build_array('INSERT', array('disallow_username' => $disallowed_user));
 			$db->sql_query($sql);
 
 			$cache->destroy('_disallowed_usernames');
@@ -75,7 +75,7 @@ class acp_disallow
 				trigger_error($user->lang['NO_USERNAME_SPECIFIED'] . adm_back_link($this->u_action), E_USER_WARNING);
 			}
 
-			$sql = 'DELETE FROM ' . DISALLOW_TABLE . '
+			$sql = 'DELETE FROM ' . PHPBB3_DISALLOW_TABLE . '
 				WHERE disallow_id = ' . $disallowed_id;
 			$db->sql_query($sql);
 
@@ -88,7 +88,7 @@ class acp_disallow
 
 		// Grab the current list of disallowed usernames...
 		$sql = 'SELECT *
-			FROM ' . DISALLOW_TABLE;
+			FROM ' . PHPBB3_DISALLOW_TABLE;
 		$result = $db->sql_query($sql);
 
 		$disallow_select = '';

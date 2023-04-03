@@ -76,7 +76,7 @@ class acp_announcements_centre
 						'announcement_show_group' 		=> (string) implode(",", $annoucement_row['announcement_show_group']),
 						);
 
-						$sql = 'UPDATE ' . ANNOUNCEMENTS_CENTRE_TABLE . '
+						$sql = 'UPDATE ' . PHPBB3_ANNOUNCEMENTS_CENTRE_TABLE . '
 								SET ' . $db->sql_build_array('UPDATE', $sql_ary);
 						$db->sql_query($sql);
 					}
@@ -90,7 +90,7 @@ class acp_announcements_centre
 					}
 						
 					$sql = 'SELECT * 
-						FROM ' . ANNOUNCEMENTS_CENTRE_TABLE;
+						FROM ' . PHPBB3_ANNOUNCEMENTS_CENTRE_TABLE;
 					$result = $db->sql_query($sql);
 					$announcement = $db->sql_fetchrow($result);
 					$db->sql_freeresult($result);

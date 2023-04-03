@@ -49,7 +49,7 @@ function display_albums($root_data = '', $display_moderators = true, $return_mod
 	$sql_array = array(
 		'SELECT'	=> 'a.*',
 		'FROM'		=> array(
-			GALLERY_ALBUMS_TABLE		=> 'a'
+			PHPBB3_GALLERY_ALBUMS_TABLE		=> 'a'
 		),
 		'LEFT_JOIN'	=> array(),
 	);
@@ -232,8 +232,8 @@ function display_albums($root_data = '', $display_moderators = true, $return_mod
 			$moderators_list = implode(', ', $album_moderators[$album_id]);
 		}
 
-		#$l_post_click_count = ($row['forum_type'] == FORUM_LINK) ? 'CLICKS' : 'POSTS';
-		#$post_click_count = ($row['forum_type'] != FORUM_LINK || $row['forum_flags'] & FORUM_FLAG_LINK_TRACK) ? $row['forum_posts'] : '';
+		#$l_post_click_count = ($row['forum_type'] == PHPBB3_FORUM_LINK) ? 'CLICKS' : 'POSTS';
+		#$post_click_count = ($row['forum_type'] != PHPBB3_FORUM_LINK || $row['forum_flags'] & PHPBB3_FORUM_FLAG_LINK_TRACK) ? $row['forum_posts'] : '';
 
 		$s_subalbums_list = array();
 		foreach ($subalbums_list as $subalbum)
@@ -248,7 +248,7 @@ function display_albums($root_data = '', $display_moderators = true, $return_mod
 		$template->assign_block_vars('albumrow', array(
 			'S_IS_CAT'			=> false,
 			'S_NO_CAT'			=> $catless && !$last_catless,
-			#'S_LOCKED_ALBUM'	=> ($row['album_status'] == ITEM_LOCKED) ? true : false,
+			#'S_LOCKED_ALBUM'	=> ($row['album_status'] == PHPBB3_ITEM_LOCKED) ? true : false,
 			'S_LIST_SUBALBUMS'	=> ($row['display_subalbum_list']) ? true : false,
 			'S_SUBALBUMS'		=> (sizeof($subalbums_list)) ? true : false,
 

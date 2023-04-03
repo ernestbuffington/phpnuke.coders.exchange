@@ -64,7 +64,7 @@ class acp_prune
 		if ($all_forums)
 		{
 			$sql = 'SELECT forum_id
-				FROM ' . FORUMS_TABLE . '
+				FROM ' . PHPBB3_FORUMS_TABLE . '
 				ORDER BY left_id';
 			$result = $db->sql_query($sql);
 
@@ -101,8 +101,8 @@ class acp_prune
 
 				// Get a list of forum's or the data for the forum that we are pruning.
 				$sql = 'SELECT forum_id, forum_name
-					FROM ' . FORUMS_TABLE . '
-					WHERE forum_type = ' . FORUM_POST . "
+					FROM ' . PHPBB3_FORUMS_TABLE . '
+					WHERE forum_type = ' . PHPBB3_FORUM_POST . "
 						$sql_forum
 					ORDER BY left_id ASC";
 				$result = $db->sql_query($sql);
@@ -193,7 +193,7 @@ class acp_prune
 		else
 		{
 			$sql = 'SELECT forum_id, forum_name
-				FROM ' . FORUMS_TABLE . '
+				FROM ' . PHPBB3_FORUMS_TABLE . '
 				WHERE ' . $db->sql_in_set('forum_id', $forum_id);
 			$result = $db->sql_query($sql);
 			$row = $db->sql_fetchrow($result);
@@ -317,7 +317,7 @@ class acp_prune
 					'S_DELETE'			=> ($action == 'delete') ? true : false,
 				));
 
-				confirm_box(false, $user->lang['CONFIRM_OPERATION'], build_hidden_fields(array(
+				confirm_box(false, $user->lang['PHPBB3_CONFIRM_OPERATION'], build_hidden_fields(array(
 					'i'				=> $id,
 					'mode'			=> $mode,
 					'prune'			=> 1,
@@ -431,7 +431,7 @@ class acp_prune
 
 		// Get bot ids
 		$sql = 'SELECT user_id
-			FROM ' . BOTS_TABLE;
+			FROM ' . PHPBB3_BOTS_TABLE;
 		$result = $db->sql_query($sql);
 
 		$bot_ids = array();
@@ -443,9 +443,9 @@ class acp_prune
 
 		// Do not prune founder members
 		$sql = 'SELECT user_id, username
-			FROM ' . USERS_TABLE . '
+			FROM ' . PHPBB3_USERS_TABLE . '
 			WHERE user_id <> ' . ANONYMOUS . '
-				AND user_type <> ' . USER_FOUNDER . "
+				AND user_type <> ' . PHPBB3_USER_FOUNDER . "
 			$where_sql";
 		$result = $db->sql_query($sql);
 

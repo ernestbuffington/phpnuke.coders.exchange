@@ -13,7 +13,7 @@ define('IN_PHPBB', true);
 $phpbb_root_path = (defined('PHPBB_ROOT_PATH')) ? PHPBB_ROOT_PATH : '../';
 $phpEx = substr(strrchr(__FILE__, '.'), 1);
 include($phpbb_root_path . 'common.' . $phpEx);
-$gallery_root_path = GALLERY_ROOT_PATH;
+$gallery_root_path = PHPBB3_GALLERY_ROOT_PATH;
 include($phpbb_root_path . 'includes/functions_display.' . $phpEx);
 include_once($phpbb_root_path . 'includes/message_parser.' . $phpEx);
 
@@ -52,7 +52,7 @@ $total_pics = 0;
 		$moderativ_string = ($moderativ_string) ? (($view_string) ? ' OR ' : '') . 'image_album_id IN (' . $moderativ_string . ')' : '';
 
 		$sql = 'SELECT *
-			FROM ' . GALLERY_IMAGES_TABLE . '
+			FROM ' . PHPBB3_GALLERY_IMAGES_TABLE . '
 			WHERE image_user_id = ' . $user_id . "
 				AND ($view_string $moderativ_string)";
 		$result = $db->sql_query($sql);
@@ -66,8 +66,8 @@ $total_pics = 0;
 		}
 		$db->sql_freeresult($result);
 		$sql = 'SELECT i.*, a.album_name
-			FROM ' . GALLERY_IMAGES_TABLE . ' i
-			LEFT JOIN ' . GALLERY_ALBUMS_TABLE . ' a
+			FROM ' . PHPBB3_GALLERY_IMAGES_TABLE . ' i
+			LEFT JOIN ' . PHPBB3_GALLERY_ALBUMS_TABLE . ' a
 				ON a.album_id = i.image_album_id
 			WHERE image_user_id = ' . $user_id . "
 				AND ($view_string $moderativ_string)
@@ -136,7 +136,7 @@ $total_pics = 0;
 					'DELETE'	=> $allow_delete ? '<a href="' . append_sid("{$phpbb_root_path}{$gallery_root_path}posting.$phpEx", "mode=image&amp;submode=delete&amp;album_id=$album_id&amp;image_id=" . $picrow[$j]['image_id']) . '">' . $user->lang['DELETE_IMAGE'] . '</a>' : '',
 					'MOVE'		=> (gallery_acl_check('a_moderate', $album_id)) ? '<a href="' . append_sid("{$phpbb_root_path}{$gallery_root_path}mcp.$phpEx", "action=images_move&amp;album_id=$album_id&amp;image_id=" . $picrow[$j]['image_id']) . '&amp;redirect=redirect">' . $user->lang['MOVE'] . '</a>' : '',
 					'STATUS'	=> (gallery_acl_check('a_moderate', $album_id)) ? '<a href="'. append_sid("{$phpbb_root_path}{$gallery_root_path}mcp.$phpEx", "mode=queue_details&amp;album_id=$album_id&amp;option_id=" . $picrow[$j]['image_id']) . '">' . $user->lang['IMAGE_STATUS'] . '</a>' : '',
-					'IP'		=> ($user->data['user_type'] == USER_FOUNDER) ? $user->lang['IP'] . ': <a href="http://www.nic.com/cgi-bin/whois.cgi?query=' . $picrow[$j]['image_user_ip'] . '">' . $picrow[$j]['image_user_ip'] . '</a><br />' : ''
+					'IP'		=> ($user->data['user_type'] == PHPBB3_USER_FOUNDER) ? $user->lang['IP'] . ': <a href="http://www.nic.com/cgi-bin/whois.cgi?query=' . $picrow[$j]['image_user_ip'] . '">' . $picrow[$j]['image_user_ip'] . '</a><br />' : ''
 				));
 			}
 		}

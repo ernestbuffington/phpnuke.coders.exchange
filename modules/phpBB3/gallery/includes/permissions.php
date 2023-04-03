@@ -15,7 +15,7 @@ if (!defined('IN_PHPBB'))
 }
 
 
-//see GALLERY_ROOT_PATH/permissions_overview.php for a short description
+//see PHPBB3_GALLERY_ROOT_PATH/permissions_overview.php for a short description
 function get_album_access_array()
 {
 	global $cache, $db, $user;
@@ -25,7 +25,7 @@ function get_album_access_array()
 	{
 		// Get Album Config
 		$sql = 'SELECT *
-			FROM ' . GALLERY_CONFIG_TABLE;
+			FROM ' . PHPBB3_GALLERY_CONFIG_TABLE;
 		$result = $db->sql_query($sql);
 
 		while( $row = $db->sql_fetchrow($result) )
@@ -64,8 +64,8 @@ function get_album_access_array()
 		$user_id = ($user->data['user_perm_from'] == 0) ? $user->data['user_id'] : $user->data['user_perm_from'];
 
 		$sql = 'SELECT g.group_id
-			FROM ' . GROUPS_TABLE . ' as g
-			LEFT JOIN ' . USER_GROUP_TABLE . " as ug
+			FROM ' . PHPBB3_GROUPS_TABLE . ' as g
+			LEFT JOIN ' . PHPBB3_USER_GROUP_TABLE . " as ug
 				ON ug.group_id = g.group_id
 			WHERE ug.user_id = $user_id
 				AND ug.user_pending = 0";
@@ -77,8 +77,8 @@ function get_album_access_array()
 		$db->sql_freeresult($result);
 
 		$sql = "SELECT p.perm_album_id, $pull_data p.perm_system
-			FROM " . GALLERY_PERMISSIONS_TABLE . " as p
-			LEFT JOIN " .  GALLERY_ROLES_TABLE .  " as pr
+			FROM " . PHPBB3_GALLERY_PERMISSIONS_TABLE . " as p
+			LEFT JOIN " .  PHPBB3_GALLERY_ROLES_TABLE .  " as pr
 				ON p.perm_role_id = pr.role_id
 			WHERE ( p.perm_user_id = $user_id
 				OR p.perm_group_id IN ($user_groups_ary))
@@ -246,7 +246,7 @@ function gen_album_auth_level($mode, $album_id, $album_status = 1)
 {
 	global $template, $user, $album_config, $album_access_array;
 
-	$locked = ($album_status == ITEM_LOCKED && ($album_access_array[$album_id]['a_moderate'] != 1)) ? true : false;
+	$locked = ($album_status == PHPBB3_ITEM_LOCKED && ($album_access_array[$album_id]['a_moderate'] != 1)) ? true : false;
 	$permissions = array('i_approve', 'i_lock', 'i_report', 'i_count', 'a_moderate', 'album_count');
 	$permissions = array_merge($permissions, array('i_rate'));
 	$permissions = array_merge($permissions, array('c_post', 'c_edit', 'c_delete'));

@@ -30,19 +30,19 @@ function get_upcbirthdays()
 		
 	$birthday_ahead_list = '';
 	$sql = 'SELECT user_id, username, user_colour, user_birthday
-		FROM ' . USERS_TABLE . "
+		FROM ' . PHPBB3_USERS_TABLE . "
 		WHERE user_birthday NOT LIKE '%- 0-%'
 			AND user_birthday NOT LIKE '0-%'
 				AND	user_birthday NOT LIKE '0- 0-%'
 					AND	user_birthday NOT LIKE ''
-						AND user_type IN (" . USER_NORMAL . ', ' . USER_FOUNDER . ')';
+						AND user_type IN (" . PHPBB3_USER_NORMAL . ', ' . PHPBB3_USER_FOUNDER . ')';
 						
 	//BEGIN for those of you who have the prime birthday mod installed, code provided by primehalo
 	$prime_birthdate_installed = function_exists('user_show_congrats');
 
     if ($prime_birthdate_installed)
     {
-        $sql = str_replace('FROM ' . USERS_TABLE, ', user_show_age FROM ' . USERS_TABLE, $sql);
+        $sql = str_replace('FROM ' . PHPBB3_USERS_TABLE, ', user_show_age FROM ' . PHPBB3_USERS_TABLE, $sql);
     }    
 	//END for those of you who have the prime birthday mod installed, code provided by primehalo
 	$result = $db->sql_query($sql);
