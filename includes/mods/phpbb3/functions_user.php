@@ -9,7 +9,7 @@
 */
 
 /**
-* @ignore
+* @rectorphp took a shit refactoring this file! Tomas whats up my dude....
 */
 if (!defined('IN_PHPBB'))
 {
