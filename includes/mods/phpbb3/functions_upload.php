@@ -9,8 +9,11 @@
 */
 
 /**
-* @ignore
-*/
+ * Applied rules:
+ * Php4ConstructorRector (https://wiki.php.net/rfc/remove_php4_constructors)
+ * StrStartsWithRector (https://wiki.php.net/rfc/add_str_starts_with_and_ends_with_functions)
+ */
+
 if (!defined('IN_PHPBB'))
 {
 	exit;
@@ -48,7 +51,7 @@ class filespec
 	* File Class
 	* @access private
 	*/
-	function filespec($upload_ary, $upload_namespace)
+	function __construct($upload_ary, $upload_namespace)
 	{
 		if (!isset($upload_ary))
 		{
@@ -73,7 +76,7 @@ class filespec
 		$this->extension = strtolower($this->get_extension($this->realname));
 
 		// Try to get real filesize from temporary folder (not always working) ;)
-		$this->filesize = (@filesize($this->filename)) ? @filesize($this->filename) : $this->filesize;
+		$this->filesize = (filesize($this->filename)) ? filesize($this->filename) : $this->filesize;
 
 		$this->width = $this->height = 0;
 		$this->file_moved = false;
@@ -181,7 +184,7 @@ class filespec
 	{
 		if ($this->file_moved)
 		{
-			@unlink($this->destination_file);
+			unlink($this->destination_file);
 		}
 	}
 
@@ -226,7 +229,7 @@ class filespec
 	*/
 	function get_filesize($filename)
 	{
-		return @filesize($filename);
+		return filesize($filename);
 	}
 	
 		/**
@@ -239,7 +242,7 @@ class filespec
 			return true;
 		}
 
-		$fp = @fopen($this->filename, 'rb');
+		$fp = fopen($this->filename, 'rb');
 
 		if ($fp !== false)
 		{
@@ -283,66 +286,66 @@ class filespec
 		// Check if the destination path exist...
 		if (!file_exists($this->destination_path))
 		{
-			@unlink($this->filename);
+			unlink($this->filename);
 			return false;
 		}
 
-		$upload_mode = (@ini_get('open_basedir') || @ini_get('safe_mode') || strtolower(@ini_get('safe_mode')) == 'on') ? 'move' : 'copy';
+		$upload_mode = (ini_get('open_basedir') || ini_get('safe_mode') || strtolower(ini_get('safe_mode')) == 'on') ? 'move' : 'copy';
 		$upload_mode = ($this->local) ? 'local' : $upload_mode;
 		$this->destination_file = $this->destination_path . '/' . basename($this->realname);
 
 		// Check if the file already exist, else there is something wrong...
 		if (file_exists($this->destination_file) && !$overwrite)
 		{
-			@unlink($this->filename);
+			unlink($this->filename);
 		}
 		else
 		{
 			if (file_exists($this->destination_file))
 			{
-				@unlink($this->destination_file);
+				unlink($this->destination_file);
 			}
 
 			switch ($upload_mode)
 			{
 				case 'copy':
 
-					if (!@copy($this->filename, $this->destination_file))
+					if (!copy($this->filename, $this->destination_file))
 					{
-						if (!@move_uploaded_file($this->filename, $this->destination_file))
+						if (!move_uploaded_file($this->filename, $this->destination_file))
 						{
 							$this->error[] = sprintf($user->lang[$this->upload->error_prefix . 'GENERAL_UPLOAD_ERROR'], $this->destination_file);
 							return false;
 						}
 					}
 
-					@unlink($this->filename);
+					unlink($this->filename);
 
 				break;
 
 				case 'move':
 
-					if (!@move_uploaded_file($this->filename, $this->destination_file))
+					if (!move_uploaded_file($this->filename, $this->destination_file))
 					{
-						if (!@copy($this->filename, $this->destination_file))
+						if (!copy($this->filename, $this->destination_file))
 						{
 							$this->error[] = sprintf($user->lang[$this->upload->error_prefix . 'GENERAL_UPLOAD_ERROR'], $this->destination_file);
 							return false;
 						}
 					}
 
-					@unlink($this->filename);
+					unlink($this->filename);
 
 				break;
 
 				case 'local':
 
-					if (!@copy($this->filename, $this->destination_file))
+					if (!copy($this->filename, $this->destination_file))
 					{
 						$this->error[] = sprintf($user->lang[$this->upload->error_prefix . 'GENERAL_UPLOAD_ERROR'], $this->destination_file);
 						return false;
 					}
-					@unlink($this->filename);
+					unlink($this->filename);
 
 				break;
 			}
@@ -351,13 +354,13 @@ class filespec
 		}
 
 		// Try to get real filesize from destination folder
-		$this->filesize = (@filesize($this->destination_file)) ? @filesize($this->destination_file) : $this->filesize;
+		$this->filesize = (filesize($this->destination_file)) ? filesize($this->destination_file) : $this->filesize;
 
 		if ($this->is_image() && !$skip_image_check)
 		{
 			$this->width = $this->height = 0;
 
-			if (($this->image_info = @getimagesize($this->destination_file)) !== false)
+			if (($this->image_info = getimagesize($this->destination_file)) !== false)
 			{
 				$this->width = $this->image_info[0];
 				$this->height = $this->image_info[1];
@@ -442,7 +445,7 @@ class filespec
 */
 class fileerror extends filespec
 {
-	function fileerror($error_msg)
+	function __construct($error_msg)
 	{
 		$this->error[] = $error_msg;
 	}
@@ -477,7 +480,7 @@ class fileupload
 	* @param int $max_height Maximum image height (only checked for images)
 	*
 	*/
-	function fileupload($error_prefix = '', $allowed_extensions = false, $max_filesize = false, $min_width = false, $min_height = false, $max_width = false, $max_height = false, $disallowed_content = false)
+	function __construct($error_prefix = '', $allowed_extensions = false, $max_filesize = false, $min_width = false, $min_height = false, $max_width = false, $max_height = false, $disallowed_content = false)
 	{
 		$this->set_allowed_extensions($allowed_extensions);
 		$this->set_max_filesize($max_filesize);
@@ -593,7 +596,7 @@ class fileupload
 		// PHP Upload filesize exceeded
 		if ($file->get('filename') == 'none')
 		{
-			$file->error[] = (@ini_get('upload_max_filesize') == '') ? $user->lang[$this->error_prefix . 'PHP_SIZE_NA'] : sprintf($user->lang[$this->error_prefix . 'PHP_SIZE_OVERRUN'], @ini_get('upload_max_filesize'));
+			$file->error[] = (ini_get('upload_max_filesize') == '') ? $user->lang[$this->error_prefix . 'PHP_SIZE_NA'] : sprintf($user->lang[$this->error_prefix . 'PHP_SIZE_OVERRUN'], ini_get('upload_max_filesize'));
 			return $file;
 		}
 
@@ -669,7 +672,7 @@ class fileupload
 		// PHP Upload filesize exceeded
 		if ($file->get('filename') == 'none')
 		{
-			$file->error[] = (@ini_get('upload_max_filesize') == '') ? $user->lang[$this->error_prefix . 'PHP_SIZE_NA'] : sprintf($user->lang[$this->error_prefix . 'PHP_SIZE_OVERRUN'], @ini_get('upload_max_filesize'));
+			$file->error[] = (ini_get('upload_max_filesize') == '') ? $user->lang[$this->error_prefix . 'PHP_SIZE_NA'] : sprintf($user->lang[$this->error_prefix . 'PHP_SIZE_OVERRUN'], ini_get('upload_max_filesize'));
 			return $file;
 		}
 
@@ -731,14 +734,14 @@ class fileupload
 		$errno = 0;
 		$errstr = '';
 
-		if (!($fsock = @fsockopen($host, $port, $errno, $errstr)))
+		if (!($fsock = fsockopen($host, $port, $errno, $errstr)))
 		{
 			$file = new fileerror($user->lang[$this->error_prefix . 'NOT_UPLOADED']);
 			return $file;
 		}
 
 		// Make sure $path not beginning with /
-		if (strpos($path, '/') === 0)
+		if (str_starts_with($path, '/'))
 		{
 			$path = substr($path, 1);
 		}
@@ -749,15 +752,15 @@ class fileupload
 
 		$get_info = false;
 		$data = '';
-		while (!@feof($fsock))
+		while (!feof($fsock))
 		{
 			if ($get_info)
 			{
-				$data .= @fread($fsock, 1024);
+				$data .= fread($fsock, 1024);
 			}
 			else
 			{
-				$line = @fgets($fsock, 1024);
+				$line = fgets($fsock, 1024);
 
 				if ($line == "\r\n")
 				{
@@ -777,7 +780,7 @@ class fileupload
 				}
 			}
 		}
-		@fclose($fsock);
+		fclose($fsock);
 
 		if (empty($data))
 		{
@@ -785,10 +788,10 @@ class fileupload
 			return $file;
 		}
 
-		$tmp_path = (!@ini_get('safe_mode') || strtolower(@ini_get('safe_mode')) == 'off') ? false : $phpbb_root_path . 'cache';
+		$tmp_path = (!ini_get('safe_mode') || strtolower(ini_get('safe_mode')) == 'off') ? false : $phpbb_root_path . 'cache';
 		$filename = tempnam($tmp_path, unique_id() . '-');
 
-		if (!($fp = @fopen($filename, 'wb')))
+		if (!($fp = fopen($filename, 'wb')))
 		{
 			$file = new fileerror($user->lang[$this->error_prefix . 'NOT_UPLOADED']);
 			return $file;
@@ -817,7 +820,7 @@ class fileupload
 		switch ($errorcode)
 		{
 			case 1:
-				$error = (@ini_get('upload_max_filesize') == '') ? $user->lang[$this->error_prefix . 'PHP_SIZE_NA'] : sprintf($user->lang[$this->error_prefix . 'PHP_SIZE_OVERRUN'], @ini_get('upload_max_filesize'));
+				$error = (ini_get('upload_max_filesize') == '') ? $user->lang[$this->error_prefix . 'PHP_SIZE_NA'] : sprintf($user->lang[$this->error_prefix . 'PHP_SIZE_OVERRUN'], ini_get('upload_max_filesize'));
 			break;
 
 			case 2:
