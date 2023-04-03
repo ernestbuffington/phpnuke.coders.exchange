@@ -9,8 +9,12 @@
 */
 
 /**
-* @ignore
-*/
+ * Applied rules:
+ * AddDefaultValueForUndefinedVariableRector (https://github.com/vimeo/psalm/blob/29b70442b11e3e66113935a2ee22e165a70c74a4/docs/fixing_code.md#possiblyundefinedvariable)
+ * RandomFunctionRector
+ * StringifyStrNeedlesRector (https://wiki.php.net/rfc/deprecations_php_7_3#string_search_functions_with_integer_needle)
+ */
+
 if (!defined('IN_PHPBB'))
 {
 	exit;
@@ -21,7 +25,7 @@ if (!defined('IN_PHPBB'))
 */
 function can_load_dll($dll)
 {
-	return ((@ini_get('enable_dl') || strtolower(@ini_get('enable_dl')) == 'on') && (!@ini_get('safe_mode') || strtolower(@ini_get('safe_mode')) == 'off') && @dl($dll . '.' . PHP_SHLIB_SUFFIX)) ? true : false;
+	return ((ini_get('enable_dl') || strtolower(ini_get('enable_dl')) == 'on') && (!ini_get('safe_mode') || strtolower(ini_get('safe_mode')) == 'off') && dl($dll . '.' . PHP_SHLIB_SUFFIX)) ? true : false;
 }
 
 /**
@@ -144,7 +148,7 @@ function get_available_dbms($dbms = false, $return_unavailable = false, $only_20
 
 		$dll = $db_ary['MODULE'];
 
-		if (!@extension_loaded($dll))
+		if (!extension_loaded($dll))
 		{
 			if (!can_load_dll($dll))
 			{
@@ -191,7 +195,8 @@ function dbms_select($default = '', $only_20x_options = false)
 */
 function get_tables($db)
 {
-	switch ($db->sql_layer)
+	$sql = null;
+ switch ($db->sql_layer)
 	{
 		case 'mysql':
 		case 'mysql4':
@@ -252,8 +257,15 @@ function get_tables($db)
 */
 function connect_check_db($error_connect, &$error, $dbms_details, $prefix_phpbb3, $dbhost, $dbuser, $dbpasswd, $dbname, $dbport, $prefix_may_exist = false, $load_dbal = true, $unicode_check = true)
 {
-	global $phpbb_root_path, $phpEx, $config, $lang;
+	$prefix_length = null;
+    $FUNCTIONS = null;
+    $SYSTEM_FLAG = null;
+    $FUNCTION_NAME = null;
+    $stats = [];
+    
+	global $phpEx, $config, $lang;
 
+    $phpbb_root_path = PHPBB3_ROOT_DIR;
 	$dbms = $dbms_details['DRIVER'];
 
 	if ($load_dbal)
@@ -275,7 +287,7 @@ function connect_check_db($error_connect, &$error, $dbms_details, $prefix_phpbb3
 	}
 
 	// Make sure we don't have a daft user who thinks having the SQLite database in the forum directory is a good idea
-	if ($dbms_details['DRIVER'] == 'sqlite' && stripos(phpbb_realpath($dbhost), phpbb_realpath('../')) === 0)
+	if ($dbms_details['DRIVER'] == 'sqlite' && stripos(phpbb_realpath($dbhost), (string) phpbb_realpath('../')) === 0)
 	{
 		$error[] = $lang['INST_ERR_DB_FORUM_PATH'];
 		return false;
@@ -364,13 +376,13 @@ function connect_check_db($error_connect, &$error, $dbms_details, $prefix_phpbb3
 				// check the version of FB, use some hackery if we can't get access to the server info
 				if ($db->service_handle !== false && function_exists('ibase_server_info'))
 				{
-					$val = @ibase_server_info($db->service_handle, IBASE_SVC_SERVER_VERSION);
+					$val = ibase_server_info($db->service_handle, IBASE_SVC_SERVER_VERSION);
 					preg_match('#V([\d.]+)#', $val, $match);
 					if ($match[1] < 2)
 					{
 						$error[] = $lang['INST_ERR_DB_NO_FIREBIRD'];
 					}
-					$db_info = @ibase_db_info($db->service_handle, $dbname, IBASE_STS_HDR_PAGES);
+					$db_info = ibase_db_info($db->service_handle, $dbname, IBASE_STS_HDR_PAGES);
 
 					preg_match('/^\\s*Page size\\s*(\\d+)/m', $db_info, $regs);
 					$page_size = intval($regs[1]);
@@ -408,14 +420,14 @@ function connect_check_db($error_connect, &$error, $dbms_details, $prefix_phpbb3
 
 					// Setup the stuff for our random table
 					$char_array = array_merge(range('A', 'Z'), range('0', '9'));
-					$char_len = mt_rand(7, 9);
+					$char_len = random_int(7, 9);
 					$char_array_len = sizeof($char_array) - 1;
 
 					$final = '';
 
 					for ($i = 0; $i < $char_len; $i++)
 					{
-						$final .= $char_array[mt_rand(0, $char_array_len)];
+						$final .= $char_array[random_int(0, $char_array_len)];
 					}
 
 					// Create some random table
