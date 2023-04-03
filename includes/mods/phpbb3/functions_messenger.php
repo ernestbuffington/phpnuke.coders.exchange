@@ -9,8 +9,14 @@
 */
 
 /**
-* @ignore
-*/
+ * Applied rules:
+ * AddDefaultValueForUndefinedVariableRector (https://github.com/vimeo/psalm/blob/29b70442b11e3e66113935a2ee22e165a70c74a4/docs/fixing_code.md#possiblyundefinedvariable)
+ * Php4ConstructorRector (https://wiki.php.net/rfc/remove_php4_constructors)
+ * RandomFunctionRector
+ * TernaryToNullCoalescingRector
+ * StrStartsWithRector (https://wiki.php.net/rfc/add_str_starts_with_and_ends_with_functions)
+ */
+
 if (!defined('IN_PHPBB'))
 {
 	exit;
@@ -32,7 +38,7 @@ class messenger
 	/**
 	* Constructor
 	*/
-	function messenger($use_queue = true)
+	function __construct($use_queue = true)
 	{
 		global $config;
 
@@ -153,7 +159,9 @@ class messenger
 	*/
 	function template($template_file, $template_lang = '')
 	{
-		global $config, $phpbb_root_path;
+		global $config;
+		
+		$phpbb_root_path = PHPBB3_ROOT_DIR;
 
 		if (!trim($template_file))
 		{
@@ -174,7 +182,7 @@ class messenger
 				trigger_error("Could not find email template file [ $tpl_file ]", E_USER_ERROR);
 			}
 
-			if (($data = @file_get_contents($tpl_file)) === false)
+			if (($data = file_get_contents($tpl_file)) === false)
 			{
 				trigger_error("Failed opening template file [ $tpl_file ]", E_USER_ERROR);
 			}
@@ -200,7 +208,8 @@ class messenger
 	*/
 	function send($method = NOTIFY_EMAIL, $break = false)
 	{
-		global $config, $user;
+		$result = null;
+        global $config, $user;
 
 		// We add some standard variables we always use, no need to specify them always
 		$this->vars['U_BOARD'] = (!isset($this->vars['U_BOARD'])) ? generate_board_url() : $this->vars['U_BOARD'];
@@ -262,8 +271,8 @@ class messenger
 	*/
 	function error($type, $msg)
 	{
-		global $user, $phpEx, $phpbb_root_path, $config;
-
+		global $user, $phpEx, $config;
+		
 		// Session doesn't exist, create it
 		if (!isset($user->session_id) || $user->session_id === '')
 		{
@@ -348,6 +357,7 @@ class messenger
 
 		return implode("\n", $headers);
 	}
+
 
 	/**
 	* Send out emails
@@ -436,14 +446,13 @@ class messenger
 
 		return true;
 	}
-
 	/**
 	* Send jabber message out
 	*/
 	function msg_jabber()
 	{
-		global $config, $db, $user, $phpbb_root_path, $phpEx;
-
+		global $config, $db, $user, $phpEx;
+		
 		if (empty($config['jab_enable']) || empty($config['jab_host']) || empty($config['jab_username']) || empty($config['jab_password']))
 		{
 			return false;
@@ -474,7 +483,7 @@ class messenger
 
 		if (!$use_queue)
 		{
-			include_once($phpbb_root_path . 'includes/functions_jabber.' . $phpEx);
+			include_once(PHPBB3_INCLUDE_DIR . 'functions_jabber.' . $phpEx);
 			$this->jabber = new jabber($config['jab_host'], $config['jab_port'], $config['jab_username'], $config['jab_password'], $config['jab_use_ssl']);
 
 			if (!$this->jabber->connect())
@@ -523,9 +532,11 @@ class queue
 	/**
 	* constructor
 	*/
-	function queue()
+	function __construct()
 	{
-		global $phpEx, $phpbb_root_path;
+		global $phpEx;
+		
+		$phpbb_root_path = PHPBB3_ROOT_DIR;
 
 		$this->data = array();
 		$this->cache_file = "{$phpbb_root_path}cache/queue.$phpEx";
@@ -555,14 +566,16 @@ class queue
 	*/
 	function process()
 	{
-		global $db, $config, $phpEx, $phpbb_root_path, $user;
+		global $db, $config, $phpEx, $user;
+		
+		$phpbb_root_path = PHPBB3_ROOT_DIR;
 
 		set_config('last_queue_run', time(), true);
 
 		// Delete stale lock file
 		if (file_exists($this->cache_file . '.lock') && !file_exists($this->cache_file))
 		{
-			@unlink($this->cache_file . '.lock');
+			unlink($this->cache_file . '.lock');
 			return;
 		}
 
@@ -571,15 +584,15 @@ class queue
 			return;
 		}
 
-		$fp = @fopen($this->cache_file . '.lock', 'wb');
+		$fp = fopen($this->cache_file . '.lock', 'wb');
 		fclose($fp);
-		@chmod($this->cache_file . '.lock', 0777);
+		chmod($this->cache_file . '.lock', 0777);
 
 		include($this->cache_file);
 
 		foreach ($this->queue_data as $object => $data_ary)
 		{
-			@set_time_limit(0);
+			set_time_limit(0);
 
 			if (!isset($data_ary['package_size']))
 			{
@@ -613,7 +626,7 @@ class queue
 						continue 2;
 					}
 
-					include_once($phpbb_root_path . 'includes/functions_jabber.' . $phpEx);
+					include_once(PHPBB3_INCLUDE_DIR . 'functions_jabber.' . $phpEx);
 					$this->jabber = new jabber($config['jab_host'], $config['jab_port'], $config['jab_username'], $config['jab_password'], $config['jab_use_ssl']);
 
 					if (!$this->jabber->connect())
@@ -658,7 +671,7 @@ class queue
 
 						if (!$result)
 						{
-							@unlink($this->cache_file . '.lock');
+							unlink($this->cache_file . '.lock');
 
 							messenger::error('EMAIL', $err_msg);
 							continue 2;
@@ -697,22 +710,22 @@ class queue
 
 		if (!sizeof($this->queue_data))
 		{
-			@unlink($this->cache_file);
+			unlink($this->cache_file);
 		}
 		else
 		{
-			if ($fp = @fopen($this->cache_file, 'wb'))
+			if ($fp = fopen($this->cache_file, 'wb'))
 			{
-				@flock($fp, LOCK_EX);
+				flock($fp, LOCK_EX);
 				fwrite($fp, "<?php\n\$this->queue_data = unserialize(" . var_export(serialize($this->queue_data), true) . ");\n\n?>");
-				@flock($fp, LOCK_UN);
+				flock($fp, LOCK_UN);
 				fclose($fp);
 
 				phpbb_chmod($this->cache_file, CHMOD_WRITE);
 			}
 		}
 
-		@unlink($this->cache_file . '.lock');
+		unlink($this->cache_file . '.lock');
 	}
 
 	/**
@@ -742,11 +755,11 @@ class queue
 			}
 		}
 
-		if ($fp = @fopen($this->cache_file, 'w'))
+		if ($fp = fopen($this->cache_file, 'w'))
 		{
-			@flock($fp, LOCK_EX);
+			flock($fp, LOCK_EX);
 			fwrite($fp, "<?php\n\$this->queue_data = unserialize(" . var_export(serialize($this->data), true) . ");\n\n?>");
-			@flock($fp, LOCK_UN);
+			flock($fp, LOCK_UN);
 			fclose($fp);
 
 			phpbb_chmod($this->cache_file, CHMOD_WRITE);
@@ -759,7 +772,8 @@ class queue
 */
 function smtpmail($addresses, $subject, $message, &$err_msg, $headers = '')
 {
-	global $config, $user;
+	$mail_to_address = null;
+ global $config, $user;
 
 	// Fix any bare linefeeds in the message to make it RFC821 Compliant.
 	$message = preg_replace("#(?<!\r)\n#si", "\r\n", $message);
@@ -783,7 +797,7 @@ function smtpmail($addresses, $subject, $message, &$err_msg, $headers = '')
 
 		foreach ($header_array as $header)
 		{
-			if (strpos(strtolower($header), 'cc:') === 0 || strpos(strtolower($header), 'bcc:') === 0)
+			if (str_starts_with(strtolower($header), 'cc:') || str_starts_with(strtolower($header), 'bcc:'))
 			{
 				$header = '';
 			}
@@ -795,13 +809,13 @@ function smtpmail($addresses, $subject, $message, &$err_msg, $headers = '')
 
 	if (trim($subject) == '')
 	{
-		$err_msg = (isset($user->lang['NO_EMAIL_SUBJECT'])) ? $user->lang['NO_EMAIL_SUBJECT'] : 'No email subject specified';
+		$err_msg = $user->lang['NO_EMAIL_SUBJECT'] ?? 'No email subject specified';
 		return false;
 	}
 
 	if (trim($message) == '')
 	{
-		$err_msg = (isset($user->lang['NO_EMAIL_MESSAGE'])) ? $user->lang['NO_EMAIL_MESSAGE'] : 'Email message was blank';
+		$err_msg = $user->lang['NO_EMAIL_MESSAGE'] ?? 'Email message was blank';
 		return false;
 	}
 
@@ -983,7 +997,7 @@ class smtp_class
 	var $backtrace = false;
 	var $backtrace_log = array();
 
-	function smtp_class()
+	function __construct()
 	{
 		// Always create a backtrace for admins to identify SMTP problems
 		$this->backtrace = true;
@@ -1028,7 +1042,7 @@ class smtp_class
 		{
 			if (!($this->server_response = fgets($this->socket, 256)))
 			{
-				return (isset($user->lang['NO_EMAIL_RESPONSE_CODE'])) ? $user->lang['NO_EMAIL_RESPONSE_CODE'] : 'Could not get mail server response codes';
+				return $user->lang['NO_EMAIL_RESPONSE_CODE'] ?? 'Could not get mail server response codes';
 			}
 			$this->responses[] = substr(rtrim($this->server_response), 4);
 			$this->numeric_response_code = (int) substr($this->server_response, 0, 3);
@@ -1090,7 +1104,7 @@ class smtp_class
 
 			// We need to close the previous session, else the server is not
 			// able to get our ip for matching...
-			if (!$this->socket = @fsockopen($config['smtp_host'], $config['smtp_port'], $errno, $errstr, 10))
+			if (!$this->socket = fsockopen($config['smtp_host'], $config['smtp_port'], $errno, $errstr, 10))
 			{
 				if ($errstr)
 				{
@@ -1143,7 +1157,7 @@ class smtp_class
 
 		if (!isset($this->commands['AUTH']))
 		{
-			return (isset($user->lang['SMTP_NO_AUTH_SUPPORT'])) ? $user->lang['SMTP_NO_AUTH_SUPPORT'] : 'SMTP server does not support authentication';
+			return $user->lang['SMTP_NO_AUTH_SUPPORT'] ?? 'SMTP server does not support authentication';
 		}
 
 		// Get best authentication method
@@ -1171,7 +1185,7 @@ class smtp_class
 
 		if (!$method)
 		{
-			return (isset($user->lang['NO_SUPPORTED_AUTH_METHODS'])) ? $user->lang['NO_SUPPORTED_AUTH_METHODS'] : 'No supported authentication methods';
+			return $user->lang['NO_SUPPORTED_AUTH_METHODS'] ?? 'No supported authentication methods';
 		}
 
 		$method = strtolower(str_replace('-', '_', $method));
@@ -1185,7 +1199,7 @@ class smtp_class
 	{
 		global $user;
 
-		if (!$this->socket = @fsockopen($hostname, 110, $errno, $errstr, 10))
+		if (!$this->socket = fsockopen($hostname, 110, $errno, $errstr, 10))
 		{
 			if ($errstr)
 			{
@@ -1363,7 +1377,7 @@ class smtp_class
 			$str = '';
 			for ($i = 0; $i < 32; $i++)
 			{
-				$str .= chr(mt_rand(0, 255));
+				$str .= chr(random_int(0, 255));
 			}
 			$cnonce = base64_encode($str);
 
@@ -1373,11 +1387,25 @@ class smtp_class
 			$auth_2 = 'AUTHENTICATE:' . $digest_uri;
 			$response_value = md5(sprintf('%s:%s:00000001:%s:auth:%s', md5($auth_1), $md5_challenge['nonce'], $cnonce, md5($auth_2)));
 
-			$input_string = sprintf('username="%s",realm="%s",nonce="%s",cnonce="%s",nc="00000001",qop=auth,digest-uri="%s",response=%s,%d', $username, $md5_challenge['realm'], $md5_challenge['nonce'], $cnonce, $digest_uri, $response_value, $md5_challenge['maxbuf']);
+			$input_string = sprintf('username="%s",
+			                            realm="%s",
+										nonce="%s",
+									   cnonce="%s",
+									 nc="00000001",
+									      qop=auth,
+								   digest-uri="%s",
+								   response=%s,%d', 
+								         $username, 
+						   $md5_challenge['realm'], 
+						   $md5_challenge['nonce'], 
+						                   $cnonce, 
+									   $digest_uri,    
+								   $response_value, 
+							$md5_challenge['maxbuf']);
 		}
 		else
 		{
-			return (isset($user->lang['INVALID_DIGEST_CHALLENGE'])) ? $user->lang['INVALID_DIGEST_CHALLENGE'] : 'Invalid digest challenge';
+			return $user->lang['INVALID_DIGEST_CHALLENGE'] ?? 'Invalid digest challenge';
 		}
 
 		$base64_method_digest_md5 = base64_encode($input_string);
