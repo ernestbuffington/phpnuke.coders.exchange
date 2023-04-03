@@ -9,7 +9,8 @@
 */
 
 /**
-*/
+ * rectorphp left me hanging again and could not refactor this file! Whats up Tomas?
+ */
 if (!defined('IN_PHPBB'))
 {
 	exit;
@@ -21,24 +22,19 @@ if (!defined('IN_PHPBB'))
 if (!defined('INCLUDES_PRIME_LINKS'))
 {
 	define('INCLUDES_PRIME_LINKS', true);
-
 	// Options
 	define('REMOVE_SUBDOMAINS', true);		// Specify subdomains to be removed before checking the link, separated by semicolons (setting TRUE will remove all subdomains)
 	define('USE_TARGET_ATTRIBUTE', false);	// The attribute "target" is not valid for STRICT doctypes
 	define('EXTERNAL_LINK_PREFIX', '');		// Example: 'http://anonym.to?'
-
 	// Link relationships
 	define('INTERNAL_LINK_REL', '');
 	define('EXTERNAL_LINK_REL', 'nofollow');
-
 	// Link targets
 	define('INTERNAL_LINK_TARGET', '');
 	define('EXTERNAL_LINK_TARGET', '_blank');
-
 	// Link classes
 	define('INTERNAL_LINK_CLASS', 'postlink-local');
 	define('EXTERNAL_LINK_CLASS', '');
-
 	/**
 	*/
 	function prime_links($text)
@@ -54,7 +50,7 @@ if (!defined('INCLUDES_PRIME_LINKS'))
 		/**
 		* Constructor
 		*/
-		function prime_links()
+		function __construct()
 		{
 		}
 
@@ -79,7 +75,7 @@ if (!defined('INCLUDES_PRIME_LINKS'))
 			$stripped_url = $url;
 			if ($remove_subdomains !== false && strpos($url, '//') !== false)
 			{
-				$url_parts = @parse_url($url);
+				$url_parts = parse_url($url);
 				if ($remove_subdomains && is_string($remove_subdomains))
 				{
 					str_replace(';', '|', $remove_subdomains);
@@ -242,4 +238,5 @@ if (!defined('INCLUDES_PRIME_LINKS'))
 		}
 	}
 }
+
 ?>
