@@ -9,7 +9,11 @@
 */
 
 /**
-*/
+ * Applied rules:
+ * TernaryToNullCoalescingRector
+ * WrapVariableVariableNameInCurlyBracesRector (https://www.php.net/manual/en/language.variables.variable.php)
+ */
+
 if (!defined('IN_PHPBB'))
 {
 	exit;
@@ -116,7 +120,9 @@ $global_rule_conditions = array(
 function get_folder($user_id, $folder_id = false)
 {
 	global $db, $user, $template;
-	global $phpbb_root_path, $phpEx;
+	global $phpEx;
+	
+	$phpbb_root_path = PHPBB3_ROOT_DIR;
 
 	$folder = array();
 
@@ -172,7 +178,7 @@ function get_folder($user_id, $folder_id = false)
 		$folder[$row['folder_id']] = array(
 			'folder_name'		=> $row['folder_name'],
 			'num_messages'		=> $row['pm_count'],
-			'unread_messages'	=> ((isset($num_unread[$row['folder_id']])) ? $num_unread[$row['folder_id']] : 0)
+			'unread_messages'	=> ($num_unread[$row['folder_id']] ?? 0)
 		);
 	}
 	$db->sql_freeresult($result);
@@ -730,7 +736,9 @@ function place_pm_into_folder(&$global_privmsgs_rules, $release = false)
 function move_pm($user_id, $message_limit, $move_msg_ids, $dest_folder, $cur_folder_id)
 {
 	global $db, $user;
-	global $phpbb_root_path, $phpEx;
+	global $phpEx;
+	
+	$phpbb_root_path = PHPBB3_ROOT_DIR;
 
 	$num_moved = 0;
 
@@ -867,7 +875,9 @@ function update_unread_status($unread, $msg_id, $user_id, $folder_id)
 */
 function handle_mark_actions($user_id, $mark_action)
 {
-	global $db, $user, $phpbb_root_path, $phpEx;
+	global $db, $user, $phpEx;
+	
+	$phpbb_root_path = PHPBB3_ROOT_DIR;
 
 	$msg_ids		= request_var('marked_msg_id', array(0));
 	$cur_folder_id	= request_var('cur_folder_id', PRIVMSGS_NO_BOX);
@@ -929,7 +939,9 @@ function handle_mark_actions($user_id, $mark_action)
 */
 function delete_pm($user_id, $msg_ids, $folder_id)
 {
-	global $db, $user, $phpbb_root_path, $phpEx;
+	global $db, $user, $phpEx;
+	
+	$phpbb_root_path = PHPBB3_ROOT_DIR;
 
 	$user_id	= (int) $user_id;
 	$folder_id	= (int) $folder_id;
@@ -1060,7 +1072,7 @@ function delete_pm($user_id, $msg_ids, $folder_id)
 		// Check if there are any attachments we need to remove
 		if (!function_exists('delete_attachments'))
 		{
-			include($phpbb_root_path . 'includes/functions_admin.' . $phpEx);
+			include(PHPBB3_INCLUDE_DIR . 'functions_admin.' . $phpEx);
 		}
 
 		delete_attachments('message', $delete_ids, false);
@@ -1098,9 +1110,9 @@ function rebuild_header($check_ary)
 		$_types = array('u', 'g');
 		foreach ($_types as $type)
 		{
-			if (sizeof($$type))
+			if (sizeof(${$type}))
 			{
-				foreach ($$type as $id)
+				foreach (${$type} as $id)
 				{
 					$address[$type][$id] = $check_type;
 				}
@@ -1116,7 +1128,9 @@ function rebuild_header($check_ary)
 */
 function write_pm_addresses($check_ary, $author_id, $plaintext = false)
 {
-	global $db, $user, $template, $phpbb_root_path, $phpEx;
+	global $db, $user, $template, $phpEx;
+	
+	$phpbb_root_path = PHPBB3_ROOT_DIR;
 
 	$addresses = array();
 
@@ -1292,7 +1306,9 @@ function get_folder_status($folder_id, $folder)
 */
 function submit_pm($mode, $subject, &$data, $put_in_outbox = true)
 {
-	global $db, $auth, $config, $phpEx, $template, $user, $phpbb_root_path;
+	global $db, $auth, $config, $phpEx, $template, $user;
+	
+	$phpbb_root_path = PHPBB3_ROOT_DIR;
 
 	// We do not handle erasing pms here
 	if ($mode == 'delete')
@@ -1544,7 +1560,7 @@ function submit_pm($mode, $subject, &$data, $put_in_outbox = true)
 			else
 			{
 				// insert attachment into db
-				if (!@file_exists($phpbb_root_path . $config['upload_path'] . '/' . basename($orphan_rows[$attach_row['attach_id']]['physical_filename'])))
+				if (!file_exists($phpbb_root_path . $config['upload_path'] . '/' . basename($orphan_rows[$attach_row['attach_id']]['physical_filename'])))
 				{
 					continue;
 				}
@@ -1601,7 +1617,9 @@ function submit_pm($mode, $subject, &$data, $put_in_outbox = true)
 */
 function pm_notification($mode, $author, $recipients, $subject, $message)
 {
-	global $db, $user, $config, $phpbb_root_path, $phpEx, $auth;
+	global $db, $user, $config, $phpEx, $auth;
+	
+	$phpbb_root_path = PHPBB3_ROOT_DIR;
 
 	$subject = censor_text($subject);
 
@@ -1656,7 +1674,7 @@ function pm_notification($mode, $author, $recipients, $subject, $message)
 		return;
 	}
 
-	include_once($phpbb_root_path . 'includes/functions_messenger.' . $phpEx);
+	include_once(PHPBB3_INCLUDE_DIR . 'functions_messenger.' . $phpEx);
 	$messenger = new messenger();
 	//-- mod: Prime Notify PM ---------------------------------------------------//
 	// It's better to keep BBCodes so the intended formatting can be seen
@@ -1715,7 +1733,9 @@ function pm_notification($mode, $author, $recipients, $subject, $message)
 */
 function message_history($msg_id, $user_id, $message_row, $folder, $in_post_mode = false)
 {
-	global $db, $user, $config, $template, $phpbb_root_path, $phpEx, $auth, $bbcode;
+	global $db, $user, $config, $template, $phpEx, $auth, $bbcode;
+	
+	$phpbb_root_path = PHPBB3_ROOT_DIR;
 
 	// Get History Messages (could be newer)
 	$sql = 'SELECT t.*, p.*, u.*
@@ -1779,7 +1799,7 @@ function message_history($msg_id, $user_id, $message_row, $folder, $in_post_mode
 	{
 		if (!class_exists('bbcode'))
 		{
-			include($phpbb_root_path . 'includes/bbcode.' . $phpEx);
+			include(PHPBB3_INCLUDE_DIR . 'bbcode.' . $phpEx);
 		}
 		$bbcode = new bbcode(base64_encode($bbcode_bitfield));
 	}
