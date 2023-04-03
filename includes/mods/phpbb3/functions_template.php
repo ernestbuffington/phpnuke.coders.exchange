@@ -9,8 +9,14 @@
 */
 
 /**
-* @ignore
-*/
+ * Applied rules:
+ * AddDefaultValueForUndefinedVariableRector (https://github.com/vimeo/psalm/blob/29b70442b11e3e66113935a2ee22e165a70c74a4/docs/fixing_code.md#possiblyundefinedvariable)
+ * Php4ConstructorRector (https://wiki.php.net/rfc/remove_php4_constructors)
+ * TernaryToNullCoalescingRector
+ * WrapVariableVariableNameInCurlyBracesRector (https://www.php.net/manual/en/language.variables.variable.php)
+ * StrStartsWithRector (https://wiki.php.net/rfc/add_str_starts_with_and_ends_with_functions)
+ */
+
 if (!defined('IN_PHPBB'))
 {
 	exit;
@@ -46,7 +52,7 @@ class template_compile
 	/**
 	* constuctor
 	*/
-	function template_compile(&$template)
+	function __construct(&$template)
 	{
 		$this->template = &$template;
 	}
@@ -63,7 +69,7 @@ class template_compile
 			trigger_error("template->_tpl_load_file(): File {$this->template->files[$handle]} does not exist or is empty", E_USER_ERROR);
 		}
 
-		$this->template->compiled_code[$handle] = $this->compile(trim(@file_get_contents($this->template->files[$handle])));
+		$this->template->compiled_code[$handle] = $this->compile(trim(file_get_contents($this->template->files[$handle])));
 
 		// Actually compile the code now.
 		$this->compile_write($handle, $this->template->compiled_code[$handle]);
@@ -78,7 +84,7 @@ class template_compile
 				'template_filename'		=> $this->template->filename[$handle],
 				'template_included'		=> '',
 				'template_mtime'		=> time(),
-				'template_data'			=> trim(@file_get_contents($this->template->files[$handle])),
+				'template_data'			=> trim(file_get_contents($this->template->files[$handle])),
 			);
 
 			$sql = 'INSERT INTO ' . STYLES_TEMPLATE_DATA_TABLE . ' ' . $db->sql_build_array('INSERT', $sql_ary);
@@ -113,7 +119,7 @@ class template_compile
 
 		if ($echo_var)
 		{
-			global $$echo_var;
+			global ${$echo_var};
 		}
 
 		// Remove any "loose" php ... we want to give admins the ability
@@ -217,7 +223,7 @@ class template_compile
 		for ($i = 0, $size = sizeof($text_blocks); $i < $size; $i++)
 		{
 			$trim_check_text = trim($text_blocks[$i]);
-			$template_php .= (!$no_echo) ? (($trim_check_text != '') ? $text_blocks[$i] : '') . ((isset($compile_blocks[$i])) ? $compile_blocks[$i] : '') : (($trim_check_text != '') ? $text_blocks[$i] : '') . ((isset($compile_blocks[$i])) ? $compile_blocks[$i] : '');
+			$template_php .= (!$no_echo) ? (($trim_check_text != '') ? $text_blocks[$i] : '') . ($compile_blocks[$i] ?? '') : (($trim_check_text != '') ? $text_blocks[$i] : '') . ($compile_blocks[$i] ?? '');
 		}
 
 		// There will be a number of occasions where we switch into and out of
@@ -279,7 +285,7 @@ class template_compile
 		$no_nesting = false;
 
 		// Is the designer wanting to call another loop in a loop?
-		if (strpos($tag_args, '!') === 0)
+		if (str_starts_with($tag_args, '!'))
 		{
 			// Count the number if ! occurrences (not allowed in vars)
 			$no_nesting = substr_count($tag_args, '!');
@@ -610,7 +616,8 @@ class template_compile
 	*/
 	function _parse_is_expr($is_arg, $tokens)
 	{
-		$expr_end = 0;
+		$expr = null;
+        $expr_end = 0;
 		$negate_expr = false;
 
 		if (($first_token = array_shift($tokens)) == 'not')
@@ -626,7 +633,7 @@ class template_compile
 		switch ($expr_type)
 		{
 			case 'even':
-				if (@$tokens[$expr_end] == 'by')
+				if ($tokens[$expr_end] == 'by')
 				{
 					$expr_end++;
 					$expr_arg = $tokens[$expr_end++];
@@ -639,7 +646,7 @@ class template_compile
 			break;
 
 			case 'odd':
-				if (@$tokens[$expr_end] == 'by')
+				if ($tokens[$expr_end] == 'by')
 				{
 					$expr_end++;
 					$expr_arg = $tokens[$expr_end++];
@@ -652,7 +659,7 @@ class template_compile
 			break;
 
 			case 'div':
-				if (@$tokens[$expr_end] == 'by')
+				if ($tokens[$expr_end] == 'by')
 				{
 					$expr_end++;
 					$expr_arg = $tokens[$expr_end++];
@@ -690,7 +697,7 @@ class template_compile
 
 		// Append the variable reference.
 		$varref .= "['$varname']";
-		$varref = ($echo) ? "<?php echo $varref; ?>" : ((isset($varref)) ? $varref : '');
+		$varref = ($echo) ? "<?php echo $varref; ?>" : ($varref ?? '');
 
 		return $varref;
 	}
@@ -748,12 +755,12 @@ class template_compile
 
 		$filename = $this->template->cachepath . str_replace('/', '.', $this->template->filename[$handle]) . '.' . $phpEx;
 
-		if ($fp = @fopen($filename, 'wb'))
+		if ($fp = fopen($filename, 'wb'))
 		{
-			@flock($fp, LOCK_EX);
-			@fwrite ($fp, $data);
-			@flock($fp, LOCK_UN);
-			@fclose($fp);
+			flock($fp, LOCK_EX);
+			fwrite ($fp, $data);
+			flock($fp, LOCK_UN);
+			fclose($fp);
 
 			phpbb_chmod($filename, CHMOD_WRITE);
 		}
