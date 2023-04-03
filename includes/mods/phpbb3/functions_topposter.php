@@ -9,7 +9,7 @@
 */
 
 /**
-* @ignore
+* @Word To The Mother Fucker
 */
 if (!defined('IN_PHPBB'))
 {
