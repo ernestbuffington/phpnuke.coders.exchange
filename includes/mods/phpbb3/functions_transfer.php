@@ -9,8 +9,11 @@
 */
 
 /**
-* @ignore
-*/
+ * Applied rules:
+ * Php4ConstructorRector (https://wiki.php.net/rfc/remove_php4_constructors)
+ * StrStartsWithRector (https://wiki.php.net/rfc/add_str_starts_with_and_ends_with_functions)
+ */
+
 if (!defined('IN_PHPBB'))
 {
 	exit;
@@ -36,9 +39,9 @@ class transfer
 	/**
 	* Constructor - init some basic values
 	*/
-	function transfer()
+	function __construct()
 	{
-		global $phpbb_root_path;
+		$phpbb_root_path = PHPBB3_ROOT_DIR;
 
 		$this->file_perms	= 0644;
 		$this->dir_perms	= 0777;
@@ -52,7 +55,8 @@ class transfer
 	*/
 	function write_file($destination_file = '', $contents = '')
 	{
-		global $phpbb_root_path;
+		
+		$phpbb_root_path = PHPBB3_ROOT_DIR;
 
 		$destination_file = $this->root_path . str_replace($phpbb_root_path, '', $destination_file);
 
@@ -63,22 +67,22 @@ class transfer
 		// like the cache folder. If the user can't do either, then
 		// he/she needs to use the fsock ftp method
 		$temp_name = tempnam($this->tmp_path, 'transfer_');
-		@unlink($temp_name);
+		unlink($temp_name);
 
-		$fp = @fopen($temp_name, 'w');
+		$fp = fopen($temp_name, 'w');
 
 		if (!$fp)
 		{
 			trigger_error('Unable to create temporary file ' . $temp_name, E_USER_ERROR);
 		}
 
-		@fwrite($fp, $contents);
-		@fclose($fp);
+		fwrite($fp, $contents);
+		fclose($fp);
 
 		$result = $this->overwrite_file($temp_name, $destination_file);
 
 		// remove temporary file now
-		@unlink($temp_name);
+		unlink($temp_name);
 
 		return $result;
 	}
@@ -104,7 +108,8 @@ class transfer
 	*/
 	function make_dir($dir)
 	{
-		global $phpbb_root_path;
+		
+		$phpbb_root_path = PHPBB3_ROOT_DIR;
 
 		$dir = str_replace($phpbb_root_path, '', $dir);
 		$dir = explode('/', $dir);
@@ -114,7 +119,7 @@ class transfer
 		{
 			$result = true;
 
-			if (strpos($dir[$i], '.') === 0)
+			if (str_starts_with($dir[$i], '.'))
 			{
 				continue;
 			}
@@ -144,9 +149,10 @@ class transfer
 	*/
 	function copy_file($from_loc, $to_loc)
 	{
-		global $phpbb_root_path;
+		
+		$phpbb_root_path = PHPBB3_ROOT_DIR;
 
-		$from_loc = ((strpos($from_loc, $phpbb_root_path) !== 0) ? $phpbb_root_path : '') . $from_loc;
+		$from_loc = ((!str_starts_with($from_loc, $phpbb_root_path)) ? $phpbb_root_path : '') . $from_loc;
 		$to_loc = $this->root_path . str_replace($phpbb_root_path, '', $to_loc);
 
 		if (!file_exists($from_loc))
@@ -164,7 +170,7 @@ class transfer
 	*/
 	function delete_file($file)
 	{
-		global $phpbb_root_path;
+		$phpbb_root_path = PHPBB3_ROOT_DIR;
 
 		$file = $this->root_path . str_replace($phpbb_root_path, '', $file);
 
@@ -177,7 +183,7 @@ class transfer
 	*/
 	function remove_dir($dir)
 	{
-		global $phpbb_root_path;
+		$phpbb_root_path = PHPBB3_ROOT_DIR;
 
 		$dir = $this->root_path . str_replace($phpbb_root_path, '', $dir);
 
@@ -189,7 +195,7 @@ class transfer
 	*/
 	function rename($old_handle, $new_handle)
 	{
-		global $phpbb_root_path;
+		$phpbb_root_path = PHPBB3_ROOT_DIR;
 
 		$old_handle = $this->root_path . str_replace($phpbb_root_path, '', $old_handle);
 
@@ -201,7 +207,7 @@ class transfer
 	*/
 	function file_exists($directory, $filename)
 	{
-		global $phpbb_root_path;
+		$phpbb_root_path = PHPBB3_ROOT_DIR;
 
 		$directory = $this->root_path . str_replace($phpbb_root_path, '', $directory);
 
@@ -238,9 +244,9 @@ class transfer
 	function methods()
 	{
 		$methods = array();
-		$disabled_functions = explode(',', @ini_get('disable_functions'));
+		$disabled_functions = explode(',', ini_get('disable_functions'));
 
-		if (@extension_loaded('ftp'))
+		if (extension_loaded('ftp'))
 		{
 			$methods[] = 'ftp';
 		}
@@ -263,7 +269,7 @@ class ftp extends transfer
 	/**
 	* Standard parameters for FTP session
 	*/
-	function ftp($host, $username, $password, $root_path, $port = 21, $timeout = 10)
+	function __construct($host, $username, $password, $root_path, $port = 21, $timeout = 10)
 	{
 		$this->host			= $host;
 		$this->port			= $port;
@@ -280,7 +286,7 @@ class ftp extends transfer
 		}
 
 		// Init some needed values
-		transfer::transfer();
+		parent::__construct();
 
 		return;
 	}
@@ -309,7 +315,7 @@ class ftp extends transfer
 	function _init()
 	{
 		// connect to the server
-		$this->connection = @ftp_connect($this->host, $this->port, $this->timeout);
+		$this->connection = ftp_connect($this->host, $this->port, $this->timeout);
 
 		if (!$this->connection)
 		{
@@ -317,10 +323,10 @@ class ftp extends transfer
 		}
 
 		// attempt to turn pasv mode on
-		@ftp_pasv($this->connection, true);
+		ftp_pasv($this->connection, true);
 
 		// login to the server
-		if (!@ftp_login($this->connection, $this->username, $this->password))
+		if (!ftp_login($this->connection, $this->username, $this->password))
 		{
 			return 'ERR_UNABLE_TO_LOGIN';
 		}
@@ -340,7 +346,7 @@ class ftp extends transfer
 	*/
 	function _mkdir($dir)
 	{
-		return @ftp_mkdir($this->connection, $dir);
+		return ftp_mkdir($this->connection, $dir);
 	}
 
 	/**
@@ -349,7 +355,7 @@ class ftp extends transfer
 	*/
 	function _rmdir($dir)
 	{
-		return @ftp_rmdir($this->connection, $dir);
+		return ftp_rmdir($this->connection, $dir);
 	}
 
 	/**
@@ -358,7 +364,7 @@ class ftp extends transfer
 	*/
 	function _rename($old_handle, $new_handle)
 	{
-		return @ftp_rename($this->connection, $old_handle, $new_handle);
+		return ftp_rename($this->connection, $old_handle, $new_handle);
 	}
 
 	/**
@@ -375,7 +381,7 @@ class ftp extends transfer
 			}
 		}
 
-		return @ftp_chdir($this->connection, $dir);
+		return ftp_chdir($this->connection, $dir);
 	}
 
 	/**
@@ -386,7 +392,7 @@ class ftp extends transfer
 	{
 		if (function_exists('ftp_chmod'))
 		{
-			$err = @ftp_chmod($this->connection, $perms, $file);
+			$err = ftp_chmod($this->connection, $perms, $file);
 		}
 		else
 		{
@@ -415,7 +421,7 @@ class ftp extends transfer
 		$to_file = basename($to_file);
 		$this->_chdir($to_dir);
 
-		$result = @ftp_put($this->connection, $to_file, $from_file, $mode);
+		$result = ftp_put($this->connection, $to_file, $from_file, $mode);
 		$this->_chdir($this->root_path);
 
 		return $result;
@@ -427,7 +433,7 @@ class ftp extends transfer
 	*/
 	function _delete($file)
 	{
-		return @ftp_delete($this->connection, $file);
+		return ftp_delete($this->connection, $file);
 	}
 
 	/**
@@ -441,7 +447,7 @@ class ftp extends transfer
 			return false;
 		}
 
-		return @ftp_quit($this->connection);
+		return ftp_quit($this->connection);
 	}
 
 	/**
@@ -451,7 +457,7 @@ class ftp extends transfer
 	*/
 	function _cwd()
 	{
-		return @ftp_pwd($this->connection);
+		return ftp_pwd($this->connection);
 	}
 
 	/**
@@ -460,7 +466,7 @@ class ftp extends transfer
 	*/
 	function _ls($dir = './')
 	{
-		return @ftp_nlist($this->connection, $dir);
+		return ftp_nlist($this->connection, $dir);
 	}
 
 	/**
@@ -469,7 +475,7 @@ class ftp extends transfer
 	*/
 	function _site($command)
 	{
-		return @ftp_site($this->connection, $command);
+		return ftp_site($this->connection, $command);
 	}
 }
 
@@ -486,7 +492,7 @@ class ftp_fsock extends transfer
 	/**
 	* Standard parameters for FTP session
 	*/
-	function ftp_fsock($host, $username, $password, $root_path, $port = 21, $timeout = 10)
+	function __construct($host, $username, $password, $root_path, $port = 21, $timeout = 10)
 	{
 		$this->host			= $host;
 		$this->port			= $port;
@@ -503,7 +509,7 @@ class ftp_fsock extends transfer
 		}
 
 		// Init some needed values
-		transfer::transfer();
+		parent::__construct();
 
 		return;
 	}
@@ -535,14 +541,14 @@ class ftp_fsock extends transfer
 		$errstr = '';
 
 		// connect to the server
-		$this->connection = @fsockopen($this->host, $this->port, $errno, $errstr, $this->timeout);
+		$this->connection = fsockopen($this->host, $this->port, $errno, $errstr, $this->timeout);
 
 		if (!$this->connection || !$this->_check_command())
 		{
 			return 'ERR_CONNECTING_SERVER';
 		}
 
-		@stream_set_timeout($this->connection, $this->timeout);
+		stream_set_timeout($this->connection, $this->timeout);
 
 		// login
 		if (!$this->_send_command('USER', $this->username))
@@ -643,12 +649,12 @@ class ftp_fsock extends transfer
 		$this->_send_command('STOR', $to_file, false);
 
 		// send the file
-		$fp = @fopen($from_file, 'rb');
-		while (!@feof($fp))
+		$fp = fopen($from_file, 'rb');
+		while (!feof($fp))
 		{
-			@fwrite($this->data_connection, @fread($fp, 4096));
+			fwrite($this->data_connection, fread($fp, 4096));
 		}
-		@fclose($fp);
+		fclose($fp);
 
 		// close connection
 		$this->_close_data_connection();
@@ -704,9 +710,9 @@ class ftp_fsock extends transfer
 		$this->_send_command('NLST', $dir);
 
 		$list = array();
-		while (!@feof($this->data_connection))
+		while (!feof($this->data_connection))
 		{
-			$list[] = preg_replace('#[\r\n]#', '', @fgets($this->data_connection, 512));
+			$list[] = preg_replace('#[\r\n]#', '', fgets($this->data_connection, 512));
 		}
 		$this->_close_data_connection();
 
@@ -760,11 +766,11 @@ class ftp_fsock extends transfer
 		$errno = 0;
 		$errstr = '';
 
-		if (!$this->data_connection = @fsockopen($server_ip, $server_port, $errno, $errstr, $this->timeout))
+		if (!$this->data_connection = fsockopen($server_ip, $server_port, $errno, $errstr, $this->timeout))
 		{
 			return false;
 		}
-		@stream_set_timeout($this->data_connection, $this->timeout);
+		stream_set_timeout($this->data_connection, $this->timeout);
 
 		return true;
 	}
@@ -775,7 +781,7 @@ class ftp_fsock extends transfer
 	*/
 	function _close_data_connection()
 	{
-		return @fclose($this->data_connection);
+		return fclose($this->data_connection);
 	}
 
 	/**
@@ -788,7 +794,7 @@ class ftp_fsock extends transfer
 
 		do
 		{
-			$result = @fgets($this->connection, 512);
+			$result = fgets($this->connection, 512);
 			$response .= $result;
 		}
 		while (substr($response, 3, 1) != ' ');
