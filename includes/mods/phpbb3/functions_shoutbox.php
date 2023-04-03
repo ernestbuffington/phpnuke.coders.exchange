@@ -77,4 +77,5 @@ function sql_error($sql, $line = __LINE__, $file = __FILE__)
 	echo "<error>$err</error>\n<sql>$sql</sql>\n</xml>";
 	exit;
 }
+
 ?>
