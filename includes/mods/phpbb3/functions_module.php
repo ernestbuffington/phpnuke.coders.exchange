@@ -9,8 +9,12 @@
 */
 
 /**
-* @ignore
-*/
+ * Applied rules:
+ * Php4ConstructorRector (https://wiki.php.net/rfc/remove_php4_constructors)
+ * TernaryToNullCoalescingRector
+ * StrStartsWithRector (https://wiki.php.net/rfc/add_str_starts_with_and_ends_with_functions)
+ */
+
 if (!defined('IN_PHPBB'))
 {
 	exit;
@@ -38,11 +42,11 @@ class p_master
 	* Constuctor
 	* Set module include path
 	*/
-	function p_master($include_path = false)
+	function __construct($include_path = false)
 	{
-		global $phpbb_root_path;
-
-		$this->include_path = ($include_path !== false) ? $include_path : $phpbb_root_path . 'includes/';
+        $phpbb_include_path = PHPBB3_INCLUDE_DIR;
+		
+		$this->include_path = ($include_path !== false) ? $include_path : $phpbb_include_path;
 
 		// Make sure the path ends with /
 		if (substr($this->include_path, -1) !== '/')
@@ -81,8 +85,8 @@ class p_master
 	function list_modules($p_class)
 	{
 		global $auth, $db, $user, $cache;
-		global $config, $phpbb_root_path, $phpEx;
-
+		global $config, $phpEx;
+		
 		// Sanitise for future path use, it's escaped as appropriate for queries
 		$this->p_class = str_replace(array('.', '/', '\\'), '', basename($p_class));
 
@@ -429,7 +433,10 @@ class p_master
 	*/
 	function load_active($mode = false, $module_url = false, $execute_module = true)
 	{
-		global $phpbb_root_path, $phpbb_admin_path, $phpEx, $user;
+		global $phpEx, $user;
+		
+		$phpbb_admin_path = PHPBB3_ADMIN_DIR;
+		$phpbb_root_path = PHPBB3_ROOT_DIR;
 
 		$module_path = $this->include_path . $this->p_class;
 		$icat = request_var('icat', '');
@@ -737,7 +744,7 @@ class p_master
 			$u_title = $module_url . $delim . 'i=' . (($item_ary['cat']) ? $item_ary['id'] : $item_ary['name'] . (($item_ary['is_duplicate']) ? '&amp;icat=' . $current_id : '') . '&amp;mode=' . $item_ary['mode']);
 
 			// Was not allowed in categories before - /*!$item_ary['cat'] && */
-			$u_title .= (isset($item_ary['url_extra'])) ? $item_ary['url_extra'] : '';
+			$u_title .= $item_ary['url_extra'] ?? '';
 
 			// Only output a categories items if it's currently selected
 			if (!$depth || ($depth && (in_array($item_ary['parent'], array_values($this->module_cache['parents'])) || $item_ary['parent'] == $this->p_parent)))
@@ -785,7 +792,7 @@ class p_master
 			return '';
 		}
 
-		return (isset($user->lang[$this->module->page_title])) ? $user->lang[$this->module->page_title] : $this->module->page_title;
+		return $user->lang[$this->module->page_title] ?? $this->module->page_title;
 	}
 
 	/**
@@ -864,7 +871,7 @@ class p_master
 			{
 				while (($entry = readdir($dir)) !== false)
 				{
-					if (strpos($entry, 'info_' . strtolower($module_class) . '_') === 0 && substr(strrchr($entry, '.'), 1) == $phpEx)
+					if (str_starts_with($entry, 'info_' . strtolower($module_class) . '_') && substr(strrchr($entry, '.'), 1) == $phpEx)
 					{
 						$add_files[] = 'mods/' . substr(basename($entry), 0, -(strlen($phpEx) + 1));
 					}
