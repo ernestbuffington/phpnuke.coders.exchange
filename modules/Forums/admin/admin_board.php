@@ -39,7 +39,7 @@ include("../includes/functions_selects.php");
 // Pull all config data
 //
 $sql = "SELECT *
-	FROM " . CONFIG_TABLE;
+	FROM " . PHPBB2_CONFIG_TABLE;
 if(!$result = $db->sql_query($sql))
 {
 	message_die(CRITICAL_ERROR, "Could not query config information in admin_board", "", __LINE__, __FILE__, $sql);
@@ -68,7 +68,7 @@ else
 
 		if( isset($_POST['submit']) )
 		{
-			$sql = "UPDATE " . CONFIG_TABLE . " SET
+			$sql = "UPDATE " . PHPBB2_CONFIG_TABLE . " SET
 				config_value = '" . str_replace("\'", "''", (string) $new[$config_name]) . "'
 				WHERE config_name = '$config_name'";
 			if( !$db->sql_query($sql) )

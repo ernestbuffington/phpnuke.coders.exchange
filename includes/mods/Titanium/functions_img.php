@@ -156,48 +156,48 @@ function img_make_tag($imgname, $mymodule_name, $mytitle='', $myborder=0, $mynam
  * @ToDo: width and height theme images should be static and pre-cached as well
  *        not all images used in a theme are at their original width and height!
  */
-function img($imgfile='', $mymodule='') {
-	global $currentlang, $ThemeSel, $Default_Theme, $cache;
-	$cache_imgfile = [0];
+function horndonkle_img($imgfile='', $mymodule='') {
+	global $currentlang, $ThemeSel, $Default_Theme, $ZendCache;
+	$ZendCache_imgfile = [0];
 	$tmp_imgfile = explode('.', (string) $imgfile);
-	$cache_imgfile = $tmp_imgfile[0];
-	static $cached_image;
+	$ZendCache_imgfile = $tmp_imgfile[0];
+	static $ZendCached_image;
 	$horndonkle = md5($imgfile.$ThemeSel); //maybe I should call this HornDonkleCrypt (just kidding, you know I love ya Technocrat)
-  if(!($cached_image = $cache->load($mymodule,'titanium_horndonkle_image_'. $horndonkle))):
+  if(!($ZendCached_image = $ZendCache->load($mymodule,'titanium_horndonkle_image_'. $horndonkle))):
 	if (file_exists(NUKE_THEMES_DIR . $ThemeSel . '/images/' . $mymodule . '/lang_' . $currentlang . '/' . $imgfile)):
-	  $cached_image[$ThemeSel][$currentlang][$cache_imgfile] = "themes/".$ThemeSel."/images/$mymodule/lang_".$currentlang."/$imgfile";
+	  $ZendCached_image[$ThemeSel][$currentlang][$ZendCache_imgfile] = "themes/".$ThemeSel."/images/$mymodule/lang_".$currentlang."/$imgfile";
 	elseif (file_exists(NUKE_THEMES_DIR . $ThemeSel . '/images/lang_' . $currentlang . '/' . $imgfile)):
-	  $cached_image[$ThemeSel][$currentlang][$cache_imgfile] = "themes/".$ThemeSel."/images/lang_".$currentlang."/$imgfile";
+	  $ZendCached_image[$ThemeSel][$currentlang][$ZendCache_imgfile] = "themes/".$ThemeSel."/images/lang_".$currentlang."/$imgfile";
 	elseif (file_exists(NUKE_THEMES_DIR . $ThemeSel . '/images/' . $mymodule . '/' . $imgfile)):
-	  $cached_image[$ThemeSel][$currentlang][$cache_imgfile] = "themes/".$ThemeSel."/images/$mymodule/$imgfile";
+	  $ZendCached_image[$ThemeSel][$currentlang][$ZendCache_imgfile] = "themes/".$ThemeSel."/images/$mymodule/$imgfile";
 	elseif (file_exists(NUKE_THEMES_DIR . $ThemeSel . '/images/' . $imgfile)):
-	  $cached_image[$ThemeSel][$currentlang][$cache_imgfile] = "themes/".$ThemeSel."/images/$imgfile";
+	  $ZendCached_image[$ThemeSel][$currentlang][$ZendCache_imgfile] = "themes/".$ThemeSel."/images/$imgfile";
 	elseif (file_exists(NUKE_THEMES_DIR . $Default_Theme . '/images/' . $mymodule . '/lang_' . $currentlang . '/' . $imgfile)):
-	  $cached_image[$ThemeSel][$currentlang][$cache_imgfile] = "themes/".$Default_Theme."/images/$mymodule/lang_".$currentlang."/$imgfile";
+	  $ZendCached_image[$ThemeSel][$currentlang][$ZendCache_imgfile] = "themes/".$Default_Theme."/images/$mymodule/lang_".$currentlang."/$imgfile";
 	elseif (file_exists(NUKE_THEMES_DIR . $Default_Theme . '/images/lang_' . $currentlang . '/' . $imgfile)):
-	  $cached_image[$ThemeSel][$currentlang][$cache_imgfile] = "themes/".$Default_Theme."/images/lang_".$currentlang."/$imgfile";
+	  $ZendCached_image[$ThemeSel][$currentlang][$ZendCache_imgfile] = "themes/".$Default_Theme."/images/lang_".$currentlang."/$imgfile";
 	elseif (file_exists(NUKE_THEMES_DIR . $Default_Theme . '/images/' . $mymodule . '/' . $imgfile)):
-	  $cached_image[$ThemeSel][$currentlang][$cache_imgfile] = "themes/".$Default_Theme."/images/$mymodule/$imgfile";
+	  $ZendCached_image[$ThemeSel][$currentlang][$ZendCache_imgfile] = "themes/".$Default_Theme."/images/$mymodule/$imgfile";
 	elseif (file_exists(NUKE_THEMES_DIR . $Default_Theme . '/images/' . $imgfile)):
-	  $cached_image[$ThemeSel][$currentlang][$cache_imgfile] = "themes/".$Default_Theme."/images/$imgfile";
+	  $ZendCached_image[$ThemeSel][$currentlang][$ZendCache_imgfile] = "themes/".$Default_Theme."/images/$imgfile";
 	elseif (file_exists(NUKE_MODULES_DIR . $mymodule . '/images/lang_' . $currentlang . '/' . $imgfile)):
-	  $cached_image[$ThemeSel][$currentlang][$cache_imgfile] = "modules/".$mymodule."/images/lang_".$currentlang."/$imgfile";
+	  $ZendCached_image[$ThemeSel][$currentlang][$ZendCache_imgfile] = "modules/".$mymodule."/images/lang_".$currentlang."/$imgfile";
 	elseif (file_exists(NUKE_MODULES_DIR . $mymodule . '/images/avatars/' . $imgfile)):
-	  $cached_image[$ThemeSel][$currentlang][$cache_imgfile] =  "modules/".$mymodule."/images/avatars/$imgfile";
+	  $ZendCached_image[$ThemeSel][$currentlang][$ZendCache_imgfile] =  "modules/".$mymodule."/images/avatars/$imgfile";
 	elseif (file_exists(NUKE_MODULES_DIR . $mymodule . '/images/' . $imgfile)):
-	  $cached_image[$ThemeSel][$currentlang][$cache_imgfile] =  "modules/".$mymodule."/images/$imgfile";
+	  $ZendCached_image[$ThemeSel][$currentlang][$ZendCache_imgfile] =  "modules/".$mymodule."/images/$imgfile";
 	elseif (file_exists(NUKE_IMAGES_DIR . $mymodule . '/' . $imgfile)):
-	  $cached_image[$ThemeSel][$currentlang][$cache_imgfile] = "images/".$mymodule."/$imgfile";
+	  $ZendCached_image[$ThemeSel][$currentlang][$ZendCache_imgfile] = "images/".$mymodule."/$imgfile";
 	elseif (file_exists(NUKE_IMAGES_DIR . $imgfile)):
-	  $cached_image[$ThemeSel][$currentlang][$cache_imgfile] = "images/$imgfile";
+	  $ZendCached_image[$ThemeSel][$currentlang][$ZendCache_imgfile] = "images/$imgfile";
 	else:
 		echo "( Image File: ".NUKE_MODULES_DIR.$mymodule.'/images/'.$imgfile." ) not found!</br>";
 	    log_write('error', "( ".NUKE_MODULES_DIR.$mymodule.'/images/'.$imgfile." ) not found!", 'Module Image Not Found Error');
-		$cached_image[$ThemeSel][$currentlang][$cache_imgfile] = '';
+		$ZendCached_image[$ThemeSel][$currentlang][$ZendCache_imgfile] = '';
 	endif;
-	$cache->save($mymodule, 'titanium_horndonkle_image_'.$horndonkle, $cached_image);
-	return($cached_image[$ThemeSel][$currentlang][$cache_imgfile]);
+	$ZendCache->save($mymodule, 'titanium_horndonkle_image_'.$horndonkle, $ZendCached_image);
+	return($ZendCached_image[$ThemeSel][$currentlang][$ZendCache_imgfile]);
   else:	
-	return ($cached_image[$ThemeSel][$currentlang][$cache_imgfile]);
+	return ($ZendCached_image[$ThemeSel][$currentlang][$ZendCache_imgfile]);
   endif;
 }

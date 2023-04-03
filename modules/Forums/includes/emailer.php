@@ -287,7 +287,7 @@ class emailer
                         {
                                 $to = ' ';
 
-                                $sql = "UPDATE " . CONFIG_TABLE . "
+                                $sql = "UPDATE " . PHPBB2_CONFIG_TABLE . "
                                         SET config_value = '1'
                                         WHERE config_name = 'sendmail_fix'";
                                 if (!$db->sql_query($sql))

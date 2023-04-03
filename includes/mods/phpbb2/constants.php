@@ -294,7 +294,7 @@ define_once('AUC_TABLE', $prefix.'_bbadvanced_username_color');
 define_once('AUTH_ACCESS_TABLE', $prefix.'_bbauth_access');
 define_once('BANLIST_TABLE', $prefix.'_bbbanlist');
 define_once('CATEGORIES_TABLE', $prefix.'_bbcategories');
-define_once('CONFIG_TABLE', $prefix.'_bbconfig');
+define_once('PHPBB2_CONFIG_TABLE', $prefix.'_bbconfig');
 define_once('DISALLOW_TABLE', $prefix.'_bbdisallow');
 define_once('FORUMS_TABLE', $prefix.'_bbforums');
 define_once('GROUPS_TABLE', $prefix.'_bbgroups');

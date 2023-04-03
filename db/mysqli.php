@@ -150,7 +150,7 @@ class sql_db
 	}
 
     function check_query($query) {
-        global $prefix, $cache;
+        global $prefix, $ZendCache;
         if (!stristr($query, "UPDATE") && !stristr($query, "INSERT") && !stristr($query, "DELETE")) 
 		{ 
 		  return; 
@@ -165,7 +165,7 @@ class sql_db
         foreach( $tables as $file => $table )
         {
             if (stristr($query, $table)) {
-				//$cache->delete($file, 'config');
+				//$ZendCache->delete($file, 'config');
             }
         }
         return;

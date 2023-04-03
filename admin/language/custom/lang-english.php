@@ -211,7 +211,7 @@ define_once("_CACHE_CAT_DELETE_FAIL", "Category deletion failed");
 define_once("_CACHE_CLEARED_SUCC", "Cache cleared successfully");
 define_once("_CACHE_CLEARED_FAIL", "Cache failed to clear");
 define_once("_CACHE_PREF_UPDATED_SUCC", "Preferences updated succesfully");
-define_once("_CACHE_ENABLE_HOW", "To enable cache, set \$use_cache to \"1\" or \"2\" in config.php if it isn't already.");
+define_once("_CACHE_ENABLE_HOW", "To enable cache, set \$use_zend_cache to \"1\" or \"2\" in config.php if it isn't already.");
 define_once("_CACHESAFEMODE", "Safe mode is enabled on your server, cache will NOT function!");
 define_once("_CACHENOTALLOWED", "You are not allowed to view this file!");
 define_once("_CACHE_MODE", "Cache Mode");

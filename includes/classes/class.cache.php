@@ -1,7 +1,7 @@
 <?php
 
-global $cache_debug;
-$cache_debug = 1;
+global $ZendCache_debug;
+$ZendCache_debug = 1;
 
 /************************************************************************
    Nuke-Evolution: Caching System
@@ -40,7 +40,7 @@ if (!defined('CACHE_PREFIX')) {
 //Cache
 require_once(NUKE_ZEND_DIR.'Cache.php');
 
-class cache 
+class ZendCache 
 {
     var $changed = false;
     var $saved = array();
@@ -50,8 +50,8 @@ class cache
     var $zend;
 
     // constructor
-    function __construct($use_cache) {
-        $this->type = $use_cache;
+    function __construct($use_zend_cache) {
+        $this->type = $use_zend_cache;
         $this->valid = ($this->type == CACHE_OFF || ($this->type == FILE_CACHE && (!is_writable(NUKE_CACHE_DIR) || ini_get('safe_mode')))) ? false : (($this->type == FILE_CACHE || $this->type == SQL_CACHE || $this->type == XCACHE || $this->type == APC_CACHE || $this->type == MEMCACHED) ? true : false);
         if($this->type == FILE_CACHE) {
         	$frontendOptions = array('lifetime' => 3600, 'automatic_serialization' => true);
@@ -101,7 +101,7 @@ class cache
         return $count;
     }
 
-    // This function passes the variable $cache_changed, and then the function resync will handle it
+    // This function passes the variable $ZendCache_changed, and then the function resync will handle it
     function save($name, string $cat = null, $fileData) {
         
 		if(!isset($cat))
@@ -128,7 +128,7 @@ class cache
         return $this->zend->load(CACHE_PREFIX.$cat.'_'.$name);
     }
 
-    // This function passes the variable $cache_changed, and then the function resync will handle it
+    // This function passes the variable $ZendCache_changed, and then the function resync will handle it
     function delete($name, $cat='config') {
 		if(!$this->valid) return false;
 		$name = str_replace(array(' ', '.', '-'), '_', $name);
@@ -163,8 +163,8 @@ class cache
     }
 }
 
-global $use_cache;
+global $use_zend_cache;
 // Set up the cache class reference
-$cache = new cache($use_cache);
+$ZendCache = new ZendCache($use_zend_cache);
 
 ?>

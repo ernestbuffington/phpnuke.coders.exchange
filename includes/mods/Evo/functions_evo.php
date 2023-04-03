@@ -233,12 +233,12 @@ function get_mod_admins($module_name='super', $all='')
  */
 function load_nukeconfig() 
 {
-    global $db, $cache, $debugger;
+    global $db, $ZendCache, $debugger;
     // $nukeconfig is only called once -> mainfile.php
     // mainfile.php is only loaded once. So static makes no sense
     // static $nukeconfig;
     // if(isset($nukeconfig) && is_array($nukeconfig)) { return $nukeconfig; }
-    if ((($nukeconfig = $cache->load('nukeconfig', 'config')) === false) || empty($nukeconfig)) {
+    if ((($nukeconfig = $ZendCache->load('nukeconfig', 'config')) === false) || empty($nukeconfig)) {
         $nukeconfig = $db->sql_ufetchrow('SELECT * FROM '._NUKE_CONFIG_TABLE, SQL_ASSOC);
         if (!$nukeconfig) {
             if ($prefix != 'nuke') {
@@ -249,13 +249,13 @@ function load_nukeconfig()
             }
         }
         $nukeconfig = str_replace('\\"', '"', $nukeconfig);
-        $cache->save('nukeconfig', 'config', $nukeconfig);
+        $ZendCache->save('nukeconfig', 'config', $nukeconfig);
         $db->sql_freeresult($nukeconfig);
     }
     if(is_array($nukeconfig)) {
         return $nukeconfig;
     } else {
-        $cache->delete('nukeconfig', 'config');
+        $ZendCache->delete('nukeconfig', 'config');
         $debugger->handle_error('There is an error in your  nuke_config data', 'Error');
         return array();
     }
@@ -270,15 +270,15 @@ function load_nukeconfig()
  */
 function load_board_config() 
 {
-    global $db, $debugger, $currentlang, $cache;
+    global $db, $debugger, $currentlang, $ZendCache;
     // load_board_config is only called once -> mainfile.php
     // mainfile.php is only loaded once. So static makes no sense
     //static $board_config;
     //if(isset($board_config) && is_array($board_config)) { return $board_config; }
-    if ((($board_config = $cache->load('board_config', 'config')) === false) || empty($board_config)) {
+    if ((($board_config = $ZendCache->load('board_config', 'config')) === false) || empty($board_config)) {
         $board_config = array();
 
-        $sql = "SELECT * FROM " . CONFIG_TABLE;
+        $sql = "SELECT * FROM " . PHPBB2_CONFIG_TABLE;
         if( !($result = $db->sql_query($sql, true)) ) {
             $debugger->handle_error("Could not query phpbb config information", 'Error');
         }
@@ -286,12 +286,12 @@ function load_board_config()
             $board_config[$row['config_name']] = $row['config_value'];
         }
         $db->sql_freeresult($result);
-        $cache->save('board_config', 'config', $board_config);
+        $ZendCache->save('board_config', 'config', $board_config);
     }
     if(is_array($board_config)) {
         return $board_config;
     } else {
-        $cache->delete('board_config', 'config');
+        $ZendCache->delete('board_config', 'config');
         $debugger->handle_error('There is an error in your board_config data', 'Error');
         return array();
     }
@@ -306,12 +306,12 @@ function load_board_config()
  */
 function load_evoconfig() 
 {
-    global $db, $cache, $debugger;
+    global $db, $ZendCache, $debugger;
     // load_evoconfig is only called once -> mainfile.php
     // mainfile.php is only loaded once. So static makes no sense
     //static $evoconfig;
     //if(isset($evoconfig) && is_array($evoconfig)) { return $evoconfig; }
-    if ((($evoconfig = $cache->load('titanium_evoconfig', 'config')) === false) || empty($evoconfig)) {
+    if ((($evoconfig = $ZendCache->load('titanium_evoconfig', 'config')) === false) || empty($evoconfig)) {
         $evoconfig = array();
 		$wordrow = array();
         $result = $db->sql_query('SELECT `evo_field`, `evo_value` FROM '._EVOCONFIG_TABLE.' WHERE `evo_field` != "cache_data"');
@@ -334,13 +334,13 @@ function load_evoconfig()
             $wordrow[$word] = $replacement;
         }
         
-        $cache->save('titanium_evoconfig', 'config', $evoconfig);
+        $ZendCache->save('titanium_evoconfig', 'config', $evoconfig);
         $db->sql_freeresult($result);
     }
     if(is_array($evoconfig)) {
         return $evoconfig;
     } else {
-        $cache->delete('titanium_evoconfig', 'config');
+        $ZendCache->delete('titanium_evoconfig', 'config');
         $debugger->handle_error('There is an error in your evoconfig data', 'Error');
         return array();
     }
@@ -349,12 +349,12 @@ function load_evoconfig()
 // main_module function by Quake
 function main_module() 
 {
-  global $db, $cache;
+  global $db, $ZendCache;
   static $main_module;
   if (isset($main_module)) { return $main_module; }
-    if((($main_module = $cache->load('main_module', 'config')) === false) || empty($main_module)) {
+    if((($main_module = $ZendCache->load('main_module', 'config')) === false) || empty($main_module)) {
         list($main_module) = $db->sql_ufetchrow('SELECT main_module FROM '._MAIN_TABLE, SQL_NUM);
-      $cache->save('main_module', 'config', $main_module);
+      $ZendCache->save('main_module', 'config', $main_module);
   }
   return $main_module;
 }
@@ -363,7 +363,7 @@ function main_module()
 function update_modules() 
 {
     // New function to add new modules and delete old ones
-    global $db, $cache;
+    global $db, $ZendCache;
     static $updated;
     if(isset($updated)) { return $updated; }
     //Here we will pull all currently installed modules from the database
@@ -414,7 +414,7 @@ function update_modules()
             $db->sql_uquery("DELETE FROM `"._MODULES_TABLE."` WHERE `title`= '$module'");
             $result = $db->sql_uquery("OPTIMIZE TABLE `"._MODULES_TABLE."`");
             $db->sql_freeresult($result);
-            $cache->delete('active_modules');
+            $ZendCache->delete('active_modules');
         }
     }
 
@@ -424,7 +424,7 @@ function update_modules()
 
 function UpdateCookie() 
 {
-    global $db, $prefix, $userinfo, $cache, $cookie, $identify;
+    global $db, $prefix, $userinfo, $ZendCache, $cookie, $identify;
 
     $ip = $identify->get_ip();
     $uid = $userinfo['user_id'];
@@ -446,7 +446,7 @@ function UpdateCookie()
     /*****[BEGIN]******************************************
     [ Base:    Caching System                     v3.0.0 ]
     ******************************************************/
-    if(($ya_config = $cache->load('ya_config', 'config')) === false) 
+    if(($ya_config = $ZendCache->load('ya_config', 'config')) === false) 
     {
         /*****[END]********************************************
         [ Base:    Caching System                     v3.0.0 ]
@@ -462,7 +462,7 @@ function UpdateCookie()
         /*****[BEGIN]******************************************
         [ Base:    Caching System                     v3.0.0 ]
         ******************************************************/
-        $cache->save('ya_config', 'config', $ya_config);
+        $ZendCache->save('ya_config', 'config', $ya_config);
         /*****[END]********************************************
         [ Base:    Caching System                     v3.0.0 ]
         ******************************************************/
@@ -496,10 +496,10 @@ function UpdateCookie()
 // called by several files - so it makes sense to cache it (ReOrGaNiSaTiOn)
 function GetColorGroups($in_admin = false) 
 {
-    global $db, $cache;
+    global $db, $ZendCache;
     static $ColorGroupsCache;
 
-    if((($ColorGroupsCache = $cache->load('ColorGroups', 'config')) === false) || empty($ColorGroupsCache)) 
+    if((($ColorGroupsCache = $ZendCache->load('ColorGroups', 'config')) === false) || empty($ColorGroupsCache)) 
 	{
         $ColorGroupsCache = '';
         $result = $db->sql_query("SELECT `group_id`, `group_name`, `group_color`, `group_weight` FROM `".AUC_TABLE."` WHERE `group_id`>'0' ORDER BY `group_weight` ASC");
@@ -510,7 +510,7 @@ function GetColorGroups($in_admin = false)
             $ColorGroupsCache .= '&nbsp;[&nbsp;<strong><a href="'. append_sid('auc_listing.php?id='. $group_id.$back) .'"><span class="genmed" style="color:#'. $group_color .';">'. $group_name .'</span></a></strong>&nbsp;]&nbsp;';
         }
         $db->sql_freeresult($result);
-        $cache->save('ColorGroups', 'config', $ColorGroupsCache);
+        $ZendCache->save('ColorGroups', 'config', $ColorGroupsCache);
     }
     return $ColorGroupsCache;
 }
@@ -1008,8 +1008,8 @@ function GetRankForums($user_id)
 # redirect function by Quake
 function redirect_evo($url, $refresh = 0) 
 {
-    global $db, $db2, $cache;
-    if(is_object($cache)) $cache->resync();
+    global $db, $db2, $ZendCache;
+    if(is_object($ZendCache)) $ZendCache->resync();
     if(is_object($db)) $db->sql_close();
 	if(is_object($db2)) $db2->sql_close();
 	$type = preg_match('/IIS|Microsoft|WebSTAR|Xitami/', (string) $_SERVER['SERVER_SOFTWARE']) ? 'Refresh: '.$refresh.'; URL=' : 'Location: ';
@@ -1063,7 +1063,7 @@ function ord_crypt_decode($data)
 
 function add_group_attributes($user_id, $group_id) 
 {
-    global $prefix, $db, $board_config, $cache;
+    global $prefix, $db, $board_config, $ZendCache;
 
     if ($user_id <= 2) return true;
 
@@ -1112,7 +1112,7 @@ function add_group_attributes($user_id, $group_id)
 /*****[BEGIN]******************************************
 [ Base:    Caching System                     v3.0.0 ]
 ******************************************************/
-         $cache->delete('UserColors', 'config');
+         $ZendCache->delete('UserColors', 'config');
 /*****[END]********************************************
 [ Base:    Caching System                     v3.0.0 ]
 ******************************************************/
@@ -1122,14 +1122,14 @@ function add_group_attributes($user_id, $group_id)
 
 function remove_group_attributes($user_id, $group_id) 
 {
-    global $prefix, $db, $board_config, $cache;
+    global $prefix, $db, $board_config, $ZendCache;
     if (empty($user_id) && !empty($group_id) && $group_id != 0) {
         $sql = "SELECT `user_id` FROM `".$prefix."_bbuser_group` WHERE `group_id`=".$group_id;
         $result = $db->sql_query($sql);
         while ($row = $db->sql_fetchrow($result)) {
             remove_group_attributes($row['user_id'], '');
         }
-        $cache->delete('UserColors', 'config');
+        $ZendCache->delete('UserColors', 'config');
     } else if (!empty($user_id) && $user_id >= 3) {
         $sql = "UPDATE `" . $prefix . "_users`
                 SET `user_color_gc` = '',
@@ -1167,7 +1167,7 @@ function web_site_up($url)
 
 function evo_mail($to, $subject, $content, $header='', $params='', $batch=false) 
 {
-    global $board_config, $nukeconfig, $cache;
+    global $board_config, $nukeconfig, $ZendCache;
 	
     if (empty($to)) return false;
 	
@@ -1242,7 +1242,7 @@ function evo_mail($to, $subject, $content, $header='', $params='', $batch=false)
 function evo_mail_batch($array_recipients)
 {
     if (!is_array($array_recipients)) return '';
-	$recipients = (new Swift_Message('PHP-Nuke Titanium'));
+	$recipients = (new Swift_Message('PHP-Nuke'));
     foreach ($array_recipients as $username => $email){
         $recipients->addTo($email, $username);
     }

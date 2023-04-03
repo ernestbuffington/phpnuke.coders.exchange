@@ -14,10 +14,24 @@
 /**
 * @ignore
 */
+if (!defined('MODULE_FILE')) {
+   die ("You can't access this file directly...");
+}
+
+if (!isset($popup))
+{
+  $module_name = basename(__DIR__);
+  require("modules/".$module_name."/nukebb.php");
+}
+else
+{
+  $phpbb_root_path = PHPBB3_ROOT_DIR;
+}
+
 define('IN_PHPBB', true);
-$phpbb_root_path = (defined('PHPBB_ROOT_PATH')) ? PHPBB_ROOT_PATH : './';
 $phpEx = substr(strrchr(__FILE__, '.'), 1);
 include($phpbb_root_path . 'common.' . $phpEx);
+
 // IBPro Game Support
 $autocom = request_var('autocom', '');
 $act = request_var('act', '');

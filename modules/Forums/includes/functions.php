@@ -171,7 +171,7 @@ function dss_rand()
    
 	if($dss_seeded !== true)
 	{
-		$sql = "UPDATE " . CONFIG_TABLE . " SET
+		$sql = "UPDATE " . PHPBB2_CONFIG_TABLE . " SET
 			config_value = '" . $board_config['rand_seed'] . "'
 			WHERE config_name = 'rand_seed'";
 		
@@ -389,7 +389,7 @@ function init_userprefs($userdata)
 	}
 	elseif ( $userdata['user_id'] === ANONYMOUS && $board_config['default_lang'] !== $default_lang )
 	{
-		$sql = 'UPDATE ' . CONFIG_TABLE . "
+		$sql = 'UPDATE ' . PHPBB2_CONFIG_TABLE . "
 			SET config_value = '" . $default_lang . "'
 			WHERE config_name = 'default_lang'";
 

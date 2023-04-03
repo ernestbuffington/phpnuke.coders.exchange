@@ -374,10 +374,10 @@ if(!defined("SQL_LAYER"))
 
     /**
     * Version information about used database
-    * @param bool $use_cache If true, it is safe to retrieve the value from the cache
+    * @param bool $use_zend_cache If true, it is safe to retrieve the value from the cache
     * @return string sql server version
     */
-    function sql_server_info($raw = false, $use_cache = true)
+    function sql_server_info($raw = false, $use_zend_cache = true)
     {
             $result = mysqli_query($this->db_connect_id, 'SELECT VERSION() AS version');
             $row = mysqli_fetch_assoc($result);

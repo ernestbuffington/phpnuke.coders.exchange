@@ -38,7 +38,7 @@ function head() {
 		     $user, $hr, $theme, $cookie, $bgcolor1, 
 		 $bgcolor2, $bgcolor3, $bgcolor4, $textcolor1, 
 	   $textcolor2, $forumpage, $adminpage, $userpage, 
-		$pagetitle, $cache, $ThemeSel;
+		$pagetitle, $ZendCache, $ThemeSel;
 
 	$ThemeSel = get_theme();
 
@@ -112,7 +112,7 @@ function head() {
 	include_once(NUKE_INCLUDE_DIR.'javascript.php');
 
 	echo "\n<!-- Loading favicon from header.php START -->\n";
-    if (!($favicon = $cache->load('favicon', 'config'))): 
+    if (!($favicon = $ZendCache->load('favicon', 'config'))): 
         if (file_exists(NUKE_BASE_DIR.'favicon.ico')) 
 		$favicon = "favicon.ico";
 		else 
@@ -125,7 +125,7 @@ function head() {
         $favicon = 'none';
 		if ($favicon != 'none') 
         echo "<link rel=\"shortcut icon\" href=\"$favicon\" type=\"image/x-icon\" />\n";
-        $cache->save('favicon', 'config', $favicon);
+        $ZendCache->save('favicon', 'config', $favicon);
 	else: 
         if ($favicon != 'none') 
         echo "<link rel=\"shortcut icon\" href=\"$favicon\" type=\"image/x-icon\" />\n";
@@ -135,7 +135,7 @@ function head() {
 	echo "<link rel=\"alternate\" type=\"application/rss+xml\" title=\"RSS\" href=\"backend.php\">\n";
 	echo "<link rel=\"StyleSheet\" href=\"themes/$ThemeSel/style/style.css\" type=\"text/css\">\n\n";
 
-    if (!($custom_head = $cache->load('custom_head', 'config'))): 
+    if (!($custom_head = $ZendCache->load('custom_head', 'config'))): 
     
 	    $custom_head = array();
 
@@ -157,7 +157,7 @@ function head() {
             endforeach;
         
 		endif;
-		$cache->save('custom_head', 'config', $custom_head);
+		$ZendCache->save('custom_head', 'config', $custom_head);
 	else: 
         
 		if (!empty($custom_head)): 

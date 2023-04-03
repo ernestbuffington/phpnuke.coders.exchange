@@ -29,7 +29,7 @@ require_once("setup_config.php");
 require_once("functions.php");
 require_once(SETUP_NUKE_INCLUDES_DIR.'functions_selects.php');
 
-global $setup_admin, $db, $dbhost, $dbname, $dbuname, $dbpass, $dbtype, $prefix, $user_prefix, $admin_file, $directory_mode, $file_mode, $debug, $use_cache, $persistency;
+global $setup_admin, $db, $dbhost, $dbname, $dbuname, $dbpass, $dbtype, $prefix, $user_prefix, $admin_file, $directory_mode, $file_mode, $debug, $use_zend_cache, $persistency;
 
 $error = ((!isset($gpl) OR $gpl != "yes" OR !isset($lgpl) OR $lgpl != "yes") AND !isset($postback));
 $errors = ["db_host"=>false, "db_host_msg"=>"", "db_user"=>false, "db_user_msg"=>"", "db_name"=>false, "upload_directory"=>false, "upload_directory"=>false];
@@ -368,7 +368,7 @@ $config .= "\$file_mode = 0666;\n";
 $config .= "\n";
 $config .= "\$debug = true;\n";
 $config .= "\n";
-$config .= "\$use_cache = 1;\n";
+$config .= "\$use_zend_cache = 1;\n";
 $config .= "\n";
 $config .= "\$persistency = false;\n";
 $config .= "\n";

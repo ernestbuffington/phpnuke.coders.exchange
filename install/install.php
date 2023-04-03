@@ -35,7 +35,7 @@ define( "_VALID_MOS", 1 );
 /** Include common.php */
 require_once( 'common.php' );
 
-global $dbhost, $dbname, $dbuname, $dbpass, $dbtype, $prefix, $user_prefix, $admin_file, $directory_mode, $file_mode, $debug, $use_cache, $persistency;
+global $dbhost, $dbname, $dbuname, $dbpass, $dbtype, $prefix, $user_prefix, $admin_file, $directory_mode, $file_mode, $debug, $use_zend_cache, $persistency;
 
 require_once(SETUP_INCLUDE_DIR.'configdata.php');
 require_once(SETUP_UDL_DIR."database.php");

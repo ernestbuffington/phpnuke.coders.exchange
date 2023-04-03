@@ -170,7 +170,7 @@ if ( $total_online_users > $board_config['record_online_users'])
 	$board_config['record_online_users'] = $total_online_users;
 	$board_config['record_online_date'] = time();
 
-	$sql = "UPDATE " . CONFIG_TABLE . "
+	$sql = "UPDATE " . PHPBB2_CONFIG_TABLE . "
 		SET config_value = '$total_online_users'
 		WHERE config_name = 'record_online_users'";
 	if ( !$db->sql_query($sql) )
@@ -178,7 +178,7 @@ if ( $total_online_users > $board_config['record_online_users'])
 		message_die(GENERAL_ERROR, 'Could not update online user record (nr of users)', '', __LINE__, __FILE__, $sql);
 	}
 
-	$sql = "UPDATE " . CONFIG_TABLE . "
+	$sql = "UPDATE " . PHPBB2_CONFIG_TABLE . "
 		SET config_value = '" . $board_config['record_online_date'] . "'
 		WHERE config_name = 'record_online_date'";
 	if ( !$db->sql_query($sql) )

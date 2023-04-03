@@ -93,7 +93,7 @@ else
 }
 
 // Read in the board config to maintain dynamic
-$config_result = $db->sql_query("select config_name,config_value from ". CONFIG_TABLE ."");
+$config_result = $db->sql_query("select config_name,config_value from ". PHPBB2_CONFIG_TABLE ."");
 while ($config_row = $db->sql_fetchrow($config_result))
 {
 	$board_config[$config_row['config_name']] = $config_row['config_value'];

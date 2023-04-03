@@ -196,7 +196,7 @@ if (
         $nuke_user_timezone = ( isset($_POST['timezone']) ) ? doubleval($_POST['timezone']) : $board_config['board_timezone'];
 
 	$sql = "SELECT config_value
-		FROM " . CONFIG_TABLE . "
+		FROM " . PHPBB2_CONFIG_TABLE . "
 		WHERE config_name = 'default_dateformat'";
 	if ( !($result = $db->sql_query($sql)) )
 	{

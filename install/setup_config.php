@@ -6,7 +6,7 @@
 *****************************************************************************************
 **/
 
-global $setup_admin, $dbhost, $dbname, $dbuname, $dbpass, $dbtype, $prefix, $user_prefix, $admin_file, $directory_mode, $file_mode, $debug, $use_cache, $persistency;
+global $setup_admin, $dbhost, $dbname, $dbuname, $dbpass, $dbtype, $prefix, $user_prefix, $admin_file, $directory_mode, $file_mode, $debug, $use_zend_cache, $persistency;
 
 
 /*----[ Admin and 1st User Name ] -------------------------
@@ -127,7 +127,7 @@ $file_mode = 0666;
 ---------------------------------------------------------*/
 $debug = true;
 
-/*----[ $use_cache ] -----=-------------------------------
+/*----[ $use_zend_cache ] -----=--------------------------
 |                                                         |
 | Use caching of database fetched data                    |
 |                                                         |
@@ -143,7 +143,7 @@ $debug = true;
 | Default: 1 (File Cache)                                 |
 |                                                         |
 ---------------------------------------------------------*/
-$use_cache = 1;
+$use_zend_cache = 1;
 
 /*----[ $persistency ] -----------------------------------
 |                                                         |

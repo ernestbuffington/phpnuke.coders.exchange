@@ -49,7 +49,7 @@ db_name     : Database Name on Server
 db_prefix   : Prefix for Tables
 persistency : Connection Persistency
 --------------------------------- */
-global $rsa_private, $rsa_public, $rsa_modulo, $use_rsa, $uploads_dir, $dbhost, $dbname, $dbuname, $dbpass, $dbtype, $prefix, $user_prefix, $admin_file, $directory_mode, $file_mode, $debug, $use_cache, $persistency;
+global $rsa_private, $rsa_public, $rsa_modulo, $use_rsa, $uploads_dir, $dbhost, $dbname, $dbuname, $dbpass, $dbtype, $prefix, $user_prefix, $admin_file, $directory_mode, $file_mode, $debug, $use_zend_cache, $persistency;
 
 $db_type        = $dbtype;
 $db_host        = $dbhost;

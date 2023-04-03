@@ -223,7 +223,7 @@ $user_ip = encode_ip($client_ip);
 // basic forum information is not available
 //
 $sql = "SELECT *
-	FROM " . CONFIG_TABLE;
+	FROM " . PHPBB2_CONFIG_TABLE;
 if( !($result = $db->sql_query($sql)) )
 {
 	message_die(CRITICAL_ERROR, "Could not query config information", "", __LINE__, __FILE__, $sql);

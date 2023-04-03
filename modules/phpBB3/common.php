@@ -119,12 +119,14 @@ if (defined('IN_CRON'))
 	$phpbb_root_path = dirname(__FILE__) . DIRECTORY_SEPARATOR;
 }
 
-if (!file_exists($phpbb_root_path . 'config.' . $phpEx))
+$cms_root_path = $_SERVER['DOCUMENT_ROOT'].'/';
+
+if (!file_exists($cms_root_path . 'config.' . $phpEx))
 {
 	die("<p>The config.$phpEx file could not be found.</p><p><a href=\"{$phpbb_root_path}install/index.$phpEx\">Click here to install phpBB</a></p>");
 }
 
-require($phpbb_root_path . 'config.' . $phpEx);
+require($cms_root_path . 'config.' . $phpEx);
 
 if (!defined('PHPBB3_INSTALLED'))
 {
@@ -183,18 +185,18 @@ if (!empty($load_extensions))
 }
 
 // Include files
-require($phpbb_root_path . 'includes/acm/acm_' . $acm_type . '.' . $phpEx);
-require($phpbb_root_path . 'includes/cache.' . $phpEx);
-require($phpbb_root_path . 'includes/template.' . $phpEx);
-require($phpbb_root_path . 'includes/session.' . $phpEx);
-require($phpbb_root_path . 'includes/auth.' . $phpEx);
+require(PHPBB3_INCLUDE_DIR . 'acm/acm_' . $acm_type . '.' . $phpEx);
+require(PHPBB3_INCLUDE_DIR . 'cache.' . $phpEx);
+require(PHPBB3_INCLUDE_DIR . 'template.' . $phpEx);
+require(PHPBB3_INCLUDE_DIR . 'session.' . $phpEx);
+require(PHPBB3_INCLUDE_DIR . 'auth.' . $phpEx);
 
-require($phpbb_root_path . 'includes/functions.' . $phpEx);
-require($phpbb_root_path . 'includes/functions_content.' . $phpEx);
+require(PHPBB3_INCLUDE_DIR . 'functions.' . $phpEx);
+require(PHPBB3_INCLUDE_DIR . 'functions_content.' . $phpEx);
 
-require($phpbb_root_path . 'includes/constants.' . $phpEx);
+require(PHPBB3_INCLUDE_DIR . 'constants.' . $phpEx);
 require($phpbb_root_path . 'includes/db/' . $dbms . '.' . $phpEx);
-require($phpbb_root_path . 'includes/utf/utf_tools.' . $phpEx);
+require(NUKE_INLCUDE_DIR . 'utf/utf_tools.' . $phpEx);
 
 // Set PHP error handler to ours
 set_error_handler(defined('PHPBB_MSG_HANDLER') ? PHPBB_MSG_HANDLER : 'msg_handler');
