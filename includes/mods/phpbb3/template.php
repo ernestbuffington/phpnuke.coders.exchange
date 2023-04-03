@@ -9,8 +9,10 @@
 */
 
 /**
-* @ignore
-*/
+ * Applied rules:
+ * ListEachRector (https://wiki.php.net/rfc/deprecations_php_7_2#each)
+ */
+
 if (!defined('IN_PHPBB'))
 {
 	exit;
@@ -49,7 +51,9 @@ class template
 	*/
 	function set_template()
 	{
-		global $phpbb_root_path, $user;
+		global $user;
+		
+		$phpbb_root_path = PHPBB3_ROOT_DIR;
 
 		if (file_exists($phpbb_root_path . 'styles/' . $user->theme['template_path'] . '/template'))
 		{
@@ -77,8 +81,9 @@ class template
 	*/
 	function set_custom_template($template_path, $template_name)
 	{
-		global $phpbb_root_path;
-
+		
+        $phpbb_root_path = PHPBB3_ROOT_DIR;
+		
 		$this->root = $template_path;
 		$this->cachepath = $phpbb_root_path . 'cache/ctpl_' . str_replace('_', '-', $template_name) . '_';
 
@@ -222,7 +227,7 @@ class template
 		$this->files_template[$handle] = $user->theme['template_id'];
 		
 		$recompile = false;
-		if (!file_exists($filename) || @filesize($filename) === 0)
+		if (!file_exists($filename) || filesize($filename) === 0)
 		{
 			$recompile = true;
 		}
@@ -234,7 +239,7 @@ class template
 				$this->files[$handle] = $this->files_inherit[$handle];
 				$this->files_template[$handle] = $user->theme['template_inherits_id'];
 			}
-			$recompile = (@filemtime($filename) < filemtime($this->files[$handle])) ? true : false;
+			$recompile = (filemtime($filename) < filemtime($this->files[$handle])) ? true : false;
 		}
 		
 		// Recompile page if the original template is newer, otherwise load the compiled version
@@ -243,11 +248,13 @@ class template
 			return $filename;
 		}
 
-		global $db, $phpbb_root_path;
+		global $db;
+		
+		$phpbb_root_path = PHPBB3_ROOT_DIR;
 
 		if (!class_exists('template_compile'))
 		{
-			include($phpbb_root_path . 'includes/functions_template.' . $phpEx);
+			include(PHPBB3_INCLUDE_DIR . 'functions_template.' . $phpEx);
 		}
 		
 		// Inheritance - we point to another template file for this one. Equality is also used for store_db
@@ -522,8 +529,9 @@ class template
 		if (is_array($key))
 		{
 			// Search array to get correct position
-			list($search_key, $search_value) = @each($key);
-
+            $search_key = key($key);
+            $search_value = current($key);
+            next($key);
 			$key = NULL;
 			foreach ($this->_tpldata[$blockname] as $i => $val_ary)
 			{
