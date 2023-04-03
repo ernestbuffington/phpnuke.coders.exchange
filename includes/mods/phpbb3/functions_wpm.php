@@ -11,9 +11,9 @@
 
 function send_wpm($user_id)
 {
-	global $config, $user, $db, $phpbb_root_path, $phpEx;
+	global $config, $user, $db, $phpEx;
 
-	include_once($phpbb_root_path . 'includes/functions_privmsgs.' . $phpEx);
+	include_once(PHPBB3_INCLUDE_DIR . 'functions_privmsgs.' . $phpEx);
 
 	$sql = 'SELECT username, user_regdate, user_email
 		FROM ' . USERS_TABLE . '
@@ -95,4 +95,5 @@ function send_wpm($user_id)
 	$user->ip	= $backup_user['ip'];
 	unset($backup_user);
 }
+
 ?>
