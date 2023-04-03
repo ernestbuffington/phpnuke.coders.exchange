@@ -9,8 +9,13 @@
 */
 
 /**
-* @ignore
-*/
+ * Applied rules:
+ * AddDefaultValueForUndefinedVariableRector (https://github.com/vimeo/psalm/blob/29b70442b11e3e66113935a2ee22e165a70c74a4/docs/fixing_code.md#possiblyundefinedvariable)
+ * Php4ConstructorRector (https://wiki.php.net/rfc/remove_php4_constructors)
+ * TernaryToNullCoalescingRector
+ * StrStartsWithRector (https://wiki.php.net/rfc/add_str_starts_with_and_ends_with_functions)
+ */
+
 if (!defined('IN_PHPBB'))
 {
 	exit;
@@ -68,7 +73,7 @@ class session
 
 		foreach ($args as $key => $argument)
 		{
-			if (strpos($argument, 'sid=') === 0)
+			if (str_starts_with($argument, 'sid='))
 			{
 				continue;
 			}
@@ -163,7 +168,7 @@ class session
 		}
 
 		// Now return the hostname (this also removes any port definition). The http:// is prepended to construct a valid URL, hosts never have a scheme assigned
-		$host = @parse_url('http://' . $host);
+		$host = parse_url('http://' . $host);
 		$host = (!empty($host['host'])) ? $host['host'] : '';
 
 		// Remove any portions not removed by parse_url (#)
@@ -178,7 +183,7 @@ class session
 			}
 			else if (!empty($config['cookie_domain']))
 			{
-				$host = (strpos($config['cookie_domain'], '.') === 0) ? substr($config['cookie_domain'], 1) : $config['cookie_domain'];
+				$host = (str_starts_with($config['cookie_domain'], '.')) ? substr($config['cookie_domain'], 1) : $config['cookie_domain'];
 			}
 			else
 			{
@@ -280,7 +285,7 @@ class session
 		// Load limit check (if applicable)
 		if ($config['limit_load'] || $config['limit_search_load'])
 		{
-			if ((function_exists('sys_getloadavg') && $load = sys_getloadavg()) || ($load = explode(' ', @file_get_contents('/proc/loadavg'))))
+			if ((function_exists('sys_getloadavg') && $load = sys_getloadavg()) || ($load = explode(' ', file_get_contents('/proc/loadavg'))))
 			{
 				$this->load = array_slice($load, 0, 1);
 				$this->load = floatval($this->load[0]);
@@ -329,11 +334,11 @@ class session
 
 				// referer checks
 				// The @ before $config['referer_validation'] suppresses notices present while running the updater
-				$check_referer_path = (@$config['referer_validation'] == REFERER_VALIDATE_PATH);
+				$check_referer_path = ($config['referer_validation'] == REFERER_VALIDATE_PATH);
 				$referer_valid = true;
 
 				// we assume HEAD and TRACE to be foul play and thus only whitelist GET
-				if (@$config['referer_validation'] && isset($_SERVER['REQUEST_METHOD']) && strtolower($_SERVER['REQUEST_METHOD']) !== 'get')
+				if ($config['referer_validation'] && isset($_SERVER['REQUEST_METHOD']) && strtolower($_SERVER['REQUEST_METHOD']) !== 'get')
 				{
 					$referer_valid = $this->validate_referer($check_referer_path);
 				}
@@ -344,7 +349,7 @@ class session
 
 					// Check whether the session is still valid if we have one
 					$method = basename(trim($config['auth_method']));
-					include_once($phpbb_root_path . 'includes/auth/auth_' . $method . '.' . $phpEx);
+					include_once(PHPBB3_INCLUDE_DIR . 'auth/auth_' . $method . '.' . $phpEx);
 
 					$method = 'validate_session_' . $method;
 					if (function_exists($method))
@@ -493,7 +498,7 @@ class session
 
 				foreach (explode(',', $row['bot_ip']) as $bot_ip)
 				{
-					if (strpos($this->ip, $bot_ip) === 0)
+					if (str_starts_with($this->ip, $bot_ip))
 					{
 						$bot = (int) $row['user_id'];
 						break;
@@ -508,7 +513,7 @@ class session
 		}
 
 		$method = basename(trim($config['auth_method']));
-		include_once($phpbb_root_path . 'includes/auth/auth_' . $method . '.' . $phpEx);
+		include_once(PHPBB3_INCLUDE_DIR . 'auth/auth_' . $method . '.' . $phpEx);
 
 		$method = 'autologin_' . $method;
 		if (function_exists($method))
@@ -821,7 +826,7 @@ class session
 
 		// Allow connecting logout with external auth method logout
 		$method = basename(trim($config['auth_method']));
-		include_once($phpbb_root_path . 'includes/auth/auth_' . $method . '.' . $phpEx);
+		include_once(PHPBB3_INCLUDE_DIR . 'auth/auth_' . $method . '.' . $phpEx);
 
 		$method = 'logout_' . $method;
 		if (function_exists($method))
@@ -1018,6 +1023,8 @@ class session
 	*/
 	function check_ban($user_id = false, $user_ips = false, $user_email = false, $return = false)
 	{
+		$ban_row = [];
+        
 		global $config, $db;
 
 		if (defined('IN_CHECK_BAN'))
@@ -1458,9 +1465,9 @@ class user extends session
 	/**
 	* Constructor to set the lang path
 	*/
-	function user()
+	function __construct()
 	{
-		global $phpbb_root_path;
+		$phpbb_root_path = PHPBB3_ROOT_DIR;
 
 		$this->lang_path = $phpbb_root_path . 'language/';
 	}
@@ -1486,7 +1493,9 @@ class user extends session
 	*/
 	function setup($lang_set = false, $style = false)
 	{
-		global $db, $template, $config, $auth, $phpEx, $phpbb_root_path, $cache;
+		global $db, $template, $config, $auth, $phpEx, $cache;
+		
+		$phpbb_root_path = PHPBB3_ROOT_DIR;
 
 		if ($this->data['user_id'] != ANONYMOUS)
 		{
@@ -1543,7 +1552,7 @@ class user extends session
 		// We include common language file here to not load it every time a custom language file is included
 		$lang = &$this->lang;
 
-		if ((@include $this->lang_path . $this->lang_name . "/common.$phpEx") === false)
+		if ((include $this->lang_path . $this->lang_name . "/common.$phpEx") === false)
 		{
 			die('Language file ' . $this->lang_path . $this->lang_name . "/common.$phpEx" . " couldn't be opened.");
 		}
@@ -1614,7 +1623,7 @@ class user extends session
 
 		foreach ($check_for as $key => $default_value)
 		{
-			$this->theme[$key] = (isset($parsed_items[$key])) ? $parsed_items[$key] : $default_value;
+			$this->theme[$key] = $parsed_items[$key] ?? $default_value;
 			settype($this->theme[$key], gettype($default_value));
 
 			if (is_string($default_value))
@@ -1640,7 +1649,7 @@ class user extends session
 				$content = '';
 				foreach ($matches[0] as $idx => $match)
 				{
-					if ($content = @file_get_contents("{$phpbb_root_path}styles/{$this->theme['theme_path']}/theme/" . $matches[1][$idx]))
+					if ($content = file_get_contents("{$phpbb_root_path}styles/{$this->theme['theme_path']}/theme/" . $matches[1][$idx]))
 					{
 						$content = trim($content);
 					}
@@ -1707,7 +1716,7 @@ class user extends session
 					AND image_lang = \'' . $db->sql_escape($this->img_lang) . '\'';
 			$result = $db->sql_query($sql);
 
-			if (@file_exists("{$phpbb_root_path}styles/{$this->theme['imageset_path']}/imageset/{$this->img_lang}/imageset.cfg"))
+			if (file_exists("{$phpbb_root_path}styles/{$this->theme['imageset_path']}/imageset/{$this->img_lang}/imageset.cfg"))
 			{
 				$cfg_data_imageset_data = parse_cfg_file("{$phpbb_root_path}styles/{$this->theme['imageset_path']}/imageset/{$this->img_lang}/imageset.cfg");
 				foreach ($cfg_data_imageset_data as $image_name => $value)
@@ -1730,7 +1739,7 @@ class user extends session
 						$image_height = $image_width = 0;
 					}
 
-					if (strpos($image_name, 'img_') === 0 && $image_filename)
+					if (str_starts_with($image_name, 'img_') && $image_filename)
 					{
 						$image_name = substr($image_name, 4);
 						$sql_ary[] = array(
@@ -2016,7 +2025,7 @@ class user extends session
 				$language_filename = $this->lang_path . $this->lang_name . '/' . (($use_help) ? 'help_' : '') . $lang_file . '.' . $phpEx;
 			}
 
-			if ((@include $language_filename) === false)
+			if ((include $language_filename) === false)
 			{
 				trigger_error('Language file ' . $language_filename . ' couldn\'t be opened.', E_USER_ERROR);
 			}
@@ -2046,7 +2055,7 @@ class user extends session
           unset($lang_dates['May_short']);
 
 
-          return strtr(@date(str_replace('|', '', $format), $date), $lang_dates);
+          return strtr(date(str_replace('|', '', $format), $date), $lang_dates);
        }
 
 	/**
@@ -2117,11 +2126,11 @@ class user extends session
 
 			if ($day !== false)
 			{
-				return str_replace('||', $this->lang['datetime'][$day], strtr(@gmdate($date_cache[$format]['format_short'], $gmepoch + $date_cache[$format]['zone_offset']), $date_cache[$format]['lang']));
+				return str_replace('||', $this->lang['datetime'][$day], strtr(gmdate($date_cache[$format]['format_short'], $gmepoch + $date_cache[$format]['zone_offset']), $date_cache[$format]['lang']));
 			}
 		}
 
-		return strtr(@gmdate($date_cache[$format]['format_long'], $gmepoch + $date_cache[$format]['zone_offset']), $date_cache[$format]['lang']);
+		return strtr(gmdate($date_cache[$format]['format_long'], $gmepoch + $date_cache[$format]['zone_offset']), $date_cache[$format]['lang']);
 	}
 
 	/**
@@ -2178,7 +2187,8 @@ class user extends session
 	function img($img, $alt = '', $width = false, $suffix = '', $type = 'full_tag')
 	{
 		static $imgs;
-		global $phpbb_root_path;
+		
+		$phpbb_root_path = PHPBB3_ROOT_DIR;
 
 		$img_data = &$imgs[$img];
 
