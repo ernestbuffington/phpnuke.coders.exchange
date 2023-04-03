@@ -111,8 +111,8 @@ function get_top_posters()
 	}
 	
 	$top_posters_hours = ( $config['top_posters_hours'] == 1 ) ? $user->lang['TOP_POSTERS_HOUR'] : sprintf($user->lang['TOP_POSTERS_HOURS'],$config['top_posters_hours']);
-// Assign index specific vars
-$template->assign_vars(array(
+    // Assign index specific vars
+    $template->assign_vars(array(
 	'TOP_POSTERS_LIST'			=> $top_posters_list,
 	'TOP_POSTERS_HOURS'			=> $top_posters_hours,
 	'TOP_POSTERS_HOURS_LIST'	=> $top_posters_hours_list));
