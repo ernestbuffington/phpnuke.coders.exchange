@@ -9,8 +9,12 @@
 */
 
 /**
-* @ignore
-*/
+ * Applied rules:
+ * AddDefaultValueForUndefinedVariableRector (https://github.com/vimeo/psalm/blob/29b70442b11e3e66113935a2ee22e165a70c74a4/docs/fixing_code.md#possiblyundefinedvariable)
+ * TernaryToNullCoalescingRector
+ * ArraySpreadInsteadOfArrayMergeRector (https://wiki.php.net/rfc/spread_operator_for_array)
+ */
+
 if (!defined('IN_PHPBB'))
 {
 	exit;
@@ -22,7 +26,9 @@ if (!defined('IN_PHPBB'))
 function generate_smilies($mode, $forum_id)
 {
 	global $auth, $db, $user, $config, $template;
-	global $phpEx, $phpbb_root_path;
+	global $phpEx;
+	
+	$phpbb_root_path = PHPBB3_ROOT_DIR;
 
 	if ($mode == 'window')
 	{
@@ -117,7 +123,9 @@ function generate_smilies($mode, $forum_id)
 function generate_smilies_acp($mode)
 {
 	global $auth, $db, $user, $config, $template;
-	global $phpEx, $phpbb_root_path;
+	global $phpEx;
+	
+	$phpbb_root_path = PHPBB3_ROOT_DIR;
 
 	if ($mode == 'window')
 	{
@@ -327,8 +335,9 @@ function update_post_information($type, $ids, $return_update_sql = false)
 */
 function posting_gen_topic_icons($mode, $icon_id)
 {
-	global $phpbb_root_path, $config, $template, $cache;
+	global $config, $template, $cache;
 
+    $phpbb_root_path = PHPBB3_ROOT_DIR;
 	// Grab icons
 	$icons = $cache->obtain_icons();
 
@@ -397,13 +406,10 @@ function posting_gen_topic_types($forum_id, $cur_topic_type = POST_NORMAL)
 
 	if ($toggle)
 	{
-		$topic_type_array = array_merge(array(0 => array(
+		$topic_type_array = [...array(0 => array(
 			'VALUE'			=> POST_NORMAL,
 			'S_CHECKED'		=> ($topic_type == POST_NORMAL) ? ' checked="checked"' : '',
-			'L_TOPIC_TYPE'	=> $user->lang['POST_NORMAL'])),
-
-			$topic_type_array
-		);
+			'L_TOPIC_TYPE'	=> $user->lang['POST_NORMAL'])), ...$topic_type_array];
 
 		foreach ($topic_type_array as $array)
 		{
@@ -430,13 +436,15 @@ function posting_gen_topic_types($forum_id, $cur_topic_type = POST_NORMAL)
 function upload_attachment($form_name, $forum_id, $local = false, $local_storage = '', $is_message = false, $local_filedata = false)
 {
 	global $auth, $user, $config, $db, $cache;
-	global $phpbb_root_path, $phpEx;
-
+	global $phpEx;
+    
+	$phpbb_root_path = PHPBB3_ROOT_DIR;
+	
 	$filedata = array(
 		'error'	=> array()
 	);
 
-	include_once($phpbb_root_path . 'includes/functions_upload.' . $phpEx);
+	include_once(PHPBB3_INCLUDE_DIR . 'functions_upload.' . $phpEx);
 	$upload = new fileupload();
 	if ($config['check_attachment_content'])
 	{
@@ -469,7 +477,7 @@ function upload_attachment($form_name, $forum_id, $local = false, $local_storage
 		return $filedata;
 	}
 
-	$cat_id = (isset($extensions[$file->get('extension')]['display_cat'])) ? $extensions[$file->get('extension')]['display_cat'] : ATTACHMENT_CATEGORY_NONE;
+	$cat_id = $extensions[$file->get('extension')]['display_cat'] ?? ATTACHMENT_CATEGORY_NONE;
 
 	// Make sure the image category only holds valid images...
 	if ($cat_id == ATTACHMENT_CATEGORY_IMAGE && !$file->is_image())
@@ -543,7 +551,7 @@ function upload_attachment($form_name, $forum_id, $local = false, $local_storage
 	}
 
 	// Check free disk space
-	if ($free_space = @disk_free_space($phpbb_root_path . $config['upload_path']))
+	if ($free_space = disk_free_space($phpbb_root_path . $config['upload_path']))
 	{
 		if ($free_space <= $file->get('filesize'))
 		{
@@ -602,7 +610,7 @@ function get_img_size_format($width, $height)
 */
 function get_supported_image_types($type = false)
 {
-	if (@extension_loaded('gd'))
+	if (extension_loaded('gd'))
 	{
 		$format = imagetypes();
 		$new_type = 0;
@@ -667,17 +675,18 @@ function get_supported_image_types($type = false)
 */
 function create_thumbnail($source, $destination, $mimetype)
 {
-	global $config;
+	$image = null;
+ global $config;
 
 	$min_filesize = (int) $config['img_min_thumb_filesize'];
-	$img_filesize = (file_exists($source)) ? @filesize($source) : false;
+	$img_filesize = (file_exists($source)) ? filesize($source) : false;
 
 	if (!$img_filesize || $img_filesize <= $min_filesize)
 	{
 		return false;
 	}
 
-	$dimension = @getimagesize($source);
+	$dimension = getimagesize($source);
 
 	if ($dimension === false)
 	{
@@ -709,7 +718,7 @@ function create_thumbnail($source, $destination, $mimetype)
 			$config['img_imagick'] .= '/';
 		}
 
-		@passthru(escapeshellcmd($config['img_imagick']) . 'convert' . ((defined('PHP_OS') && preg_match('#^win#i', PHP_OS)) ? '.exe' : '') . ' -quality 85 -antialias -sample ' . $new_width . 'x' . $new_height . ' "' . str_replace('\\', '/', $source) . '" +profile "*" "' . str_replace('\\', '/', $destination) . '"');
+		passthru(escapeshellcmd($config['img_imagick']) . 'convert' . ((defined('PHP_OS') && preg_match('#^win#i', PHP_OS)) ? '.exe' : '') . ' -quality 85 -antialias -sample ' . $new_width . 'x' . $new_height . ' "' . str_replace('\\', '/', $source) . '" +profile "*" "' . str_replace('\\', '/', $destination) . '"');
 
 		if (file_exists($destination))
 		{
@@ -732,19 +741,19 @@ function create_thumbnail($source, $destination, $mimetype)
 			switch ($type['format'])
 			{
 				case IMG_GIF:
-					$image = @imagecreatefromgif($source);
+					$image = imagecreatefromgif($source);
 				break;
 
 				case IMG_JPG:
-					$image = @imagecreatefromjpeg($source);
+					$image = imagecreatefromjpeg($source);
 				break;
 
 				case IMG_PNG:
-					$image = @imagecreatefrompng($source);
+					$image = imagecreatefrompng($source);
 				break;
 
 				case IMG_WBMP:
-					$image = @imagecreatefromwbmp($source);
+					$image = imagecreatefromwbmp($source);
 				break;
 			}
 
@@ -769,16 +778,16 @@ function create_thumbnail($source, $destination, $mimetype)
 				}
 
 				// Preserve alpha transparency (png for example)
-				@imagealphablending($new_image, false);
-				@imagesavealpha($new_image, true);
+				imagealphablending($new_image, false);
+				imagesavealpha($new_image, true);
 
 				imagecopyresampled($new_image, $image, 0, 0, 0, 0, $new_width, $new_height, $width, $height);
 			}
 
 			// If we are in safe mode create the destination file prior to using the gd functions to circumvent a PHP bug
-			if (@ini_get('safe_mode') || @strtolower(ini_get('safe_mode')) == 'on')
+			if (ini_get('safe_mode') || strtolower(ini_get('safe_mode')) == 'on')
 			{
-				@touch($destination);
+				touch($destination);
 			}
 
 			switch ($type['format'])
@@ -847,14 +856,16 @@ function posting_gen_inline_attachments(&$attachment_data)
 */
 function posting_gen_attachment_entry($attachment_data, &$filename_data, $show_attach_box = true)
 {
-	global $template, $config, $phpbb_root_path, $phpEx, $user, $auth;
+	global $template, $config, $phpEx, $user, $auth;
+	
+	$phpbb_root_path = PHPBB3_ROOT_DIR;
 
 	// Some default template variables
 	$template->assign_vars(array(
 		'S_SHOW_ATTACH_BOX'	=> $show_attach_box,
 		'S_HAS_ATTACHMENTS'	=> sizeof($attachment_data),
 		'FILESIZE'			=> $config['max_filesize'],
-		'FILE_COMMENT'		=> (isset($filename_data['filecomment'])) ? $filename_data['filecomment'] : '',
+		'FILE_COMMENT'		=> $filename_data['filecomment'] ?? '',
 	));
 
 	if (sizeof($attachment_data))
@@ -901,7 +912,9 @@ function posting_gen_attachment_entry($attachment_data, &$filename_data, $show_a
 function load_drafts($topic_id = 0, $forum_id = 0, $id = 0)
 {
 	global $user, $db, $template, $auth;
-	global $phpbb_root_path, $phpEx;
+	global $phpEx;
+	
+	$phpbb_root_path = PHPBB3_ROOT_DIR;
 
 	$topic_ids = $forum_ids = $draft_rows = array();
 
@@ -1016,7 +1029,9 @@ function load_drafts($topic_id = 0, $forum_id = 0, $id = 0)
 function topic_review($topic_id, $forum_id, $mode = 'topic_review', $cur_post_id = 0, $show_quote_button = true)
 {
 	global $user, $auth, $db, $template, $bbcode, $cache;
-	global $config, $phpbb_root_path, $phpEx;
+	global $config, $phpEx;
+	
+	$phpbb_root_path = PHPBB3_ROOT_DIR;
 
 	// Go ahead and pull all data for this topic
 	$sql = 'SELECT p.post_id
@@ -1074,7 +1089,7 @@ function topic_review($topic_id, $forum_id, $mode = 'topic_review', $cur_post_id
 	// Instantiate BBCode class
 	if (!isset($bbcode) && $bbcode_bitfield !== '')
 	{
-		include_once($phpbb_root_path . 'includes/bbcode.' . $phpEx);
+		include_once(PHPBB3_INCLUDE_DIR . 'bbcode.' . $phpEx);
 		$bbcode = new bbcode(base64_encode($bbcode_bitfield));
 	}
 
@@ -1186,7 +1201,9 @@ function topic_review($topic_id, $forum_id, $mode = 'topic_review', $cur_post_id
 */
 function user_notification($mode, $subject, $topic_title, $forum_name, $forum_id, $topic_id, $post_id)
 {
-	global $db, $user, $config, $phpbb_root_path, $phpEx, $auth;
+	global $db, $user, $config, $phpEx, $auth;
+	
+	$phpbb_root_path = PHPBB3_ROOT_DIR;
 
 	$topic_notification = ($mode == 'reply' || $mode == 'quote') ? true : false;
 	$forum_notification = ($mode == 'post') ? true : false;
@@ -1317,7 +1334,7 @@ function user_notification($mode, $subject, $topic_title, $forum_name, $forum_id
 	// Now, we are able to really send out notifications
 	if (sizeof($msg_users))
 	{
-		include_once($phpbb_root_path . 'includes/functions_messenger.' . $phpEx);
+		include_once(PHPBB3_INCLUDE_DIR . 'functions_messenger.' . $phpEx);
 		$messenger = new messenger();
 
 		$msg_list_ary = array();
@@ -1414,7 +1431,9 @@ function user_notification($mode, $subject, $topic_title, $forum_name, $forum_id
 function delete_post($forum_id, $topic_id, $post_id, &$data)
 {
 	global $db, $user, $auth;
-	global $config, $phpEx, $phpbb_root_path;
+	global $config, $phpEx;
+	
+	$phpbb_root_path = PHPBB3_ROOT_DIR;
 
 	// Specify our post mode
 	$post_mode = 'delete';
@@ -1433,7 +1452,7 @@ function delete_post($forum_id, $topic_id, $post_id, &$data)
 	$sql_data = array();
 	$next_post_id = false;
 
-	include_once($phpbb_root_path . 'includes/functions_admin.' . $phpEx);
+	include_once(PHPBB3_INCLUDE_DIR . 'functions_admin.' . $phpEx);
 
 	$db->sql_transaction('begin');
 
@@ -1635,7 +1654,13 @@ function delete_post($forum_id, $topic_id, $post_id, &$data)
 */
 function submit_post($mode, $subject, $username, $topic_type, &$poll, &$data, $update_message = true)
 {
-	global $db, $auth, $user, $config, $phpEx, $template, $phpbb_root_path;
+	$post_mode = null;
+    $f_mark_time = null;
+    
+	global $db, $auth, $user, $config, $phpEx, $template;
+ 
+    $phpbb_root_path = PHPBB3_ROOT_DIR;
+	$phpbb_include_path = PHPBB3_INCLUDE_DIR;
 
 	// We do not handle erasing posts here
 	if ($mode == 'delete')
@@ -1864,9 +1889,9 @@ function submit_post($mode, $subject, $username, $topic_type, &$poll, &$data, $u
 				'poll_start'				=> (isset($poll['poll_options'])) ? (($poll['poll_start']) ? $poll['poll_start'] : $current_time) : 0,
 				'poll_max_options'			=> (isset($poll['poll_options'])) ? $poll['poll_max_options'] : 1,
 				'poll_length'				=> (isset($poll['poll_options'])) ? ($poll['poll_length'] * 86400) : 0,
-				'poll_vote_change'			=> (isset($poll['poll_vote_change'])) ? $poll['poll_vote_change'] : 0,
+				'poll_vote_change'			=> $poll['poll_vote_change'] ?? 0,
 
-				'topic_attachment'			=> (!empty($data['attachment_data'])) ? 1 : (isset($data['topic_attachment']) ? $data['topic_attachment'] : 0),
+				'topic_attachment'			=> (!empty($data['attachment_data'])) ? 1 : ($data['topic_attachment'] ?? 0),
 			);
 
 			// Correctly set back the topic replies and forum posts... only if the topic was approved before and now gets disapproved
@@ -2152,7 +2177,7 @@ function submit_post($mode, $subject, $username, $topic_type, &$poll, &$data, $u
 			else
 			{
 				// insert attachment into db
-				if (!@file_exists($phpbb_root_path . $config['upload_path'] . '/' . basename($orphan_rows[$attach_row['attach_id']]['physical_filename'])))
+				if (!file_exists($phpbb_root_path . $config['upload_path'] . '/' . basename($orphan_rows[$attach_row['attach_id']]['physical_filename'])))
 				{
 					continue;
 				}
@@ -2461,14 +2486,14 @@ function submit_post($mode, $subject, $username, $topic_type, &$poll, &$data, $u
 		// Select the search method and do some additional checks to ensure it can actually be utilised
 		$search_type = basename($config['search_type']);
 
-		if (!file_exists($phpbb_root_path . 'includes/search/' . $search_type . '.' . $phpEx))
+		if (!file_exists(PHPBB3_INCLUDE_DIR . 'search/' . $search_type . '.' . $phpEx))
 		{
 			trigger_error('NO_SUCH_SEARCH_MODULE');
 		}
 
 		if (!class_exists($search_type))
 		{
-			include("{$phpbb_root_path}includes/search/$search_type.$phpEx");
+			include("{$phpbb_include_path}search/$search_type.$phpEx");
 		}
 
 		$error = false;
