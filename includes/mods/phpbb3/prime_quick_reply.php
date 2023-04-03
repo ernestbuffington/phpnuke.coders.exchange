@@ -145,7 +145,7 @@ if (!defined('INCLUDES_PRIME_QUICK_REPLY'))
 			'lastclick'	=> time(),
 		);
 
-//-- mod: Prime Anti-bot ----------------------------------------------------//
+        //-- mod: Prime Anti-bot ----------------------------------------------------//
 		if (!empty($config['prime_captcha_post']) && !$user->data['is_registered'])
 		{
 			if (!class_exists('prime_captcha'))
@@ -155,7 +155,7 @@ if (!defined('INCLUDES_PRIME_QUICK_REPLY'))
 			$prime_captcha = new prime_captcha();
 			$s_hidden_fields = $s_hidden_fields + ($prime_captcha->fields ?? array());
 		}
-//-- end: Prime Anti-bot ----------------------------------------------------//
+        //-- end: Prime Anti-bot ----------------------------------------------------//
 
 		// CAPTCHA (code stolen from posting.php)
 		if ($config['enable_post_confirm'] && !$user->data['is_registered'])
