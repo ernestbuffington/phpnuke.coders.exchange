@@ -279,10 +279,10 @@ ALTER TABLE `#prefix#_message`
 
 ALTER TABLE `#prefix#_modules`
   ADD PRIMARY KEY (`mid`),
-  ADD KEY `mid` (`mid`),
+  ADD UNIQUE KEY `mid` (`mid`),
   ADD KEY `title` (`title`),
   ADD KEY `custom_title` (`custom_title`);
-
+  
 ALTER TABLE `#prefix#_pages`
   ADD PRIMARY KEY (`pid`),
   ADD KEY `pid` (`pid`),
