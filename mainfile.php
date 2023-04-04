@@ -691,7 +691,7 @@ function is_admin($admin) {
         $pass = $db->sql_fetchrow($result);
         $db->sql_freeresult($result);
 
-        if ($pass[0] == $pwd && !empty($pass[0])) {
+        if (isset($pass[0]) && $pass[0] == $pwd && !empty($pass[0])) {
 
         	return $adminSave = 1;
         }
