@@ -9,8 +9,12 @@
 */
 
 /**
-* @ignore
-*/
+ * Applied rules:
+ * Php4ConstructorRector (https://wiki.php.net/rfc/remove_php4_constructors)
+ * TernaryToNullCoalescingRector
+ * ArraySpreadInsteadOfArrayMergeRector (https://wiki.php.net/rfc/spread_operator_for_array)
+ */
+
 if (!defined('IN_PHPBB'))
 {
 	exit;
@@ -18,7 +22,7 @@ if (!defined('IN_PHPBB'))
 
 /**
 * Database Abstraction Layer
-* @package dbal
+* @package dbal 
 */
 class dbal
 {
@@ -73,7 +77,7 @@ class dbal
 	/**
 	* Constructor
 	*/
-	function dbal()
+	function __construct()
 	{
 		$this->num_queries = array(
 			'cached'		=> 0,
@@ -220,7 +224,7 @@ class dbal
 			}
 
 			$row = $this->sql_fetchrow($query_id);
-			return (isset($row[$field])) ? $row[$field] : false;
+			return $row[$field] ?? false;
 		}
 
 		return false;
@@ -555,7 +559,7 @@ class dbal
 							}
 						}
 
-						$table_array = array_merge($table_array, $last);
+						$table_array = [...$table_array, ...$last];
 					}
 				}
 

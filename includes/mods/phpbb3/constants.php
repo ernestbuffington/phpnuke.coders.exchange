@@ -254,7 +254,7 @@ define('PHPBB3_TOPICS_POSTED_TABLE',		$prefix_phpbb3 . 'topics_posted');
 define('PHPBB3_TOPICS_TRACK_TABLE',		    $prefix_phpbb3 . 'topics_track');
 define('PHPBB3_TOPICS_WATCH_TABLE',		    $prefix_phpbb3 . 'topics_watch');
 define('PHPBB3_USER_GROUP_TABLE',			$prefix_phpbb3 . 'user_group');
-define('PHPBB3_USERS_TABLE',				  $user_prefix . 'users');
+define('PHPBB3_USERS_TABLE',				  $user_prefix . '_users');
 define('PHPBB3_WARNINGS_TABLE',			    $prefix_phpbb3 . 'warnings');
 define('PHPBB3_WORDS_TABLE',				$prefix_phpbb3 . 'words');
 define('PHPBB3_ZEBRA_TABLE',				$prefix_phpbb3 . 'zebra');

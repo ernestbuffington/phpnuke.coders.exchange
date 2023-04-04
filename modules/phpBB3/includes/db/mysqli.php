@@ -16,7 +16,13 @@ if (!defined('IN_PHPBB'))
 	exit;
 }
 
-include_once($phpbb_root_path . 'includes/db/dbal.' . $phpEx);
+global $dbms, $sqlserver, $port, $database, $sqluser, $sqlpassword;
+
+$prefix_phpbb3 = 'forum_';
+$acm_type = 'file';
+$load_extensions = '';
+
+include_once(PHPBB3_ROOT_DIR . 'includes/db/dbal.' . $phpEx);
 
 /**
 * MySQLi Database Abstraction Layer

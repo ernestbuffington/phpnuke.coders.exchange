@@ -190,13 +190,11 @@ require(PHPBB3_INCLUDE_DIR . 'cache.' . $phpEx);
 require(PHPBB3_INCLUDE_DIR . 'template.' . $phpEx);
 require(PHPBB3_INCLUDE_DIR . 'session.' . $phpEx);
 require(PHPBB3_INCLUDE_DIR . 'auth.' . $phpEx);
-
 require(PHPBB3_INCLUDE_DIR . 'functions.' . $phpEx);
 require(PHPBB3_INCLUDE_DIR . 'functions_content.' . $phpEx);
-
 include_once(PHPBB3_INCLUDE_DIR . 'constants.' . $phpEx);
-require($phpbb_root_path . 'includes/db/' . $dbms . '.' . $phpEx);
-require(NUKE_INCLUDE_DIR . 'utf/utf_tools.' . $phpEx);
+//require(PHPBB3_ROOT_DIR . 'includes/db/' . $dbms . '.' . $phpEx);
+//require(NUKE_INCLUDE_DIR . 'utf/utf_tools.' . $phpEx);
 
 // Set PHP error handler to ours
 set_error_handler(defined('PHPBB_MSG_HANDLER') ? PHPBB_MSG_HANDLER : 'msg_handler');
@@ -206,24 +204,24 @@ $user		= new user();
 $auth		= new auth();
 $template	= new template();
 $cache		= new cache();
-$db			= new $sql_db();
+//$db			= new $sql_db();
 
 // Connect to DB
-$db->sql_connect($dbhost, $dbuser, $dbpasswd, $dbname, $dbport, false, defined('PHPBB_DB_NEW_LINK') ? PHPBB_DB_NEW_LINK : false);
+//$db->sql_connect($dbhost, $dbuser, $dbpasswd, $dbname, $dbport, false, defined('PHPBB_DB_NEW_LINK') ? PHPBB_DB_NEW_LINK : false);
 
 // We do not need this any longer, unset for safety purposes
-unset($dbpasswd);
+//unset($dbpasswd);
 
 // Grab global variables, re-cache if necessary
 $config = $cache->obtain_config();
 
 // Add own hook handler
-require($phpbb_root_path . 'includes/hooks/index.' . $phpEx);
+require(PHPBB3_INCLUDE_DIR . 'hooks/index.' . $phpEx);
 $phpbb_hook = new phpbb_hook(array('exit_handler', 'phpbb_user_session_handler', 'append_sid', array('template', 'display')));
 
 foreach ($cache->obtain_hooks() as $hook)
 {
-	include($phpbb_root_path . 'includes/hooks/' . $hook . '.' . $phpEx);
+	include(PHPBB3_INCLUDE_DIR . 'hooks/' . $hook . '.' . $phpEx);
 }
 
 ?>
