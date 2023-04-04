@@ -254,14 +254,14 @@ class identify {
 
     function detect_bot($where = false) {
         global $db, $prefix;
-
+		
         $bot        = false;
         $where      = ($where ? "WHERE agent_name LIKE '$where%'" : '');
         $result     = $db->sql_query('SELECT agent_name, agent_fullname FROM '.$prefix.'_security_agents'.$where.' ORDER BY agent_name', true);
         $find       = ['\\', '(', ')', '{', '}', '.', '$', '*'];
         $replace    = ['\\\\', '\(', '\)', '\{', '\}', '\.', '\$', '\*'];
 
-        while ($row = $db->sql_fetchrow($result)) 
+        while (isset($row) && $row = $db->sql_fetchrow($result)) 
         {
             $row[1] = str_replace($find, $replace, (string) $row[1]);
 			
