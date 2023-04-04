@@ -212,7 +212,19 @@ CREATE TABLE IF NOT EXISTS `#prefix#_bbgroups` (
   `group_name` varchar(40) NOT NULL DEFAULT '',
   `group_description` varchar(255) NOT NULL DEFAULT '',
   `group_moderator` mediumint(8) NOT NULL DEFAULT 0,
-  `group_single_user` tinyint(1) NOT NULL DEFAULT 1
+  `group_single_user` tinyint(1) NOT NULL DEFAULT 1,
+  `group_allow_pm` tinyint(2) NOT NULL DEFAULT 5,
+  `group_color` varchar(15) NOT NULL DEFAULT '',
+  `group_rank` varchar(5) NOT NULL DEFAULT '0',
+  `max_inbox` mediumint(10) NOT NULL DEFAULT 100,
+  `max_sentbox` mediumint(10) NOT NULL DEFAULT 100,
+  `max_savebox` mediumint(10) NOT NULL DEFAULT 100,
+  `override_max_inbox` tinyint(1) NOT NULL DEFAULT 0,
+  `override_max_sentbox` tinyint(1) NOT NULL DEFAULT 0,
+  `override_max_savebox` tinyint(1) NOT NULL DEFAULT 0,
+  `group_count` int(4) UNSIGNED DEFAULT 99999999,
+  `group_count_max` int(4) UNSIGNED DEFAULT 99999999,
+  `group_count_enable` smallint(2) UNSIGNED DEFAULT 0
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 CREATE TABLE IF NOT EXISTS `#prefix#_bbposts` (
