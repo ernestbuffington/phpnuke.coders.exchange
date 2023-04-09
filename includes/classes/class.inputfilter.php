@@ -1,16 +1,28 @@
 <?php
 
+/************************************************************************/
+/* PHP-NUKE: Advanced Content Management System                         */
+/* ============================================                         */
+/*                                                                      */
+/* Copyright (c) 2002 by Francisco Burzi                                */
+/* http://phpnuke.org                                                   */
+/*                                                                      */
+/* This program is free software. You can redistribute it and/or modify */
+/* it under the terms of the GNU General Public License as published by */
+/* the Free Software Foundation; either version 2 of the License.       */
+/************************************************************************/
+
 if (realpath(__FILE__) == realpath($_SERVER['SCRIPT_FILENAME'])) {
     exit('Access Denied');
 }
 
 
-/** @class: InputFilter (PHP4, PHP5, PHP7 & PHP8 with comments)
+/** @class: InputFilter (PHP4 & PHP5, with comments)
   * @project: PHP Input Filter
-  * @date: 03-28-2023
-  * @version: 1.2.2_php4/php5/php7/php8
+  * @date: 10-05-2005
+  * @version: 1.2.2_php4/php5
   * @author: Daniel Morris
-  * @contributors: Gianpaolo Racca, Ghislain Picard, Marco Wandschneider, Chris Tobin, Ernest Buffington and Andrew Eddie.
+  * @contributors: Gianpaolo Racca, Ghislain Picard, Marco Wandschneider, Chris Tobin and Andrew Eddie.
   * @copyright: Daniel Morris
   * @email: dan@rootcube.com
   * @license: GNU General Public License (GPL)
@@ -63,11 +75,11 @@ class InputFilter {
                         );
         if(function_exists('log_write')) {
             log_write('error', $logdata, 'Script Attack');
-			log_write('error', $logdata, 'Script Kiddie Alert!');
+			log_write('error', $logdata, 'Suck it Tonight Fargnoggel!');
         } else {
-            include_once(NUKE_INCLUDE_DIR.'mods/Evo/log.php');
+            include_once(NUKE_INCLUDE_DIR.'log.php');
             log_write('error', $logdata, 'Script Attack');
-			log_write('error', $logdata, 'Script Kiddie Alert!');
+			log_write('error', $logdata, 'Suck it Tonight Fargnoggel!');
         }
         OpenTable();
 		echo '"' . htmlspecialchars($filtered) . '" is an XSS and was blocked in:<br />'. htmlspecialchars($source);
@@ -104,7 +116,7 @@ class InputFilter {
 	 * 
 	 * @access	public
 	 * @param	mixed	$source	Input string/array-of-string to be 'cleaned'
-	 * @return  mixed	$source	'cleaned' version of input parameter
+	 * @return mixed	$source	'cleaned' version of input parameter
 	 */
     function process($source) {
         
@@ -350,7 +362,7 @@ class InputFilter {
             list($attrSubSet[0]) = explode(' ', $attrSubSet[0]);
             
 			# removes all "non-regular" attr names AND also attr blacklisted
-            if ((!preg_match('#^[a-z]*$#mi',$attrSubSet[0])) || (($this->xssAuto) && ((in_array(strtolower($attrSubSet[0]), $this->attrBlacklist)) || (str_starts_with($attrSubSet[0], 'on')))))
+            if ((!eregi("^[a-z]*$",$attrSubSet[0])) || (($this->xssAuto) && ((in_array(strtolower($attrSubSet[0]), $this->attrBlacklist)) || (substr($attrSubSet[0], 0, 2) == 'on'))))
             {
                 continue;
             }
@@ -441,18 +453,21 @@ class InputFilter {
       */
     function decode($source) {
         
-		$charset = _CHARSET;
-		
 		# url decode
-        $source = html_entity_decode($source, ENT_QUOTES, $charset);
+        $source = html_entity_decode($source, ENT_QUOTES, "ISO-8859-1");
+        
 		# Convert enties without semicolons
         $source = preg_replace('#(&\#x*)([0-9A-F]+);*#iu', "$1$2;", $source);
+        
 		# Convert to decimal
         $source = preg_replace('/&#0{4,5}(\d+);/me',"chr(\\1)", $source);
+        
 		# convert decimal
         $source = preg_replace('/&#(\d+);/me',"chr(\\1)", $source);              # decimal notation
+        
 		# convert hex
         $source = preg_replace('/&#x([a-f0-9]+);/mei',"chr(0x\\1)", $source);    # hex notation
+        
 		#Convert newlines
         $source = preg_replace('#(&\#*\w+)[\x00-\x20]+;#U', "$1;", $source);
         
@@ -499,9 +514,8 @@ class InputFilter {
     function quoteSmart($source, &$connection) {
         
 		# strip slashes
-        if (function_exists('get_magic_quotes_gpc') && get_magic_quotes_gpc()){
-		  $source = stripslashes($source);
-		}
+        if (get_magic_quotes_gpc()) $source = stripslashes($source);
+        
 		# quote both numeric and text
         $source = $this->escapeString($source, $connection);
         return $source;
@@ -518,7 +532,10 @@ class InputFilter {
     function escapeString($string, &$connection) 
 	{
         # depreciated function
-        mysql_real_escape_string($string);
+        if (version_compare(phpversion(),"4.3.0", "<")) 
+		mysql_escape_string($string);
+		# current function
+        else mysql_real_escape_string($string);
         return $string;
     }
 }

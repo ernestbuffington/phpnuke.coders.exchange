@@ -1,4 +1,17 @@
 <?php
+
+/************************************************************************/
+/* PHP-NUKE: Advanced Content Management System                         */
+/* ============================================                         */
+/*                                                                      */
+/* Copyright (c) 2002 by Francisco Burzi                                */
+/* http://phpnuke.org                                                   */
+/*                                                                      */
+/* This program is free software. You can redistribute it and/or modify */
+/* it under the terms of the GNU General Public License as published by */
+/* the Free Software Foundation; either version 2 of the License.       */
+/************************************************************************/
+
 /***************************************************************************
 *                             admin_forum_prune.php
 *                              -------------------
@@ -19,12 +32,8 @@
  *
  ***************************************************************************/
 
-/* Applied rules:
- * ReplaceHttpServerVarsByServerRector (https://blog.tigertech.net/posts/php-5-3-http-server-vars/)
- * TernaryToNullCoalescingRector
- */
- 
-defined('IN_PHPBB') or define('IN_PHPBB', 1);
+if (!defined('IN_PHPBB')) if (!defined('IN_PHPBB')) define('IN_PHPBB', true);
+
 if ( !empty($setmodules) )
 {
         $filename = basename(__FILE__);
@@ -39,15 +48,15 @@ if ( !empty($setmodules) )
 $phpbb_root_path = "./../";
 require($phpbb_root_path . 'extension.inc');
 require('./pagestart.' . $phpEx);
-require("../includes/prune.php");
-require("../includes/functions_admin.php");
+require("../../../includes/prune.php");
+require("../../../includes/functions_admin.php");
 
 //
 // Get the forum ID for pruning
 //
-if( isset($_GET[POST_FORUM_URL]) || isset($_POST[POST_FORUM_URL]) )
+if( isset($HTTP_GET_VARS[POST_FORUM_URL]) || isset($HTTP_POST_VARS[POST_FORUM_URL]) )
 {
-        $forum_id = $_POST[POST_FORUM_URL] ?? $_GET[POST_FORUM_URL];
+        $forum_id = ( isset($HTTP_POST_VARS[POST_FORUM_URL]) ) ? $HTTP_POST_VARS[POST_FORUM_URL] : $HTTP_GET_VARS[POST_FORUM_URL];
 
         if( $forum_id == -1 )
         {
@@ -86,9 +95,9 @@ while( $row = $db->sql_fetchrow($result) )
 //
 // Check for submit to be equal to Prune. If so then proceed with the pruning.
 //
-if( isset($_POST['doprune']) )
+if( isset($HTTP_POST_VARS['doprune']) )
 {
-        $prunedays = ( isset($_POST['prunedays']) ) ? intval($_POST['prunedays']) : 0;
+        $prunedays = ( isset($HTTP_POST_VARS['prunedays']) ) ? intval($HTTP_POST_VARS['prunedays']) : 0;
 
         // Convert days to seconds for timestamp functions...
         $prunedate = time() - ( $prunedays * 86400 );
@@ -128,7 +137,7 @@ else
         // If they haven't selected a forum for pruning yet then
         // display a select box to use for pruning.
         //
-        if( empty($_POST[POST_FORUM_URL]) )
+        if( empty($HTTP_POST_VARS[POST_FORUM_URL]) )
         {
                 //
                 // Output a selection table if no forum id has been specified.
@@ -160,7 +169,7 @@ else
         }
         else
         {
-                $forum_id = intval($_POST[POST_FORUM_URL]);
+                $forum_id = intval($HTTP_POST_VARS[POST_FORUM_URL]);
 
                 //
                 // Output the form to retrieve Prune information.
@@ -200,3 +209,4 @@ $template->pparse('body');
 
 include('./page_footer_admin.'.$phpEx);
 
+?>

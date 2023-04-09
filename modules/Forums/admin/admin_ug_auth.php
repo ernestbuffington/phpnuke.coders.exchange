@@ -1,4 +1,17 @@
 <?php
+
+/************************************************************************/
+/* PHP-NUKE: Advanced Content Management System                         */
+/* ============================================                         */
+/*                                                                      */
+/* Copyright (c) 2002 by Francisco Burzi                                */
+/* http://phpnuke.org                                                   */
+/*                                                                      */
+/* This program is free software. You can redistribute it and/or modify */
+/* it under the terms of the GNU General Public License as published by */
+/* the Free Software Foundation; either version 2 of the License.       */
+/************************************************************************/
+
 /***************************************************************************
  *                            admin_ug_auth.php
  *                            -------------------
@@ -7,7 +20,6 @@
  *   email                : support@phpbb.com
  *
  *   Id: admin_ug_auth.php,v 1.13.2.9 2005/07/19 20:01:05 acydburn Exp
- *
  *
  ***************************************************************************/
 
@@ -20,12 +32,17 @@
  *
  ***************************************************************************/
 
-/* Applied rules:
- * WhileEachToForeachRector - rector Missed this #Bug 4
- * WrapVariableVariableNameInCurlyBracesRector (https://www.php.net/manual/en/language.variables.variable.php)
- */
- 
-defined('IN_PHPBB') or define('IN_PHPBB', 1);
+/*****[CHANGES]**********************************************************
+-=[Base]=-
+      Nuke Patched                             v3.1.0       06/26/2005
+-=[Mod]=-
+      Attachment Mod                           v2.4.1       07/20/2005
+      Global Announcements                     v1.2.8       06/13/2005
+      Advanced Username Color                  v1.0.5       06/13/2005
+      Group Colors                             v1.0.0       10/20/2005
+************************************************************************/
+
+if (!defined('IN_PHPBB')) define('IN_PHPBB', true);
 
 if( !empty($setmodules) )
 {
@@ -43,7 +60,7 @@ $no_page_header = TRUE;
 
 $phpbb_root_path = "./../";
 require($phpbb_root_path . 'extension.inc');
-require('./pagestart.' . $phpEx);
+require(__DIR__ . '/pagestart.' . $phpEx);
 
 $params = ['mode' => 'mode', 'user_id' => POST_USERS_URL, 'nuke_group_id' => POST_GROUPS_URL, 'adv' => 'adv'];
 
@@ -68,7 +85,13 @@ $mode = htmlspecialchars((string) $mode);
 //
 // Start program - define vars
 //
-$forum_auth_fields = ['auth_view', 'auth_read', 'auth_post', 'auth_reply', 'auth_edit', 'auth_delete', 'auth_sticky', 'auth_announce', 'auth_vote', 'auth_pollcreate'];
+/*****[BEGIN]******************************************
+ [ Mod:     Global Announcements               v1.2.8 ]
+ ******************************************************/
+$forum_auth_fields = ['auth_view', 'auth_read', 'auth_post', 'auth_reply', 'auth_edit', 'auth_delete', 'auth_sticky', 'auth_announce', 'auth_vote', 'auth_pollcreate', 'auth_globalannounce'];
+/*****[END]********************************************
+ [ Mod:     Global Announcements               v1.2.8 ]
+ ******************************************************/
 
 $auth_field_match = [
     'auth_view' => AUTH_VIEW,
@@ -81,12 +104,20 @@ $auth_field_match = [
     'auth_announce' => AUTH_ANNOUNCE,
     'auth_vote' => AUTH_VOTE,
     'auth_pollcreate' => AUTH_POLLCREATE,
+    /*****[BEGIN]******************************************
+     [ Mod:     Global Announcements               v1.2.8 ]
+     ******************************************************/
+    'auth_globalannounce' => AUTH_GLOBALANNOUNCE,
 ];
+/*****[END]********************************************
+ [ Mod:     Global Announcements               v1.2.8 ]
+ ******************************************************/
 
 $field_names = [
     'auth_view' => $lang['View'],
     'auth_read' => $lang['Read'],
     'auth_post' => $lang['Post'],
+    /*--FNA--*/
     'auth_reply' => $lang['Reply'],
     'auth_edit' => $lang['Edit'],
     'auth_delete' => $lang['Delete'],
@@ -94,7 +125,22 @@ $field_names = [
     'auth_announce' => $lang['Announce'],
     'auth_vote' => $lang['Vote'],
     'auth_pollcreate' => $lang['Pollcreate'],
+    /*****[BEGIN]******************************************
+     [ Mod:     Global Announcements               v1.2.8 ]
+     ******************************************************/
+    'auth_globalannounce' => $lang['Globalannounce'],
 ];
+/*****[END]********************************************
+ [ Mod:     Global Announcements               v1.2.8 ]
+ ******************************************************/
+
+/*****[BEGIN]******************************************
+ [ Mod:    Attachment Mod                      v2.4.1 ]
+ ******************************************************/
+attach_setup_usergroup_auth($forum_auth_fields, $auth_field_match, $field_names);
+/*****[END]********************************************
+ [ Mod:    Attachment Mod                      v2.4.1 ]
+ ******************************************************/
 
 // ---------------
 // Start Functions
@@ -189,10 +235,15 @@ if (isset($_POST['submit']) && ( ( $mode == 'user' && $user_id ) || ( $mode == '
                     // Delete any entries in auth_access, they are not required if user is becoming an
                     // admin
                     //
+/*****[BEGIN]******************************************
+ [ Mod:     Global Announcements               v1.2.8 ]
+ ******************************************************/
                     $sql = "UPDATE " . AUTH_ACCESS_TABLE . "
-                                SET auth_view = '0', auth_read = '0', auth_post = '0', auth_reply = '0', auth_edit = '0', auth_delete = '0', auth_sticky = '0', auth_announce = '0'
+                                SET auth_view = '0', auth_read = '0', auth_post = '0', auth_reply = '0', auth_edit = '0', auth_delete = '0', auth_sticky = '0', auth_announce = '0', auth_globalannounce = 0
                                 WHERE nuke_group_id = '$nuke_group_id'";
-
+/*****[END]********************************************
+ [ Mod:     Global Announcements               v1.2.8 ]
+ ******************************************************/
                     if ( !($result = $db->sql_query($sql)) )
                     {
                             message_die(GENERAL_ERROR, "Couldn't update auth access", "", __LINE__, __FILE__, $sql);
@@ -202,7 +253,7 @@ if (isset($_POST['submit']) && ( ( $mode == 'user' && $user_id ) || ( $mode == '
             $message = $lang['Auth_updated'] . '<br /><br />' . sprintf($lang['Click_return_userauth'], '<a href="' . append_sid("admin_ug_auth.$phpEx?mode=$mode") . '">', '</a>') . '<br /><br />' . sprintf($lang['Click_return_admin_index'], '<a href="' . append_sid("index.$phpEx?pane=right") . '">', '</a>');
             message_die(GENERAL_MESSAGE, $message);
     }
-    else 
+    else
     {
             if ( $mode == 'user' && $_POST['userlevel'] == 'user' && $user_level == ADMIN )
             {
@@ -212,10 +263,15 @@ if (isset($_POST['submit']) && ( ( $mode == 'user' && $user_id ) || ( $mode == '
                     //
                     if ( $userdata['user_id'] != $user_id )
                     {
+/*****[BEGIN]******************************************
+ [ Mod:     Global Announcements               v1.2.8 ]
+ ******************************************************/
                             $sql = "UPDATE " . AUTH_ACCESS_TABLE . "
-                                        SET auth_view = '0', auth_read = '0', auth_post = '0', auth_reply = '0', auth_edit = '0', auth_delete = '0', auth_sticky = '0', auth_announce = '0'
+                                        SET auth_view = '0', auth_read = '0', auth_post = '0', auth_reply = '0', auth_edit = '0', auth_delete = '0', auth_sticky = '0', auth_announce = '0', auth_globalannounce = 0
                                         WHERE nuke_group_id = '$nuke_group_id'";
-
+/*****[END]********************************************
+ [ Mod:     Global Announcements               v1.2.8 ]
+ ******************************************************/
                             if ( !($result = $db->sql_query($sql)) )
                             {
                                     message_die(GENERAL_ERROR, 'Could not update auth access', '', __LINE__, __FILE__, $sql);
@@ -586,7 +642,7 @@ endif;
     }
 
             message_die(GENERAL_MESSAGE, $message);
-            //$cache->delete('forum_moderators', 'config');
+            $cache->delete('forum_moderators', 'config');
     }
 } elseif (( $mode == 'user' && ( isset($_POST['username']) || $user_id ) ) || ( $mode == 'group' && $nuke_group_id )) {
     if ( isset($_POST['username']) )
@@ -745,12 +801,8 @@ endif;
         $auth_ug[$forum_id]['auth_mod'] = ( empty($auth_access_count[$forum_id]) ) ? 0 : check_auth(AUTH_MOD, 'auth_mod', $auth_access[$forum_id], 0);
     }
     $i = 0;
-	
-	if(isset($auth_ug)){
-      reset($auth_ug);
-	}
-    
-	//while( [$forum_id, $user_ary] = @each($auth_ug) )
+    reset($auth_ug);
+    //while( [$forum_id, $user_ary] = @each($auth_ug) )
 	foreach ($auth_ug as $forum_id => $user_ary)
     {
             if ( empty($adv) )
@@ -891,7 +943,13 @@ endif;
 		    $ug = ( $mode == 'user' ) ? 'group&amp;' . POST_GROUPS_URL : 'user&amp;' . POST_USERS_URL;
             if (!$singleUg_info['user_pending'])
             {
-               $t_usergroup_list .= ( ( $t_usergroup_list != '' ) ? ', ' : '' ) . '<a href="' . append_sid("admin_ug_auth.$phpEx?mode=$ug=" . $id[$i] = $id[$i] ?? '') . '">' . $name[$i] = $name[$i] ?? '' . '</a>';
+            /*****[BEGIN]******************************************
+             [ Mod:    Advanced Username Color             v1.0.5 ]
+             ******************************************************/
+           $t_usergroup_list .= ( ( $t_usergroup_list != '' ) ? ', ' : '' ) . '<a href="' . append_sid("admin_ug_auth.$phpEx?mode=$ug=" . $id[$i] = $id[$i] ?? '') . '">' . UsernameColor($name[$i] = $name[$i] ?? '') . '</a>';
+           /*****[END]********************************************
+            [ Mod:    Advanced Username Color             v1.0.5 ]
+            ******************************************************/
             }
             else
             {
@@ -943,7 +1001,13 @@ endif;
             $template->assign_block_vars("switch_group_auth", []);
 
             $template->assign_vars([
-                'USERNAME' => $t_groupname,
+                /*****[BEGIN]******************************************
+                 [ Mod:    Group Colors                        v1.0.0 ]
+                 ******************************************************/
+                'USERNAME' => GroupColor($t_groupname),
+                /*****[END]********************************************
+                 [ Mod:    Group Colors                        v1.0.0 ]
+                 ******************************************************/
                 'GROUP_MEMBERSHIP' => $lang['Usergroup_members'] . ' : ' . $t_usergroup_list . '<br />' . $lang['Pending_members'] . ' : ' . $t_pending_list,
             ]
             );
@@ -1003,4 +1067,4 @@ $template->pparse('body');
 
 include(__DIR__ . '/page_footer_admin.'.$phpEx);
 
-
+?>

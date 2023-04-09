@@ -27,7 +27,7 @@ automated_news();
 
 function theindex($catid) {
 	global $storyhome, $httpref, $httprefmax, $topicname, $topicimage, $topictext, $datetime, $user, $cookie, $nukeurl, $prefix, $multilingual, $currentlang, $db, $articlecomm, $module_name, $userinfo;
-        if (is_user($user)) { getusrinfo($user); }
+        if (is_user()) { getusrinfo($user); }
 	if ($multilingual == 1) {
 		$querylang = "AND (alanguage='$currentlang' OR alanguage='')"; /* the OR is needed to display stories who are posted to ALL languages */
 	} else {

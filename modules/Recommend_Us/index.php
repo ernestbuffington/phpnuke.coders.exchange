@@ -1,245 +1,203 @@
 <?php
-
-
-
 /************************************************************************/
-
 /* PHP-NUKE: Web Portal System                                          */
-
 /* ===========================                                          */
-
 /*                                                                      */
-
-/* Copyright (c) 2023 by Francisco Burzi                                */
-
-/* https://phpnuke.coders.exchange                                      */
-
+/* Copyright (c) 2002 by Francisco Burzi                                */
+/* http://phpnuke.org                                                   */
 /*                                                                      */
-
 /* This program is free software. You can redistribute it and/or modify */
-
 /* it under the terms of the GNU General Public License as published by */
-
 /* the Free Software Foundation; either version 2 of the License.       */
-
 /************************************************************************/
 
+/************************************************************************/
+/*         Additional security & Abstraction layer conversion           */
+/*                           2003 chatserv                              */
+/*      http://www.nukefixes.com -- http://www.nukeresources.com        */
+/************************************************************************/
 
+/*****[CHANGES]**********************************************************
+-=[Base]=-
+      Nuke Patched                             v3.1.0       06/26/2005
+ ************************************************************************/
 
-if (!defined('MODULE_FILE')) {
-
-	die ("You can't access this file directly...");
-
-}
-
-require_once("mainfile.php");
-
-$module_name = basename(dirname(__FILE__));
+defined('NUKE_BASE_DIR') or die('Stop, What do you think you are doing!?!');
 
 get_lang($module_name);
 
-$pagetitle = "- "._RECOMMEND."";
+function RecommendSite() 
+{
+    global $module_name, $userinfo, $customlang;
+    include_once(NUKE_BASE_DIR.'header.php');
+    if ( !get_query_var( 'recap', 'get', 'int' ) ):
+    	title($customlang[$module_name]['recommend']);
+    else:
+    	/**
+	 	 *	If recaptcha has failed, display the error header.
+	 	 */
+    	title($customlang[$module_name]['recaptcha_error']);
+    endif;
+    OpenTable();
 
-
-
-function RecommendSite($mess="0") {
-
-	global $user, $cookie, $prefix, $db, $user_prefix, $module_name, $gfx_chk;
-
-	include ("header.php");
-
-	title(""._RECOMMEND."");
-
-	OpenTable();
-
-	$mess = intval($mess);
-
-	if ($mess == 1) {
-
-		$mess = "<center>"._SECURITYCODEERROR."</center><br><br>";
-
-	} else {
-
-		$mess = "";
-
-	}
-
-	echo "<center><font class=\"content\"><b>"._RECOMMEND."</b></font></center><br><br>$mess"
-
-	."<table align=\"left\" border=\"0\" cellpadding=\"5\" cellspacing=\"5\"><tr><td>"
-
-	."<form action=\"modules.php?name=$module_name\" method=\"post\">"
-
-	."<input type=\"hidden\" name=\"op\" value=\"SendSite\">";
-
-	if (is_user($user)) {
-
-		$row = $db->sql_fetchrow($db->sql_query("SELECT username, user_email from ".$user_prefix."_users where user_id = '".intval($cookie[0])."'"));
-
-		$yn = filter($row['username'], "nohtml");
-
-		$ye = filter($row['user_email'], "nohtml");
-
-	}
-
-	else {
-
-		$yn = "";
-
-		$ye = "";
-
-	}
-
-	echo "<b>"._FYOURNAME." </b></td><td><input type=\"text\" name=\"yname\" value=\"$yn\"></td></tr>\n"
-
-	."<tr><td><b>"._FYOUREMAIL." </b></td><td><input type=\"text\" name=\"ymail\" value=\"$ye\"></td></tr>\n"
-
-	."<tr><td><b>"._FFRIENDNAME." </b></td><td><input type=\"text\" name=\"fname\"></td></tr>\n"
-
-	."<tr><td><b>"._FFRIENDEMAIL." </b></td><td><input type=\"text\" name=\"fmail\"></td></tr>\n";
-
-	mt_srand ((double)microtime()*1000000);
-
-	$maxran = 1000000;
-
-	$random_num = mt_rand(0, $maxran);
-
-	if (extension_loaded("gd") AND $gfx_chk != 0 ) {
-
-		echo "<tr><td><b>"._SECURITYCODE.":</b></td><td><img src='?gfx=gfx_little&random_num=$random_num' border='1' alt='"._SECURITYCODE."' title='"._SECURITYCODE."'></td></tr>\n";
-
-		echo "<tr><td><b>"._TYPESECCODE.":</b></td><td><input type=\"text\" NAME=\"gfx_check\" SIZE=\"3\" MAXLENGTH=\"3\"></td></tr>\n";
-
-		echo "<input type=\"hidden\" name=\"random_num\" value=\"$random_num\">\n";
-
-	} else {
-
-		echo "<input type=\"hidden\" name=\"random_num\" value=\"$random_num\">\n";
-
-	}
-
-	echo "<tr><td>&nbsp;</td><td><input type=submit value="._SEND."></form></td></tr></table>\n";
-
-	CloseTable();
-
-	include ('footer.php');
-
-}
-
-
-
-function SendSite($yname, $ymail, $fname, $fmail, $random_num="0", $gfx_check) {
-
-	global $sitename, $slogan, $nukeurl, $module_name, $gfx_chk, $sitekey;
-
-	if (empty($fname) OR empty($fmail) OR empty($yname) OR empty($ymail)) {
-
-		include("header.php");
-
-		title("$sitename - "._RECOMMEND."");
-
-		OpenTable();
-
-		echo "<center>"._SENDSITEERROR."<br><br>"._GOBACK."";
-
+    $your_name = ( is_user() ) ? $userinfo['username'] : '';
+    $your_mail = ( is_user() ) ? $userinfo['user_email'] : '';
+	
+	/**
+	 *	Make sure the user is actually logged in, We do not want any anonymous users in here.
+	 */
+	if ( !is_user() ):
+	
+		echo '<div class="center">'.sprintf($customlang[$module_name]['must_be_user'], '<a class="bbcode-href" href="modules.php?name=Your_Account">', '</a>').'</div>';
 		CloseTable();
+    	include_once(NUKE_BASE_DIR.'footer.php');
+		exit;
+	
+	endif;
 
-		include("footer.php");
+	/**
+	 *	If the sender fails the recaptcha, Send them back to the main index page.
+	 */
+	if ( get_query_var( 'recap', 'get', 'int' ) == 1 ):
 
-		die();
+		echo '<div class="col-12 center"><h2 style="color:#FF0000 !important;">'.$customlang[$module_name]['recaptcha_failed'].'</h2><br />[ <a href="modules.php?name=Recommend_Us">'.$customlang[$module_name]['goback'].'</a> ]</div>';
+		CloseTable();
+		include_once(NUKE_BASE_DIR.'footer.php');
 
-	}
+	endif;
 
-	$fname = removecrlf(filter($fname, "nohtml"));
+	echo '<style>';
+	echo 'div.g-recaptcha {';
+	echo '  margin: 0 auto;';
+	echo '  width: 304px;';
+	echo '}';
+	echo '</style>';
 
-	$fmail = validate_mail(removecrlf(filter($fmail, "nohtml")));
+    $gfxchk = array(0,1,2,3,4,5,6,7);
 
-	$yname = removecrlf(filter($yname, "nohtml"));
+    ?>
 
-	$ymail = validate_mail(removecrlf(filter($ymail, "nohtml")));
+	<form action="" method="post">
+	<div class="col-10" style="display: table; border-collapse: separate; border-spacing: 10px; margin: 0 auto">
 
-	$datekey = date("F j");
+	  <div class="col-12" style="display: table-row;">	    	
+        <div class="col-6" style="display: table-cell;"><?php echo $customlang[$module_name]['your_name'] ?></div>
+        <div class="col-6" style="display: table-cell;"><input style="width: 98%" type="text" name="yname" value="<?php echo $your_name ?>" required></div>
+	  </div>
+	  <div class="col-12" style="display: table-row;">	    	
+        <div class="col-6" style="display: table-cell;"><?php echo $customlang[$module_name]['your_mail'] ?></div>
+        <div class="col-6" style="display: table-cell;"><input style="width: 98%" type="email" name="ymail" value="<?php echo $your_mail ?>" required></div>
+	  </div>
 
-	$rcode = hexdec(md5($_SERVER['HTTP_USER_AGENT'] . $sitekey . $random_num . $datekey));
+	  <div class="col-12" style="display: table-row;">	    	
+        <div class="col-6" style="display: table-cell;"><?php echo $customlang[$module_name]['friend_name'] ?></div>
+        <div class="col-6" style="display: table-cell;"><input style="width: 98%" type="text" name="fname" value="" required></div>
+	  </div>
+	  <div class="col-12" style="display: table-row;">	    	
+        <div class="col-6" style="display: table-cell;"><?php echo $customlang[$module_name]['friend_mail'] ?></div>
+        <div class="col-6" style="display: table-cell;"><input style="width: 98%" type="email" name="fmail" value="" required></div>
+	  </div>
 
-	$code = substr($rcode, 2, 3);
+	  <div class="col-12" style="display: table-row;">	    	
+        <div class="col-6" style="display: table-cell; vertical-align: top;"><?php echo $customlang[$module_name]['message'] ?><span class="evo-sprite help tooltip float-right" title="<?php echo $customlang[$module_name]['optional'] ?>"></span></div>
+        <div class="col-6" style="display: table-cell;"><textarea name="message" style="height: 100px; min-height: 100px; width: 98%;"></textarea></div>	      
+	  </div>
 
-	if (extension_loaded("gd") AND $code != $gfx_check AND $gfx_chk != 0) {
+	</div>
+	<?php
 
-		$mess = 1;
+	echo security_code($gfxchk, 'normal');
 
-		Header("Location: modules.php?name=$module_name&op=RecommendSite&mess=$mess");
+	?>
+	  <input type="hidden" name="op" value="SendSite">	    
+	  <div class="col-12 center" style="padding-top: 10px;"><input type="submit" value="<?php echo $customlang[$module_name]['send'] ?>"></div>
+	</form>
+	
 
-	} else {
+    <?php
 
-		$subject = ""._INTSITE." $sitename";
-
-		$message = ""._HELLO." $fname:\n\n"._YOURFRIEND." $yname "._OURSITE." $sitename "._INTSENT."\n\n\n"._FSITENAME." $sitename\n$slogan\n"._FSITEURL." $nukeurl\n";
-
-		mail($fmail, $subject, $message, "From: \"$yname\" <$ymail>\nX-Mailer: PHP/" . phpversion());
-
-		update_points(3);
-
-		Header("Location: modules.php?name=$module_name&op=SiteSent&fname=$fname");
-
-	}
-
+    CloseTable();
+    include_once(NUKE_BASE_DIR.'footer.php');
 }
 
+function SendSite() 
+{
+    global $sitename, $slogan, $nukeurl, $module_name, $customlang;
 
+    $yname = get_query_var( 'yname', 'post' );
+    $ymail = get_query_var( 'ymail', 'post' );
+    $fname = get_query_var( 'fname', 'post' );
+    $fmail = get_query_var( 'fmail', 'post' );
+    $short_message = get_query_var( 'message', 'post' );
 
-function SiteSent($fname) {
+    $subject  = $customlang[$module_name]['interesting']." $sitename ".$customlang[$module_name]['from']." $yname";
+	$message  = $customlang[$module_name]['hello']." $fname<br /><br />";
+	$message .= $customlang[$module_name]['your_friend'].": $yname ".$customlang[$module_name]['our_site']." $sitename ".$customlang[$module_name]['interest_sent']."<br /><br />";
+	$message .= $customlang[$module_name]['sitename'].": $sitename<br />$slogan<br />";
+	$message .= $customlang[$module_name]['siteurl'].": <a href=\"$nukeurl\">$nukeurl</a><br /><br />";
+	if ( $short_message ):
+		$message .= $customlang[$module_name]['why_i_recommend'].": <br /><br /> $short_message";
+	endif;
 
-	include ('header.php');
+	$gfxchk = array(0,1,2,3,4,5,6,7);
+	if ( !security_code_check($_POST['g-recaptcha-response'], $gfxchk) ):
 
-	$fname = removecrlf(filter($fname, "nohtml"));
+		/*
+    	 *	If the user fails to complete the reCaptcha, redirec them back for another try.
+    	 */
+		redirect("modules.php?name=$module_name&recap=1");
+	elseif (empty($fname) || empty($fmail) || empty($yname) || empty($ymail)):
 
-	OpenTable();
+		/*
+    	 *	The user failed to provide the required fields, Let's redirect them and they can try again.
+    	 */
+		redirect("modules.php?name=$module_name");
+	else:
 
-	echo "<center><font class=\"content\">"._FREFERENCE." $fname...<br><br>"._THANKSREC."</font></center>";
+		/**
+		 *	OK, Let's set the email headers
+		 */
+    	$headers = array( 'Content-Type: text/html; charset=UTF-8', 'From: '.$ymail, 'Reply-To: '.$ymail, 'Return-Path: '.$ymail );
 
-	CloseTable();
+    	/*
+    	 *	OK, Now the headers are set, we can send the email.
+    	 */
+      	phpmailer($fmail, $subject, $message, $headers);
 
-	include ('footer.php');
+      	/*
+    	 *	OK, we are done here, redirewct the user back to the homepage.
+    	 */
+		redirect("modules.php?name=$module_name&op=SiteSent&fname=$fname");
 
+    endif;
 }
 
-
-
-if (!isset($mess)) { $mess = 0; }
-
-
-
-switch($op) {
-
-
-
-	case "SendSite":
-
-	SendSite($yname, $ymail, $fname, $fmail, $random_num, $gfx_check);
-
-	break;
-
-
-
-	case "SiteSent":
-
-	SiteSent($fname);
-
-	break;
-
-
-
-	default:
-
-	RecommendSite($mess);
-
-	break;
-
-
-
+function SiteSent() 
+{	
+    include_once(NUKE_BASE_DIR.'header.php');
+    global $module_name, $customlang;
+    $fname = get_query_var( 'fname', 'get' );
+    OpenTable();
+    echo '<div class="col-12 center">'.$customlang[$module_name]['reference'].' '.$fname.'...<br /><br />'.$customlang[$module_name]['thank_you'].'</div>';
+    CloseTable();
+    header( "refresh:5; url=index.php" );
+    include_once(NUKE_BASE_DIR.'footer.php');
 }
 
+switch(isset($op)) {
 
+    case "SendSite":
+        SendSite();
+    	break;
+
+    case "SiteSent":
+        SiteSent();
+    	break;
+
+    default:
+        RecommendSite();
+    	break;
+
+}
 
 ?>

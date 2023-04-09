@@ -17,7 +17,7 @@
 /* And, if you use HTML code, please double check it.                     */
 /**************************************************************************/
 
-
+define_once("_ASSOTOPIC","Associated Topics");
 define_once("_NEWS","News");
 define_once("_FUNCTIONS","Functions");
 define_once("_YES","Yes");

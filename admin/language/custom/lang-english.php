@@ -1,8 +1,16 @@
 <?php
-/*======================================================================= 
-  PHP-Nuke Titanium | Nuke-Evolution Xtreme : PHP-Nuke Web Portal System
- =======================================================================*/
 
+/************************************************************************/
+/* PHP-NUKE: Advanced Content Management System                         */
+/* ============================================                         */
+/*                                                                      */
+/* Copyright (c) 2002 by Francisco Burzi                                */
+/* http://phpnuke.org                                                   */
+/*                                                                      */
+/* This program is free software. You can redistribute it and/or modify */
+/* it under the terms of the GNU General Public License as published by */
+/* the Free Software Foundation; either version 2 of the License.       */
+/************************************************************************/
 
 /*****[CHANGES]**********************************************************
 -=[Base]=-
@@ -67,72 +75,6 @@ define_once("_POLLDAYS", "Number of days between voting");
 define_once("_POLLRANDOM", "Show a random Survey");
 /*****[END]********************************************
  [ Mod:  Extended Surveys Admin Interface      v1.0.0 ]
- ******************************************************/
-
-/*****[BEGIN]******************************************
- [ Mod:     Admin Tracker                      v1.0.1 ]
- ******************************************************/
-// define_once("_ADMIN_LOG","Security Tracker");
-// define_once("_ADMIN_LOG_EXPLAIN1","The Security Tracker logs the following");
-// define_once("_ADMIN_LOG_EXPLAIN2","<ul><li>Admin account creation</li><li>Failed admin logins</li><li>Intruder Alert</li><li>MySQL Errors</li></ul>");
-// define_once("_ADMIN_LOG_CHG","<strong>Your Admin Tracker log <strong>HAS</strong> changed</strong>");
-// define_once("_ADMIN_LOG_FINE","Your Admin Tracker log has not changed");
-// define_once("_ADMIN_LOG_CHECKED","The version was last checked on");
-// define_once("_ADMIN_LOG_VIEW","View Log");
-// define_once("_ADMIN_LOG_ACK","Acknowledge");
-
-// define_once("_ERROR_LOG_CHG","<strong>Your Error Log <strong>HAS</strong> changed</strong>");
-// define_once("_ERROR_LOG_FINE","Your Error Log has not changed");
-// define_once("_ERROR_LOG_ERR","<strong>There was a problem checking your log.</strong>");
-// define_once("_ERROR_LOG_ERRCHMOD","<strong>Your file is not writeable. Did you do the CHMOD?</strong>");
-// define_once("_ERROR_LOG_ERRFND","The log could not be found");
-// define_once("_ERROR_ERR_OPEN","Failed to open error.log");
-
-// define_once("_ADMIN_LOG_ERR","<strong>There was a problem checking your log.</strong>");
-// define_once("_ADMIN_LOG_ERRCHMOD","<strong>Your file is not writeable. Did you do the CHMOD?</strong>");
-// define_once("_ADMIN_LOG_ERRFND","The log could not be found");
-
-// define_once("_TRACKER_HEAD_DATE","Date");
-// define_once("_TRACKER_HEAD_TIME","Time");
-// define_once("_TRACKER_HEAD_IP","IP");
-// define_once("_TRACKER_HEAD_MSG","Message");
-
-// define_once("_TRACKER_UP","UPDATED");
-// define_once("_TRACKER_BACK","Back");
-// define_once("_TRACKER_CLEAR", "Clear Log");
-
-// define_once("_TRACKER_ERR_OPEN","Failed to open admin.log");
-// define_once("_TRACKER_ERR_UP","Failed to update");
-
-// define_once("_TRACKER_CLEARED", "Your Security Tracker has been cleared!");
-/*****[END]********************************************
- [ Mod:     Admin Tracker                      v1.0.1 ]
- ******************************************************/
-
-/*****[BEGIN]******************************************
- [ Mod:     Evolution Version Checker          v1.0.0 ]
- ******************************************************/
-// define_once("_ADMIN_VER_TITLE","PHP-Nuke Evolution Xtreme Xtreme Version Checker");
-// define_once("_ADMIN_VER_ERRCON","Could not connect to www.evolution-xtreme.com");
-// define_once("_ADMIN_VER_ERRSQL","Could not retrieve version from Database");
-// define_once("_ADMIN_VER_CHG","There is a new version of Evolution-Xtreme");
-// define_once("_ADMIN_VER_VIEW","View New Version");
-// define_once("_ADMIN_VER_CUR","Your version is current");
-// define_once("_CHECKVER", "Click Here to check version");
-// define_once("_VER_ERR_CON","Could not connect to <a href='http://www.evolution-xtreme.com'>Evolution-Xtreme</a>");
-// define_once("_VER_ERR_CHG","There was a problem with accessing the Changed Log");
-// define_once("_VER_TITLE","PHP-Nuke Evolution Xtreme Xtreme Version");
-// define_once("_VER_VER","The current version is:");
-// define_once("_VER_YOURVER","Your version is:");
-// define_once("_VER_CHGLOG","Evolution-Xtreme Version Changed Log");
-// define_once('_VERSIONUP2DATE', 'Your installation is up to date, no updates are available for your version of Evolution-Xtreme.');
-// define_once('_VERSIONOUTOFDATE', 'Your installation does <strong>not</strong> seem to be up to date. Updates are available for your version of Evolution-Xtreme, please visit <a href="http://www.evolution-xtreme.com/modules.php?name=Downloads" target="_new">http://www.evolution-xtreme.com/modules.php?name=Downloads</a> to obtain the latest version.');
-// define_once('_VERSIONLATESTINFO', 'The latest available version is <strong>Evolution-Xtreme %s</strong>.');
-// define_once('_VERSIONCURRENTINFO', 'You are running <strong>Evolution-Xtreme %s</strong>.');
-// define_once('_VERSIONSOCKETERROR', 'Unable to open connection to Evolution-Xtreme Server, reported error is:<br />%s');
-// define_once('_VERSIONFUNCTIONSDISABLED', 'Unable to use socket functions.');
-/*****[END]********************************************
- [ Mod:     Evolution Version Checker          v1.0.0 ]
  ******************************************************/
 
 /*****[BEGIN]******************************************
@@ -211,7 +153,7 @@ define_once("_CACHE_CAT_DELETE_FAIL", "Category deletion failed");
 define_once("_CACHE_CLEARED_SUCC", "Cache cleared successfully");
 define_once("_CACHE_CLEARED_FAIL", "Cache failed to clear");
 define_once("_CACHE_PREF_UPDATED_SUCC", "Preferences updated succesfully");
-define_once("_CACHE_ENABLE_HOW", "To enable cache, set \$use_zend_cache to \"1\" or \"2\" in config.php if it isn't already.");
+define_once("_CACHE_ENABLE_HOW", "To enable cache, set \$use_cache to \"1\" or \"2\" in config.php if it isn't already.");
 define_once("_CACHESAFEMODE", "Safe mode is enabled on your server, cache will NOT function!");
 define_once("_CACHENOTALLOWED", "You are not allowed to view this file!");
 define_once("_CACHE_MODE", "Cache Mode");
@@ -237,8 +179,8 @@ define_once("_ADMIN_IP_LOCK", "Admin IP Lock");
 /*****[BEGIN]******************************************
  [ Base:    Theme Management                   v1.0.2 ]
  ******************************************************/
-define_once("_THEMES_HEADER", "Nuke Evolution :: Theme Management");
-define_once('_THEMES_DEFAULT', 'Default Theme');
+define_once("_THEMES_HEADER", "<h1>Theme Management</h1>");
+if (!defined('_THEMES_DEFAULT')) define_once('_THEMES_DEFAULT', 'Default Theme');
 define_once("_THEMES_DEFAULT_NOT_FOUND", " was NOT found!");
 define_once("_THEMES_DEFAULT_MISSING", "Your default theme is missing! ");
 define_once("_THEMES_ERROR", "Error");
@@ -253,6 +195,7 @@ define_once("_THEMES_RETURNMAIN", "Return to Main Administration");
 define_once("_THEMES_MAKEDEFAULT", "Make Default");
 
 define_once("_THEMES_ISDEFAULT", "This theme is set as Default");
+define_once("_THEMES_DOWNLOAD", "Archive Theme");
 
 define_once("_THEMES_DEACTIVATE", "Deactivate");
 define_once("_THEMES_ACTIVATE", "Activate");
@@ -290,7 +233,7 @@ define_once("_THEMES_UNINSTALL1", "Are you sure you wish to uninstall this theme
 define_once("_THEMES_UNINSTALL2", "You will lose ALL your settings for this theme!");
 define_once("_THEMES_UNINSTALL3", "This will set ALL users using this theme back to the default theme!");
 define_once("_THEMES_THEME_UNINSTALL", "Uninstall Theme");
-define_once('_THEMES_QUNINSTALLED', 'Uninstalled');
+if (!defined('_THEMES_QUNINSTALLED')) define_once('_THEMES_QUNINSTALLED', 'Uninstalled');
 define_once("_THEMES_THEME_MISSING", "Theme Missing!");
 define_once("_THEMES_THEME_DEACTIVATED", "Theme deactivated successfully!");
 define_once("_THEMES_THEME_DEACTIVATED_FAILED", "Theme deactivation failed!");
@@ -313,7 +256,7 @@ define_once("_THEMES_ADV_OPTS", "Advanced Theme Options");
 define_once("_THEMES_ADV_COMP", "Your theme is compatible with Advanced Features");
 define_once("_THEMES_DEF_LOADED", "Default options are loaded below.");
 define_once("_THEMES_REST_DEF", "Restore Default");
-define_once("_THEMES_NOT_COMPAT", "<font color='red'>Your theme is not compatible with Advanced Features</font><br /><a href='http://evolution-xtremethemes.co.cc' target='_blank'>Evolution Xtreme Themes</a>");
+define_once("_THEMES_NOT_COMPAT", "<h1><span style=\"color: red;\"><strong>Your theme does not have any Advanced Theme Features!</strong></span></h1><span style=\"color: lime;\">You can add a <span style=\"color: red;\"><strong>theme_info.php</strong></span> file to the root directory of your theme and this will allow you to add advanced features to this theme.</span>");
 define_once("_THEMES_PERMISSIONS", "Permissions");
 define_once("_THEMES_LIST", "Return to Theme List");
 define_once('_THEMES_DOWNLOAD_FILES','Download & Back up Theme');
@@ -326,7 +269,7 @@ define_once('_THEMES_USERTHEME', 'Theme');
 define_once('_THEMES_FUNCTIONS', 'Functions');
 define_once('_THEMES_USER_RESET', 'Reset to Default');
 define_once('_THEMES_USER_MODIFY', 'Modify Theme');
-define_once('_THEMES_SUBMIT', 'Submit');
+if (!defined('_THEMES_SUBMIT')) define_once('_THEMES_SUBMIT', 'Submit');
 define_once('_NOREALNAME', 'N/A');
 define_once('_THEMES_PAGE_FIRST', 'First');
 define_once('_THEMES_PAGE_PREVIOUS', 'Prev');
@@ -438,3 +381,9 @@ define_once('_BLOCK_EDIT','Block Edit');
 /*****[END]********************************************
  [ Base:    Blocks                             v.1.0.0]
  ******************************************************/
+
+
+ 
+
+
+?>

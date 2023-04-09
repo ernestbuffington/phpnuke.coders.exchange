@@ -236,9 +236,12 @@ if ($db->sql_numrows($result8)>0) {
 
 		for($i = 0; $i < 12; $i++) {
 
+			if(!isset($sum)) {
+			$sum = 0;
+			}
 			$result10 = $db->sql_query("SELECT optionCount FROM ".$prefix."_poll_data WHERE (pollID='$id') AND (voteID='$i')");
 			$row10 = $db->sql_fetchrow($result10);
-			$optionCount = $row10['optionCount'];
+			$optionCount = $row10['optionCount'] ?? 0;
 			$sum = (int)$sum+$optionCount;
 		}
 

@@ -1,364 +1,373 @@
 <?php 
+/************************************************************************/
+/* PHP-NUKE: Advanced Content Management System                         */
+/* ============================================                         */
+/*                                                                      */
+/* Copyright (c) 2002 by Francisco Burzi                                */
+/* http://phpnuke.org                                                   */
+/*                                                                      */
+/* This program is free software. You can redistribute it and/or modify */
+/* it under the terms of the GNU General Public License as published by */
+/* the Free Software Foundation; either version 2 of the License.       */
+/************************************************************************/
 
-/**
-* File: includes/classes/class.browsers.php
-* Contributor(s): Ernest Allen Buffington (ernest.buffington@gmail.com)
-* Original Author: Chris Schuld (http://chrisschuld.com/)
-* Last Modified: March    28th, 2023 
-* Last Modified: October  9th,  2022
-* Last Modified: November 24th  2022
-* Last Modified: April    14th, 2020
-* Last Modified: August   20th, 2010 
-*
-* @version 1.9.6 to 2.8.41
-* @version 1.9 to 1.9.6
-* @package PegasusPHP
-*
-* Copyright (C) 2008-2019 Chris Schuld  (chris@chrisschuld.com)
-*
-* Permission is hereby granted, free of charge, to any person obtaining a
-* copy of this software and associated documentation files (the "Software"),
-* to deal in the Software without restriction, including without
-* limitation the rights to use, copy, modify, merge, publish, distribute,
-* sublicense, and/or sell copies of the Software, and to permit persons to
-* whom the Software is furnished to do so, subject to the following
-* conditions:
-* 
-* The above copyright notice and this permission notice shall be included
-* in all copies or substantial portions of the Software.
-* 
-* THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
-* OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
-* MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. 
-* IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
-* CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
-* TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
-* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.	 *
-*
-* Typical Usage:
-*
-*   $phpnuke_browser = new Browser();
-*   if( $phpnuke_browser->getBrowser() == Browser::BROWSER_FIREFOX && $phpnuke_browser->getVersion() >= 2 ) {
-*   	echo 'You have FireFox version 2 or greater';
-*   }
-*
-* User Agents Sampled from: http://www.useragentstring.com/
-*
-* This implementation is based on the original work from Gary White
-* http://apptools.com/phptools/browser/
-*
-* UPDATES:
-*
-* 2010-08-20 (v1.9):
-*  + Added MSN Explorer Browser (legacy)
-*  + Added Bing/MSN Robot (Thanks Rob MacDonald)
-*  + Added the Android Platform (PLATFORM_ANDROID)
-*  + Fixed issue with Android 1.6/2.2 (Thanks Tom Hirashima)
-*
-* 2010-04-27 (v1.8):
-*  + Added iPad Support
-*
-* 2010-03-07 (v1.7):
-*  + *MAJOR* Rebuild (preg_match and other "slow" routine removal(s))
-*  + Almost allof Gary's original code has been replaced
-*  + Large PHPUNIT testing environment created to validate new releases and additions
-*  + Added FreeBSD Platform
-*  + Added OpenBSD Platform
-*  + Added NetBSD Platform
-*  + Added SunOS Platform
-*  + Added OpenSolaris Platform
-*  + Added support of the Iceweazel Browser
-*  + Added isChromeFrame() call to check if chromeframe is in use
-*  + Moved the Opera check in front of the Firefox check due to legacy Opera User Agents
-*  + Added the __toString() method (Thanks Deano)
-*
-* 2009-11-15:
-*  + Updated the checkes for Firefox
-*  + Added the NOKIA platform
-*  + Added Checks for the NOKIA brower(s)
-*  
-* 2009-11-08:
-*  + PHP 5.3 Support
-*  + Added support for BlackBerry OS and BlackBerry browser
-*  + Added support for the Opera Mini browser
-*  + Added additional documenation
-*  + Added support for isRobot() and isMobile()
-*  + Added support for Opera version 10
-*  + Added support for deprecated Netscape Navigator version 9
-*  + Added support for IceCat
-*  + Added support for Shiretoko
-*
-* 2010-04-27 (v1.8):
-*  + Added iPad Support
-*
-* 2009-08-18:
-*  + Updated to support PHP 5.3 - removed all deprecated function calls
-*  + Updated to remove all double quotes (") -- converted to single quotes (')
-*
-* 2009-04-27:
-*  + Updated the IE check to remove a typo and bug (thanks John)
-*
-* 2009-04-22:
-*  + Added detection for GoogleBot
-*  + Added detection for the W3C Validator.
-*  + Added detection for Yahoo! Slurp
-*
-* 2009-03-14:
-*  + Added detection for iPods.
-*  + Added Platform detection for iPhones
-*  + Added Platform detection for iPods
-*
-* 2009-02-16: (Rick Hale)
-*  + Added version detection for Android phones.
-*
-* 2008-12-09:
-*  + Removed unused constant
-*
-* 2008-11-07:
-*  + Added Google's Chrome to the detection list
-*  + Added isBrowser(string) to the list of functions special thanks to
-*    Daniel 'mavrick' Lang for the function concept (http://mavrick.id.au)
-*
-*
-* Gary White noted: "Since browser detection is so unreliable, I am
-* no longer maintaining this script. You are free to use and or
-* modify/update it as you want, however the author assumes no
-* responsibility for the accuracy of the detected values."
-*
-* Anyone experienced with Gary's script might be interested in these notes:
-*
-*   Added class constants
-*   Added detection and version detection for Google's Chrome
-*   Updated the version detection for Amaya
-*   Updated the version detection for Firefox
-*   Updated the version detection for Lynx
-*   Updated the version detection for WebTV
-*   Updated the version detection for NetPositive
-*   Updated the version detection for IE
-*   Updated the version detection for OmniWeb
-*   Updated the version detection for iCab
-*   Updated the version detection for Safari
-*   Updated Safari to remove mobile devices (iPhone)
-*   Added detection for iPhone
-*   Added detection for robots
-*   Added detection for mobile devices
-*   Added detection for BlackBerry
-*   Removed Netscape checks (matches heavily with firefox & mozilla)
-^
-*  Mobile Detect Library
-* Motto: "Every business should have a mobile detection script to detect mobile readers"
-*
-* Mobile_Detect is a lightweight PHP class for detecting mobile devices (including tablets).
-* It uses the User-Agent string combined with specific HTTP headers to detect the mobile environment.
-*
-* Homepage: http://mobiledetect.net
-* GitHub: https://github.com/serbanghita/Mobile-Detect
-* README: https://github.com/serbanghita/Mobile-Detect/blob/master/README.md
-* CONTRIBUTING: https://github.com/serbanghita/Mobile-Detect/blob/master/docs/CONTRIBUTING.md
-* KNOWN LIMITATIONS: https://github.com/serbanghita/Mobile-Detect/blob/master/docs/KNOWN_LIMITATIONS.md
-* EXAMPLES: https://github.com/serbanghita/Mobile-Detect/wiki/Code-examples
-*
-* @license https://github.com/serbanghita/Mobile-Detect/blob/master/LICENSE
-* @author  Serban Ghita <serbanghita@gmail.com> (since 2012)
-* @author  Nick Ilyin <nick.ilyin@gmail.com>
-* @author: Victor Stanciu <vic.stanciu@gmail.com> (original author)
-*
-* @version 2.8.41
-*
-* Auto-generated isXXXX() magic methods.
-* php -a examples/dump_magic_methods.php
-*
-* ToDo @method bool isiPhone()
-* ToDo @method bool isBlackBerry()
-* ToDo @method bool isPixel()
-* ToDo @method bool isHTC()
-* ToDo @method bool isNexus()
-* ToDo @method bool isDell()
-* ToDo @method bool isMotorola()
-* ToDo @method bool isSamsung()
-* ToDo @method bool isLG()
-* ToDo @method bool isSony()
-* ToDo @method bool isAsus()
-* ToDo @method bool isXiaomi()
-* ToDo @method bool isNokiaLumia()
-* ToDo @method bool isMicromax()
-* ToDo @method bool isPalm()
-* ToDo @method bool isVertu()
-* ToDo @method bool isPantech()
-* ToDo @method bool isFly()
-* ToDo @method bool isWiko()
-* ToDo @method bool isiMobile()
-* ToDo @method bool isSimValley()
-* ToDo @method bool isWolfgang()
-* ToDo @method bool isAlcatel()
-* ToDo @method bool isNintendo()
-* ToDo @method bool isAmoi()
-* ToDo @method bool isINQ()
-* ToDo @method bool isOnePlus()
-* ToDo @method bool isGenericPhone()
-* ToDo @method bool isiPad()
-* ToDo @method bool isNexusTablet()
-* ToDo @method bool isGoogleTablet()
-* ToDo @method bool isSamsungTablet()
-* ToDo @method bool isKindle()
-* ToDo @method bool isSurfaceTablet()
-* ToDo @method bool isHPTablet()
-* ToDo @method bool isAsusTablet()
-* ToDo @method bool isBlackBerryTablet()
-* ToDo @method bool isHTCtablet()
-* ToDo @method bool isMotorolaTablet()
-* ToDo @method bool isNookTablet()
-* ToDo @method bool isAcerTablet()
-* ToDo @method bool isToshibaTablet()
-* ToDo @method bool isLGTablet()
-* ToDo @method bool isFujitsuTablet()
-* ToDo @method bool isPrestigioTablet()
-* ToDo @method bool isLenovoTablet()
-* ToDo @method bool isDellTablet()
-* ToDo @method bool isYarvikTablet()
-* ToDo @method bool isMedionTablet()
-* ToDo @method bool isArnovaTablet()
-* ToDo @method bool isIntensoTablet()
-* ToDo @method bool isIRUTablet()
-* ToDo @method bool isMegafonTablet()
-* ToDo @method bool isEbodaTablet()
-* ToDo @method bool isAllViewTablet()
-* ToDo @method bool isArchosTablet()
-* ToDo @method bool isAinolTablet()
-* ToDo @method bool isNokiaLumiaTablet()
-* ToDo @method bool isSonyTablet()
-* ToDo @method bool isPhilipsTablet()
-* ToDo @method bool isCubeTablet()
-* ToDo @method bool isCobyTablet()
-* ToDo @method bool isMIDTablet()
-* ToDo @method bool isMSITablet()
-* ToDo @method bool isSMiTTablet()
-* ToDo @method bool isRockChipTablet()
-* ToDo @method bool isFlyTablet()
-* ToDo @method bool isbqTablet()
-* ToDo @method bool isHuaweiTablet()
-* ToDo @method bool isNecTablet()
-* ToDo @method bool isPantechTablet()
-* ToDo @method bool isBronchoTablet()
-* ToDo @method bool isVersusTablet()
-* ToDo @method bool isZyncTablet()
-* ToDo @method bool isPositivoTablet()
-* ToDo @method bool isNabiTablet()
-* ToDo @method bool isKoboTablet()
-* ToDo @method bool isDanewTablet()
-* ToDo @method bool isTexetTablet()
-* ToDo @method bool isPlaystationTablet()
-* ToDo @method bool isTrekstorTablet()
-* ToDo @method bool isPyleAudioTablet()
-* ToDo @method bool isAdvanTablet()
-* ToDo @method bool isDanyTechTablet()
-* ToDo @method bool isGalapadTablet()
-* ToDo @method bool isMicromaxTablet()
-* ToDo @method bool isKarbonnTablet()
-* ToDo @method bool isAllFineTablet()
-* ToDo @method bool isPROSCANTablet()
-* ToDo @method bool isYONESTablet()
-* ToDo @method bool isChangJiaTablet()
-* ToDo @method bool isGUTablet()
-* ToDo @method bool isPointOfViewTablet()
-* ToDo @method bool isOvermaxTablet()
-* ToDo @method bool isHCLTablet()
-* ToDo @method bool isDPSTablet()
-* ToDo @method bool isVistureTablet()
-* ToDo @method bool isCrestaTablet()
-* ToDo @method bool isMediatekTablet()
-* ToDo @method bool isConcordeTablet()
-* ToDo @method bool isGoCleverTablet()
-* ToDo @method bool isModecomTablet()
-* ToDo @method bool isVoninoTablet()
-* ToDo @method bool isECSTablet()
-* ToDo @method bool isStorexTablet()
-* ToDo @method bool isVodafoneTablet()
-* ToDo @method bool isEssentielBTablet()
-* ToDo @method bool isRossMoorTablet()
-* ToDo @method bool isiMobileTablet()
-* ToDo @method bool isTolinoTablet()
-* ToDo @method bool isAudioSonicTablet()
-* ToDo @method bool isAMPETablet()
-* ToDo @method bool isSkkTablet()
-* ToDo @method bool isTecnoTablet()
-* ToDo @method bool isJXDTablet()
-* ToDo @method bool isiJoyTablet()
-* ToDo @method bool isFX2Tablet()
-* ToDo @method bool isXoroTablet()
-* ToDo @method bool isViewsonicTablet()
-* ToDo @method bool isVerizonTablet()
-* ToDo @method bool isOdysTablet()
-* ToDo @method bool isCaptivaTablet()
-* ToDo @method bool isIconbitTablet()
-* ToDo @method bool isTeclastTablet()
-* ToDo @method bool isOndaTablet()
-* ToDo @method bool isJaytechTablet()
-* ToDo @method bool isBlaupunktTablet()
-* ToDo @method bool isDigmaTablet()
-* ToDo @method bool isEvolioTablet()
-* ToDo @method bool isLavaTablet()
-* ToDo @method bool isAocTablet()
-* ToDo @method bool isMpmanTablet()
-* ToDo @method bool isCelkonTablet()
-* ToDo @method bool isWolderTablet()
-* ToDo @method bool isMediacomTablet()
-* ToDo @method bool isMiTablet()
-* ToDo @method bool isNibiruTablet()
-* ToDo @method bool isNexoTablet()
-* ToDo @method bool isLeaderTablet()
-* ToDo @method bool isUbislateTablet()
-* ToDo @method bool isPocketBookTablet()
-* ToDo @method bool isKocasoTablet()
-* ToDo @method bool isHisenseTablet()
-* ToDo @method bool isHudl()
-* ToDo @method bool isTelstraTablet()
-* ToDo @method bool isGenericTablet()
-* ToDo @method bool isAndroidOS()
-* ToDo @method bool isBlackBerryOS()
-* ToDo @method bool isPalmOS()
-* ToDo @method bool isSymbianOS()
-* ToDo @method bool isWindowsMobileOS()
-* ToDo @method bool isWindowsPhoneOS()
-* ToDo @method bool isiOS()
-* ToDo @method bool isiPadOS()
-* ToDo @method bool isSailfishOS()
-* ToDo @method bool isMeeGoOS()
-* ToDo @method bool isMaemoOS()
-* ToDo @method bool isJavaOS()
-* ToDo @method bool iswebOS()
-* ToDo @method bool isbadaOS()
-* ToDo @method bool isBREWOS()
-* ToDo @method bool isChrome()
-* ToDo @method bool isDolfin()
-* ToDo @method bool isOpera()
-* ToDo @method bool isSkyfire()
-* ToDo @method bool isEdge()
-* ToDo @method bool isIE()
-* ToDo @method bool isFirefox()
-* ToDo @method bool isBolt()
-* ToDo @method bool isTeaShark()
-* ToDo @method bool isBlazer()
-* ToDo @method bool isSafari()
-* ToDo @method bool isWeChat()
-* ToDo @method bool isUCBrowser()
-* ToDo @method bool isbaiduboxapp()
-* ToDo @method bool isbaidubrowser()
-* ToDo @method bool isDiigoBrowser()
-* ToDo @method bool isMercury()
-* ToDo @method bool isObigoBrowser()
-* ToDo @method bool isNetFront()
-* ToDo @method bool isGenericBrowser()
-* ToDo @method bool isPaleMoon()
-* ToDo @method bool isBot()
-* ToDo @method bool isMobileBot()
-* ToDo @method bool isDesktopMode()
-* ToDo @method bool isTV()
-* ToDo @method bool isWebKit()
-* ToDo @method bool isConsole()
-* ToDo @method bool isWatch()	 
-*
-*/
+	/**
+	 * File: includes/classes/class.browsers.php
+	 * Contributor(s): Ernest Allen Buffington (ernest.buffington@gmail.com)
+	 * Original Author: Chris Schuld (http://chrisschuld.com/)
+	 * Last Modified: August 20th, 2010 
+	 * Last Modified: April 14th, 2020
+	 * Last Modified: October 9th 2022
+	 * Last Modified: November 24th 2022
+	 * @version 1.9.6 to 2.8.41
+	 * @version 1.9 to 1.9.6
+	 * @package PegasusPHP
+	 *
+	 * Copyright (C) 2008-2019 Chris Schuld  (chris@chrisschuld.com)
+	 *
+     * Permission is hereby granted, free of charge, to any person obtaining a
+     * copy of this software and associated documentation files (the "Software"),
+     * to deal in the Software without restriction, including without
+     * limitation the rights to use, copy, modify, merge, publish, distribute,
+     * sublicense, and/or sell copies of the Software, and to permit persons to
+     * whom the Software is furnished to do so, subject to the following
+     * conditions:
+     * 
+     * The above copyright notice and this permission notice shall be included
+     * in all copies or substantial portions of the Software.
+     * 
+     * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+     * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+     * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. 
+     * IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
+     * CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
+     * TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
+     * SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.	 *
+	 *
+	 * Typical Usage:
+	 *
+	 *   $titanium_browser = new Browser();
+	 *   if( $titanium_browser->getBrowser() == Browser::BROWSER_FIREFOX && $titanium_browser->getVersion() >= 2 ) {
+	 *   	echo 'You have FireFox version 2 or greater';
+	 *   }
+	 *
+	 * User Agents Sampled from: http://www.useragentstring.com/
+	 *
+	 * This implementation is based on the original work from Gary White
+	 * http://apptools.com/phptools/browser/
+	 *
+	 * UPDATES:
+	 *
+	 * 2010-08-20 (v1.9):
+	 *  + Added MSN Explorer Browser (legacy)
+	 *  + Added Bing/MSN Robot (Thanks Rob MacDonald)
+	 *  + Added the Android Platform (PLATFORM_ANDROID)
+	 *  + Fixed issue with Android 1.6/2.2 (Thanks Tom Hirashima)
+	 *
+	 * 2010-04-27 (v1.8):
+	 *  + Added iPad Support
+	 *
+	 * 2010-03-07 (v1.7):
+	 *  + *MAJOR* Rebuild (preg_match and other "slow" routine removal(s))
+	 *  + Almost allof Gary's original code has been replaced
+	 *  + Large PHPUNIT testing environment created to validate new releases and additions
+	 *  + Added FreeBSD Platform
+	 *  + Added OpenBSD Platform
+	 *  + Added NetBSD Platform
+	 *  + Added SunOS Platform
+	 *  + Added OpenSolaris Platform
+	 *  + Added support of the Iceweazel Browser
+	 *  + Added isChromeFrame() call to check if chromeframe is in use
+	 *  + Moved the Opera check in front of the Firefox check due to legacy Opera User Agents
+	 *  + Added the __toString() method (Thanks Deano)
+	 *
+	 * 2009-11-15:
+	 *  + Updated the checkes for Firefox
+	 *  + Added the NOKIA platform
+	 *  + Added Checks for the NOKIA brower(s)
+	 *  
+	 * 2009-11-08:
+	 *  + PHP 5.3 Support
+	 *  + Added support for BlackBerry OS and BlackBerry browser
+	 *  + Added support for the Opera Mini browser
+	 *  + Added additional documenation
+	 *  + Added support for isRobot() and isMobile()
+	 *  + Added support for Opera version 10
+	 *  + Added support for deprecated Netscape Navigator version 9
+	 *  + Added support for IceCat
+	 *  + Added support for Shiretoko
+	 *
+	 * 2010-04-27 (v1.8):
+	 *  + Added iPad Support
+	 *
+	 * 2009-08-18:
+	 *  + Updated to support PHP 5.3 - removed all deprecated function calls
+	 *  + Updated to remove all double quotes (") -- converted to single quotes (')
+	 *
+	 * 2009-04-27:
+	 *  + Updated the IE check to remove a typo and bug (thanks John)
+	 *
+	 * 2009-04-22:
+	 *  + Added detection for GoogleBot
+	 *  + Added detection for the W3C Validator.
+	 *  + Added detection for Yahoo! Slurp
+	 *
+	 * 2009-03-14:
+	 *  + Added detection for iPods.
+	 *  + Added Platform detection for iPhones
+	 *  + Added Platform detection for iPods
+	 *
+	 * 2009-02-16: (Rick Hale)
+	 *  + Added version detection for Android phones.
+	 *
+	 * 2008-12-09:
+	 *  + Removed unused constant
+	 *
+	 * 2008-11-07:
+	 *  + Added Google's Chrome to the detection list
+	 *  + Added isBrowser(string) to the list of functions special thanks to
+	 *    Daniel 'mavrick' Lang for the function concept (http://mavrick.id.au)
+	 *
+	 *
+	 * Gary White noted: "Since browser detection is so unreliable, I am
+	 * no longer maintaining this script. You are free to use and or
+	 * modify/update it as you want, however the author assumes no
+	 * responsibility for the accuracy of the detected values."
+	 *
+	 * Anyone experienced with Gary's script might be interested in these notes:
+	 *
+	 *   Added class constants
+	 *   Added detection and version detection for Google's Chrome
+	 *   Updated the version detection for Amaya
+	 *   Updated the version detection for Firefox
+	 *   Updated the version detection for Lynx
+	 *   Updated the version detection for WebTV
+	 *   Updated the version detection for NetPositive
+	 *   Updated the version detection for IE
+	 *   Updated the version detection for OmniWeb
+	 *   Updated the version detection for iCab
+	 *   Updated the version detection for Safari
+	 *   Updated Safari to remove mobile devices (iPhone)
+	 *   Added detection for iPhone
+	 *   Added detection for robots
+	 *   Added detection for mobile devices
+	 *   Added detection for BlackBerry
+	 *   Removed Netscape checks (matches heavily with firefox & mozilla)
+
+     *  Mobile Detect Library
+     * Motto: "Every business should have a mobile detection script to detect mobile readers"
+     *
+     * Mobile_Detect is a lightweight PHP class for detecting mobile devices (including tablets).
+     * It uses the User-Agent string combined with specific HTTP headers to detect the mobile environment.
+     *
+     * Homepage: http://mobiledetect.net
+     * GitHub: https://github.com/serbanghita/Mobile-Detect
+     * README: https://github.com/serbanghita/Mobile-Detect/blob/master/README.md
+     * CONTRIBUTING: https://github.com/serbanghita/Mobile-Detect/blob/master/docs/CONTRIBUTING.md
+     * KNOWN LIMITATIONS: https://github.com/serbanghita/Mobile-Detect/blob/master/docs/KNOWN_LIMITATIONS.md
+     * EXAMPLES: https://github.com/serbanghita/Mobile-Detect/wiki/Code-examples
+     *
+     * @license https://github.com/serbanghita/Mobile-Detect/blob/master/LICENSE
+     * @author  Serban Ghita <serbanghita@gmail.com> (since 2012)
+     * @author  Nick Ilyin <nick.ilyin@gmail.com>
+     * @author: Victor Stanciu <vic.stanciu@gmail.com> (original author)
+     *
+     * @version 2.8.41
+     *
+     * Auto-generated isXXXX() magic methods.
+     * php -a examples/dump_magic_methods.php
+     *
+     * ToDo @method bool isiPhone()
+     * ToDo @method bool isBlackBerry()
+     * ToDo @method bool isPixel()
+     * ToDo @method bool isHTC()
+     * ToDo @method bool isNexus()
+     * ToDo @method bool isDell()
+     * ToDo @method bool isMotorola()
+     * ToDo @method bool isSamsung()
+     * ToDo @method bool isLG()
+     * ToDo @method bool isSony()
+     * ToDo @method bool isAsus()
+     * ToDo @method bool isXiaomi()
+     * ToDo @method bool isNokiaLumia()
+     * ToDo @method bool isMicromax()
+     * ToDo @method bool isPalm()
+     * ToDo @method bool isVertu()
+     * ToDo @method bool isPantech()
+     * ToDo @method bool isFly()
+     * ToDo @method bool isWiko()
+     * ToDo @method bool isiMobile()
+     * ToDo @method bool isSimValley()
+     * ToDo @method bool isWolfgang()
+     * ToDo @method bool isAlcatel()
+     * ToDo @method bool isNintendo()
+     * ToDo @method bool isAmoi()
+     * ToDo @method bool isINQ()
+     * ToDo @method bool isOnePlus()
+     * ToDo @method bool isGenericPhone()
+     * ToDo @method bool isiPad()
+     * ToDo @method bool isNexusTablet()
+     * ToDo @method bool isGoogleTablet()
+     * ToDo @method bool isSamsungTablet()
+     * ToDo @method bool isKindle()
+     * ToDo @method bool isSurfaceTablet()
+     * ToDo @method bool isHPTablet()
+     * ToDo @method bool isAsusTablet()
+     * ToDo @method bool isBlackBerryTablet()
+     * ToDo @method bool isHTCtablet()
+     * ToDo @method bool isMotorolaTablet()
+     * ToDo @method bool isNookTablet()
+     * ToDo @method bool isAcerTablet()
+     * ToDo @method bool isToshibaTablet()
+     * ToDo @method bool isLGTablet()
+     * ToDo @method bool isFujitsuTablet()
+     * ToDo @method bool isPrestigioTablet()
+     * ToDo @method bool isLenovoTablet()
+     * ToDo @method bool isDellTablet()
+     * ToDo @method bool isYarvikTablet()
+     * ToDo @method bool isMedionTablet()
+     * ToDo @method bool isArnovaTablet()
+     * ToDo @method bool isIntensoTablet()
+     * ToDo @method bool isIRUTablet()
+     * ToDo @method bool isMegafonTablet()
+     * ToDo @method bool isEbodaTablet()
+     * ToDo @method bool isAllViewTablet()
+     * ToDo @method bool isArchosTablet()
+     * ToDo @method bool isAinolTablet()
+     * ToDo @method bool isNokiaLumiaTablet()
+     * ToDo @method bool isSonyTablet()
+     * ToDo @method bool isPhilipsTablet()
+     * ToDo @method bool isCubeTablet()
+     * ToDo @method bool isCobyTablet()
+     * ToDo @method bool isMIDTablet()
+     * ToDo @method bool isMSITablet()
+     * ToDo @method bool isSMiTTablet()
+     * ToDo @method bool isRockChipTablet()
+     * ToDo @method bool isFlyTablet()
+     * ToDo @method bool isbqTablet()
+     * ToDo @method bool isHuaweiTablet()
+     * ToDo @method bool isNecTablet()
+     * ToDo @method bool isPantechTablet()
+     * ToDo @method bool isBronchoTablet()
+     * ToDo @method bool isVersusTablet()
+     * ToDo @method bool isZyncTablet()
+     * ToDo @method bool isPositivoTablet()
+     * ToDo @method bool isNabiTablet()
+     * ToDo @method bool isKoboTablet()
+     * ToDo @method bool isDanewTablet()
+     * ToDo @method bool isTexetTablet()
+     * ToDo @method bool isPlaystationTablet()
+     * ToDo @method bool isTrekstorTablet()
+     * ToDo @method bool isPyleAudioTablet()
+     * ToDo @method bool isAdvanTablet()
+     * ToDo @method bool isDanyTechTablet()
+     * ToDo @method bool isGalapadTablet()
+     * ToDo @method bool isMicromaxTablet()
+     * ToDo @method bool isKarbonnTablet()
+     * ToDo @method bool isAllFineTablet()
+     * ToDo @method bool isPROSCANTablet()
+     * ToDo @method bool isYONESTablet()
+     * ToDo @method bool isChangJiaTablet()
+     * ToDo @method bool isGUTablet()
+     * ToDo @method bool isPointOfViewTablet()
+     * ToDo @method bool isOvermaxTablet()
+     * ToDo @method bool isHCLTablet()
+     * ToDo @method bool isDPSTablet()
+     * ToDo @method bool isVistureTablet()
+     * ToDo @method bool isCrestaTablet()
+     * ToDo @method bool isMediatekTablet()
+     * ToDo @method bool isConcordeTablet()
+     * ToDo @method bool isGoCleverTablet()
+     * ToDo @method bool isModecomTablet()
+     * ToDo @method bool isVoninoTablet()
+     * ToDo @method bool isECSTablet()
+     * ToDo @method bool isStorexTablet()
+     * ToDo @method bool isVodafoneTablet()
+     * ToDo @method bool isEssentielBTablet()
+     * ToDo @method bool isRossMoorTablet()
+     * ToDo @method bool isiMobileTablet()
+     * ToDo @method bool isTolinoTablet()
+     * ToDo @method bool isAudioSonicTablet()
+     * ToDo @method bool isAMPETablet()
+     * ToDo @method bool isSkkTablet()
+     * ToDo @method bool isTecnoTablet()
+     * ToDo @method bool isJXDTablet()
+     * ToDo @method bool isiJoyTablet()
+     * ToDo @method bool isFX2Tablet()
+     * ToDo @method bool isXoroTablet()
+     * ToDo @method bool isViewsonicTablet()
+     * ToDo @method bool isVerizonTablet()
+     * ToDo @method bool isOdysTablet()
+     * ToDo @method bool isCaptivaTablet()
+     * ToDo @method bool isIconbitTablet()
+     * ToDo @method bool isTeclastTablet()
+     * ToDo @method bool isOndaTablet()
+     * ToDo @method bool isJaytechTablet()
+     * ToDo @method bool isBlaupunktTablet()
+     * ToDo @method bool isDigmaTablet()
+     * ToDo @method bool isEvolioTablet()
+     * ToDo @method bool isLavaTablet()
+     * ToDo @method bool isAocTablet()
+     * ToDo @method bool isMpmanTablet()
+     * ToDo @method bool isCelkonTablet()
+     * ToDo @method bool isWolderTablet()
+     * ToDo @method bool isMediacomTablet()
+     * ToDo @method bool isMiTablet()
+     * ToDo @method bool isNibiruTablet()
+     * ToDo @method bool isNexoTablet()
+     * ToDo @method bool isLeaderTablet()
+     * ToDo @method bool isUbislateTablet()
+     * ToDo @method bool isPocketBookTablet()
+     * ToDo @method bool isKocasoTablet()
+     * ToDo @method bool isHisenseTablet()
+     * ToDo @method bool isHudl()
+     * ToDo @method bool isTelstraTablet()
+     * ToDo @method bool isGenericTablet()
+     * ToDo @method bool isAndroidOS()
+     * ToDo @method bool isBlackBerryOS()
+     * ToDo @method bool isPalmOS()
+     * ToDo @method bool isSymbianOS()
+     * ToDo @method bool isWindowsMobileOS()
+     * ToDo @method bool isWindowsPhoneOS()
+     * ToDo @method bool isiOS()
+     * ToDo @method bool isiPadOS()
+     * ToDo @method bool isSailfishOS()
+     * ToDo @method bool isMeeGoOS()
+     * ToDo @method bool isMaemoOS()
+     * ToDo @method bool isJavaOS()
+     * ToDo @method bool iswebOS()
+     * ToDo @method bool isbadaOS()
+     * ToDo @method bool isBREWOS()
+     * ToDo @method bool isChrome()
+     * ToDo @method bool isDolfin()
+     * ToDo @method bool isOpera()
+     * ToDo @method bool isSkyfire()
+     * ToDo @method bool isEdge()
+     * ToDo @method bool isIE()
+     * ToDo @method bool isFirefox()
+     * ToDo @method bool isBolt()
+     * ToDo @method bool isTeaShark()
+     * ToDo @method bool isBlazer()
+     * ToDo @method bool isSafari()
+     * ToDo @method bool isWeChat()
+     * ToDo @method bool isUCBrowser()
+     * ToDo @method bool isbaiduboxapp()
+     * ToDo @method bool isbaidubrowser()
+     * ToDo @method bool isDiigoBrowser()
+     * ToDo @method bool isMercury()
+     * ToDo @method bool isObigoBrowser()
+     * ToDo @method bool isNetFront()
+     * ToDo @method bool isGenericBrowser()
+     * ToDo @method bool isPaleMoon()
+     * ToDo @method bool isBot()
+     * ToDo @method bool isMobileBot()
+     * ToDo @method bool isDesktopMode()
+     * ToDo @method bool isTV()
+     * ToDo @method bool isWebKit()
+     * ToDo @method bool isConsole()
+     * ToDo @method bool isWatch()	 
+     *
+     */
 	 
 class Browser
 {
@@ -405,6 +414,7 @@ class Browser
     const BROWSER_CURL = 'cURL'; // https://en.wikipedia.org/wiki/CURL
     const BROWSER_WGET = 'Wget'; // https://en.wikipedia.org/wiki/Wget
     const BROWSER_UCBROWSER = 'UCBrowser'; // https://www.ucweb.com/
+
 
     const BROWSER_YANDEXBOT = 'YandexBot'; // http://yandex.com/bots
     const BROWSER_YANDEXIMAGERESIZER_BOT = 'YandexImageResizer'; // http://yandex.com/bots
@@ -506,12 +516,12 @@ class Browser
 
     /**
      * Check to see if the specific browser is valid
-     * @param string $phpnuke_browserName
+     * @param string $titanium_browserName
      * @return bool True if the browser is the specified browser
      */
-    function isBrowser($phpnuke_browserName)
+    function isBrowser($titanium_browserName)
     {
-        return (0 == strcasecmp($this->_browser_name, trim($phpnuke_browserName)));
+        return (0 == strcasecmp($this->_browser_name, trim($titanium_browserName)));
     }
 
     /**
@@ -525,11 +535,11 @@ class Browser
 
     /**
      * Set the name of the browser
-     * @param $phpnuke_browser string The name of the Browser
+     * @param $titanium_browser string The name of the Browser
      */
-    public function setBrowser($phpnuke_browser)
+    public function setBrowser($titanium_browser)
     {
-        $this->_browser_name = $phpnuke_browser;
+        $this->_browser_name = $titanium_browser;
     }
 
     /**
@@ -2159,7 +2169,6 @@ class Browser
         }
     }
 }
-global $phpnuke_browser, $titanium_browser;
-$titanium_browser = new Browser(); 
-$phpnuke_browser = $titanium_browser;
+ 
+//$titanium_browser = new Browser();
 ?>    

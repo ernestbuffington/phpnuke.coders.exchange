@@ -1,4 +1,17 @@
 <?php
+
+/************************************************************************/
+/* PHP-NUKE: Advanced Content Management System                         */
+/* ============================================                         */
+/*                                                                      */
+/* Copyright (c) 2002 by Francisco Burzi                                */
+/* http://phpnuke.org                                                   */
+/*                                                                      */
+/* This program is free software. You can redistribute it and/or modify */
+/* it under the terms of the GNU General Public License as published by */
+/* the Free Software Foundation; either version 2 of the License.       */
+/************************************************************************/
+
 /**
 *
 * @package utf
@@ -1772,6 +1785,7 @@ function utf8_normalize_nfc($strings)
 	if (!class_exists('utf_normalizer'))
 	{
 		global $phpEx;
+		if(!isset($phpEx)) { $phpEx = 'php'; }
 		include(NUKE_INCLUDE_DIR . 'utf/utf_normalizer.' . $phpEx);
 	}
 

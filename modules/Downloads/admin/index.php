@@ -298,7 +298,7 @@ if ($row2['radminsuper'] == 1 || $auth_user == 1) {
 		$result8 = $db->sql_query("SELECT cid, title from " . $prefix . "_downloads_categories");
 		$numrows = $db->sql_numrows($result8);
 
-		if(is_user($user)) {
+		if(is_user()) {
 	    $user2 = base64_decode($user);
 	    $user2 = addslashes($user2);
 	    $cookie = explode(":", $user2);

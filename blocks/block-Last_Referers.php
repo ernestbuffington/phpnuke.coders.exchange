@@ -1,13 +1,17 @@
 <?php
+/*======================================================================= 
+  PHP-Nuke Titanium | Nuke-Evolution Xtreme : PHP-Nuke Web Portal System
+ =======================================================================*/
+
 
 /************************************************************************/
 /* PHP-NUKE: Web Portal System                                          */
 /* ===========================                                          */
 /*                                                                      */
-/* Copyright (c) 2023 by Francisco Burzi                                */
-/* https://phpnuke.coders.exchange                                      */
+/* Copyright (c) 2002 by Francisco Burzi                                */
+/* http://phpnuke.org                                                   */
 /*                                                                      */
-/* Based on Last Referers Block                                         */
+/* Last referers block for phpNuke portal                               */
 /* Copyright (c) 2001 by Jack Kozbial (jack@internetintl.com            */
 /* http://www.InternetIntl.com                                          */
 /*                                                                      */
@@ -15,46 +19,54 @@
 /* it under the terms of the GNU General Public License as published by */
 /* the Free Software Foundation; either version 2 of the License.       */
 /************************************************************************/
+/*         Additional security & Abstraction layer conversion           */
+/*                           2003 chatserv                              */
+/*      http://www.nukefixes.com -- http://www.nukeresources.com        */
+/************************************************************************/
 
-if ( !defined('BLOCK_FILE') ) {
+/*****[CHANGES]**********************************************************
+-=[Base]=-
+      Nuke Patched                             v3.1.0       06/26/2005
+ ************************************************************************/
 
-    Header("Location: ../index.php");
-    die();
+if(!defined('NUKE_FILE')) exit;
+
+global $db, $prefix;
+
+# how many referers should the block display?
+$ref = 10;
+$a = 1;
+$content = '';
+
+$result = $db->sql_query("SELECT url FROM ".$prefix."_referer ORDER BY lasttime DESC LIMIT 0,$ref");
+$total = $db->sql_numrows($result);
+if ($total < 1) {
+    return $content = 'No referers to display';
 }
 
-global $prefix, $db, $admin, $admin_file;
-
-$ref = 10; // how many referers in block
-
-$a = 1;
-
-$result = $db->sql_query("SELECT rid, url FROM " . $prefix . "_referer ORDER BY rid DESC LIMIT 0,$ref");
-
-while ($row = $db->sql_fetchrow($result)) {
-
-    $rid = intval($row['rid']);
-
-    $url = filter($row['url'], "nohtml");
-
-    $url2 = str_replace("_", " ", $url);
-
-    if(strlen($url2) > 18) {
-
-		$url2 = substr($url,0,20);
-
-        $url2 .= "..";
+while (list($url) = $db->sql_fetchrow($result)) {
+    $url2 = str_replace('_', ' ', $url);
+    
+    if (strlen($url2) > 18) {
+        $url2 = substr($url, 0, 20);
+        $url2 .= '..';
     }
-
-    $content .= "$a:&nbsp;<a href=\"$url\" target=\"new\">$url2</a><br>";
-
+    
+    $content .= "$a:&nbsp;\n"
+               ."<a href=\"$url\" target=\"_blank\">$url2</a>\n"
+               ."<br />\n";
     $a++;
 }
 
-if (is_admin($admin)) {
-
-    $total = $db->sql_numrows($db->sql_query("SELECT * FROM ".$prefix."_referer"));
-
-    $content .= "<br><center>$total "._HTTPREFERERS."<br>[ <a href=\"".$admin_file.".php?op=delreferer\">"._DELETE."</a> ]</center>";
+if (is_admin()) {
+    global $admin_file;
+    $content .= "<br />\n"
+               ."<div align=\"center\">\n"
+               ."$total "._HTTPREFERERS."\n"
+               ."<br /><br />\n"
+               ."[ <a href=\"".$admin_file.".php?op=hreferer&amp;del=all\">"._DELETE."</a> ]\n"
+               ."</div>\n";
 }
+$db->sql_freeresult($result);
 
 ?>

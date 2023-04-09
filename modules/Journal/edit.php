@@ -33,10 +33,15 @@
 /* Additional security checking code 2003 by chatserv                   */
 /* http://www.nukefixes.com -- http://www.nukeresources.com             */
 /************************************************************************/
-    /* Journal 2.0 Enhanced and Debugged 2004                               */
-    /* by sixonetonoffun -- http://www.netflake.com --                      */
-    /* Images Created by GanjaUK -- http://www.GanjaUK.com                  */
-    /************************************************************************/
+/* Journal 2.0 Enhanced and Debugged 2004                               */
+/* by sixonetonoffun -- http://www.netflake.com --                      */
+/* Images Created by GanjaUK -- http://www.GanjaUK.com                  */
+/************************************************************************/
+
+/* Applied rules:
+ * BinaryOpBetweenNumberAndStringRector (https://3v4l.org/XPEEl)
+ */
+ 
 if ( !defined('MODULE_FILE') )
 {
 	die("You can't access this file directly...");
@@ -44,14 +49,14 @@ if ( !defined('MODULE_FILE') )
 
 require_once("mainfile.php");
 $module_name = basename(dirname(__FILE__));
-get_lang($module_name);
+get_lang("Journal");
 
 $pagetitle = "- "._USERSJOURNAL."";
 
 include("header.php");
-include("modules/$module_name/functions.php");
-    include("modules/$module_name/kses.php");
-    if (is_user($user)) {
+include("modules/Journal/functions.php");
+    include("modules/Journal/kses.php");
+    if (is_user()) {
         cookiedecode($user);
         $username = $cookie[1];
         $user = filter($user, "nohtml");
@@ -70,27 +75,29 @@ include("modules/$module_name/functions.php");
         if (isset($jid)) { $jid = intval($jid); }
 		else { $jid = ""; }
         if (isset($edit) AND ($edit == intval(1))) {
-    $htime = date("h");
-    $mtime = date("i");
-    $ntime = date("a");
-    $mtime = "$htime:$mtime $ntime";
-    $mdate = date("m");
-    $ddate = date("d");
-    $ydate = date("Y");
-    $ndate = "$mdate-$ddate-$ydate";
-    $pdate = $ndate;
-    $ptime = $mtime;
-    $micro = microtime();
-	$sql = "SELECT * FROM ".$prefix."_journal WHERE jid = '$jid'";
-    $result = $db->sql_query($sql);
-    while ($row = $db->sql_fetchrow($result)) {
-            	if (!is_admin($admin)):
+        $htime = date("h");
+        $mtime = date("i");
+        $ntime = date("a");
+        $mtime = "$htime:$mtime $ntime";
+        $mdate = date("m");
+        $ddate = date("d");
+        $ydate = date("Y");
+        $ndate = "$mdate-$ddate-$ydate";
+        $pdate = $ndate;
+        $ptime = $mtime;
+        $micro = microtime();
+	    $sql = "SELECT * FROM ".$prefix."_journal WHERE jid = '$jid'";
+        $result = $db->sql_query($sql);
+    
+	while ($row = $db->sql_fetchrow($result)) {
+            	if (!is_admin()):
 	if ($username != $row['aid']):
-    	    echo ("<br>");
+    	    
 	    openTable();
 	    echo ("<div align=center>".NOTYOURS."</div>");
 	    closeTable();
-	    journalfoot();
+	    
+		journalfoot();
                 die();
                 endif;
                 endif;
@@ -106,16 +113,17 @@ include("modules/$module_name/functions.php");
         echo ("UserName:$username<br>SiteName: $sitename");
         endif;
         startjournal($sitename, $user);
-        echo "<br>";
+        
         OpenTable();
         echo ("<div align=center class=title>"._JOURNALFOR." $username</div><br>");
-        echo ("<div align=center> [ <a href=\"modules.php?name=$module_name&file=add\">"._ADDENTRY."</a> | <a href=\"modules.php?name=$module_name&file=edit&disp=last\">"._YOURLAST20."</a> | <a href=\"modules.php?name=$module_name&file=edit&disp=all\">"._LISTALLENTRIES."</a> ]</div>");
+        echo ("<div align=center> [ <a href=\"modules.php?name=Journal&file=add\">"._ADDENTRY."</a> | <a href=\"modules.php?name=Journal&file=edit&disp=last\">"._YOURLAST20."</a> | <a href=\"modules.php?name=Journal&file=edit&disp=all\">"._LISTALLENTRIES."</a> ]</div>");
         echo "$edited";
         CloseTable();
-        echo "<br>";
+        
         function list20($username, $bgcolor1, $bgcolor2, $bgcolor3) {
-	global $prefix, $user_prefix, $db, $module_name;
-            openTable();
+	    global $prefix, $user_prefix, $db;
+        
+		    openTable();
             echo ("<div align=\"center\" class=title>"._LAST20FOR." $username</div><br>");
             echo ("<table align=center border=1 width=\"90%\">");
             echo ("<tr>");
@@ -126,14 +134,14 @@ include("modules/$module_name/functions.php");
             echo ("<td align=center bgcolor=$bgcolor1 width=\"5%\"><strong><div align=\"center\">"._EDIT."</div></strong></td>");
             echo ("<td align=center bgcolor=$bgcolor1 width=\"5%\"><strong><div align=\"center\">"._DELETE."</div></strong></td>");
             echo ("</tr>");
-	$sql = "SELECT jid, aid, title, pdate, ptime, mdate, mtime, status, mood FROM ".$prefix."_journal WHERE aid='$username' order by 'jid' DESC";
+	        $sql = "SELECT jid, aid, title, pdate, ptime, mdate, mtime, status, mood FROM ".$prefix."_journal WHERE aid='$username' order by 'jid' DESC";
             $result = $db->sql_query($sql);
             $dcount = 1;
             while ($row = $db->sql_fetchrow($result)) {
                 if ($dcount >= 21) :
                 echo ("</tr></table>");
                 closeTable();
-                echo ("<br>");
+                
                 journalfoot();
                 die();
                 else :
@@ -146,7 +154,7 @@ include("modules/$module_name/functions.php");
                 $ptime = filter($row['ptime'], "nohtml");
                 printf ("<td align=center bgcolor=$bgcolor2><div align=\"center\">%s</div></td>", $pdate);
                 printf ("<td align=center bgcolor=$bgcolor2><div align=\"center\">%s</div></td>", $ptime);
-                printf ("<td align=left bgcolor=$bgcolor2>&nbsp;<a href=\"modules.php?name=$module_name&file=display&jid=%s\">%s</a>", $jid, $title);
+                printf ("<td align=left bgcolor=$bgcolor2>&nbsp;<a href=\"modules.php?name=Journal&file=display&jid=%s\">%s</a>", $jid, $title);
                 $sqlscnd = "SELECT cid from ".$prefix."_journal_comments where rid='$jaid'";
                 $rstscnd = $db->sql_query($sqlscnd);
                 $scndcount = 0;
@@ -164,8 +172,8 @@ include("modules/$module_name/functions.php");
                     $row['status'] = _NO;
                 }
                 printf ("<td align=center bgcolor=$bgcolor2><div align=\"center\">%s</div></td>", $row['status']);
-                printf ("<td align=center bgcolor=$bgcolor2><div align=\"center\"><a href=\"modules.php?name=$module_name&file=modify&jid=%s\"><img src='modules/$module_name/images/edit.gif' border='0' alt=\""._EDIT."\" title=\""._EDIT."\"></a></div></td>", $jid, $title);
-                printf ("<td align=center bgcolor=$bgcolor2><div align=\"center\"><a href=\"modules.php?name=$module_name&file=delete&jid=%s\"><img src='modules/$module_name/images/trash.gif' border='0' alt=\""._DELETE."\" title=\""._DELETE."\"></a></div></td>", $jid, $title);
+                printf ("<td align=center bgcolor=$bgcolor2><div align=\"center\"><a href=\"modules.php?name=Journal&file=modify&jid=%s\"><img src='modules/Journal/images/edit.gif' border='0' alt=\""._EDIT."\" title=\""._EDIT."\"></a></div></td>", $jid, $title);
+                printf ("<td align=center bgcolor=$bgcolor2><div align=\"center\"><a href=\"modules.php?name=Journal&file=delete&jid=%s\"><img src='modules/Journal/images/trash.gif' border='0' alt=\""._DELETE."\" title=\""._DELETE."\"></a></div></td>", $jid, $title);
                 print ("</tr>");
                 endif;
             }
@@ -173,8 +181,9 @@ include("modules/$module_name/functions.php");
             closeTable();
         }
         function listall($username, $bgcolor1, $bgcolor2, $bgcolor3, $sitename) {
-            global $prefix, $user_prefix, $db, $module_name;
-            openTable();
+            global $prefix, $user_prefix, $db;
+            
+			openTable();
             echo ("<div align=\"center\" class=title>"._COMPLETELIST." $username</div><br>");
             echo ("<table align=center border=1 width=\"90%\">");
             echo ("<tr>");
@@ -190,7 +199,8 @@ include("modules/$module_name/functions.php");
 			$dcount = 0;
 			$pubcount = 0;
 			$prvcount = 0;
-            while ($row = $db->sql_fetchrow($result)) {
+            
+			while ($row = $db->sql_fetchrow($result)) {
                 $jid = intval($row['jid']);
                 $title = filter($row['title'], "nohtml");
                 $jaid = filter($row['aid'], "nohtml");
@@ -207,11 +217,12 @@ include("modules/$module_name/functions.php");
                 print ("<tr>");
                 printf ("<td align=center bgcolor=$bgcolor2><div align=\"center\">%s</div></td>", $row['pdate']);
                 printf ("<td align=center bgcolor=$bgcolor2><div align=\"center\">%s</div></td>", $row['ptime']);
-                printf ("<td align=left bgcolor=$bgcolor2><a href=\"modules.php?name=$module_name&file=display&jid=%s\">%s</a>", $jid, $title);
+                printf ("<td align=left bgcolor=$bgcolor2><a href=\"modules.php?name=Journal&file=display&jid=%s\">%s</a>", $jid, $title);
 		$sqlscnd = "SELECT cid from ".$prefix."_journal_comments where rid='".intval($row['jid'])."'";
                 $rstscnd = $db->sql_query($sqlscnd);
                 $scndcount = 0;
-                while ($rowscnd = $db->sql_fetchrow($rstscnd)) {
+            
+			    while ($rowscnd = $db->sql_fetchrow($rstscnd)) {
                     $scndcount = $scndcount + 1;
                 }
                 if ($scndcount == 1) {
@@ -220,18 +231,18 @@ include("modules/$module_name/functions.php");
                     printf (" &#151;&#151; $scndcount "._COMMENTS."</td>");
                 }
                 printf ("<td align=center bgcolor=$bgcolor2><div align=\"center\">%s</div></td>", $row['status']);
-                printf ("<td align=center bgcolor=$bgcolor2><div align=\"center\"><a href=\"modules.php?name=$module_name&file=modify&jid=%s\"><img src='modules/$module_name/images/edit.gif' border='0' alt='"._EDIT."'></a></div></td>", $row['jid']);
-                printf ("<td align=center bgcolor=$bgcolor2><div align=\"center\"><a href=\"modules.php?name=$module_name&file=delete&jid=%s\"><img src='modules/$module_name/images/trash.gif' border='0' alt='"._DELETE."'></a></div></td>", $row['jid']);
+                printf ("<td align=center bgcolor=$bgcolor2><div align=\"center\"><a href=\"modules.php?name=Journal&file=modify&jid=%s\"><img src='modules/Journal/images/edit.gif' border='0' alt='"._EDIT."'></a></div></td>", $row['jid']);
+                printf ("<td align=center bgcolor=$bgcolor2><div align=\"center\"><a href=\"modules.php?name=Journal&file=delete&jid=%s\"><img src='modules/Journal/images/trash.gif' border='0' alt='"._DELETE."'></a></div></td>", $row['jid']);
                 print ("</tr>");
             }
             echo ("</table>");
-            if ($prvcount == "") {
+            if ($prvcount == 0) {
                 $prvcount = 0;
             }
-            if ($pubcount == "") {
+            if ($pubcount == 0) {
                 $pubcount = 0;
             }
-            if ($dcount == "") {
+            if ($dcount == 0) {
                 $dcount = 0;
             }
             echo "<br><div align=center>$pubcount "._PUBLICENTRIES." - " ."$prvcount "._PRIVATEENTRIES." - " ."$dcount "._TOTALENTRIES."</div>";
@@ -251,7 +262,7 @@ include("modules/$module_name/functions.php");
         }
         journalfoot();
     }
-    if (is_admin($admin)) {
+    if (is_admin()) {
         $username = filter($username, "nohtml");
         $sitename = filter($sitename, "nohtml");
         $jbodytext = kses(ADVT_stripslashes($jbodytext), $allowed);
@@ -284,16 +295,17 @@ include("modules/$module_name/functions.php");
         echo ("UserName:$username<br>SiteName: $sitename");
         endif;
         startjournal($sitename, $user);
-        echo "<br>";
+        
         OpenTable();
         echo ("<div align=center class=title>"._JOURNALFOR." $username</div><br>");
-        echo ("<div align=center> [ <a href=\"modules.php?name=$module_name&file=add\">"._ADDENTRY."</a> | <a href=\"modules.php?name=$module_name&file=edit&disp=last\">"._YOURLAST20."</a> | <a href=\"modules.php?name=$module_name&file=edit&disp=all\">"._LISTALLENTRIES."</a> ]</div>");
+        echo ("<div align=center> [ <a href=\"modules.php?name=Journal&file=add\">"._ADDENTRY."</a> | <a href=\"modules.php?name=Journal&file=edit&disp=last\">"._YOURLAST20."</a> | <a href=\"modules.php?name=Journal&file=edit&disp=all\">"._LISTALLENTRIES."</a> ]</div>");
         echo "$edited";
         CloseTable();
-        echo "<br>";
+        
         function list20($username, $bgcolor1, $bgcolor2, $bgcolor3) {
-            global $prefix, $user_prefix, $db, $module_name;
-            openTable();
+            global $prefix, $user_prefix, $db;
+        
+		    openTable();
             echo ("<div align=\"center\" class=title>"._LAST20FOR." $username</div><br>");
             echo ("<table align=center border=1 width=\"90%\">");
             echo ("<tr>");
@@ -304,14 +316,15 @@ include("modules/$module_name/functions.php");
             echo ("<td align=center bgcolor=$bgcolor1 width=\"5%\"><strong><div align=\"center\">"._EDIT."</div></strong></td>");
             echo ("<td align=center bgcolor=$bgcolor1 width=\"5%\"><strong><div align=\"center\">"._DELETE."</div></strong></td>");
             echo ("</tr>");
-            $sql = "SELECT jid, aid, title, pdate, ptime, mdate, mtime, status, mood FROM ".$prefix."_journal WHERE aid='$username' order by 'jid' DESC";
+        
+		    $sql = "SELECT jid, aid, title, pdate, ptime, mdate, mtime, status, mood FROM ".$prefix."_journal WHERE aid='$username' order by 'jid' DESC";
             $result = $db->sql_query($sql);
             $dcount = 1;
             while ($row = $db->sql_fetchrow($result)) {
                 if ($dcount >= 21) :
                 echo ("</tr></table>");
                 closeTable();
-                echo ("<br>");
+                
                 journalfoot();
                 die();
                 else :
@@ -324,7 +337,7 @@ include("modules/$module_name/functions.php");
                 $ptime = filter($row['ptime'], "nohtml");
                 printf ("<td align=center bgcolor=$bgcolor2><div align=\"center\">%s</div></td>", $pdate);
                 printf ("<td align=center bgcolor=$bgcolor2><div align=\"center\">%s</div></td>", $ptime);
-                printf ("<td align=left bgcolor=$bgcolor2>&nbsp;<a href=\"modules.php?name=$module_name&file=display&jid=%s\">%s</a>", $jid, $title);
+                printf ("<td align=left bgcolor=$bgcolor2>&nbsp;<a href=\"modules.php?name=Journal&file=display&jid=%s\">%s</a>", $jid, $title);
                 $sqlscnd = "SELECT cid from ".$prefix."_journal_comments where rid='$jaid'";
                 $rstscnd = $db->sql_query($sqlscnd);
                 $scndcount = 0;
@@ -342,8 +355,8 @@ include("modules/$module_name/functions.php");
                     $row['status'] = _NO;
                 }
                 printf ("<td align=center bgcolor=$bgcolor2><div align=\"center\">%s</div></td>", $row['status']);
-                printf ("<td align=center bgcolor=$bgcolor2><div align=\"center\"><a href=\"modules.php?name=$module_name&file=modify&jid=%s\"><img src='modules/$module_name/images/edit.gif' border='0' alt=\""._EDIT."\" title=\""._EDIT."\"></a></div></td>", $jid, $title);
-                printf ("<td align=center bgcolor=$bgcolor2><div align=\"center\"><a href=\"modules.php?name=$module_name&file=delete&jid=%s\"><img src='modules/$module_name/images/trash.gif' border='0' alt=\""._DELETE."\" title=\""._DELETE."\"></a></div></td>", $jid, $title);
+                printf ("<td align=center bgcolor=$bgcolor2><div align=\"center\"><a href=\"modules.php?name=Journal&file=modify&jid=%s\"><img src='modules/Journal/images/edit.gif' border='0' alt=\""._EDIT."\" title=\""._EDIT."\"></a></div></td>", $jid, $title);
+                printf ("<td align=center bgcolor=$bgcolor2><div align=\"center\"><a href=\"modules.php?name=Journal&file=delete&jid=%s\"><img src='modules/Journal/images/trash.gif' border='0' alt=\""._DELETE."\" title=\""._DELETE."\"></a></div></td>", $jid, $title);
                 print ("</tr>");
                 endif;
             }
@@ -351,8 +364,9 @@ include("modules/$module_name/functions.php");
             closeTable();
         }
         function listall($username, $bgcolor1, $bgcolor2, $bgcolor3, $sitename) {
-            global $prefix, $user_prefix, $db, $module_name;
-            openTable();
+            global $prefix, $user_prefix, $db;
+            
+			openTable();
             echo ("<div align=\"center\" class=title>"._COMPLETELIST." $username</div><br>");
             echo ("<table align=center border=1 width=\"90%\">");
             echo ("<tr>");
@@ -368,7 +382,8 @@ include("modules/$module_name/functions.php");
 			$dcount = 0;
 			$pubcount = 0;
 			$prvcount = 0;
-            while ($row = $db->sql_fetchrow($result)) {
+            
+			while ($row = $db->sql_fetchrow($result)) {
                 $jid = intval($row['jid']);
                 $title = filter($row['title'], "nohtml");
                 $jaid = filter($row['aid'], "nohtml");
@@ -385,7 +400,7 @@ include("modules/$module_name/functions.php");
                 print ("<tr>");
                 printf ("<td align=center bgcolor=$bgcolor2><div align=\"center\">%s</div></td>", $row['pdate']);
                 printf ("<td align=center bgcolor=$bgcolor2><div align=\"center\">%s</div></td>", $row['ptime']);
-                printf ("<td align=left bgcolor=$bgcolor2><a href=\"modules.php?name=$module_name&file=display&jid=%s\">%s</a>", $jid, $title);
+                printf ("<td align=left bgcolor=$bgcolor2><a href=\"modules.php?name=Journal&file=display&jid=%s\">%s</a>", $jid, $title);
                 $sqlscnd = "SELECT cid from ".$user_prefix."_journal_comments where rid=".intval($row['jid']);
                 $rstscnd = $db->sql_query($sqlscnd);
                 $scndcount = 0;
@@ -398,18 +413,18 @@ include("modules/$module_name/functions.php");
                     printf (" &#151;&#151; $scndcount "._COMMENTS."</td>");
                 }
                 printf ("<td align=center bgcolor=$bgcolor2><div align=\"center\">%s</div></td>", $row['status']);
-                printf ("<td align=center bgcolor=$bgcolor2><div align=\"center\"><a href=\"modules.php?name=$module_name&file=modify&jid=%s\"><img src='modules/$module_name/images/edit.gif' border='0' alt='"._EDIT."'></a></div></td>", $row['jid']);
-                printf ("<td align=center bgcolor=$bgcolor2><div align=\"center\"><a href=\"modules.php?name=$module_name&file=delete&jid=%s\"><img src='modules/$module_name/images/trash.gif' border='0' alt='"._DELETE."'></a></div></td>", $row['jid']);
+                printf ("<td align=center bgcolor=$bgcolor2><div align=\"center\"><a href=\"modules.php?name=Journal&file=modify&jid=%s\"><img src='modules/Journal/images/edit.gif' border='0' alt='"._EDIT."'></a></div></td>", $row['jid']);
+                printf ("<td align=center bgcolor=$bgcolor2><div align=\"center\"><a href=\"modules.php?name=Journal&file=delete&jid=%s\"><img src='modules/Journal/images/trash.gif' border='0' alt='"._DELETE."'></a></div></td>", $row['jid']);
                 print ("</tr>");
             }
             echo ("</table>");
-            if ($prvcount == "") {
+            if ($prvcount == 0) {
                 $prvcount = 0;
             }
-            if ($pubcount == "") {
+            if ($pubcount == 0) {
                 $pubcount = 0;
             }
-            if ($dcount == "") {
+            if ($dcount == 0) {
                 $dcount = 0;
             }
             echo "<br><div align=center>$pubcount "._PUBLICENTRIES." - " ."$prvcount "._PRIVATEENTRIES." - " ."$dcount "._TOTALENTRIES."</div>";
@@ -431,10 +446,12 @@ include("modules/$module_name/functions.php");
     } else {
         $pagetitle = "- "._YOUMUSTBEMEMBER."";
         $pagetitle = filter($pagetitle, "nohtml");
-        OpenTable();
+        
+		OpenTable();
         echo "<center><b>"._YOUMUSTBEMEMBER."</b></center>";
         CloseTable();
-        include("footer.php");
+        
+		include("footer.php");
         die();
     }
 

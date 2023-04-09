@@ -29,10 +29,11 @@
 /* it under the terms of the GNU General Public License as published by */
 /* the Free Software Foundation; either version 2 of the License.       */
 /************************************************************************/
-    /* Journal 2.0 Enhanced and Debugged 2004                               */
-    /* by sixonetonoffun -- http://www.netflake.com --                      */
-    /* Images Created by GanjaUK -- http://www.GanjaUK.com                  */
-    /************************************************************************/
+/* Journal 2.0 Enhanced and Debugged 2004                               */
+/* by sixonetonoffun -- http://www.netflake.com --                      */
+/* Images Created by GanjaUK -- http://www.GanjaUK.com                  */
+/************************************************************************/
+
 if ( !defined('MODULE_FILE') )
 {
 	die("You can't access this file directly...");
@@ -44,13 +45,16 @@ if ( !defined('MODULE_FILE') )
     include("header.php");
     include("modules/$module_name/functions.php");
     include("modules/$module_name/kses.php");
+   
     if (empty($title) OR empty($jbodytext) OR empty($status)) {
+   
         OpenTable();
         echo "<center><b>"._YOUMUSTFILLFIELDS."</b><br><br>"._GOBACK."</center>";
         CloseTable();
+   
         include("footer.php");
         die();
-    } elseif (is_user($user)) {
+    } elseif (is_user()) {
         cookiedecode($user);
         $username = $cookie[1];
         $htime = date("h");
@@ -63,16 +67,19 @@ if ( !defined('MODULE_FILE') )
         $ndate = "$mdate-$ddate-$ydate";
         $pdate = $ndate;
         $ptime = $mtime;
+   
         if ($debug == "true") :
         echo ("UserName:$username<br>SiteName: $sitename");
         endif;
+   
         startjournal($sitename, $user);
-        echo "<br>";
+        
         OpenTable();
         echo ("<div align=center class=title>"._ENTRYADDED."</div><br><br>");
-        echo ("<div align=center> [ <a href=\"modules.php?name=$module_name&file=edit\">"._RETURNJOURNAL."</a> ]</div>");
+        echo ("<div align=center> [ <a href=\"modules.php?name=Journal&file=edit\">"._RETURNJOURNAL."</a> ]</div>");
         CloseTable();
-        $username = $cookie[1];
+        
+		$username = $cookie[1];
         $user = filter($user, "nohtml");
         $username = filter($username, "nohtml");
         $sitename = filter($sitename, "nohtml");
@@ -82,17 +89,35 @@ if ( !defined('MODULE_FILE') )
 		else { $mood = ""; }
         $jbodytext = kses(ADVT_stripslashes($jbodytext), $allowed);
         $jbodytext = addslashes($jbodytext);
-        $sql = "INSERT INTO ".$prefix."_journal (jid,aid,title,bodytext,mood,pdate,ptime,status,mtime,mdate) VALUES (NULL,'$username','$title','$jbodytext','$mood','$pdate','$ptime','$status','$mtime','$ndate')";
+		
+        $sql = "INSERT INTO ".$prefix."_journal (jid,
+		                                         aid,
+											   title,
+											bodytext,
+											    mood,
+											   pdate,
+											   ptime,
+											  status,
+											   mtime,
+											   mdate) VALUES (NULL,'$username','$title','$jbodytext','$mood','$pdate','$ptime','$status','$mtime','$ndate')";
         $db->sql_query($sql);
-        update_points(1);
-$sql = "SELECT * FROM ".$prefix."_journal_stats WHERE joid = '$username'";
+        
+		update_points(1);
+        $sql = "SELECT * FROM ".$prefix."_journal_stats WHERE joid = '$username'";
         $result = $db->sql_query($sql);
         $row_count = $db->sql_numrows($result);
         if ($row_count == 0):
-$query = "INSERT INTO ".$prefix."_journal_stats (id,joid,nop,ldp,ltp,micro) VALUES ('','$username','1',now(),'$mtime',now())";
+        $query = "INSERT INTO ".$prefix."_journal_stats (id,
+		                                               joid,
+													    nop,
+														ldp,
+														ltp,
+													  micro) VALUES (NULL,'$username','1',now(),'$mtime',now())";
         $db->sql_query($query);
         else :
-        $row = $db->sql_fetchrow($result);
+        $sql2 = "SELECT * FROM ".$prefix."_journal_stats WHERE joid = '$username'";
+        $result2 = $db->sql_query($sql2);
+        $row = $db->sql_fetchrow($result2);
         $nnop = $row['nop'];
         $nnnop = ($nnop + 1);
         $micro = date("U");
@@ -100,17 +125,21 @@ $query = "INSERT INTO ".$prefix."_journal_stats (id,joid,nop,ldp,ltp,micro) VALU
         $ndate = filter($ndate, "nohtml");
         $mtime = filter($mtime, "nohtml");
         $micro = filter($micro, "nohtml");
-$query = "UPDATE ".$prefix."_journal_stats SET nop='$nnnop', ldp='$ndate', ltp='$mtime' micro='$micro' WHERE joid='$username'";
+		        
+		$query = "UPDATE `".$prefix."_journal_stats` SET `nop`='$nnnop',`ldp`='$ndate',`ltp`='$mtime',`micro`='$micro' WHERE joid='$username'";
         $db->sql_query($query);
         endif;
-        journalfoot();
+        
+		journalfoot();
     } else {
         $pagetitle = "- "._YOUMUSTBEMEMBER."";
         $pagetitle = filter($pagetitle, "nohtml");
-        OpenTable();
+        
+		OpenTable();
         echo "<center><b>"._YOUMUSTBEMEMBER."</b></center>";
         CloseTable();
-        include("footer.php");
+        
+		include("footer.php");
         die();
     }
 

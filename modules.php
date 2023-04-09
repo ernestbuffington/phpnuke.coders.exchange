@@ -1,29 +1,35 @@
 <?php
 
 /************************************************************************/
-/* PHP-NUKE: Web Portal System                                          */
-/* ===========================                                          */
+/* PHP-NUKE: Advanced Content Management System                         */
+/* ============================================                         */
 /*                                                                      */
-/* Copyright (c) 2023 by Francisco Burzi                                */
-/* https://phpnuke.coders.exchange                                      */
+/* Copyright (c) 2002 by Francisco Burzi                                */
+/* http://phpnuke.org                                                   */
 /*                                                                      */
 /* This program is free software. You can redistribute it and/or modify */
 /* it under the terms of the GNU General Public License as published by */
 /* the Free Software Foundation; either version 2 of the License.       */
 /************************************************************************/
 
+##########################################################################
+# Additional security checking code 2003 by chatserv                     #
+# Old web address http://www.nukefixes.com                               #
+# Old web address http://www.nukeresources.com                           #
+##########################################################################
+
 /*****[CHANGES]**********************************************************
 -=[Base]=-
-      Nuke Patched                             v3.1.1       04/03/2023
+      Nuke Patched                             v3.1.0       06/26/2005
+	  Titanium Patched                         v1.0.0       05/19/2021
 -=[Mod]=-
-      Lock Modules                             v1.0.1       04/03/2023
+      Lock Modules                             v1.0.0       08/04/2005
 	  
-	  Groups Permissiond Mod                   v1.0.1       04/03/2023
+	  Groups Permissiond Mod                   v1.0.0       05/19/2021
 	  This mod adds a stop sign and message for the user when they try
 	  to access a module that is assigned to a group that they are not
 	  a member of.
  ************************************************************************/
- 
 define('MODULE_FILE', true);
 
 if(isset($_GET['file']) && $_GET['file'] == 'posting'): 
@@ -44,7 +50,7 @@ global $name;
 
 if($name): 
     # Mod: Lock Modules v1.0.0 START
-    global $db, $prefix, $user, $lock_modules;
+    global $groupcookie, $db, $prefix, $user, $lock_modules;
 
     if(($lock_modules && $name != 'Your_Account') 
 	&& !is_admin() 
@@ -126,7 +132,7 @@ if($name):
 				     if(isset($userinfo['groups'][$group])):
 					 $ingroup = true;
                  	 # Group Cookie Control START
-					 list($groupname) = $db->sql_ufetchrow("SELECT `group_name` FROM ".$prefix."_bbgroups WHERE `group_id`=".$group."", SQL_NUM);
+					 list($groupname) = $db->sql_ufetchrow("SELECT `group_name` FROM ".$prefix."_bbgroups WHERE `nuke_group_id`=".$group."", SQL_NUM);
    			         $groupcookie = str_replace(" ", "_", $groupname);
 		
 					 if(!isset($_COOKIE[$groupcookie])):
@@ -140,8 +146,8 @@ if($name):
 			    if(!$ingroup):
                   $result = $db->sql_query('SELECT `group_name`
 			                                FROM  '.$prefix.'_bbgroups 
-											WHERE group_id = '.$group.'
-				                            ORDER BY group_id'); 
+											WHERE nuke_group_id = '.$group.'
+				                            ORDER BY nuke_group_id'); 
 				endif;
 				 
 				  if($db->sql_numrows($result)): 

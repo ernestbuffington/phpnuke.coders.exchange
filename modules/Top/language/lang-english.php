@@ -17,25 +17,25 @@
 /* And, if you use HTML code, please double check it.                     */
 /**************************************************************************/
 
-define("_CATEGORY","Category");
-define("_LVOTES","votes");
-define("_HITS","Hits");
-define("_TOPWELCOME","Welcome to the TOP page for");
-define("_READSTORIES","most read stories");
-define("_COMMENTEDSTORIES","most commented stories");
-define("_ACTIVECAT","most active categories");
-define("_READSECTION","most read articles in special sections");
-define("_NEWSSUBMITTERS","most active news submitters");
-define("_NEWSSENT","news sent");
-define("_VOTEDPOLLS","most voted polls");
-define("_MOSTACTIVEAUTHORS","most active authors");
-define("_NEWSPUBLISHED","news published");
-define("_READREVIEWS","most read reviews");
-define("_DOWNLOADEDFILES","most downloaded files");
-define("_LDOWNLOADS","downloads");
-define("_MOSTREADPAGES","most read pages");
-define("_MOSTVOTEDSTORIES","most voted stories");
-define("_POINTS","points");
-define("_BESTRATEDSTORIES","best rated stories (based on 5 maximun points)");
+define_once("_CATEGORY","Category");
+define_once("_LVOTES","votes");
+define_once("_HITS","Hits");
+define_once("_TOPWELCOME","Welcome to the TOP page for");
+define_once("_READSTORIES","most read stories");
+define_once("_COMMENTEDSTORIES","most commented stories");
+define_once("_ACTIVECAT","most active categories");
+define_once("_READSECTION","most read articles in special sections");
+define_once("_NEWSSUBMITTERS","most active news submitters");
+define_once("_NEWSSENT","news sent");
+define_once("_VOTEDPOLLS","most voted polls");
+define_once("_MOSTACTIVEAUTHORS","most active authors");
+define_once("_NEWSPUBLISHED","news published");
+define_once("_READREVIEWS","most read reviews");
+define_once("_DOWNLOADEDFILES","most downloaded files");
+define_once("_LDOWNLOADS","downloads");
+define_once("_MOSTREADPAGES","most read pages");
+define_once("_MOSTVOTEDSTORIES","most voted stories");
+define_once("_POINTS","points");
+define_once("_BESTRATEDSTORIES","best rated stories (based on 5 maximun points)");
 
 ?>

@@ -1,5 +1,4 @@
 <?php
-
 /**************************************************************************/
 /* PHP-NUKE: Advanced Content Management System                           */
 /* ============================================                           */
@@ -17,21 +16,30 @@
 /* And, if you use HTML code, please double check it.                     */
 /**************************************************************************/
 
-define_once("_SEND","Send");
-define_once("_FYOURNAME","Your Name:");
-define_once("_FYOUREMAIL","Your E-mail:");
-define_once("_FFRIENDNAME","Your Friend's Name:");
-define_once("_FFRIENDEMAIL","Your Friend's E-mail:");
-define_once("_HELLO","Hello");
-define_once("_YOURFRIEND","Your Friend");
-define_once("_RECOMMEND","Recommend this Site to a Friend");
-define_once("_INTSITE","Interesting Site:");
-define_once("_OURSITE","considered our site");
-define_once("_INTSENT","interesting and wanted to send it to you.");
-define_once("_FSITENAME","Site Name:");
-define_once("_FSITEURL","Site URL:");
-define_once("_FREFERENCE","The reference to our site has been sent to");
-define_once("_THANKSREC","Thanks for recommending us!");
-define_once("_SECURITYCODEERROR","<b>ERROR:</b> The security code you wrote is incorrect...<br>Please write it exactly as given bellow:");
-define_once("_SENDSITEERROR","<b>Error sending the recommendation...</b><br><br><b>ERROR:</b> One or more required fields are empty.<br>Please go back and correct the problem, then try again.");
+global $customlang, $module_name;
 
+$customlang[$module_name]['send'] = "Send";
+$customlang[$module_name]['your_name'] = "Your Name";
+$customlang[$module_name]['your_mail'] = "Your E-mail";
+$customlang[$module_name]['friend_name'] = "Your Friend's Name";
+$customlang[$module_name]['friend_mail'] = "Your Friend's E-mail";
+$customlang[$module_name]['hello'] = "Hello";
+$customlang[$module_name]['your_friend'] = "Your Friend";
+$customlang[$module_name]['recommend'] = "Recommend this Site to a Friend";
+$customlang[$module_name]['interesting'] = "Interesting Site";
+$customlang[$module_name]['our_site'] = "considered our site";
+$customlang[$module_name]['interest_sent'] = "interesting and wanted to send it to you.";
+$customlang[$module_name]['sitename'] = "Site Name";
+$customlang[$module_name]['siteurl'] = "Site URL";
+$customlang[$module_name]['reference'] = "The reference to our site has been sent to";
+$customlang[$module_name]['thank_you'] = "Thanks for recommending us!";
+$customlang[$module_name]['must_be_user'] = "You must be %slogged in%s to Recommend this site.";
+$customlang[$module_name]['recaptcha_error'] = "Error";
+$customlang[$module_name]['recaptcha_failed'] = "Failed the recaptcha, go back and try again.";
+$customlang[$module_name]['from'] = "from";
+$customlang[$module_name]['goback'] = "Go Back";
+$customlang[$module_name]['message'] = 'Short message to your friend why you recommend us';
+$customlang[$module_name]['optional'] = 'Optional Field';
+$customlang[$module_name]['why_i_recommend'] = 'Here is why i recommend this site';
+
+?>

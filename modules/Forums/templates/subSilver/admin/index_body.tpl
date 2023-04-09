@@ -1,84 +1,126 @@
-
 <h1>{L_WELCOME}</h1>
 
 <p>{L_ADMIN_INTRO}</p>
-
 <h1>{L_FORUM_STATS}</h1>
 
 <table width="100%" cellpadding="4" cellspacing="1" border="0" class="forumline">
-  <tr> 
-	<th width="25%" nowrap="nowrap" height="25" class="thCornerL">{L_STATISTIC}</th>
-	<th width="25%" height="25" class="thTop">{L_VALUE}</th>
-	<th width="25%" nowrap="nowrap" height="25" class="thTop">{L_STATISTIC}</th>
-	<th width="25%" height="25" class="thCornerR">{L_VALUE}</th>
+  <tr>
+    <td style="height: 35px; width: 25%;" class="catHead" colspan="3">{L_STATISTIC}</td>
+    <td style="height: 35px; width: 25%;" class="catHead">{L_VALUE}</td>
+    <td style="height: 35px; width: 25%;" class="catHead">{L_STATISTIC}</td>
+    <td style="height: 35px; width: 25%;" class="catHead">{L_VALUE}</td>
   </tr>
-  <tr> 
-	<td class="row1" nowrap="nowrap">{L_NUMBER_POSTS}:</td>
-	<td class="row2"><b>{NUMBER_OF_POSTS}</b></td>
-	<td class="row1" nowrap="nowrap">{L_POSTS_PER_DAY}:</td>
-	<td class="row2"><b>{POSTS_PER_DAY}</b></td>
+  <tr>
+    <td class="row1" colspan="3" style="height: 35px;">{L_ADMIN_IP_LOCK}:</td>
+    <td class="row1" colspan="3" style="height: 35px;">{ADMIN_IP_LOCK_ED}</td>
   </tr>
-  <tr> 
-	<td class="row1" nowrap="nowrap">{L_NUMBER_TOPICS}:</td>
-	<td class="row2"><b>{NUMBER_OF_TOPICS}</b></td>
-	<td class="row1" nowrap="nowrap">{L_TOPICS_PER_DAY}:</td>
-	<td class="row2"><b>{TOPICS_PER_DAY}</b></td>
+  <tr>
+    <td class="row1" colspan="3" style="height: 35px;">{L_PHPBB_VERSION}:</td>
+    <td class="row1" colspan="3" style="height: 35px;"><strong>{VERSION_INFO}</strong></td>
   </tr>
-  <tr> 
-	<td class="row1" nowrap="nowrap">{L_NUMBER_USERS}:</td>
-	<td class="row2"><b>{NUMBER_OF_USERS}</b></td>
-	<td class="row1" nowrap="nowrap">{L_USERS_PER_DAY}:</td>
-	<td class="row2"><b>{USERS_PER_DAY}</b></td>
+  <tr>
+    <td class="row1" colspan="3" style="height: 35px;">{L_PHP_VERSION}:</td>
+    <td class="row2" style="height: 35px;"><strong>{PHP_VERSION}</strong></td>
+    <td class="row1" style="height: 35px;">{L_MYSQL_VERSION}:</td>
+    <td class="row1" style="height: 35px;"><strong>{MYSQL_VERSION}</strong></td>
   </tr>
-  <tr> 
-	<td class="row1" nowrap="nowrap">{L_BOARD_STARTED}:</td>
-	<td class="row2"><b>{START_DATE}</b></td>
-	<td class="row1" nowrap="nowrap">{L_AVATAR_DIR_SIZE}:</td>
-	<td class="row2"><b>{AVATAR_DIR_SIZE}</b></td>
+  <tr>
+    <td class="row1" colspan="3" style="height: 35px;">{L_BOARD_STARTED}:</td>
+    <td class="row2" style="height: 35px;"><strong>{START_DATE}</strong></td>
+    <td class="row1" style="height: 35px;">{L_AVATAR_DIR_SIZE}:</td>
+    <td class="row1" style="height: 35px;"><strong>{AVATAR_DIR_SIZE}</strong></td>
   </tr>
-  <tr> 
-	<td class="row1" nowrap="nowrap">{L_DB_SIZE}:</td>
-	<td class="row2"><b>{DB_SIZE}</b></td>
-	<td class="row1" nowrap="nowrap">{L_GZIP_COMPRESSION}:</td>
-	<td class="row2"><b>{GZIP_COMPRESSION}</b></td>
+  <tr>
+    <td class="row1" colspan="3" style="height: 35px;">{L_DB_SIZE}:</td>
+    <td class="row2" style="height: 35px;"><strong>{DB_SIZE}</strong></td>
+    <td class="row1" style="height: 35px;">{L_GZIP_COMPRESSION}:</td>
+    <td class="row1" style="height: 35px;"><strong>{GZIP_COMPRESSION}</strong></td>
+  </tr>
+  <tr>
+    <td class="row1" colspan="3" style="height: 35px;">{L_NUMBER_POSTS}:</td>
+    <td class="row2" style="height: 35px;"><strong>{NUMBER_OF_POSTS}</strong></td>
+    <td class="row1" style="height: 35px;">{L_POSTS_PER_DAY}:</td>
+    <td class="row1" style="height: 35px;"><strong>{POSTS_PER_DAY}</strong></td>
+  </tr>
+  <tr>
+    <td class="row1" colspan="3" style="height: 35px;">{L_NUMBER_TOPICS}:</td>
+    <td class="row2" style="height: 35px;"><strong>{NUMBER_OF_TOPICS}</strong></td>
+    <td class="row1" style="height: 35px;">{L_TOPICS_PER_DAY}:</td>
+    <td class="row1" style="height: 35px;"><strong>{TOPICS_PER_DAY}</strong></td>
+  </tr>
+  <tr>
+    <td class="row1" colspan="3" style="height: 35px;">{L_NUMBER_USERS}:</td>
+    <td class="row2" style="height: 35px;"><strong>{NUMBER_OF_USERS}</strong></td>
+    <td class="row1" style="height: 35px;">{L_USERS_PER_DAY}:</td>
+    <td class="row1" style="height: 35px;"><strong>{USERS_PER_DAY}</strong></td>
+  </tr>
+  <tr>
+    <td class="row3" style="height: 35px; width: 10px;">&nbsp;</td>
+    <td class="row1" colspan="2" style="height: 35px;">{L_NUMBER_DEACTIVATED_USERS}:</td>
+    <td class="row1" colspan="3" style="height: 35px;">{NUMBER_OF_DEACTIVATED_USERS}</td>
+  </tr>
+  <tr>
+    <td class="row3" style="height: 35px; width: 10px;">&nbsp;</td>
+    <td class="row3" style="height: 35px; width: 10px;">&nbsp;</td>
+    <td class="row1" style="height: 35px;">{L_NAME_DEACTIVATED_USERS}:</td>
+    <td class="row1" colspan="3" style="height: 35px;">{NAMES_OF_DEACTIVATED}</td>
+  </tr>
+  <tr>
+    <td class="row3" style="height: 35px; width: 10px;">&nbsp;</td>
+    <td class="row1" colspan="2" style="height: 35px;">{L_NUMBER_MODERATORS}:</td>
+    <td class="row1" colspan="3" style="height: 35px;">{NUMBER_OF_MODERATORS}</td>
+  </tr>
+  <tr>
+    <td class="row3" style="height: 35px; width: 10px;">&nbsp;</td>
+    <td class="row3" style="height: 35px; width: 10px;">&nbsp;</td>
+    <td class="row1" style="height: 35px;">{L_NAME_MODERATORS}:</td>
+    <td class="row1" colspan="3" style="height: 35px;">{NAMES_OF_MODERATORS}</td>
+  </tr>
+  <tr>
+    <td class="row3" style="height: 35px; width: 10px;">&nbsp;</td>
+    <td class="row1" colspan="2" style="height: 35px;">{L_NUMBER_ADMINISTRATORS}:</td>
+    <td class="row1" colspan="3" style="height: 35px;">{NUMBER_OF_ADMINISTRATORS}</td>
+  </tr>
+  <tr>
+    <td class="row3" style="height: 35px; width: 10px;">&nbsp;</td>
+    <td class="row3" style="height: 35px; width: 10px;">&nbsp;</td>
+    <td class="row1" style="height: 35px;">{L_NAME_ADMINISTRATORS}:</td>
+    <td class="row1" colspan="3" style="height: 35px;">{NAMES_OF_ADMINISTRATORS}</td>
   </tr>
 </table>
-<h1>{L_WHO_IS_ONLINE}</h1>
-
+<br />
 <table width="100%" cellpadding="4" cellspacing="1" border="0" class="forumline">
-  <tr> 
-	<th width="20%" class="thCornerL" height="25">&nbsp;{L_USERNAME}&nbsp;</th>
-	<th width="20%" height="25" class="thTop">&nbsp;{L_STARTED}&nbsp;</th>
-	<th width="20%" class="thTop">&nbsp;{L_LAST_UPDATE}&nbsp;</th>
-	<th width="20%" class="thCornerR">&nbsp;{L_FORUM_LOCATION}&nbsp;</th>
-	<th width="20%" height="25" class="thCornerR">&nbsp;{L_IP_ADDRESS}&nbsp;</th>
+  <tr>
+    <td colspan="5" style="height: 35px; width: 20%; text-align: center;" class="catHead">{L_WHO_IS_ONLINE}</td>
+  </tr>
+  <tr>
+    <td style="height: 35px; width: 20%;" class="catHead">{L_USERNAME}</td>
+    <td style="height: 35px; width: 20%; text-align: center;" class="catHead">{L_STARTED}</td>
+    <td style="height: 35px; width: 20%; text-align: center;" class="catHead">{L_LAST_UPDATE}</td>
+    <td style="height: 35px; width: 20%;" class="catHead">{L_FORUM_LOCATION}</td>
+    <td style="height: 35px; width: 20%;" class="catHead">{L_IP_ADDRESS}</td>
   </tr>
   <!-- BEGIN reg_user_row -->
-  <tr> 
-	<td width="20%" class="{reg_user_row.ROW_CLASS}">&nbsp;<span class="gen"><a href="{reg_user_row.U_USER_PROFILE}" class="gen">{reg_user_row.USERNAME}</a></span>&nbsp;</td>
-	<td width="20%" align="center" class="{reg_user_row.ROW_CLASS}">&nbsp;<span class="gen">{reg_user_row.STARTED}</span>&nbsp;</td>
-	<td width="20%" align="center" nowrap="nowrap" class="{reg_user_row.ROW_CLASS}">&nbsp;<span class="gen">{reg_user_row.LASTUPDATE}</span>&nbsp;</td>
-	<td width="20%" class="{reg_user_row.ROW_CLASS}">&nbsp;<span class="gen"><a href="{reg_user_row.U_FORUM_LOCATION}" class="gen">{reg_user_row.FORUM_LOCATION}</a></span>&nbsp;</td>
-	<td width="20%" class="{reg_user_row.ROW_CLASS}">&nbsp;<span class="gen"><a href="{reg_user_row.U_WHOIS_IP}" class="gen" target="_phpbbwhois">{reg_user_row.IP_ADDRESS}</a></span>&nbsp;</td>
+  <tr>
+    <td class="{reg_user_row.ROW_CLASS}" style="height: 35px; width: 20%;"><a href="{reg_user_row.U_USER_PROFILE}">{reg_user_row.USERNAME}</a></td>
+    <td class="{reg_user_row.ROW_CLASS}" style="height: 35px; width: 20%; text-align: center;">{reg_user_row.STARTED}</td>
+    <td class="{reg_user_row.ROW_CLASS}" style="height: 35px; width: 20%; text-align: center;">{reg_user_row.LASTUPDATE}</td>
+    <td class="{reg_user_row.ROW_CLASS}" style="height: 35px; width: 20%;"><a href="{reg_user_row.U_FORUM_LOCATION}">{reg_user_row.FORUM_LOCATION}</a></td>
+    <td class="{reg_user_row.ROW_CLASS}" style="height: 35px; width: 20%;"><a href="{reg_user_row.U_WHOIS_IP}" target="_phpbbwhois">{reg_user_row.IP_ADDRESS}</a></td>
   </tr>
   <!-- END reg_user_row -->
-  <tr> 
-	<td colspan="5" height="1" class="row3"><img src="../templates/subSilver/images/spacer.gif" width="1" height="1" alt="."></td>
+  <tr>
+    <td colspan="5" class="catBottom" style="height: 35px;"><img src="../templates/subSilver/images/spacer.gif" width="1" height="1" alt="."></td>
   </tr>
   <!-- BEGIN guest_user_row -->
-  <tr> 
-	<td width="20%" class="{guest_user_row.ROW_CLASS}">&nbsp;<span class="gen">{guest_user_row.USERNAME}</span>&nbsp;</td>
-	<td width="20%" align="center" class="{guest_user_row.ROW_CLASS}">&nbsp;<span class="gen">{guest_user_row.STARTED}</span>&nbsp;</td>
-	<td width="20%" align="center" nowrap="nowrap" class="{guest_user_row.ROW_CLASS}">&nbsp;<span class="gen">{guest_user_row.LASTUPDATE}</span>&nbsp;</td>
-	<td width="20%" class="{guest_user_row.ROW_CLASS}">&nbsp;<span class="gen"><a href="{guest_user_row.U_FORUM_LOCATION}" class="gen">{guest_user_row.FORUM_LOCATION}</a></span>&nbsp;</td>
-	<td width="20%" class="{guest_user_row.ROW_CLASS}">&nbsp;<span class="gen"><a href="{guest_user_row.U_WHOIS_IP}" target="_phpbbwhois">{guest_user_row.IP_ADDRESS}</a></span>&nbsp;</td>
+  <tr>
+    <td class="{guest_user_row.ROW_CLASS}" style="height: 35px; width: 20%;">{guest_user_row.USERNAME}</td>
+    <td class="{guest_user_row.ROW_CLASS}" style="height: 35px; width: 20%; text-align: center;">{guest_user_row.STARTED}</td>
+    <td class="{guest_user_row.ROW_CLASS}" style="height: 35px; width: 20%; text-align: center;">{guest_user_row.LASTUPDATE}</td>
+    <td class="{guest_user_row.ROW_CLASS}" style="height: 35px; width: 20%;"><a href="{guest_user_row.U_FORUM_LOCATION}">{guest_user_row.FORUM_LOCATION}</a></td>
+    <td class="{guest_user_row.ROW_CLASS}" style="height: 35px; width: 20%;"><a href="{guest_user_row.U_WHOIS_IP}" target="_phpbbwhois">{guest_user_row.IP_ADDRESS}</a></td>
   </tr>
   <!-- END guest_user_row -->
 </table>
-
-<br />
-<h1>{L_VERSION_INFORMATION}</h1>
-
-{VERSION_INFO}
 
 <br />

@@ -1,4 +1,17 @@
 <?php
+
+/************************************************************************/
+/* PHP-NUKE: Advanced Content Management System                         */
+/* ============================================                         */
+/*                                                                      */
+/* Copyright (c) 2002 by Francisco Burzi                                */
+/* http://phpnuke.org                                                   */
+/*                                                                      */
+/* This program is free software. You can redistribute it and/or modify */
+/* it under the terms of the GNU General Public License as published by */
+/* the Free Software Foundation; either version 2 of the License.       */
+/************************************************************************/
+
 /***************************************************************************
  *                              admin_ranks.php
  *                            -------------------
@@ -6,7 +19,7 @@
  *   copyright            : (C) 2001 The phpBB Group
  *   email                : support@phpbb.com
  *
- *   $Id: admin_ranks.php,v 1.13.2.8 2006/04/13 09:56:48 grahamje Exp $
+ *   Id: admin_ranks.php,v 1.13.2.4 2004/03/25 15:57:20 acydburn Exp
  *
  ***************************************************************************/
 
@@ -19,64 +32,53 @@
  *
  ***************************************************************************/
 
-/* Applied rules:
- * ReplaceHttpServerVarsByServerRector (https://blog.tigertech.net/posts/php-5-3-http-server-vars/)
- * TernaryToNullCoalescingRector
- * NullToStrictStringFuncCallArgRector
- */
-
 if( !empty($setmodules) )
 {
-        $file = basename(__FILE__);
+	$file = basename(__FILE__);
 	$module['Users']['Ranks'] = $file;
-        return;
+	return;
 }
 
-defined('IN_PHPBB') or define('IN_PHPBB', 1);
+if (!defined('IN_PHPBB')) define('IN_PHPBB', true);
 
 //
 // Let's set the root dir for phpBB
 //
 $phpbb_root_path = "./../";
 require($phpbb_root_path . 'extension.inc');
-
-$cancel = ( isset($_POST['cancel']) ) ? true : false;
+$cancel = ( isset($_POST['cancel']) || isset($_POST['cancel']) ) ? true : false;
 $no_page_header = $cancel;
-
 require('./pagestart.' . $phpEx);
-
 if ($cancel)
 {
-	redirect('admin/' . append_sid("admin_ranks.$phpEx", true));
+	redirect(append_sid("admin_ranks.$phpEx", true));
 }
 
 if( isset($_GET['mode']) || isset($_POST['mode']) )
 {
-	$mode = $_GET['mode'] ?? $_POST['mode'];
-        $mode = htmlspecialchars((string) $mode);
+	$mode = (isset($_GET['mode'])) ? $_GET['mode'] : $_POST['mode'];
+	$mode = htmlspecialchars($mode);
 }
 else
 {
-        //
-        // These could be entered via a form button
-        //
-        if( isset($_POST['add']) )
-        {
-                $mode = "add";
-        }
-        else if( isset($_POST['save']) )
-        {
-                $mode = "save";
-        }
-        else
-        {
-                $mode = "";
-        }
+    //
+    // These could be entered via a form button
+    //
+    if( isset($_POST['add']) )
+    {
+            $mode = "add";
+    }
+    else if( isset($_POST['save']) )
+    {
+            $mode = "save";
+    }
+    else
+    {
+            $mode = "";
+    }
 }
-
 // Restrict mode input to valid options
 $mode = ( in_array($mode, array('add', 'edit', 'save', 'delete')) ) ? $mode : '';
-
 if( $mode != "" )
 {
         if( $mode == "edit" || $mode == "add" )
@@ -113,20 +115,116 @@ if( $mode != "" )
 
                 $s_hidden_fields .= '<input type="hidden" name="mode" value="save" />';
 
-                $rank_is_special = ( $rank_info['rank_special'] ) ? "checked=\"checked\"" : "";
-                $rank_is_not_special = ( !$rank_info['rank_special'] ) ? "checked=\"checked\"" : "";
+/*****[BEGIN]******************************************
+ [ Mod:    Multiple Ranks And Staff View       v2.0.3 ]
+ ******************************************************/
+				$rank_no_rank = ( $rank_info['rank_special'] == '-2' ) ? "checked=\"checked\"" : "";
+				$rank_day_counter = ( $rank_info['rank_special'] == '-1' ) ? "checked=\"checked\"" : "";
+				$rank_is_not_special = ( $rank_info['rank_special'] == '0' ) ? "checked=\"checked\"" : "";
+				$rank_is_special = ( $rank_info['rank_special'] == '1' ) ? "checked=\"checked\"" : "";
+				$rank_is_guest = ( $rank_info['rank_special'] == '2' ) ? "checked=\"checked\"" : "";
+				$rank_is_banned = ( $rank_info['rank_special'] == '3' ) ? "checked=\"checked\"" : "";
+		
+				$rank_path = "../images/ranks/";
+				if ( is_dir($rank_path) )
+				{
+					$dir = opendir($rank_path);
+					$l = 0;
+					while($file = readdir($dir))
+					{
+                         $supported_format = array('gif','png');
+                         $ext = strtolower(pathinfo($file, PATHINFO_EXTENSION));
+                         if (in_array($ext, $supported_format))
+                         {
+                                // if (strpos($file, '.gif'))
+                                // {
+                                $file1[$l] = $file;
+                                $l++;
+                                // }
+                         }
+					}
+					closedir($dir);
+					$ranks_list = '<select name="rank_image_sel" onChange="update_rank(this.options[selectedIndex].value);">';
+					
+					if(!isset($lang['No_Rank_Image']))
+					$lang['No_Rank_Image'] = '';
+
+					if(!isset($rank_info['rank_image']))
+					$rank_info['rank_image'] = '';
+					
+					if (isset($rank_info['rank_image']) && $rank_info['rank_image'] == '')
+					{
+						$ranks_list .= "<option value=\"\" selected=\"selected\">" . $lang['No_Rank_Image'] . "</option>";
+					}
+					else
+					{
+						$ranks_list .= "<option value=\"\">" . $lang['No_Rank_Image'] . "</option>";
+						$ranks_list .= "<option value=\"" . $rank_info['rank_image'] . "\" selected=\"selected\">" . str_replace($rank_path, "", $rank_info['rank_image']) . "</option>";
+					}
+					for($k=0; $k<=$l;$k++)
+					{
+						if (isset($file1[$k]) && $file1[$k] != "")
+						{
+							$ranks_list .= "<option value=\"images/ranks/" . $file1[$k] . "\">images/ranks/" . $file1[$k] . "</option>";
+						}
+					}
+					
+					if(!isset($images['spacer']))
+					$images['spacer'] = '';
+					
+					$rank_img_sp = ( ($rank_info['rank_image'] != '') ? ('../' . $rank_info['rank_image']) : $images['spacer'] );
+					$rank_img_path = ( $rank_info['rank_image'] != '' ) ? $rank_info['rank_image'] : '';
+					$ranks_list .= '</select>';
+					$ranks_list .= '  <img name="rank_image" src="' . $rank_img_sp . '" border="0" alt="" align="absmiddle" />';
+					$ranks_list .= '<br /><br />';
+					$ranks_list .= '<input class="post" type="text" name="rank_image_path" size="40" maxlength="255" value="' . $rank_img_path . '" />';
+					$ranks_list .= '<br />';
+					
+				}
+				else
+				{
+					$rank_img_path = ( $rank_info['rank_image'] != '' ) ? $rank_info['rank_image'] : '';
+					$ranks_list = '<input class="post" type="text" name="rank_image_path" size="40" maxlength="255" value="' . $rank_img_path . '" /><br />';
+				}
+/*****[END]********************************************
+ [ Mod:    Multiple Ranks And Staff View       v2.0.3 ]
+ ******************************************************/
 
                 $template->set_filenames(array(
                         "body" => "admin/ranks_edit_body.tpl")
                 );
-
+                
+				if(!isset($rank_info['rank_min']))
+				$rank_info['rank_min'] = '';
+				
                 $template->assign_vars(array(
-                        "RANK" => $rank_info['rank_title'],
-                        "SPECIAL_RANK" => $rank_is_special,
-                        "NOT_SPECIAL_RANK" => $rank_is_not_special,
-                        "MINIMUM" => ( $rank_is_special ) ? "" : $rank_info['rank_min'],
-                        "IMAGE" => ( $rank_info['rank_image'] != "" ) ? $rank_info['rank_image'] : "",
-                        "IMAGE_DISPLAY" => ( $rank_info['rank_image'] != "" ) ? '<img src="../../../' . $rank_info['rank_image'] . '" />' : "",
+/*****[BEGIN]******************************************
+ [ Mod:    Multiple Ranks And Staff View       v2.0.3 ]
+ ******************************************************/
+						"NO_RANK" => $rank_no_rank,
+						"DAYS_RANK" => $rank_day_counter,
+						"NOT_SPECIAL_RANK" => $rank_is_not_special,
+						"MINIMUM" => ( ($rank_info['rank_special'] == '0') || ($rank_info['rank_special'] == '-1') ) ? $rank_info['rank_min'] : "",
+						"SPECIAL_RANK" => $rank_is_special,
+						"GUEST_RANK" => $rank_is_guest,
+						"BANNED_RANK" => $rank_is_banned,
+						"RANK" => $rank_info['rank_title'] ?? '',
+						"RANK_LIST" => $ranks_list,
+						"RANK_IMG" => ( $rank_info['rank_image'] != "") ? '../' . $rank_info['rank_image'] : $images['spacer'],
+			
+						"L_NO_RANK" => $lang['No_Rank'],
+						"L_DAYS_RANK" => $lang['Rank_Days_Count'],
+						"L_POSTS_RANK" => $lang['Rank_Posts_Count'],
+						"L_MIN_M_D" => $lang['Rank_Min_Des'],
+						"L_SPECIAL_RANK" => $lang['Rank_Special'],
+						"L_GUEST" => $lang['Guest_User'],
+						"L_BANNED" => $lang['Banned_User'],
+						"L_CURRENT_RANK" => $lang['Current_Rank_Image'],
+						"IMAGE" => ( $rank_info['rank_image'] != "" ) ? $rank_info['rank_image'] : "",
+						"IMAGE_DISPLAY" => ( $rank_info['rank_image'] != "" ) ? '<img src="../' . $rank_info['rank_image'] . '" />' : "",
+/*****[END]********************************************
+ [ Mod:    Multiple Ranks And Staff View       v2.0.3 ]
+ ******************************************************/
 
                         "L_RANKS_TITLE" => $lang['Ranks_title'],
                         "L_RANKS_TEXT" => $lang['Ranks_explain'],
@@ -152,17 +250,29 @@ if( $mode != "" )
                 //
 
                 $rank_id = ( isset($_POST['id']) ) ? intval($_POST['id']) : 0;
-                $rank_title = ( isset($_POST['title']) ) ? trim((string) $_POST['title']) : "";
-                $special_rank = ( $_POST['special_rank'] == 1 ) ? TRUE : 0;
-                $min_posts = ( isset($_POST['min_posts']) ) ? intval($_POST['min_posts']) : -1;
-                $rank_image = ( (isset($_POST['rank_image'])) ) ? trim((string) $_POST['rank_image']) : "";
+                $rank_title = ( isset($_POST['title']) ) ? trim($_POST['title']) : "";
+/*****[BEGIN]******************************************
+ [ Mod:    Multiple Ranks And Staff View       v2.0.3 ]
+ ******************************************************/
+				$special_rank = $_POST['special_rank'];
+				$min_posts = ( isset($_POST['min_posts']) ) ? intval($_POST['min_posts']) : -1;
+				$rank_image = ( (isset($_POST['rank_image_path'])) ) ? trim($_POST['rank_image_path']) : "";
+/*****[END]********************************************
+ [ Mod:    Multiple Ranks And Staff View       v2.0.3 ]
+ ******************************************************/
 
-                if( $rank_title == "" )
+                if( empty($rank_title) )
                 {
                         message_die(GENERAL_MESSAGE, $lang['Must_select_rank']);
                 }
 
-                if( $special_rank == 1 )
+/*****[BEGIN]******************************************
+ [ Mod:    Multiple Ranks And Staff View       v2.0.3 ]
+ ******************************************************/
+				if( $special_rank > 0 )
+/*****[END]********************************************
+ [ Mod:    Multiple Ranks And Staff View       v2.0.3 ]
+ ******************************************************/
                 {
                         $max_posts = -1;
                         $min_posts = -1;
@@ -181,7 +291,13 @@ if( $mode != "" )
 
                 if ($rank_id)
                 {
-                        if (!$special_rank)
+/*****[BEGIN]******************************************
+ [ Mod:    Multiple Ranks And Staff View       v2.0.3 ]
+ ******************************************************/
+						if ($special_rank == 1)
+/*****[END]********************************************
+ [ Mod:    Multiple Ranks And Staff View       v2.0.3 ]
+ ******************************************************/
                         {
                                 $sql = "UPDATE " . USERS_TABLE . "
                                         SET nuke_user_rank = 0
@@ -230,10 +346,8 @@ if( $mode != "" )
                 {
                         $rank_id = 0;
                 }
-
-		$confirm = isset($_POST['confirm']);
-		
-		if( $rank_id && $confirm )
+                $confirm = isset($_POST['confirm']);
+                if( $rank_id && $confirm )
                 {
                         $sql = "DELETE FROM " . RANKS_TABLE . "
                                 WHERE rank_id = $rank_id";
@@ -256,100 +370,115 @@ if( $mode != "" )
 
                         message_die(GENERAL_MESSAGE, $message);
 
-                }
-		elseif( $rank_id && !$confirm)
-        {
-			// Present the confirmation screen to the user
-                $template->set_filenames(array(
-				'body' => 'admin/confirm_body.tpl')
-                );
+  		}
+ 		elseif( $rank_id && !$confirm)
+  		{
+ 			// Present the confirmation screen to the user
+ 			$template->set_filenames(array(
+ 				'body' => 'admin/confirm_body.tpl')
+ 			);
 
-			$hidden_fields = '<input type="hidden" name="mode" value="delete" /><input type="hidden" name="id" value="' . $rank_id . '" />';
+ 			$hidden_fields = '<input type="hidden" name="mode" value="delete" /><input type="hidden" name="id" value="' . $rank_id . '" />';
 
-			$template->assign_vars(array(
-				'MESSAGE_TITLE' => $lang['Confirm'],
-				'MESSAGE_TEXT' => $lang['Confirm_delete_rank'],
+ 			$template->assign_vars(array(
+ 				'MESSAGE_TITLE' => $lang['Confirm'],
+ 				'MESSAGE_TEXT' => $lang['Confirm_delete_rank'],
 
-				'L_YES' => $lang['Yes'],
-				'L_NO' => $lang['No'],
+ 				'L_YES' => $lang['Yes'],
+ 				'L_NO' => $lang['No'],
 
-				'S_CONFIRM_ACTION' => append_sid("admin_ranks.$phpEx"),
-				'S_HIDDEN_FIELDS' => $hidden_fields)
-                );
-		}
-		else
-                {
-			message_die(GENERAL_MESSAGE, $lang['Must_select_rank']);
-		}
-                        }
+ 				'S_CONFIRM_ACTION' => append_sid("admin_ranks.$phpEx"),
+ 				'S_HIDDEN_FIELDS' => $hidden_fields)
+ 			);
+ 		}
+ 		else
+ 		{
+ 			message_die(GENERAL_MESSAGE, $lang['Must_select_rank']);
+ 		}
+ 	}
 
-	$template->pparse("body");
+ 	$template->pparse("body");
 
-	include('./page_footer_admin.'.$phpEx);
-}
+ 	include('./page_footer_admin.'.$phpEx);
+ }
 
-        //
-        // Show the default page
-        //
-        $template->set_filenames(array(
-                "body" => "admin/ranks_list_body.tpl")
-        );
+ //
+ // Show the default page
+ //
+ $template->set_filenames(array(
+ 	"body" => "admin/ranks_list_body.tpl")
+ );
 
-        $sql = "SELECT * FROM " . RANKS_TABLE . "
-                ORDER BY rank_min ASC, rank_special ASC";
-        if( !$result = $db->sql_query($sql) )
-        {
-                message_die(GENERAL_ERROR, "Couldn't obtain ranks data", "", __LINE__, __FILE__, $sql);
-        }
-        $rank_count = $db->sql_numrows($result);
+ $sql = "SELECT * FROM " . RANKS_TABLE . "
+ 	ORDER BY rank_min ASC, rank_special ASC";
+ if( !$result = $db->sql_query($sql) )
+ {
+ 	message_die(GENERAL_ERROR, "Couldn't obtain ranks data", "", __LINE__, __FILE__, $sql);
+ }
+ $rank_count = $db->sql_numrows($result);
 
-        $rank_rows = $db->sql_fetchrowset($result);
+ $rank_rows = $db->sql_fetchrowset($result);
 
-        $template->assign_vars(array(
-                "L_RANKS_TITLE" => $lang['Ranks_title'],
-                "L_RANKS_TEXT" => $lang['Ranks_explain'],
-                "L_RANK" => $lang['Rank_title'],
-                "L_RANK_MINIMUM" => $lang['Rank_minimum'],
-                "L_SPECIAL_RANK" => $lang['Rank_special'],
-                "L_EDIT" => $lang['Edit'],
-                "L_DELETE" => $lang['Delete'],
-                "L_ADD_RANK" => $lang['Add_new_rank'],
-                "L_ACTION" => $lang['Action'],
+ $template->assign_vars(array(
+ 	"L_RANKS_TITLE" => $lang['Ranks_title'],
+ 	"L_RANKS_TEXT" => $lang['Ranks_explain'],
+ 	"L_RANK" => $lang['Rank_title'],
+ 	"L_RANK_MINIMUM" => $lang['Rank_minimum'],
+ 	"L_SPECIAL_RANK" => $lang['Rank_special'],
+ 	"L_EDIT" => $lang['Edit'],
+ 	"L_DELETE" => $lang['Delete'],
+ 	"L_ADD_RANK" => $lang['Add_new_rank'],
+ 	"L_ACTION" => $lang['Action'],
 
-                "S_RANKS_ACTION" => append_sid("admin_ranks.$phpEx"))
-        );
+ 	"S_RANKS_ACTION" => append_sid("admin_ranks.$phpEx"))
+ );
 
-        for($i = 0; $i < $rank_count; $i++)
-        {
-                $rank = $rank_rows[$i]['rank_title'];
-                $special_rank = $rank_rows[$i]['rank_special'];
-                $rank_id = $rank_rows[$i]['rank_id'];
-                $rank_min = $rank_rows[$i]['rank_min'];
+ for($i = 0; $i < $rank_count; $i++)
+ {
+ 	$rank = $rank_rows[$i]['rank_title'];
+ 	$special_rank = $rank_rows[$i]['rank_special'];
+ 	$rank_id = $rank_rows[$i]['rank_id'];
+ 	$rank_min = $rank_rows[$i]['rank_min'];
 
-                if( $special_rank == 1 )
-                {
-                        $rank_min = $rank_max = "-";
-                }
+/*****[BEGIN]******************************************
+ [ Mod:    Multiple Ranks And Staff View       v2.0.3 ]
+ ******************************************************/
+	$rank_img_sp = ( ($rank_rows[$i]['rank_image'] != "") ? ('../' . $rank_rows[$i]['rank_image']) : $images['spacer'] );
+	$rank .= '<br /><img name="rank_image" src="' . $rank_img_sp . '" border="0" alt="" />';
 
-                $row_color = ( !($i % 2) ) ? $theme['td_color1'] : $theme['td_color2'];
-                $row_class = ( !($i % 2) ) ? $theme['td_class1'] : $theme['td_class2'];
+	if( ($special_rank > 0) || ($special_rank == '-2') )
+/*****[END]********************************************
+ [ Mod:    Multiple Ranks And Staff View       v2.0.3 ]
+ ******************************************************/
+ 	{
+ 		$rank_min = $rank_max = "-";
+ 	}
 
-                $rank_is_special = ( $special_rank ) ? $lang['Yes'] : $lang['No'];
+ 	$row_color = ( !($i % 2) ) ? $theme['td_color1'] : $theme['td_color2'];
+ 	$row_class = ( !($i % 2) ) ? $theme['td_class1'] : $theme['td_class2'];
 
-                $template->assign_block_vars("ranks", array(
-                        "ROW_COLOR" => "#" . $row_color,
-                        "ROW_CLASS" => $row_class,
-                        "RANK" => $rank,
-                        "SPECIAL_RANK" => $rank_is_special,
-                        "RANK_MIN" => $rank_min,
+/*****[BEGIN]******************************************
+ [ Mod:    Multiple Ranks And Staff View       v2.0.3 ]
+ ******************************************************/
+	$rank_is_special = ( $special_rank > 0) ? $lang['Yes'] : $lang['No'];
+/*****[END]********************************************
+ [ Mod:    Multiple Ranks And Staff View       v2.0.3 ]
+ ******************************************************/
 
-                        "U_RANK_EDIT" => append_sid("admin_ranks.$phpEx?mode=edit&amp;id=$rank_id"),
-                        "U_RANK_DELETE" => append_sid("admin_ranks.$phpEx?mode=delete&amp;id=$rank_id"))
-                );
-        }
+ 	$template->assign_block_vars("ranks", array(
+ 		"ROW_COLOR" => "#" . $row_color,
+ 		"ROW_CLASS" => $row_class,
+ 		"RANK" => $rank,
+ 		"SPECIAL_RANK" => $rank_is_special,
+ 		"RANK_MIN" => $rank_min,
 
-$template->pparse("body");
+ 		"U_RANK_EDIT" => append_sid("admin_ranks.$phpEx?mode=edit&amp;id=$rank_id"),
+ 		"U_RANK_DELETE" => append_sid("admin_ranks.$phpEx?mode=delete&amp;id=$rank_id"))
+ 	);
+ }
+
+ $template->pparse("body");
 
 include('./page_footer_admin.'.$phpEx);
 
-
+?>

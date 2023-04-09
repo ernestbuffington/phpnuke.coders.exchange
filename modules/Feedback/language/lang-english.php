@@ -1,4 +1,8 @@
 <?php
+/*======================================================================= 
+  PHP-Nuke Titanium | Nuke-Evolution Xtreme : PHP-Nuke Web Portal System
+ =======================================================================*/
+
 
 /**************************************************************************/
 /* PHP-NUKE: Advanced Content Management System                           */
@@ -17,18 +21,23 @@
 /* And, if you use HTML code, please double check it.                     */
 /**************************************************************************/
 
-define_once("_SEND","Send");
-define_once("_YOURNAME","Your Name");
-define_once("_MESSAGE","Message");
-define_once("_YOUREMAIL","Your Email");
-define_once("_FEEDBACKNOTE","All comments and suggestions about this web site are very welcome and a valuable source of information for us. Thanks!");
-define_once("_FEEDBACKTITLE","Feedback Form");
-define_once("_FEEDBACK","Feedback");
-define_once("_FBENTERNAME","ERROR: Please enter your name!");
-define_once("_FBENTEREMAIL","ERROR: Please enter your e-mail address!");
-define_once("_FBENTERMESSAGE","ERROR: Please enter a message!");
-define_once("_SENDEREMAIL","Sender's Email");
-define_once("_SENDERNAME","Sender's Name");
-define_once("_FBMAILSENT","Mail has been sent!");
-define_once("_FBTHANKSFORCONTACT","Thank you for contacting us");
+global $lang_new;
 
+$lang_new[$module_name]['back'] 			= "%sGo Back%s";
+$lang_new[$module_name]['email'] 			= "Your Email Address";
+$lang_new[$module_name]['email_error'] 		= "ERROR: Please enter your e-mail address!";
+$lang_new[$module_name]['email_sent'] 		= "Mail has been sent!";
+$lang_new[$module_name]['ip'] 				= "IP Address";
+$lang_new[$module_name]['message'] 			= "Message";
+$lang_new[$module_name]['message_error'] 	= "ERROR: Please enter a message!";
+$lang_new[$module_name]['name'] 			= "Your Name";
+$lang_new[$module_name]['name_error'] 		= "ERROR: Please enter your name!";
+$lang_new[$module_name]['note'] 			= "All comments and suggestions about this web site are very welcome and a valuable source of information for us. Thanks!";
+$lang_new[$module_name]['reCaptcha'] 		= "You failed the reCaptcha, Please go back and try again.";
+$lang_new[$module_name]['send'] 			= "Send";
+$lang_new[$module_name]['sender'] 			= "Sender's Name";
+$lang_new[$module_name]['sender_email'] 	= "Sender's Email";
+$lang_new[$module_name]['thanks'] 			= "Thank you for contacting us";
+$lang_new[$module_name]['title'] 			= "%s: Feedback Form";
+
+?>

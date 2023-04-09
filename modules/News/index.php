@@ -35,7 +35,7 @@ function theindex($new_topic="0") {
 
    global $db, $storyhome, $topicname, $topicimage, $topictext, $datetime, $user, $cookie, $nukeurl, $prefix, $multilingual, $currentlang, $articlecomm, $sitename, $user_news, $userinfo;
 
-        if (is_user($user)) { getusrinfo($user); }
+        if (is_user()) { getusrinfo($user); }
 
 	$new_topic = intval($new_topic);
 
@@ -366,7 +366,7 @@ function rate_complete($sid, $rated=0, $score) {
 
 	$r_options = "";
 
-	if (is_user($user)) {
+	if (is_user()) {
 
                 getusrinfo($user);
 

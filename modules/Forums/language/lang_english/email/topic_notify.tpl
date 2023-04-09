@@ -1,11 +1,17 @@
 Subject: Topic Reply Notification - {TOPIC_TITLE}
-Charset: iso-8859-1
+Charset: UTF-8
 
 Hello {USERNAME},
 
 You are receiving this email because you are watching the topic, "{TOPIC_TITLE}" at {SITENAME}. This topic has received a reply since your last visit. You can use the following link to view the replies made, no more notifications will be sent until you visit the topic.
 
 {U_TOPIC}
+
+The contents of the posted reply by {RELPY_BY} are as follows:
+
+{CONTENTS}
+
+{ATTACHMENT}
 
 If you no longer wish to watch this topic you can either click the "Stop watching this topic link" found at the bottom of the topic above, or by clicking the following link:
 

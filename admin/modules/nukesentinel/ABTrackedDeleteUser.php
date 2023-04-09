@@ -1,0 +1,27 @@
+<?php
+
+/************************************************************************/
+/* PHP-NUKE: Advanced Content Management System                         */
+/* ============================================                         */
+/*                                                                      */
+/* Copyright (c) 2002 by Francisco Burzi                                */
+/* http://phpnuke.org                                                   */
+/*                                                                      */
+/* This program is free software. You can redistribute it and/or modify */
+/* it under the terms of the GNU General Public License as published by */
+/* the Free Software Foundation; either version 2 of the License.       */
+/************************************************************************/
+
+/********************************************************/
+/* NukeSentinel(tm)                                     */
+/* By: NukeScripts Network (webmaster@nukescripts.net)  */
+/* http://nukescripts.86it.us                           */
+/* Copyright (c) 2000-2008 by NukeScripts Network       */
+/* See CREDITS.txt for ALL contributors                 */
+/********************************************************/
+
+$db->sql_query("DELETE FROM `".$prefix."_nsnst_tracked_ips` WHERE `user_id`='$user_id'");
+$db->sql_query("OPTIMIZE TABLE `".$prefix."_nsnst_tracked_ips`");
+Header("Location: ".$admin_file.".php?op=$xop&user_id=$user_id&column=$column&direction=$direction&min=$min&showmodule=$showmodule");
+
+?>

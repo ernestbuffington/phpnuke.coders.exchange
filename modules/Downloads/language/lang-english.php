@@ -19,6 +19,7 @@ global $sitename, $anonwaitdays, $outsidewaitdays;
 /* And, if you use HTML code, please double check it.                     */
 /**************************************************************************/
 
+define_once("_UDOWNLOADS","User Downloads");
 define_once("_URL","URL");
 define_once("_PREVIOUS","Previous Page");
 define_once("_NEXT","Next Page");

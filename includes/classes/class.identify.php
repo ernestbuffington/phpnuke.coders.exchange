@@ -1,5 +1,17 @@
 <?php
 
+/************************************************************************/
+/* PHP-NUKE: Advanced Content Management System                         */
+/* ============================================                         */
+/*                                                                      */
+/* Copyright (c) 2002 by Francisco Burzi                                */
+/* http://phpnuke.org                                                   */
+/*                                                                      */
+/* This program is free software. You can redistribute it and/or modify */
+/* it under the terms of the GNU General Public License as published by */
+/* the Free Software Foundation; either version 2 of the License.       */
+/************************************************************************/
+
 /************************************************************************
 
     MOO CMS, Copyright (c) 2005 The MOO Dev. Group. All rights reserved.
@@ -55,7 +67,7 @@ class identify {
         
 		if (!empty($_SERVER['HTTP_CLIENT_IP']) && $_SERVER['HTTP_CLIENT_IP'] != 'unknown') 
         $ips[] = $_SERVER['HTTP_CLIENT_IP'];
-        $ipsCount = count($ips);
+  $ipsCount = count($ips);
         
 		for ($i = 0; $i < $ipsCount; $i++) 
 		{
@@ -254,14 +266,14 @@ class identify {
 
     function detect_bot($where = false) {
         global $db, $prefix;
-		
+
         $bot        = false;
         $where      = ($where ? "WHERE agent_name LIKE '$where%'" : '');
         $result     = $db->sql_query('SELECT agent_name, agent_fullname FROM '.$prefix.'_security_agents'.$where.' ORDER BY agent_name', true);
         $find       = ['\\', '(', ')', '{', '}', '.', '$', '*'];
         $replace    = ['\\\\', '\(', '\)', '\{', '\}', '\.', '\$', '\*'];
 
-        while (isset($row) && $row = $db->sql_fetchrow($result)) 
+        while ($row = $db->sql_fetchrow($result)) 
         {
             $row[1] = str_replace($find, $replace, (string) $row[1]);
 			
@@ -283,7 +295,3 @@ class identify {
         return ($bot === false) ? false : ['ua' => 'bot', 'bot' => $bot, 'engine' => 'bot'];
     }
 }
-global $agent;
-
-$identify = new identify();
-$agent = $identify->identify_agent();

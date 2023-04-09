@@ -1,227 +1,148 @@
 <?php
 
-
-
 /************************************************************************/
-
-/* PHP-NUKE: Web Portal System                                          */
-
-/* ===========================                                          */
-
+/* PHP-NUKE: Advanced Content Management System                         */
+/* ============================================                         */
 /*                                                                      */
-
-/* Copyright (c) 2023 by Francisco Burzi                                */
-
-/* https://phpnuke.coders.exchange                                      */
-
+/* Copyright (c) 2002 by Francisco Burzi                                */
+/* http://phpnuke.org                                                   */
 /*                                                                      */
-
-/* Based on Feedback Addon 1.0                                          */
-
-/* Copyright (c) 2001 by Jack Kozbial (jack@internetintl.com)           */
-
-/* http://www.InternetIntl.com                                          */
-
-/*                                                                      */
-
 /* This program is free software. You can redistribute it and/or modify */
-
 /* it under the terms of the GNU General Public License as published by */
-
 /* the Free Software Foundation; either version 2 of the License.       */
+/************************************************************************/
 
+/************************************************************************/
+/* Based on php Addon Feedback 1.0                                      */
+/* Copyright (c) 2001 by Jack Kozbial                                   */
+/* http://www.InternetIntl.com                                          */
+/* jack@internetintl.com                                                */
+/*                                                                      */
+/* This program is free software. You can redistribute it and/or modify */
+/* it under the terms of the GNU General Public License as published by */
+/* the Free Software Foundation; either version 2 of the License.       */
 /************************************************************************/
 
 
+/************************************************************************/
+/*         Additional security & Abstraction layer conversion           */
+/*                           2003 chatserv                              */
+/*      http://www.nukefixes.com -- http://www.nukeresources.com        */
+/************************************************************************/
 
-if (!defined('MODULE_FILE')) {
+/*****[CHANGES]**********************************************************
+-=[Base]=-
+      Nuke Patched                             v3.1.0       06/26/2005
+ ************************************************************************/
 
-	die ("You can't access this file directly...");
+if (!defined('MODULE_FILE'))
+	die('You can not access this file directly...');
 
-}
+global $lang_new;
 
+// $module_name = basename(dirname(__FILE__));
+get_header();
 
+# Let include the language file.
+if(file_exists(NUKE_MODULES_DIR.the_module().'/language/lang-'.$currentlang.'.php'))
+	include_once(NUKE_MODULES_DIR.the_module().'/language/lang-'.$currentlang.'.php');
+else
+	include_once(NUKE_MODULES_DIR.the_module().'/language/lang-english.php');
 
-require_once("mainfile.php");
-
-$module_name = basename(dirname(__FILE__));
-
-get_lang($module_name);
-
-
-
-define('INDEX_FILE', true);
-
-$subject = $sitename." "._FEEDBACK;
-
-define('NO_EDITOR', true);
-
-
-
-include("header.php");
-
-
-
-if (!isset($opi) OR ($opi != "ds")) {
-
-  $intcookie = intval($cookie[0]);
-
-  if (!empty($cookie[1])) {
-
-    $sql = "SELECT name, username, user_email FROM ".$user_prefix."_users WHERE user_id='".$intcookie."'";
-
-    $result = $db->sql_query($sql);
-
-    $row = $db->sql_fetchrow($result);
-
-    $db->sql_freeresult($result);
-
-    if (!empty($row['name'])) {
-
-		$sender_name = filter($row['name'], "nohtml");
-
-	} else {
-
-		$sender_name = filter($row['username'], "nohtml");
-
-	}
-
-	$sender_email = filter($row['user_email'], "nohtml");
-
-  } else {
-
-    $sender_email = "";
-
-    $sender_name = "";
-
-  }
-
-}
-
-
-
-if (!isset($message)) { $message = ""; }
-
-if (!isset($opi)) { $opi = ""; }
-
-if (!isset($send)) { $send = ""; }
-
-title(_FEEDBACKTITLE);
-
-info_box("note", _FEEDBACKNOTE);
-
-echo "<br>";
-
-$form_block = "
-
-	<table border=\"0\" width=\"80%\">
-
-    <tr><td nowrap><FORM METHOD=\"post\" ACTION=\"modules.php?name=$module_name\">
-
-    <strong>"._YOURNAME.":</strong></td><td><INPUT type=\"text\" NAME=\"sender_name\" VALUE=\"$sender_name\" SIZE=30></td></tr>
-
-    <tr><td nowrap><strong>"._YOUREMAIL.":</strong></td><td><INPUT type=\"text\" NAME=\"sender_email\" VALUE=\"$sender_email\" SIZE=30></td></tr>
-
-    <tr><td><strong>"._MESSAGE.":</strong></td><td><TEXTAREA NAME=\"message\" COLS=60 ROWS=10 WRAP=virtual style='width: 399px;'>$message</TEXTAREA><br>
-
-    <i>"._HTMLNOTALLOWED2."</i></td></tr>
-
-    <tr><td>&nbsp;</td><td><INPUT type=\"hidden\" name=\"opi\" value=\"ds\">
-
-    <INPUT TYPE=\"submit\" NAME=\"submit\" VALUE=\""._SEND."\">
-
-    </FORM></td></tr></table>
-
-";
-
-
+# Just an empty variable so an error is not thrown.
+$error_message = array();
 
 OpenTable();
 
-if ($_POST['opi'] != "ds") {
+echo '<div class="nuketitle acenter">'.sprintf($lang_new[the_module()]['title'], $sitename).'</div><br /><br />';
 
-    echo $form_block;
+if (isset($_POST['action']) && $_POST['action'] == 'submit' ):
 
-} else {
+	# Throw an error, If the user fails the reCaptcha.
+	if (!security_code_check($_POST['g-recaptcha-response'], array(0,1,2,3,4,5,6,7))):
+		$error_message[] = $lang_new[$module_name]['reCaptcha'];
+	endif;
 
-    if (empty($sender_name)) {
+	if ( empty($_POST['sender_name']) ):
+		$error_message[] = $lang_new[$module_name]['name_error'];
+	endif;
 
-		$name_err = "<div align=\"center\"><span class=\"option\"><strong><em>"._FBENTERNAME."</em></strong></span></div>";
+	if ( empty($_POST['sender_email']) ):
+		$error_message[] = $lang_new[$module_name]['email_error'];
+	endif;
 
-		$send = "no";
+	if ( empty($_POST['message']) ):
+		$error_message[] = $lang_new[$module_name]['message_error'];
+	endif;
 
-    } 
+	# Display all errors found during submission.
+	if (count($error_message) > 0):
 
-    if (empty($sender_email)) {
+		echo '<div class="acenter">';
+		foreach($error_message as $error_string):
+			echo '  <div>'.$error_string.'</div>';
+		endforeach;
+		echo '  <br /><div>'.sprintf($lang_new[$module_name]['back'],'<a href="javascript:history.go(-1)">','</a>').'</div>';
+		echo '</div>';
 
-		$email_err = "<div align=\"center\"><span class=\"option\"><strong><em>"._FBENTEREMAIL."</em></strong></span></div>";
+	else:
 
-		$send = "no";
+		// $sender_name 	= Remove_Slashes(removecrlf($_POST['sender_name']));
+  //       $sender_email 	= Remove_Slashes(removecrlf($_POST['sender_email']));
+  //       $message 		= Remove_Slashes($_POST['message']);
+		$sender_name 	= get_query_var('sender_name', 'post');
+        $sender_email 	= get_query_var('sender_email', 'post');
+        $message 		= get_query_var('message', 'post');
 
-    } 
+        $msg  = $sitename."\n\n";
+        $msg .= $lang_new[$module_name]['sender'].": $sender_name\n";
+        $msg .= $lang_new[$module_name]['sender_email'].": $sender_email\n";
+        $msg .= $lang_new[$module_name]['message'].": $message\n\n";
+        $msg .= $lang_new[$module_name]['ip'].": ".$nsnst_const['remote_ip']."\n\n";
+        $msg = nl2br($msg);
 
-    if (empty($message)) {
-
-    	$message_err = "<div align=\"center\"><span class=\"option\"><strong><em>"._FBENTERMESSAGE."</em></span></font></div>";
-
-		$send = "no";
-
-    } 
-
-	if ($send != "no") {
-
-		$sender_name = removecrlf(filter($sender_name, "nohtml"));
-
-		$sender_email = removecrlf(filter($sender_email, "nohtml"));
-
-		$message = filter($message, "nohtml");
-
-		$msg = "$sitename\n\n";
-
-		$msg .= ""._SENDERNAME.": $sender_name\n";
-
-		$msg .= ""._SENDEREMAIL.": $sender_email\n";
-
-		$msg .= ""._MESSAGE.": $message\n\n";
-
-		$to = $adminmail;
-
-		$mailheaders = "From: $sender_name <$sender_email>\n";
-
-		$mailheaders .= "Reply-To: $sender_email\n\n";
-
-		mail($to, $subject, $msg, $mailheaders);
-
-		echo "<p><div align=\"center\">"._FBMAILSENT."</div></p>";
-
-		echo "<p><div align=\"center\">"._FBTHANKSFORCONTACT."</div></p>";
-
-    } elseif ($send == "no") {
-
-		OpenTable2();
-
-		if (!empty($name_err)) { echo "$name_err"; }
-
-		if (!empty($email_err)) {echo "$email_err"; }
-
-		if (!empty($message_err)) {echo "$message_err"; }
-
-		CloseTable2();
-
-		echo "<br><br>";
-
-		echo $form_block;
-
-	}
-
-}
+        $subject = sprintf($lang_new[$module_name]['title'], $sitename);
+  //       $to = $adminmail;
+  //       $mailheaders = "From: $sender_name <$sender_email>\r\n";
+  //       $mailheaders .= "Reply-To: $sender_email\r\nX-Mailer: PHP/" . phpversion();
+  //       evo_mail($to, $subject, $msg, $mailheaders);
 
 
+		/**
+		 *	OK, Let's set the email headers
+		 */
+    	$headers = array( 'Content-Type: text/html; charset=UTF-8', 'From: '.$sender_name.' <'.$sender_email.'>', 'Reply-To: '.$sender_email );
+
+    	/*
+    	 *	OK, Now the headers are set, we can send the email.
+    	 */
+      	phpmailer($adminmail, $subject, $msg, $headers);
+
+        echo '<div class="acenter"><p>'.$lang_new[$module_name]['email_sent'].'</p></div>';
+        echo '<div class="acenter"><p>'.$lang_new[$module_name]['thanks'].'</p></div>';
+
+	endif;
+	CloseTable();
+	get_footer();
+	die();
+
+endif;
+
+echo '<div>'.$lang_new[$module_name]['note'].'</div><br />';
+
+if(!isset($_POST['message']))
+$_POST['message'] = '';
+
+echo '<form action="modules.php?name='.$module_name.'" method="post" name="feedback">';
+echo '<input type="hidden" name="action" value="submit">';
+echo '<div class="textbold" style="margin-left:1px;">'.$lang_new[$module_name]['name'].'</div><input type="text" name="sender_name" value="'.$userinfo['username'].'" size="30" required><br /><br />';
+echo '<div class="textbold" style="margin-left:1px;">'.$lang_new[$module_name]['email'].'</div><input type="email" name="sender_email" value="'.$userinfo['user_email'].'" size="30" required><br /><br />';
+echo '<div class="textbold" style="margin-left:1px;">'.$lang_new[$module_name]['message'].'</div><textarea data-autoresize name="message" style="resize: none; width: 99.8%; height: 190px; min-height: 190px;" required>'.$_POST['message'].'</textarea><br /><br />';
+echo security_code(array(0,1,2,3,4,5,6,7), 'normal').'<br />';
+echo '<input type="submit" name="submit" value="'.$lang_new[$module_name]['send'].'">';
+echo '<form>';
 
 CloseTable();
-
-include("footer.php");
-
-
+get_footer();
 
 ?>

@@ -17,11 +17,11 @@
 /* And, if you use HTML code, please double check it.                     */
 /**************************************************************************/
 
-define("_ACTIVETOPICS","Current Active Topics");
-define("_CLICK2LIST","Click to list all articles in this topic");
-define("_TOTNEWS","Total News");
-define("_TOTREADS","Total Reads");
-define("_MORE","More");
-define("_NONEWSYET","...There aren't any news yet for this topic...");
+define_once("_ACTIVETOPICS","Current Active Topics");
+define_once("_CLICK2LIST","Click to list all articles in this topic");
+define_once("_TOTNEWS","Total News");
+define_once("_TOTREADS","Total Reads");
+define_once("_MORE","More");
+define_once("_NONEWSYET","...There aren't any news yet for this topic...");
 
 ?>

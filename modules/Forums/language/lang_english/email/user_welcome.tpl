@@ -1,5 +1,5 @@
 Subject: Welcome to {SITENAME} Forums
-Charset: iso-8859-1
+Charset: UTF-8
 
 {WELCOME_MSG}
 

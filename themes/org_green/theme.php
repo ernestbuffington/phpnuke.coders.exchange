@@ -59,8 +59,6 @@ function themeheader() {
 	?>
     <!-- Theme body -->
     <?php
-	echo '<body>';
-	
 	//ads(0);
 
     $topics_list = "<select name=\"topic\" onChange='submit()'>\n";

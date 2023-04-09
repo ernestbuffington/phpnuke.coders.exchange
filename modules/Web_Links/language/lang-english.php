@@ -1,7 +1,7 @@
 <?php
-global $sitename;
-if(!isset($anonwaitdays)) { $anonwaitdays = 0; }
-if(!isset($outsidewaitdays)) { $outsidewaitdays = 0; }
+/*======================================================================= 
+  PHP-Nuke Titanium | Nuke-Evolution Xtreme : PHP-Nuke Web Portal System
+ =======================================================================*/
 
 
 /**************************************************************************/
@@ -21,11 +21,14 @@ if(!isset($outsidewaitdays)) { $outsidewaitdays = 0; }
 /* And, if you use HTML code, please double check it.                     */
 /**************************************************************************/
 
+global $sitename;
+
+define_once("_WEBLINKS","Web Links");
 define_once("_URL","URL");
 define_once("_PREVIOUS","Previous Page");
 define_once("_NEXT","Next Page");
 define_once("_YOURNAME","Your Name");
-define_once("_CATEGORY","Category");
+define_once("_CATEGORY","Link Category");
 define_once("_CATEGORIES","Categories");
 define_once("_LVOTES","votes");
 define_once("_TOTALVOTES","Total Votes:");
@@ -35,12 +38,11 @@ define_once("_THEREARE","There are");
 define_once("_NOMATCHES","No matches found to your query");
 define_once("_SCOMMENTS","Comments");
 define_once("_DESCRIPTION","Description");
-define_once("_DATE","Date");
 define_once("_TO","To");
-define_once("_ADDLINK","Add Link");
-define_once("_NEW","New");
-define_once("_POPULAR","Popular");
-define_once("_TOPRATED","Top Rated");
+define_once("_ADDLINK","Add A Link");
+define_once("_NEW","New Links");
+define_once("_POPULAR","Popular Links");
+define_once("_TOPRATED","Top Rated Links");
 define_once("_RANDOM","Random");
 define_once("_LINKSMAIN","Links Main");
 define_once("_LINKCOMMENTS","Link Comments");
@@ -90,7 +92,6 @@ define_once("_RATING","Rating");
 define_once("_RATESITE","Rate this Site");
 define_once("_DETAILS","Details");
 define_once("_BESTRATED","Best Rated Links - Top");
-define_once("_OF","of");
 define_once("_TRATEDLINKS","total rated links");
 define_once("_TVOTESREQ","minimum votes required");
 define_once("_SHOWTOP","Show Top");
@@ -100,7 +101,7 @@ define_once("_SORTLINKSBY","Sort Links by");
 define_once("_SITESSORTED","Sites currently sorted by");
 define_once("_POPULARITY","Popularity");
 define_once("_SELECTPAGE","Select Page");
-define_once("_MAIN","Main");
+define_once("_MAIN","Links Main");
 define_once("_NEWTODAY","New Today");
 define_once("_NEWLAST3DAYS","New last 3 days");
 define_once("_NEWTHISWEEK","New This Week");
@@ -150,16 +151,17 @@ define_once("_WEIGHOUTNOTE","* Note: This Resource weighs Registered vs. Outside
 define_once("_NOOUTSIDEVOTES","No Outside Votes");
 define_once("_OUTSIDEVOTERS","Outside Voters");
 define_once("_UNREGISTEREDUSERS","Unregistered Users");
-define_once("_PROMOTEYOURSITE","Promote Your Website");
-define_once("_PROMOTE01","Maybe you can be interested in several of the remote 'Rate a Website' options we have available. These allow you to place an image (or even a rating form) on your web site in order to increase the number of votes your resource receive. Please choose from one of the options listed below:");
+define_once("_PROMOTEYOURSITE","Promote Your Website or Portal");
+define_once("_PROMOTE01","Maybe you will be interested in several of the remote 'Rate a Website/Portal' options we have available. These allow you to place an image (or even a rating form) on your web site in order to increase the number of votes your website or portal receives. Please choose from one of the options listed below:");
 define_once("_TEXTLINK","Text Link");
 define_once("_PROMOTE02","One way to link to the rating form is through a simple text link:");
 define_once("_HTMLCODE1","The HTML code you should use in this case, is the following:");
 define_once("_THENUMBER","The Number");
+global $anonwaitdays; 
 define_once("_IDREFER","in the HTML source references your site's ID number in $sitename database. Be sure this number is present.");
 define_once("_BUTTONLINK","Button Link");
 define_once("_PROMOTE03","If you're looking for a little more than a basic text link, you may wish to use a small button link:");
-define_once("_RATEIT","Rate this Site!");
+define_once("_RATEIT","Rate this Portal!");
 define_once("_HTMLCODE2","The source code for the above button is:");
 define_once("_REMOTEFORM","Remote Rating Form");
 define_once("_PROMOTE04","If you cheat on this, we'll remove your link. Having said that, here is what the current remote rating form looks like.");
@@ -187,14 +189,17 @@ define_once("_YOUAREREGGED","You are a registered user and are logged in.");
 define_once("_FEELFREE2ADD","Feel free to add a comment about this site.");
 define_once("_YOUARENOTREGGED","You are not a registered user or you have not logged in.");
 define_once("_IFYOUWEREREG","If you were registered you could make comments on this website.");
-define_once("_WEBLINKS","Web Links");
+// define("_WEBLINKS","Web Links");
 define_once("_TITLE","Title");
 define_once("_MODIFY","Modify");
 define_once("_COMPLETEVOTE1","Your vote is appreciated.");
+global $anonwaitdays;
 define_once("_COMPLETEVOTE2","You have already voted for this resource in the past $anonwaitdays day(s).");
-define_once("_COMPLETEVOTE3","Vote for a resource only once.<br>All votes are logged and reviewed.");
-define_once("_COMPLETEVOTE4","You cannot vote on a link you submitted.<br>All votes are logged and reviewed.");
+define_once("_COMPLETEVOTE3","Vote for a resource only once.<br />All votes are logged and reviewed.");
+define_once("_COMPLETEVOTE4","You cannot vote on a link you submitted.<br />All votes are logged and reviewed.");
 define_once("_COMPLETEVOTE5","No rating selected - no vote tallied");
+global $outsidewaitdays;
 define_once("_COMPLETEVOTE6","Only one vote per IP address allowed every $outsidewaitdays day(s).");
 define_once("_LINKSDATESTRING","%d-%b-%Y");
-
+// define_once("_GFX_FAILURE","Please enter the correct GFX code");
+?>

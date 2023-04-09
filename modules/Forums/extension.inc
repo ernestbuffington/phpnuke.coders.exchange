@@ -1,4 +1,17 @@
 <?php
+
+/************************************************************************/
+/* PHP-NUKE: Advanced Content Management System                         */
+/* ============================================                         */
+/*                                                                      */
+/* Copyright (c) 2002 by Francisco Burzi                                */
+/* http://phpnuke.org                                                   */
+/*                                                                      */
+/* This program is free software. You can redistribute it and/or modify */
+/* it under the terms of the GNU General Public License as published by */
+/* the Free Software Foundation; either version 2 of the License.       */
+/************************************************************************/
+
 /***************************************************************************
  *                               extension.inc
  *                            -------------------
@@ -8,8 +21,8 @@
  *
  *   $Id: extension.inc,v 1.5 2002/04/04 11:52:50 psotfx Exp $
  *
- *
  ***************************************************************************/
+
 /***************************************************************************
 * phpbb2 forums port version 2.0.5 (c) 2003 - Nuke Cops (http://nukecops.com)
 *
@@ -31,6 +44,7 @@
 * now reflecting phpbb2 standalone 2.0.5 that fixes some bugs and the
 * invalid_session error message.
 ***************************************************************************/
+
 /***************************************************************************
  *   This file is part of the phpBB2 port to Nuke 6.0 (c) copyright 2002
  *   by Tom Nitzschner (tom@toms-home.com)
@@ -48,15 +62,15 @@
  *   under the GNU GENERAL PUBLIC LICENSE. Please see the README for more information.
  *
  ***************************************************************************/
-if ( !defined('IN_PHPBB') )
+
+if (!defined('IN_PHPBB'))
 {
-	die("Hacking attempt");
+    die('Hacking attempt');
 }
 
 //
 // Change this if your extension is not .php!
 //
 $phpEx = "php";
-
 $starttime = 0;
 

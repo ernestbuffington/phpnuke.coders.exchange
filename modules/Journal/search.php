@@ -30,10 +30,15 @@
 /* Additional security checking code 2003 by chatserv                   */
 /* http://www.nukefixes.com -- http://www.nukeresources.com             */
 /************************************************************************/
-    /* Journal 2.0 Enhanced and Debugged 2004                               */
-    /* by sixonetonoffun -- http://www.netflake.com --                      */
-    /* Images Created by GanjaUK -- http://www.GanjaUK.com                  */
-    /************************************************************************/
+/* Journal 2.0 Enhanced and Debugged 2004                               */
+/* by sixonetonoffun -- http://www.netflake.com --                      */
+/* Images Created by GanjaUK -- http://www.GanjaUK.com                  */
+/************************************************************************/
+
+/* Applied rules:
+ * AddDefaultValueForUndefinedVariableRector (https://github.com/vimeo/psalm/blob/29b70442b11e3e66113935a2ee22e165a70c74a4/docs/fixing_code.md#possiblyundefinedvariable)
+ */
+
 if ( !defined('MODULE_FILE') )
 {
 	die("You can't access this file directly...");
@@ -44,7 +49,7 @@ if ( !defined('MODULE_FILE') )
     $pagetitle = "- "._USERSJOURNAL."";
     include("header.php");
     include("modules/$module_name/functions.php");
-    if (is_user($user)) {
+    if (is_user()) {
         cookiedecode($user);
         $username = $cookie[1];
     }
@@ -63,12 +68,12 @@ if ( !defined('MODULE_FILE') )
     startjournal($sitename, $user);
     function displaySearch($sitename, $username, $bgcolor2, $bgcolor3, $bgcolor1) {
         global $module_name;
-        echo "<br>";
+        
         OpenTable();
         echo ("<div align=center class=title>");
         echo ("<strong>"._JOURNALSEARCH."</strong></div><br><br>");
         echo ("<div align=center>");
-        echo ("<form action='modules.php?name=$module_name&file=search' method='post'>");
+        echo ("<form action='modules.php?name=Journal&file=search' method='post'>");
         echo ("<input type='hidden' name='disp' value='search'>");
         echo ("<input type='text' name='forwhat' size='30' maxlength='150'> "._IN." <select name='bywhat'>");
         echo ("<option value=\"aid\" SELECTED>"._MEMBER."</option>");
@@ -81,8 +86,9 @@ if ( !defined('MODULE_FILE') )
         CloseTable();
     }
     function search($username, $bywhat, $forwhat, $sitename, $bgcolor2, $bgcolor3, $user) {
+        $sql = null;
         global $prefix, $user_prefix, $db, $module_name, $exact, $bgcolor1;
-        echo "<br>";
+        
         OpenTable();
         echo ("<div align=center>");
         $exact = intval($exact);
@@ -99,29 +105,9 @@ if ( !defined('MODULE_FILE') )
         echo ("<td align=center width=100><strong><div align=\"center\">"._PROFILE."</div></strong></td>");
         echo ("<td align=center><strong>"._TITLE."</strong> "._CLICKTOVIEW."</td>");
         echo ("<td align=center width=\"5%\"><strong>"._VIEW."</strong></td>");
-         /* Commented out because this was broken sixonetonoffun
-        $editdel = intval($editdel);
-        if ($exact == '1') {
-            if ($forwhat == $username) {
-                $editdel = 1;
-            }
-        } else {
-            if (eregi($forwhat, $username)) {
-                $editdel = 2;
-            }
-        }
-       
-        if ($editdel == '1') {
-            echo ("<td align=center width=\"5%\"><strong>"._EDIT."</strong></td>");
-            echo ("<td align=center width=\"5%\"><strong>"._DELETE."</strong></td>");
-        } elseif ($editdel == '2') {
-            echo ("<td align=center width=\"5%\"><strong>"._EDIT."/<br>"._PROFILE."</strong></td>");
-            echo ("<td align=center width=\"5%\"><strong>"._DELETE."/<br>&nbsp;</strong></td>");
-        } else {
-        	*/
-            echo ("<td align=center width=\"5%\"><strong>"._PROFILE."</strong></td>");
-  //    } Commented out because this was broken sixonetonoffun
+        echo ("<td align=center width=\"5%\"><strong>"._PROFILE."</strong></td>");
         echo ("</tr>");
+
         if ($bywhat == 'aid'):
             if ($exact == '1') {
             $sql = "SELECT j.jid, j.aid, j.title, j.pdate, j.ptime, j.status, j.mdate, j.mtime, u.user_id, u.username FROM ".$prefix."_journal j, ".$user_prefix."_users u WHERE u.username=j.aid and j.aid='$forwhat' order by j.jid DESC";
@@ -134,7 +120,9 @@ if ( !defined('MODULE_FILE') )
         elseif ($bywhat == 'comment'):
         $sql = "SELECT j.jid, j.aid, j.title, j.pdate, j.ptime, j.status, j.mdate, j.mtime, u.user_id, u.username FROM ".$prefix."_journal j, ".$user_prefix."_users u, ".$user_prefix."_journal_comments c WHERE u.username=j.aid and c.rid=j.jid and c.comment LIKE '%$forwhat%' order by j.jid DESC";
         endif;
+
         $result = $db->sql_query($sql);
+
         while ($row = $db->sql_fetchrow($result)) {
             $row['jid'] = intval($row['jid']);
             $row['aid'] = filter($row['aid'], "nohtml");
@@ -154,7 +142,7 @@ if ( !defined('MODULE_FILE') )
             print ("<tr>");
             //The follwing line made reference to non-existing field uname.//
             printf ("<td align=center bgcolor=$bgcolor2><a href=\"modules.php?name=Your_Account&op=userinfo&username=".$row['username']."\">%s</a></td>", $row['aid'], $row['aid']);
-            printf ("<td align=left bgcolor=$bgcolor2>&nbsp;<a href=\"modules.php?name=$module_name&file=display&jid=%s\">%s</a> <span class=tiny>(%s @ %s)</span>", $row['jid'], $row['title'], $row['pdate'], $row['ptime']);
+            printf ("<td align=left bgcolor=$bgcolor2>&nbsp;<a href=\"modules.php?name=Journal&file=display&jid=%s\">%s</a> <span class=tiny>(%s @ %s)</span>", $row['jid'], $row['title'], $row['pdate'], $row['ptime']);
 		$sqlscnd = "SELECT cid from ".$prefix."_journal_comments where rid=".$row['jid'];
             $rstscnd = $db->sql_query($sqlscnd);
             $scndcount = 0;
@@ -164,25 +152,14 @@ if ( !defined('MODULE_FILE') )
             if ($scndcount > 0):
                 printf (" &#151;&#151; $scndcount comments</td>");
             endif;
-            printf ("<td align=center bgcolor=$bgcolor2><a href=\"modules.php?name=$module_name&file=display&jid=%s\"><img src=\"modules/$module_name/images/read.gif\" border=0 alt=\""._READ."\" title=\""._READ."\"></a></td>", $row['jid'], $row['title']);
-        /* Commented out because this was broken sixonetonoffun
-            if ($row['aid'] == $username) :
-            printf ("<td align=center bgcolor=$bgcolor2><a href=\"modules.php?name=$module_name&file=modify&jid=%s\"><img src='modules/$module_name/images/edit.gif' border='0' alt=\""._EDIT."\" title=\""._EDIT."\"></a></td>", $row['jid'], $row['title']);
-            printf ("<td align=center bgcolor=$bgcolor2><a href=\"modules.php?name=$module_name&file=delete&jid=%s&forwhat=$forwhat\"><img src='modules/$module_name/images/trash.gif' border='0' alt=\""._DELETE."\" title=\""._DELETE."\"></a></td>", $row['jid'], $row['title']);
-            else :
-            */
-            //printf ("<td align=center bgcolor=$bgcolor2><a href=\"modules.php?name=$module_name&file=display&jid=%s\"><img src=\"modules/$module_name/images/read.gif\" border=0 alt=\""._READ."\" title=\""._READ."\"></a></td>", $row['jid'], $row['title']);
-            //The follwing line made reference to non-existing field uname.//
-            printf ("<td align=center bgcolor=$bgcolor2><a href=\"modules.php?name=Your_Account&op=userinfo&username=".$row['username']."\"><img src=\"modules/$module_name/images/nuke.gif\" border=\"0\" alt=\""._USERPROFILE2."\" title=\""._USERPROFILE2."\"></a></td>");
-            /*
-            if (empty($username)) {
-            print ("<td align=center bgcolor=$bgcolor2><a href=\"modules.php?name=Your_Account\"><img src=\"modules/$module_name/images/folder.gif\" border=0 alt=\""._CREATEACCOUNT."\" title=\""._CREATEACCOUNT."\"></a></td>");
-            } elseif (!empty($username) AND is_active("Private_Messages")) {
-            printf ("<td align=center bgcolor=$bgcolor2><a href=\"modules.php?name=Private_Messages&mode=post&u=".$row['user_id']."\"><img src='modules/$module_name/images/chat.gif' border='0' alt='"._PRIVMSGJ2."'></a></td>", $row['aid'], $row['aid']);
-            }
-            */
+            
+			printf ("<td align=center bgcolor=$bgcolor2><a href=\"modules.php?name=Journal&file=display&jid=%s\"><img 
+			src=\"modules/Journal/images/read.gif\" border=0 alt=\""._READ."\" title=\""._READ."\"></a></td>", $row['jid'], $row['title']);
+
+            printf ("<td align=center bgcolor=$bgcolor2><a href=\"modules.php?name=Your_Account&op=userinfo&username=".$row['username']."\"><img 
+			src=\"modules/Journal/images/nuke.gif\" border=\"0\" alt=\""._USERPROFILE2."\" title=\""._USERPROFILE2."\"></a></td>");
+
             endif;
-      //    endif; // Commented out because this was broken sixonetonoffun
         }
         echo ("</table>");
         if (empty($dcount)) {

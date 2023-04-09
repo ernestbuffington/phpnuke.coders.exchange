@@ -24,7 +24,7 @@ require_once("setup_config.php");
 require_once("functions.php");
 require_once(SETUP_NUKE_INCLUDES_DIR.'functions_selects.php');
 
-global $dbhost, $dbname, $dbuname, $dbpass, $dbtype, $prefix, $user_prefix, $admin_file, $directory_mode, $file_mode, $debug, $use_zend_cache, $persistency;
+global $dbhost, $dbname, $dbuname, $dbpass, $dbtype, $prefix, $user_prefix, $admin_file, $directory_mode, $file_mode, $debug, $use_cache, $persistency;
 
 // Set flag that this is a parent file
 define( "_VALID_MOS", 1 );

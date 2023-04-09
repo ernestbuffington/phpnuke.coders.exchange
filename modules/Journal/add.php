@@ -29,10 +29,16 @@
 /* it under the terms of the GNU General Public License as published by */
 /* the Free Software Foundation; either version 2 of the License.       */
 /************************************************************************/
-    /* Journal 2.0 Enhanced and Debugged 2004                               */
-    /* by sixonetonoffun -- http://www.netflake.com --                      */
-    /* Images Created by GanjaUK -- http://www.GanjaUK.com                  */
-    /************************************************************************/
+/* Journal 2.0 Enhanced and Debugged 2004                               */
+/* by sixonetonoffun -- http://www.netflake.com --                      */
+/* Images Created by GanjaUK -- http://www.GanjaUK.com                  */
+/************************************************************************/
+
+/* Applied rules:
+ * EregToPregMatchRector (http://php.net/reference.pcre.pattern.posix https://stackoverflow.com/a/17033826/1348344 https://docstore.mik.ua/orelly/webprog/pcook/ch13_02.htm)
+ * WhileEachToForeachRector (https://wiki.php.net/rfc/deprecations_php_7_2#each)
+ */
+ 
 if ( !defined('MODULE_FILE') )
 {
 	die("You can't access this file directly...");
@@ -41,12 +47,12 @@ if ( !defined('MODULE_FILE') )
     $module_name = basename(dirname(__FILE__));
     get_lang($module_name);
     $pagetitle = "- "._USERSJOURNAL."";
-include("header.php");
-include("modules/$module_name/functions.php");
+    include("header.php");
+    include("modules/$module_name/functions.php");
     include("modules/$module_name/kses.php");
-    if (is_user($user)) {
-cookiedecode($user);
-$username = $cookie[1];
+    if (is_user()) {
+    cookiedecode($user);
+    $username = $cookie[1];
     }
     $user = filter($user, "nohtml");
     $username = filter($username, "nohtml");
@@ -61,11 +67,9 @@ $username = $cookie[1];
 #####################################################
 # Check to see if the current user of add.php is a  #
 # member of the site. If not, inform them that they #
-# must register before posting.		            #
+# must register before posting.		                #
 #####################################################
-
-    if (!is_user($user)) :
-    echo ("<br>");
+    if (!is_user()) :
     openTable();
     echo ("<div align=center>"._YOUMUSTBEMEMBER."<br></div>");
     closeTable();
@@ -74,21 +78,21 @@ $username = $cookie[1];
 endif;
 
 #####################################################
-# Build Journal Entry Form.	    		    #
+# Build Journal Entry Form.	    		            #
 # NOTE: The mood list is dynamic!!! To add/edit the #
 # list of available moods, just upload or remove    #
-# gifs and jpgs from the 			    #
-# modules/Journal/Images/moods directory.	    #
+# gifs and jpgs from the 			                #
+# modules/Journal/Images/moods directory.	        #
 #####################################################
-    if (is_user($user)) {
-echo "<br>";
+    if (is_user()) {
+
 OpenTable();
 echo ("<div align=center class=title>"._ADDJOURNAL."</div><br>");
-echo ("<div align=center> [ <a href=\"modules.php?name=$module_name&file=add\">"._ADDENTRY."</a> | <a href=\"modules.php?name=$module_name&file=edit&op=last\">"._YOURLAST20."</a> | <a href=\"modules.php?name=$module_name&file=edit&op=all\">"._LISTALLENTRIES."</a> ]</div>");
+echo ("<div align=center> [ <a href=\"modules.php?name=Journal&file=add\">"._ADDENTRY."</a> | <a href=\"modules.php?name=Journal&file=edit&op=last\">"._YOURLAST20."</a> | <a href=\"modules.php?name=Journal&file=edit&op=all\">"._LISTALLENTRIES."</a> ]</div>");
 CloseTable();
-echo "<br>";
+
 OpenTable();
-print  ("<form action='modules.php?name=$module_name&file=savenew' method='post'>");
+print  ("<form action='modules.php?name=Journal&file=savenew' method='post'>");
 print  ("<table align=center border=0>");
 print  ("<tr>");
 print  ("<td align=right valign=top><strong>"._TITLE.": </strong></td>");
@@ -116,8 +120,8 @@ $tempcount = 0;
             }
 }
 asort($filelist);
-while (list ($key, $file) = each ($filelist)) {
-    if (!ereg(".gif|.jpg",$file)) { }
+foreach ($filelist as $key => $file) {
+    if (!preg_match('#.gif|.jpg#m',$file)) { }
     elseif ($file == "." || $file == "..") {
         $a=1;
     } else {
@@ -149,10 +153,10 @@ print  ("</tr>");
 print  ("</table>");
 print  ("</form>");
 closeTable();
-echo ("<br>");
+
 journalfoot();
     } else {
-        echo ("<br>");
+        
         openTable();
         echo ("<div align=center>"._YOUMUSTBEMEMBER."<br></div>");
         closeTable();

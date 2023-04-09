@@ -3,6 +3,7 @@
 /* Remember to change the logo. The default logo has been   */
 /* left as a "reference only".                              */
 /************************************************************/
+global $ThemeSel;
 $ThemeSel = get_theme();
 ?>
 <!-- banner org_green -->

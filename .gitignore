@@ -4,10 +4,14 @@ vendor/*
 /desktop.ini
 /config.php
 /rector.php
-lincludes/log/*
+includes/log/*
 includes/cache/*
 pspbrwse.jbf
 *.pspimage
 uploads/*
+/nconfig.php
+*.iso
+*.zip
+*.rar
 
 

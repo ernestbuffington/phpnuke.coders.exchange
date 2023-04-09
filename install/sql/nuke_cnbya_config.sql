@@ -28,5 +28,5 @@ REPLACE INTO `#prefix#_cnbya_config` (`config_name`, `config_value`) VALUES
 ('cookieinactivity', '-'),
 ('autosuspendmain', '0'),
 ('doublecheckemail', '1'),
-('version', '4.4.2'),
+('version', '5.0.0'),
 ('tos_text', 'This is your default TOS. You may edit this through the Your Account Admin Panel.');

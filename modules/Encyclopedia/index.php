@@ -1,38 +1,19 @@
 <?php
 
-
-
 /************************************************************************/
-
 /* PHP-NUKE: Web Portal System                                          */
-
 /* ===========================                                          */
-
 /*                                                                      */
-
 /* Copyright (c) 2023 by Francisco Burzi                                */
-
 /* https://phpnuke.coders.exchange                                      */
-
 /*                                                                      */
-
 /* This program is free software. You can redistribute it and/or modify */
-
 /* it under the terms of the GNU General Public License as published by */
-
 /* the Free Software Foundation; either version 2 of the License.       */
-
 /************************************************************************/
-
-
-
 if (!defined('MODULE_FILE')) {
-
 	die ("You can't access this file directly...");
-
 }
-
-
 
 require_once("mainfile.php");
 
@@ -40,31 +21,22 @@ $module_name = basename(dirname(__FILE__));
 
 get_lang($module_name);
 
-
-
 $pagetitle = "- "._ENCYCLOPEDIA."";
 
-
+if(!isset($op))
+$op = '';
 
 function encysearch($eid) {
 
 	global $module_name;
 
 	echo "<center><form action=\"modules.php?name=$module_name&file=search\" method=\"post\">"
-
 	."<input type=\"text\" size=\"20\" name=\"query\">&nbsp;&nbsp;"
-
 	."<input type=\"hidden\" name=\"eid\" value=\"$eid\">"
-
 	."<input type=\"submit\" value=\""._SEARCH."\">"
-
 	."</form>"
-
 	."</center>";
-
 }
-
-
 
 function alpha($eid) {
 
@@ -200,9 +172,9 @@ function terms($eid, $ltr) {
 
 	OpenTable();
 
-	if (($active == 1) OR (is_admin($admin))) {
+	if (($active == 1) OR (is_admin())) {
 
-		if (($active != 1) AND (is_admin($admin))) {
+		if (($active != 1) AND (is_admin())) {
 
 			echo "<center>"._YOURADMINENCY."</center><br><br>";
 
@@ -278,7 +250,7 @@ function content($tid, $ltr, $page=0, $query="") {
 
 	$active = intval($row['active']);
 
-	if (($active == 1) OR ($active == 0 AND is_admin($admin))) {
+	if (($active == 1) OR ($active == 0 AND is_admin())) {
 
 		$db->sql_query("UPDATE ".$prefix."_encyclopedia_text SET counter=counter+1 WHERE tid='$tid'");
 
@@ -360,7 +332,7 @@ function content($tid, $ltr, $page=0, $query="") {
 
 		.""._GOBACK."</center><br>";
 
-		if (is_admin($admin)) {
+		if (is_admin()) {
 
 			echo "<p align=\"right\">[ <a href=\"".$admin_file.".php?op=encyclopedia_text_edit&amp;tid=$etid\">"._EDIT."</a> ]</p>";
 
@@ -434,7 +406,7 @@ function list_themes() {
 
 		}
 
-		if (is_admin($admin)) {
+		if (is_admin()) {
 
 			echo "<strong><big>&middot;</big></strong> $the_lang <a href=\"modules.php?name=$module_name&amp;op=list_content&amp;eid=$eid\">$title</a><br>$description<br>[ <a href=\"".$admin_file.".php?op=encyclopedia_edit&amp;eid=$eid\">"._EDIT."</a> | <a href=\"".$admin_file.".php?op=encyclopedia_change_status&amp;eid=$eid&amp;active=1\">"._DEACTIVATE."</a> | <a href=\"".$admin_file.".php?op=encyclopedia_delete&amp;eid=$eid\">"._DELETE."</a> ]<br><br>";
 
@@ -448,7 +420,7 @@ function list_themes() {
 
 	echo "</blockquote>";
 
-	if (is_admin($admin)) {
+	if (is_admin()) {
 
 		$result2 = $db->sql_query("SELECT eid, title, description, elanguage FROM ".$prefix."_encyclopedia WHERE active='0'");
 

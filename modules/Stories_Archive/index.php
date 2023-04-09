@@ -106,7 +106,7 @@ function show_month($year, $month, $month_l) {
 
 	$r_options = "";
 
-	if(is_user($user)) {
+	if(is_user()) {
 
 	  getusrinfo($user);
 
@@ -319,7 +319,7 @@ function show_all($min) {
 
 	$r_options = "";
 
-	if(is_user($user)) {
+	if(is_user()) {
 
 	  getusrinfo($user);
 

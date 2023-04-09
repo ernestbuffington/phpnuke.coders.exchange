@@ -157,7 +157,7 @@ function downloadinfomenu($lid) {
 	." | <a href=\"modules.php?name=$module_name&amp;d_op=viewdownloadeditorial&amp;lid=$lid\">"._EDITORREVIEW."</a>"
 	." | <a href=\"modules.php?name=$module_name&amp;d_op=modifydownloadrequest&amp;lid=$lid\">"._MODIFY."</a>";
 
-    if (is_user($user)) {
+    if (is_user()) {
 	echo " | <a href=\"modules.php?name=$module_name&amp;d_op=brokendownload&amp;lid=$lid\">"._REPORTBROKEN."</a>";
     }
 
@@ -301,7 +301,7 @@ function AddDownload() {
     OpenTable();
     echo "<center><font class=\"title\"><b>"._ADDADOWNLOAD."</b></font></center><br>";
 
-    if (is_user($user) || $downloads_anonadddownloadlock != 1) {
+    if (is_user() || $downloads_anonadddownloadlock != 1) {
 
     	$message = "<b>"._INSTRUCTIONS.":</b><br>"
 	    	."<strong><big>&middot;</big></strong> "._DSUBMITONCE."<br>"
@@ -385,7 +385,7 @@ function Add($title, $url, $auth_name, $cat, $description, $email, $filesize, $v
 
     } else {
 
-	if(is_user($user)) {
+	if(is_user()) {
 
 	    $user2 = base64_decode($user);
 	    $user2 = addslashes($user2);
@@ -615,7 +615,7 @@ function NewDownloadsDate($selectdate) {
 	$homepage = filter($row['homepage'], "nohtml");
 	$downloadratingsummary = number_format($downloadratingsummary, $mainvotedecimal);
 
-	if (is_admin($admin)) {
+	if (is_admin()) {
 	    echo "<a href=\"".$admin_file.".php?op=DownloadsModDownload&amp;lid=$lid\"><img src=\"modules/$module_name/images/lwin.gif\" border=\"0\" alt=\""._EDIT."\"></a>&nbsp;&nbsp;";
 	} else {
 	    echo "<img src=\"modules/$module_name/images/lwin.gif\" border=\"0\" alt=\"\">&nbsp;&nbsp;";
@@ -664,7 +664,7 @@ function NewDownloadsDate($selectdate) {
 	}
 
 	echo "<a href=\"modules.php?name=$module_name&amp;d_op=ratedownload&amp;lid=$lid\">"._RATERESOURCE."</a>";
-        if (is_user($user)) {
+        if (is_user()) {
 	    echo " | <a href=\"modules.php?name=$module_name&amp;d_op=brokendownload&amp;lid=$lid\">"._REPORTBROKEN."</a>";
 	}
 
@@ -776,7 +776,7 @@ function TopRated($ratenum, $ratetype) {
 	$homepage = filter($row['homepage'], "nohtml");
 	$downloadratingsummary = number_format($downloadratingsummary, $mainvotedecimal);
 
-	if (is_admin($admin)) {
+	if (is_admin()) {
 	    echo "<a href=\"".$admin_file.".php?op=DownloadsModDownload&amp;lid=$lid\"><img src=\"modules/$module_name/images/lwin.gif\" border=\"0\" alt=\""._EDIT."\"></a>&nbsp;&nbsp;";
 	} else {
 	    echo "<img src=\"modules/$module_name/images/lwin.gif\" border=\"0\" alt=\"\">&nbsp;&nbsp;";
@@ -828,7 +828,7 @@ function TopRated($ratenum, $ratetype) {
 
 	echo "<a href=\"modules.php?name=$module_name&amp;d_op=ratedownload&amp;lid=$lid\">"._RATERESOURCE."</a>";
 
-	if (is_user($user)) {
+	if (is_user()) {
 	    echo " | <a href=\"modules.php?name=$module_name&amp;d_op=brokendownload&amp;lid=$lid\">"._REPORTBROKEN."</a>";
 	}
 
@@ -933,7 +933,7 @@ function MostPopular($ratenum, $ratetype) {
 
     global $prefix, $db, $admin;
 
-	if (is_admin($admin)) {
+	if (is_admin()) {
 	    echo "<a href=\"".$admin_file.".php?op=DownloadsModDownload&amp;lid=$lid\"><img src=\"modules/$module_name/images/lwin.gif\" border=\"0\" alt=\""._EDIT."\"></a>&nbsp;&nbsp;";
 	} else {
 	    echo "<img src=\"modules/$module_name/images/lwin.gif\" border=\"0\" alt=\"\">&nbsp;&nbsp;";
@@ -983,7 +983,7 @@ function MostPopular($ratenum, $ratetype) {
 
 	echo "<a href=\"modules.php?name=$module_name&amp;d_op=ratedownload&amp;lid=$lid\">"._RATERESOURCE."</a>";
 
-	if (is_user($user)) {
+	if (is_user()) {
 	    echo " | <a href=\"modules.php?name=$module_name&amp;d_op=brokendownload&amp;lid=$lid\">"._REPORTBROKEN."</a>";
 	}
 
@@ -1175,7 +1175,7 @@ function viewdownload($cid, $min, $orderby, $show) {
 
     global $prefix, $db, $admin;
 
-	if (is_admin($admin)) {
+	if (is_admin()) {
 	    echo "<a href=\"".$admin_file.".php?op=DownloadsModDownload&amp;lid=$lid\"><img src=\"modules/$module_name/images/lwin.gif\" border=\"0\" alt=\""._EDIT."\"></a>&nbsp;&nbsp;";
 	} else {
 	    echo "<img src=\"modules/$module_name/images/lwin.gif\" border=\"0\" alt=\"\">&nbsp;&nbsp;";
@@ -1225,7 +1225,7 @@ function viewdownload($cid, $min, $orderby, $show) {
 
 	echo "<a href=\"modules.php?name=$module_name&amp;d_op=ratedownload&amp;lid=$lid\">"._RATERESOURCE."</a>";
 
-        if (is_user($user)) {
+        if (is_user()) {
 	    echo " | <a href=\"modules.php?name=$module_name&amp;d_op=brokendownload&amp;lid=$lid\">"._REPORTBROKEN."</a>";
 
 	}
@@ -1457,7 +1457,7 @@ function viewsdownload($sid, $min, $orderby, $show) {
 
         global $prefix, $db, $admin;
 
-	if (is_admin($admin)) {
+	if (is_admin()) {
 	    echo "<a href=\"".$admin_file.".php?op=DownloadsModDownload&amp;lid=$lid\"><img src=\"modules/$module_name/images/lwin.gif\" border=\"0\" alt=\""._EDIT."\"></a>&nbsp;&nbsp;";
 	} else {
 	    echo "<img src=\"modules/$module_name/images/lwin.gif\" border=\"0\" alt=\"\">&nbsp;&nbsp;";
@@ -1506,7 +1506,7 @@ function viewsdownload($sid, $min, $orderby, $show) {
 
 	echo "<a href=\"modules.php?name=$module_name&amp;d_op=ratedownload&amp;lid=$lid\">"._RATERESOURCE."</a>";
 
-	if (is_user($user)) {
+	if (is_user()) {
 	    echo " | <a href=\"modules.php?name=$module_name&amp;d_op=brokendownload&amp;lid=$lid\">"._REPORTBROKEN."</a>";
 	}
 
@@ -1918,7 +1918,7 @@ function search($query, $min, $orderby, $show) {
 
     		global $prefix, $db, $admin;
 
-		if (is_admin($admin)) {
+		if (is_admin()) {
 		    echo "<a href=\"".$admin_file.".php?op=DownloadsModDownload&amp;lid=$lid\"><img src=\"modules/$module_name/images/lwin.gif\" border=\"0\" alt=\""._EDIT."\"></a>&nbsp;&nbsp;";
 		} else {
 		    echo "<img src=\"modules/$module_name/images/lwin.gif\" border=\"0\" alt=\"\">&nbsp;&nbsp;";
@@ -2258,7 +2258,7 @@ function viewdownloadcomments($lid) {
 	    ."<td colspan=\"3\">"
 	    ."<font class=\"content\">";
 
-	    if (is_admin($admin)) {
+	    if (is_admin()) {
 		echo "<a href=\"".$admin_file.".php?op=DownloadsModDownload&amp;lid=$lid\"><img src=\"modules/$module_name/images/editicon.gif\" border=\"0\" alt=\""._EDITTHISDOWNLOAD."\"></a>";
 	    }	
 
@@ -2879,7 +2879,7 @@ function brokendownload($lid) {
 
     global $prefix, $db, $user, $cookie, $module_name;
 
-    if (is_user($user)) {
+    if (is_user()) {
 
 		include("header.php");
 
@@ -2925,7 +2925,7 @@ function brokendownloadS($lid, $modifysubmitter) {
 
     global $prefix, $db, $user, $anonymous, $cookie, $module_name, $user;
 
-    if (is_user($user)) {
+    if (is_user()) {
 
 		include("modules/$module_name/d_config.php");
 
@@ -2971,7 +2971,7 @@ function modifydownloadrequest($lid) {
 
     include("modules/$module_name/d_config.php");
 
-    if(is_user($user)) {
+    if(is_user()) {
     	$user2 = base64_decode($user);
     	$user2 = addslashes($user2);
    		$cookie = explode(":", $user2);
@@ -3067,7 +3067,7 @@ function modifydownloadrequestS($lid, $cat, $title, $url, $description, $modifys
 
     include("modules/$module_name/d_config.php");
 
-    if(is_user($user)) {
+    if(is_user()) {
 		$user2 = base64_decode($user);
 		$user2 = addslashes($user2);
 		$cookie = explode(":", $user2);
@@ -3159,7 +3159,7 @@ function addrating($ratinglid, $ratinguser, $rating, $ratinghost_name, $ratingco
 
     completevoteheader();
 
-    if(is_user($user)) {
+    if(is_user()) {
 		$user2 = base64_decode($user);
 		$user2 = addslashes($user2);
 	   	$cookie = explode(":", $user2);
@@ -3414,7 +3414,7 @@ function ratedownload($lid, $user) {
 	."<li>"._DRATENOTE4.""
 	."<li>"._RATENOTE5."";
 
-    if(is_user($user)) {
+    if(is_user()) {
 
     	$user2 = base64_decode($user);
 
@@ -3465,7 +3465,7 @@ function ratedownload($lid, $user) {
 
     $karma = $db->sql_fetchrow($db->sql_query("SELECT karma FROM ".$user_prefix."_users WHERE user_id='$cookie[0]'"));
 
-    if(is_user($user) AND $karma['karma'] != 3 AND $karma['karma'] != 4) {
+    if(is_user() AND $karma['karma'] != 3 AND $karma['karma'] != 4) {
 		echo "<b>"._SCOMMENTS.":</b><br><textarea wrap=\"virtual\" cols=\"70\" rows=\"15\" name=\"ratingcomments\"></textarea>"
  	    	."<br><br><br>"
      	    ."</font></td>";

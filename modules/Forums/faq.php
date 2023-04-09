@@ -1,4 +1,17 @@
 <?php
+
+/************************************************************************/
+/* PHP-NUKE: Advanced Content Management System                         */
+/* ============================================                         */
+/*                                                                      */
+/* Copyright (c) 2002 by Francisco Burzi                                */
+/* http://phpnuke.org                                                   */
+/*                                                                      */
+/* This program is free software. You can redistribute it and/or modify */
+/* it under the terms of the GNU General Public License as published by */
+/* the Free Software Foundation; either version 2 of the License.       */
+/************************************************************************/
+
 /***************************************************************************
  *                                  faq.php
  *                            -------------------
@@ -7,7 +20,6 @@
  *   email                : support@phpbb.com
  *
  *   Id: faq.php,v 1.14.2.2 2004/07/11 16:46:15 acydburn Exp
- *
  *
  ***************************************************************************/
 
@@ -19,25 +31,22 @@
  *   (at your option) any later version.
  *
  ***************************************************************************/
- 
-/* Applied rules:
- * ReplaceHttpServerVarsByServerRector (https://blog.tigertech.net/posts/php-5-3-http-server-vars/)
- * CountOnNullRector (https://3v4l.org/Bndc9)
- */
- 
-if ( !defined('MODULE_FILE') )
-{
-	die("You can't access this file directly...");
+
+/*****[CHANGES]**********************************************************
+-=[Base]=-
+      Nuke Patched                             v3.1.0       06/26/2005
+-=[Mod]=-
+      Attachment Mod                           v2.4.1       07/20/2005
+      FAQ Admin Addon                          v1.0.0       07/08/2005
+ ************************************************************************/
+
+if (!defined('MODULE_FILE')) {
+   die ("You can't access this file directly...");
 }
-if (!isset($popup) OR ($popup != "1"))
-    {
-        $module_name = basename(dirname(__FILE__));
-        require("modules/".$module_name."/nukebb.php");
-    }
-    else
-    {
-        $phpbb_root_path = 'modules/Forums/';
-    }
+
+$module_name = basename(dirname(__FILE__));
+require("modules/".$module_name."/nukebb.php");
+
 define('IN_PHPBB', true);
 include($phpbb_root_path . 'extension.inc');
 include($phpbb_root_path . 'common.'.$phpEx);
@@ -45,7 +54,7 @@ include($phpbb_root_path . 'common.'.$phpEx);
 //
 // Start session management
 //
-$userdata = session_pagestart($user_ip, PAGE_FAQ, $nukeuser);
+$userdata = session_pagestart($user_ip, PAGE_FAQ);
 init_userprefs($userdata);
 //
 // End session management
@@ -55,26 +64,49 @@ $faq = array();
 //
 // Load the appropriate faq file
 //
-if( isset($_GET['mode']) )
-{
-        switch( $_GET['mode'] )
+/*if( isset($HTTP_GET_VARS['mode']) )
+{*/
+$mode = request_var('mode', '');
+        switch(isset($HTTP_GET_VARS['mode']))
         {
                 case 'bbcode':
                         $lang_file = 'lang_bbcode';
                         $l_title = $lang['BBCode_guide'];
                         break;
+/*****[BEGIN]******************************************
+ [ Mod:    FAQ Admin Addon                     v1.0.0 ]
+ ******************************************************/
+                case 'faq_attach':
+                        $lang_file = 'lang_faq_attach';
+                        $l_title = $lang['BBCode_attach'];
+                        break;
+                case 'rules':
+                        $lang_file = 'lang_rules';
+                        $l_title = $lang['BBCode_rules'];
+                        break;
+/*****[END]********************************************
+ [ Mod:    FAQ Admin Addon                     v1.0.0 ]
+ ******************************************************/
                 default:
                         $lang_file = 'lang_faq';
                         $l_title = $lang['FAQ'];
                         break;
         }
-}
+/*}
 else
 {
         $lang_file = 'lang_faq';
         $l_title = $lang['FAQ'];
-}
+}*/
 include($phpbb_root_path . 'language/lang_' . $board_config['default_lang'] . '/' . $lang_file . '.' . $phpEx);
+
+/*****[BEGIN]******************************************
+ [ Mod:    Attachment Mod                      v2.4.1 ]
+ ******************************************************/
+attach_faq_include($lang_file);
+/*****[END]********************************************
+ [ Mod:    Attachment Mod                      v2.4.1 ]
+ ******************************************************/
 
 //
 // Pull the array data from the lang pack
@@ -110,7 +142,7 @@ for($i = 0; $i < count($faq); $i++)
 // Lets build a page ...
 //
 $page_title = $l_title;
-include("modules/$module_name/includes/page_header.php");
+include("includes/page_header.php");
 
 $template->set_filenames(array(
         'body' => 'faq_body.tpl')
@@ -124,7 +156,7 @@ $template->assign_vars(array(
 
 for($i = 0; $i < count($faq_block); $i++)
 {
-        if( is_countable($faq_block[$i]) ? count($faq_block[$i]) : 0 )
+        if( count($faq_block[$i]) )
         {
                 $template->assign_block_vars('faq_block', array(
                         'BLOCK_TITLE' => $faq_block_titles[$i])
@@ -133,7 +165,7 @@ for($i = 0; $i < count($faq_block); $i++)
                         'BLOCK_TITLE' => $faq_block_titles[$i])
                 );
 
-                for($j = 0; $j < (is_countable($faq_block[$i]) ? count($faq_block[$i]) : 0); $j++)
+                for($j = 0; $j < count($faq_block[$i]); $j++)
                 {
                         $row_color = ( !($j % 2) ) ? $theme['td_color1'] : $theme['td_color2'];
                         $row_class = ( !($j % 2) ) ? $theme['td_class1'] : $theme['td_class2'];
@@ -160,5 +192,6 @@ for($i = 0; $i < count($faq_block); $i++)
 
 $template->pparse('body');
 
-include("modules/$module_name/includes/page_tail.php");
+include("includes/page_tail.php");
 
+?>

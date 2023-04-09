@@ -1,5 +1,4 @@
 <?php
-
 /**************************************************************************/
 /* PHP-NUKE: Advanced Content Management System                           */
 /* ============================================                           */
@@ -17,7 +16,6 @@
 /* And, if you use HTML code, please double check it.                     */
 /**************************************************************************/
 
-define_once("_LINKS","Links");
 define_once("_URL","URL");
 define_once("_EMAIL","Email");
 define_once("_FUNCTIONS","Functions");
@@ -56,6 +54,8 @@ define_once("_ADDNEWLINK","Add a New Link");
 define_once("_DESCRIPTION255","Description: (255 characters max)");
 define_once("_MODCATEGORY","Modify a Category");
 define_once("_MODLINK","Modify a Link");
+define_once("_WEBLINKS_ADMIN_HEADER", "Web Links :: Modules Admin Panel");
+define_once("_WEBLINKS_RETURNMAIN", "Return to Main Administration");
 define_once("_WEBLINKSADMIN","Web Links Administration");
 define_once("_ADDEDITORIAL","Add Editorial");
 define_once("_EDITORIALTITLE","Editorial Title");
@@ -63,8 +63,8 @@ define_once("_EDITORIALTEXT","Editorial Text");
 define_once("_DATEWRITTEN","Date Written");
 define_once("_NOREPORTEDBROKEN","No reported broken links.");
 define_once("_USERREPBROKEN","User Reported Broken Links");
-define_once("_IGNOREINFO","Ignore (Deletes all <b><i>requests</i></b> for a given link)");
-define_once("_DELETEINFO","Delete (Deletes <b><i>broken link</i></b> and <b><i>requests</i></b> for a given link)");
+define_once("_IGNOREINFO","Ignore (Deletes all <strong><i>requests</i></strong> for a given link)");
+define_once("_DELETEINFO","Delete (Deletes <strong><i>broken link</i></strong> and <strong><i>requests</i></strong> for a given link)");
 define_once("_LINK","Link");
 define_once("_LINKOWNER","Link Owner");
 define_once("_IGNORE","Ignore");
@@ -96,7 +96,7 @@ define_once("_ERRORNOURL","ERROR: You need to type a URL for your URL!");
 define_once("_ERRORNODESCRIPTION","ERROR: You need to type a DESCRIPTION for your URL!");
 define_once("_NEWLINKADDED","New Link added to the Database");
 define_once("_YOURLINKAT","Your Link at");
-define_once("_YOUCANBROWSEUS","You can browse our search engine at:");
+define_once("_YOUCANBROWSEUS2","You can browse our search engine at:");
 define_once("_THANKS4YOURSUBMISSION","Thanks for your submission!");
 define_once("_TEAM","Team.");
 define_once("_EZTRANSFERLINKS","Transfer all links from category");
@@ -107,5 +107,5 @@ define_once("_EZSUBCAT","sub-categories");
 define_once("_EZATTACHEDTOCAT","under this category");
 define_once("_EZBROKENLINKS","Broken Links");
 define_once("_LINKAPPROVEDMSG", "Congratulations! The web link you submitted to our links database has been approved right now.");
-define_once("_OWNERISADMIN","Administration");
 
+?>

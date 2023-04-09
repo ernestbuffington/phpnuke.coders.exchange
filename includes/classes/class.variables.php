@@ -1,5 +1,17 @@
 <?php
 
+/************************************************************************/
+/* PHP-NUKE: Advanced Content Management System                         */
+/* ============================================                         */
+/*                                                                      */
+/* Copyright (c) 2002 by Francisco Burzi                                */
+/* http://phpnuke.org                                                   */
+/*                                                                      */
+/* This program is free software. You can redistribute it and/or modify */
+/* it under the terms of the GNU General Public License as published by */
+/* the Free Software Foundation; either version 2 of the License.       */
+/************************************************************************/
+
 /**
  *
  * Variable validation and checking class.
@@ -462,9 +474,9 @@ function deepPurifier($data)
 	if(!isset($config) || empty($config)) 
 	{
         $siteRootDir = dirname($_SERVER['DOCUMENT_ROOT']);
-        defined('EZYANG_BASE_DIR') or define('EZYANG_BASE_DIR', $siteRootDir . '/public_html/includes/vendor/ezyang/htmlpurifier/library/');
-        if(file_exists(EZYANG_BASE_DIR.'HTMLPurifier/Bootstrap.php')):
-            require_once(EZYANG_BASE_DIR.'HTMLPurifier/Bootstrap.php');
+        defined('EZYANG_BASE_DIR') or define('EZYANG_BASE_DIR', $siteRootDir . '/public_html/vendor/ezyang/htmlpurifier/library/HTMLPurifier/');
+        if(file_exists(EZYANG_BASE_DIR.'Bootstrap.php')):
+            require_once(EZYANG_BASE_DIR.'Bootstrap.php');
         endif;
 		
         if(file_exists(EZYANG_BASE_DIR.'HTMLPurifier.autoload.php')):
@@ -477,7 +489,7 @@ function deepPurifier($data)
 		$config = HTMLPurifier_Config::createDefault();
 		$config->set('Core.Encoding', 'UTF-8');
 		$config->set('HTML.Doctype', 'HTML 4.01 Transitional');
-		if(!is_admin($admin) || (is_admin($admin) && !$html_auth)) 
+		if(!is_god($admin) || (is_god($admin) && !$html_auth)) 
 		{
 			$config->set('HTML.Trusted', true);
 			$config->set('HTML.SafeObject', true);
@@ -526,7 +538,7 @@ function deepPurifier($data)
                 }
             }
             # If its a strip lets purify it
-            if (!is_admin($admin) || (is_admin($admin) && !$html_auth)) {
+            if (!is_god($admin) || (is_god($admin) && !$html_auth)) {
  					$data[$k] = $purifier->purify($v);
  				}
             $data[$k] = str_replace('\n', "\n", (string) $data[$k]);
@@ -558,7 +570,7 @@ function deepPurifier($data)
  * @package v4.0.3
  * @subpackage Variables
  */
-class PHP_Nuke_Variables
+class Titanium_Variables
 {
     /**
      * The raw or "dirty" variable
@@ -1073,7 +1085,7 @@ endif;
             if (is_array($input[$k])) {
                 foreach (array_keys($input[$k]) as $k2) {
                     if (in_array(strtolower($k2), $banned)) {
-                        die('Script Kiddie Alert: Input Hack attempt!!');
+                        die('Dork Alert: Input hack attempt!!');
                     }
                 }
             } elseif (in_array(strtolower((string) $k), $banned)) {
@@ -1084,7 +1096,7 @@ endif;
 }
 
 global $_GETVAR;
-$_GETVAR = new PHP_Nuke_Variables();
+$_GETVAR = new Titanium_Variables();
 $_GETVAR->check_valid_inputTypes();
 
 /**

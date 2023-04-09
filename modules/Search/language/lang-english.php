@@ -1,5 +1,4 @@
 <?php
-
 /**************************************************************************/
 /* PHP-NUKE: Advanced Content Management System                           */
 /* ============================================                           */
@@ -25,7 +24,7 @@ define_once("_SEARCHUSERS","Search in User's Database");
 define_once("_SEARCHSECTIONS","Search in Special Sections");
 define_once("_SEARCHREVIEWS","Search in Reviews");
 define_once("_SEARCHIN","Search in");
-define_once("_ARTICLES","Articles");
+define_once("_BLOGS","Blogs");
 define_once("_ALLAUTHORS","All Authors");
 define_once("_ALL","All");
 define_once("_WEEK","week");
@@ -43,7 +42,6 @@ define_once("_INSECTION","Article in the Section");
 define_once("_NONAME","No name entered");
 define_once("_SCOMMENTS","Comments");
 define_once("_SEARCHRESULTS","Search Results");
-define_once("_CONTRIBUTEDBY","Contributed by");
 define_once("_UCOMMENTS","Comments");
 define_once("_MATCHTITLE","Match on Title");
 define_once("_MATCHTEXT","Match on Article's text");
@@ -60,6 +58,5 @@ define_once("_FINDMORE","... more");
 define_once("_DIDNOTFIND","Didn't find what you're looking for?");
 define_once("_ENCYCLOPEDIA","Encyclopedia");
 define_once("_SEARCHINSTORY","Search All Comments in Story:");
-define_once("_SEARCHCHARACTERS","<center><b>Search System Error</b><br><br>Your query should be at least 3 characters long to be processed.<br>Please, fix the problem and try again...</center>");
 
 ?>

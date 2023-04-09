@@ -24,7 +24,7 @@ $module_name = basename(dirname(__FILE__));
 get_lang($module_name);
 $pagetitle = "- "._RECOMMEND."";
 
-if (!is_user($user)) {
+if (!is_user()) {
 	Header("Location: modules.php?name=$module_name&file=article&sid=$sid");
 	fdie();	
 }
@@ -42,7 +42,7 @@ function FriendSend($sid) {
 	.""._YOUSENDSTORY." <b>$title</b> "._TOAFRIEND."<br><br>"
 	."<form action=\"modules.php?name=$module_name&amp;file=friend\" method=\"post\">"
 	."<input type=\"hidden\" name=\"sid\" value=\"$sid\">";
-	if (is_user($user)) {
+	if (is_user()) {
 		$row2 = $db->sql_fetchrow($db->sql_query("SELECT name, username, user_email FROM ".$user_prefix."_users WHERE user_id = '".intval($cookie[0])."'"));
 		if (empty($row['name'])) {
 			$yn = filter($row2['username'], "nohtml");

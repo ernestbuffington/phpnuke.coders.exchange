@@ -1,4 +1,17 @@
 <?php
+
+/************************************************************************/
+/* PHP-NUKE: Advanced Content Management System                         */
+/* ============================================                         */
+/*                                                                      */
+/* Copyright (c) 2002 by Francisco Burzi                                */
+/* http://phpnuke.org                                                   */
+/*                                                                      */
+/* This program is free software. You can redistribute it and/or modify */
+/* it under the terms of the GNU General Public License as published by */
+/* the Free Software Foundation; either version 2 of the License.       */
+/************************************************************************/
+
 /***************************************************************************
 *                             admin_mass_email.php
 *                              -------------------
@@ -19,13 +32,7 @@
  *
  ***************************************************************************/
 
-/* Applied rules:
- * ReplaceHttpServerVarsByServerRector (https://blog.tigertech.net/posts/php-5-3-http-server-vars/)
- * CountOnNullRector (https://3v4l.org/Bndc9)
- * NullToStrictStringFuncCallArgRector
- */
- 
-defined('IN_PHPBB') or define('IN_PHPBB', 1);
+if (!defined('IN_PHPBB')) define('IN_PHPBB', true);
 
 if( !empty($setmodules) )
 {
@@ -47,7 +54,7 @@ require('./pagestart.' . $phpEx);
 // Increase maximum execution time in case of a lot of users, but don't complain about it if it isn't
 // allowed.
 //
-set_time_limit(1200);
+@set_time_limit(1200);
 
 $message = '';
 $subject = '';
@@ -55,10 +62,10 @@ $subject = '';
 //
 // Do the job ...
 //
-if ( isset($_POST['submit']) )
+if ( isset($HTTP_POST_VARS['submit']) )
 {
-        $subject = stripslashes(trim((string) $_POST['subject']));
-        $message = stripslashes(trim((string) $_POST['message']));
+        $subject = stripslashes(trim($HTTP_POST_VARS['subject']));
+        $message = stripslashes(trim($HTTP_POST_VARS['message']));
 
         $error = FALSE;
         $error_msg = '';
@@ -75,7 +82,7 @@ if ( isset($_POST['submit']) )
                 $error_msg .= ( !empty($error_msg) ) ? '<br />' . $lang['Empty_message'] : $lang['Empty_message'];
         }
 
-        $nuke_group_id = intval($_POST[POST_GROUPS_URL]);
+        $nuke_group_id = intval($HTTP_POST_VARS[POST_GROUPS_URL]);
 
         $sql = ( $nuke_group_id != -1 ) ? "SELECT u.user_email FROM " . USERS_TABLE . " u, " . USER_GROUP_TABLE . " ug WHERE ug.nuke_group_id = $nuke_group_id AND ug.user_pending <> " . TRUE . " AND u.user_id = ug.user_id" : "SELECT user_email FROM " . USERS_TABLE;
         if ( !($result = $db->sql_query($sql)) )
@@ -104,7 +111,7 @@ if ( isset($_POST['submit']) )
 
         if ( !$error )
         {
-                include("../includes/emailer.php");
+                include("../../../includes/emailer.php");
 
                 //
                 // Let's do some checking to make sure that mass mail functions
@@ -112,12 +119,12 @@ if ( isset($_POST['submit']) )
                 //
                 if ( preg_match('/[c-z]:\\\.*/i', getenv('PATH')) && !$board_config['smtp_delivery'])
                 {
-                        $ini_val = ( phpversion() >= '4.0.0' ) ? 'ini_get' : 'get_cfg_var';
+                        $ini_val = ( @phpversion() >= '4.0.0' ) ? 'ini_get' : 'get_cfg_var';
 
                         // We are running on windows, force delivery to use our smtp functions
                         // since php's are broken by default
                         $board_config['smtp_delivery'] = 1;
-                        $board_config['smtp_host'] = $ini_val('SMTP');
+                        $board_config['smtp_host'] = @$ini_val('SMTP');
                 }
 
                 $emailer = new emailer($board_config['smtp_delivery']);
@@ -125,7 +132,7 @@ if ( isset($_POST['submit']) )
                 $emailer->from($board_config['board_email']);
                 $emailer->replyto($board_config['board_email']);
 
-                for ($i = 0; $i < (is_countable($bcc_list) ? count($bcc_list) : 0); $i++)
+                for ($i = 0; $i < count($bcc_list); $i++)
                 {
                         $emailer->bcc($bcc_list[$i]);
                 }
@@ -152,15 +159,20 @@ if ( isset($_POST['submit']) )
         }
 }
 
-if (isset($error))
+if(!isset($error))
+$error = '';
+
+if($error)
 {
-        $template->set_filenames(array(
-                'reg_header' => 'error_body.tpl')
-        );
-        $template->assign_vars(array(
-                'ERROR_MESSAGE' => $error_msg)
-        );
-        $template->assign_var_from_handle('ERROR_BOX', 'reg_header');
+  $template->set_filenames(array(
+    'reg_header' => 'error_body.tpl')
+  );
+  
+  $template->assign_vars(array(
+    'ERROR_MESSAGE' => $error_msg)
+  );
+  
+  $template->assign_var_from_handle('ERROR_BOX', 'reg_header');
 }
 
 //
@@ -195,6 +207,9 @@ $template->set_filenames(array(
         'body' => 'admin/user_email_body.tpl')
 );
 
+if(!isset($notice))
+$notice = '';
+
 $template->assign_vars(array(
         'MESSAGE' => $message,
         'SUBJECT' => $subject,
@@ -206,7 +221,7 @@ $template->assign_vars(array(
         'L_EMAIL_SUBJECT' => $lang['Subject'],
         'L_EMAIL_MSG' => $lang['Message'],
         'L_EMAIL' => $lang['Email'],
-        'L_NOTICE' => $notice ?? '',
+        'L_NOTICE' => $notice,
 
         'S_USER_ACTION' => append_sid('admin_mass_email.'.$phpEx),
         'S_GROUP_SELECT' => $select_list)

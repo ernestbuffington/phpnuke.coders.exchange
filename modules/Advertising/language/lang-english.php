@@ -1,25 +1,19 @@
 <?php
 
-/**************************************************************************/
-/* PHP-NUKE: Advanced Content Management System                           */
-/* ============================================                           */
-/*                                                                        */
-/* This is the language module with all the system messages               */
-/*                                                                        */
-/* If you made a translation, please go to my website and send to me      */
-/* the translated file. Please keep the original text order by modules,   */
-/* and just one message per line, also double check your translation!     */
-/*                                                                        */
-/* You need to change the second quoted phrase, not the capital one!      */
-/*                                                                        */
-/* If you need to use double quotes (") remember to add a backslash (\),  */
-/* so your entry will look like: This is \"double quoted\" text.          */
-/* And, if you use HTML code, please double check it.                     */
-/**************************************************************************/
+/************************************************************************/
+/* PHP-NUKE: Advanced Content Management System                         */
+/* ============================================                         */
+/*                                                                      */
+/* Copyright (c) 2002 by Francisco Burzi                                */
+/* http://phpnuke.org                                                   */
+/*                                                                      */
+/* This program is free software. You can redistribute it and/or modify */
+/* it under the terms of the GNU General Public License as published by */
+/* the Free Software Foundation; either version 2 of the License.       */
+/************************************************************************/
 
-
+define_once('_BANNERS','Banners');
 define_once("_MYADS","My Ads");
-define_once("_CLIENTLOGIN","Client Login");
 define_once("_ADSMENU","Advertising Menu");
 define_once("_SITESTATS","Site Stats");
 define_once("_MAINPAGE","Main Page");
@@ -63,13 +57,13 @@ define_once("_EMAILSTATS","Email Stats");
 define_once("_VIEWBANNER","View Banner");
 define_once("_INACTIVEADS","Current Inactive Banners for");
 define_once("_NOCONTENT","There is no content here at this time...");
-define_once("_ADISNTYOURS","<b>Error:</b> The banner you're trying to view isn't assigned to your account.");
+define_once("_ADISNTYOURS","<strong>Error:</strong> The banner you're trying to view isn't assigned to your account.");
 define_once("_YOURBANNER","Your Banner");
 define_once("_CURRENTSTATUS","Current Status:");
 define_once("_ACTIVE","Active");
 define_once("_INACTIVE","Inactive");
-define_once("_FUNCTIONNOTALLOWED","<b>Error:</b> The selected function isn't allowed.");
-define_once("_STATSNOTSEND","Statistics for the selected Banner can't be send because<br>there isn't an email associated with it.<br>Please contact the Administrator");
+define_once("_FUNCTIONNOTALLOWED","<strong>Error:</strong> The selected function isn't allowed.");
+define_once("_STATSNOTSEND","Statistics for the selected Banner can't be sent because<br />there isn't an email associated with it.<br />Please contact the Administrator");
 define_once("_YOURSTATS","Your Banner Statistics at");
 define_once("_FOLLOWINGSTATS","Following are the complete stats for your advertising investment at");
 define_once("_CLIENTNAME","Client Name");
@@ -85,5 +79,5 @@ define_once("_CLICKSPERCENT","Clicks Percent");
 define_once("_GENERATEDON","Report Generated on");
 define_once("_STATSSENT","Statistics for your Ad Banner has been sent by email at:");
 define_once("_FLASHMOVIE","Flash Movie");
-define_once("_WELCOMEADS","<b>Welcome to our Advertising Section!</b><br><br>If you want your banner ad here in our website, you may want to know some details because you should know what kind of target and ads plans we can offer.<br><br>If you are already our advertising customer, please login <a href=\"modules.php?name=Advertising&op=client\">here</a>.<br>");
+define_once("_WELCOMEADS","<strong>Welcome to our Advertising Section!</strong><br /><br />If you want your banner ad here in our website, you may want to know some details because you should know what kind of target and ads plans we can offer.<br /><br />If you are already our advertising customer, please login <a href=\"modules.php?name=Advertising&amp;op=client\">here</a>.<br />");
 

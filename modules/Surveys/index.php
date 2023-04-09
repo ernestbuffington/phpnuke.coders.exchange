@@ -27,6 +27,8 @@ get_lang($module_name);
 
 $pagetitle = "- "._SURVEYS."";
 
+if(!isset($op)) { $op = ''; }
+
 if (isset($pollID)) {
 	$pollID = intval($pollID);
 }
@@ -43,15 +45,15 @@ if(!isset($pollID)) {
 		Header("Location: modules.php?name=$module_name"); // SecurityReason Fix 2005 - sp3x -> Now should be OK.
 	}
 	OpenTable();
-	echo "<center><font class=\"title\"><b>"._CURRENTPOLLRESULTS."</b></font></center>";
+	echo "<div align=\"center\"><span class=\"title\"><strong>"._CURRENTPOLLRESULTS."</strong></span></div>";
 	CloseTable();
-	echo "<br>";
+	
 	OpenTable();
 	pollResults($pollID);
 	CloseTable();
-	echo "<br>";
+	
 	OpenTable();
-	echo "<b>"._LAST5POLLS." $sitename</b><br><br>";
+	echo "<strong>"._LAST5POLLS." $sitename</strong><br><br>";
 	$r_options = "";
 
 	if (isset($userinfo['umode'])) { $r_options .= "&amp;mode=".$userinfo['umode']; }
@@ -71,7 +73,7 @@ if(!isset($pollID)) {
 			echo "<img src='images/arrow.gif' border='0'>&nbsp;<a href='modules.php?name=$module_name&op=results&pollID=$plid$r_options'>$pltitle</a> ($plvoters "._LVOTES.")<br><br>";
 		}
 	}
-	echo "<div align=\"right\"><a href='modules.php?name=$module_name'><b>"._MOREPOLLS."</b></a></div>";
+	echo "<div align=\"right\"><a href='modules.php?name=$module_name'><strong>"._MOREPOLLS."</strong></a></div>";
 	CloseTable();
 
 	cookiedecode($user);
@@ -84,17 +86,17 @@ if(!isset($pollID)) {
 	pollCollector($pollID, $voteID);
 } elseif($pollID != pollLatest()) {
 	OpenTable();
-	echo "<center><font class=\"option\"><b>"._SURVEY."</b></font></center>";
+	echo "<div align=\"center\"><span class=\"option\"><strong>"._SURVEY."</strong></span></div>";
 	CloseTable();
-	echo "<br><br>";
+	
 	echo "<table border=\"0\" align=\"center\"><tr><td>";
 	pollMain($pollID);
 	echo "</td></tr></table>";
 } else {
 	OpenTable();
-	echo "<center><font class=\"option\"><b>"._CURRENTSURVEY."</b></font></center>";
+	echo "<div align=\"center\"><span class=\"option\"><strong>"._CURRENTSURVEY."</strong></span></div>";
 	CloseTable();
-	echo "<br><br><table border=\"0\" align=\"center\"><tr><td>";
+	echo "<table border=\"0\" align=\"center\"><tr><td>";
 	pollNewest();
 	echo "</td></tr></table>";
 }
@@ -105,29 +107,38 @@ include ('footer.php');
 /*********************************************************/
 
 function pollMain($pollID) {
+
 	global $boxTitle, $boxContent, $userinfo, $pollcomm, $user, $cookie, $prefix, $module_name, $db, $userinfo;
+
 	$pollID = intval($pollID);
+
 	if(!isset($pollID))
 	$pollID = 1;
+
 	$boxContent .= "<form action=\"modules.php?name=$module_name\" method=\"post\">";
 	$boxContent .= "<input type=\"hidden\" name=\"pollID\" value=\"".$pollID."\">";
+
 	$result_a = $db->sql_query("SELECT pollTitle, voters FROM ".$prefix."_poll_desc WHERE pollID='$pollID'");
-	//list($pollTitle, $voters) = $db->sql_fetchrow($result_a);
+
 	[$pollTitle, $voters] = $db->sql_fetchrow($result_a);
 
 	$boxTitle = _SURVEY;
-	$boxContent .= "<font class=\"content\"><b>$pollTitle</b></font><br><br>\n";
+	$boxContent .= "<span class=\"content\"><strong>$pollTitle</strong></span><br>\n";
 	$boxContent .= "<table border=\"0\" width=\"100%\">";
+
 	for($i = 1; $i <= 12; $i++) {
 		$result = $db->sql_query("SELECT pollID, optionText, optionCount, voteID FROM ".$prefix."_poll_data WHERE pollID='$pollID' AND voteID='$i'");
 		$row = $db->sql_fetchrow($result);
-			$optionText = $row['optionText'];
+			$optionText = $row['optionText'] ?? '';
 			if(!empty($optionText)) {
-				$boxContent .= "<tr><td valign=\"top\"><input type=\"radio\" name=\"voteID\" value=\"".$i."\"></td><td width=\"100%\"><font class=\"content\">$optionText</font></td></tr>\n";
+				$boxContent .= "<tr><td><input type=\"radio\" name=\"voteID\" value=\"".$i."\" style=\"height:16px; width:16px; vertical-align: middle;\"></td>
+				<td style=\"height:16px; text-align: left; vertical-align: middle;\" width=\"100%\">&nbsp;<span style=\"font-size:13px;\">$optionText</span></td></tr>\n";
 		}
 	}
-	$boxContent .= "</table><br><center><font class=\"content\"><input type=\"submit\" value=\""._VOTE."\"></font><br>";
-	if (is_user($admin)) {
+
+	$boxContent .= "</table><br><div align=\"center\"><span class=\"content\"><input type=\"submit\" value=\""._VOTE."\"></span><br>";
+
+	if (is_user()) {
 		cookiedecode($user);
 		getusrinfo($user);
 	}
@@ -142,17 +153,17 @@ function pollMain($pollID) {
 	if(!isset($userinfo['uoder'])){ $userinfo['uoder'] = 0; }
 	if(!isset($userinfo['thold'])){ $userinfo['thold'] = 0; }
 	
-	$boxContent .= "<br><font class=\"content\"><a href=\"modules.php?name=$module_name&amp;op=results&amp;pollID=$pollID&amp;mode=".$userinfo['umode']."&amp;order=".$userinfo['uoder']."&amp;thold=".$userinfo['thold']."\"><b>"._RESULTS."</b></a><br><a href=\"modules.php?name=$module_name\"><b>"._POLLS."</b></a><br>";
+	$boxContent .= "<br><span class=\"content\"><a href=\"modules.php?name=$module_name&amp;op=results&amp;pollID=$pollID&amp;mode=".$userinfo['umode']."&amp;order=".$userinfo['uoder']."&amp;thold=".$userinfo['thold']."\"><strong>"._RESULTS."</strong></a><br><a href=\"modules.php?name=$module_name\"><strong>"._POLLS."</strong></a><br>";
 
 	if ($pollcomm) {
 		//list($numcom) = $db->sql_fetchrow($db->sql_query("select count(*) from ".$prefix."_pollcomments where pollID='$pollID'"));
 		[$numcom] = $db->sql_fetchrow($db->sql_query("select count(*) from ".$prefix."_pollcomments where pollID='$pollID'"));
 
-		$boxContent .= "<br>"._VOTES.": <b>$sum</b> <br> "._PCOMMENTS." <b>$numcom</b>\n\n";
+		$boxContent .= "<br>"._VOTES.": <strong>$sum</strong> <br> "._PCOMMENTS." <strong>$numcom</strong>\n\n";
 	} else {
-		$boxContent .= "<br>"._VOTES." <b>$sum</b>\n\n";
+		$boxContent .= "<br>"._VOTES." <strong>$sum</strong>\n\n";
 	}
-	$boxContent .= "</font></center></form>\n\n";
+	$boxContent .= "</span></div></form>\n\n";
 	themesidebox($boxTitle, $boxContent);
 }
 
@@ -209,10 +220,10 @@ function pollCollector($pollID, $voteID) {
 
 function pollList() {
  
- $resultArray = [];
- $resultArray2 = [];
+    $resultArray = [];
+    $resultArray2 = [];
  
- global $user, $cookie, $prefix, $multilingual, $currentlang, $admin, $module_name, $db, $admin_file, $userinfo;
+    global $user, $cookie, $prefix, $multilingual, $currentlang, $admin, $module_name, $db, $admin_file, $userinfo;
 
 	if(!isset($userinfo['umode'])){ $userinfo['umode'] = 0; }
 	if(!isset($userinfo['uoder'])){ $userinfo['uoder'] = 0; }
@@ -229,10 +240,13 @@ function pollList() {
 	}
 	$result = $db->sql_query("SELECT pollID, pollTitle, timeStamp, voters FROM ".$prefix."_poll_desc $querylang ORDER BY timeStamp DESC");
 	$counter = 0;
+	
 	OpenTable();
-	OpenTable();
-	echo "<center><font class=\"title\"><b>"._PASTSURVEYS."</b></font></center>";
-	CloseTable();
+	
+	//OpenTable();
+	echo "<div align=\"center\"><span class=\"title\"><strong>"._PASTSURVEYS."</strong></span></div>";
+	//CloseTable();
+	
 	echo "<table border=\"0\" cellpadding=\"8\"><tr><td>";
 
 	while($row = $db->sql_fetchrow($result)) {
@@ -252,7 +266,7 @@ function pollList() {
 			$sum = (int)$sum+$optionCount;
 		}
 		echo "<strong><big>&middot;</big></strong>&nbsp;<a href=\"modules.php?name=$module_name&amp;pollID=$id\">$pollTitle</a> ";
-		if (is_admin($admin)) {
+		if (is_admin()) {
 			$editing = " - <a href=\"".$admin_file.".php?op=polledit&amp;pollID=$id\">Edit</a>";
 		} else {
 			$editing = "";
@@ -275,7 +289,7 @@ function pollList() {
 	}
 	if ($counter > 0) {
 		OpenTable();
-		echo "<center><font class=\"title\"><b>"._SURVEYSATTACHED."</b></font></center>";
+		echo "<div align=\"center\"><span class=\"title\"><strong>"._SURVEYSATTACHED."</strong></span></div>";
 		CloseTable();
 	}
 	for ($count = 0; $count < count($resultArray2); $count++) {
@@ -291,7 +305,7 @@ function pollList() {
 			$sum = (int)$sum+$optionCount;
 		}
 		echo "<strong><big>&middot;</big></strong>&nbsp;<a href=\"modules.php?name=$module_name&amp;pollID=$id\">$pollTitle</a> ";
-		if (is_admin($admin)) {
+		if (is_admin()) {
 			$editing = " - <a href=\"".$admin_file.".php?op=polledit&amp;pollID=$id\">Edit</a>";
 		} else {
 			$editing = "";
@@ -312,8 +326,8 @@ function pollList() {
 
 function pollResults($pollID) {
 	$salto = null;
- global $resultTableBgColor, $resultBarFile, $Default_Theme, $user, $cookie, $prefix, $admin, $module_name, $db, $admin_file, $userinfo;
-	if (is_user($admin)) {
+    global $resultTableBgColor, $resultBarFile, $Default_Theme, $user, $cookie, $prefix, $admin, $module_name, $db, $admin_file, $userinfo;
+	if (is_user()) {
 		getusrinfo($user);
 		cookiedecode($user);
 	}
@@ -321,7 +335,7 @@ function pollResults($pollID) {
 	$pollID = intval($pollID);
 	$result = $db->sql_query("SELECT pollID, pollTitle, timeStamp, artid FROM ".$prefix."_poll_desc WHERE pollID='$pollID'");
 	$holdtitle = $db->sql_fetchrow($result);
-	echo "<b>$holdtitle[1]</b><br><br>";
+	echo "<strong>$holdtitle[1]</strong><br><br>";
 	$sum = 0;	
 	for($i = 0; $i < 12; $i++) {
 		$result2 = $db->sql_query("SELECT optionCount FROM ".$prefix."_poll_data WHERE pollID='$pollID' AND voteID='$i'");
@@ -335,11 +349,11 @@ function pollResults($pollID) {
 		/* select next vote option */
 		$result3 = $db->sql_query("SELECT pollID, optionText, optionCount, voteID FROM ".$prefix."_poll_data WHERE pollID='$pollID' AND voteID='$i'");
 		$row3 = $db->sql_fetchrow($result3);
-			$optionText = $row3['optionText'];
-			$optionCount = $row3['optionCount'];
+			$optionText = $row3['optionText'] ?? '';
+			$optionCount = $row3['optionCount'] ?? 0;
 			if(!empty($optionText)) {
 				echo "<tr><td>";
-				echo "$optionText";
+				echo "$optionText&nbsp;&nbsp;";
 				echo "</td>";
 				if($sum) {
 					$percent = 100 * $optionCount / $sum;
@@ -414,20 +428,20 @@ function pollResults($pollID) {
 
 	}
 	echo "</table><br>";
-	echo "<center><font class=\"content\">";
-	echo "<b>"._TOTALVOTES." $sum</b><br>";
+	echo "<div align=\"center\"><span class=\"content\">";
+	echo "<strong>"._TOTALVOTES." $sum</strong><br>";
 	echo "<br><br>";
 	$booth = $pollID;
 	$booth = intval($booth);
 	if ($holdtitle[3] > 0) {
 		$article = "<br><br>"._GOBACK."</font></center>";
 	} else {
-		$article = "</font></center>";
+		$article = "</span></div>";
 	}
 	echo "[ <a href=\"modules.php?name=$module_name&amp;pollID=$booth\">"._VOTING."</a> | "
 	."<a href=\"modules.php?name=$module_name\">"._OTHERPOLLS."</a> ] $article";
-	if (is_admin($admin)) {
-		echo "<br><center>[ <a href=\"".$admin_file.".php?op=create\">"._ADD."</a> | <a href=\"".$admin_file.".php?op=polledit&amp;pollID=$pollID\">"._EDIT."</a> ]</center>";
+	if (is_admin()) {
+		echo "<br><div align=\"center\">[ <a href=\"".$admin_file.".php?op=create\">"._ADD."</a> | <a href=\"".$admin_file.".php?op=polledit&amp;pollID=$pollID\">"._EDIT."</a> ]</div>";
 	}
 	return(1);
 }

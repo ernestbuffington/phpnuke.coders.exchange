@@ -1,4 +1,17 @@
 <?php
+
+/************************************************************************/
+/* PHP-NUKE: Advanced Content Management System                         */
+/* ============================================                         */
+/*                                                                      */
+/* Copyright (c) 2002 by Francisco Burzi                                */
+/* http://phpnuke.org                                                   */
+/*                                                                      */
+/* This program is free software. You can redistribute it and/or modify */
+/* it under the terms of the GNU General Public License as published by */
+/* the Free Software Foundation; either version 2 of the License.       */
+/************************************************************************/
+
 /***************************************************************************
  *                            admin_disallow.php
  *                            -------------------
@@ -7,7 +20,6 @@
  *   email                : support@phpbb.com
  *
  *   Id: admin_disallow.php,v 1.9.2.2 2002/11/26 11:42:11 psotfx Exp
- *
  *
  ***************************************************************************/
 
@@ -20,18 +32,12 @@
  *
  ***************************************************************************/
 
-/* Applied rules:
- * ReplaceHttpServerVarsByServerRector (https://blog.tigertech.net/posts/php-5-3-http-server-vars/)
- * CountOnNullRector (https://3v4l.org/Bndc9)
- * NullToStrictStringFuncCallArgRector
- */
- 
-defined('IN_PHPBB') or define('IN_PHPBB', 1);
+if (!defined('IN_PHPBB')) define('IN_PHPBB', true);
 
 if( !empty($setmodules) )
 {
         $filename = basename(__FILE__);
-        $module['Users']['Disallow'] = append_sid($filename);
+        $module['Users']['Disallow'] = $filename;
 
         return;
 }
@@ -43,15 +49,15 @@ $phpbb_root_path = "./../";
 require($phpbb_root_path . 'extension.inc');
 require('./pagestart.' . $phpEx);
 
-if( isset($_POST['add_name']) )
+if( isset($HTTP_POST_VARS['add_name']) )
 {
-        include("../includes/functions_validate.php");
+        include("../../../includes/functions_validate.php");
 
-        $disallowed_user = ( isset($_POST['disallowed_user']) ) ? trim((string) $_POST['disallowed_user']) : trim((string) $_GET['disallowed_user']);
+        $disallowed_user = ( isset($HTTP_POST_VARS['disallowed_user']) ) ? trim($HTTP_POST_VARS['disallowed_user']) : trim($HTTP_GET_VARS['disallowed_user']);
 
         if ($disallowed_user == '')
         {
-                message_die(MESSAGE, $lang['Fields_empty']);
+                message_die(GENERAL_MESSAGE, $lang['Fields_empty']);
         }
         if( !validate_username($disallowed_user) )
         {
@@ -73,9 +79,9 @@ if( isset($_POST['add_name']) )
 
         message_die(GENERAL_MESSAGE, $message);
 }
-else if( isset($_POST['delete_name']) )
+else if( isset($HTTP_POST_VARS['delete_name']) )
 {
-        $disallowed_id = ( isset($_POST['disallowed_id']) ) ? intval( $_POST['disallowed_id'] ) : intval( $_GET['disallowed_id'] );
+        $disallowed_id = ( isset($HTTP_POST_VARS['disallowed_id']) ) ? intval( $HTTP_POST_VARS['disallowed_id'] ) : intval( $HTTP_GET_VARS['disallowed_id'] );
 
         $sql = "DELETE FROM " . DISALLOW_TABLE . "
                 WHERE disallow_id = $disallowed_id";
@@ -84,9 +90,11 @@ else if( isset($_POST['delete_name']) )
         {
                 message_die(GENERAL_ERROR, "Couldn't removed disallowed user.", "",__LINE__, __FILE__, $sql);
         }
-if(!isset($message))
-$message = '';
-        $message .= $lang['Disallowed_deleted'] . "<br /><br />" . sprintf($lang['Click_return_disallowadmin'], "<a href=\"" . append_sid("admin_disallow.$phpEx") . "\">", "</a>") . "<br /><br />" . sprintf($lang['Click_return_admin_index'], "<a href=\"" . append_sid("index.$phpEx?pane=right") . "\">", "</a>");
+
+        if(!isset($message))
+		$message = '';
+		
+		$message .= $lang['Disallowed_deleted'] . "<br /><br />" . sprintf($lang['Click_return_disallowadmin'], "<a href=\"" . append_sid("admin_disallow.$phpEx") . "\">", "</a>") . "<br /><br />" . sprintf($lang['Click_return_admin_index'], "<a href=\"" . append_sid("index.$phpEx?pane=right") . "\">", "</a>");
 
         message_die(GENERAL_MESSAGE, $message);
 
@@ -104,21 +112,21 @@ if( !$result )
 }
 
 $disallowed = $db->sql_fetchrowset($result);
+
 //
 // Ok now generate the info for the template, which will be put out no matter
 // what mode we are in.
 //
 $disallow_select = '<select name="disallowed_id">';
-if(!isset($lang['no_disallowed'])) {$lang['no_disallowed'] = ''; }
 
-if($disallowed == '')
+if( empty($disallowed) )
 {
-        $disallow_select .= '<option value="">' . $lang['no_disallowed'] . '</option>';
+        $disallow_select .= '<option value="">' . $lang['no_disallowed'] = $lang['no_disallowed'] ?? '' . '</option>';
 }
 else
 {
         $user = array();
-        for( $i = 0; $i < (is_countable($disallowed) ? count($disallowed) : 0); $i++ )
+        for( $i = 0; $i < count($disallowed); $i++ )
         {
                 $disallow_select .= '<option value="' . $disallowed[$i]['disallow_id'] . '">' . $disallowed[$i]['disallow_username'] . '</option>';
         }
@@ -134,7 +142,7 @@ $template->assign_vars(array(
         "S_DISALLOW_SELECT" => $disallow_select,
         "S_FORM_ACTION" => append_sid("admin_disallow.$phpEx"),
 
-        "L_INFO" => $output_info ?? '',
+        "L_INFO" => $output_info = $output_info ?? '',
         "L_DISALLOW_TITLE" => $lang['Disallow_control'],
         "L_DISALLOW_EXPLAIN" => $lang['Disallow_explain'],
         "L_DELETE" => $lang['Delete_disallow'],
@@ -150,3 +158,4 @@ $template->pparse("body");
 
 include('./page_footer_admin.'.$phpEx);
 
+?>

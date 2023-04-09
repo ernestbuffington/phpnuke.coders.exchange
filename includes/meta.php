@@ -1,41 +1,86 @@
 <?php
 
 /************************************************************************/
-/* PHP-NUKE: Web Portal System                                          */
-/* ===========================                                          */
+/* PHP-NUKE: Advanced Content Management System                         */
+/* ============================================                         */
 /*                                                                      */
-/* Copyright (c) 2023 by Francisco Burzi                                */
-/* https://phpnuke.coders.exchange                                      */
+/* Copyright (c) 2002 by Francisco Burzi                                */
+/* http://phpnuke.org                                                   */
 /*                                                                      */
 /* This program is free software. You can redistribute it and/or modify */
 /* it under the terms of the GNU General Public License as published by */
 /* the Free Software Foundation; either version 2 of the License.       */
 /************************************************************************/
 
-if (stristr(htmlentities($_SERVER['PHP_SELF']), "meta.php")) {
-    Header("Location: ../index.php");
-    die();
+/*****[CHANGES]**********************************************************
+-=[Base]=-
+      Nuke Patched                             v3.1.0       06/26/2005
+      Caching System                           v1.0.0       11/19/2005
+	  PHP 8.1 Patched                          v4.0.3       12/15/2022
+-=[Last Updated]=-
+      12/15/2022 3:49 pm Ernest Allen Buffington	  
+ ************************************************************************/
+ 
+if (!defined('NUKE_FILE')): 
+  die("You can't access this file directly...");
+endif;
+
+global $db, $prefix, $cache;
+
+##################################################
+# Load dynamic meta tags from database           #
+##################################################
+
+  /*****[BEGIN]******************************************
+   [ Base:    Caching System                     v3.0.0 ]
+   ******************************************************/
+if(($metatags = $cache->load('metatags', 'config')) === false): 
+
+  /*****[END]********************************************
+   [ Base:    Caching System                     v3.0.0 ]
+   ******************************************************/
+  $metatags = [];
+  $sql = 'SELECT meta_name, meta_content FROM '.$prefix.'_meta';
+  $result = $db->sql_query($sql, true);
+  $i=0;
+
+  while([$meta_name, $meta_content] = $db->sql_fetchrow($result, SQL_NUM)): 
+  
+      $metatags[$i] = [];
+      $metatags[$i]['meta_name'] = $meta_name;
+      $metatags[$i]['meta_content'] = $meta_content;
+      $i++;
+	  
+  endwhile;
+  
+  unset($i);
+  
+  $db->sql_freeresult($result);
+/*****[BEGIN]******************************************
+ [ Base:    Caching System                     v3.0.0 ]
+ ******************************************************/
+  $cache->save('metatags', 'config', $metatags);
+  
+endif;
+/*****[END]********************************************
+ [ Base:    Caching System                     v3.0.0 ]
+ ******************************************************/
+$metastring = '';
+$metastring .= '<meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">'."\n";
+
+/**
+ * Only add the meta tag below if the theme is bootstrap made.
+ */
+if(defined('BOOTSTRAP')):
+$metastring .= '<meta name="viewport" content="width=device-width, maximum-scale=1.0; user-scalable=no">'."\n";
+else:
+$metastring .= '<meta name="viewport" content="width=device-width, initial-scale=1.0">'."\n";
+endif;
+
+foreach ($metatags as $i => $metatag) {
+    $metatag = $metatag;
+    $metastring .= '<meta name="'.$metatag['meta_name'].'" content="'.$metatag['meta_content'].'">'."\n";
 }
-
-global $commercial_license, $sitename, $slogan;
-
-##################################################
-# Include for Meta Tags generation               #
-##################################################
-if(!isset($metastring)) { $metastring = ''; }
-$metastring .= "<meta http-equiv=\"expires\" content=\"0\">\n";
-$metastring .= '<!--[if IE]>'."\n";
-$metastring .= '<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />'."\n";
-$metastring .= '<![endif]-->'."\n";
-$metastring .= "<meta name=\"resource-type\" content=\"document\">\n";
-$metastring .= "<meta name=\"distribution\" content=\"global\">\n";
-$metastring .= "<meta name=\"author\" content=\"$sitename\">\n";
-$metastring .= "<meta name=\"copyright\" content=\"Copyright (c) by $sitename\">\n";
-$metastring .= "<meta name=\"keywords\" content=\"News, news, New, new, Technology, technology, Headlines, headlines, Nuke, nuke, PHP-Nuke, phpnuke, php-nuke, Geek, geek, Geeks, geeks, Hacker, hacker, Hackers, hackers, Linux, linux, Windows, windows, Software, software, Download, download, Downloads, downloads, Free, FREE, free, Community, community, MP3, mp3, Forum, forum, Forums, forums, Bulletin, bulletin, Board, board, Boards, boards, PHP, php, Survey, survey, Kernel, kernel, Comment, comment, Comments, comments, Portal, portal, ODP, odp, Open, open, Open Source, OpenSource, Opensource, opensource, open source, Free Software, FreeSoftware, Freesoftware, free software, GNU, gnu, GPL, gpl, License, license, Unix, UNIX, *nix, unix, MySQL, mysql, SQL, sql, Database, DataBase, Blogs, blogs, Blog, blog, database, Mandrake, mandrake, Red Hat, RedHat, red hat, Slackware, slackware, SUSE, SuSE, suse, Debian, debian, Gnome, GNOME, gnome, Kde, KDE, kde, Enlightenment, enlightenment, Interactive, interactive, Programming, programming, Extreme, extreme, Game, game, Games, games, Web Site, web site, Weblog, WebLog, weblog, Guru, GURU, guru, Oracle, oracle, db2, DB2, odbc, ODBC, plugin, plugins, Plugin, Plugins\">\n";
-$metastring .= "<meta name=\"description\" content=\"$slogan\">\n";
-$metastring .= "<meta name=\"robots\" content=\"index, follow\">\n";
-$metastring .= "<meta name=\"revisit-after\" content=\"1 days\">\n";
-$metastring .= "<meta name=\"rating\" content=\"general\">\n";
 
 ###############################################
 # DO NOT REMOVE THE FOLLOWING COPYRIGHT LINE! #
@@ -44,9 +89,7 @@ $metastring .= "<meta name=\"rating\" content=\"general\">\n";
 
 // IF YOU REALLY NEED TO REMOVE IT AND HAVE MY WRITTEN AUTHORIZATION CHECK: http://phpnuke.org/modules.php?name=Commercial_License
 // PLAY FAIR AND SUPPORT THE DEVELOPMENT, PLEASE!
-if ($commercial_license != 1) {
-	$metastring .= "<meta name=\"generator\" content=\"PHP-Nuke Copyright (c) 2000 - 2023 by Francisco Burzi. This is free software, and you may redistribute it under the GPL (http://phpnuke.org/files/gpl.txt). PHP-Nuke comes with absolutely no warranty, for details, see the license (http://phpnuke.org/files/gpl.txt).\">\n";
-}
+$metastring .= '<meta name="generator" content="The US Version of PHP-Nuke Titanium Copyright (c) 2021 by Brandon Maintenance Management, LLC">'."\n";
 
 echo $metastring;
 

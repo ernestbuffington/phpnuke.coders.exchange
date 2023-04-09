@@ -1,4 +1,17 @@
 <?php
+
+/************************************************************************/
+/* PHP-NUKE: Advanced Content Management System                         */
+/* ============================================                         */
+/*                                                                      */
+/* Copyright (c) 2002 by Francisco Burzi                                */
+/* http://phpnuke.org                                                   */
+/*                                                                      */
+/* This program is free software. You can redistribute it and/or modify */
+/* it under the terms of the GNU General Public License as published by */
+/* the Free Software Foundation; either version 2 of the License.       */
+/************************************************************************/
+
 /***************************************************************************
  *                              admin_words.php
  *                            -------------------
@@ -6,8 +19,7 @@
  *   copyright            : (C) 2001 The phpBB Group
  *   email                : support@phpbb.com
  *
- *   $Id: admin_words.php,v 1.10.2.6 2006/04/13 09:56:48 grahamje Exp $
- *
+ *   Id: admin_words.php,v 1.10.2.3 2004/03/25 15:57:20 acydburn Exp
  *
  ***************************************************************************/
 
@@ -20,53 +32,44 @@
  *
  ***************************************************************************/
 
-/* Applied rules:
- * ReplaceHttpServerVarsByServerRector (https://blog.tigertech.net/posts/php-5-3-http-server-vars/)
- * TernaryToNullCoalescingRector
- * CountOnNullRector (https://3v4l.org/Bndc9)
- * NullToStrictStringFuncCallArgRector
- */
- 
 if( !empty($setmodules) )
 {
         $file = basename(__FILE__);
-	$module['General']['Word_Censor'] = $file;
+        $module['General']['Word_Censor'] = $file;
         return;
 }
 
-defined('IN_PHPBB') or define('IN_PHPBB', 1);
+if (!defined('IN_PHPBB')) define('IN_PHPBB', true);
 
 //
 // Load default header
 //
 $phpbb_root_path = "./../";
 require($phpbb_root_path . 'extension.inc');
-
-$cancel = ( isset($_POST['cancel']) ) ? true : false;
+$cancel = (isset($HTTP_POST_VARS['cancel']) || isset($_POST['cancel'])) ? true : false;
 $no_page_header = $cancel;
-
 require('./pagestart.' . $phpEx);
-
 if ($cancel)
 {
-	redirect('admin/' . append_sid("admin_words.$phpEx", true));
+	redirect(append_sid("admin_words.$phpEx", true));
 }
 
-if( isset($_GET['mode']) || isset($_POST['mode']) )
+
+if( isset($HTTP_GET_VARS['mode']) || isset($HTTP_POST_VARS['mode']) )
 {
-	$mode = $_GET['mode'] ?? $_POST['mode'];
-        $mode = htmlspecialchars((string) $mode);
+        $mode = (isset($HTTP_GET_VARS['mode'])) ? $HTTP_GET_VARS['mode'] : $HTTP_POST_VARS['mode'];
+        $mode = htmlspecialchars($mode);
 }
 else
 {
         //
         // These could be entered via a form button
         //
-        if( isset($_POST['add']) )
+        if( isset($HTTP_POST_VARS['add']) )
         {
                 $mode = "add";
         }
-        else if( isset($_POST['save']) )
+        else if( isset($HTTP_POST_VARS['save']) )
         {
                 $mode = "save";
         }
@@ -83,13 +86,13 @@ if( $mode != "" )
 {
         if( $mode == "edit" || $mode == "add" )
         {
-                $word_id = ( isset($_GET['id']) ) ? intval($_GET['id']) : 0;
+                $word_id = ( isset($HTTP_GET_VARS['id']) ) ? intval($HTTP_GET_VARS['id']) : 0;
 
                 $template->set_filenames(array(
                         "body" => "admin/words_edit_body.tpl")
                 );
 
-		$word_info = array('word' => '', 'replacement' => '');
+                $word_info = array('word' => '', 'replacement' => '');
                 $s_hidden_fields = '';
 
                 if( $mode == "edit" )
@@ -114,8 +117,8 @@ if( $mode != "" )
                 }
 
                 $template->assign_vars(array(
-                        "WORD" => $word_info['word'],
-                        "REPLACEMENT" => $word_info['replacement'],
+                        "WORD" => htmlspecialchars($word_info['word']),
+			            "REPLACEMENT" => htmlspecialchars($word_info['replacement']),
 
                         "L_WORDS_TITLE" => $lang['Words_title'],
                         "L_WORDS_TEXT" => $lang['Words_explain'],
@@ -134,11 +137,11 @@ if( $mode != "" )
         }
         else if( $mode == "save" )
         {
-                $word_id = ( isset($_POST['id']) ) ? intval($_POST['id']) : 0;
-                $word = ( isset($_POST['word']) ) ? trim((string) $_POST['word']) : "";
-                $replacement = ( isset($_POST['replacement']) ) ? trim((string) $_POST['replacement']) : "";
+                $word_id = ( isset($HTTP_POST_VARS['id']) ) ? intval($HTTP_POST_VARS['id']) : 0;
+                $word = ( isset($HTTP_POST_VARS['word']) ) ? trim($HTTP_POST_VARS['word']) : "";
+                $replacement = ( isset($HTTP_POST_VARS['replacement']) ) ? trim($HTTP_POST_VARS['replacement']) : "";
 
-                if($word == "" || $replacement == "")
+                if(empty($word) || empty($replacement))
                 {
                         message_die(GENERAL_MESSAGE, $lang['Must_enter_word']);
                 }
@@ -168,19 +171,17 @@ if( $mode != "" )
         }
         else if( $mode == "delete" )
         {
-                if( isset($_POST['id']) ||  isset($_GET['id']) )
+                if( isset($HTTP_POST_VARS['id']) ||  isset($HTTP_GET_VARS['id']) )
                 {
-                        $word_id = $_POST['id'] ?? $_GET['id'];
+                        $word_id = ( isset($HTTP_POST_VARS['id']) ) ? $HTTP_POST_VARS['id'] : $HTTP_GET_VARS['id'];
                         $word_id = intval($word_id);
                 }
                 else
                 {
                         $word_id = 0;
                 }
-
-		$confirm = isset($_POST['confirm']);
-
-		if( $word_id && $confirm )
+                $confirm = isset($HTTP_POST_VARS['confirm']);
+                if( $word_id && $confirm )
                 {
                         $sql = "DELETE FROM " . WORDS_TABLE . "
                                 WHERE word_id = $word_id";
@@ -194,26 +195,26 @@ if( $mode != "" )
 
                         message_die(GENERAL_MESSAGE, $message);
                 }
-		elseif( $word_id && !$confirm)
-		{
-			// Present the confirmation screen to the user
-			$template->set_filenames(array(
-				'body' => 'admin/confirm_body.tpl')
-			);
+                elseif( $word_id && !$confirm)
+         		{
+         			// Present the confirmation screen to the user
+         			$template->set_filenames(array(
+         				'body' => 'admin/confirm_body.tpl')
+         			);
 
-			$hidden_fields = '<input type="hidden" name="mode" value="delete" /><input type="hidden" name="id" value="' . $word_id . '" />';
+         			$hidden_fields = '<input type="hidden" name="mode" value="delete" /><input type="hidden" name="id" value="' . $word_id . '" />';
 
-			$template->assign_vars(array(
-				'MESSAGE_TITLE' => $lang['Confirm'],
-				'MESSAGE_TEXT' => $lang['Confirm_delete_word'],
+         			$template->assign_vars(array(
+         				'MESSAGE_TITLE' => $lang['Confirm'],
+         				'MESSAGE_TEXT' => $lang['Confirm_delete_word'],
 
-				'L_YES' => $lang['Yes'],
-				'L_NO' => $lang['No'],
+         				'L_YES' => $lang['Yes'],
+         				'L_NO' => $lang['No'],
 
-				'S_CONFIRM_ACTION' => append_sid("admin_words.$phpEx"),
-				'S_HIDDEN_FIELDS' => $hidden_fields)
-			);
-		}
+         				'S_CONFIRM_ACTION' => append_sid("admin_words.$phpEx"),
+         				'S_HIDDEN_FIELDS' => $hidden_fields)
+         			);
+         		}
                 else
                 {
                         message_die(GENERAL_MESSAGE, $lang['No_word_selected']);
@@ -235,8 +236,8 @@ else
         }
 
         $word_rows = $db->sql_fetchrowset($result);
-	$db->sql_freeresult($result);
-        $word_count = is_countable($word_rows) ? count($word_rows) : 0;
+        $db->sql_freeresult($result);
+        $word_count = count($word_rows);
 
         $template->assign_vars(array(
                 "L_WORDS_TITLE" => $lang['Words_title'],
@@ -264,8 +265,8 @@ else
                 $template->assign_block_vars("words", array(
                         "ROW_COLOR" => "#" . $row_color,
                         "ROW_CLASS" => $row_class,
-                        "WORD" => $word,
-                        "REPLACEMENT" => $replacement,
+                        "WORD" => htmlspecialchars($word),
+			            "REPLACEMENT" => htmlspecialchars($replacement),
 
                         "U_WORD_EDIT" => append_sid("admin_words.$phpEx?mode=edit&amp;id=$word_id"),
                         "U_WORD_DELETE" => append_sid("admin_words.$phpEx?mode=delete&amp;id=$word_id"))
@@ -277,3 +278,4 @@ $template->pparse("body");
 
 include('./page_footer_admin.'.$phpEx);
 
+?>

@@ -1,9 +1,0 @@
-Subject: Happy Birthday {USERNAME}! 
-
-Dear {USERNAME}, 
-
-Many happy returns on your birthday and have a great day !!
-
-
-
-{EMAIL_SIG}

@@ -1,6 +1,20 @@
 <?php
 
+/************************************************************************/
+/* PHP-NUKE: Advanced Content Management System                         */
+/* ============================================                         */
+/*                                                                      */
+/* Copyright (c) 2002 by Francisco Burzi                                */
+/* http://phpnuke.org                                                   */
+/*                                                                      */
+/* This program is free software. You can redistribute it and/or modify */
+/* it under the terms of the GNU General Public License as published by */
+/* the Free Software Foundation; either version 2 of the License.       */
+/************************************************************************/
+
 /* -- -----------------------------------------------------------
+ * // Nuke-Evolution Xtreme: Enhanced PHP-Nuke Web Portal System
+ * -- -----------------------------------------------------------
  *
  * >> Exception Handler
  *
@@ -33,8 +47,8 @@ class DBException extends aException {
 	/**
 	 * @public static var $validDBTypes
 	 *
-	 * The currently valid database class types that have been integrated with Nuke
-	 * 
+	 * The currently valid database class types that have been integrated with the Nuke Evolution
+	 * Xtreme Core
 	 */
 	public static $validDBTypes = array('MySQL', 'MySQLi');
 

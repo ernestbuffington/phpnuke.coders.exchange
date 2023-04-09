@@ -68,7 +68,7 @@ function defaultDisplay() {
 
 	OpenTable();
 
-	if (is_user($user)) getusrinfo($user);
+	if (is_user()) getusrinfo($user);
 
 	echo "<table border=\"0\" widht=\"100%\">";
 
@@ -76,7 +76,7 @@ function defaultDisplay() {
 
 		."<b>"._YOURNAME.":</b></td><td>";
 
-	if (is_user($user)) {
+	if (is_user()) {
 
 		cookiedecode($user);
 
@@ -290,7 +290,7 @@ function PreviewStory($name, $address, $subject, $story, $storyext, $topic, $ala
 
 		."<b>"._YOURNAME.":</b></td><td>";
 
-	if (is_user($user)) {
+	if (is_user()) {
 
 		cookiedecode($user);
 
@@ -436,7 +436,7 @@ function submitStory($name, $address, $subject, $story, $storyext, $topic, $alan
 
 	global $user, $EditedMessage, $cookie, $anonymous, $notify, $notify_email, $notify_subject, $notify_message, $notify_from, $prefix, $db;
 
-	if (is_user($user)) {
+	if (is_user()) {
 
 		cookiedecode($user);
 

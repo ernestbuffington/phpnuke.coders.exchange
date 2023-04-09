@@ -1,46 +1,49 @@
 <?php
+/*======================================================================= 
+  PHP-Nuke Titanium | Nuke-Evolution Xtreme : PHP-Nuke Web Portal System
+ =======================================================================*/
+
 
 /************************************************************************/
 /* PHP-NUKE: Web Portal System                                          */
 /* ===========================                                          */
 /*                                                                      */
-/* Copyright (c) 2023 by Francisco Burzi                                */
-/* https://phpnuke.coders.exchange                                      */
+/* Copyright (c) 2002 by Francisco Burzi                                */
+/* http://phpnuke.org                                                   */
 /*                                                                      */
 /* This program is free software. You can redistribute it and/or modify */
 /* it under the terms of the GNU General Public License as published by */
 /* the Free Software Foundation; either version 2 of the License.       */
 /************************************************************************/
+/*         Additional security & Abstraction layer conversion           */
+/*                           2003 chatserv                              */
+/*      http://www.nukefixes.com -- http://www.nukeresources.com        */
+/************************************************************************/
 
-if ( !defined('BLOCK_FILE') ) {
-    Header("Location: ../index.php");
-    die();
-}
+/*****[CHANGES]**********************************************************
+-=[Base]=-
+      Nuke Patched                             v3.1.0       06/26/2005
+ ************************************************************************/
+
+if(!defined('NUKE_FILE')) exit;
 
 global $cookie, $prefix, $multilingual, $currentlang, $db, $user, $userinfo;
 
-if ($multilingual == 1) {
-
-    $querylang = "AND (alanguage='$currentlang' OR alanguage='')"; /* the OR is needed to display stories who are posted to ALL languages */
-
-} else {
-
-    $querylang = "";
-}
+$querylang = ($multilingual) ? "AND (alanguage='$currentlang' OR alanguage='')" : '';
 
 $today = getdate();
 
 $day = $today['mday'];
 
-if ($day < 10) {
-
+if ($day < 10) 
+{
     $day = "0$day";
 }
 
 $month = $today['mon'];
 
-if ($month < 10) {
-
+if ($month < 10) 
+{
     $month = "0$month";
 }
 
@@ -48,69 +51,41 @@ $year = $today['year'];
 
 $tdate = "$year-$month-$day";
 
-$row = $db->sql_fetchrow($db->sql_query("SELECT sid, title FROM ".$prefix."_stories WHERE (time LIKE '%$tdate%') $querylang ORDER BY counter DESC LIMIT 0,1"));
+list($sid, $title) = $db->sql_ufetchrow("SELECT sid, title FROM ".$prefix."_blogs WHERE (datePublished LIKE '%$tdate%') $querylang ORDER BY counter DESC LIMIT 0,1", SQL_NUM);
 
-$fsid = intval($row['sid'] ?? 0);
+$fsid = intval($sid);
 
-$ftitle = filter($row['title'] ?? '', "nohtml");
+$ftitle = stripslashes($title);
 
 $content = "<span class=\"content\">";
 
-if ((!$fsid) AND (!$ftitle)) {
+if ((!$fsid) AND (!$ftitle)) 
+{
+    $content .= _NOBIGSTORY."</span>";
+} 
+else 
+{
+    $content .= _BIGSTORY."<br /><br />";
 
-    $content .= ""._NOBIGSTORY."</font>";
-
-} else {
-
-    $content .= ""._BIGSTORY."<br><br>";
-
-    getusrinfo($user);
-
-          if (!isset($mode) OR empty($mode)) {
-
-            if(isset($userinfo['umode'])) {
-
-              $mode = $userinfo['umode'];
-
-            } else {
-
-              $mode = "thread";
-            }
-          }
-
-          if (!isset($order) OR empty($order)) {
-
-            if(isset($userinfo['uorder'])) {
-
-              $order = $userinfo['uorder'];
-
-            } else {
-
-              $order = 0;
-            }
-          }
-
-          if (!isset($thold) OR empty($thold)) {
-
-            if(isset($userinfo['thold'])) {
-
-              $thold = $userinfo['thold'];
-
-            } else {
-
-              $thold = 0;
-            }
-          }
-
-    $r_options = "";
-
+    if (!isset($mode) OR empty($mode)) 
+	{
+        $mode = (!empty($userinfo['umode'])) ? $userinfo['umode'] : "thread";
+    }
+    
+	if (!isset($order) OR empty($order)) 
+	{
+        $order = (!empty($userinfo['uorder'])) ? $userinfo['uorder'] : 0;
+    }
+    
+	if (!isset($thold) OR empty($thold)) 
+	{
+        $thold = (!empty($userinfo['thold'])) ? $userinfo['thold'] : 0;
+    }
+    
+	$r_options = '';
     $r_options .= "&amp;mode=".$mode;
-
     $r_options .= "&amp;order=".$order;
-
     $r_options .= "&amp;thold=".$thold;
-
-    $content .= "<a href=\"modules.php?name=News&amp;file=article&amp;sid=$fsid$r_options\">$ftitle</a></span>";
+    $content .= "<a href=\"modules.php?name=Blogs&amp;file=article&amp;sid=$fsid$r_options\">$ftitle</a></span>";
 }
-
 ?>

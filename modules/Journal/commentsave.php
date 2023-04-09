@@ -29,10 +29,10 @@
 /* it under the terms of the GNU General Public License as published by */
 /* the Free Software Foundation; either version 2 of the License.       */
 /************************************************************************/
-    /* Journal 2.0 Enhanced and Debugged 2004                               */
-    /* by sixonetonoffun -- http://www.netflake.com --                      */
-    /* Images Created by GanjaUK -- http://www.GanjaUK.com                  */
-    /************************************************************************/
+/* Journal 2.0 Enhanced and Debugged 2004                               */
+/* by sixonetonoffun -- http://www.netflake.com --                      */
+/* Images Created by GanjaUK -- http://www.GanjaUK.com                  */
+/************************************************************************/
 if ( !defined('MODULE_FILE') )
 {
 	die("You can't access this file directly...");
@@ -46,17 +46,17 @@ $pagetitle = "- "._USERSJOURNAL."";
 
 include("header.php");
 include("modules/$module_name/functions.php");
-    if (is_user($user)) {
-cookiedecode($user);
-$username = $cookie[1];
-$htime = date("h");
-$mtime = date("i");
-$ntime = date("a");
-$mtime = "$htime:$mtime $ntime";
-$mdate = date("m");
-$ddate = date("d");
-$ydate = date("Y");
-$ndate = "$mdate-$ddate-$ydate";
+    if (is_user()) {
+        cookiedecode($user);
+        $username = $cookie[1];
+        $htime = date("h");
+        $mtime = date("i");
+        $ntime = date("a");
+        $mtime = "$htime:$mtime $ntime";
+        $mdate = date("m");
+        $ddate = date("d");
+        $ydate = date("Y");
+        $ndate = "$mdate-$ddate-$ydate";
         $username = filter($username, "nohtml");
         $sitename = filter($sitename, "nohtml");
         $ndate = filter($ndate, "nohtml");
@@ -64,18 +64,18 @@ $ndate = "$mdate-$ddate-$ydate";
         $comment = addslashes(filter($comment, "nohtml"));
 startjournal($sitename,$user);
 $rid = intval($rid);
-$sql="INSERT INTO ".$prefix."_journal_comments VALUES ('','$rid','$username','$comment','$ndate','$mtime')";
+$sql="INSERT INTO ".$prefix."_journal_comments VALUES (NULL,'$rid','$username','$comment','$ndate','$mtime')";
 $db->sql_query($sql);
 update_points(2);
-echo ("<br>");
 
 openTable();
 echo ("<div align=center>"._COMMENTPOSTED."<br><br>");
-echo ("<a href=\"modules.php?name=$module_name&file=display&jid=$rid\">"._RETURNJOURNAL2."</a><br><br><div class=title>"._THANKS."</div></div>");
+echo ("<a href=\"modules.php?name=Journal&file=display&jid=$rid\">"._RETURNJOURNAL2."</a><br><br><div class=title>"._THANKS."</div></div>");
 closeTable();
-        journalfoot();
+
+journalfoot();
     }
-    if (!is_user($user) && !is_admin($admin)) {
+    if (!is_user() && !is_admin()) {
         $pagetitle = "- "._YOUMUSTBEMEMBER."";
         $pagetitle = filter($pagetitle, "nohtml");
         OpenTable();

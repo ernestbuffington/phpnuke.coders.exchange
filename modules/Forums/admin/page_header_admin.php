@@ -1,4 +1,17 @@
 <?php
+
+/************************************************************************/
+/* PHP-NUKE: Advanced Content Management System                         */
+/* ============================================                         */
+/*                                                                      */
+/* Copyright (c) 2002 by Francisco Burzi                                */
+/* http://phpnuke.org                                                   */
+/*                                                                      */
+/* This program is free software. You can redistribute it and/or modify */
+/* it under the terms of the GNU General Public License as published by */
+/* the Free Software Foundation; either version 2 of the License.       */
+/************************************************************************/
+
 /***************************************************************************
  *                           page_header_admin.php
  *                            -------------------
@@ -6,8 +19,7 @@
  *   copyright            : (C) 2001 The phpBB Group
  *   email                : support@phpbb.com
  *
- *   Id: page_header_admin.php,v 1.12.2.7 2006/01/29 21:19:02 grahamje Exp $
- *
+ *   Id: page_header_admin.php,v 1.12.2.6 2005/03/26 14:15:59 acydburn Exp
  *
  ***************************************************************************/
 
@@ -20,68 +32,40 @@
  *
  ***************************************************************************/
 
-/* Applied rules:
- * ReplaceHttpServerVarsByServerRector (https://blog.tigertech.net/posts/php-5-3-http-server-vars/)
- * TernaryToNullCoalescingRector
- * NullToStrictStringFuncCallArgRector
- */
+/*****[CHANGES]**********************************************************
+-=[Mod]=-
+      Forum Admin Style Selection              v1.0.0       10/01/2005
+ ************************************************************************/
+if (!defined('IN_PHPBB')) die('Hacking attempt');
 
-if ( !defined('IN_PHPBB') )
-{
-        die("Hacking attempt");
-}
+define_once('HEADER_INC', true);
 
-define('HEADER_INC', true);
-
-//
-// gzip_compression
-//
-$do_gzip_compress = FALSE;
-if ( $board_config['gzip_compress'] )
-{
-        $phpver = phpversion();
-
-	$useragent = $_SERVER['HTTP_USER_AGENT'] ?? getenv('HTTP_USER_AGENT');
-
-        if ( $phpver >= '4.0.4pl1' && ( strstr((string) $useragent,'compatible') || strstr((string) $useragent,'Gecko') ) )
-        {
-                if ( extension_loaded('zlib') )
-                {
-                        ob_start('ob_gzhandler');
-                }
-        }
-        else if ( $phpver > '4.0' )
-        {
-                if ( strstr((string) $_SERVER['HTTP_ACCEPT_ENCODING'], 'gzip') )
-                {
-                        if ( extension_loaded('zlib') )
-                        {
-                                $do_gzip_compress = TRUE;
-                                ob_start();
-                                ob_implicit_flush(0);
-
-                                header('Content-Encoding: gzip');
-                        }
-                }
-        }
-}
+/*****[BEGIN]******************************************
+ [ Mod:     Forum Admin Style Selection        v1.0.0 ]
+ ******************************************************/
+$ThemeSel = get_theme();
+$style = ($board_config['use_theme_style']) ? "./../../../themes/$ThemeSel/style/admin.css" : "./../templates/subSilver/subSilver.css";
+/*****[END]********************************************
+ [ Mod:     Forum Admin Style Selection        v1.0.0 ]
+ ******************************************************/
 
 $template->set_filenames(array(
         'header' => 'admin/page_header.tpl')
 );
 
 // Format Timezone. We are unable to use array_pop here, because of PHP3 compatibility
-$l_timezone = explode('.', (string) $board_config['board_timezone']);
+$l_timezone = explode('.', $board_config['board_timezone']);
 $l_timezone = (count($l_timezone) > 1 && $l_timezone[count($l_timezone)-1] != 0) ? $lang[sprintf('%.1f', $board_config['board_timezone'])] : $lang[number_format($board_config['board_timezone'])];
-
 //
 // The following assigns all _common_ variables that may be used at any point
 // in a template. Note that all URL's should be wrapped in append_sid, as
 // should all S_x_ACTIONS for forms.
 //
+if(!isset($page_title))
+$page_title = 'phpBB Titanium Admin Area';
 $template->assign_vars(array(
         'SITENAME' => $board_config['sitename'],
-        'PAGE_TITLE' => $page_title ?? '',
+        'PAGE_TITLE' => $page_title,
 
         'L_ADMIN' => $lang['Admin'],
         'L_INDEX' => sprintf($lang['Forum_Index'], $board_config['sitename']),
@@ -97,8 +81,13 @@ $template->assign_vars(array(
         'S_CONTENT_ENCODING' => $lang['ENCODING'],
         'S_CONTENT_DIR_LEFT' => $lang['LEFT'],
         'S_CONTENT_DIR_RIGHT' => $lang['RIGHT'],
-
-        'T_HEAD_STYLESHEET' => $theme['head_stylesheet'],
+/*****[BEGIN]******************************************
+ [ Mod:     Forum Admin Style Selection        v1.0.0 ]
+ ******************************************************/
+        'T_HEAD_STYLESHEET' => $style,
+/*****[END]********************************************
+ [ Mod:     Forum Admin Style Selection        v1.0.0 ]
+ ******************************************************/
         //'T_BODY_BACKGROUND' => $theme['body_background'],
         //'T_BODY_BGCOLOR' => '#'.$theme['body_bgcolor'],
         'T_BODY_BGCOLOR' => '#EEEEEE',
@@ -138,10 +127,9 @@ $template->assign_vars(array(
         'T_SPAN_CLASS2' => $theme['span_class2'],
         'T_SPAN_CLASS3' => $theme['span_class3'])
 );
-
 // Work around for "current" Apache 2 + PHP module which seems to not
 // cope with private cache control setting
-if (!empty($_SERVER['SERVER_SOFTWARE']) && strstr((string) $_SERVER['SERVER_SOFTWARE'], 'Apache/2'))
+if (!empty($HTTP_SERVER_VARS['SERVER_SOFTWARE']) && strstr($HTTP_SERVER_VARS['SERVER_SOFTWARE'], 'Apache/2'))
 {
 	header ('Cache-Control: no-cache, pre-check=0, post-check=0');
 }
@@ -151,7 +139,5 @@ else
 }
 header ('Expires: 0');
 header ('Pragma: no-cache');
-
 $template->pparse('header');
-
-
+?>

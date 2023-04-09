@@ -29,10 +29,10 @@
 /* it under the terms of the GNU General Public License as published by */
 /* the Free Software Foundation; either version 2 of the License.       */
 /************************************************************************/
-    /* Journal 2.0 Enhanced and Debugged 2004                               */
-    /* by sixonetonoffun -- http://www.netflake.com --                      */
-    /* Images Created by GanjaUK -- http://www.GanjaUK.com                  */
-    /************************************************************************/
+/* Journal 2.0 Enhanced and Debugged 2004                               */
+/* by sixonetonoffun -- http://www.netflake.com --                      */
+/* Images Created by GanjaUK -- http://www.GanjaUK.com                  */
+/************************************************************************/
 if ( !defined('MODULE_FILE') )
 {
 	die("You can't access this file directly...");
@@ -45,21 +45,23 @@ get_lang($module_name);
 $pagetitle = "- "._USERSJOURNAL."";
 include("header.php");
 include("modules/$module_name/functions.php");
-    if (is_user($user)) {
-cookiedecode($user);
-$username = $cookie[1];
-$htime = date("h");
-$mtime = date("i");
-$ntime = date("a");
-$mtime = "$htime:$mtime $ntime";
-$mdate = date("m");
-$ddate = date("d");
-$ydate = date("Y");
-$ndate = "$mdate-$ddate-$ydate";
-        $username = filter($username, "nohtml");
-        $sitename = filter($sitename, "nohtml");
-        $ndate = filter($ndate, "nohtml");
-        $debug = filter($debug, "nohtml");
+    if (is_user()) {
+  
+  cookiedecode($user);
+  $username = $cookie[1];
+  $htime = date("h");
+  $mtime = date("i");
+  $ntime = date("a");
+  $mtime = "$htime:$mtime $ntime";
+  $mdate = date("m");
+  $ddate = date("d");
+  $ydate = date("Y");
+  $ndate = "$mdate-$ddate-$ydate";
+  $username = filter($username, "nohtml");
+  $sitename = filter($sitename, "nohtml");
+  $ndate = filter($ndate, "nohtml");
+  $debug = filter($debug, "nohtml");
+
 if ($debug == "true") :
     echo ("UserName:$username<br>SiteName: $sitename");
 endif;
@@ -70,18 +72,18 @@ startjournal($sitename,$user);
 function dropcomment($username,$onwhat,$mtime,$ndate) {
     global $module_name;
     $onwhat = intval($onwhat);
-    echo "<br>";
+
     OpenTable();
     echo ("<div align=center class=title>"._LEAVECOMMENT."</div><br><br>");
-    echo ("<form action='modules.php?name=$module_name&file=commentsave' method='post'><input type='hidden' name='rid' value='$onwhat'>");
+    echo ("<form action='modules.php?name=Journal&file=commentsave' method='post'><input type='hidden' name='rid' value='$onwhat'>");
     echo ("<div align=center>"._COMMENTBOX.":<br><textarea name=\"comment\" cols=70 rows=15></textarea><br>"._HTMLNOTALLOWED."<br><input type='submit' name='submit' value='"._POSTCOMMENT."'></div>");
     echo ("</form><br>");
     echo ("<center>"._COMMENTSNOTE."</center>");
     CloseTable();
 }
 }
-if (!is_user($user)) :
-    echo ("<br>");
+if (!is_user()) :
+
     openTable();
     echo ("<div align=center>"._YOUMUSTBEMEMBER."<br></div>");
     closeTable();

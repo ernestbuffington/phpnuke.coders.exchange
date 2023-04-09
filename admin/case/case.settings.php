@@ -1,47 +1,32 @@
 <?php
 
 /************************************************************************/
-/* PHP-NUKE: Web Portal System                                          */
-/* ===========================                                          */
+/* PHP-NUKE: Advanced Content Management System                         */
+/* ============================================                         */
 /*                                                                      */
-/* Copyright (c) 2023 by Francisco Burzi                                */
-/* https://phpnuke.coders.exchange                                      */
+/* Copyright (c) 2002 by Francisco Burzi                                */
+/* http://phpnuke.org                                                   */
 /*                                                                      */
 /* This program is free software. You can redistribute it and/or modify */
 /* it under the terms of the GNU General Public License as published by */
 /* the Free Software Foundation; either version 2 of the License.       */
 /************************************************************************/
 
+/*****[CHANGES]**********************************************************
+-=[Base]=-
+      Nuke Patched                             v3.1.0       06/26/2005
+ ************************************************************************/
+
 if (!defined('ADMIN_FILE')) {
-	die ("Access Denied");
+    die ('Illegal File Access');
 }
 
 switch($op) {
 
-	case "options_menu":
-	case "general":
-	case "savegeneral":
-	case "themes":
-	case "savethemes":
-	case "users":
-	case "saveusers":
-	case "comments":
-	case "savecomments":
-	case "languages":
-	case "savelanguages":
-	case "footer":
-	case "savefooter":
-	case "backend":
-	case "savebackend":
-	case "referers":
-	case "savereferers":
-	case "mailing":
-	case "savemailing":
-	case "other":
-	case "saveother":
-	case "Configure":
-	include("admin/modules/settings.php");
-	break;
+    case "Configure":
+    case "ConfigSave":
+        include(NUKE_ADMIN_MODULE_DIR.'settings.php');
+    break;
 
 }
 

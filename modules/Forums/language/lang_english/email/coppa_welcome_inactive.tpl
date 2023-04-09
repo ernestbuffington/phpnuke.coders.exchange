@@ -1,5 +1,5 @@
 Subject: Welcome to {SITENAME} Forums
-Charset: iso-8859-1
+Charset: UTF-8
 
 {WELCOME_MSG}
 
@@ -29,21 +29,17 @@ From: {FROM}
 Occupation: {OCC}
 Interests: {INTERESTS}
 
-I HAVE REVIEWED THE INFORMATION PROVIDED BY MY CHILD AND HEREBY GRANT PERMISSION TO {SITENAME} TO STORE THIS INFORMATION. 
-I UNDERSTAND THIS INFORMATION CAN BE CHANGED AT ANY TIME BY ENTERING A PASSWORD. 
+I HAVE REVIEWED THE INFORMATION PROVIDED BY MY CHILD AND HEREBY GRANT PERMISSION TO {SITENAME} TO STORE THIS INFORMATION.
+I UNDERSTAND THIS INFORMATION CAN BE CHANGED AT ANY TIME BY ENTERING A PASSWORD.
 I UNDERSTAND THAT I MAY REQUEST FOR THIS INFORMATION TO BE REMOVED FROM {SITENAME} AT ANY TIME.
-
-
-Parent or Guardian 
+Parent or Guardian
 (print your name here): _____________________
 
-(sign here): __________________ 
+(sign here): __________________
 
 Date: _______________
 
 ------------------------------ CUT HERE ------------------------------
-
-
 Once the administrator has received the above form via fax or regular mail your account will be activated.
 
 Please do not forget your password as it has been encrypted in our database and we cannot retrieve it for you. However, should you forget your password you can request a new one which will be activated in the same way as this account.

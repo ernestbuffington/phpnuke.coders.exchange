@@ -1,35 +1,54 @@
 <?php
 
 /************************************************************************/
-/* PHP-NUKE: Web Portal System                                          */
-/* ===========================                                          */
+/* PHP-NUKE: Advanced Content Management System                         */
+/* ============================================                         */
 /*                                                                      */
-/* Copyright (c) 2023 by Francisco Burzi                                */
-/* http://www.phpnuke.coders.exchange                                   */
+/* Copyright (c) 2002 by Francisco Burzi                                */
+/* http://phpnuke.org                                                   */
 /*                                                                      */
 /* This program is free software. You can redistribute it and/or modify */
 /* it under the terms of the GNU General Public License as published by */
 /* the Free Software Foundation; either version 2 of the License.       */
 /************************************************************************/
 
+/************************************************************************
+   Nuke-Evolution: SQL Control System
+   ============================================
+   Copyright (c) 2005 by The Nuke-Evolution Team
+
+   Filename      : case.backup.php
+   Author(s)     : Quake (www.Nuke-Evolution.com)
+   Version       : 1.0.0
+   Date          : 12.03.2005 (mm.dd.yyyy)
+
+   Notes         : Database Backup Manager
+************************************************************************/
+
+/*****[CHANGES]**********************************************************
+-=[Base]=-
+      Nuke Patched                             v3.1.0       10/01/2005
+ ************************************************************************/
+
 if (!defined('ADMIN_FILE')) {
-	die ("Access Denied");
+    die ('Illegal File Access');
 }
 
-// this is the global that is used on the fly by the admin system
-// which is run through the /admin.php file.
-global $op;
-// list all the switches needede for admin/backup.php 
-// these will all be used to switch modes in the 
-// admin/backup.php file.
 switch($op) {
 
-	case "backup":
-	case "backupnow":
-	case "backupdone":
-	case "backupdownload":
-    include("admin/modules/backup.php");
+    case "database":
+    case "backup":
+    case "optimize":
+    case "BackupDB":
+    case "OptimizeDB":
+    case "CheckDB":
+    case "AnalyzeDB":
+    case "RepairDB":
+    case "StatusDB":
+    case "RestoreDB":
+        include(NUKE_ADMIN_MODULE_DIR.'backup.php');
     break;
- 
+
 }
 
+?>

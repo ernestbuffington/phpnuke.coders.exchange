@@ -2,7 +2,7 @@
 
 function OpenTable() {
     echo "<table border=\"0\" cellspacing=\"0\" cellpadding=\"0\" width=\"100%\"><tr>
-    <td width=\"15\" height=\"15\"><img src=\"themes/3D-Fantasy/images/up-left2.gif\" alt=\"\" border=\"0\"></td>
+    <td width=\"15\" height=\"15\"><img width=\"15\" height=\"15\" src=\"themes/3D-Fantasy/images/up-left2.gif\" alt=\"\" border=\"0\"></td>
     <td background=\"themes/3D-Fantasy/images/up2.gif\" align=\"center\" width=\"100%\" height=\"15\">&nbsp;</td>
     <td><img src=\"themes/3D-Fantasy/images/up-right2.gif\" width=\"15\" height=\"15\" alt=\"\" border=\"0\"></td></tr>
     <tr>

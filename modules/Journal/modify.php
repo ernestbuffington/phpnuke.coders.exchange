@@ -32,10 +32,16 @@
 /* Additional security checking code 2003 by chatserv                   */
 /* http://www.nukefixes.com -- http://www.nukeresources.com             */
 /************************************************************************/
-    /* Journal 2.0 Enhanced and Debugged 2004                               */
-    /* by sixonetonoffun -- http://www.netflake.com --                      */
-    /* Images Created by GanjaUK -- http://www.GanjaUK.com                  */
-    /************************************************************************/
+/* Journal 2.0 Enhanced and Debugged 2004                               */
+/* by sixonetonoffun -- http://www.netflake.com --                      */
+/* Images Created by GanjaUK -- http://www.GanjaUK.com                  */
+/************************************************************************/
+
+/* Applied rules:
+ * EregToPregMatchRector (http://php.net/reference.pcre.pattern.posix https://stackoverflow.com/a/17033826/1348344 https://docstore.mik.ua/orelly/webprog/pcook/ch13_02.htm)
+ * WhileEachToForeachRector (https://wiki.php.net/rfc/deprecations_php_7_2#each)
+ */
+ 
 if ( !defined('MODULE_FILE') )
 {
 	die("You can't access this file directly...");
@@ -48,7 +54,7 @@ if ( !defined('MODULE_FILE') )
 	if (!isset($jid) OR !is_numeric($jid)) { die("No journal specified."); }
     $pagetitle = "- "._USERSJOURNAL."";
     include("header.php");
-    if (is_user($user)) {
+    if (is_user()) {
         cookiedecode($user);
         $username = $cookie[1];
         $user = filter($user, "nohtml");
@@ -59,25 +65,28 @@ if ( !defined('MODULE_FILE') )
         echo ("UserName:$username<br>SiteName: $sitename<br>JID: $jid");
         endif;
         startjournal($sitename, $user);
-        echo "<br>";
+        
         OpenTable();
         echo ("<div align=center class=title>"._EDITJOURNAL."</div><br>");
-        echo ("<div align=center> [ <a href=\"modules.php?name=$module_name&file=add\">"._ADDENTRY."</a> | <a href=\"modules.php?name=$module_name&file=edit&op=last\">"._YOURLAST20."</a> | <a href=\"modules.php?name=$module_name&file=edit&op=all\">"._LISTALLENTRIES."</a> ]</div>");
+        echo ("<div align=center> [ <a href=\"modules.php?name=Journal&file=add\">"._ADDENTRY."</a> | <a href=\"modules.php?name=Journal&file=edit&op=last\">"._YOURLAST20."</a> | <a href=\"modules.php?name=Journal&file=edit&op=all\">"._LISTALLENTRIES."</a> ]</div>");
         CloseTable();
-        echo "<br>";
+        
         OpenTable();
         $jid = intval($jid);
 $sql = "SELECT * FROM ".$prefix."_journal WHERE jid = '$jid'";
         $result = $db->sql_query($sql);
         while ($row = $db->sql_fetchrow($result)) {
             $jaid = filter($row['aid'], "nohtml");
-            if (!is_admin($admin)):
+            if (!is_admin()):
             if ($username != $jaid):
                 echo ("<br>");
-            OpenTable();
+            
+			//OpenTable();
             echo ("<div align=center>"._NOTYOURS2."</div>");
-            CloseTable();
-            CloseTable();
+            //CloseTable();
+            
+			CloseTable();
+			
             journalfoot();
             include("footer.php");
             die();
@@ -88,7 +97,7 @@ $sql = "SELECT * FROM ".$prefix."_journal WHERE jid = '$jid'";
             $jbodytext = $row['bodytext'];
             $jbodytext = kses(ADVT_stripslashes($jbodytext), $allowed);
             $jmood = filter($row['mood'], "nohtml");
-            print ("<form action='modules.php?name=$module_name&file=edit' method='post'>");
+            print ("<form action='modules.php?name=Journal&file=edit' method='post'>");
             print ("<input type='hidden' name='edit' value='1'>");
             print ("<input type='hidden' name='jid' value='$jid'>");
             print ("<table align=center border=0>");
@@ -121,25 +130,25 @@ $sql = "SELECT * FROM ".$prefix."_journal WHERE jid = '$jid'";
             }
             closedir($handle);
             asort($filelist);
-            while (list ($key, $file) = each ($filelist)) {
-			    if (!ereg(".gif|.jpg",$file)) { }
-			    elseif ($file == "." || $file == "..") {
-                    $a = 1;
-                } else {
-                    if ($file == $jmood) {
-                        $checked = "checked";
-                    } else {
-                        $checked = "";
-                    }
-                    if ($tempcount == 6):
-                        echo "</tr><tr>";
-                    echo "<td><input type='radio' name='mood' value='$file' $checked></td><td><img src=\"$jsmiles/$file\" alt=\"$file\" title=\"$file\"></td>";
-                    $tempcount = 0;
-                    else :
-                    echo "<td><input type='radio' name='mood' value='$file' $checked></td><td><img src=\"$jsmiles/$file\" alt=\"$file\" title=\"$file\"></td>";
-                    endif;
-                    $tempcount = $tempcount + 1;
-                }
+            foreach ($filelist as $key => $file) {
+                if (!preg_match('#.gif|.jpg#m',$file)) { }
+         			    elseif ($file == "." || $file == "..") {
+                             $a = 1;
+                         } else {
+                             if ($file == $jmood) {
+                                 $checked = "checked";
+                             } else {
+                                 $checked = "";
+                             }
+                             if ($tempcount == 6):
+                                 echo "</tr><tr>";
+                             echo "<td><input type='radio' name='mood' value='$file' $checked></td><td><img src=\"$jsmiles/$file\" alt=\"$file\" title=\"$file\"></td>";
+                             $tempcount = 0;
+                             else :
+                             echo "<td><input type='radio' name='mood' value='$file' $checked></td><td><img src=\"$jsmiles/$file\" alt=\"$file\" title=\"$file\"></td>";
+                             endif;
+                             $tempcount = $tempcount + 1;
+                         }
             }
             echo "</tr></table>";
             print ("</td>");
@@ -170,7 +179,7 @@ $sql = "SELECT * FROM ".$prefix."_journal WHERE jid = '$jid'";
         CloseTable();
         journalfoot();
     }
-    if (is_admin($admin)) {
+    if (is_admin()) {
         cookiedecode($user);
         $username = $cookie[1];
         $user = filter($user, "nohtml");
@@ -181,12 +190,12 @@ $sql = "SELECT * FROM ".$prefix."_journal WHERE jid = '$jid'";
         echo ("UserName:$username<br>SiteName: $sitename<br>JID: $jid");
         endif;
         startjournal($sitename, $user);
-        echo "<br>";
+        
         OpenTable();
         echo ("<div align=center class=title>"._EDITJOURNAL."</div><br>");
-        echo ("<div align=center> [ <a href=\"modules.php?name=$module_name&file=add\">"._ADDENTRY."</a> | <a href=\"modules.php?name=$module_name&file=edit&op=last\">"._YOURLAST20."</a> | <a href=\"modules.php?name=$module_name&file=edit&op=all\">"._LISTALLENTRIES."</a> ]</div>");
+        echo ("<div align=center> [ <a href=\"modules.php?name=Journal&file=add\">"._ADDENTRY."</a> | <a href=\"modules.php?name=Journal&file=edit&op=last\">"._YOURLAST20."</a> | <a href=\"modules.php?name=Journal&file=edit&op=all\">"._LISTALLENTRIES."</a> ]</div>");
         CloseTable();
-        echo "<br>";
+        
         OpenTable();
         $jid = intval($jid);
         $sql = "SELECT * FROM ".$prefix."_journal WHERE jid = '$jid'";
@@ -198,7 +207,7 @@ $sql = "SELECT * FROM ".$prefix."_journal WHERE jid = '$jid'";
             $jbodytext = $row['bodytext'];
             $jbodytext = kses(ADVT_stripslashes($jbodytext), $allowed);
             $jmood = filter($row['mood'], "nohtml");
-            print ("<form action='modules.php?name=$module_name&file=edit' method='post'>");
+            print ("<form action='modules.php?name=Journal&file=edit' method='post'>");
             print ("<input type='hidden' name='edit' value='1'>");
             print ("<input type='hidden' name='jid' value='$jid'>");
             print ("<table align=center border=0>");
@@ -232,25 +241,25 @@ $sql = "SELECT * FROM ".$prefix."_journal WHERE jid = '$jid'";
             }
             closedir($handle);
             asort($filelist);
-            while (list ($key, $file) = each ($filelist)) {
-			    if (!ereg(".gif|.jpg",$file)) { }
-			    elseif ($file == "." || $file == "..") {
-                    $a = 1;
-                } else {
-                    if ($file == $jmood) {
-                        $checked = "checked";
-                    } else {
-                        $checked = "";
-                    }
-                    if ($tempcount == 6):
-                        echo "</tr><tr>";
-                    echo "<td><input type='radio' name='mood' value='$file' $checked></td><td><img src=\"$jsmiles/$file\" alt=\"$file\" title=\"$file\"></td>";
-                    $tempcount = 0;
-                    else :
-                    echo "<td><input type='radio' name='mood' value='$file' $checked></td><td><img src=\"$jsmiles/$file\" alt=\"$file\" title=\"$file\"></td>";
-                    endif;
-                    $tempcount = $tempcount + 1;
-                }
+            foreach ($filelist as $key => $file) {
+                if (!preg_match('#.gif|.jpg#m',$file)) { }
+         			    elseif ($file == "." || $file == "..") {
+                             $a = 1;
+                         } else {
+                             if ($file == $jmood) {
+                                 $checked = "checked";
+                             } else {
+                                 $checked = "";
+                             }
+                             if ($tempcount == 6):
+                                 echo "</tr><tr>";
+                             echo "<td><input type='radio' name='mood' value='$file' $checked></td><td><img src=\"$jsmiles/$file\" alt=\"$file\" title=\"$file\"></td>";
+                             $tempcount = 0;
+                             else :
+                             echo "<td><input type='radio' name='mood' value='$file' $checked></td><td><img src=\"$jsmiles/$file\" alt=\"$file\" title=\"$file\"></td>";
+                             endif;
+                             $tempcount = $tempcount + 1;
+                         }
             }
             echo "</tr></table>";
             print ("</td>");

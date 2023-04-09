@@ -32,10 +32,10 @@
 /* Additional security checking code 2003 by chatserv                   */
 /* http://www.nukefixes.com -- http://www.nukeresources.com             */
 /************************************************************************/
-    /* Journal 2.0 Enhanced and Debugged 2004                               */
-    /* by sixonetonoffun -- http://www.netflake.com --                      */
-    /* Images Created by GanjaUK -- http://www.GanjaUK.com                  */
-    /************************************************************************/
+/* Journal 2.0 Enhanced and Debugged 2004                               */
+/* by sixonetonoffun -- http://www.netflake.com --                      */
+/* Images Created by GanjaUK -- http://www.GanjaUK.com                  */
+/************************************************************************/
 if ( !defined('MODULE_FILE') )
 {
 	die("You can't access this file directly...");
@@ -49,7 +49,7 @@ if (!isset($jid) OR !is_numeric($jid)) { die("No journal specified."); }
 $pagetitle = "- "._USERSJOURNAL;
 include("header.php");
 include("modules/$module_name/functions.php");
-    if (is_user($user)) {
+    if (is_user()) {
 cookiedecode($user);
 $username = $cookie[1];
     }
@@ -61,7 +61,7 @@ startjournal($sitename,$user);
 # If not - inform them that there is a problem and  #
 # to check their current username.		    #
 #####################################################
-    if (is_user($user)) {
+    if (is_user()) {
 $jid = intval($jid);
 $sql = "SELECT * FROM ".$prefix."_journal WHERE jid = '$jid'";
 $result = $db->sql_query($sql);
@@ -71,7 +71,7 @@ while ($row = $db->sql_fetchrow($result)) {
 	openTable();
 	echo ("<div align=center>"._YOUWRONG."</div>");
 	closeTable();
-	echo ("<br>");
+	
 	journalfoot();
 	die();
     endif;
@@ -79,23 +79,23 @@ while ($row = $db->sql_fetchrow($result)) {
     $db->sql_query($sql);
 	$sql = "DELETE FROM ".$prefix."_journal_comments WHERE rid = '$jid'";
     $db->sql_query($sql);
-    echo ("<br>");
+    
     openTable();
     echo ("<div align=center>"._ENTRYREMOVED."<br><br>");
-    echo ("<a href=\"modules.php?name=$module_name&file=edit\">"._RETURNJOURNAL."</a></div>");
+    echo ("<a href=\"modules.php?name=Journal&file=edit\">"._RETURNJOURNAL."</a></div>");
     closeTable();
 }
         journalfoot();
     } else {
-        if (is_admin($admin)) {
+        if (is_admin()) {
             $sql = "DELETE FROM ".$prefix."_journal WHERE jid = '$jid'";
             $db->sql_query($sql);
             $sql = "DELETE FROM ".$prefix."_journal_comments WHERE rid = '$jid'";
             $db->sql_query($sql);
-            echo ("<br>");
+            
             openTable();
             echo ("<div align=center>"._ENTRYREMOVED."<br><br>");
-            echo ("<a href=\"modules.php?name=$module_name&file=edit\">"._RETURNJOURNAL."</a></div>");
+            echo ("<a href=\"modules.php?name=Journal&file=edit\">"._RETURNJOURNAL."</a></div>");
             closeTable();
         }
         journalfoot();
