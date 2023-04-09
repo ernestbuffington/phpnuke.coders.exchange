@@ -30,43 +30,75 @@ if ( !defined('ADMIN_FILE') )
 }
 
 global $admin_file, $currentlang;
-	if (is_mod_admin('admin'))
-		{
-			if (file_exists(NUKE_ADMIN_DIR.'language/Honeypot/lang-'.$currentlang.'.php')) 
-			{
-				include_once(NUKE_ADMIN_DIR.'language/Honeypot/lang-'.$currentlang.'.php');
-			} else {
-				include_once(NUKE_ADMIN_DIR.'language/Honeypot/lang-english.php');
-			}
-		
+
+if (is_mod_admin('admin'))
+{
+	if (file_exists(NUKE_ADMIN_DIR.'language/Honeypot/lang-'.$currentlang.'.php')) 
+	{
+		include_once(NUKE_ADMIN_DIR.'language/Honeypot/lang-'.$currentlang.'.php');
+	} else {
+		include_once(NUKE_ADMIN_DIR.'language/Honeypot/lang-english.php');
+}
 		
 function abget_country($tempip)
-	{
-		global $prefix, $db;
-		$tempip = str_replace(".*", ".0", $tempip);
-		$tempip = sprintf("%u", ip2long($tempip));
-		$result = $db->sql_query("SELECT * FROM `".$prefix."_nsnst_ip2country` WHERE `ip_lo`<='$tempip' AND `ip_hi`>='$tempip' LIMIT 0,1");
-		$countryinfo = $db->sql_fetchrow($result);
-		$db->sql_freeresult($result);
-		return $countryinfo;
-	}
+{
+	global $prefix, $db;
+	$tempip = str_replace(".*", ".0", $tempip);
+	$tempip = sprintf("%u", ip2long($tempip));
+	$result = $db->sql_query("SELECT * FROM `".$prefix."_nsnst_ip2country` WHERE `ip_lo`<='$tempip' AND `ip_hi`>='$tempip' LIMIT 0,1");
+	$countryinfo = $db->sql_fetchrow($result);
+	$db->sql_freeresult($result);
+	return $countryinfo;
+}
 
-
-
-//*************************************************************************
 //*************************************************************************
 //  Start of stats section
 //*************************************************************************
-//*************************************************************************
 function honeypotstats()
-	{	
-	  	global $prefix, $db, $admin_file;
+{	
+  	global $prefix, $db, $admin_file;
 
-		$result = $db->sql_query("SELECT check1, check2, check3, check4, check5, check6, c8opt1, c8opt2, fs9opt1, fs9opt2, headcolor, rowcolor1, rowcolor2, pagebgcolor, pagebordercolor, fontcolor, fontcolor2 FROM ".$prefix."_honeypot_config");
-		list($check1, $check2, $check3, $check4, $check5, $check6, $c8opt1, $c8opt2, $fs9opt1, $fs9opt2, $headcolor, $rowcolor1, $rowcolor2, $pagebgcolor, $pagebordercolor, $fontcolor, $fontcolor2) = $db->sql_fetchrow($result);
+	$result = $db->sql_query("SELECT check1, 
+	                                 check2, 
+									 check3, 
+									 check4, 
+									 check5, 
+									 check6, 
+									 c8opt1, 
+									 c8opt2, 
+									fs9opt1, 
+									fs9opt2, 
+								  headcolor, 
+								  rowcolor1, 
+								  rowcolor2, 
+								pagebgcolor, 
+							pagebordercolor, 
+							      fontcolor, 
+								 fontcolor2 FROM ".$prefix."_honeypot_config");
+	
+	    list($check1, 
+	         $check2, 
+		     $check3, 
+		     $check4, 
+		     $check5, 
+		     $check6, 
+		     $c8opt1, 
+		     $c8opt2, 
+		    $fs9opt1, 
+		    $fs9opt2, 
+	      $headcolor, 
+	      $rowcolor1, 
+	      $rowcolor2, 
+	    $pagebgcolor, 
+	$pagebordercolor, 
+	      $fontcolor, 
+		 $fontcolor2) = $db->sql_fetchrow($result);
 		
-		addCSSToHead('./includes/honeypot/css/honeypot_stats.css','file');
-    $hpcss2head .='<style>';
+	addCSSToHead('./includes/honeypot/css/honeypot_stats.css','file');
+    
+    if(!isset($hpcss2head)) { $hpcss2head = ''; }
+		
+	$hpcss2head .='<style>';
 	$hpcss2head .='.maincontent {';
 	$hpcss2head .='border:1px solid '.$pagebordercolor.';';
 	$hpcss2head .='}';
@@ -100,33 +132,31 @@ function honeypotstats()
 
 	addCSSToHead(''.$hpcss2head.'','inline');
 			
-					include("header.php");	
+	include("header.php");	
 					
-					$result1 = $db->sql_query("SELECT COUNT(potnum) FROM `". $prefix ."_honeypot` WHERE potnum = '0'");
-list($waitscript) = $db->sql_fetchrow($result1);
-$db->sql_freeresult($result1);
-					$result2 = $db->sql_query("SELECT COUNT(potnum) FROM `". $prefix ."_honeypot` WHERE potnum = '1'");
-list($textremoval) = $db->sql_fetchrow($result2);
-$db->sql_freeresult($result2);
-					$result3 = $db->sql_query("SELECT COUNT(potnum) FROM `". $prefix ."_honeypot` WHERE potnum = '2'");
-list($hidden) = $db->sql_fetchrow($result3);
-$db->sql_freeresult($result3);
-					$result4 = $db->sql_query("SELECT COUNT(potnum) FROM `". $prefix ."_honeypot` WHERE potnum = '3'");
-list($customquestion) = $db->sql_fetchrow($result4);
-$db->sql_freeresult($result4);
-					$result5 = $db->sql_query("SELECT COUNT(potnum) FROM `". $prefix ."_honeypot` WHERE potnum = '4' OR potnum = '5'");
-list($sfsspam) = $db->sql_fetchrow($result5);
-$db->sql_freeresult($result5);
-					$result6 = $db->sql_query("SELECT COUNT(potnum) FROM `". $prefix ."_honeypot` WHERE potnum = '6'");
-list($bscheck) = $db->sql_fetchrow($result6);
-$db->sql_freeresult($result6);
-					$result7 = $db->sql_query("SELECT COUNT(potnum) FROM `". $prefix ."_honeypot` WHERE potnum = '7'");
-list($fscheck) = $db->sql_fetchrow($result7);
-$db->sql_freeresult($result7);
-
-
+	$result1 = $db->sql_query("SELECT COUNT(potnum) FROM `". $prefix ."_honeypot` WHERE potnum = '0'");
+    list($waitscript) = $db->sql_fetchrow($result1);
+    $db->sql_freeresult($result1);
+	$result2 = $db->sql_query("SELECT COUNT(potnum) FROM `". $prefix ."_honeypot` WHERE potnum = '1'");
+    list($textremoval) = $db->sql_fetchrow($result2);
+    $db->sql_freeresult($result2);
+	$result3 = $db->sql_query("SELECT COUNT(potnum) FROM `". $prefix ."_honeypot` WHERE potnum = '2'");
+    list($hidden) = $db->sql_fetchrow($result3);
+    $db->sql_freeresult($result3);
+	$result4 = $db->sql_query("SELECT COUNT(potnum) FROM `". $prefix ."_honeypot` WHERE potnum = '3'");
+    list($customquestion) = $db->sql_fetchrow($result4);
+    $db->sql_freeresult($result4);
+	$result5 = $db->sql_query("SELECT COUNT(potnum) FROM `". $prefix ."_honeypot` WHERE potnum = '4' OR potnum = '5'");
+    list($sfsspam) = $db->sql_fetchrow($result5);
+    $db->sql_freeresult($result5);
+	$result6 = $db->sql_query("SELECT COUNT(potnum) FROM `". $prefix ."_honeypot` WHERE potnum = '6'");
+    list($bscheck) = $db->sql_fetchrow($result6);
+    $db->sql_freeresult($result6);
+	$result7 = $db->sql_query("SELECT COUNT(potnum) FROM `". $prefix ."_honeypot` WHERE potnum = '7'");
+    list($fscheck) = $db->sql_fetchrow($result7);
+    $db->sql_freeresult($result7);
 	
-		echo '<script src="https://www.gstatic.com/charts/loader.js"></script>' , PHP_EOL
+	echo '<script src="https://www.gstatic.com/charts/loader.js"></script>' , PHP_EOL
 		,'    <script>
       google.charts.load("current", {packages:["corechart"]});
       google.charts.setOnLoadCallback(drawChart);
@@ -158,7 +188,7 @@ $db->sql_freeresult($result7);
 
 		OpenTable();
 		echo '<div class="potlogo">' , PHP_EOL
-		,'<p>'._HONEYPOT_MAIN.'<br /><img src="./images/honeypot/nukehoneypot.png" height="107px" width="360px" alt="Honeypot Protected">' , PHP_EOL
+		,'<p>'._HONEYPOT_MAIN.'<br /><img style="padding-top: 15px;" src="./images/honeypot/nukehoneypot.png" height="107px" width="360px" alt="Honeypot Protected">' , PHP_EOL
 		,'</p></div>' , PHP_EOL
 		,'<div align="center">[ <a href="admin.php?op=honeypot"><strong>'._HONEYPOT_BOTLIST.'</strong></a> ]' , PHP_EOL
 		,' &nbsp; -- &nbsp; ' , PHP_EOL
@@ -169,18 +199,18 @@ $db->sql_freeresult($result7);
 		
 		OpenTable();
 	
-$result_total = $db->sql_query("SELECT COUNT(potnum) FROM `". $prefix ."_honeypot`");
-list($total_blocked) = $db->sql_fetchrow($result_total);
-$db->sql_freeresult($result_total);
+        $result_total = $db->sql_query("SELECT COUNT(potnum) FROM `". $prefix ."_honeypot`");
+        list($total_blocked) = $db->sql_fetchrow($result_total);
+        $db->sql_freeresult($result_total);
 	
-function checkPercentage($total, $check_blocked) {
-	if ($total > 0) {
-   $percentage = number_format(($check_blocked/$total),3)*100;
-	}else{
-		$percentage = 0;
-	}
-   return $percentage.'%';
-}
+        function checkPercentage($total, $check_blocked) {
+           if ($total > 0) {
+             $percentage = number_format(($check_blocked/$total),3)*100;
+	       }else{
+	         $percentage = 0;
+	       }
+             return $percentage.'%';
+           }
 
 		echo '<div class="maincontent">' , PHP_EOL
 		    , 'There have been a total of '.$total_blocked.' bots blocked by the Honeypot<br />', PHP_EOL
@@ -195,8 +225,9 @@ function checkPercentage($total, $check_blocked) {
 
 			, '</tr>' , PHP_EOL;
 
-
-	echo '<tr>' , PHP_EOL
+        if(!isset($row_color)) {$row_color = ''; }
+	    
+		echo '<tr>' , PHP_EOL
 		, '<td bgcolor="'.$row_color.'" class="mark pot" align="left">' , PHP_EOL
 		, _HONEYPOT_WAITSCRIPT .(($check3 == 0) ? '<span class="disabled">*DISABLED*</span>' : '') , PHP_EOL 
 	    ,'</td>' , PHP_EOL
@@ -208,7 +239,7 @@ function checkPercentage($total, $check_blocked) {
 	    ,'</td>' , PHP_EOL
 		, '</tr>' , PHP_EOL;
 		
-			echo '<tr>' , PHP_EOL
+		echo '<tr>' , PHP_EOL
 		, '<td bgcolor="'.$row_color.'" class="mark pot" align="left">' , PHP_EOL
 		, _HONEYPOT_TEXTREMOVALSCRIPT .(($check2 == 0) ? '<span class="disabled">*DISABLED*</span>' : '') , PHP_EOL 
 	    ,'</td>' , PHP_EOL
@@ -220,7 +251,7 @@ function checkPercentage($total, $check_blocked) {
 	    ,'</td>' , PHP_EOL
 		, '</tr>' , PHP_EOL;
 		
-			echo '<tr>' , PHP_EOL
+		echo '<tr>' , PHP_EOL
 		, '<td bgcolor="'.$row_color.'" class="mark pot" align="left">' , PHP_EOL
 		, _HONEYPOT_HIDDENTEXTFIELD .(($check1 == 0) ? '<span class="disabled">*DISABLED*</span>' : '') , PHP_EOL 
 	    ,'</td>' , PHP_EOL
@@ -232,7 +263,7 @@ function checkPercentage($total, $check_blocked) {
 	    ,'</td>' , PHP_EOL
 		, '</tr>' , PHP_EOL;
 		
-			echo '<tr>' , PHP_EOL
+		echo '<tr>' , PHP_EOL
 		, '<td bgcolor="'.$row_color.'" class="mark pot" align="left">' , PHP_EOL
 		, _HONEYPOT_CUSTOMQUESTION .(($check4 == 0) ? '<span class="disabled">*DISABLED*</span>' : '') , PHP_EOL 
 	    ,'</td>' , PHP_EOL
@@ -244,7 +275,7 @@ function checkPercentage($total, $check_blocked) {
 	    ,'</td>' , PHP_EOL
 		, '</tr>' , PHP_EOL;
 		
-			echo '<tr>' , PHP_EOL
+		echo '<tr>' , PHP_EOL
 		, '<td bgcolor="'.$row_color.'" class="mark pot" align="left">' , PHP_EOL
 		, _HONEYPOT_SFSCHECK .(($check5 == 0 && $check6 == 0) ? '<span class="disabled">*DISABLED*</span>' : '') , PHP_EOL 
 	    ,'</td>' , PHP_EOL
@@ -256,7 +287,7 @@ function checkPercentage($total, $check_blocked) {
 	    ,'</td>' , PHP_EOL
 		, '</tr>' , PHP_EOL;
 		
-			echo '<tr>' , PHP_EOL
+		echo '<tr>' , PHP_EOL
 		, '<td bgcolor="'.$row_color.'" class="mark pot" align="left">' , PHP_EOL
 		, _HONEYPOT_BSCHECK .(($c8opt1 == 0 && $c8opt2 == 0) ? '<span class="disabled">*DISABLED*</span>' : '') , PHP_EOL  
 	    ,'</td>' , PHP_EOL
@@ -268,7 +299,7 @@ function checkPercentage($total, $check_blocked) {
 	    ,'</td>' , PHP_EOL
 		, '</tr>' , PHP_EOL;
 		
-			echo '<tr>' , PHP_EOL
+		echo '<tr>' , PHP_EOL
 		, '<td bgcolor="'.$row_color.'" class="mark pot" align="left">' , PHP_EOL
 		, _HONEYPOT_FSCHECK .(($fs9opt1 == 0 && $fs9opt2 == 0) ? '<span class="disabled">*DISABLED*</span>' : '') , PHP_EOL 
 	    ,'</td>' , PHP_EOL
@@ -279,15 +310,11 @@ function checkPercentage($total, $check_blocked) {
 		, checkPercentage($total_blocked, $fscheck) , PHP_EOL 
 	    ,'</td>' , PHP_EOL
 		, '</tr>' , PHP_EOL;
-
-
 		echo"</table>" , PHP_EOL;
-		
 
-   echo '<br /><br />' , PHP_EOL
+        echo '<br /><br />' , PHP_EOL
         , '<div id="piechart_3d" class="minipot-text" style="width: 700px; height: 500px;"></div>' , PHP_EOL
 		, '</div>' , PHP_EOL;
-		
 		CloseTable();
 
 		OpenTable();
@@ -296,11 +323,11 @@ function checkPercentage($total, $check_blocked) {
 			, 'www.headshotdomain.net' , PHP_EOL
 			, '</a></p>' , PHP_EOL
 			, '<div align="center" style="text-align:center;">' , PHP_EOL
-			, '<form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_blank">' , PHP_EOL
-			, '<input type="hidden" name="cmd" value="_s-xclick" />' , PHP_EOL
-			, '<input type="hidden" name="hosted_button_id" value="FBDV9KVDGAN2E" />' , PHP_EOL
-			, '<input type="image" src="https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif" border="0" name="submit" alt="PayPal - The safer, easier way to pay online!" />' , PHP_EOL
-			, '<img style="border:0; width:1px; height:1px;" src="https://www.paypalobjects.com/en_US/i/scr/pixel.gif" alt="" />' , PHP_EOL
+			, '<form style="background-color: transparent !important;" action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_blank">' , PHP_EOL
+			, '<input style="background-color: transparent !important;" type="hidden" name="cmd" value="_s-xclick" />' , PHP_EOL
+			, '<input style="background-color: transparent !important;" type="hidden" name="hosted_button_id" value="FBDV9KVDGAN2E" />' , PHP_EOL
+			, '<input style="background-color: transparent !important;" type="image" src="https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif" border="0" name="submit" alt="PayPal - The safer, easier way to pay online!" />' , PHP_EOL
+			, '<img style="background-color: transparent !important; border:0; width:1px; height:1px;" src="https://www.paypalobjects.com/en_US/i/scr/pixel.gif" alt="" />' , PHP_EOL
 			, '<br /><br />Help support this project, every little bit helps.<br />' , PHP_EOL
 			, '</form>' , PHP_EOL
 			, '</div>' , PHP_EOL;
@@ -308,125 +335,125 @@ function checkPercentage($total, $check_blocked) {
 				
 	}
 //*************************************************************************
-//*************************************************************************
 //  End of stats section
 //*************************************************************************
-//*************************************************************************
-
 
 function honeypot()
+{
+	global $prefix, $db, $admin_file;
+	$result1 = $db->sql_query("SELECT botlisting, perpage, pagenumberpos, headcolor, rowcolor1, rowcolor2, pagebgcolor, pagebordercolor, fontcolor, fontcolor2, usefeedback, email FROM ".$prefix."_honeypot_config");
+	list($botlisting, $perpage, $pagenumberpos, $headcolor, $rowcolor1, $rowcolor2, $pagebgcolor, $pagebordercolor, $fontcolor, $fontcolor2, $usefeedback, $email) = $db->sql_fetchrow($result1);
+	if($pagenumberpos == 0)
 	{
-		global $prefix, $db, $admin_file;
-		$result1 = $db->sql_query("SELECT botlisting, perpage, pagenumberpos, headcolor, rowcolor1, rowcolor2, pagebgcolor, pagebordercolor, fontcolor, fontcolor2, usefeedback, email FROM ".$prefix."_honeypot_config");
-		list($botlisting, $perpage, $pagenumberpos, $headcolor, $rowcolor1, $rowcolor2, $pagebgcolor, $pagebordercolor, $fontcolor, $fontcolor2, $usefeedback, $email) = $db->sql_fetchrow($result1);
-		if($pagenumberpos == 0)
-		{
-			$page_numberpos = "top";
-		} 
-		elseif ($pagenumberpos == 1)
-		{
-			$page_numberpos = "bottom";
-		}
-		elseif ($pagenumberpos == 2)
-		{
-			$page_numberpos = "both";
-		}
+		$page_numberpos = "top";
+	} 
+	elseif ($pagenumberpos == 1)
+	{
+		$page_numberpos = "bottom";
+	}
+	elseif ($pagenumberpos == 2)
+	{
+		$page_numberpos = "both";
+	}
 	
-		if($botlisting == 0)
-		{
-			$orderby = "ASC";
-		}
-		elseif ($botlisting == 1)
-		{
-			$orderby = "DESC";
-		}
+	if($botlisting == 0)
+	{
+		$orderby = "ASC";
+	}
+	elseif ($botlisting == 1)
+	{
+		$orderby = "DESC";
+	}
 		
-		if (isset($_GET['del']) && $_GET['del'] == 'all') 
-		{
-			$db->sql_query('DELETE FROM `'.$prefix.'_honeypot`');
-			$db->sql_query('ALTER TABLE `'.$prefix.'_honeypot` AUTO_INCREMENT = 1');
-			$db->sql_query('OPTIMIZE TABLE `'.$prefix.'_honeypot`');
-			Header("Location: admin.php?op=honeypot");
-		} 
-		else 
-		{
-			global $prefix, $db, $bgcolor2, $admin_file;
+	if (isset($_GET['del']) && $_GET['del'] == 'all') 
+	{
+		$db->sql_query('DELETE FROM `'.$prefix.'_honeypot`');
+		$db->sql_query('ALTER TABLE `'.$prefix.'_honeypot` AUTO_INCREMENT = 1');
+		$db->sql_query('OPTIMIZE TABLE `'.$prefix.'_honeypot`');
+		Header("Location: admin.php?op=honeypot");
+	} 
+	else 
+	{
+		global $prefix, $db, $bgcolor2, $admin_file;
 			
-			addCSSToHead('./includes/honeypot/css/honeypot.css','file');
+		addCSSToHead('./includes/honeypot/css/honeypot.css','file');
 			
-			$hpcss2head = '<style>';
-			$hpcss2head .='.button, button.inputbutton, input.inputarea, div.pagination a {';
-			$hpcss2head .='		border:1px solid '.$pagebordercolor .';';
-			$hpcss2head .='		color: '.$fontcolor.';';
-			$hpcss2head .='		background-color: '.$pagebgcolor .';';
-			$hpcss2head .='		}';
-			$hpcss2head .='		div.pagination span {';
-			$hpcss2head .='		border:1px solid '.$pagebordercolor .';';
-			$hpcss2head .='		color: '.$fontcolor.';';
-			$hpcss2head .='		background-color: '.$pagebgcolor .';';
-			$hpcss2head .='		}';
-			$hpcss2head .='		.button, button.inputbutton:hover, div.pagination a:hover,div.pagination a:active,div.pagination span.current {';
-			$hpcss2head .='		border:1px solid '.$pagebordercolor .';';
-			$hpcss2head .='		background-color: '.$rowcolor1 .';';
-			$hpcss2head .='		}';
-			$hpcss2head .='		.pothead {';
-			$hpcss2head .='		color: '.$fontcolor2.';';
-			$hpcss2head .='		text-shadow: 0 0 5px '.$pagebordercolor.';';
-			$hpcss2head .='		border:1px solid '.$pagebordercolor.';';
-			$hpcss2head .='		}';
-			$hpcss2head .='		.potlogo p{';
-			$hpcss2head .='		text-shadow: 0 0 15px '.$pagebordercolor.';';
-			$hpcss2head .='		color: '.$fontcolor2.';';
-			$hpcss2head .='		}';
-			$hpcss2head .='		.pot {';
-			$hpcss2head .='		border:1px solid '.$pagebordercolor .';';
-			$hpcss2head .='		color: '.$fontcolor.';';
-			$hpcss2head .='		}';
-			$hpcss2head .='		.minipot {';
-			$hpcss2head .='		color: '.$fontcolor.';';
-			$hpcss2head .='		border:0px solid '.$pagebordercolor.';';
-			$hpcss2head .='		}';
-			$hpcss2head .='		.minipot-text {';
-			$hpcss2head .='		color: '.$fontcolor.';';
-			$hpcss2head .='		border:0px solid '.$pagebordercolor.';;';
-			$hpcss2head .='		}';
-			$hpcss2head .='		.pot A:link {color:'.$fontcolor.';} ';
-			$hpcss2head .='		.pot A:visited {color:'.$fontcolor.';} ';
-			$hpcss2head .='		.pot A:active {color:'.$fontcolor.';} ';
-			$hpcss2head .='		.pot A:hover {color:'.$fontcolor2.';}';
-			$hpcss2head .='		.hp-bot-box {';
-			$hpcss2head .='			border: 5px solid '.$pagebordercolor.';';
-			$hpcss2head .='			background-color: '.$pagebgcolor.';';
-			$hpcss2head .='			color: '.$fontcolor.';';
-			$hpcss2head .='		}';
-			$hpcss2head .='		</style>';
-			addCSSToHead(''.$hpcss2head.'','inline');
-			include("header.php");		
-			OpenTable();
-			echo '<div class="potlogo"><p>'._HONEYPOT_MAIN.'</p>' , PHP_EOL
-				,'<p><img src="./images/honeypot/nukehoneypot.png" height="107px" width="360px" alt="Honeypot Protected"></p></div>' , PHP_EOL
-				, '<div align="center">' , PHP_EOL
-				,'[ <a href="admin.php?op=honeypotconfig"><strong>'._HONEYPOT_CONFIG.'</strong></a> ]' , PHP_EOL
-				,' &nbsp; -- &nbsp; ' , PHP_EOL
-				,'[ <a href="'.$admin_file.'.php">'._HONEYPOT_MAINADMIN.'</a> ]' , PHP_EOL;
+		$hpcss2head = '<style>';
+		$hpcss2head .='.button, button.inputbutton, input.inputarea, div.pagination a {';
+		$hpcss2head .='		border:1px solid '.$pagebordercolor .';';
+		$hpcss2head .='		color: '.$fontcolor.';';
+		$hpcss2head .='		background-color: '.$pagebgcolor .';';
+		$hpcss2head .='		}';
+		$hpcss2head .='		div.pagination span {';
+		$hpcss2head .='		border:1px solid '.$pagebordercolor .';';
+		$hpcss2head .='		color: '.$fontcolor.';';
+		$hpcss2head .='		background-color: '.$pagebgcolor .';';
+		$hpcss2head .='		}';
+		$hpcss2head .='		.button, button.inputbutton:hover, div.pagination a:hover,div.pagination a:active,div.pagination span.current {';
+		$hpcss2head .='		border:1px solid '.$pagebordercolor .';';
+		$hpcss2head .='		background-color: '.$rowcolor1 .';';
+		$hpcss2head .='		}';
+		$hpcss2head .='		.pothead {';
+		$hpcss2head .='		color: '.$fontcolor2.';';
+		$hpcss2head .='		text-shadow: 0 0 5px '.$pagebordercolor.';';
+		$hpcss2head .='		border:1px solid '.$pagebordercolor.';';
+		$hpcss2head .='		}';
+		$hpcss2head .='		.potlogo p{';
+		$hpcss2head .='		text-shadow: 0 0 15px '.$pagebordercolor.';';
+		$hpcss2head .='		color: '.$fontcolor2.';';
+		$hpcss2head .='		}';
+		$hpcss2head .='		.pot {';
+		$hpcss2head .='		border:1px solid '.$pagebordercolor .';';
+		$hpcss2head .='		color: '.$fontcolor.';';
+		$hpcss2head .='		}';
+		$hpcss2head .='		.minipot {';
+		$hpcss2head .='		color: '.$fontcolor.';';
+		$hpcss2head .='		border:0px solid '.$pagebordercolor.';';
+		$hpcss2head .='		}';
+		$hpcss2head .='		.minipot-text {';
+		$hpcss2head .='		color: '.$fontcolor.';';
+		$hpcss2head .='		border:0px solid '.$pagebordercolor.';;';
+		$hpcss2head .='		}';
+		$hpcss2head .='		.pot A:link {color:'.$fontcolor.';} ';
+		$hpcss2head .='		.pot A:visited {color:'.$fontcolor.';} ';
+		$hpcss2head .='		.pot A:active {color:'.$fontcolor.';} ';
+		$hpcss2head .='		.pot A:hover {color:'.$fontcolor2.';}';
+		$hpcss2head .='		.hp-bot-box {';
+		$hpcss2head .='			border: 5px solid '.$pagebordercolor.';';
+		$hpcss2head .='			background-color: '.$pagebgcolor.';';
+		$hpcss2head .='			color: '.$fontcolor.';';
+		$hpcss2head .='		}';
+		$hpcss2head .='		</style>';
+
+		addCSSToHead(''.$hpcss2head.'','inline');
+
+		include("header.php");		
+
+		OpenTable();
+		echo '<div class="potlogo"><p>'._HONEYPOT_MAIN.'</p>' , PHP_EOL
+			,'<p><img style="padding-top: 5px;" src="./images/honeypot/nukehoneypot.png" height="107px" width="360px" alt="Honeypot Protected"></p></div>' , PHP_EOL
+			, '<div align="center">' , PHP_EOL
+			,'[ <a href="admin.php?op=honeypotconfig"><strong>'._HONEYPOT_CONFIG.'</strong></a> ]' , PHP_EOL
+			,' &nbsp; -- &nbsp; ' , PHP_EOL
+			,'[ <a href="'.$admin_file.'.php">'._HONEYPOT_MAINADMIN.'</a> ]' , PHP_EOL;
 				
-			if(isset($_GET['search']))
-			{
-				echo' &nbsp; -- &nbsp; ' , PHP_EOL
-				.'[ <a href="admin.php?op=honeypot"><strong>'._HONEYPOT_BOTLIST.'</strong></a> ]' , PHP_EOL;
-			}
-				echo ' &nbsp; -- &nbsp; ' , PHP_EOL
-		,'[ <a href="admin.php?op=honeypotstats"><strong>HoneyPot Stats</strong></a> ]</div>' , PHP_EOL
-				,'<br>' , PHP_EOL
-				  ,'<div align="center">' , PHP_EOL
-					,'<form method="get" action="./admin.php" id="searchform">' , PHP_EOL
-					,'<input type="hidden" name="op" value="honeypot" />' , PHP_EOL
-					,'<input type="text" name="search" size="30" class="inputarea" required>' , PHP_EOL
-					,'<input type="submit" value="Search" class="inputbutton">' , PHP_EOL
-					,'</form>' , PHP_EOL
-				,'</div>' , PHP_EOL
-				,'<div align="center" style="font-style: italic;">'._HONRYPOT_ONLY_IP_EMAIL.'</div>' , PHP_EOL;
-			CloseTable();
+		if(isset($_GET['search']))
+		{
+			echo' &nbsp; -- &nbsp; ' , PHP_EOL
+			.'[ <a href="admin.php?op=honeypot"><strong>'._HONEYPOT_BOTLIST.'</strong></a> ]' , PHP_EOL;
+		}
+			echo ' &nbsp; -- &nbsp; ' , PHP_EOL
+	        ,'[ <a href="admin.php?op=honeypotstats"><strong>HoneyPot Stats</strong></a> ]</div>' , PHP_EOL
+			,'<br>' , PHP_EOL
+			,'<div align="center">' , PHP_EOL
+			,'<form method="get" action="./admin.php" id="searchform">' , PHP_EOL
+			,'<input type="hidden" name="op" value="honeypot" />' , PHP_EOL
+			,'<input type="text" name="search" size="30" class="inputarea" required>' , PHP_EOL
+			,'<input type="submit" value="Search" class="inputbutton">' , PHP_EOL
+			,'</form>' , PHP_EOL
+			,'</div>' , PHP_EOL
+			,'<div align="center" style="font-style: italic;">'._HONRYPOT_ONLY_IP_EMAIL.'</div>' , PHP_EOL;
+		CloseTable();
 
 	//Checker to see if the installer is still on your site
 	if (file_exists('./honeypot-install.php')) 
@@ -498,7 +525,7 @@ function honeypot()
 					if($page<=0) $page = 1;
 						$reload = $page_url;
 			// call pagination function:
-					echo "<p>";
+				echo "<p>";
 				echo paginate($reload, $page, $total_pages, $adjacents).'</p>';
 			} 
 		}
@@ -523,7 +550,7 @@ function honeypot()
 		, '  }' , PHP_EOL
 		, '}' , PHP_EOL
 		, '</script>' , PHP_EOL
-// Jquery for Hidden div start
+        // Jquery for Hidden div start
 		, '<script>' , PHP_EOL
 		, 'nuke_jq(document).ready(function(){' , PHP_EOL
 		, '		nuke_jq(".mark").bind("mouseover", function () {' , PHP_EOL
@@ -536,17 +563,17 @@ function honeypot()
 		, '		});' , PHP_EOL
 		, '});' , PHP_EOL
 		, '</script>' , PHP_EOL
-// End jquer for Hidden div
+        // End jquer for Hidden div
 		, '<form name="form1" method="post" id ="checkall">' , PHP_EOL
 		, '<table border="0" cellpadding="2" cellspacing="1" width="100%">' , PHP_EOL
-			, '<tr>' , PHP_EOL
-			, '<td width="45px" class="pothead" bgcolor="'.$headcolor.'" align="center">'._HONEYPOT_ID.'</td>' , PHP_EOL
-			, '<td width="25%" class="pothead" bgcolor="'.$headcolor.'" align="center">'._HONEYPOT_IP.'</td>' , PHP_EOL
-			, '<td width="25%" class="pothead" bgcolor="'.$headcolor.'" align="center">'._HONEYPOT_DATETIME.'</td>' , PHP_EOL
-			, '<td width="25%" class="pothead" bgcolor="'.$headcolor.'" align="center">'._HONEYPOT_CAUGHTBY.'</td>' , PHP_EOL
-			, '<td width="25%" class="pothead" bgcolor="'.$headcolor.'" align="center">'._HONEYPOT_REASON.'</td>' , PHP_EOL
-			, '<td width="30px" class="pothead" bgcolor="'.$headcolor.'" align="center">'._HONEYPOT_DELETE.'</td>' , PHP_EOL
-			, '</tr>' , PHP_EOL;
+		, '<tr>' , PHP_EOL
+		, '<td width="45px" class="pothead" bgcolor="'.$headcolor.'" align="center">'._HONEYPOT_ID.'</td>' , PHP_EOL
+		, '<td width="25%" class="pothead" bgcolor="'.$headcolor.'" align="center">'._HONEYPOT_IP.'</td>' , PHP_EOL
+		, '<td width="25%" class="pothead" bgcolor="'.$headcolor.'" align="center">'._HONEYPOT_DATETIME.'</td>' , PHP_EOL
+		, '<td width="25%" class="pothead" bgcolor="'.$headcolor.'" align="center">'._HONEYPOT_CAUGHTBY.'</td>' , PHP_EOL
+		, '<td width="25%" class="pothead" bgcolor="'.$headcolor.'" align="center">'._HONEYPOT_REASON.'</td>' , PHP_EOL
+		, '<td width="30px" class="pothead" bgcolor="'.$headcolor.'" align="center">'._HONEYPOT_DELETE.'</td>' , PHP_EOL
+		, '</tr>' , PHP_EOL;
 
 		if(isset($_GET['search'])){
 			$nameip = $db->sql_escapestring($_GET['search']);
@@ -590,7 +617,7 @@ function honeypot()
 	echo '<tr>' , PHP_EOL
 		, '<td bgcolor="'.$row_color.'" class="mark pot" id="mark',$row['id'],'" width="45px" align="center">' , PHP_EOL
 		, '<span class="minipot">' , $row['id'] , '</span>', PHP_EOL;
-// Hidden Div start
+    // Hidden Div start
 	echo '<div class="addinfo',$row['id'],' hp-bot-box">' , PHP_EOL
 	   , '<div class="pothead text-center">' , _HONEYPOT_ADDITIONALINFO , '</div>' , PHP_EOL
 	   , '<hr>' , PHP_EOL
@@ -600,7 +627,7 @@ function honeypot()
 	   , '<p class="minipot-text"><span class="minipot thick">' , _HONEYPOT_EMAIL , '</span> &nbsp;&nbsp;-&nbsp;&nbsp; ' , htmlspecialchars($row['email'], ENT_QUOTES, _CHARSET) , '</p>' , PHP_EOL
 	   , '</div>' , PHP_EOL;
 	   
-// Hidden Div end
+    // Hidden Div end
 	echo '</td>' , PHP_EOL
 		, '<td bgcolor="'.$row_color.'" class="pot" width="25%" align="center">' , PHP_EOL
 			, '<a href="http://dnsquery.org/ipwhois/'.$row['ip'].'" target="_blank">'.$ip2c_image . $row['ip'].'</a></td>' , PHP_EOL
@@ -612,12 +639,8 @@ function honeypot()
 		, '</tr>' , PHP_EOL;
 
 	}
-		echo"</table>" , PHP_EOL;
+	echo"</table>" , PHP_EOL;
 		
-
-
-
-
 	if (($total_count == 0) && (isset($_POST['nameip']))){
 			echo'<table border="0" cellpadding="2" cellspacing="1" width="100%">' , PHP_EOL
 			, '<tr>' , PHP_EOL
@@ -674,11 +697,11 @@ function honeypot()
 			, 'www.headshotdomain.net' , PHP_EOL
 			, '</a></p>' , PHP_EOL
 			, '<div align="center" style="text-align:center;">' , PHP_EOL
-			, '<form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_blank">' , PHP_EOL
-			, '<input type="hidden" name="cmd" value="_s-xclick" />' , PHP_EOL
-			, '<input type="hidden" name="hosted_button_id" value="FBDV9KVDGAN2E" />' , PHP_EOL
-			, '<input type="image" src="https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif" border="0" name="submit" alt="PayPal - The safer, easier way to pay online!" />' , PHP_EOL
-			, '<img style="border:0; width:1px; height:1px;" src="https://www.paypalobjects.com/en_US/i/scr/pixel.gif" alt="" />' , PHP_EOL
+			, '<form style="background-color: transparent !important;" action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_blank">' , PHP_EOL
+			, '<input style="background-color: transparent !important;" type="hidden" name="cmd" value="_s-xclick" />' , PHP_EOL
+			, '<input style="background-color: transparent !important;" type="hidden" name="hosted_button_id" value="FBDV9KVDGAN2E" />' , PHP_EOL
+			, '<input style="background-color: transparent !important;" type="image" src="https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif" border="0" name="submit" alt="PayPal - The safer, easier way to pay online!" />' , PHP_EOL
+			, '<img style="background-color: transparent !important; border:0; width:1px; height:1px;" src="https://www.paypalobjects.com/en_US/i/scr/pixel.gif" alt="" />' , PHP_EOL
 			, '<br /><br />Help support this project, every little bit helps.<br />' , PHP_EOL
 			, '</form>' , PHP_EOL
 			, '</div>' , PHP_EOL;
@@ -690,40 +713,105 @@ function honeypot()
 	{
 		global $prefix, $db, $admin_file, $bgcolor2;
 
-		$result2 = $db->sql_query("SELECT usehp, botlisting, perpage, pagenumberpos, headcolor, rowcolor1, rowcolor2, pagebgcolor, pagebordercolor, fontcolor, fontcolor2, check1, check2, check3, check4, check5, check6, c7opt1, c7opt2, c7amount, c8opt1, c8opt2, usebsapi, c8apikey, fs9opt1, fs9opt2, fs9apikey, check3time, check4question, check4answer, usefeedback, email, version FROM ".$prefix."_honeypot_config");
-		list($usehp, $botlisting, $perpage, $pagenumberpos, $headcolor, $rowcolor1, $rowcolor2, $pagebgcolor, $pagebordercolor, $fontcolor, $fontcolor2, $check1, $check2, $check3, $check4, $check5, $check6, $c7opt1, $c7opt2, $c7amount, $c8opt1, $c8opt2, $usebsapi, $c8apikey, $fs9opt1, $fs9opt2, $fs9apikey, $check3time, $check4question, $check4answer, $usefeedback, $email, $hpversion) = $db->sql_fetchrow($result2);
-$hpcss2head = '<style>'."\n";
-$hpcss2head .= '	.pothead {'."\n";
-$hpcss2head .= '		border:1px solid '.$pagebgcolor .';'."\n";
-$hpcss2head .= '	}'."\n";
-$hpcss2head .= '	.potlogo p{'."\n";
-$hpcss2head .= '		text-shadow: 0 0 15px '.$pagebgcolor .';'."\n";
-$hpcss2head .= '	}'."\n";
-$hpcss2head .= '	.pot {'."\n";
-$hpcss2head .= '		border:1px solid '.$pagebordercolor .';'."\n";
-$hpcss2head .= '	}'."\n";
-$hpcss2head .= '	td.spacer {'."\n";
-$hpcss2head .= '		background-color: '.$bgcolor2.';'."\n";
-$hpcss2head .= '	}'."\n";
-$hpcss2head .= '	</style>'."\n";
-$hpjs2head = '<script>'."\n";
-$hpjs2head .= '  nuke_jq(document).ready(function(){'."\n";
-$hpjs2head .= '      nuke_jq(\'.img-zoom\').hover(function() {'."\n";
-$hpjs2head .= '          nuke_jq(this).addClass(\'transition\');'."\n";
-$hpjs2head .= '      }, function() {'."\n";
-$hpjs2head .= '          nuke_jq(this).removeClass(\'transition\');'."\n";
-$hpjs2head .= '      });'."\n";
-$hpjs2head .= '    });'."\n";
-$hpjs2head .= '  </script>'."\n";
+		$result2 = $db->sql_query("SELECT usehp, 
+		                             botlisting, 
+									    perpage, 
+								  pagenumberpos, 
+								      headcolor, 
+									  rowcolor1, 
+									  rowcolor2, 
+									pagebgcolor, 
+								pagebordercolor, 
+								      fontcolor, 
+									 fontcolor2, 
+									     check1, 
+										 check2, 
+										 check3, 
+										 check4, 
+										 check5, 
+										 check6, 
+										 c7opt1, 
+										 c7opt2, 
+									   c7amount, 
+									     c8opt1, 
+										 c8opt2, 
+									   usebsapi, 
+									   c8apikey, 
+									    fs9opt1, 
+										fs9opt2, 
+									  fs9apikey, 
+									 check3time, 
+								 check4question, 
+								   check4answer, 
+								    usefeedback, 
+									      email, 
+										version FROM ".$prefix."_honeypot_config");
+	        list($usehp, 
+		    $botlisting, 
+		       $perpage, 
+	     $pagenumberpos, 
+	         $headcolor, 
+		     $rowcolor1, 
+		     $rowcolor2, 
+	       $pagebgcolor, 
+	   $pagebordercolor, 
+	         $fontcolor, 
+			$fontcolor2, 
+			    $check1, 
+			    $check2, 
+			    $check3, 
+			    $check4, 
+				$check5, 
+				$check6, 
+				$c7opt1, 
+				$c7opt2, 
+			  $c7amount, 
+			    $c8opt1, 
+				$c8opt2, 
+			  $usebsapi, 
+			  $c8apikey, 
+			   $fs9opt1, 
+			   $fs9opt2, 
+			 $fs9apikey, 
+			$check3time, 
+		$check4question, 
+		  $check4answer, 
+		   $usefeedback, 
+		         $email, 
+			 $hpversion) = $db->sql_fetchrow($result2);
 
-			addCSSToHead(''.$hpcss2head.'','inline');
-			addCSSToHead('./includes/honeypot/css/honeypot_cfg.css','file');
-			addJSToBody(''.$hpjs2head.'','inline', true);
-			include("header.php");	
+         $hpcss2head = '<style>'."\n";
+        $hpcss2head .= '	.pothead {'."\n";
+        $hpcss2head .= '		border:1px solid '.$pagebgcolor .';'."\n";
+        $hpcss2head .= '	}'."\n";
+        $hpcss2head .= '	.potlogo p{'."\n";
+        $hpcss2head .= '		text-shadow: 0 0 15px '.$pagebgcolor .';'."\n";
+        $hpcss2head .= '	}'."\n";
+        $hpcss2head .= '	.pot {'."\n";
+        $hpcss2head .= '		border:1px solid '.$pagebordercolor .';'."\n";
+        $hpcss2head .= '	}'."\n";
+        $hpcss2head .= '	td.spacer {'."\n";
+        $hpcss2head .= '		background-color: '.$bgcolor2.';'."\n";
+        $hpcss2head .= '	}'."\n";
+        $hpcss2head .= '	</style>'."\n";
+        $hpjs2head = '<script>'."\n";
+        $hpjs2head .= '  nuke_jq(document).ready(function(){'."\n";
+        $hpjs2head .= '      nuke_jq(\'.img-zoom\').hover(function() {'."\n";
+        $hpjs2head .= '          nuke_jq(this).addClass(\'transition\');'."\n";
+        $hpjs2head .= '      }, function() {'."\n";
+        $hpjs2head .= '          nuke_jq(this).removeClass(\'transition\');'."\n";
+        $hpjs2head .= '      });'."\n";
+        $hpjs2head .= '    });'."\n";
+        $hpjs2head .= '  </script>'."\n";
+
+		addCSSToHead(''.$hpcss2head.'','inline');
+		addCSSToHead('./includes/honeypot/css/honeypot_cfg.css','file');
+		addJSToBody(''.$hpjs2head.'','inline', true);
+		include("header.php");	
 
 		OpenTable();
 		echo '<div class="potlogo">' , PHP_EOL
-		,'<p>'._HONEYPOT_MAIN.'<br /><img src="./images/honeypot/nukehoneypot.png" height="107px" width="360px" alt="Honeypot Protected">' , PHP_EOL
+		,'<p>'._HONEYPOT_MAIN.'<br /><img style="padding-top: 15px;" src="./images/honeypot/nukehoneypot.png" height="107px" width="360px" alt="Honeypot Protected">' , PHP_EOL
 		,'</p></div>' , PHP_EOL
 		,'<div align="center">[ <a href="admin.php?op=honeypot"><strong>'._HONEYPOT_BOTLIST.'</strong></a> ]' , PHP_EOL
 		,' &nbsp; -- &nbsp; ' , PHP_EOL
@@ -731,40 +819,41 @@ $hpjs2head .= '  </script>'."\n";
 		,' &nbsp; -- &nbsp; ' , PHP_EOL
 		,'[ <a href="admin.php?op=honeypotstats"><strong>HoneyPot Stats</strong></a> ]</div>' , PHP_EOL;
 		
-	//Version Check and update feed fetcher
+	    //Version Check and update feed fetcher
 		$url = "http://www.headshotdomain.net/script_vchecker/evo-hpchangelog.xml";
-	// Check first to see if fopen is allowed
+	    // Check first to see if fopen is allowed
 		if (ini_get('allow_url_fopen') == true) 
 		{
 			$xml = simplexml_load_file($url);
 		}
 		else
 		{
-	//If fopen is not allowed, it will try using a CUrl instead.
-			function download_page($path)
-			{
-				$ch = curl_init();
-				curl_setopt($ch, CURLOPT_URL,$path);
-				curl_setopt($ch, CURLOPT_FAILONERROR,1);
-				curl_setopt($ch, CURLOPT_FOLLOWLOCATION,1);
-				curl_setopt($ch, CURLOPT_RETURNTRANSFER,1);
-				curl_setopt($ch, CURLOPT_TIMEOUT, 15);
-				$retValue = curl_exec($ch); 
-				curl_close($ch);
-				return $retValue;
-			}
-			$sXML = download_page($url);
-	//Check to see if XML failr to retrieve,
-			try 
-			{
-				$xml = new SimpleXMLElement($sXML);
-			}
-	//If retrieval fails, it will stop from displaying errors and force the fail message
-			catch (Exception $e) 
-			{
-				$xml = "";
-			}
+	    //If fopen is not allowed, it will try using a CUrl instead.
+		function download_page($path)
+		{
+			$ch = curl_init();
+			curl_setopt($ch, CURLOPT_URL,$path);
+			curl_setopt($ch, CURLOPT_FAILONERROR,1);
+			curl_setopt($ch, CURLOPT_FOLLOWLOCATION,1);
+			curl_setopt($ch, CURLOPT_RETURNTRANSFER,1);
+			curl_setopt($ch, CURLOPT_TIMEOUT, 15);
+			$retValue = curl_exec($ch); 
+			curl_close($ch);
+			return $retValue;
 		}
+		$sXML = download_page($url);
+	    //Check to see if XML failr to retrieve,
+		try 
+		{
+			$xml = new SimpleXMLElement($sXML);
+		}
+	    //If retrieval fails, it will stop from displaying errors and force the fail message
+		catch (Exception $e) 
+		{
+			$xml = "";
+		}
+		}
+		
 		if($xml) 
 		{
 			$checkerresponse = $xml->latest_version->version;	
@@ -794,10 +883,10 @@ $hpjs2head .= '  </script>'."\n";
 		echo '<p style="font-weight: bold; text-align:center;">'._HONEYPOT_INSTALLCHECK.':</p>' , PHP_EOL
 		,'<br>' , PHP_EOL;
 
-			if (file_exists('./includes/honeypot/flash.js')) 
-			{
-				echo "<script type=\"text/javascript\" src=\"./includes/honeypot/flash.js\"></script>" , PHP_EOL;
-			}
+		if (file_exists('./includes/honeypot/flash.js')) 
+		{
+			echo "<script type=\"text/javascript\" src=\"./includes/honeypot/flash.js\"></script>" , PHP_EOL;
+		}
 		echo"<style type=\"text/css\">
 			.blink {
 			display: inline;
@@ -1021,11 +1110,11 @@ $hpjs2head .= '  </script>'."\n";
 	   , '<td>' , _HONEYPOT_CHECK4ANSWER , ':</td>' , PHP_EOL
 	   , '<td><input type="text" name="check4answer" value="' , $check4answer , '" size="30" maxlength="255" /><br /><em>' , _HONEYPOT_LIMIT ,'</em></td>' , PHP_EOL
 	   , '</tr>' , PHP_EOL;
-//--------[SPACER]-------------
+    //--------[SPACER]-------------
 	echo '<tr>' , PHP_EOL
 	   , '<td colspan="2" class="spacer"><br /><br /></td>' , PHP_EOL
 	   , '</tr>' , PHP_EOL;
-//-----------------------------
+    //-----------------------------
 	echo '<tr>' , PHP_EOL
 	   , '<td>'._HONEYPOT_CHECK7OPTIONS.'</td>' , PHP_EOL
 	   , '<td>' , PHP_EOL
@@ -1059,11 +1148,11 @@ $hpjs2head .= '  </script>'."\n";
 	   , '<input type="text" name="c7amount" maxlength="100" value="' , $c7amount , '" />' , PHP_EOL
 	   , '</td>' , PHP_EOL
 	   , '</tr>' , PHP_EOL;
-//--------[SPACER]-------------
+    //--------[SPACER]-------------
 	echo '<tr>' , PHP_EOL
 	   , '<td colspan="2" class="spacer"><br /><br /></td>' , PHP_EOL
 	   , '</tr>' , PHP_EOL;
-//-----------------------------
+    //-----------------------------
 	echo '<tr>' , PHP_EOL
 	   , '<td>'._HONEYPOT_CHECK_5_AND_6.'</td>' , PHP_EOL
 	   , '<td>' , PHP_EOL
@@ -1091,11 +1180,11 @@ $hpjs2head .= '  </script>'."\n";
 	   , '</table>' , PHP_EOL
 	   , '</td>' , PHP_EOL
 	   , '</tr>' , PHP_EOL;
-//--------[SPACER]-------------
+    //--------[SPACER]-------------
 	echo '<tr>' , PHP_EOL
 	   , '<td colspan="2" class="spacer"><br /><br /></td>' , PHP_EOL
 	   , '</tr>' , PHP_EOL;
-//-----------------------------
+    //-----------------------------
 	echo '<tr>' , PHP_EOL
 	   , '<td width="315px">'._HONEYPOT_CHECK8OPTIONS , PHP_EOL
 	   , '<div class="text-center">' , PHP_EOL
@@ -1151,11 +1240,11 @@ $hpjs2head .= '  </script>'."\n";
 		   , '</td>' , PHP_EOL
 		   , '</tr>' , PHP_EOL;
 	}
-//--------[SPACER]-------------
+    //--------[SPACER]-------------
 	echo '<tr>' , PHP_EOL
 	   , '<td colspan="2" class="spacer"><br /><br /></td>' , PHP_EOL
 	   , '</tr>' , PHP_EOL;
-//-----------------------------
+    //-----------------------------
 	echo '<tr>' , PHP_EOL
 	   , '<td>'._HONEYPOT_CHECK9OPTIONS.'<br />' , PHP_EOL
 	   , '<div class="text-center">' , PHP_EOL
@@ -1201,11 +1290,11 @@ $hpjs2head .= '  </script>'."\n";
 		   , '</td>' , PHP_EOL
 		   , '</tr>' , PHP_EOL;
 	}
-//--------[SPACER]-------------
+    //--------[SPACER]-------------
 	echo '<tr>' , PHP_EOL
 	   , '<td colspan="2" class="spacer"><br /><br /></td>' , PHP_EOL
 	   , '</tr>' , PHP_EOL;
-//-----------------------------
+    //-----------------------------
 	   echo '<tr>' , PHP_EOL
 	   , '<td>' , _HONEYPOT_FEEDBACK , ':</td>' , PHP_EOL
 	   , '<td>' , PHP_EOL
@@ -1232,7 +1321,7 @@ $hpjs2head .= '  </script>'."\n";
 	   , '<td colspan="2" class="text-center">' , PHP_EOL
 	   , '<input type="hidden" name="op" value="honeypotconfigsave" />' , PHP_EOL
 	   , '<br /><br />' , PHP_EOL
-	   , '<input type="image" src="images/honeypot/button/saveconfig1.png" onmouseover="this.src=\'images/honeypot/button/saveconfig2.png\'" onmouseout="this.src=\'images/honeypot/button/saveconfig1.png\'" style="width:176px; height:49px" alt="Save Info" />' , PHP_EOL
+	   , '<input style="background-color: transparent !important;" type="image" src="images/honeypot/button/saveconfig1.png" onmouseover="this.src=\'images/honeypot/button/saveconfig2.png\'" onmouseout="this.src=\'images/honeypot/button/saveconfig1.png\'" style="width:176px; height:49px" alt="Save Info" />' , PHP_EOL
 	   , '<br />' , PHP_EOL
 	   , '</td>' , PHP_EOL
 	   , '</tr>' , PHP_EOL
@@ -1295,20 +1384,51 @@ $hpjs2head .= '  </script>'."\n";
 		echo '<div style="text-align:center;">Mod Created by coRpSE ' , PHP_EOL
 			, '<a href="http://www.headshotdomain.net" title="HeadShotDomain" target="_blank">www.headshotdomain.net</a></p>' , PHP_EOL
 			, '<div align="center" style="text-align:center;">' , PHP_EOL
-			, '<form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_blank">' , PHP_EOL
-			, '<input type="hidden" name="cmd" value="_s-xclick" />' , PHP_EOL
-			, '<input type="hidden" name="hosted_button_id" value="FBDV9KVDGAN2E" />' , PHP_EOL
-			, '<input type="image" src="https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif" border="0" name="submit" alt="PayPal - The safer, easier way to pay online!" />' , PHP_EOL
-			, '<img style="border:0; width:1px; height:1px;" src="https://www.paypalobjects.com/en_US/i/scr/pixel.gif" alt="" />' , PHP_EOL
+			, '<form style="background-color: transparent !important;" action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_blank">' , PHP_EOL
+			, '<input style="background-color: transparent !important;" type="hidden" name="cmd" value="_s-xclick" />' , PHP_EOL
+			, '<input style="background-color: transparent !important;" type="hidden" name="hosted_button_id" value="FBDV9KVDGAN2E" />' , PHP_EOL
+			, '<input style="background-color: transparent !important;" type="image" src="https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif" border="0" name="submit" alt="PayPal - The safer, easier way to pay online!" />' , PHP_EOL
+			, '<img style="background-color: transparent !important; border:0; width:1px; height:1px;" src="https://www.paypalobjects.com/en_US/i/scr/pixel.gif" alt="" />' , PHP_EOL
 			, '<br /><br />Help support this project, every little bit helps.<br />' , PHP_EOL
 			, '</form>' , PHP_EOL
 			, '</div></div>' , PHP_EOL;
 		CloseTable();
 	}
 	//save config start
-	function honeypotconfigsave($usehp, $botlisting, $perpage, $pagenumberpos, $headcolor, $rowcolor1, $rowcolor2, $pagebgcolor, $pagebordercolor, $fontcolor, $fontcolor2, $check1, $check2, $check3, $check4, $check5, $check6, $c7opt1, $c7opt2, $c7amount, $c8opt1, $c8opt2, $usebsapi, $c8apikey, $fs9opt1, $fs9opt2, $fs9apikey, $check3time, $check4question, $check4answer,$usefeedback, $email) {
-	include("header.php");
-	global $prefix, $db, $module_name;
+	function honeypotconfigsave($usehp, 
+	                       $botlisting, 
+						      $perpage, 
+						$pagenumberpos, 
+						    $headcolor, 
+							$rowcolor1, 
+							$rowcolor2, 
+						  $pagebgcolor, 
+					  $pagebordercolor, 
+					        $fontcolor, 
+						   $fontcolor2, 
+						       $check1, 
+							   $check2, 
+							   $check3, 
+							   $check4, 
+							   $check5, 
+							   $check6, 
+							   $c7opt1, 
+							   $c7opt2, 
+							 $c7amount, 
+							   $c8opt1, 
+							   $c8opt2, 
+							 $usebsapi, 
+							 $c8apikey, 
+							  $fs9opt1, 
+							  $fs9opt2, 
+							$fs9apikey, 
+						   $check3time, 
+					   $check4question, 
+					     $check4answer,
+						  $usefeedback, 
+						        $email) {
+	    include("header.php");
+	    global $prefix, $db, $module_name;
 
 		$usehp = htmlentities($usehp, ENT_QUOTES);
 		$botlisting = htmlentities($botlisting, ENT_QUOTES);
