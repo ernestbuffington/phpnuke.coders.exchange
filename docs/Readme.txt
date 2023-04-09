@@ -1,7 +1,7 @@
 PHP-Nuke: PHP 8.x Web Portal System
 ===========================
 
-Welcome to PHP-Nuke v8.3.2!
+Welcome to PHP-Nuke v8.3.3!
 
 First of all, thanks a lot for downloading this software, I hope that you
 can enjoy it.
