@@ -1,0 +1,6 @@
+ssl in
+cd public_html
+run composer update from the root directory of your website..
+create rector.php config file in your root dir.
+
+And wala you are ready to refactor!
