@@ -31,8 +31,8 @@
 
 /*****[CHANGES]*******************************************************************
 -=[Base]=-
-      Nuke Patched                             v3.1.0       06/26/2005
-      NukeSentinel                             v2.5.00      07/11/2006
+      PHP Patched                              v8.2.4       04/10/2023
+      NukeSentinel                             v2.6.16      07/11/2021
       Evolution Functions                      v1.5.0       12/20/2005
 -=[Mod]=-
       Forum Logout                             v1.0.0       07/27/2005
@@ -61,40 +61,13 @@ global $cookie;
 if(!isset($op))
 $op = '';
 
-if (isset($_REQUEST['username'])) 
-{
-  $username = Fix_Quotes($_REQUEST['username']);
-}
-
-if (isset($_REQUEST['redirect'])) 
-{
-  $redirect = $_REQUEST['redirect'];
-}
-
-if (isset($_REQUEST['module'])) 
-{
-  $module = $_REQUEST['module'];
-}
-
-if (isset($_REQUEST['user_password'])) 
-{
-  $user_password = $_REQUEST['user_password'];
-}
-
-if (isset($_REQUEST['mode'])) 
-{
-  $mode = $_REQUEST['mode'];
-}
-
-if (isset($_REQUEST['t'])) 
-{
-  $t = $_REQUEST['t'];
-}
-
-if (isset($_REQUEST['p'])) 
-{
-  $p = $_REQUEST['p'];
-}
+if (isset($_REQUEST['username'])) { $username = Fix_Quotes($_REQUEST['username']); }
+if (isset($_REQUEST['redirect'])) { $redirect = $_REQUEST['redirect']; }
+if (isset($_REQUEST['module'])) { $module = $_REQUEST['module']; }
+if (isset($_REQUEST['user_password'])) { $user_password = $_REQUEST['user_password']; }
+if (isset($_REQUEST['mode'])) { $mode = $_REQUEST['mode']; }
+if (isset($_REQUEST['t'])) { $t = $_REQUEST['t']; }
+if (isset($_REQUEST['p'])) { $p = $_REQUEST['p']; }
 
 include(NUKE_MODULES_DIR.$module_name.'/navbar.php');
 include(NUKE_MODULES_DIR.$module_name.'/includes/cookiecheck.php');
