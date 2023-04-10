@@ -34,7 +34,7 @@ global $prefix, $db;
 include_once(NUKE_BASE_DIR.'header.php');
 title(_CB_ADMIN3);
 CBMenu();
-echo"<br />\n";
+
 CBSample(3);
 OpenTable();
 title(_CB_CONFIG3);
@@ -53,6 +53,7 @@ echo "<tr><td>"._CB_HEIGHT.": <input size='4' type='text' name='xheight' value='
 echo "</tr></table></center><br /><br /><br />\n";
 title(_CB_LIST3);
 $cblocksdir = dir(NUKE_BLOCKS_DIR);
+if(!isset($cblockslist)) { $cblockslist = ''; }
 while($func=$cblocksdir->read()) { if(substr($func, 0, 6) == "block-") { $cblockslist .= "$func "; } }
 closedir($cblocksdir->handle);
 $cblockslist = explode(" ", $cblockslist);

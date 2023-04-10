@@ -98,15 +98,19 @@ function cb_blocks($rid) {
 }
 
 function CBSample($set) {
-    global $db, $prefix;
+    global $bgcolor2, $bgcolor1, $db, $prefix;
     $cbinfo = $db->sql_fetchrow($db->sql_query("SELECT * FROM `".$prefix."_nsncb_config` WHERE `cgid`='$set'"));
     if($cbinfo['height'] <> "0") { $cheight = "height='".$cbinfo['height']."' "; } else { $cheight = ""; }
-    OpenTable();
+    
+	OpenTable();
     echo "<table width='100%' ".$cheight."border='0' cellspacing='1' cellpadding='0' bgcolor='$bgcolor2'><tr><td valign='top'>\n";
     echo "<table width='100%' ".$cheight."border='0' cellspacing='1' cellpadding='4' bgcolor='$bgcolor1'><tr>";
-    $result3 = $db->sql_query("SELECT * FROM `".$prefix."_nsncb_blocks` WHERE `cgid`='$set' ORDER BY `cbid`");
-    while($cbidinfo = $db->sql_fetchrow($result3)) {
-        if($cbidinfo['cbid'] <= $cbinfo['count']) {
+    
+	$result3 = $db->sql_query("SELECT * FROM `".$prefix."_nsncb_blocks` WHERE `cgid`='$set' ORDER BY `cbid`");
+    
+	while($cbidinfo = $db->sql_fetchrow($result3)) {
+    
+	    if($cbidinfo['cbid'] <= $cbinfo['count']) {
             if($cbidinfo['wtype'] == '0') {
                 echo "<td width='".$cbidinfo['width']."' valign='top' align='center'>\n";
             } else {
@@ -119,7 +123,7 @@ function CBSample($set) {
     echo "</tr></table>\n";
     echo "</td></tr></table>\n";
     CloseTable();
-    echo "<br />";
+   
 }
 
 function CBMenu() {
