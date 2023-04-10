@@ -38,6 +38,10 @@
                    other similar deathtraps! (So the spambot still
                    receives tons of fake emails, but the bandwidth
                    consumed is not all yours!).
+				   
+				   
+  Applied rules:
+   * RandomFunctionRector				   
 ************************************************************************/
 
 /*****[CHANGES]**********************************************************
@@ -76,7 +80,7 @@ $chars = explode(" ", $spamchars);
 
 //Domains
 $domains = array(".com", ".net", ".org", ".co.uk", ".nl", ".de");
-srand(microtime() * 1000000);
+mt_srand(microtime() * 1000000);
 /*****[END]********************************************
  [ Configuration:                                     ]
  ******************************************************/
@@ -88,7 +92,7 @@ function gensalt($length) {
 	mt_srand(0, MT_RAND_MT19937);
     $salt = "";
     for($j=0; $j<$length; $j++) {
-        $salt .= $chars[mt_rand(0, count($chars) - 1)];
+        $salt .= $chars[random_int(0, count($chars) - 1)];
     }
     return $salt;
 }
@@ -100,33 +104,33 @@ echo '<div style="height: 50em; overflow: auto;">'.$keywords ."<p><body></p>"; /
 $emailsserved = 0;
 for($i=0; $i<$numemails; $i++) {
     $emailaddr = "";
-    for($j=0; $j<mt_rand(2,3); $j++) {
-        $emailaddr .= $words[mt_rand(0, count($words) - 1)];
+    for($j=0; $j<random_int(2,3); $j++) {
+        $emailaddr .= $words[random_int(0, count($words) - 1)];
     }
 
     //Append some junk to make it less likely to hit
-    $emailaddr .= gensalt(mt_rand(0,6));
+    $emailaddr .= gensalt(random_int(0,6));
     $emailaddr .= "@";
-    for($j=0; $j<mt_rand(2,3); $j++) {
-        $emailaddr .= $words[mt_rand(0, count($words) - 1)];
+    for($j=0; $j<random_int(2,3); $j++) {
+        $emailaddr .= $words[random_int(0, count($words) - 1)];
     }
 
     //Append some junk to make the domain more unlikely to hit
-    $emailaddr .= gensalt(mt_rand(0,6));
-    $emailaddr .= $domains[mt_rand(0, count($domains) - 1)];
+    $emailaddr .= gensalt(random_int(0,6));
+    $emailaddr .= $domains[random_int(0, count($domains) - 1)];
     echo "<a href=\"mailto:".$emailaddr."\">".$emailaddr."</a><br />\n";
     $emailsserved++;
 
     //Some bonuses
-    if (mt_rand(1, 5) == 1) {
-        $emailaddr = gensalt(mt_rand(7, 14)) . "@" . gensalt(mt_rand(8, 12)) . $domains[mt_rand(0, count($domains)-1)];
+    if (random_int(1, 5) == 1) {
+        $emailaddr = gensalt(random_int(7, 14)) . "@" . gensalt(random_int(8, 12)) . $domains[random_int(0, count($domains)-1)];
         echo "<a href=\"mailto:".$emailaddr."\">".$emailaddr."</a><br />\n";
         $emailsserved++;
     }
 
     //For real dumb spambots who don't even recognise MD5 hashes ;)
-    if (mt_rand(1, 15) == 1) {
-        $emailaddr = md5(mt_rand(1, 1000000)) . "@" . md5(mt_rand(1, 1000000)) . $domains[mt_rand(0, count($domains)-1)];
+    if (random_int(1, 15) == 1) {
+        $emailaddr = md5(random_int(1, 1000000)) . "@" . md5(random_int(1, 1000000)) . $domains[random_int(0, count($domains)-1)];
         echo "<a href=\"mailto:".$emailaddr."\">".$emailaddr."</a><br />\n";
         $emailsserved++;
     }
@@ -157,10 +161,10 @@ if ($counter <= 3) {
 $limit = 8000; //Crank it up for effectiveness!
 echo "<p>"._SBK_BOTS_ONLY."</p><hr />";
 for($i=0; $i<$limit; $i++) {
-    echo chr(mt_rand(0, 255));
-    if (mt_rand(1, 25) == 1) echo "<a href=mailto:";
-    if (mt_rand(1, 25) == 1) echo ">";
-    if (mt_rand(1, 25) == 1) echo "</a>";
+    echo chr(random_int(0, 255));
+    if (random_int(1, 25) == 1) echo "<a href=mailto:";
+    if (random_int(1, 25) == 1) echo ">";
+    if (random_int(1, 25) == 1) echo "</a>";
 }
 
 echo '</div>';
