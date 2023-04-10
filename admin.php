@@ -317,8 +317,6 @@ if ($admintest){
         break;
 		case "logout":
             setcookie("admin", false);
-			// setcookie('admin', '/', 1);
-
             unset($admin);
             header("Refresh: 3; url=".$admin_file.".php");
             DisplayError("<span class=\"title\"><strong>".$admlang['logged_out']."</strong></span>", true);
