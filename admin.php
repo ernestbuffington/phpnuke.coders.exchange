@@ -94,9 +94,9 @@ if (isset($aid) && (preg_match("/[^a-zA-Z0-9_-]/", trim($aid)))){
 if (isset($aid)){ $aid = substr($aid, 0,25);}
 if (isset($pwd)){ $pwd = substr($pwd, 0,40);}
 if ((isset($aid)) && (isset($pwd)) && (isset($op)) && ($op == "login")){
-/*****[BEGIN]******************************************
- [ Mod:     Advanced Security Code Control     v1.0.0 ]
- ******************************************************/
+    /*****[BEGIN]******************************************
+     [ Mod:     Advanced Security Code Control     v1.0.0 ]
+     ******************************************************/
     if(!isset($_POST['g-recaptcha-response']))
     $_POST['g-recaptcha-response'] = '';
  
