@@ -26,7 +26,7 @@
 /* the Free Software Foundation; either version 2 of the License.                */
 /*                                                                               */
 /*********************************************************************************/
-/* CNB Your Account it the official successor of NSN Your Account by Bob Marion  */
+/* CNB Your Account is the official successor of NSN Your Account by Bob Marion  */
 /*********************************************************************************/
 
 /*****[CHANGES]*******************************************************************
