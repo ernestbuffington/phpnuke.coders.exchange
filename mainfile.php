@@ -1571,6 +1571,9 @@ function filter($what, $strip="", $save="", $type="") {
 
 /*
  * formatTimestamp function by ReOrGaNiSaTiOn
+ * Adopted Evo function formatTimestamp
+ * Code origin Evo Xtreme v2.0.9e
+ * @date 03/28/2023 8:23 AM Ernest Allen Buffington 
  */
 function formatTimestamp($time, $format='', $dateonly='') 
 {
