@@ -1616,7 +1616,10 @@ function formatTimestamp($time, $format='', $dateonly='')
 	return $datetime;
 }
 
-# Mod: Blog Signature v1.0.0 START
+/* Adopted from PHP-Nuke Titanium v4.0.4
+ * @author Ernest Allen Biffington
+ * Mod: Blog Signature v1.0.0 START
+ */
 function blog_signature($aid) 
 {
     global $user_prefix, $db, $userinfo;
@@ -1672,7 +1675,6 @@ function blog_signature($aid)
 
 	return $aid . '</table>';
 }
-# Mod: Blog Signature v1.0.0 END
 
 function get_author($aid) 
 {
