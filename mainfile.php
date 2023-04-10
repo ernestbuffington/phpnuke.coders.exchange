@@ -1437,7 +1437,6 @@ function Fix_Quotes($str, $nohtml=false)
 function Remove_Slashes($str) 
 {
     global $_GETVAR;
-    
 	return $_GETVAR->stripSlashes($str);
 }
 
