@@ -32,10 +32,17 @@
       NukeSentinel                             v2.4.2       10/29/2005
 -=[Mod]=-
       Advanced Username Color                  v1.0.5       10/10/2005
+	  
+ Applied rules:
+ * AddDefaultValueForUndefinedVariableRector (https://github.com/vimeo/psalm/blob/29b70442b11e3e66113935a2ee22e165a70c74a4/docs/fixing_code.md#possiblyundefinedvariable)
+ * TernaryToNullCoalescingRector	  
  ************************************************************************/
 
 function ShoutBox($ShoutSubmit, $ShoutComment, $shoutuid) 
 {
+    $ShoutError = null;
+    $unixDay = null;
+    $tempContent = [];
     global $currentlang, $cache, $top_content, $mid_content, $bottom_content, $ShoutMarqueeheight, $nsnst_const, $userinfo, $prefix, $db, $top_out, $board_config;
 	
     if (!empty($currentlang)) 
@@ -567,8 +574,8 @@ function ShoutBox($ShoutSubmit, $ShoutComment, $shoutuid)
         // shout error reporting
         $top_content = '';
         if (!empty($ShoutError)) {
-            $top_content .= "<table style=\"cursor: text;\" width=\"100%\" border=\"0\" cellspacing=\"0\" cellpadding=\"3\"><tr><td style=\"background-color: #FFFFE1;\"><strong>"._SB_NOTE.":</strong> $ShoutError</td></tr></table>";
-            $top_out = "<td style=\"background-color: #FFFFE1;\"><strong>"._SB_NOTE.":</strong> $ShoutError</td>";
+        $top_content .= "<table style=\"cursor: text;\" width=\"100%\" border=\"0\" cellspacing=\"0\" cellpadding=\"3\"><tr><td style=\"background-color: #FFFFE1;\"><strong>"._SB_NOTE.":</strong> $ShoutError</td></tr></table>";
+        $top_out = "<td style=\"background-color: #FFFFE1;\"><strong>"._SB_NOTE.":</strong> $ShoutError</td>";
         }
 
         // table that holds the scrolling area
@@ -917,17 +924,17 @@ function ShoutBox($ShoutSubmit, $ShoutComment, $shoutuid)
 
 global $HTTP_POST_VARS, $HTTP_GET_VARS, $json, $top_out, $mid_content;
 
-$ShoutComment = (isset($HTTP_POST_VARS['ShoutComment'])) ? $HTTP_POST_VARS['ShoutComment'] : '';
-$ShoutSubmit = (isset($HTTP_POST_VARS['ShoutSubmit'])) ? $HTTP_POST_VARS['ShoutSubmit'] : '';
-$shoutuid = (isset($HTTP_POST_VARS['shoutuid'])) ? $HTTP_POST_VARS['shoutuid'] : '';
+$ShoutComment = $HTTP_POST_VARS['ShoutComment'] ?? '';
+$ShoutSubmit = $HTTP_POST_VARS['ShoutSubmit'] ?? '';
+$shoutuid = $HTTP_POST_VARS['shoutuid'] ?? '';
 
 if (!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest') {
 	if (isset($HTTP_POST_VARS['shoutbox_action']) && !empty($HTTP_POST_VARS['shoutbox_action'])) { 
 		switch($HTTP_POST_VARS['shoutbox_action']) {
 			case 'post_shout':
 				$ShoutComment = (isset($HTTP_POST_VARS['ShoutComment'])) ? base64_decode($HTTP_POST_VARS['ShoutComment']) : '';
-				$ShoutSubmit = (isset($HTTP_POST_VARS['ShoutSubmit'])) ? $HTTP_POST_VARS['ShoutSubmit'] : '';
-				$shoutuid = (isset($HTTP_POST_VARS['shoutuid'])) ? $HTTP_POST_VARS['shoutuid'] : '';
+				$ShoutSubmit = $HTTP_POST_VARS['ShoutSubmit'] ?? '';
+				$shoutuid = $HTTP_POST_VARS['shoutuid'] ?? '';
 				ShoutBox($ShoutSubmit,$ShoutComment,$shoutuid);
 				$value = array('disable' => false, 'top' => $top_out, 'mid' => $mid_content);
 				echo $json->encode($value);
@@ -935,8 +942,8 @@ if (!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQ
 			
 			case 'refresh_shouts':
 				$ShoutComment = (isset($HTTP_POST_VARS['ShoutComment'])) ? base64_decode($HTTP_POST_VARS['ShoutComment']) : '';
-				$ShoutSubmit = (isset($HTTP_POST_VARS['ShoutSubmit'])) ? $HTTP_POST_VARS['ShoutSubmit'] : '';
-				$shoutuid = (isset($HTTP_POST_VARS['shoutuid'])) ? $HTTP_POST_VARS['shoutuid'] : '';
+				$ShoutSubmit = $HTTP_POST_VARS['ShoutSubmit'] ?? '';
+				$shoutuid = $HTTP_POST_VARS['shoutuid'] ?? '';
 				ShoutBox($ShoutSubmit,$ShoutComment,$shoutuid);
 				$value = array('disable' => false, 'top' => $top_out, 'mid' => $mid_content);
 				echo $json->encode($value);
