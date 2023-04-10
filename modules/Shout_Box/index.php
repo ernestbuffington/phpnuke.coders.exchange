@@ -32,9 +32,13 @@
       NukeSentinel                             v2.4.2       02/01/2006
 -=[Mod]=-
       Advanced Username Color                  v1.0.5       10/29/2005
+ 
+ Applied rules:
+ * AddDefaultValueForUndefinedVariableRector (https://github.com/vimeo/psalm/blob/29b70442b11e3e66113935a2ee22e165a70c74a4/docs/fixing_code.md#possiblyundefinedvariable)
+ * TernaryToNullCoalescingRector	  
  ************************************************************************/
-
-if (!defined('MODULE_FILE')) {
+ 
+ if (!defined('MODULE_FILE')) {
    die ("You can't access this file directly...");
 }
 
@@ -63,7 +67,7 @@ if (!($conf = $cache->load('conf', 'titanium_shoutbox'))) {
     $db->sql_freeresult($result);
 }
 
-$Action = (isset($_REQUEST['Action'])) ? $_REQUEST['Action'] : '';
+$Action = $_REQUEST['Action'] ?? '';
 
 if ($Action == "AJAX") { die(); }
 
@@ -105,7 +109,8 @@ if($conf['nameblock'] == "yes" && $Action != "UserBanned") {
 
 function searchHistory($where, $sbsearchtext, $results, $style, $order, $page) 
 {
-	global $db, $sitename, $prefix, $username, $userinfo, $board_config;
+	$bgcolor = null;
+ global $db, $sitename, $prefix, $username, $userinfo, $board_config;
     include_once(NUKE_BASE_DIR.'header.php');
 
     $sbsearchtext = htmlspecialchars($sbsearchtext, ENT_QUOTES);
@@ -830,6 +835,7 @@ function findAvatar($row_avatar)
 
 function showHistory($page) 
 {
+    $bgcolor = null;
     global $db, $sitename, $prefix, $username, $userinfo, $board_config;
     include_once(NUKE_BASE_DIR.'header.php');
     global $conf;
@@ -1123,13 +1129,13 @@ function showBanned() {
 
 $page = (isset($_REQUEST['page'])) ? (int)$_REQUEST['page'] : 1;
 $shoutID = (isset($_REQUEST['shoutID'])) ? (int)$_REQUEST['shoutID'] : '';
-$where = (isset($_POST['where'])) ? $_POST['where'] : '';
-$sbsearchtext = (isset($_POST['sbsearchtext'])) ? $_POST['sbsearchtext'] : '';
+$where = $_POST['where'] ?? '';
+$sbsearchtext = $_POST['sbsearchtext'] ?? '';
 $results = (isset($_POST['results'])) ? (int)$_POST['results'] : 0;
-$order = (isset($_POST['order'])) ? $_POST['order'] : '';
-$style = (isset($_POST['style'])) ? $_POST['style'] : '';
-$ShoutError = (isset($_REQUEST['ShoutError'])) ? $_REQUEST['ShoutError'] : '';
-$ShoutComment = (isset($_POST['ShoutComment'])) ? $_POST['ShoutComment'] : '';
+$order = $_POST['order'] ?? '';
+$style = $_POST['style'] ?? '';
+$ShoutError = $_REQUEST['ShoutError'] ?? '';
+$ShoutComment = $_POST['ShoutComment'] ?? '';
 
 switch($Action) {
 
