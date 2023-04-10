@@ -148,7 +148,7 @@ function modthree($pollID, $mode, $order, $thold=0) {
                 $form .= "<input type=hidden name=mode value=$mode>";
                 $form .= "<input type=hidden name=order value=$order>";
                 $form .= "<input type=hidden name=thold value=$thold>";
-                $form .= "<input type=hidden name=op value=moderate><br>";
+                $form .= "<input type=hidden name=op value=moderate>";
                 echo $form;
 
 	    	OpenTable();

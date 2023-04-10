@@ -79,7 +79,7 @@ if(!isset($pollID)) {
 	cookiedecode($user);
 
 	if (($pollcomm) AND ((!isset($mode)) OR ($mode != "nocomments")) AND !isset($tid)) {
-		echo "<br>";
+		
 		include("modules/Surveys/comments.php");
 	}
 } elseif(isset($voteID) AND ($voteID > 0)) {
