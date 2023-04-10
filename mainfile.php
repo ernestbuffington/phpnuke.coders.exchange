@@ -822,8 +822,12 @@ if(!defined('FORUM_ADMIN')):
     endif;
 
 endif;
-# Base: Admin File Check v3.0.0 END
 
+/*
+ * Adopted Nuke Titanium function is_admin
+ * Code origin PHP-Nuke Titanium v4.0.4
+ * @date 03/28/2023 8:23 AM Ernest Allen Buffington
+ */
 function is_admin($trash=0) 
 {
     static $adminstatus;
