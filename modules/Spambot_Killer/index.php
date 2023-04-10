@@ -80,7 +80,7 @@ $chars = explode(" ", $spamchars);
 
 //Domains
 $domains = array(".com", ".net", ".org", ".co.uk", ".nl", ".de");
-mt_srand(microtime() * 1000000);
+mt_srand((double) microtime() * 1000000);
 /*****[END]********************************************
  [ Configuration:                                     ]
  ******************************************************/
@@ -138,7 +138,7 @@ for($i=0; $i<$numemails; $i++) {
 echo "<p>".$emailsserved. _SBK_SERVED."</p>\n";
 
 //Don't use up too much bandwidth: limit hits by spambots
-if ($counter <= 3) {
+if (isset($counter) && $counter <= 3) {
     for($i=0; $i<10; $i++) {
         //Random salt
         $salt = gensalt(30);
