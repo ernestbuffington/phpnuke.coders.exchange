@@ -102,22 +102,22 @@ if ((isset($aid)) && (isset($pwd)) && (isset($op)) && ($op == "login")){
  
     $gfxchk = array(1,5,6,7);
     if (!security_code_check($_POST['g-recaptcha-response'], $gfxchk)){
-/*****[END]********************************************
- [ Mod:     Advanced Security Code Control     v1.0.0 ]
- ******************************************************/
+    /*****[END]********************************************
+     [ Mod:     Advanced Security Code Control     v1.0.0 ]
+     ******************************************************/
         redirect($admin_file.".php");
     }
 	
     if (!empty($aid) AND !empty($pwd)){
         $txt_pwd = $pwd;
-/*****[BEGIN]******************************************
- [ Base:     Evolution Functions               v1.5.0 ]
- ******************************************************/
+    /*****[BEGIN]******************************************
+     [ Base:     Evolution Functions               v1.5.0 ]
+     ******************************************************/
         $evo_crypt = EvoCrypt($pwd);
         $pwd = md5($pwd);
-/*****[END]********************************************
- [ Base:     Evolution Functions               v1.5.0 ]
- ******************************************************/
+    /*****[END]********************************************
+     [ Base:     Evolution Functions               v1.5.0 ]
+     ******************************************************/
         $admlanguage = addslashes(get_admin_field('admlanguage', $aid));
         $rpwd = get_admin_field('pwd', $aid);
 		
@@ -128,25 +128,21 @@ if ((isset($aid)) && (isset($pwd)) && (isset($op)) && ($op == "login")){
         }
 		
         if($rpwd == $pwd && !empty($rpwd)){
-/*****[BEGIN]******************************************
- [ Mod:    Persistent Admin Login              v2.0.0 ]
- ******************************************************/
+    /*****[BEGIN]******************************************
+     [ Mod:    Persistent Admin Login              v2.0.0 ]
+     ******************************************************/
             $persistent = intval($persistent);
-			
 			$superadmin = get_admin_field('radminsuper', $aid);
-			// $layouttype = ($superadmin == 0) ? 'old' : 'new';
-			
-            // $admin = base64_encode("$aid:$pwd:$admlanguage:$persistent:$layouttype");
             $admin = base64_encode("$aid:$pwd:$admlanguage:$persistent");
             $time = (intval($admin1[3])) ? 43200 : 60;
             setcookie('admin',$admin,time()+($time*60));
-/*****[END]********************************************
- [ Mod:    Persistent Admin Login              v2.0.0 ]
- ******************************************************/
+    /*****[END]********************************************
+     [ Mod:    Persistent Admin Login              v2.0.0 ]
+     ******************************************************/
             unset($op);
-/*****[BEGIN]******************************************
- [ Mod:    Admin Tracker                       v1.0.1 ]
- ******************************************************/
+    /*****[BEGIN]******************************************
+     [ Mod:    Admin Tracker                       v1.0.1 ]
+     ******************************************************/
             unset($txt_pwd);
             redirect($_SERVER['REQUEST_URI']);
         } 
@@ -182,9 +178,9 @@ if ((isset($aid)) && (isset($pwd)) && (isset($op)) && ($op == "login")){
             log_write('admin', 'Attempted to login to the admin area with no password', 'Security Breach');
         }
     }
-/*****[END]********************************************
- [ Mod:    Admin Tracker                       v1.0.1 ]
- ******************************************************/
+    /*****[END]********************************************
+     [ Mod:    Admin Tracker                       v1.0.1 ]
+     ******************************************************/
 }
 
 $admintest = false;
