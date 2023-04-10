@@ -770,13 +770,27 @@ if (!defined('ADMIN_FILE')) {
  */
 include_once(NUKE_CLASSES_DIR.'class.wysiwyg.php');
 
-
+/*
+ * @package     Services_JSON
+ * @author      Michal Migurski <mike-json@teczno.com>
+ * @author      Matt Knapp <mdknapp[at]gmail[dot]com>
+ * @author      Brett Stimmerman <brettstimmerman[at]gmail[dot]com>
+ * @copyright   2005 Michal Migurski
+ * @version     CVS: $Id: JSON.php,v 1.31 2006/06/28 05:54:17 migurski Exp $
+ * @license     http://www.opensource.org/licenses/bsd-license.php
+ * @link        http://pear.php.net/pepr/pepr-proposal-show.php?id=198
+ */
 include_once(NUKE_INCLUDE_DIR.'json.php');
 $json = new Services_JSON(SERVICES_JSON_LOOSE_TYPE);
 
-# Mod: Shoutbox v8.5.2 START
+/* ShoutBox v4.2.0
+ * Copyright (c) 2003-2005 by Aric Bolf (SuperCat)
+ * http://www.OurScripts.net
+ *
+ * Copyright (c) 2002 by Quiecom
+ * http://www.Quiecom.com
+ */
 include_once(NUKE_MODULES_DIR.'Shout_Box/shout.php');
-# Mod: Shoutbox v8.5.2 END
 
 if(file_exists(NUKE_INCLUDE_DIR.'custom_files/custom_mainfile.php')):
   require_once(NUKE_INCLUDE_DIR.'custom_files/custom_mainfile.php');
