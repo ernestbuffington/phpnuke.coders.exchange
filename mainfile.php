@@ -63,6 +63,7 @@
 define('NUKE_FILE', true);
 
 define('NUKE_VERSION', '8.3.3');
+define('NUKE_MOD', 'PHP-Nuke');
 
 # Define File
 define('PHPBB_TITANIUM', '2.0.25');
