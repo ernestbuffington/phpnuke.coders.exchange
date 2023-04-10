@@ -67,7 +67,7 @@
 - Added Zend (zf1 Future) for PHP-Nuke<br />
 - Added new debugger<br />
 - Added CNBA Your_Account Mod<br />
-- Updated Auto MimeType v1.0.0 to 1.0.1 (used for loading multiple doctype themes HTML4/HTML5/XHTML/XHTML5 etc)<br />
+- Updated Auto MimeType to v1.0.1 (used for loading multiple doctype themes HTML4/HTML5/XHTML/XHTML5 etc)<br />
 - Added Assets folder to root of website for theme use<br />
 - Added Bootstrap v5.2.0 (https://getbootstrap.com/)<br />
 - Added Bootstrap v3.4.1 (https://getbootstrap.com/)<br />
