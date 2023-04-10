@@ -392,21 +392,23 @@ function mmain($user) {
 		mt_srand(0, MT_RAND_MT19937);
         $maxran = 10000000;
         $random_num = mt_rand(0, $maxran);
-        Show_CNBYA_menu();
-        OpenTable();
+        
+		Show_CNBYA_menu();
+        
+		OpenTable();
         echo "<br /><table width=\"100%\" cellpadding=\"4\" cellspacing=\"1\" class=\"forumline\" border=\"0\">";
         
-		echo "    <tr>";
-        echo "        <th class=\"thHead\">" . _EUCOOKIETITLE . "</th>";
-        echo "    </tr>";
+		//echo "<tr>";
+        //echo "<th class=\"thHead\">" . _EUCOOKIETITLE . "</th>";
+        //echo "</tr>";
         
-		echo "    <tr>";
-        echo "        <td align=\"left\" class=\"row1\">" . _EUCOOKIEAUTH . "</td>";
-        echo "    </tr>";
+		//echo "<tr>";
+        //echo "<td align=\"left\" class=\"row1\">" . _EUCOOKIEAUTH . "</td>";
+        //echo "</tr>";
 
-		echo "    <tr>";
-        echo "        <th class=\"thHead\">&nbsp;</th>";
-        echo "    </tr>";
+		echo "<tr>";
+        echo "<th class=\"thHead\">&nbsp;</th>";
+        echo "</tr>";
         
 		echo "</table><br />";
         
@@ -416,11 +418,11 @@ function mmain($user) {
 		echo "<form action=\"modules.php?name=".$module_name."\" method=\"post\">\n";
         echo "<table border=\"0\">\n";
         
-		echo "<tr><td>"._NICKNAME.":</td><td><input type=\"text\" name=\"username\" size=\"25\" maxlength=\"25\"></td></tr>\n";
+		echo "<tr><td>"._NICKNAME.":&nbsp;</td><td><input type=\"text\" name=\"username\" size=\"25\" maxlength=\"25\"></td></tr>\n";
 
 		echo "<tr><td>&nbsp;</td><td>&nbsp;</td></tr>\n";
         
-		echo "<tr><td>"._PASSWORD.":</td><td><input type=\"password\" name=\"user_password\" size=\"25\" maxlength=\"25\" AutoComplete=\"off\"></td></tr>\n";
+		echo "<tr><td style=\"text-align: right;\">"._PASSWORD.":&nbsp;</td><td><input type=\"text\" name=\"user_password\" size=\"25\" maxlength=\"25\" AutoComplete=\"off\"></td></tr>\n";
 
 		echo "<tr><td>&nbsp;</td><td>&nbsp;</td></tr>\n";
 		
