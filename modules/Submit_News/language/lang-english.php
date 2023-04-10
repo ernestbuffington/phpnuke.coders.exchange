@@ -17,6 +17,7 @@
 /* And, if you use HTML code, please double check it.                     */
 /**************************************************************************/
 
+define_once("_HTMLNOTALLOWED","No HTML Allowed");
 define_once("_PRINTER","Printer Friendly Page");
 define_once("_FRIEND","Send this Story to a Friend");
 define_once("_YOURNAME","Your Name");
