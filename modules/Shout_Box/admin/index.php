@@ -31,6 +31,11 @@
       Nuke Patched                             v3.1.0       08/10/2005
 -=[Mod]=-
       Advanced Username Color                  v1.0.5       10/29/2005
+	  
+ Applied rules:
+ * AddDefaultValueForUndefinedVariableRector (https://github.com/vimeo/psalm/blob/29b70442b11e3e66113935a2ee22e165a70c74a4/docs/fixing_code.md#possiblyundefinedvariable)
+ * TernaryToNullCoalescingRector
+ * NullCoalescingOperatorRector (https://wiki.php.net/rfc/null_coalesce_equal_operator)
  ************************************************************************/
 
 if (!defined('ADMIN_FILE')) {
@@ -101,9 +106,9 @@ function ShoutBoxAdminMenu($ShoutMenuOptionActive)
 
     OpenTable();
     
-	$rowColor['border'] = $rowColor['border'] ?? 'none';
-	$rowColor['menuColor2'] = $rowColor['menuColor2'] ?? '#000000';
-	$rowColor['menuColor1'] = $rowColor['menuColor1'] ?? '#000000';
+	$rowColor['border'] ??= 'none';
+	$rowColor['menuColor2'] ??= '#000000';
+	$rowColor['menuColor1'] ??= '#000000';
 	
 	echo '<br /><div align="center" class="title">'._SHOUTADMIN.'</div><br />'.PHP_EOL;
 
@@ -394,8 +399,8 @@ function manageShouts($page, $pruned) {
 	if(!isset($stickyRowB['name']))
 	$stickyRowB['name'] = $userinfo['username'];
 
-	$stickyRowA['comment'] = $stickyRowA['comment'] ?? '';
-	$stickyRowB['comment'] = $stickyRowB['comment'] ?? '';
+	$stickyRowA['comment'] ??= '';
+	$stickyRowB['comment'] ??= '';
 	
 	echo "<center><table align=\"center\" cellpadding=\"5\" cellspacing=\"0\" border=\"0\"><tr><td>".$stickyRowA['name']."&nbsp;&nbsp;</td><td nowrap=\"nowrap\"><form name=\"shoutAdmin20\" action=\"\" method=\"post\" style=\"margin-bottom: 0px;\"><input type=\"hidden\" name=\"page\" value=\"$page\" /><input type=\"text\" name=\"stickyShout\" value=\"".$stickyRowA['comment']."\" maxlength=\"150\" size=\"75\" />&nbsp;&nbsp;<input type=\"hidden\" name=\"stickyUsername\" value=\"".$stickyRowA['name']."\" /><input type=\"hidden\" name=\"Submit\" value=\"stickySubmit\" /><input type=\"hidden\" name=\"stickySlot\" value=\"0\" /><input type=\"submit\" name=\"button\" value=\""._SB_SUBMIT."\" /></form></td></tr><tr>";
 	
@@ -1009,13 +1014,14 @@ function shoutHealth($SBhealthCount)
 // Start Themeing code
 
 function ShoutBoxThemeing() {
+    $themeRow = [];
     global $prefix, $db, $admin_file, $sbURL, $module_name, $rowColor;
     include_once(NUKE_BASE_DIR.'header.php');
     
-	$rowColor['border'] = $rowColor['border'] ?? 'none';
-	$rowColor['menuColor2'] = $rowColor['menuColor2'] ?? '#000000';
-	$rowColor['menuColor1'] = $rowColor['menuColor1'] ?? '#000000';
-	$themeRow['blockBackgroundImage'] = $themeRow['blockBackgroundImage'] ?? '';
+	$rowColor['border'] ??= 'none';
+	$rowColor['menuColor2'] ??= '#000000';
+	$rowColor['menuColor1'] ??= '#000000';
+	$themeRow['blockBackgroundImage'] ??= '';
 	
 	LinkAdmin();
     $ShoutMenuOptionActive = 3;
@@ -1566,20 +1572,20 @@ function ipremove($ipremove) {
 
 // End 'Bans' code
 
-$page = (isset($_REQUEST['page'])) ? $_REQUEST['page'] : '';
-$aCount = (isset($_REQUEST['aCount'])) ? $_REQUEST['aCount'] : '';
-$Submit = (isset($_REQUEST['Submit'])) ? $_REQUEST['Submit'] : '';
-$SBhealthCount = (isset($_REQUEST['SBhealthCount'])) ? $_REQUEST['SBhealthCount'] : '';
-$addemoticonimage = (isset($_REQUEST['addemoticonimage'])) ? $_REQUEST['addemoticonimage'] : '';
-$addemoticontext = (isset($_REQUEST['addemoticontext'])) ? $_REQUEST['addemoticontext'] : '';
-$addemoticontext = (isset($_REQUEST['addemoticontext'])) ? $_REQUEST['addemoticontext'] : '';
+$page = $_REQUEST['page'] ?? '';
+$aCount = $_REQUEST['aCount'] ?? '';
+$Submit = $_REQUEST['Submit'] ?? '';
+$SBhealthCount = $_REQUEST['SBhealthCount'] ?? '';
+$addemoticonimage = $_REQUEST['addemoticonimage'] ?? '';
+$addemoticontext = $_REQUEST['addemoticontext'] ?? '';
+$addemoticontext = $_REQUEST['addemoticontext'] ?? '';
 $listnum = (isset($_REQUEST['listnum'])) ? (int)$_REQUEST['listnum'] : 0;
-$emoticonremove = (isset($_REQUEST['emoticonremove'])) ? $_REQUEST['emoticonremove'] : '';
-$addcensor = (isset($_REQUEST['addcensor'])) ? $_REQUEST['addcensor'] : '';
-$addcensorr = (isset($_REQUEST['addcensorr'])) ? $_REQUEST['addcensorr'] : '';
-$censorremove = (isset($_REQUEST['censorremove'])) ? $_REQUEST['censorremove'] : '';
-$banoption = (isset($_REQUEST['banoption'])) ? $_REQUEST['banoption'] : '';
-$censoroption = (isset($_REQUEST['censoroption'])) ? $_REQUEST['censoroption'] : '';
+$emoticonremove = $_REQUEST['emoticonremove'] ?? '';
+$addcensor = $_REQUEST['addcensor'] ?? '';
+$addcensorr = $_REQUEST['addcensorr'] ?? '';
+$censorremove = $_REQUEST['censorremove'] ?? '';
+$banoption = $_REQUEST['banoption'] ?? '';
+$censoroption = $_REQUEST['censoroption'] ?? '';
 
 switch($Submit) {
 
