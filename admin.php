@@ -14,8 +14,8 @@
 
 /*****[CHANGES]**********************************************************
 -=[Base]=-
-      Nuke Patched                             v3.1.0       06/26/2005
-      NukeSentinel                             v2.5.00      07/11/2006
+      PHP Patched                              v8.2.4       04/10/2023
+      NukeSentinel                             v2.6.16      07/11/2021
       Caching System                           v1.0.0       10/31/2005
       Module Simplifications                   v1.0.0       11/17/2005
       Evolution Functions                      v1.5.0       12/14/2005
@@ -48,7 +48,6 @@ if(isset($aid) && ($aid) && (!isset($admin) || empty($admin)) && $op != 'login')
     die('Access Denied');
 }
 
-// Include functions
 require_once(dirname(__FILE__) . '/mainfile.php');
 require_once(NUKE_ADMIN_DIR.'functions.php');
 
@@ -282,14 +281,14 @@ elseif (($op == 'mod_authors'
 	  && $admdata['name'] != 'God')
 {
     include(NUKE_BASE_DIR.'header.php');
+
 	OpenTable();
 	echo '<div align="center"><img class="icons" align="absmiddle" width="200" src="'.img('unknown-error.png','error').'"></div><br />';
 	echo '<div align="center"><strong>You Do Not Have The Necessary Security Clearance To Access This Area!</strong></div><br />';
 	echo '<div align="center"><strong><span class="blink-one" style="color: red;">You Must Have A God Security Level</span></strong></div><br />';
-//	die('Illegal Operation');
     CloseTable();
-    include(NUKE_BASE_DIR.'footer.php');
 
+    include(NUKE_BASE_DIR.'footer.php');
 }
 
 if ($admintest){
