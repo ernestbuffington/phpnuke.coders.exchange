@@ -866,6 +866,11 @@ function is_admin($trash=0)
 	return $adminstatus = 0;
 }
 
+/*
+ * Adopted Evo function is_god_admin
+ * Code origin Evo Xtreme v2.0.9e
+ * @date 03/28/2023 8:23 AM Ernest Allen Buffington
+ */
 function is_god_admin($trash=0) 
 {
     static $godadminstatus;
@@ -907,6 +912,11 @@ function is_god_admin($trash=0)
 	return $godadminstatus = 0;
 }
 
+/*
+ * Adopted Nuke Titanium function is_user
+ * Code origin PHP-Nuke Titanium v4.0.4
+ * @date 03/28/2023 8:23 AM Ernest Allen Buffington
+ */
 function is_user($trash=0) 
 {
     static $userstatus;
@@ -938,6 +948,11 @@ function is_user($trash=0)
 	return $userstatus = 0;
 }
 
+/*
+ * Adopted Evo function cookiedecode
+ * Code origin Evo Xtreme v2.0.9e
+ * @date 03/28/2023 8:23 AM Ernest Allen Buffington
+ */
 function cookiedecode($trash=0) 
 {
     global $cookie;
@@ -1203,15 +1218,15 @@ function blockfileinc($blockfiletitle, $blockfile, $side=1,$bid = 0) {
     if (empty($content)) {
         $content = _BLOCKPROBLEM2;
     }
-/*****[BEGIN]******************************************
- [ Mod:     Switch Content Script              v2.0.0 ]
- ******************************************************/
+    /*****[BEGIN]******************************************
+     [ Mod:     Switch Content Script              v2.0.0 ]
+     ******************************************************/
     if($collapse) {
         $content = "&nbsp;<div id=\"block".$bid."\" class=\"switchcontent\">".$content."</div>";
     }
-/*****[END]********************************************
- [ Mod:     Switch Content Script              v2.0.0 ]
- ******************************************************/
+    /*****[END]********************************************
+     [ Mod:     Switch Content Script              v2.0.0 ]
+     ******************************************************/
     if ($side == 'r' || $side == 'l') {
         themesidebox($blockfiletitle, $content, $bid);
     } else {
