@@ -1588,7 +1588,7 @@ function AutoTheme_admin_updatecmd($var)
 }
 
 /* Admin links for sub pages */
-function atAdminThemeLinks($themedir, $title="", $var, $submenu=0)
+function atAdminThemeLinks($themedir, $title="", $var="", $submenu=0)
 {
 	$var = atExportVar($var);
     extract($var);
