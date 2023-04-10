@@ -882,7 +882,7 @@ function ShoutBox($ShoutSubmit, $ShoutComment, $shoutuid)
 				$bottom_content .= "<input type=\"hidden\" name=\"ShoutSubmit\" id=\"ShoutSubmit\" value=\"ShoutPost\" />";
 				
 				$bottom_content .= "<div id=\"smilies_hide\" style=\"display: block;\">";
-				
+				// fixed so that it clears the shout text field on submit - 04/10/2023 11:36 AM Ernest Allen Buffington
 				$bottom_content .= "<input type=\"button\" name=\"button\" onclick=\"AjaxShout(); document.getElementById('ShoutComment').value = '';\" value=\""._SHOUT."\" />&nbsp;"; # added a space between buttons
 				
 				$bottom_content .= "<span onclick=\"changeBoxSize('show'); return false;\"><input type=\"button\" value=\""._SMILIES."\" /></span>";
