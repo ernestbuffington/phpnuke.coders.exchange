@@ -534,36 +534,8 @@ function ShoutBox($ShoutSubmit, $ShoutComment, $shoutuid)
             $showBackground = 'no';
         }
 
-			$up_img = '<i class="bi bi-caret-up"></i>';
-			$down_img = '<i class="bi bi-caret-down"></i>';
-			//$pause_img = '<i class="bi bi-pause"></i>';
-
-			/*
-
-        if (!empty($themeRow['blockArrowColor'])) {
-			
-            if (file_exists(NUKE_MODULES_DIR.'Shout_Box/images/up/'.$themeRow['blockArrowColor'])) {
-                $up_img = 'modules/Shout_Box/images/up/'.$themeRow['blockArrowColor'];
-            } else {
-				
-                $up_img = 'modules/Shout_Box/images/up/Black.gif';
-            }
-            if (file_exists(NUKE_MODULES_DIR.'Shout_Box/images/down/'.$themeRow['blockArrowColor'])) {
-                $down_img = 'modules/Shout_Box/images/down/'.$themeRow['blockArrowColor'];
-            } else {
-                $down_img = 'modules/Shout_Box/images/down/Black.gif';
-            }
-            if (file_exists(NUKE_MODULES_DIR.'Shout_Box/images/pause/'.$themeRow['blockArrowColor'])) {
-                $pause_img = 'modules/Shout_Box/images/pause/'.$themeRow['blockArrowColor'];
-            } else {
-                $pause_img = 'modules/Shout_Box/images/pause/Black.gif';
-            }
-        } else {
-            $up_img = 'modules/Shout_Box/images/up/Black.gif';
-            $down_img = 'modules/Shout_Box/images/down/Black.gif';
-            $pause_img = 'modules/Shout_Box/images/pause/Black.gif';
-        }
-        */
+		$up_img = '<i class="bi bi-caret-up"></i>';
+		$down_img = '<i class="bi bi-caret-down"></i>';
 		
         $sql = "SELECT * FROM `".$prefix."_shoutbox_shouts` ORDER BY `id` DESC LIMIT $conf[number]";
         $result = $db->sql_query($sql);
