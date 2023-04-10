@@ -1422,9 +1422,11 @@ function ultramode()
     endif;
 }
 
-# Adds slashes to string and strips PHP+HTML for SQL insertion and hack prevention
-# $str: the string to modify
-# $nohtml: strip PHP+HTML tags, false=no, true=yes, default=false
+/*
+ * Adds slashes to string and strips PHP+HTML for SQL insertion and hack prevention
+ * $str: the string to modify
+ * $nohtml: strip PHP+HTML tags, false=no, true=yes, default=false
+ */
 function Fix_Quotes($str, $nohtml=false) 
 {
     if($nohtml): 
@@ -1525,8 +1527,10 @@ function filter_text($Message, $strip='') {
     return $Message;
 }
 
-# actualTime function by ReOrGaNiSaTiOn
-# currently not being used anywhere as of 1/13/2023
+/* Not used anywhere at the current moment
+ * actualTime function by ReOrGaNiSaTiOn
+ * currently not being used anywhere as of 1/13/2023
+ */
 function actualTime() {
   $date = date('Y-m-d H:i:s');
   $actualTime_tempdate = formatTimestamp($date, $format='Y-m-d H:i:s');
@@ -1565,7 +1569,9 @@ function filter($what, $strip="", $save="", $type="") {
 	return($what);
 }
 
-# formatTimestamp function by ReOrGaNiSaTiOn
+/*
+ * formatTimestamp function by ReOrGaNiSaTiOn
+ */
 function formatTimestamp($time, $format='', $dateonly='') 
 {
     global $datetime, $locale, $userinfo, $board_config;
