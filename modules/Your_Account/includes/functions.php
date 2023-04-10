@@ -50,9 +50,9 @@ function Show_CNBYA_menu(){
     
 	OpenTable();
     if ($stop) {
-        echo "<center><span class=\"title\"><strong>"._LOGININCOR."</strong></span></center>\n";
+        echo "<div align=\"center\"><span class=\"title\"><strong>"._LOGININCOR."</strong></span></div>\n";
     } else {
-        echo "<center><span class=\"title\"><strong>"._USERREGLOGIN."</strong></span></center>\n";
+        echo "<div align=\"center\"><span class=\"title\"><strong>"._USERREGLOGIN."</strong></span></div>\n";
     }
 
     echo "<table width=\"100%\" cellspacing=\"0\" cellpadding=\"0\" border=\"0\"><tr><td align=\"left\"><span class=\"content\">\n";
@@ -73,11 +73,11 @@ function ya_userCheck($username){
 	$username = trim($username);
 	
     if (!Validate($username, 'username', '', 1, 1)){
-        $stop = "<center>"._ERRORINVNICK."</center><br />";
+        $stop = "<div align=\"center\">"._ERRORINVNICK."</div><br />";
     }
 	
-    if (strlen($username) > $ya_config['nick_max']) $stop = "<center>"._YA_NICKLENGTH."</center>";
-    if (strlen($username) < $ya_config['nick_min']) $stop = "<center>"._YA_NICKLENGTH."</center>";
+    if (strlen($username) > $ya_config['nick_max']) $stop = "<div align=\"center\">"._YA_NICKLENGTH."</div>";
+    if (strlen($username) < $ya_config['nick_min']) $stop = "<div align=\"center\">"._YA_NICKLENGTH."</div>";
 	
     $result = $db->sql_query("SELECT disallow_username FROM ". $prefix ."_bbdisallow");
     $disallowed = $db->sql_fetchrowset($result);
@@ -94,16 +94,16 @@ function ya_userCheck($username){
 		if (!empty($BadNickList) && is_array($BadNickList)){
 			for($i=0; $i<count($BadNickList); $i++){
 				if (strtolower(trim($BadNickList[$i])) == strtolower($username)){
-					$stop = "<center>"._NAMERESTRICTED."</center><br />";
+					$stop = "<div align=\"center\">"._NAMERESTRICTED."</div><br />";
 					break;
 				}
 			}
 		}
 	}
 	
-    if (strrpos($username,' ') > 0) $stop = "<center>"._NICKNOSPACES."</center>";
-    if ($db->sql_numrows($db->sql_query("SELECT username FROM ".$user_prefix."_users WHERE username='$username'")) > 0) $stop = "<center>"._NICKTAKEN."</center><br />";
-    if ($db->sql_numrows($db->sql_query("SELECT username FROM ".$user_prefix."_users_temp WHERE username='$username'")) > 0) $stop = "<center>"._NICKTAKEN."</center><br />";
+    if (strrpos($username,' ') > 0) $stop = "<div align=\"center\">"._NICKNOSPACES."</div>";
+    if ($db->sql_numrows($db->sql_query("SELECT username FROM ".$user_prefix."_users WHERE username='$username'")) > 0) $stop = "<div align=\"center\">"._NICKTAKEN."</div><br />";
+    if ($db->sql_numrows($db->sql_query("SELECT username FROM ".$user_prefix."_users_temp WHERE username='$username'")) > 0) $stop = "<div align=\"center\">"._NICKTAKEN."</div><br />";
 	
     return ($stop);
 }
@@ -124,23 +124,23 @@ function ya_mailCheck($user_email) {
 	
     $user_email = strtolower($user_email);
 	
-    if ((!$user_email) || (empty($user_email)) || (!preg_match("/^[_\.0-9a-z-]+@([0-9a-z][0-9a-z-]+\.)+[a-z]{2,6}$/i", $user_email))) $stop = "<center>"._ERRORINVEMAIL."</center><br />";
+    if ((!$user_email) || (empty($user_email)) || (!preg_match("/^[_\.0-9a-z-]+@([0-9a-z][0-9a-z-]+\.)+[a-z]{2,6}$/i", $user_email))) $stop = "<div align=\"center\">"._ERRORINVEMAIL."</div><br />";
 	
     if ($ya_config['bad_mail'] > ""){
         $BadMailList = explode("\n", $ya_config['bad_mail']);
 		
         for($i=0; $i<count($BadMailList); $i++){
             if (substr($user_email, -strlen(trim($BadMailList[$i]))) == strtolower(trim($BadMailList[$i]))){
-				$stop = "<center>"._MAILBLOCKED." <strong>".$BadMailList[$i]."</strong></center><br />";
+				$stop = "<div align=\"center\">"._MAILBLOCKED." <strong>".$BadMailList[$i]."</strong></div><br />";
 				break;
 			}
        	}
     }
 	
-    if (strrpos($user_email,' ') > 0) $stop = "<center>"._ERROREMAILSPACES."</center><br />";
-    if ($db->sql_numrows($db->sql_query("SELECT user_email FROM ".$user_prefix."_users WHERE user_email='$user_email'")) > 0) $stop = "<center>"._EMAILREGISTERED."</center><br />";
-    if ($db->sql_numrows($db->sql_query("SELECT user_email FROM ".$user_prefix."_users WHERE user_email='".md5($user_email)."'")) > 0) $stop = "<center>"._EMAILNOTUSABLE."</center><br />";
-    if ($db->sql_numrows($db->sql_query("SELECT user_email FROM ".$user_prefix."_users_temp WHERE user_email='$user_email'")) > 0) $stop = "<center>"._EMAILREGISTERED."</center><br />";
+    if (strrpos($user_email,' ') > 0) $stop = "<div align=\"center\">"._ERROREMAILSPACES."</div><br />";
+    if ($db->sql_numrows($db->sql_query("SELECT user_email FROM ".$user_prefix."_users WHERE user_email='$user_email'")) > 0) $stop = "<div align=\"center\">"._EMAILREGISTERED."</div><br />";
+    if ($db->sql_numrows($db->sql_query("SELECT user_email FROM ".$user_prefix."_users WHERE user_email='".md5($user_email)."'")) > 0) $stop = "<div align=\"center\">"._EMAILNOTUSABLE."</div><br />";
+    if ($db->sql_numrows($db->sql_query("SELECT user_email FROM ".$user_prefix."_users_temp WHERE user_email='$user_email'")) > 0) $stop = "<div align=\"center\">"._EMAILREGISTERED."</div><br />";
     
 	return ($stop);
 }
@@ -149,9 +149,9 @@ function ya_passCheck($user_pass1, $user_pass2) {
     
 	global $stop, $ya_config;
     
-	if (strlen($user_pass1) > $ya_config['pass_max']) $stop = "<center>"._YA_PASSLENGTH."</center><br />";
-    if (strlen($user_pass1) < $ya_config['pass_min']) $stop = "<center>"._YA_PASSLENGTH."</center><br />";
-    if ($user_pass1 != $user_pass2) $stop = "<center>"._PASSWDNOMATCH."</center><br />";
+	if (strlen($user_pass1) > $ya_config['pass_max']) $stop = "<div align=\"center\">"._YA_PASSLENGTH."</div><br />";
+    if (strlen($user_pass1) < $ya_config['pass_min']) $stop = "<div align=\"center\">"._YA_PASSLENGTH."</div><br />";
+    if ($user_pass1 != $user_pass2) $stop = "<div align=\"center\">"._PASSWDNOMATCH."</div><br />";
     return($stop);
 }
 
