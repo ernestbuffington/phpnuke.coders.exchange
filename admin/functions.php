@@ -219,8 +219,8 @@ function login()
 		<div class="col-12 form-group text-center">
 			<input class="btn btn-primary btn-responsive" type="submit" name="submit" value="<?php echo $admlang['global']['login'] ?>">
 		</div>
-
-	</div>
+	<span style="font-size: xx-small;"><?=NUKE_MOD?> v<?=NUKE_VERSION?></span>
+    </div>
 	<input type="hidden" name="op" value="login">
 	</form>
     </div>
