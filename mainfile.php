@@ -806,7 +806,11 @@ if(!defined('FORUM_ADMIN') && !isset($ThemeSel) && !defined('RSS_FEED')):
   include_once(NUKE_THEMES_DIR . $ThemeSel . '/theme.php');
 endif;
 
-# Base: Admin File Check v3.0.0 START
+/*
+ * Adopted Evo Admin File Check v3.0.0
+ * Code origin Nuke Evolution / Xtreme v2.0.9e
+ * @date 03/28/2023 8:23 AM Ernest Allen Buffington
+ */
 if(!defined('FORUM_ADMIN')):
 
   global $admin_file;
