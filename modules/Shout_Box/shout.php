@@ -835,8 +835,12 @@ function ShoutBox($ShoutSubmit, $ShoutComment, $shoutuid)
 			if ($SBpos == 'center') 
 			{
 				$bottom_content .= "<td align=\"left\" nowrap=\"nowrap\" valign=\"top\">";
+
 				$bottom_content .= "<input type=\"text\" name=\"ShoutComment\" id=\"ShoutComment\" size=\"$ShoutTextWidth\" onKeyPress=\"return OnEnter(event)\" value=\"$boxtext\" 
-				maxlength=\"2500\" onfocus=\"if ( this.value == '"._SB_MESSAGE."' ) { this.value=''; }\" onblur=\"if (this.value == '') { this.value='"._SB_MESSAGE."' }\" style=\"width: 100%;\" />";
+				maxlength=\"2500\" onfocus=\"if (this.value == '"._SB_MESSAGE."') { this.value = ''; }\" onblur=\"if (this.value == '') { this.value='"._SB_MESSAGE."' }\" style=\"width: 100%;\" />";
+
+				$bottom_content .= "";
+
 				$bottom_content .= "</td>";
 				
 				$bottom_content .= "<td align=\"right\" width=\"140\">";
@@ -846,8 +850,10 @@ function ShoutBox($ShoutSubmit, $ShoutComment, $shoutuid)
 				
 				$bottom_content .= "<div class=\"content\">";
 				$bottom_content .= "<input type=\"button\" name=\"button\" onclick=\"AjaxShout();\" value=\""._SHOUT."\" />&nbsp;"; # added a space between buttons
+				
 				$bottom_content .= "<span onclick=\"changeBoxSize('show'); return false;\"><input type=\"button\" value=\""._SMILIES."\" /></span>";
 				$bottom_content .= "</div>";
+				
 				$bottom_content .= "</div>";
 				$bottom_content .= "<div id=\"smilies_show\" style=\"display: none;\">";
 				$bottom_content .= "<div class=\"content\">";
@@ -863,17 +869,23 @@ function ShoutBox($ShoutSubmit, $ShoutComment, $shoutuid)
 				$bottom_content .= "<tr>";
 				$bottom_content .= "<td align=\"center\" nowrap=\"nowrap\">";
 				
-				$bottom_content .= "<input type=\"text\" name=\"ShoutComment\" id=\"ShoutComment\" size=\"$ShoutTextWidth\" onKeyPress=\"return OnEnter(event)\" value=\"$boxtext\" maxlength=\"2500\" onfocus=\"if ( this.value == '"._SB_MESSAGE."' ) { this.value=''; }\" onblur=\"if (this.value == '') { this.value='"._SB_MESSAGE."' }\" />";
+				$bottom_content .= "<input type=\"text\" name=\"ShoutComment\" id=\"ShoutComment\" size=\"$ShoutTextWidth\" 
+				onKeyPress=\"return OnEnter(event)\" value=\"$boxtext\" maxlength=\"2500\" 
+				onfocus=\"if ( this.value == '"._SB_MESSAGE."' ) { this.value = ''; }\" 
+				onblur=\"if (this.value == '') { this.value = '"._SB_MESSAGE."' }\" />";
+				
 				$bottom_content .= "</td>";
 				$bottom_content .= "</tr>";
 				$bottom_content .= "<tr>";
 				$bottom_content .= "<td align=\"center\"><br/>";
+				
 				$bottom_content .= "<input type=\"hidden\" name=\"ShoutSubmit\" id=\"ShoutSubmit\" value=\"ShoutPost\" />";
+				
 				$bottom_content .= "<div id=\"smilies_hide\" style=\"display: block;\">";
-				$bottom_content .= "<div class=\"content\"><br/>"; # added
-				$bottom_content .= "<input type=\"button\" name=\"button\" onclick=\"AjaxShout();\" value=\""._SHOUT."\" />&nbsp;"; # added a space between buttons
+				
+				$bottom_content .= "<input type=\"button\" name=\"button\" onclick=\"AjaxShout(); document.getElementById('ShoutComment').value = '';\" value=\""._SHOUT."\" />&nbsp;"; # added a space between buttons
+				
 				$bottom_content .= "<span onclick=\"changeBoxSize('show'); return false;\"><input type=\"button\" value=\""._SMILIES."\" /></span>";
-				$bottom_content .= "</div>";
 				$bottom_content .= "</div>";
 				$bottom_content .= "<div id=\"smilies_show\" style=\"display: none;\">";
 				$bottom_content .= "<div class=\"content\">";
