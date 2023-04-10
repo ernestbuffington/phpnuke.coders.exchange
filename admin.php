@@ -347,7 +347,10 @@ if ($admintest){
 
             $result = $db->sql_query("SELECT title FROM ".$prefix."_modules ORDER BY title ASC");
             while(list($mod_title) = $db->sql_fetchrow($result,SQL_BOTH)){
-                if (is_mod_admin($mod_title) && (file_exists(NUKE_MODULES_DIR.$mod_title.'/admin/index.php') AND file_exists(NUKE_MODULES_DIR.$mod_title.'/admin/links.php') AND file_exists(NUKE_MODULES_DIR.$mod_title.'/admin/case.php'))){
+                if (is_mod_admin($mod_title) 
+				&& (file_exists(NUKE_MODULES_DIR.$mod_title.'/admin/index.php') 
+				&& file_exists(NUKE_MODULES_DIR.$mod_title.'/admin/links.php') 
+				&& file_exists(NUKE_MODULES_DIR.$mod_title.'/admin/case.php'))){
                      include(NUKE_MODULES_DIR.$mod_title.'/admin/case.php');
                 }
             }
