@@ -45,8 +45,10 @@ if (realpath(__FILE__) == realpath($_SERVER['SCRIPT_FILENAME'])) {
 // function Show_CNBYA_menu(){ [added by menelaos dot hetnet dot nl']
 /*************************************************************************************/
 function Show_CNBYA_menu(){
-    global $stop, $module_name, $redirect, $mode, $t, $f, $ya_config;
-    OpenTable();
+    
+	global $stop, $module_name, $redirect, $mode, $t, $f, $ya_config;
+    
+	OpenTable();
     if ($stop) {
         echo "<center><span class=\"title\"><strong>"._LOGININCOR."</strong></span></center>\n";
     } else {
@@ -64,6 +66,7 @@ function Show_CNBYA_menu(){
 }
 
 function ya_userCheck($username){
+
     global $stop, $user_prefix, $db, $ya_config, $prefix;
 	
 	// Remove any whitespace
@@ -106,15 +109,18 @@ function ya_userCheck($username){
 }
 
 function ya_mail($email, $subject, $message, $from) {
-global $ya_config, $adminmail;
-    if ($ya_config['servermail'] == 0) {
+    
+	global $ya_config, $adminmail;
+    
+	if ($ya_config['servermail'] == 0) {
         if (trim($from) == '') $from  = "From: $adminmail\n" . "Reply-To: $adminmail\n" . "Return-Path: $adminmail\n";
         evo_mail($email, $subject, $message, $from);
     }
 }
 
 function ya_mailCheck($user_email) {
-    global $stop, $user_prefix, $db, $ya_config;
+    
+	global $stop, $user_prefix, $db, $ya_config;
 	
     $user_email = strtolower($user_email);
 	
@@ -140,8 +146,10 @@ function ya_mailCheck($user_email) {
 }
 
 function ya_passCheck($user_pass1, $user_pass2) {
-    global $stop, $ya_config;
-    if (strlen($user_pass1) > $ya_config['pass_max']) $stop = "<center>"._YA_PASSLENGTH."</center><br />";
+    
+	global $stop, $ya_config;
+    
+	if (strlen($user_pass1) > $ya_config['pass_max']) $stop = "<center>"._YA_PASSLENGTH."</center><br />";
     if (strlen($user_pass1) < $ya_config['pass_min']) $stop = "<center>"._YA_PASSLENGTH."</center><br />";
     if ($user_pass1 != $user_pass2) $stop = "<center>"._PASSWDNOMATCH."</center><br />";
     return($stop);
@@ -155,9 +163,12 @@ function ya_fixtext($ya_fixtext) {
 
 // function improved by Peter
 function ya_save_config($config_name, $config_value, $config_param=""){
-    global $prefix, $db, $cache;
-    Fix_Quotes($config_value);
-    if($config_param == 'html') {
+    
+	global $prefix, $db, $cache;
+    
+	Fix_Quotes($config_value);
+    
+	if($config_param == 'html') {
         $config_name = check_html($config_name, 'nohtml');
         $config_value = check_html($config_value, 'html');
         $db -> sql_query("UPDATE ".$prefix."_cnbya_config SET config_value='$config_value' WHERE config_name='$config_name'");
@@ -174,7 +185,8 @@ function ya_save_config($config_name, $config_value, $config_param=""){
 }
 
 function ya_get_configs(){
-    global $prefix, $db, $cache;
+    
+	global $prefix, $db, $cache;
     
 	static $ya_config;
     
@@ -201,10 +213,14 @@ function ya_get_configs(){
 }
 
 function yacookie($setuid, $setusername, $setpass, $setstorynum, $setumode, $setuorder, $setthold, $setnoscore, $setublockon, $settheme, $setcommentmax) {
-    global $ya_config, $db, $prefix, $identify;
-    $ip = $identify->get_ip();
-    $result = $db->sql_query("SELECT time FROM ".$prefix."_session WHERE uname='$setusername'");
-    $ctime = time();
+    
+	global $ya_config, $db, $prefix, $identify;
+    
+	$ip = $identify->get_ip();
+    
+	$result = $db->sql_query("SELECT time FROM ".$prefix."_session WHERE uname='$setusername'");
+    
+	$ctime = time();
 
     $guest = 1;
     $user_agent = $identify->identify_agent();
@@ -239,8 +255,10 @@ function yacookie($setuid, $setusername, $setpass, $setstorynum, $setumode, $set
 }
 
 function YA_CoolSize($size) {
-    $mb = 1024*1024;
-    if ( $size > $mb ) {
+    
+	$mb = 1024*1024;
+    
+	if ( $size > $mb ) {
         $mysize = sprintf ("%01.2f",$size/$mb) . " MB";
     } elseif ( $size >= 1024 ) {
         $mysize = sprintf ("%01.2f",$size/1024) . " Kb";
@@ -251,8 +269,10 @@ function YA_CoolSize($size) {
 }
 
 function YA_MakePass() {
-    static $makepass;
-    if(isset($makepass)) return $makepass;
+    
+	static $makepass;
+    
+	if(isset($makepass)) return $makepass;
     $cons = 'bcdfghjklmnpqrstvwxyz';
     $vocs = 'aeiou';
     for ($x=0; $x < 6; $x++) {
@@ -268,8 +288,10 @@ function YA_MakePass() {
 }
 
 function amain() {
-    global $ya_config, $module_name, $db, $user_prefix, $bgcolor2, $bgcolor1, $textcolor1, $find, $what, $match, $query, $admin_file;
-    $cnbyaversion = $ya_config['version'];
+    
+	global $ya_config, $module_name, $db, $user_prefix, $bgcolor2, $bgcolor1, $textcolor1, $find, $what, $match, $query, $admin_file;
+    
+	$cnbyaversion = $ya_config['version'];
 
     OpenTable();
     $act = $db->sql_numrows($db->sql_query("SELECT * FROM ".$user_prefix."_users WHERE user_level>'0' AND user_id>'1'"));
@@ -320,8 +342,10 @@ function amain() {
 }
 
 function asearch() {
-    global $module_name, $bgcolor2, $bgcolor1, $textcolor1, $find, $what, $match, $query, $db, $user_prefix;
-    OpenTable();
+    
+	global $module_name, $bgcolor2, $bgcolor1, $textcolor1, $find, $what, $match, $query, $db, $user_prefix;
+    
+	OpenTable();
     echo "<table style='margin:auto' cellpadding='2' cellspacing='2' border='0'>\n";
     echo "<form method='post' action='modules.php?name=$module_name&amp;file=admin'>\n";
     echo "<input type='hidden' name='op' value='listresults'>\n";
@@ -359,8 +383,10 @@ function asearch() {
 }
 
 function mmain($user) {
-    global $stop, $module_name, $redirect, $mode, $t, $f, $ya_config, $user, $p;
-    if(!is_user()) {
+    
+	global $stop, $module_name, $redirect, $mode, $t, $f, $ya_config, $user, $p;
+    
+	if(!is_user()) {
         include_once(NUKE_BASE_DIR.'header.php');
         //mt_srand ((double)microtime()*1000000);
 		mt_srand(0, MT_RAND_MT19937);
@@ -434,10 +460,13 @@ function mmain($user) {
 }
 
 function yapagenums($op, $totalselected, $perpage, $max, $find, $what, $match, $query) {
-    global $module_name;
-    $pagesint = ($totalselected / $perpage);
+    
+	global $module_name;
+    
+	$pagesint = ($totalselected / $perpage);
     $pageremainder = ($totalselected % $perpage);
-    if ($pageremainder != 0) {
+    
+	if ($pageremainder != 0) {
         $pages = ceil($pagesint);
         if ($totalselected < $perpage) { $pageremainder = 0; }
     } else {
