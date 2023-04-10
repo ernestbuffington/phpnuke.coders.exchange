@@ -1677,10 +1677,8 @@ function search($query, $min, $orderby, $show) {
 
     if (!isset($min)) $min=0;
     if (!isset($max)) $max=$min+$downloadsresults;
-    if(!empty($orderby)) {
-
+    if (!empty($orderby)) {
 	$orderby = convertorderbyin($orderby);
-
     } else {
 	$orderby = "title ASC";
     }
@@ -1688,9 +1686,7 @@ function search($query, $min, $orderby, $show) {
     if ($show!="") {
 	$downloadsresults = $show;
     } else {
-
 	$show=$downloadsresults;     
-
     }
 
     $query1 = filter($query, "nohtml", 1);
