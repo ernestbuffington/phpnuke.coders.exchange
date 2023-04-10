@@ -2621,6 +2621,29 @@ function block_vpn_proxy_user()
   endif;
 }
 
+function info_box($graphic, $message) {
+
+	// Function to generate a message box with a graphic inside
+	// $graphic value can be whichever: warning, caution, tip, note.
+	// Then the graphic value with the extension .gif should be present inside /images/system/ folder
+	if (file_exists("images/system/".$graphic.".gif") AND !empty($message)) {
+
+		Opentable();
+		$graphic = filter($graphic, "nohtml");
+		$message = filter($message, "");
+
+		echo "<table align=\"center\" border=\"0\" width=\"80%\" cellpadding=\"10\"><tr>"
+			."<td valign=\"top\"><img src=\"images/system/".$graphic.".gif\" border=\"0\" alt=\"\" title=\"\" width=\"34\" height=\"34\"></td>"
+			."<td valign=\"top\">$message</td>"
+			."</tr></table>";
+		CloseTable();
+
+	} else {
+
+		return;
+	}
+}
+
 /*****[BEGIN]******************************************
 [ Mod:    NSN Center Blocks                    v2.2.1 ]
 ******************************************************/
