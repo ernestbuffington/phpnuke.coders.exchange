@@ -149,8 +149,6 @@ switch($op):
         disabled();
     break;
     case "edituser":
-        //include(NUKE_MODULES_DIR.$module_name.'/public/edituser.php'); (WHY WAS THIS TAKEN OUT?????) Assholes not commenting their changes!
-        
 		# Mod: YA Merge v1.0.0 START
         redirect("modules.php?name=Profile&mode=editprofile");
         exit;
