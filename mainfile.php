@@ -661,14 +661,16 @@ $evoconfig = load_evoconfig();
 $board_config = load_board_config();
 # Base: Evolution Functions v1.5.0 END
 
-# Mod: Lock Modules v1.0.0 START
-# Mod: Queries Count v2.0.0 START
-# Other: SSL Administration v1.0.0 START
-# Base: Censor v1.0.0 START
-# Base: Caching System  v3.0.0 START
-# Mod: Color Toggle v1.0.0 START
-# Mod: Lazy Google Tap v1.0.0 START
-# Base: Switch Content Script v2.0.0 START
+/*
+* Mod: Lock Modules v1.0.0 START
+* Mod: Queries Count v2.0.0 START
+* Other: SSL Administration v1.0.0 START
+* Base: Censor v1.0.0 START
+* Base: Caching System  v3.0.0 START
+* Mod: Color Toggle v1.0.0 START
+* Mod: Lazy Google Tap v1.0.0 START
+* Base: Switch Content Script v2.0.0 START
+*/
 if(isset($evoconfig['lock_modules']))
 $lock_modules = (int) $evoconfig['lock_modules'];
 if(isset($evoconfig['queries_count']))
@@ -710,20 +712,6 @@ $html_auth = $evoconfig['html_auth'];
 
 $more_js = '';
 $more_styles = '';
-# Mod: Lock Modules v1.0.0 END
-# Mod: Queries Count v2.0.0 END
-# Other: SSL Administration v1.0.0 END
-# Base: Censor v1.0.0 END
-# Base: Caching System  v3.0.0 END
-# Mod: Color Toggle v1.0.0 END
-# Mod: Lazy Google Tap v1.0.0 END
-# Base: Switch Content Script v2.0.0 END
-
-# Mod: Browsers v1.0 START
-# Mod: Lazy Google Tap v1.0.0 START
-# Base: Theme Management v1.0.2 START
-# Base: NukeSentinel v2.5.08 START
-# Mod: Custom Text Area v1.0.0 START
 
 /*
  * @version v2.8.41
@@ -733,9 +721,28 @@ $more_styles = '';
  */
 require_once(NUKE_INCLUDE_DIR.'functions_browser.php');
 
+/*
+ * @version Theme Management v1.0.2 
+ * @package Nuke Evo Xtreme
+ * Code origin Nuke Evolution v2.0.9e
+ * @date 03/28/2023 8:23 AM Ernest Allen Buffington
+ */
 require_once(NUKE_INCLUDE_DIR.'themes.php');
+
+/*
+ * @version Google Tap Functions v1.0.0
+ * @package Nuke Evo Xtreme
+ * Code origin Nuke Evolution v2.0.9e
+ * @date 03/28/2023 8:23 AM Ernest Allen Buffington
+ */
 include_once(NUKE_INCLUDE_DIR.'functions_tap.php');
 
+/*
+ * @version NukeSentinel v1.0.0
+ * @package NukeSentinel by Bob Marion
+ * Code origin Nuke Evolution v2.0.9e
+ * @date 03/28/2023 8:23 AM Ernest Allen Buffington
+ */
 if(!defined('NO_SENTINEL')): 
   require_once(NUKE_INCLUDE_DIR.'nukesentinel.php');
 endif;
@@ -756,12 +763,13 @@ if (!defined('ADMIN_FILE')) {
   require_once(NUKE_CLASSES_DIR."class.inputfilter.php");
 }
 
+/*
+ * Adopted Evo WYSIWYG functions
+ * Code origin Nuke Evolution / Xtreme v2.0.9e
+ * @date 03/28/2023 8:23 AM Ernest Allen Buffington
+ */
 include_once(NUKE_CLASSES_DIR.'class.wysiwyg.php');
-# Mod: Browsers v1.0 END
-# Mod: Lazy Google Tap v1.0.0 END
-# Base: Theme Management v1.0.2 END
-# Base: NukeSentinel v2.5.08 END
-# Mod: Custom Text Area v1.0.0 END
+
 
 include_once(NUKE_INCLUDE_DIR.'json.php');
 $json = new Services_JSON(SERVICES_JSON_LOOSE_TYPE);
