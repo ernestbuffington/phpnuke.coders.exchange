@@ -792,6 +792,11 @@ $json = new Services_JSON(SERVICES_JSON_LOOSE_TYPE);
  */
 include_once(NUKE_MODULES_DIR.'Shout_Box/shout.php');
 
+/* Custom Mainfile
+ * You can create a custom_mainfile.php in the 
+ * includes/custom_files directory.
+ * This will save space in the original mainfile.php
+ */
 if(file_exists(NUKE_INCLUDE_DIR.'custom_files/custom_mainfile.php')):
   require_once(NUKE_INCLUDE_DIR.'custom_files/custom_mainfile.php');
 endif;
