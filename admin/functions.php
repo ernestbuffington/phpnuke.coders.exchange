@@ -174,6 +174,7 @@ function login()
 
 	</style>
 
+	<div align="center">
 	<form method="post" action="<?php echo get_admin_filename() ?>.php">
 
 	<div class="al-width m-auto">
@@ -184,16 +185,20 @@ function login()
 		</div>
 		<?php endif; ?>
 
-		<!-- administration login username -->
+        <!-- administration login username -->
 		<div class="col-12 form-group justify-content-center">
-			<label for="aid"><?php echo $admlang['admin_id'] ?></label>
-			<input type="text" name="aid" class="<?php echo ((defined('BOOTSTRAP')) ? 'form-control' : 'al-block') ?>" id="aid" placeholder="Enter username">
+		<label for="aid"><?php echo $admlang['admin_id'] ?></label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <input style="max-width: 300px;" type="text" name="aid" class="<?php echo ((defined('BOOTSTRAP')) ? 'form-control' : 'al-block') ?>" id="aid" placeholder="Enter Admin ID">
 		</div>
 
 		<!-- administration login password -->
 		<div class="col-12 form-group justify-content-center">
-			<label for="password"><?php echo $admlang['global']['password'] ?></label>
-			<input type="password" name="pwd" class="<?php echo ((defined('BOOTSTRAP')) ? 'form-control' : 'al-block') ?>" id="password" placeholder="Enter password">
+			<label for="password"><?php echo $admlang['global']['password'] ?></label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			<input style="max-width: 300px;" type="text" name="pwd" class="<?php echo ((defined('BOOTSTRAP')) ? 'form-control' : 'al-block') ?>" id="password" placeholder="Enter Admin password">
 		</div>
 
 		<div class="col-12 form-group justify-content-center m-3">
@@ -218,6 +223,7 @@ function login()
 	</div>
 	<input type="hidden" name="op" value="login">
 	</form>
+    </div>
 
 	<?php   
 	closetable();
