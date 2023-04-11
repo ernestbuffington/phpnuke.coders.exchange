@@ -27,6 +27,7 @@ if (!defined('MODULE_FILE'))
 function _file_repository_submitdownload()
 {
 	global $db, $admin_file, $lang_new, $module_name, $settings, $themes, $userinfo, $admin, $user;
+	
 	OpenTable();
 	_index_navigation_header();
 
@@ -37,199 +38,203 @@ function _file_repository_submitdownload()
 	echo '<br />';
 	echo '<form action="modules.php?name='.$module_name.'&amp;action=submitdownload_save" method="post" enctype="multipart/form-data">'."\n";
 	echo '<table style="width: 100%;" border="0" cellpadding="4" cellspacing="1" class="forumline">'."\n";
-	echo '  <tr'._bgColor(2).'>'."\n";
-	echo '    <td'._tdcss(false,'center',_sh(),2).'>'._suh($lang_new[$module_name]['SUBMITDOWNLOAD_HEADER']).'</td>'."\n";
-	echo '  </tr>'."\n";
+	echo '<tr'._bgColor(2).'>'."\n";
+	echo '<td'._tdcss(false,'center',_sh(),2).'>'._suh($lang_new[$module_name]['SUBMITDOWNLOAD_HEADER']).'</td>'."\n";
+	echo '</tr>'."\n";
+	
 	if ($numrows > 0 && $settings['users_can_upload'] == true && _check_users_permissions($settings['group_allowed_to_upload']) == true ):
 
-		echo '  <tr'._bgColor(1).'>'."\n";
-		echo '    <td'._tdcss(false,'center',_sc(),2).'>Information on how the system works will be posted here.</td>'."\n";
-		echo '  </tr>'."\n";
-		echo '  <tr'._bgColor(1).'>'."\n";
-		echo '    <td'._tdcss('50%',FALSE,_sc()).'>'._sut($lang_new[$module_name]['FILE_TITLE']).'</td>'."\n";
-		echo '    <td'._tdcss('50%',FALSE,_sc()).'>'._input('text','title','250px',$row['title'],false,false,true).'</td>'."\n";
-		echo '  </tr>'."\n";
-		echo '  <tr'._bgColor(1).'>'."\n";
-		echo '    <td'._tdcss('50%',FALSE,_sc()).'>'._sut($lang_new[$module_name]['PREVIEW']).'</td>'."\n";
-		echo '    <td'._tdcss('50%',FALSE,_sc()).'>'._input('text','preview','250px',$row['preview']).'</td>'."\n";
-		echo '  </tr>'."\n";
-		echo '  <tr'._bgColor(1).'>'."\n";
-		echo '    <td'._tdcss('50%',FALSE,_sc()).'>'._sut($lang_new[$module_name]['FILE_VERSION']).'</td>'."\n";
-		echo '    <td'._tdcss('50%',FALSE,_sc()).'>'._input('text','version','100px',$row['version']).'</td>'."\n";
-		echo '  </tr>'."\n";
-		echo '  <tr'._bgColor(1).'>'."\n";
-		echo '    <td'._tdcss('50%',false,_sc()).'>'._sut($lang_new[$module_name]['CATEGORY']).'</td>'."\n";
-		echo '    <td'._tdcss('50%',false,_sc()).'>'._category_parents_and_children('cid',0,false,true).'</td>'."\n";
-		echo '  </tr>'."\n";
-		echo '  <tr'._bgColor(2).'>'."\n";
-		echo '    <td'._tdcss(false,false,_sh(),2).'>'._sut($lang_new[$module_name]['FILES']).'</td>'."\n";
-		echo '  </tr>'."\n";
-		echo '  <tr'._bgColor(1).'>'."\n";
-		echo '    <td'._tdcss(false,false,_sc(),2).'>';
-		echo '      <table style="width: 100%; white-space: nowrap;" cellpadding="0" cellspacing="0" border="0">';
-		echo '        <tr>';
-		echo '          <td'._tdcss('25%').'>'._sut($lang_new[$module_name]['FILE_TITLE']).'</td>'."\n";
-		echo '          <td'._tdcss('75%').'>'._sut($lang_new[$module_name]['FILE']).'</td>'."\n";
-		echo '        </tr>';
+		echo '<tr'._bgColor(1).'>'."\n";
+		echo '<td'._tdcss(false,'center',_sc(),2).'>Information on how the system works will be posted here.</td>'."\n";
+		echo '</tr>'."\n";
+		echo '<tr'._bgColor(1).'>'."\n";
+		echo '<td'._tdcss('50%',FALSE,_sc()).'>'._sut($lang_new[$module_name]['FILE_TITLE']).'</td>'."\n";
+		echo '<td'._tdcss('50%',FALSE,_sc()).'>'._input('text','title','250px',$row['title'],false,false,true).'</td>'."\n";
+		echo '</tr>'."\n";
+		echo '<tr'._bgColor(1).'>'."\n";
+		echo '<td'._tdcss('50%',FALSE,_sc()).'>'._sut($lang_new[$module_name]['PREVIEW']).'</td>'."\n";
+		echo '<td'._tdcss('50%',FALSE,_sc()).'>'._input('text','preview','250px',$row['preview']).'</td>'."\n";
+		echo '</tr>'."\n";
+		echo '<tr'._bgColor(1).'>'."\n";
+		echo '<td'._tdcss('50%',FALSE,_sc()).'>'._sut($lang_new[$module_name]['FILE_VERSION']).'</td>'."\n";
+		echo '<td'._tdcss('50%',FALSE,_sc()).'>'._input('text','version','100px',$row['version']).'</td>'."\n";
+		echo '</tr>'."\n";
+		echo '<tr'._bgColor(1).'>'."\n";
+		echo '<td'._tdcss('50%',false,_sc()).'>'._sut($lang_new[$module_name]['CATEGORY']).'</td>'."\n";
+		echo '<td'._tdcss('50%',false,_sc()).'>'._category_parents_and_children('cid',0,false,true).'</td>'."\n";
+		echo '</tr>'."\n";
+		echo '<tr'._bgColor(2).'>'."\n";
+		echo '<td'._tdcss(false,false,_sh(),2).'>'._sut($lang_new[$module_name]['FILES']).'</td>'."\n";
+		echo '</tr>'."\n";
+		echo '<tr'._bgColor(1).'>'."\n";
+		echo '<td'._tdcss(false,false,_sc(),2).'>';
+		echo '<table style="width: 100%; white-space: nowrap;" cellpadding="0" cellspacing="0" border="0">';
+		echo '<tr>';
+		echo '<td'._tdcss('25%').'>'._sut($lang_new[$module_name]['FILE_TITLE']).'</td>'."\n";
+		echo '<td'._tdcss('75%').'>'._sut($lang_new[$module_name]['FILE']).'</td>'."\n";
+		echo '</tr>';
+		
 		if($settings['users_file_upload_amount'] >= 1):
 
-			echo '        <tr>';
-			echo '          <td'._tdcss('25%').'>'._input('text','userfile_desc[]','100%','').'</td>';
-			echo '          <td'._tdcss('75%').'>'._input('file','userfile[]','100%','',false,false,false,'userfile_upload').'</td>'."\n";
-			echo '        </tr>';
+			echo '<tr>';
+			echo '<td'._tdcss('25%').'>'._input('text','userfile_desc[]','100%','').'</td>';
+			echo '<td'._tdcss('75%').'>'._input('file','userfile[]','100%','',false,false,false,'userfile_upload').'</td>'."\n";
+			echo '</tr>';
 
 		endif;
 		if($settings['users_file_upload_amount'] >= 2):
 
-			echo '        <tr>';
-			echo '          <td'._tdcss('25%').'>'._input('text','userfile_desc[]','100%','').'</td>';
-			echo '          <td'._tdcss('75%').'>'._input('file','userfile[]','100%','',false,false,false,'userfile_upload').'</td>'."\n";
-			echo '        </tr>';
+			echo '<tr>';
+			echo '<td'._tdcss('25%').'>'._input('text','userfile_desc[]','100%','').'</td>';
+			echo '<td'._tdcss('75%').'>'._input('file','userfile[]','100%','',false,false,false,'userfile_upload').'</td>'."\n";
+			echo '</tr>';
 
 		endif;
 		if($settings['users_file_upload_amount'] >= 3):
 
-			echo '        <tr>';
-			echo '          <td'._tdcss('25%').'>'._input('text','userfile_desc[]','100%','').'</td>';
-			echo '          <td'._tdcss('75%').'>'._input('file','userfile[]','100%','',false,false,false,'userfile_upload').'</td>'."\n";
-			echo '        </tr>';
+			echo '<tr>';
+			echo '<td'._tdcss('25%').'>'._input('text','userfile_desc[]','100%','').'</td>';
+			echo '<td'._tdcss('75%').'>'._input('file','userfile[]','100%','',false,false,false,'userfile_upload').'</td>'."\n";
+			echo '</tr>';
 
 		endif;
 		if($settings['users_file_upload_amount'] >= 4):
 
-			echo '        <tr>';
-			echo '          <td'._tdcss('25%').'>'._input('text','userfile_desc[]','100%','').'</td>';
-			echo '          <td'._tdcss('75%').'>'._input('file','userfile[]','100%','',false,false,false,'userfile_upload').'</td>'."\n";
-			echo '        </tr>';
+			echo '<tr>';
+			echo '<td'._tdcss('25%').'>'._input('text','userfile_desc[]','100%','').'</td>';
+			echo '<td'._tdcss('75%').'>'._input('file','userfile[]','100%','',false,false,false,'userfile_upload').'</td>'."\n";
+			echo '</tr>';
 
 		endif;
 		if($settings['users_file_upload_amount'] == 5):
 
-			echo '        <tr>';
-			echo '          <td'._tdcss('25%').'>'._input('text','userfile_desc[]','100%','').'</td>';
-			echo '          <td'._tdcss('75%').'>'._input('file','userfile[]','100%','',false,false,false,'userfile_upload').'</td>'."\n";
-			echo '        </tr>';
+			echo '<tr>';
+			echo '<td'._tdcss('25%').'>'._input('text','userfile_desc[]','100%','').'</td>';
+			echo '<td'._tdcss('75%').'>'._input('file','userfile[]','100%','',false,false,false,'userfile_upload').'</td>'."\n";
+			echo '</tr>';
 
 		endif;			
-		echo '      </table>';
-		echo '    </td>'."\n";
-		echo '  </tr>'."\n";
-		echo '  <tr'._bgColor(2).'>'."\n";
-		echo '    <td'._tdcss(false,false,_sh(),2).'>'._sut($lang_new[$module_name]['SCREENSHOTS']).'</td>'."\n";
-		echo '  </tr>'."\n";
-		echo '  <tr'._bgColor(1).'>'."\n";
-		echo '    <td'._tdcss(false,false,_sc(),2).'>'."\n";
-		echo '      <table style="width: 100%; white-space: nowrap;" cellpadding="0" cellspacing="0" border="0">'."\n";
-		echo '        <tr>'."\n";
-		echo '          <td'._tdcss('25%').'>'._sut($lang_new[$module_name]['FILE_TITLE']).'</td>'."\n";
-		echo '          <td'._tdcss('75%').'>'._sut($lang_new[$module_name]['FILE']).'</td>'."\n";
-		echo '        <tr>'."\n";
+		echo '</table>';
+		echo '</td>'."\n";
+		echo '</tr>'."\n";
+		echo '<tr'._bgColor(2).'>'."\n";
+		echo '<td'._tdcss(false,false,_sh(),2).'>'._sut($lang_new[$module_name]['SCREENSHOTS']).'</td>'."\n";
+		echo '</tr>'."\n";
+		echo '<tr'._bgColor(1).'>'."\n";
+		echo '<td'._tdcss(false,false,_sc(),2).'>'."\n";
+		echo '<table style="width: 100%; white-space: nowrap;" cellpadding="0" cellspacing="0" border="0">'."\n";
+		echo '<tr>'."\n";
+		echo '<td'._tdcss('25%').'>'._sut($lang_new[$module_name]['FILE_TITLE']).'</td>'."\n";
+		echo '<td'._tdcss('75%').'>'._sut($lang_new[$module_name]['FILE']).'</td>'."\n";
+		echo '<tr>'."\n";
+		
 		if($settings['users_screens_upload_amount'] >= 1):
 
-			echo '        <tr>';
-			echo '          <td'._tdcss('25%').'>'._input('text','userscreen_desc[]','100%','').'</td>';
-			echo '          <td'._tdcss('75%').'>'._input('file','userscreen[]','100%','',false,false,false,'userimage_upload').'</td>'."\n";
-			echo '        </tr>';
+			echo '<tr>';
+			echo '<td'._tdcss('25%').'>'._input('text','userscreen_desc[]','100%','').'</td>';
+			echo '<td'._tdcss('75%').'>'._input('file','userscreen[]','100%','',false,false,false,'userimage_upload').'</td>'."\n";
+			echo '</tr>';
 
 		endif;
 		if($settings['users_screens_upload_amount'] >= 2):
 
-			echo '        <tr>';
-			echo '          <td'._tdcss('25%').'>'._input('text','userscreen_desc[]','100%','').'</td>';
-			echo '          <td'._tdcss('75%').'>'._input('file','userscreen[]','100%','',false,false,false,'userimage_upload').'</td>'."\n";
-			echo '        </tr>';
+			echo '<tr>';
+			echo '<td'._tdcss('25%').'>'._input('text','userscreen_desc[]','100%','').'</td>';
+			echo '<td'._tdcss('75%').'>'._input('file','userscreen[]','100%','',false,false,false,'userimage_upload').'</td>'."\n";
+			echo '</tr>';
 
 		endif;
 		if($settings['users_screens_upload_amount'] >= 3):
 
-			echo '        <tr>';
-			echo '          <td'._tdcss('25%').'>'._input('text','userscreen_desc[]','100%','').'</td>';
-			echo '          <td'._tdcss('75%').'>'._input('file','userscreen[]','100%','',false,false,false,'userimage_upload').'</td>'."\n";
-			echo '        </tr>';
+			echo '<tr>';
+			echo '<td'._tdcss('25%').'>'._input('text','userscreen_desc[]','100%','').'</td>';
+			echo '<td'._tdcss('75%').'>'._input('file','userscreen[]','100%','',false,false,false,'userimage_upload').'</td>'."\n";
+			echo '</tr>';
 
 		endif;
 		if($settings['users_screens_upload_amount'] >= 4):
 
-			echo '        <tr>';
-			echo '          <td'._tdcss('25%').'>'._input('text','userscreen_desc[]','100%','').'</td>';
-			echo '          <td'._tdcss('75%').'>'._input('file','userscreen[]','100%','',false,false,false,'userimage_upload').'</td>'."\n";
-			echo '        </tr>';
+			echo '<tr>';
+			echo '<td'._tdcss('25%').'>'._input('text','userscreen_desc[]','100%','').'</td>';
+			echo '<td'._tdcss('75%').'>'._input('file','userscreen[]','100%','',false,false,false,'userimage_upload').'</td>'."\n";
+			echo '</tr>';
 
 		endif;
 		if($settings['users_screens_upload_amount'] == 5):
 
-			echo '        <tr>';
-			echo '          <td'._tdcss('25%').'>'._input('text','userscreen_desc[]','100%','').'</td>';
-			echo '          <td'._tdcss('75%').'>'._input('file','userscreen[]','100%','',false,false,false,'userimage_upload').'</td>'."\n";
-			echo '        </tr>';
+			echo '<tr>';
+			echo '<td'._tdcss('25%').'>'._input('text','userscreen_desc[]','100%','').'</td>';
+			echo '<td'._tdcss('75%').'>'._input('file','userscreen[]','100%','',false,false,false,'userimage_upload').'</td>'."\n";
+			echo '</tr>';
 
 		endif;
-		echo '      </table>'."\n";
-		echo '    </td>'."\n";
-		echo '  </tr>'."\n";
-		echo '  <tr'._bgColor(2).'>'."\n";
-		echo '	  <td'._tdcss(FALSE,FALSE,_sh(),2).'>'._suh($lang_new[$module_name]['DESCRIPTION']).'</td>'."\n";
-		echo '  </tr>'."\n";
-		echo '  <tr'._bgColor(1).'>'."\n";
-		echo '    <td'._tdcss(FALSE,FALSE,_sc(),2).'>'._textarea('submit_description','').'</td>'."\n";
-		echo '  </tr>'."\n";
-		echo '  <tr'._bgColor(2).'>'."\n";
-		echo '	  <td'._tdcss(FALSE,FALSE,_sh(),2).'>'._suh($lang_new[$module_name]['AUTHOR_DETAILS']).'</td>'."\n";
-		echo '  </tr>'."\n";
-		echo '  <tr'._bgColor(1).'>'."\n";
-		echo '    <td'._tdcss('50%',FALSE,_sc()).'>'._sut($lang_new[$module_name]['AUTHOR']).'</td>'."\n";
-		echo '    <td'._tdcss('50%',FALSE,_sc()).'>'._input('text','author','250px',$row['author'],false,false,false).'</td>'."\n";
-		echo '  </tr>'."\n";
-		echo '  <tr'._bgColor(1).'>'."\n";
-		echo '    <td'._tdcss('50%',FALSE,_sc()).'>'._sut($lang_new[$module_name]['EMAIL']).'</td>'."\n";
-		echo '    <td'._tdcss('50%',FALSE,_sc()).'>'._input('email','author_email','250px',$row['author_email'],false,false,false).'</td>'."\n";
-		echo '  </tr>'."\n";
-		echo '  <tr'._bgColor(1).'>'."\n";
-		echo '    <td'._tdcss('50%',FALSE,_sc()).'>'._sut($lang_new[$module_name]['WEBSITE']).'</td>'."\n";
-		echo '    <td'._tdcss('50%',FALSE,_sc()).'>'._input('text','author_website','250px',$row['author_website']).'</td>'."\n";
-		echo '  </tr>'."\n";
+		echo '</table>'."\n";
+		echo '</td>'."\n";
+		echo '</tr>'."\n";
+		echo '<tr'._bgColor(2).'>'."\n";
+		echo '<td'._tdcss(FALSE,FALSE,_sh(),2).'>'._suh($lang_new[$module_name]['DESCRIPTION']).'</td>'."\n";
+		echo '</tr>'."\n";
+		echo '<tr'._bgColor(1).'>'."\n";
+		echo '<td'._tdcss(FALSE,FALSE,_sc(),2).'>'._textarea('submit_description','').'</td>'."\n";
+		echo '</tr>'."\n";
+		echo '<tr'._bgColor(2).'>'."\n";
+		echo '<td'._tdcss(FALSE,FALSE,_sh(),2).'>'._suh($lang_new[$module_name]['AUTHOR_DETAILS']).'</td>'."\n";
+		echo '</tr>'."\n";
+		echo '<tr'._bgColor(1).'>'."\n";
+		echo '<td'._tdcss('50%',FALSE,_sc()).'>'._sut($lang_new[$module_name]['AUTHOR']).'</td>'."\n";
+		echo '<td'._tdcss('50%',FALSE,_sc()).'>'._input('text','author','250px',$row['author'],false,false,false).'</td>'."\n";
+		echo '</tr>'."\n";
+		echo '<tr'._bgColor(1).'>'."\n";
+		echo '<td'._tdcss('50%',FALSE,_sc()).'>'._sut($lang_new[$module_name]['EMAIL']).'</td>'."\n";
+		echo '<td'._tdcss('50%',FALSE,_sc()).'>'._input('email','author_email','250px',$row['author_email'],false,false,false).'</td>'."\n";
+		echo '</tr>'."\n";
+		echo '<tr'._bgColor(1).'>'."\n";
+		echo '<td'._tdcss('50%',FALSE,_sc()).'>'._sut($lang_new[$module_name]['WEBSITE']).'</td>'."\n";
+		echo '<td'._tdcss('50%',FALSE,_sc()).'>'._input('text','author_website','250px',$row['author_website']).'</td>'."\n";
+		echo '</tr>'."\n";
+		
 		// display the submitters information.
-		echo '  <tr'._bgColor(2).'>'."\n";
-		echo '	  <td'._tdcss(FALSE,FALSE,_sh(),2).'>'._suh($lang_new[$module_name]['SUBMITTER_DETAILS']).'</td>'."\n";
-		echo '  </tr>'."\n";
-		echo '  <tr'._bgColor(1).'>'."\n";
-		echo '    <td'._tdcss('50%',FALSE,_sc()).'>'._sut($lang_new[$module_name]['SUBMITTER_USERNAME']).'</td>'."\n";
-		echo '    <td'._tdcss('50%',FALSE,_sc()).'>'.$userinfo['username'].'</td>'."\n";
-		echo '  </tr>'."\n";
-		echo '  <tr'._bgColor(1).'>'."\n";
-		echo '    <td'._tdcss('50%',FALSE,_sc()).'>'._sut($lang_new[$module_name]['SUBMITTER_EMAIL']).'</td>'."\n";
-		echo '    <td'._tdcss('50%',FALSE,_sc()).'>'.$userinfo['user_email'].'</td>'."\n";
-		echo '  </tr>'."\n";
+		echo '<tr'._bgColor(2).'>'."\n";
+		echo '<td'._tdcss(FALSE,FALSE,_sh(),2).'>'._suh($lang_new[$module_name]['SUBMITTER_DETAILS']).'</td>'."\n";
+		echo '</tr>'."\n";
+		echo '<tr'._bgColor(1).'>'."\n";
+		echo '<td'._tdcss('50%',FALSE,_sc()).'>'._sut($lang_new[$module_name]['SUBMITTER_USERNAME']).'</td>'."\n";
+		echo '<td'._tdcss('50%',FALSE,_sc()).'>'.$userinfo['username'].'</td>'."\n";
+		echo '</tr>'."\n";
+		echo '<tr'._bgColor(1).'>'."\n";
+		echo '<td'._tdcss('50%',FALSE,_sc()).'>'._sut($lang_new[$module_name]['SUBMITTER_EMAIL']).'</td>'."\n";
+		echo '<td'._tdcss('50%',FALSE,_sc()).'>'.$userinfo['user_email'].'</td>'."\n";
+		echo '</tr>'."\n";
 
-		echo '  <tr'._bgColor(2).'>'."\n";
-		echo '    <td'._tdcss(FALSE,'center',_sf(),2).'>'._submit($lang_new[$module_name]['SAVE']).'</td>'."\n";
-		echo '  </tr>'."\n";
+		echo '<tr'._bgColor(2).'>'."\n";
+		echo '<td'._tdcss(FALSE,'center',_sf(),2).'>'._submit($lang_new[$module_name]['SAVE']).'</td>'."\n";
+		echo '</tr>'."\n";
 
 	else:
 
 		if($settings['users_can_upload'] == false):
 
 			// echo $lang_new[$module_name]['USER_UPLOAD_DISABLED'];
-			echo '  <tr'._bgColor(1).'>'."\n";
-			echo '    <td'._tdcss(false,'center',_sc(),2).'>'.$lang_new[$module_name]['USER_UPLOAD_DISABLED'].'</td>'."\n";
-			echo '  </tr>'."\n";
+			echo '<tr'._bgColor(1).'>'."\n";
+			echo '<td'._tdcss(false,'center',_sc(),2).'>'.$lang_new[$module_name]['USER_UPLOAD_DISABLED'].'</td>'."\n";
+			echo '</tr>'."\n";
 
 		elseif($numrows == 0):
 
-			echo '  <tr'._bgColor(1).'>'."\n";
-			echo '    <td'._tdcss(false,'center',_sc(),2).'>No Categories have been set allow any uploads at this time.</td>'."\n";
-			echo '  </tr>'."\n";
+			echo '<tr'._bgColor(1).'>'."\n";
+			echo '<td'._tdcss(false,'center',_sc(),2).'>No Categories have been set allow any uploads at this time.</td>'."\n";
+			echo '</tr>'."\n";
 
 		else:
 
-			echo '  <tr'._bgColor(1).'>'."\n";
-			echo '    <td'._tdcss(false,'center',_sc(),2).'>You do not have permissions to upload.</td>'."\n";
-			echo '  </tr>'."\n";
+			echo '<tr'._bgColor(1).'>'."\n";
+			echo '<td'._tdcss(false,'center',_sc(),2).'>You do not have permissions to upload.</td>'."\n";
+			echo '</tr>'."\n";
 
 		endif;
-		echo '  <tr'._bgColor(2).'>'."\n";
-		echo '    <td'._tdcss(FALSE,'center',_sf(),2).'>&nbsp;</td>'."\n";
-		echo '  </tr>'."\n";
+		echo '<tr'._bgColor(2).'>'."\n";
+		echo '<td'._tdcss(FALSE,'center',_sf(),2).'>&nbsp;</td>'."\n";
+		echo '</tr>'."\n";
 
 	endif;
 	
@@ -250,7 +255,7 @@ function _file_repository_get_file_information($upload)
 	$file['type']   = str_replace("'", '', $file['type']);
 	$file['error']  = $upload['error'];
 	$file['size']   = $upload['size'];
-	$file_parts     = @pathinfo($upload['name']);
+	$file_parts     = pathinfo($upload['name']);
     $file['ext']    = $file_parts['extension'];
     return $file;
 }
@@ -274,14 +279,14 @@ function _file_repository_delete_on_client_error($did)
 	{
 		while ($row2 = $db->sql_fetchrow($result))
 		{
-			@unlink(_FILE_REPOSITORY_SCREENS.'thumbs/thumb_100x100_'.$row2['filename']);
-			@unlink(_FILE_REPOSITORY_SCREENS.'thumbs/thumb_190x120_'.$row2['filename']);
-			@unlink(_FILE_REPOSITORY_SCREENS.$row2['filename']);
+			unlink(_FILE_REPOSITORY_SCREENS.'thumbs/thumb_100x100_'.$row2['filename']);
+			unlink(_FILE_REPOSITORY_SCREENS.'thumbs/thumb_190x120_'.$row2['filename']);
+			unlink(_FILE_REPOSITORY_SCREENS.$row2['filename']);
 			$db->sql_query("DELETE FROM `"._FILE_REPOSITORY_SCREENSHOTS."` WHERE `pid`='".$row2['pid']."'");
 		}
 		$db->sql_freeresult($result);
 	}
-	@unlink(_FILE_REPOSITORY_DIR.$rowf['filename']);
+	unlink(_FILE_REPOSITORY_DIR.$rowf['filename']);
 }
 
 function _file_repository_save_submitdownload()
@@ -326,7 +331,7 @@ function _file_repository_save_submitdownload()
 
 				$fileupload['desc']  	= $_POST['userfile_desc'][$i];
 				$fileupload['error']  	= $_FILES['userfile']['error'][$i];
-				$file_parts     		= @pathinfo($_FILES['userfile']['name'][$i]);
+				$file_parts     		= pathinfo($_FILES['userfile']['name'][$i]);
 		    	$fileupload['ext'] 		= $file_parts['extension'];
 		    	$fileupload['size']		= $_FILES['userfile']['size'][$i];
 		    	$fileupload['temp']   	= $_FILES['userfile']['tmp_name'][$i];
@@ -353,12 +358,12 @@ function _file_repository_save_submitdownload()
 					endif;
 
 					# Move the file to the specified upload directory.
-					if (@move_uploaded_file($fileupload['temp'], _FILE_REPOSITORY_DIR.$fileupload['name']))
+					if (move_uploaded_file($fileupload['temp'], _FILE_REPOSITORY_DIR.$fileupload['name']))
 					{
 						# check if the upload directory is CHMOD 755, if not return an error.
-						if (!@chmod(_FILE_REPOSITORY_DIR.$fileupload['name'],0755)):
+						if (!chmod(_FILE_REPOSITORY_DIR.$fileupload['name'],0755)):
 
-							@unlink($fileupload['temp']);
+							unlink($fileupload['temp']);
 							$error_messages[] = 'CHMOD Error';
 
 						endif;
@@ -383,7 +388,7 @@ function _file_repository_save_submitdownload()
 
 				$userscreen['desc']  	= $_POST['userscreen_desc'][$s];
 				$userscreen['error']  	= $_FILES['userscreen']['error'][$s];
-				$file_parts     		= @pathinfo($_FILES['userscreen']['name'][$s]);
+				$file_parts     		= pathinfo($_FILES['userscreen']['name'][$s]);
 		    	$userscreen['ext'] 		= $file_parts['extension'];
 		    	$userscreen['size']		= $_FILES['userscreen']['size'][$s];
 		    	$userscreen['temp']   	= $_FILES['userscreen']['tmp_name'][$s];
@@ -408,7 +413,7 @@ function _file_repository_save_submitdownload()
 						$userscreen['name'] = strtolower($userscreen['name']).'-'._generate_rand_string().'.'.$userscreen['ext'];
 					endif;
 
-					if (@move_uploaded_file($userscreen['temp'], _FILE_REPOSITORY_SCREENS.$userscreen['name'])):
+					if (move_uploaded_file($userscreen['temp'], _FILE_REPOSITORY_SCREENS.$userscreen['name'])):
 
 						# Generate the thumbnails for this submitted download.
 						_create_thumb_from_image(_FILE_REPOSITORY_SCREENS.$userscreen['name'], _FILE_REPOSITORY_SCREENS.'thumbs/thumb_100x100_'.$userscreen['name'], array(
