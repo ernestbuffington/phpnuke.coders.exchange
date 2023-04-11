@@ -23,8 +23,8 @@
  
 /*****[CHANGES]**********************************************************
 -=[Base]=-
-      NukeSentinel                             v2.5.08      07/11/2006
-      Nuke Patched                             v3.1.0       06/26/2005
+      NukeSentinel                             v2.6.16      07/11/2021
+      PHP Patched                              v8.2.4       04/11/2023
       Language Selector                        v3.0.0       12/11/2005
       Admin File Check                         v3.0.0       11/19/2005
       PHP Input Filter                         v1.2.2       10/14/2005
@@ -107,6 +107,9 @@ define('CUR_RAVEN', 'NUKE_RAVEN');
 
 define('NUKE_VERSION', '8.3.3');
 define('NUKE_MOD', 'PHP-Nuke');
+define('NUKE_VERSION_CHECKING', 'https://phpnuke.coders.exchange/versions/nuke-version.json');
+define('NUKE_LIVE_FEED', 'https://phpnuke.coders.exchange/versions/nuke-live-feed.json');
+define('NUKE_DEVELOPER_FEED', 'https://phpnuke.coders.exchange/versions/feed.php');
 
 // Get php file extension
 $phpEx = "php"; 
