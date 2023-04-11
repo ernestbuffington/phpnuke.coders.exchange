@@ -15,10 +15,10 @@
 /*
 |-----------------------------------------------------------------------
 |	COPYRIGHT (c) 2016 by lonestar-modules.com
-|	AUTHOR 				:	Lonestar	
+|	AUTHOR(s) 			:	Lonestar, Ernest Allen Buffington	
 |	COPYRIGHTS 			:	lonestar-modules.com
 |	PROJECT 			:	File Repository
-|	VERSION 			:	1.0.0
+|	VERSION 			:	1.1.1
 |----------------------------------------------------------------------
 */
 
