@@ -214,4 +214,5 @@ class Paginator {
       }
 			
 	}//ends Paginator class
-	?>
+?>
+	
