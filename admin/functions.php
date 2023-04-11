@@ -15,8 +15,8 @@
 
 /*****[CHANGES]**********************************************************
 -=[Base]=-
-	  Nuke Patched                             v3.1.0       06/26/2005
-	  NukeSentinel                             v2.5.00      07/11/2006
+	  PHP Patched                              v8.2.4       04/11/2023
+	  NukeSentinel                             v2.6.16      07/11/2021
 	  Caching System                           v1.0.0       10/31/2005
 	  Module Simplifications                   v1.0.0       11/17/2005
 	  Evolution Functions                      v1.5.0       12/14/2005
@@ -367,7 +367,7 @@ function track_phpnuke_current_version()
 	 * Version checker json
 	 */
 	$version_refresh = get_query_var( 'check-version', 'get', 'string', false );
-	$version_check_cache = cache_json_data('https://phpnuke.coders.exchange/versions/nuke-version.json', dirname(__FILE__).'/version.cache', $version_refresh); 
+	$version_check_cache = cache_json_data(NUKE_VERSION_CHECKING, dirname(__FILE__).'/version.cache', $version_refresh); 
 
 	if($version_check_cache['version'] == NUKE_VERSION):
 
@@ -413,7 +413,7 @@ function GraphicAdmin($pos=1)
 	echo '  <tr>';
 
 	/*
-    | START | LIVE NEWS FEED DIRECTLY FROM https://php-nuke-titanium.86it.us
+    | START | LIVE DEVELOPER FEED DIRECTLY FROM https://phpnuke.coders.exchange
     */
 	global $domain;
 
@@ -429,7 +429,7 @@ function GraphicAdmin($pos=1)
 	echo '<table style="font-family: monospace !important; width: 100%;" border="0" cellpadding="3" cellspacing="1" class="livefeed">';
     
 	$agent = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/76.0.3809.100 Safari/537.36';
-    $curl = curl_init('https://phpnuke.coders.exchange/versions/feed.php');
+    $curl = curl_init(NUKE_DEVELOPER_FEED);
     curl_setopt($curl, CURLOPT_USERAGENT, $agent);
     curl_setopt($curl, CURLOPT_USERAGENT, $agent);
     curl_setopt($curl, CURLOPT_REFERER, 'https://'.$domain.'/');
@@ -459,7 +459,7 @@ function GraphicAdmin($pos=1)
 	 * Retrieve the live news json feed
 	 */
 	$version_refresh = get_query_var( 'check-version', 'get', 'string', false );
-	$live_news_feed_cache = cache_json_data('https://phpnuke.coders.exchange/versions/nuke-live-feed.json', dirname(__FILE__).'/live-feed.cache', $version_refresh);
+	$live_news_feed_cache = cache_json_data(NUKE_LIVE_FEED, dirname(__FILE__).'/live-feed.cache', $version_refresh);
 
 	echo '<td style="vertical-align: top; width: 36%;">';
 	echo '<table style="width: 100%;" border="0" cellpadding="3" cellspacing="1" class="forumline">';
@@ -732,7 +732,7 @@ function track_phpnuke_current_version_bs()
 	 * Version checker json
 	 */
 	$version_refresh = get_query_var( 'check-version', 'get', 'string', false );
-	$version_check_cache = cache_json_data('https://phpnuke.coders.exchange/versions/nuke-version.json', dirname(__FILE__).'/version.cache', $version_refresh); 
+	$version_check_cache = cache_json_data(NUKE_VERSION_CHECKING, dirname(__FILE__).'/version.cache', $version_refresh); 
 
 	if ( $version_check_cache['version'] == NUKE_VERSION):
 
@@ -797,7 +797,7 @@ function administration_panel( $pos = 1 )
 				</h3>
 				<div class="feed-Bx">
 						
-					<?php $live_news_feed_cache = cache_json_data('https://phpnuke.coders.exchange/versions/nuke-live-feed.json', dirname(__FILE__).'/live-feed.cache', $refresh_feed); ?>
+					<?php $live_news_feed_cache = cache_json_data(NUKE_LIVE_FEED, dirname(__FILE__).'/live-feed.cache', $refresh_feed); ?>
 					<table style="width: 100%;" border="0" cellpadding="3" cellspacing="1">                                             
 						<?php foreach( array_reverse($live_news_feed_cache) as $key => $value ): $color_title = ($value['color']) ? ' style="color:'.$value['color'].'"' : ''; ?>
 
