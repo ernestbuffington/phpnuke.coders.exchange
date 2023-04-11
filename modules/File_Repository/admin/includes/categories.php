@@ -15,10 +15,10 @@
 /*
 |-----------------------------------------------------------------------
 |	COPYRIGHT (c) 2016 by lonestar-modules.com
-|	AUTHOR 				:	Lonestar	
+|	AUTHOR(s) 			:	Lonestar, Ernest Buffington	
 |	COPYRIGHTS 			:	lonestar-modules.com
 |	PROJECT 			:	File Repository
-|	VERSION 			:	1.0.0
+|	VERSION 			:	1.1.1
 |----------------------------------------------------------------------
 */
 
@@ -53,16 +53,20 @@ function _file_repository_categories()
 function _file_repository_add_category()
 {
 	global $db, $admin_file, $lang_new, $module_name, $settings;
+	
+	if(!isset($_GET['cid'])) { $_GET['cid'] = ''; }
+	if(!isset($row['cid'])) { $row['cid'] = ''; }
+	
 	_admin_navigation_menu();
-	$row = $db->sql_fetchrow($db->sql_query("SELECT * FROM `"._FILE_REPOSITORY_CATEGORIES."` WHERE `cid`='".isset($_GET['cid'])."'"));
+	$row = $db->sql_fetchrow($db->sql_query("SELECT * FROM `"._FILE_REPOSITORY_CATEGORIES."` WHERE `cid`='".$_GET['cid']."'"));
 	echo '<form action="'.$admin_file.'.php?op=file_repository&action=savecat" method="post">'."\n";
-//---------------------------------------------------------------------
-//	HIDDEN FIELD USED FOR UPDATING CATEGORY VARIABLES
-//---------------------------------------------------------------------
-	echo '<input type="hidden" name="cid" value="'.isset($row['cid']).'" />';
-//---------------------------------------------------------------------
-//	HIDDEN FIELD USED FOR UPDATING CATEGORY VARIABLES
-//---------------------------------------------------------------------
+    //---------------------------------------------------------------------
+    //	HIDDEN FIELD USED FOR UPDATING CATEGORY VARIABLES
+    //---------------------------------------------------------------------
+	echo '<input type="hidden" name="cid" value="'.$row['cid'].'" />';
+    //---------------------------------------------------------------------
+    //	HIDDEN FIELD USED FOR UPDATING CATEGORY VARIABLES
+    //---------------------------------------------------------------------
     if (!isset($row['parentid'])) $row['parentid'] = 0;
     if (!isset($row['cname'])) $row['cname'] = 'Not Set';
     if (!isset($row['color'])) $row['color'] = 'Not Set';
