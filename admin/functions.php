@@ -452,7 +452,7 @@ function GraphicAdmin($pos=1)
     
 	echo '</td>';
     /*
-    | END | LIVE NEWS FEED DIRECTLY FROM https://php-nuke-titanium.86it.us
+    | END | LIVE DEVELOPER FEED DIRECTLY FROM https://phpnuke.coders.exchange
     */
 	
 	/**
