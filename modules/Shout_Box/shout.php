@@ -787,7 +787,8 @@ function ShoutBox($ShoutSubmit, $ShoutComment, $shoutuid)
             }
 			
             if ($conf['anonymouspost']== 'yes' && $username == 'Anonymous') {
-                if (isset($PreviousUsername)) { $boxtext = $PreviousUsername; } else { $boxtext = _NAME; }
+                
+				if (isset($PreviousUsername)) { $boxtext = $PreviousUsername; } else { $boxtext = _NAME; }
                 
 				if ($SBpos == 'center') 
 				{
