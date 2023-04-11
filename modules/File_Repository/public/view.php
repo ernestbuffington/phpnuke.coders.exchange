@@ -252,12 +252,15 @@ function _view_downloadinfo()
 function _view_the_mutiple_files()
 {
 	global $db, $lang_new, $module_name, $settings, $admin;
+	
 	$did = _escape_string($_GET['did']);
 	$iteminfo 	 = _collect_iteminfo($did);
 	$gfxcheck 	 = (!defined('NUKE_FILE')) ? security_code_check($_POST['gfx_check'],array(2,4,5,7)) : security_code_check($_POST['g-recaptcha-response'],array(0,1,2,3,4,5,6,7));
 	$adminBypass = ($settings['adminBypass'] == true && is_admin($admin)) ? false : true;
+	
 	OpenTable();
 	_index_navigation_header();
+	
 	if (!$gfxcheck && _check_users_permissions($iteminfo['groups']) == true && $settings['usegfxcheck'] == true && $adminBypass) 
 	{		
 		echo '<br />';
