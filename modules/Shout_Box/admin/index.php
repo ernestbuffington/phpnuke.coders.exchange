@@ -1698,11 +1698,11 @@ switch($Submit) {
     case "themeSubmit":
     for ($x = 0; $x <= $totalThemes; $x++) {
         $themeColorValues["themeName"][$x] = ${"themeName$x"};
-        $themeColorValues["${"themeName$x"}"]["block1"] = ${"blockColor1Theme$x"};
-        $themeColorValues["${"themeName$x"}"]["block2"] = ${"blockColor2Theme$x"};
-        $themeColorValues["${"themeName$x"}"]["border"] = ${"borderTheme$x"};
-        $themeColorValues["${"themeName$x"}"]["menu1"] = ${"menuColor1Theme$x"};
-        $themeColorValues["${"themeName$x"}"]["menu2"] = ${"menuColor2Theme$x"};
+        $themeColorValues["{${"themeName$x"}}"]["block1"] = ${"blockColor1Theme$x"};
+        $themeColorValues["{${"themeName$x"}}"]["block2"] = ${"blockColor2Theme$x"};
+        $themeColorValues["{${"themeName$x"}}"]["border"] = ${"borderTheme$x"};
+        $themeColorValues["{${"themeName$x"}}"]["menu1"] = ${"menuColor1Theme$x"};
+        $themeColorValues["{${"themeName$x"}}"]["menu2"] = ${"menuColor2Theme$x"};
     }
     themeSubmit($themeColorValues, $totalThemes);
     break;
@@ -1710,8 +1710,8 @@ switch($Submit) {
     case "themeImageSubmit":
     for ($x = 0; $x <= $totalThemes; $x++) {
         $themeImageValues["themeName"][$x] = ${"themeName$x"};
-        $themeImageValues["${"themeName$x"}"]["blockArrowColor"] = ${"blockArrowColorTheme$x"};
-        $themeImageValues["${"themeName$x"}"]["blockBackgroundImage"] = ${"blockBackgroundImageTheme$x"};
+        $themeImageValues["{${"themeName$x"}}"]["blockArrowColor"] = ${"blockArrowColorTheme$x"};
+        $themeImageValues["{${"themeName$x"}}"]["blockBackgroundImage"] = ${"blockBackgroundImageTheme$x"};
     }
     themeImageSubmit($themeImageValues, $totalThemes);
     break;
