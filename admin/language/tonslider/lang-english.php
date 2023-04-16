@@ -19,8 +19,11 @@
 
 define_once("_BOOTSTRAP_SLIDER","Bootstrap Slider");
 
-define("_TONSLIDERCONFIG","Tricked Out News Slider Control Panel");
-define("_TONSLIDERSETUP","Control the features of Tricked Out News SLider");
+define("_TONSLIDERCONFIG","Bootstrap Slider Control Panel");
+define("_TONSLIDERSETUP","Bootstrap Slider Control Panel");
+define("_RETURNMAIN","Return to Main Administration");
+
+
 define("_SLIDERWIDTH","<b>Width of Slider</b>");
 define("_SLIDERHEIGHT","<b>Height of Slider</b>");
 define("_SLIDERDURATION","<b>Duration of Slider</b>");
