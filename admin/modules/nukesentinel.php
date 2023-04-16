@@ -23,7 +23,7 @@ if (!defined('ADMIN_FILE')) {
    die ("Illegal File Access");
 }
 
-@set_time_limit(600);
+set_time_limit(600);
 
 if($ab_config['show_right'] == 1) {
   define('INDEX_FILE', TRUE);
