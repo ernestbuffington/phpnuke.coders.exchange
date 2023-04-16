@@ -46,7 +46,7 @@ switch($op) {
 $db->sql_query("CREATE TABLE `".$prefix."_tonslider` (
   `sliderwidth` varchar(3) NOT NULL default '0',
   `sliderheight` varchar(3) NOT NULL default '0',
-  `sliderduration` varchar(3) NOT NULL default '0',
+  `sliderduration` varchar(5) NOT NULL default '0',
   `slidertitle1` varchar(25) NOT NULL default '0',
   `slidertitle2` varchar(25) NOT NULL default '0',
   `slidertitle3` varchar(25) NOT NULL default '0',
