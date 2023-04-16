@@ -62,14 +62,14 @@ $dbtype = 'mysqli';
 
 /*----[ $prefix ] ----------------------------------------
 |                                                         |
-| The prefix for your PHP-Nuke Titanium tables            |
+| The prefix for your PHP-Nuke tables                     |
 |                                                         |
 ---------------------------------------------------------*/
 $prefix = 'nuke';
 
 /*----[ $user_prefix ] -----------------------------------
 |                                                         |
-| The prefix for your PHP-Nuke Titanium tables            |
+| The prefix for your PHP-Nuke tables                     |
 | Do not change this unless it is really needed           |
 |                                                         |
 ---------------------------------------------------------*/

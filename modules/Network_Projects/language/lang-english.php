@@ -24,7 +24,7 @@ define_once("_NETWORK_REQUESTADD","Project Add Request");
 define_once("_NETWORK_ACTIVATE","Activate");
 define_once("_NETWORK_ACTIVATEREPORTS","Activate Reports");
 define_once("_NETWORK_ACTIVATEREQUESTS","Activate Requests");
-define_once("_NETWORK_ADMIN_HEADER", "PHP-Nuke Titanium Projects :: Modules Admin Panel");
+define_once("_NETWORK_ADMIN_HEADER", "PHP-Nuke Projects :: Modules Admin Panel");
 define_once("_NETWORK_RETURNMAIN", "Return to Main Administration");
 define_once("_NETWORK_ADMIN","Administration");
 define_once("_NETWORK_ADMINEMAIL","Admin E-mail");

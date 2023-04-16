@@ -23,10 +23,6 @@
 /* it under the terms of the GNU General Public License as published by */
 /* the Free Software Foundation; either version 2 of the License.       */
 /************************************************************************/
-/*======================================================================= 
-  PHP-Nuke Titanium | Nuke-Evolution Xtreme : PHP-Nuke Web Portal System
- =======================================================================*/
-
 
 define_once('_HONEYPOT_MAIN','Nuke HoneyPot V2.2 - Antispam');
 define_once('_HONEYPOT_BOTLIST','Honeypot Bot List');

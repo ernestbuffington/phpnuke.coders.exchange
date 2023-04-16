@@ -145,7 +145,7 @@ function build_module($info_array, $lang_array, $php_file, $module_id = -1)
         {
             $contents = "<?php
 /*======================================================================= 
-  PHP-Nuke Titanium | Nuke-Evolution Xtreme : PHP-Nuke Web Portal System
+  PHP-Nuke : Advanced Web Portal System
  =======================================================================*/
 \n\n\n?>";
         }

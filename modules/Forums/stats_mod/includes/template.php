@@ -768,7 +768,7 @@ class Stats_template {
 
         $data = '<?php
 /*======================================================================= 
-  PHP-Nuke Titanium | Nuke-Evolution Xtreme : PHP-Nuke Web Portal System
+  PHP-Nuke : Advanced Web Portal System
  =======================================================================*/
 ' . "\nif (\$this->security()) {\n" . $data . "\n}\n?".">";
 

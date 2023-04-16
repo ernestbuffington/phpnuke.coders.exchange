@@ -119,7 +119,7 @@ if ($mode == 'export_module')
     
     $content = '<?php
 /*======================================================================= 
-  PHP-Nuke Titanium | Nuke-Evolution Xtreme : PHP-Nuke Web Portal System
+  PHP-Nuke : Advanced Web Portal System
  =======================================================================*/
 ' . "\n\n";
     $content .= '// [' . $language . ']' . "\n";
@@ -188,7 +188,7 @@ else if ($mode == 'export_lang')
     fwrite($fp, pack("C*", 0xCC, 0xFC, 0xFF), 3);
     $content = '<?php
 /*======================================================================= 
-  PHP-Nuke Titanium | Nuke-Evolution Xtreme : PHP-Nuke Web Portal System
+  PHP-Nuke : Advanced Web Portal System
  =======================================================================*/
 ' . "\n\n";
     $content .= '// [' . $language . ']' . "\n";
@@ -260,7 +260,7 @@ else if ($mode == 'export_everything')
     fwrite($fp, pack("C*", 0xCC, 0xFC, 0xFF), 3);
     $content = '<?php
 /*======================================================================= 
-  PHP-Nuke Titanium | Nuke-Evolution Xtreme : PHP-Nuke Web Portal System
+  PHP-Nuke : Advanced Web Portal System
  =======================================================================*/
 ' . "\n\n";
     

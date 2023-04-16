@@ -40,7 +40,7 @@ if(is_mod_admin($pnt_module))
 		break;
   case 'step1':
   OpenTable();
-  $nuke_name = "PHP-Nuke Titanium (Network Version)";
+  $nuke_name = "PHP-Nuke (Network Version)";
   $step = (isset($_REQUEST['step'])) ? $_REQUEST['step'] : 0;
   if (!$step) $step = '1';
   $total_phpbb2_steps = '2';

@@ -59,7 +59,7 @@ define("_MENU_DISPLAYONLYTHESEDAYS","Only on");
 define("_MENU_SHOWADMIN","Extended Administrator view");
 define("_ALWAYS_OPEN","Always open");
 define("_MENU_CENTER25","Center");
-define("_MENU__ADMIN_HEADER","PHP-Nuke Titanium Portal Menu :: Admin Panel");
+define("_MENU__ADMIN_HEADER","PHP-Nuke Portal Menu :: Admin Panel");
 define("_MENU__RETURNMAIN","Return to Main Administration");
 define("_MENU","Portal Menu");
 define("_MENU_ADMINTITLE","<strong>Administration Menu</strong>");

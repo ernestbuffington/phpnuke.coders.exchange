@@ -1,9 +1,4 @@
 <?php
-/*======================================================================= 
-  PHP-Nuke Titanium | Nuke-Evolution Xtreme : PHP-Nuke Web Portal System
- =======================================================================*/
-
-
 /********************************************************/
 /* NukeSentinel(tm)                                     */
 /* By: NukeScripts Network (webmaster@nukescripts.net)  */

@@ -154,7 +154,7 @@ define_once("_BLOG_YES","Yes");
 define_once("_BLOG_HOMETOPIC","Blog Post Topics in Home");
 define_once("_BLOG_ALLTOPICS","All Blog Post Topics");
 define_once("_BLOG_HOMENUMBER","Blog Posts in Home");
-define_once("_BLOG_NUKEDEFAULT","PHP-Nuke Titanium Default");
+define_once("_BLOG_NUKEDEFAULT","PHP-Nuke Default");
 define_once("_BLOG_ARTICLES","Blog Posts");
 define_once("_BLOG_HOMENUMNOTE","This will override user preferences<br />if set other than PHP-Nuke Titanium Default");
 define_once("_BLOG_SAVECHANGES","Save Changes");

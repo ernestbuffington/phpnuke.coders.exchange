@@ -15,7 +15,7 @@ define("_NETWORK_","");
 define("_NETWORK_ACTIVATE","Activate");
 define("_NETWORK_ACTIVATEREPORTS","Activate Reports");
 define("_NETWORK_ACTIVATEREQUESTS","Activate Requests");
-define("_NETWORK_ADMIN_HEADER", "PHP-Nuke Titanium Projects :: Modules Admin Panel");
+define("_NETWORK_ADMIN_HEADER", "PHP-Nuke Projects :: Modules Admin Panel");
 define("_NETWORK_RETURNMAIN", "Return to Main Administration");
 define("_NETWORK_ADMIN","Administration");
 define("_NETWORK_ADMINEMAIL","Admin E-mail");

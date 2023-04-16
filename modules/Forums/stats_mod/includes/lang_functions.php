@@ -328,7 +328,7 @@ function set_lang_entry($language, $module_id, $key, $value)
     {
         $contents = "<?php
 /*======================================================================= 
-  PHP-Nuke Titanium | Nuke-Evolution Xtreme : PHP-Nuke Web Portal System
+  PHP-Nuke : Advanced Web Portal System
  =======================================================================*/
 \n\n\n?>";
     }
@@ -415,7 +415,7 @@ function set_lang_block($language, $module_id, $lang_block)
     {
         $contents = "<?php
 /*======================================================================= 
-  PHP-Nuke Titanium | Nuke-Evolution Xtreme : PHP-Nuke Web Portal System
+  PHP-Nuke : Advanced Web Portal System
  =======================================================================*/
 \n\n\n?>";
     }
@@ -534,7 +534,7 @@ function lang_add_new_key($language, $module_id, $add_key, $add_value)
     {
         $contents = "<?php
 /*======================================================================= 
-  PHP-Nuke Titanium | Nuke-Evolution Xtreme : PHP-Nuke Web Portal System
+  PHP-Nuke : Advanced Web Portal System
  =======================================================================*/
 \n\n\n?>";
     }
@@ -645,7 +645,7 @@ function delete_lang_key($language, $module_id, $key_name)
     {
         $contents = "<?php
 /*======================================================================= 
-  PHP-Nuke Titanium | Nuke-Evolution Xtreme : PHP-Nuke Web Portal System
+  PHP-Nuke : Advanced Web Portal System
  =======================================================================*/
 \n\n\n?>";
     }
@@ -732,7 +732,7 @@ function add_empty_language($new_language)
         {
             $contents = "<?php
 /*======================================================================= 
-  PHP-Nuke Titanium | Nuke-Evolution Xtreme : PHP-Nuke Web Portal System
+  PHP-Nuke : Advanced Web Portal System
  =======================================================================*/
 \n\n\n?>";
         }
@@ -863,7 +863,7 @@ function add_new_language_predefined($new_language, $modules)
         {
             $contents = "<?php
 /*======================================================================= 
-  PHP-Nuke Titanium | Nuke-Evolution Xtreme : PHP-Nuke Web Portal System
+  PHP-Nuke : Advanced Web Portal System
  =======================================================================*/
 \n\n\n?>";
         }

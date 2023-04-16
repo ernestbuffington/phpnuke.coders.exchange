@@ -1,5 +1,4 @@
 <?php
-
 /************************************************************************/
 /* PHP-NUKE: Advanced Content Management System                         */
 /* ============================================                         */
@@ -12,53 +11,6 @@
 /* the Free Software Foundation; either version 2 of the License.       */
 /************************************************************************/
 
- /*****[CHANGES]**********************************************************
-  The Nuke-Evo Base Engine : v2.1.0 RC3 dated May 4th, 2009 is what we
-  used to build our new content management system. 
-   
-  This file was re-written for PHP-Nuke Titanium and all modifications
-  were done by Ernest Allen Buffington of Sebastian Enterprises.
-  
-  PHP-Nuke Titanium is written for Social Networking and uses a centralized 
-  database that is chained to The Scorpion Network & The 86it Social Network
-
-  It is not intended for single user platforms and has the requirement of
-  remote database access to https://the.scorpion.network and 
-  https://www.86it.us which is a new Social Networking System designed by 
-  Ernest Buffington that requires a FEDERATED MySQL engine in order to 
-  function at all.
-  
-  The federated database concept was created in the 1980's and has been
-  available a very long time. In fact it was a part of MySQL before they
-  ever started to document it. There is not much information available
-  about using a FEDERATED engine and a lot of the documention is not very
-  complete with regard to every detail; it is superficial and partial to
-  say thge least. 
-  
-  The core engine from Nuke Evolution was used to create 
-  PHP-Nuke Titanium. Almost all versions of PHP-Nuke were unstable and not 
-  very secure. We have made it so that it is enhanced and advanced!
-  
-  PHP-Nuke Titanium is now a secure custom FORK of the ORIGINAL PHP-Nuke
-  that was purchased by Ernest Buffington of Sebastian Enterprises.
-  
-  PHP-Nuke Titanium is not backward compatible to any of the prior versions of
-  PHP-Nuke, Nuke-Evoltion or Nuke-Evo.
-  
-  The module framework of PHP-Nuke is the only thing that still functions 
-  in the same way that Francis Burzi had intended and even that had to be
-  safer and more secure to be a reliable form of internet communications.
-  
- ************************************************************************
- * PHP-NUKE: Advanced Content Management System                         *
- * ============================================                         *
- * Copyright (c) 2002 by Francisco Burzi                                *
- * http://phpnuke.org                                                   *
- *                                                                      *
- * This program is free software. You can redistribute it and/or modify *
- * it under the terms of the GNU General Public License as published by *
- * the Free Software Foundation; either version 2 of the License.       *
- ************************************************************************/
 global $doctype;
 
 $charset = defined('_CHARSET') ? _CHARSET : 'UTF-8';

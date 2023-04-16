@@ -1,9 +1,4 @@
 <?php
-/*======================================================================= 
-  PHP-Nuke Titanium | Nuke-Evolution Xtreme : PHP-Nuke Web Portal System
- =======================================================================*/
-
- 
 /************************************************************************
    Nuke-Evolution: Theme Management
    ============================================
@@ -20,18 +15,18 @@
 if(!defined('NUKE_FILE')) exit;
 
 if (is_user()) {
-    $content  = "<center>\n"; 
+    $content  = "<div align=\"center\">\n"; 
     $content .= "<form style=\"padding:0\" method=\"post\" action=\"" . $_SERVER['PHP_SELF'] . "\">\n";
     $content .= "<input type=\"hidden\" name=\"chngtheme\" value=\"1\" />\n";
     $content .= GetThemeSelect('theme', 'user_themes', false, 'onChange=submit();');
     $content .= "</form>\n"; 
-    $content .= "</center>\n";
+    $content .= "</div>\n";
 } else {
-    $content  = "<center>\n"; 
+    $content  = "<div align=\"center\">\n"; 
     $content .= "<form style=\"padding:0\" method=\"post\" action=\"" . $_SERVER['PHP_SELF'] . "\">\n";
     $content .= GetThemeSelect('tpreview', 'user_themes', false, 'onChange=submit();', get_theme(), 0);
     $content .= "</form>\n"; 
-    $content .= "</center>\n";
+    $content .= "</div>\n";
 }
 
 ?>

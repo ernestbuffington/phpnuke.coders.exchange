@@ -89,7 +89,7 @@ foreach ($metatags as $i => $metatag) {
 
 // IF YOU REALLY NEED TO REMOVE IT AND HAVE MY WRITTEN AUTHORIZATION CHECK: http://phpnuke.org/modules.php?name=Commercial_License
 // PLAY FAIR AND SUPPORT THE DEVELOPMENT, PLEASE!
-$metastring .= '<meta name="generator" content="The US Version of PHP-Nuke Titanium Copyright (c) 2021 by Brandon Maintenance Management, LLC">'."\n";
+$metastring .= '<meta name="generator" content="The US Version of PHP-Nuke Copyright (c) 2000 0 2023 by Francisco Burzi (Frank)">'."\n";
 
 echo $metastring;
 

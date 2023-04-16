@@ -1,7 +1,7 @@
 <?php
 
 /*======================================================================= 
-  PHP-Nuke Titanium | Nuke-Evolution Xtreme : PHP-Nuke Web Portal System
+  PHP-Nuke : Advanced Web Portal System
  =======================================================================*/
 
 

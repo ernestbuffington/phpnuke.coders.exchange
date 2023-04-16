@@ -1,6 +1,6 @@
 <?php
 /*======================================================================= 
-  PHP-Nuke Titanium | Nuke-Evolution Xtreme : PHP-Nuke Web Portal System
+  PHP-Nuke: PHP-Nuke Web Portal System
  =======================================================================*/
 
 /**************************************************************************/
@@ -572,7 +572,7 @@ $admlang['referers']['none']			= 'There are no %s to display';
 
 
 $admlang['preferences']['link'] 		= 'Preferences';
-$admlang['preferences']['header']		= 'PHP-Nuke Titanium Preferences :: Admin Panel';
+$admlang['preferences']['header']		= 'PHP-Nuke :: Admin Panel';
 
 $admlang['preferences']['plugins'] 		= 'Plugins';
 $admlang['plugins']['header'] 			= 'Custom Plugin Administration';
@@ -714,7 +714,7 @@ $admlang['preferences']['meta'] 		= 'Meta Tags';
 $admlang['meta']['title'] 				= 'Meta Tags Administration';
 
 $admlang['messages']['link'] 			= 'Messages';
-$admlang['messages']['header'] 			= 'PHP-Nuke Titanium Messages :: Admin Panel';
+$admlang['messages']['header'] 			= 'PHP-Nuke :: Admin Panel';
 $admlang['messages']['change_date']		= 'Change start date to today';
 $admlang['messages']['active']			= '(If you Active this Message now, the start date will be today)';
 $admlang['messages']['edit'] 			= 'Edit message';
@@ -724,7 +724,7 @@ $admlang['messages']['view'] 			= 'Visible to';
 $admlang['messages']['remove'] 			= 'Are you sure you want to remove this message?';
 
 
-$admlang['newsletter']['header'] 		= 'PHP-Nuke Titanium Newsletter :: Admin Panel';
+$admlang['newsletter']['header'] 		= 'PHP-Nuke Newsletter :: Admin Panel';
 $admlang['newsletter']['regards'] 		= 'Best Regards';
 $admlang['newsletter']['subscribed'] 	= 'Subscribed Users';
 $admlang['newsletter']['nousers'] 		= 'The group selected to receive this newsletter has zero users<br />Please go back and select a different group';
@@ -736,7 +736,7 @@ $admlang['newsletter']['sent'] 			= 'The Newsletter has been sent.';
 
 
 $admlang['modules']['link'] 			= 'Modules';
-$admlang['modules']['header'] 			= 'PHP-Nuke Titanium Messages :: Admin Panel';
+$admlang['modules']['header'] 			= 'PHP-Nuke Messages :: Admin Panel';
 $admlang['modules']['warn'] 			= 'Bold module\'s title represents the module you have in the Homepage.<br />You can\'t Deactivate or Restrict this module while it\'s the default one!<br />If you delete the module\'s directory you\'ll see an error in the Homepage.<br />Also, this module has been replaced with <i>Home</i> link in the modules block.<br /><br />[ <big><strong>&middot;</strong></big> ] means a module which name and link will not be visible in Modules Block';
 $admlang['modules']['block'] 			= 'Modules Block EDIT';
 $admlang['modules']['inhome'] 			= 'In Home';
@@ -956,7 +956,7 @@ $admlang['adminfail']['timeout'] 				= 'Cooldown Time, (min)';
 $admlang['adminfail']['timeout_explain'] 		= 'How long should they be blocked for.';
 
 
-$admlang['versions']['title'] 					= "PHP-Nuke Titanium Version Checker";
+$admlang['versions']['title'] 					= "PHP-Nuke Version Checker";
 $admlang['versions']['version'] 				= "The current version is:";
 $admlang['versions']['your_version'] 			= "Your version is:";
 $admlang['versions']['version_checked']			= "The version was last checked on";

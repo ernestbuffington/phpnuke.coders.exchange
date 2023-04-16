@@ -116,7 +116,7 @@ function title_and_meta_tags() {
                 $newpagetitle = $sitename . ' ' . $item_delim . ' Shout Box';
 
                 $facebook_og_title = '<meta property="og:title" content="' . $newpagetitle . '">' . "\n";
-                $facebook_ogdescription = '<meta property="og:description" content="PHP-Nuke Titanium ' . $item_delim . ' Shout Box Module v1.0">' . "\n";
+                $facebook_ogdescription = '<meta property="og:description" content="PHP-Nuke ' . $item_delim . ' Shout Box Module v1.0">' . "\n";
 
                 $facebookimagetype = '<meta property="og:image:type" content="image/png">' . "\n";
                 $facebook_ogimage_width = '<meta property="og:image:width" content="1200">' . "\n";

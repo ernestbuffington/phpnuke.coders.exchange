@@ -71,18 +71,7 @@ if(isset($has_echoed) && $has_echoed == 1) return;
 # powered by information and credits START
 global $powered_by, $ThemeSel;
 	
-$powered_by = '<font size="3">PHP-Nuke Titanium (US Version) Copyright &copy; 2010 2021<br /> by Ernest Allen Buffington and The 86it Developers Network.<br /> 
- All logos, trademarks and posts in this site are property of their respective owners, all the rest <br />&copy; '.date('l jS \of F Y h:i:s A').' by Brandon Maintenance Management, LLC.<br />
- Powered by PHP-Nuke Titanium v4.0.0b (US Version)<br /><br />
- <strong>CREDITS</strong><br />
- PHP-Nuke Copyright &copy; 2006 by Francisco Burzi.<br /> 
- Bob Marion of NukeScripts.Net<br />  
- Ernest Allen Buffington of 86it.us<br>
- PHP-Nuke Evolution Basic<br /> 
- PHP-Nuke Evolution Xtreme UK Version<br />
- PHP-Nuke Evolution Xtreme US Version<br />
- </font>
- ';
+$powered_by = '';
 # powered by information and credits END
 
 # footer messages span class START
