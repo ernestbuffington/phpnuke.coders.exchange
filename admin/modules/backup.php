@@ -58,7 +58,7 @@ if (is_mod_admin())
 $crlf = "\n";
 $filename = $dbname.'_'.date('d-m-Y').'.sql';
 $tablelist = $_POST['tablelist'] ?? $db->sql_fetchtables($dbname);
-@set_time_limit(0);
+set_time_limit(0);
 
 global $dbname, $tablelist, $filename;
 switch ($op) {
