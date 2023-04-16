@@ -28,7 +28,7 @@ if (stristr($_SERVER['SCRIPT_NAME'], "block-BootstrapSlider.php"))
 }
 
 require_once('mainfile.php');
-global $db, $prefix;
+global $db, $prefix, $sliderduration;
 
  $sql = "SELECT slidertitle1, 
                 slidertitle2, 
@@ -74,7 +74,7 @@ global $db, $prefix;
 $content = '<div align="center" style="padding-top:20px;"></div>';
 
 $content .= '<div class="container">';
-$content .= '<div id="myCarousel" class="carousel slide" data-ride="carousel">';
+$content .= '<div id="myCarousel" class="carousel slide" data-ride="carousel" data-interval="'.$sliderduration.'">';
 $content .= '<!-- NSN Bootsrap Indicators -->';
 $content .= '<ol class="carousel-indicators">';
 $content .= '<li data-target="#myCarousel" data-slide-to="0" class="active"></li>';
