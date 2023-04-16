@@ -87,7 +87,7 @@ function tonslidersetup() {
 	.'<table width="100%" border="0"><tr><td>'
 	. _SLIDERWIDTH . ':&nbsp;<input type="text" name="xsliderwidth" value="'.$sliderwidth.'" size="5" maxlength="3" /><br /><br />'
 	. _SLIDERHEIGHT . ':&nbsp;<input type="text" name="xsliderheight" value="'.$sliderheight.'" size="5" maxlength="3" /><br /><br />'
-	. _SLIDERDURATION . ':&nbsp;<input type="text" name="xsliderduration" value="'.$sliderduration.'" size="5" maxlength="4" /><br /><br />'
+	. _SLIDERDURATION . ':&nbsp;<input type="text" name="xsliderduration" value="'.$sliderduration.'" size="5" maxlength="5" /><br /><br />'
 	. _SLIDER1TITLE . ':&nbsp;<input type="text" name="xslidertitle1" value="'.$slidertitle1.'" size="25" maxlength="30" /><br /><br />'
 	. _SLIDERTHUMB1. ':&nbsp;<input type="text" name="xsliderthumb1" value="'.$sliderthumb1.'" size="25" maxlength="25" /><br /><br />'
 	. _SLIDER1 . ':';
