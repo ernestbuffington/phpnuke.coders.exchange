@@ -28,7 +28,7 @@ function tonslidersetup() {
     
 	include ("header.php");
     
-	GraphicAdmin();
+	//GraphicAdmin();
     
 	$result = $db->sql_query("SELECT sliderwidth, 
 	                                sliderheight, 
@@ -76,15 +76,18 @@ function tonslidersetup() {
 		
     OpenTable();
     echo '<div align="center"><span class="title"><strong>'._TONSLIDERCONFIG.'</strong></span></div>';
-    CloseTable();
+    echo "<div align=\"center\">\n[ <a href=\"$admin_file.php\">" . _RETURNMAIN . "</a> ]</div>\n";
+	CloseTable();
     
     OpenTable();
-    echo '<div align=\"center\"><font class="option"><b>'._TONSLIDERSETUP.'</b></font></div>'
-	.'<center><form action="'.$admin_file.'.php" method="post">'
+    echo '<div align=\"center\">'
+	
+	.'<form action="'.$admin_file.'.php" method="post">'
+	
 	.'<table width="100%" border="0"><tr><td>'
 	. _SLIDERWIDTH . ':&nbsp;<input type="text" name="xsliderwidth" value="'.$sliderwidth.'" size="5" maxlength="3" /><br /><br />'
 	. _SLIDERHEIGHT . ':&nbsp;<input type="text" name="xsliderheight" value="'.$sliderheight.'" size="5" maxlength="3" /><br /><br />'
-	. _SLIDERDURATION . ':&nbsp;<input type="text" name="xsliderduration" value="'.$sliderduration.'" size="5" maxlength="3" /><br /><br />'
+	. _SLIDERDURATION . ':&nbsp;<input type="text" name="xsliderduration" value="'.$sliderduration.'" size="5" maxlength="4" /><br /><br />'
 	. _SLIDER1TITLE . ':&nbsp;<input type="text" name="xslidertitle1" value="'.$slidertitle1.'" size="25" maxlength="30" /><br /><br />'
 	. _SLIDERTHUMB1. ':&nbsp;<input type="text" name="xsliderthumb1" value="'.$sliderthumb1.'" size="25" maxlength="25" /><br /><br />'
 	. _SLIDER1 . ':';
@@ -138,7 +141,7 @@ function tonslidersetup() {
 
     echo '<input type="hidden" name="op" value="tonsliderSave" />'
 	.'<input type="submit" value="'._SAVECHANGES.'" />'
-	.'</form></center>';
+	.'</form></div>';
     CloseTable();
 
     include ("footer.php");
