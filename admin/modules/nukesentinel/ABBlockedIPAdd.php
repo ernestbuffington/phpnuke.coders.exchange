@@ -24,36 +24,57 @@ if (!defined('NUKESENTINEL_ADMIN')) {
 }
 
 include_once(NUKE_BASE_DIR.'header.php');
+
 OpenTable();
+
 OpenMenu(_AB_ADDIP);
 mastermenu();
 CarryMenu();
 blockedipmenu();
 CloseMenu();
+
 CloseTable();
 
 OpenTable();
 echo '<form action="'.$admin_file.'.php" method="post" class="nuke-sentienl-blocked-ip-form">'."\n";
 echo '<table summary="" align="center" border="0" cellpadding="2" cellspacing="2">'."\n";
 echo '<tr bgcolor="'.$bgcolor1.'"><td align="center" class="content" colspan="2">'._AB_ADDIPS.'</td></tr>'."\n";
-// Start submitted by technocrat
+
+// Start submitted by technocrat - ??? Where is the rest of shit needed my friend.. the static username and static user id which needs to come from usercp_viewprofile
+global $static_user_last_ip, $get_static_name, $static_user_id;
+
+if($static_user_last_ip != 0)
+$tip = $static_user_last_ip;
+
 if(!isset($tip)) {
-  $tip[0]=""; $tip[1]=$tip[2]=$tip[3]="0";
+  $tip[0]=$tip[1]=$tip[2]=$tip[3]="0";
 } else {
   if(preg_match("/^[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}$/", $tip)) {
     $tip = explode(".", $tip);
   } else {
-    $tip[0]=""; $tip[1]=$tip[2]=$tip[3]="0";
+    $tip[0]=$tip[1]=$tip[2]=$tip[3]="0";
   }
 }
+
+$user_to_ban = $get_static_name;
+$user_id_to_ban = $static_user_id;
+
+if(!isset($user_to_ban)) {
+  $user_to_ban = 'Anonymous';
+}
+
+if(!isset($user_id_to_ban)) {
+  $user_id_to_ban = 1;
+}
+
 // End submitted by technocrat
 echo '<tr><td bgcolor="'.$bgcolor2.'"><strong>'._AB_IPBLOCKED.':</strong></td>'."\n";
 echo '<td><input class="nuke-sentinel-add-ip" type="text" name="xip[0]" value="'.$tip[0].'" size="4" maxlength="3" style="text-align: center;" />'."\n";
 echo '. <input class="nuke-sentinel-add-ip" type="text" name="xip[1]" value="'.$tip[1].'" size="4" maxlength="3" style="text-align: center;" />'."\n";
 echo '. <input class="nuke-sentinel-add-ip" type="text" name="xip[2]" value="'.$tip[2].'" size="4" maxlength="3" style="text-align: center;" />'."\n";
 echo '. <input class="nuke-sentinel-add-ip" type="text" name="xip[3]" value="'.$tip[3].'" size="4" maxlength="3" style="text-align: center;" /></td></tr>'."\n";
-echo '<tr><td bgcolor="'.$bgcolor2.'"><strong>'._AB_USERID.':</strong></td><td><input type="text" name="xuser_id" size="10" value="1" /></td></tr>'."\n";
-echo '<tr><td bgcolor="'.$bgcolor2.'"><strong>'._AB_USERNAME.':</strong></td><td><input type="text" name="xusername" size="20" value="'.$anonymous.'" /></td></tr>'."\n";
+echo '<tr><td bgcolor="'.$bgcolor2.'"><strong>'._AB_USERID.':</strong></td><td><input type="text" name="xuser_id" size="10" value="'.$user_id_to_ban.'" /></td></tr>'."\n";
+echo '<tr><td bgcolor="'.$bgcolor2.'"><strong>'._AB_USERNAME.':</strong></td><td><input type="text" name="xusername" size="20" value="'.$user_to_ban.'" /></td></tr>'."\n";
 echo '<tr><td bgcolor="'.$bgcolor2.'"><strong>'._AB_AGENT.':</strong></td><td><input type="text" name="xuser_agent" size="40" value="'._AB_UNKNOWN.'" /></td></tr>'."\n";
 echo '<tr><td bgcolor="'.$bgcolor2.'" valign="top"><strong>'._AB_EXPIRESIN.':</strong></td><td><select name="xexpires">'."\n";
 echo '<option value="0">'._AB_PERMENANT.'</option>'."\n";
