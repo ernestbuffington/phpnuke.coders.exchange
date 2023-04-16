@@ -26,5 +26,5 @@ $sql = "SELECT sliderwidth, sliderheight, sliderduration FROM ".$prefix."_tonsli
     $sliderwidth = $row['sliderwidth'];
     $sliderheight = $row['sliderheight'];
     $sliderduration = $row['sliderduration'];
-    
+	
 ?>
