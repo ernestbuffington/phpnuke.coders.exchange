@@ -97,7 +97,7 @@ function tonslidersetup() {
 	Make_TextArea('xslidercontent1', ''.$slidercontent1.'', 'PHPNukeAdmin');
 	 
 	 echo '<br /><br />'
-	 . _SLIDER2TITLE . ':&nbsp;<input type="text" name="xslidertitle2" value="'.$slidertitle2.'" size="25" maxlength="30" /><br /><br />'
+	 . _SLIDER2TITLE . ':&nbsp;<input type="text" name="xslidertitle2" value="'.$slidertitle2.'" size="50" maxlength="100" /><br /><br />'
 	 . _SLIDERTHUMB2. ':&nbsp;<input type="text" name="xsliderthumb2" value="'.$sliderthumb2.'" size="25" maxlength="25" /><br /><br />'
 	. _SLIDER2. ':';
 
@@ -105,7 +105,7 @@ function tonslidersetup() {
 	Make_TextArea('xslidercontent2', ''.$slidercontent2.'', 'PHPNukeAdmin');
 	 
 	 echo '<br /><br />'	 
-	 . _SLIDER3TITLE . ':&nbsp;<input type="text" name="xslidertitle3" value="'.$slidertitle3.'" size="25" maxlength="30" /><br /><br />'
+	 . _SLIDER3TITLE . ':&nbsp;<input type="text" name="xslidertitle3" value="'.$slidertitle3.'" size="50" maxlength="100" /><br /><br />'
 	 . _SLIDERTHUMB3. ':&nbsp;<input type="text" name="xsliderthumb3" value="'.$sliderthumb3.'" size="25" maxlength="25" /><br /><br />'
 	 . _SLIDER3. ':';
 	
@@ -113,7 +113,7 @@ function tonslidersetup() {
 	Make_TextArea('xslidercontent3', ''.$slidercontent3.'', 'PHPNukeAdmin');
     
 	     echo '<br /><br />'
-         . _SLIDER4TITLE . ':&nbsp;<input type="text" name="xslidertitle4" value="'.$slidertitle4.'" size="25" maxlength="30" /><br /><br />'
+         . _SLIDER4TITLE . ':&nbsp;<input type="text" name="xslidertitle4" value="'.$slidertitle4.'" size="50" maxlength="100" /><br /><br />'
          . _SLIDERTHUMB4. ':&nbsp;<input type="text" name="xsliderthumb4" value="'.$sliderthumb4.'" size="25" maxlength="25" /><br /><br />'
 	 . _SLIDER4. ':';
 	
@@ -121,7 +121,7 @@ function tonslidersetup() {
 	Make_TextArea('xslidercontent4', ''.$slidercontent4.'', 'PHPNukeAdmin');
 
          echo '<br /><br />'
-         . _SLIDER5TITLE . ':&nbsp;<input type="text" name="xslidertitle5" value="'.$slidertitle5.'" size="25" maxlength="30" /><br /><br />'
+         . _SLIDER5TITLE . ':&nbsp;<input type="text" name="xslidertitle5" value="'.$slidertitle5.'" size="50" maxlength="100" /><br /><br />'
          . _SLIDERTHUMB5. ':&nbsp;<input type="text" name="xsliderthumb5" value="'.$sliderthumb5.'" size="25" maxlength="25" /><br /><br />'	
 	 . _SLIDER5. ':';
 	
@@ -129,7 +129,7 @@ function tonslidersetup() {
 	Make_TextArea('xslidercontent5', ''.$slidercontent5.'', 'PHPNukeAdmin');
     
 	     echo '<br /><br />'
-         . _SLIDER6TITLE . ':&nbsp;<input type="text" name="xslidertitle6" value="'.$slidertitle6.'" size="25" maxlength="30" /><br /><br />'
+         . _SLIDER6TITLE . ':&nbsp;<input type="text" name="xslidertitle6" value="'.$slidertitle6.'" size="50" maxlength="100" /><br /><br />'
           . _SLIDERTHUMB6. ':&nbsp;<input type="text" name="xsliderthumb6" value="'.$sliderthumb6.'" size="25" maxlength="25" /><br /><br />'  
 	. _SLIDER6. ':';
 	
