@@ -22,6 +22,8 @@
 
 global $module_name, $admin_file, $sitename, $nukeurl, $admlang;
 
+define_once("_BOOTSTRAP_SLIDER","Bootstrap Slider");
+
 // this had to be added back
 define_once("_LINKUS","Link Us");
 
