@@ -176,4 +176,16 @@ function writeBODYJS()
   return;
 }
 
+function readDIRtoArray($dir, $filter) {
+	$files = array();
+	$handle = opendir($dir);
+	while (false !== ($file = readdir($handle))) {
+		if (preg_match($filter, $file)) {
+			$files[] = $file;
+		}
+	}
+	closedir($handle);
+	return $files;
+}
+
 ?>
