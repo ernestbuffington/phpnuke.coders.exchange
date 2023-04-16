@@ -60,6 +60,11 @@ message_die(GENERAL_MESSAGE, $lang['No_user_id_specified']);
 
 $profiledata = get_userdata($_GET[POST_USERS_URL]);
 
+global $static_user_last_ip, $get_static_name, $static_user_id;
+
+$static_user_id = $_GET[POST_USERS_URL];
+list($static_user_last_ip, $get_static_name) = $db->sql_fetchrow($db->sql_query("SELECT last_ip, username FROM " . $user_prefix . "_users WHERE user_id='".$_GET[POST_USERS_URL]."'"));
+
 /*  
  * Ghost Mode Mod v1.0
  * @Author Ernest Allen Buffingon
@@ -492,7 +497,6 @@ $online_status_img = '';
 if(!isset($online_status))
 $online_status = '';
 
-
 $template->assign_vars(array(
 /*****[BEGIN]******************************************
  [ Mod:    Advanced Username Color             v1.0.5 ]
@@ -561,9 +565,9 @@ $template->assign_vars(array(
  * Mod: Display the users last visit date and time.
  * @since 2.0.9e
  */
-	'USER_LAST_VISIT' => $user_last_visit,
+  'USER_LAST_VISIT' => $user_last_visit,
   'EDIT_THIS_USER' => sprintf($lang['Edit_Forum_User_ACP'],'<a href="'.append_sid("modules/Forums/admin/admin_users.$phpEx?mode=edit&amp;u=" . $profiledata['user_id']).'" target="_blank">','</a>'),
-  'BAN_THIS_USER_IP' => sprintf($lang['Ban_Forum_User_IP'],'<a href="'.$admin_file.'.php?op=ABBlockedIPAdd&amp;tip='.$profiledata['last_ip'].'" target="_blank">','</a>'),
+  'BAN_THIS_USER_IP' => sprintf($lang['Ban_Forum_User_IP'],'<a href="'.$admin_file.'.php?op=ABBlockedIPAdd&amp;tip='.$profiledata['last_ip'].'&amp;get_static_name='.$get_static_name.'&amp;static_user_id='.$static_user_id.'" target="_blank">','</a>'),
   'SUSPEND_THIS_USER' => sprintf($lang['Suspend_This_User'],'<a href="modules.php?name=Your_Account&amp;file=admin&amp;op=suspendUser&amp;chng_uid='.$profiledata['user_id'].'">','</a>'),
   'DELETE_THIS_USER' => sprintf($lang['Delete_This_User'],'<a href="modules.php?name=Your_Account&amp;file=admin&amp;op=deleteUser&amp;chng_uid='.$profiledata['user_id'].'">','</a>'),
 
