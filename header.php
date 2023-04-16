@@ -128,17 +128,36 @@ function head()
 	echo "\n<!-- Loading includes/javascript.php from header.php -->\n";  
 	include_once(NUKE_INCLUDE_DIR.'javascript.php');
 
+   /**
+    * Include Addons from Header and Body
+    * used for for blocks and modules!
+    * @Adopted from RavenCMS v2.5.2
+	* @www http://www.ravenphpscripts.com
+    * @author Raven
+    * @version 1.0
+    * @license GPL-3.0
+    */
+    $addons = readDIRtoArray(NUKE_INCLUDE_DIR . 'addons', '/^head\-(.+)\.php/');
+	foreach ($addons as $addon) {
+        echo "\n<!-- Loading Header Addon File From includes/addons/".$addon." from header.php -->\n";  
+		include_once NUKE_INCLUDE_DIR . 'addons/'.$addon;
+	}
+	$addons = readDIRtoArray(NUKE_INCLUDE_DIR . 'addons', '/^body\-(.+)\.php/');
+	foreach ($addons as $addon) {
+        echo "\n<!-- Loading Body Addon File From includes/addons/".$addon." from header.php -->\n";  
+		include_once NUKE_INCLUDE_DIR . 'addons/'.$addon;
+	}	
+	
 	global $titanium_browser;
     $titanium_browser = new Browser();
 	
     
 	if (file_exists(NUKE_THEMES_DIR.$ThemeSel.'/nuke83x.php')) {
-      
-	  
+     // dont do shit or maybe later do some shit!  
 	} else {
 	# FlyKit Mod v1.0.0 START
 	# used to add rounded corners to user avatars!
-	echo "<!-- Loadiing includes/css/cms_css.php from header.php -->\n";
+	echo "\n<!-- Loadiing includes/css/cms_css.php from header.php -->\n";
 	addPHPCSSToHead(NUKE_BASE_DIR.'includes/css/cms_css.php','file');
     # FlyKit Mod v1.0.0 END
 	}
@@ -146,7 +165,8 @@ function head()
    /**
     * Include current Theme Javascript Functions
     * for Theme Copyright and Bootstrap loading!
-    *
+	* 
+    * @date 04/16/2023 1:23 AM
     * @author Ernest Allen Bufffington
     * @version 1.0
     * @license GPL-3.0
