@@ -92,7 +92,7 @@ echo '<tr><td bgcolor="'.$bgcolor2.'">'.help_img(_AB_HELP_015).' '._AB_TEMPLATE.
 $templatedir = dir(NUKE_INCLUDE_DIR.'nukesentinel/abuse');
 $templatelist = '';
 while($func=$templatedir->read()) {
-  if(substr($func, 0, 6) == 'abuse_') { $templatelist .= $func.' '; }
+  if(str_starts_with($func, 'abuse_')) { $templatelist .= $func.' '; }
 }
 closedir($templatedir->handle);
 $templatelist = explode(" ", $templatelist);

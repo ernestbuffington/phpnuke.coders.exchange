@@ -72,7 +72,7 @@ echo '<td><select name="xsite_reason">'."\n";
 $templatedir = dir(NUKE_INCLUDE_DIR.'nukesentinel/abuse');
 $templatelist = "";
 while($func=$templatedir->read()) {
-  if(substr($func, 0, 6) == "admin_") {
+  if(str_starts_with($func, "admin_")) {
     $templatelist .= "$func ";
   }
 }
@@ -181,7 +181,7 @@ echo '<td><select name="xproxy_reason">'."\n";
 $templatedir = dir(NUKE_INCLUDE_DIR.'nukesentinel/abuse');
 $templatelist = "";
 while($func=$templatedir->read()) {
-  if(substr($func, 0, 6) == "abuse_") {
+  if(str_starts_with($func, "abuse_")) {
     $templatelist .= "$func ";
   }
 }

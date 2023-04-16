@@ -30,7 +30,7 @@ if(is_god($_COOKIE['admin'])) {
       for($x=0; $x < 20; $x++) {
         //mt_srand ((double) microtime() * 1000000);
 		mt_srand(0, MT_RAND_MT19937);
-        $str[$x] = substr($strs, mt_rand(0, strlen($strs)-1), 1);
+        $str[$x] = substr($strs, random_int(0, strlen($strs)-1), 1);
         $makepass = $makepass.$str[$x];
       }
       $xpassword_md5 = md5($makepass);

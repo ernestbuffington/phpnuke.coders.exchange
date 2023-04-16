@@ -400,8 +400,8 @@ CloseTable();
 OpenTable();
 if($domain) {
 	$domain = trim($domain);
-	if(substr(strtolower($domain), 0, 7) == "http://") $domain = substr($domain, 7);
-	if(substr(strtolower($domain), 0, 4) == "www.") $domain = substr($domain, 4);
+	if(str_starts_with(strtolower($domain), "http://")) $domain = substr($domain, 7);
+	if(str_starts_with(strtolower($domain), "www.")) $domain = substr($domain, 4);
 	if(ValidateIP($domain)) {
 		$result = LookupIP($domain);
 	}
