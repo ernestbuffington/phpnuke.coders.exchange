@@ -52,7 +52,7 @@ while ($sqlvalue = $db->sql_fetchrow($result)):
   $usrinfo[$sqlvalue[name]] = $value;
 endwhile;
 
-global $cookie;
+global $cookie, $usrinfo;
 include_once(NUKE_BASE_DIR.'header.php');
 
 if ($num > 0): 
