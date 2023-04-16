@@ -562,8 +562,8 @@ $template->assign_vars(array(
  * @since 2.0.9e
  */
 	'USER_LAST_VISIT' => $user_last_visit,
-  'EDIT_THIS_USER' => sprintf($lang['Edit_Forum_User_ACP'],'<a href="'.append_sid("modules/Forums/admin/admin_users.$phpEx?mode=edit&amp;u=" . $profiledata['user_id']).'">','</a>'),
-  'BAN_THIS_USER_IP' => sprintf($lang['Ban_Forum_User_IP'],'<a href="'.$admin_file.'.php?op=ABBlockedIPAdd&amp;tip='.$profiledata['last_ip'].'">','</a>'),
+  'EDIT_THIS_USER' => sprintf($lang['Edit_Forum_User_ACP'],'<a href="'.append_sid("modules/Forums/admin/admin_users.$phpEx?mode=edit&amp;u=" . $profiledata['user_id']).'" target="_blank">','</a>'),
+  'BAN_THIS_USER_IP' => sprintf($lang['Ban_Forum_User_IP'],'<a href="'.$admin_file.'.php?op=ABBlockedIPAdd&amp;tip='.$profiledata['last_ip'].'" target="_blank">','</a>'),
   'SUSPEND_THIS_USER' => sprintf($lang['Suspend_This_User'],'<a href="modules.php?name=Your_Account&amp;file=admin&amp;op=suspendUser&amp;chng_uid='.$profiledata['user_id'].'">','</a>'),
   'DELETE_THIS_USER' => sprintf($lang['Delete_This_User'],'<a href="modules.php?name=Your_Account&amp;file=admin&amp;op=deleteUser&amp;chng_uid='.$profiledata['user_id'].'">','</a>'),
 
