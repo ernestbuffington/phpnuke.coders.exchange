@@ -59,12 +59,12 @@ $db->sql_query("CREATE TABLE `".$prefix."_tonslider` (
   `slidercontent4` varchar(999) NOT NULL default '0',  
   `slidercontent5` varchar(999) NOT NULL default '0',
   `slidercontent6` varchar(999) NOT NULL default '0',
-  `sliderthumb1` varchar(25) NOT NULL default '0',
-  `sliderthumb2` varchar(25) NOT NULL default '0', 
-  `sliderthumb3` varchar(25) NOT NULL default '0',
-  `sliderthumb4` varchar(25) NOT NULL default '0', 
-  `sliderthumb5` varchar(25) NOT NULL default '0',
-  `sliderthumb6` varchar(25) NOT NULL default '0' 
+  `sliderthumb1` varchar(100) NOT NULL default '0',
+  `sliderthumb2` varchar(100) NOT NULL default '0', 
+  `sliderthumb3` varchar(100) NOT NULL default '0',
+  `sliderthumb4` varchar(100) NOT NULL default '0', 
+  `sliderthumb5` varchar(100) NOT NULL default '0',
+  `sliderthumb6` varchar(100) NOT NULL default '0' 
     ) ENGINE=MyISAM;");
     
 $db->sql_query("INSERT INTO ".$prefix."_tonslider (sliderwidth, 
@@ -89,7 +89,7 @@ $db->sql_query("INSERT INTO ".$prefix."_tonslider (sliderwidth,
 												  sliderthumb5, 
 												  sliderthumb6) VALUES ('560', 
 												                        '235', 
-																		'600', 
+																	  '15500', 
 																    'Title 1', 
 																	'Title 2', 
 																	'Title 3', 
