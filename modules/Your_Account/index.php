@@ -273,7 +273,8 @@ switch($op):
 
             yacookie($setinfo['user_id'], 
 			        $setinfo['username'], 
-		 $new_pass, $setinfo['storynum'], 
+		                       $new_pass, 
+					$setinfo['storynum'], 
 		               $setinfo['umode'], 
 					  $setinfo['uorder'], 
 					   $setinfo['thold'], 
