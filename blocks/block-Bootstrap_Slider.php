@@ -92,7 +92,7 @@ $content .= '<div style="border-radius: 30px;" class="item active">';
 $content .= '<img src="images/slider/'.$sliderthumb1.'" alt="'.$slidertitle1.'" style="border-radius: 30px; width:100%;">';
 $content .= '<br /><br /><br /><br /><br /><br /><br /><br /><br />';
 $content .= '<div class="carousel-caption">';
-$content .= '<h3>'.$slidertitle1.'</h3>';
+$content .= '<h2><strong>'.$slidertitle1.'</strong></h2>';
 $content .= '<p>'.$slidercontent1.'</p>';
 $content .= '</div>';
 $content .= '</div>';
