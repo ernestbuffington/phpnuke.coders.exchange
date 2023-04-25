@@ -1020,8 +1020,9 @@ $boxstring = null;
     // Let the jumpbox work again in sites having additional session id checks.
 //    if ( !empty($SID) )
 //    {
-
+        if(isset($userdata['session_id'])):
         $boxstring .= '<input type="hidden" name="sid" value="' . $userdata['session_id'] . '" />';
+		endif;
 
 //    }
     $template->set_filenames(['jumpbox' => 'jumpbox.tpl']
