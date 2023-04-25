@@ -185,12 +185,14 @@ switch($op):
         $db->sql_query("UPDATE ".$user_prefix."_users SET agreedtos='1' WHERE username='$username'");
         endif;
 		
-		if(isset($redirect))
-		$forward = str_replace("redirect=", "", "$redirect");
-        
-		if (preg_match("#privmsg#", $forward)): 
-		$pm_login = "active";
-		endif; 
+		if(isset($redirect)):
+		  $forward = str_replace("redirect=", "", $redirect);
+			if(isset($forward)):
+		      if (preg_match("#privmsg#", (string) $forward)): 
+		      $pm_login = "active";
+		      endif; 
+		    endif; 
+		endif;
         
    if ($db->sql_numrows($result) == 0): 
           
