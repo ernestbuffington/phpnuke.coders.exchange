@@ -935,8 +935,8 @@ else if ( $mode == 'read' )
 /*****[BEGIN]******************************************
  [ Mod:    Online/Offline/Hidden               v2.2.7 ]
  ******************************************************/
-        if(!isset($images['icon_online']))
-		$images['icon_online'] = '';
+        if(!isset($images['icon_online'])) { $images['icon_online'] = ''; }
+        if(!isset($images['icon_hidden'])) { $images['icon_hidden'] = ''; }
 		
 		if ($privmsg['user_session_time_1'] >= (time()-$board_config['online_time']))
         {
